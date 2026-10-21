@@ -27,7 +27,7 @@ See also: `DMAdaptor`, `DMAdaptationStrategy`, `DMAdaptorSetSolver()`, `DMAdapto
 $(_doc_external("DM/DMAdaptorAdapt"))
 """
 function DMAdaptorAdapt(petsclib::PetscLibType, adaptor::DMAdaptor, x::AbstractPetscVec, strategy::DMAdaptationStrategy)
-    error("DMAdaptorAdapt: no generated method for these argument types")
+    throw(MethodError(DMAdaptorAdapt, (petsclib, adaptor, x, strategy)))
 end
 
 @for_petsc function DMAdaptorAdapt(petsclib::$UnionPetscLib, adaptor::DMAdaptor, x::AbstractPetscVec, strategy::DMAdaptationStrategy )
@@ -67,7 +67,7 @@ See also: `DM`, `DMAdaptor`, `DMAdaptorDestroy()`, `DMAdaptorAdapt()`, `PetscCon
 $(_doc_external("DM/DMAdaptorCreate"))
 """
 function DMAdaptorCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("DMAdaptorCreate: no generated method for these argument types")
+    throw(MethodError(DMAdaptorCreate, (petsclib, comm)))
 end
 
 @for_petsc function DMAdaptorCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -102,7 +102,7 @@ See also: `DM`, `DMAdaptor`, `DMAdaptorCreate()`, `DMAdaptorAdapt()`
 $(_doc_external("DM/DMAdaptorDestroy"))
 """
 function DMAdaptorDestroy(petsclib::PetscLibType, adaptor::Union{DMAdaptor, Ref{DMAdaptor}})
-    error("DMAdaptorDestroy: no generated method for these argument types")
+    throw(MethodError(DMAdaptorDestroy, (petsclib, adaptor)))
 end
 
 @for_petsc function DMAdaptorDestroy(petsclib::$UnionPetscLib, adaptor::Union{DMAdaptor, Ref{DMAdaptor}} )
@@ -139,7 +139,7 @@ See also: `DMAdaptor`, `DMAdaptorSetCriterion()`, `DMAdaptationCriterion`
 $(_doc_external("DM/DMAdaptorGetCriterion"))
 """
 function DMAdaptorGetCriterion(petsclib::PetscLibType, adaptor::DMAdaptor)
-    error("DMAdaptorGetCriterion: no generated method for these argument types")
+    throw(MethodError(DMAdaptorGetCriterion, (petsclib, adaptor)))
 end
 
 @for_petsc function DMAdaptorGetCriterion(petsclib::$UnionPetscLib, adaptor::DMAdaptor )
@@ -177,7 +177,7 @@ See also: `DMAdaptor`, `DMAdaptorSetMixedSetupFunction()`, `DMAdaptorAdapt()`
 $(_doc_external("DM/DMAdaptorGetMixedSetupFunction"))
 """
 function DMAdaptorGetMixedSetupFunction(petsclib::PetscLibType, adaptor::DMAdaptor, noname::Ptr{Cvoid})
-    error("DMAdaptorGetMixedSetupFunction: no generated method for these argument types")
+    throw(MethodError(DMAdaptorGetMixedSetupFunction, (petsclib, adaptor, noname)))
 end
 
 @for_petsc function DMAdaptorGetMixedSetupFunction(petsclib::$UnionPetscLib, adaptor::DMAdaptor, noname::Ptr{Cvoid} )
@@ -213,7 +213,7 @@ See also: `DMAdaptor`, `DMAdaptorSetSequenceLength()`, `DMAdaptorCreate()`, `DMA
 $(_doc_external("DM/DMAdaptorGetSequenceLength"))
 """
 function DMAdaptorGetSequenceLength(petsclib::PetscLibType, adaptor::DMAdaptor)
-    error("DMAdaptorGetSequenceLength: no generated method for these argument types")
+    throw(MethodError(DMAdaptorGetSequenceLength, (petsclib, adaptor)))
 end
 
 @for_petsc function DMAdaptorGetSequenceLength(petsclib::$UnionPetscLib, adaptor::DMAdaptor )
@@ -251,7 +251,7 @@ See also: `DM`, `DMAdaptor`, `DMAdaptorSetSolver()`, `DMAdaptorCreate()`, `DMAda
 $(_doc_external("DM/DMAdaptorGetSolver"))
 """
 function DMAdaptorGetSolver(petsclib::PetscLibType, adaptor::DMAdaptor)
-    error("DMAdaptorGetSolver: no generated method for these argument types")
+    throw(MethodError(DMAdaptorGetSolver, (petsclib, adaptor)))
 end
 
 @for_petsc function DMAdaptorGetSolver(petsclib::$UnionPetscLib, adaptor::DMAdaptor )
@@ -297,7 +297,7 @@ See also: `DMAdaptor`, `DMAdaptorSetTransferFunction()`, `DMAdaptorAdapt()`
 $(_doc_external("DM/DMAdaptorGetTransferFunction"))
 """
 function DMAdaptorGetTransferFunction(petsclib::PetscLibType, adaptor::DMAdaptor, noname::Ptr{Cvoid})
-    error("DMAdaptorGetTransferFunction: no generated method for these argument types")
+    throw(MethodError(DMAdaptorGetTransferFunction, (petsclib, adaptor, noname)))
 end
 
 @for_petsc function DMAdaptorGetTransferFunction(petsclib::$UnionPetscLib, adaptor::DMAdaptor, noname::Ptr{Cvoid} )
@@ -333,7 +333,7 @@ See also: `DM`, `DMPLEX`, `DMAdaptor`, `DMAdaptorType`, `DMAdaptorSetType()`, `D
 $(_doc_external("DM/DMAdaptorGetType"))
 """
 function DMAdaptorGetType(petsclib::PetscLibType, adaptor::DMAdaptor)
-    error("DMAdaptorGetType: no generated method for these argument types")
+    throw(MethodError(DMAdaptorGetType, (petsclib, adaptor)))
 end
 
 @for_petsc function DMAdaptorGetType(petsclib::$UnionPetscLib, adaptor::DMAdaptor )
@@ -374,7 +374,7 @@ See also: `DMAdaptorMonitorSet()`
 $(_doc_external("DM/DMAdaptorMonitor"))
 """
 function DMAdaptorMonitor(petsclib::PetscLibType, adaptor::DMAdaptor, it::Integer, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::Integer, enorms::AbstractVector{<:Number}, error::AbstractPetscVec)
-    error("DMAdaptorMonitor: no generated method for these argument types")
+    throw(MethodError(DMAdaptorMonitor, (petsclib, adaptor, it, odm, adm, Nf, enorms, error)))
 end
 
 @for_petsc function DMAdaptorMonitor(petsclib::$UnionPetscLib, adaptor::DMAdaptor, it::$PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::$PetscInt, enorms::Vector{$PetscReal}, error::AbstractPetscVec )
@@ -410,7 +410,7 @@ See also: `DMAdaptorMonitorError()`, `DMAdaptorMonitorSet()`, `DMAdaptor`
 $(_doc_external("DM/DMAdaptorMonitorCancel"))
 """
 function DMAdaptorMonitorCancel(petsclib::PetscLibType, adaptor::DMAdaptor)
-    error("DMAdaptorMonitorCancel: no generated method for these argument types")
+    throw(MethodError(DMAdaptorMonitorCancel, (petsclib, adaptor)))
 end
 
 @for_petsc function DMAdaptorMonitorCancel(petsclib::$UnionPetscLib, adaptor::DMAdaptor )
@@ -453,7 +453,7 @@ See also: `DMAdaptor`, `DMAdaptorMonitorSet()`, `DMAdaptorMonitorErrorDraw()`, `
 $(_doc_external("DM/DMAdaptorMonitorError"))
 """
 function DMAdaptorMonitorError(petsclib::PetscLibType, adaptor::DMAdaptor, n::Integer, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::Integer, enorms::AbstractVector{<:Number}, error::AbstractPetscVec, vf::Vector{PetscViewerAndFormat})
-    error("DMAdaptorMonitorError: no generated method for these argument types")
+    throw(MethodError(DMAdaptorMonitorError, (petsclib, adaptor, n, odm, adm, Nf, enorms, error, vf)))
 end
 
 @for_petsc function DMAdaptorMonitorError(petsclib::$UnionPetscLib, adaptor::DMAdaptor, n::$PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::$PetscInt, enorms::Vector{$PetscReal}, error::AbstractPetscVec, vf::Vector{PetscViewerAndFormat} )
@@ -496,7 +496,7 @@ See also: `PETSCVIEWERDRAW`, `DMAdaptor`, `DMAdaptorMonitorSet()`, `DMAdaptorMon
 $(_doc_external("DM/DMAdaptorMonitorErrorDraw"))
 """
 function DMAdaptorMonitorErrorDraw(petsclib::PetscLibType, adaptor::DMAdaptor, n::Integer, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::Integer, enorms::AbstractVector{<:Number}, error::AbstractPetscVec, vf::Vector{PetscViewerAndFormat})
-    error("DMAdaptorMonitorErrorDraw: no generated method for these argument types")
+    throw(MethodError(DMAdaptorMonitorErrorDraw, (petsclib, adaptor, n, odm, adm, Nf, enorms, error, vf)))
 end
 
 @for_petsc function DMAdaptorMonitorErrorDraw(petsclib::$UnionPetscLib, adaptor::DMAdaptor, n::$PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::$PetscInt, enorms::Vector{$PetscReal}, error::AbstractPetscVec, vf::Vector{PetscViewerAndFormat} )
@@ -540,7 +540,7 @@ See also: `PETSCVIEWERDRAW`, `DMAdaptor`, `DMAdaptorMonitorSet()`, `DMAdaptorMon
 $(_doc_external("DM/DMAdaptorMonitorErrorDrawLG"))
 """
 function DMAdaptorMonitorErrorDrawLG(petsclib::PetscLibType, adaptor::DMAdaptor, n::Integer, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::Integer, enorms::AbstractVector{<:Number}, error::AbstractPetscVec, vf::Vector{PetscViewerAndFormat})
-    error("DMAdaptorMonitorErrorDrawLG: no generated method for these argument types")
+    throw(MethodError(DMAdaptorMonitorErrorDrawLG, (petsclib, adaptor, n, odm, adm, Nf, enorms, error, vf)))
 end
 
 @for_petsc function DMAdaptorMonitorErrorDrawLG(petsclib::$UnionPetscLib, adaptor::DMAdaptor, n::$PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::$PetscInt, enorms::Vector{$PetscReal}, error::AbstractPetscVec, vf::Vector{PetscViewerAndFormat} )
@@ -578,7 +578,7 @@ See also: `PETSCVIEWERDRAW`, `PetscViewerMonitorGLSetUp()`, `DMAdaptor`, `DMAdap
 $(_doc_external("DM/DMAdaptorMonitorErrorDrawLGCreate"))
 """
 function DMAdaptorMonitorErrorDrawLGCreate(petsclib::PetscLibType, viewer::PetscViewer, format::PetscViewerFormat, ctx::Ptr{Cvoid})
-    error("DMAdaptorMonitorErrorDrawLGCreate: no generated method for these argument types")
+    throw(MethodError(DMAdaptorMonitorErrorDrawLGCreate, (petsclib, viewer, format, ctx)))
 end
 
 @for_petsc function DMAdaptorMonitorErrorDrawLGCreate(petsclib::$UnionPetscLib, viewer::PetscViewer, format::PetscViewerFormat, ctx::Ptr{Cvoid} )
@@ -618,7 +618,7 @@ See also: `DMAdaptor`, `DMAdaptorMonitorSet()`, `DMAdaptorMonitorRegisterAll()`,
 $(_doc_external("DM/DMAdaptorMonitorRegister"))
 """
 function DMAdaptorMonitorRegister(petsclib::PetscLibType, name::String, vtype::String, format::PetscViewerFormat, monitor::external, create::external, destroy::external)
-    error("DMAdaptorMonitorRegister: no generated method for these argument types")
+    throw(MethodError(DMAdaptorMonitorRegister, (petsclib, name, vtype, format, monitor, create, destroy)))
 end
 
 @for_petsc function DMAdaptorMonitorRegister(petsclib::$UnionPetscLib, name::String, vtype::String, format::PetscViewerFormat, monitor::external, create::external, destroy::external )
@@ -648,7 +648,7 @@ See also: `SNES`, `DM`, `DMAdaptorMonitorRegister()`, `DMAdaptorRegister()`
 $(_doc_external("DM/DMAdaptorMonitorRegisterAll"))
 """
 function DMAdaptorMonitorRegisterAll(petsclib::PetscLibType)
-    error("DMAdaptorMonitorRegisterAll: no generated method for these argument types")
+    throw(MethodError(DMAdaptorMonitorRegisterAll, (petsclib, )))
 end
 
 @for_petsc function DMAdaptorMonitorRegisterAll(petsclib::$UnionPetscLib)
@@ -677,7 +677,7 @@ See also: `DM`, `DMPLEX`, `DMAdaptorMonitorRegisterAll()`, `DMAdaptor`, `PetscFi
 $(_doc_external("DM/DMAdaptorMonitorRegisterDestroy"))
 """
 function DMAdaptorMonitorRegisterDestroy(petsclib::PetscLibType)
-    error("DMAdaptorMonitorRegisterDestroy: no generated method for these argument types")
+    throw(MethodError(DMAdaptorMonitorRegisterDestroy, (petsclib, )))
 end
 
 @for_petsc function DMAdaptorMonitorRegisterDestroy(petsclib::$UnionPetscLib)
@@ -730,7 +730,7 @@ See also: `DMAdaptorMonitorError()`, `DMAdaptor`, `PetscCtxDestroyFn`
 $(_doc_external("DM/DMAdaptorMonitorSet"))
 """
 function DMAdaptorMonitorSet(petsclib::PetscLibType, adaptor::DMAdaptor, monitor::external, ctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid})
-    error("DMAdaptorMonitorSet: no generated method for these argument types")
+    throw(MethodError(DMAdaptorMonitorSet, (petsclib, adaptor, monitor, ctx, monitordestroy)))
 end
 
 @for_petsc function DMAdaptorMonitorSet(petsclib::$UnionPetscLib, adaptor::DMAdaptor, monitor::external, ctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid} )
@@ -766,7 +766,7 @@ See also: `DMAdaptorMonitorRegister()`, `DMAdaptorMonitorSet()`, `PetscOptionsGe
 $(_doc_external("DM/DMAdaptorMonitorSetFromOptions"))
 """
 function DMAdaptorMonitorSetFromOptions(petsclib::PetscLibType, adaptor::DMAdaptor, opt::String, name::String, ctx::Ptr{Cvoid})
-    error("DMAdaptorMonitorSetFromOptions: no generated method for these argument types")
+    throw(MethodError(DMAdaptorMonitorSetFromOptions, (petsclib, adaptor, opt, name, ctx)))
 end
 
 @for_petsc function DMAdaptorMonitorSetFromOptions(petsclib::$UnionPetscLib, adaptor::DMAdaptor, opt::String, name::String, ctx::Ptr{Cvoid} )
@@ -809,7 +809,7 @@ See also: `DMAdaptor`, `DMAdaptorMonitorSet()`, `DMAdaptorMonitorError()`, `DMAd
 $(_doc_external("DM/DMAdaptorMonitorSize"))
 """
 function DMAdaptorMonitorSize(petsclib::PetscLibType, adaptor::DMAdaptor, n::Integer, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::Integer, enorms::AbstractVector{<:Number}, error::AbstractPetscVec, vf::Vector{PetscViewerAndFormat})
-    error("DMAdaptorMonitorSize: no generated method for these argument types")
+    throw(MethodError(DMAdaptorMonitorSize, (petsclib, adaptor, n, odm, adm, Nf, enorms, error, vf)))
 end
 
 @for_petsc function DMAdaptorMonitorSize(petsclib::$UnionPetscLib, adaptor::DMAdaptor, n::$PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::$PetscInt, enorms::Vector{$PetscReal}, error::AbstractPetscVec, vf::Vector{PetscViewerAndFormat} )
@@ -841,7 +841,7 @@ See also: `DM`, `DMPLEX`, `DMAdaptor`, `DMAdaptorRegisterAll()`, `DMAdaptorRegis
 $(_doc_external("DM/DMAdaptorRegister"))
 """
 function DMAdaptorRegister(petsclib::PetscLibType, name::String, noname::Ptr{Cvoid})
-    error("DMAdaptorRegister: no generated method for these argument types")
+    throw(MethodError(DMAdaptorRegister, (petsclib, name, noname)))
 end
 
 @for_petsc function DMAdaptorRegister(petsclib::$UnionPetscLib, name::String, noname::Ptr{Cvoid} )
@@ -871,7 +871,7 @@ See also: `DM`, `DMPLEX`, `DMAdaptorType`, `DMRegisterAll()`, `DMAdaptorRegister
 $(_doc_external("DM/DMAdaptorRegisterAll"))
 """
 function DMAdaptorRegisterAll(petsclib::PetscLibType)
-    error("DMAdaptorRegisterAll: no generated method for these argument types")
+    throw(MethodError(DMAdaptorRegisterAll, (petsclib, )))
 end
 
 @for_petsc function DMAdaptorRegisterAll(petsclib::$UnionPetscLib)
@@ -900,7 +900,7 @@ See also: `DM`, `DMPLEX`, `DMAdaptorRegisterAll()`, `DMAdaptorType`, `PetscFinal
 $(_doc_external("DM/DMAdaptorRegisterDestroy"))
 """
 function DMAdaptorRegisterDestroy(petsclib::PetscLibType)
-    error("DMAdaptorRegisterDestroy: no generated method for these argument types")
+    throw(MethodError(DMAdaptorRegisterDestroy, (petsclib, )))
 end
 
 @for_petsc function DMAdaptorRegisterDestroy(petsclib::$UnionPetscLib)
@@ -933,7 +933,7 @@ See also: `DMAdaptor`, `DMAdaptorGetCriterion()`, `DMAdaptationCriterion`
 $(_doc_external("DM/DMAdaptorSetCriterion"))
 """
 function DMAdaptorSetCriterion(petsclib::PetscLibType, adaptor::DMAdaptor, criterion::DMAdaptationCriterion)
-    error("DMAdaptorSetCriterion: no generated method for these argument types")
+    throw(MethodError(DMAdaptorSetCriterion, (petsclib, adaptor, criterion)))
 end
 
 @for_petsc function DMAdaptorSetCriterion(petsclib::$UnionPetscLib, adaptor::DMAdaptor, criterion::DMAdaptationCriterion )
@@ -974,7 +974,7 @@ See also: `DM`, `DMAdaptor`, `DMAdaptorCreate()`, `DMAdaptorAdapt()`
 $(_doc_external("DM/DMAdaptorSetFromOptions"))
 """
 function DMAdaptorSetFromOptions(petsclib::PetscLibType, adaptor::DMAdaptor)
-    error("DMAdaptorSetFromOptions: no generated method for these argument types")
+    throw(MethodError(DMAdaptorSetFromOptions, (petsclib, adaptor)))
 end
 
 @for_petsc function DMAdaptorSetFromOptions(petsclib::$UnionPetscLib, adaptor::DMAdaptor )
@@ -1012,7 +1012,7 @@ See also: `DMAdaptor`, `DMAdaptorGetMixedSetupFunction()`, `DMAdaptorAdapt()`
 $(_doc_external("DM/DMAdaptorSetMixedSetupFunction"))
 """
 function DMAdaptorSetMixedSetupFunction(petsclib::PetscLibType, adaptor::DMAdaptor, setupFunc::external)
-    error("DMAdaptorSetMixedSetupFunction: no generated method for these argument types")
+    throw(MethodError(DMAdaptorSetMixedSetupFunction, (petsclib, adaptor, setupFunc)))
 end
 
 @for_petsc function DMAdaptorSetMixedSetupFunction(petsclib::$UnionPetscLib, adaptor::DMAdaptor, setupFunc::external )
@@ -1046,7 +1046,7 @@ See also: `DMAdaptor`, `SNESSetOptionsPrefix()`, `DMAdaptorSetFromOptions()`
 $(_doc_external("DM/DMAdaptorSetOptionsPrefix"))
 """
 function DMAdaptorSetOptionsPrefix(petsclib::PetscLibType, adaptor::DMAdaptor, prefix::String)
-    error("DMAdaptorSetOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(DMAdaptorSetOptionsPrefix, (petsclib, adaptor, prefix)))
 end
 
 @for_petsc function DMAdaptorSetOptionsPrefix(petsclib::$UnionPetscLib, adaptor::DMAdaptor, prefix::String )
@@ -1080,7 +1080,7 @@ See also: `DMAdaptorGetSequenceLength()`, `DMAdaptorCreate()`, `DMAdaptorAdapt()
 $(_doc_external("DM/DMAdaptorSetSequenceLength"))
 """
 function DMAdaptorSetSequenceLength(petsclib::PetscLibType, adaptor::DMAdaptor, num::Integer)
-    error("DMAdaptorSetSequenceLength: no generated method for these argument types")
+    throw(MethodError(DMAdaptorSetSequenceLength, (petsclib, adaptor, num)))
 end
 
 @for_petsc function DMAdaptorSetSequenceLength(petsclib::$UnionPetscLib, adaptor::DMAdaptor, num::$PetscInt )
@@ -1114,7 +1114,7 @@ See also: `DMAdaptor`, `DMAdaptorGetSolver()`, `DMAdaptorCreate()`, `DMAdaptorAd
 $(_doc_external("DM/DMAdaptorSetSolver"))
 """
 function DMAdaptorSetSolver(petsclib::PetscLibType, adaptor::DMAdaptor, snes::AbstractSNES)
-    error("DMAdaptorSetSolver: no generated method for these argument types")
+    throw(MethodError(DMAdaptorSetSolver, (petsclib, adaptor, snes)))
 end
 
 @for_petsc function DMAdaptorSetSolver(petsclib::$UnionPetscLib, adaptor::DMAdaptor, snes::AbstractSNES )
@@ -1156,7 +1156,7 @@ See also: `DMAdaptor`, `DMAdaptorGetTransferFunction()`, `DMAdaptorAdapt()`
 $(_doc_external("DM/DMAdaptorSetTransferFunction"))
 """
 function DMAdaptorSetTransferFunction(petsclib::PetscLibType, adaptor::DMAdaptor, tfunc::external)
-    error("DMAdaptorSetTransferFunction: no generated method for these argument types")
+    throw(MethodError(DMAdaptorSetTransferFunction, (petsclib, adaptor, tfunc)))
 end
 
 @for_petsc function DMAdaptorSetTransferFunction(petsclib::$UnionPetscLib, adaptor::DMAdaptor, tfunc::external )
@@ -1193,7 +1193,7 @@ See also: `DM`, `DMPLEX`, `DMAdaptor`, `DMAdaptorType`, `DMAdaptorGetType()`, `D
 $(_doc_external("DM/DMAdaptorSetType"))
 """
 function DMAdaptorSetType(petsclib::PetscLibType, adaptor::DMAdaptor, method::String)
-    error("DMAdaptorSetType: no generated method for these argument types")
+    throw(MethodError(DMAdaptorSetType, (petsclib, adaptor, method)))
 end
 
 @for_petsc function DMAdaptorSetType(petsclib::$UnionPetscLib, adaptor::DMAdaptor, method::String )
@@ -1226,7 +1226,7 @@ See also: `DMAdaptor`, `DMAdaptorCreate()`, `DMAdaptorAdapt()`
 $(_doc_external("DM/DMAdaptorSetUp"))
 """
 function DMAdaptorSetUp(petsclib::PetscLibType, adaptor::DMAdaptor)
-    error("DMAdaptorSetUp: no generated method for these argument types")
+    throw(MethodError(DMAdaptorSetUp, (petsclib, adaptor)))
 end
 
 @for_petsc function DMAdaptorSetUp(petsclib::$UnionPetscLib, adaptor::DMAdaptor )
@@ -1260,7 +1260,7 @@ See also: `DM`, `DMAdaptor`, `DMAdaptorCreate()`, `DMAdaptorAdapt()`
 $(_doc_external("DM/DMAdaptorView"))
 """
 function DMAdaptorView(petsclib::PetscLibType, adaptor::DMAdaptor, viewer::PetscViewer)
-    error("DMAdaptorView: no generated method for these argument types")
+    throw(MethodError(DMAdaptorView, (petsclib, adaptor, viewer)))
 end
 
 @for_petsc function DMAdaptorView(petsclib::$UnionPetscLib, adaptor::DMAdaptor, viewer::PetscViewer )
@@ -1298,7 +1298,7 @@ See also: `DMField`, `DMFIELDDA`, `DMDA`, `DMFieldCreate()`, `DMFieldCreateDS()`
 $(_doc_external("DM/DMFieldCreateDA"))
 """
 function DMFieldCreateDA(petsclib::PetscLibType, dm::AbstractPetscDM, nc::Integer, cornerValues::AbstractVector{<:Number})
-    error("DMFieldCreateDA: no generated method for these argument types")
+    throw(MethodError(DMFieldCreateDA, (petsclib, dm, nc, cornerValues)))
 end
 
 @for_petsc function DMFieldCreateDA(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nc::$PetscInt, cornerValues::Vector{$PetscScalar} )
@@ -1338,7 +1338,7 @@ See also: `DMField`, `DMFIELDDS`, `DMFieldCreateDSWithDG()`, `DMFieldCreate()`, 
 $(_doc_external("DM/DMFieldCreateDS"))
 """
 function DMFieldCreateDS(petsclib::PetscLibType, dm::AbstractPetscDM, fieldNum::Integer, vec::AbstractPetscVec)
-    error("DMFieldCreateDS: no generated method for these argument types")
+    throw(MethodError(DMFieldCreateDS, (petsclib, dm, fieldNum, vec)))
 end
 
 @for_petsc function DMFieldCreateDS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fieldNum::$PetscInt, vec::AbstractPetscVec )
@@ -1380,7 +1380,7 @@ See also: `DMField`, `DMFIELDDS`, `DMFieldCreateDS()`, `DMFieldCreate()`, `Petsc
 $(_doc_external("DM/DMFieldCreateDSWithDG"))
 """
 function DMFieldCreateDSWithDG(petsclib::PetscLibType, dm::AbstractPetscDM, dmDG::AbstractPetscDM, fieldNum::Integer, vec::AbstractPetscVec, vecDG::AbstractPetscVec)
-    error("DMFieldCreateDSWithDG: no generated method for these argument types")
+    throw(MethodError(DMFieldCreateDSWithDG, (petsclib, dm, dmDG, fieldNum, vec, vecDG)))
 end
 
 @for_petsc function DMFieldCreateDSWithDG(petsclib::$UnionPetscLib, dm::AbstractPetscDM, dmDG::AbstractPetscDM, fieldNum::$PetscInt, vec::AbstractPetscVec, vecDG::AbstractPetscVec )
@@ -1419,7 +1419,7 @@ See also: `DMFieldCreateDefaultQuadrature()`, `DMField`, `PetscQuadrature`, `IS`
 $(_doc_external("DM/DMFieldCreateDefaultFaceQuadrature"))
 """
 function DMFieldCreateDefaultFaceQuadrature(petsclib::PetscLibType, field::DMField, pointIS::AbstractIS)
-    error("DMFieldCreateDefaultFaceQuadrature: no generated method for these argument types")
+    throw(MethodError(DMFieldCreateDefaultFaceQuadrature, (petsclib, field, pointIS)))
 end
 
 @for_petsc function DMFieldCreateDefaultFaceQuadrature(petsclib::$UnionPetscLib, field::DMField, pointIS::AbstractIS )
@@ -1459,7 +1459,7 @@ See also: `DMFieldCreateDefaultFaceQuadrature()`, `DMField`, `PetscQuadrature`, 
 $(_doc_external("DM/DMFieldCreateDefaultQuadrature"))
 """
 function DMFieldCreateDefaultQuadrature(petsclib::PetscLibType, field::DMField, pointIS::AbstractIS)
-    error("DMFieldCreateDefaultQuadrature: no generated method for these argument types")
+    throw(MethodError(DMFieldCreateDefaultQuadrature, (petsclib, field, pointIS)))
 end
 
 @for_petsc function DMFieldCreateDefaultQuadrature(petsclib::$UnionPetscLib, field::DMField, pointIS::AbstractIS )
@@ -1500,7 +1500,7 @@ See also: `DMField`, `PetscQuadrature`, `IS`, `PetscFEGeom`, `DMFieldEvaluateFE(
 $(_doc_external("DM/DMFieldCreateFEGeom"))
 """
 function DMFieldCreateFEGeom(petsclib::PetscLibType, field::DMField, pointIS::AbstractIS, quad::PetscQuadrature, mode::PetscFEGeomMode)
-    error("DMFieldCreateFEGeom: no generated method for these argument types")
+    throw(MethodError(DMFieldCreateFEGeom, (petsclib, field, pointIS, quad, mode)))
 end
 
 @for_petsc function DMFieldCreateFEGeom(petsclib::$UnionPetscLib, field::DMField, pointIS::AbstractIS, quad::PetscQuadrature, mode::PetscFEGeomMode )
@@ -1541,7 +1541,7 @@ See also: `DMField`, `DMFIELDSHELL`, `DMFieldShellGetContext()`, `DMFieldShellSe
 $(_doc_external("DM/DMFieldCreateShell"))
 """
 function DMFieldCreateShell(petsclib::PetscLibType, dm::AbstractPetscDM, numComponents::Integer, continuity::DMFieldContinuity, ctx::Ptr{Cvoid})
-    error("DMFieldCreateShell: no generated method for these argument types")
+    throw(MethodError(DMFieldCreateShell, (petsclib, dm, numComponents, continuity, ctx)))
 end
 
 @for_petsc function DMFieldCreateShell(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numComponents::$PetscInt, continuity::DMFieldContinuity, ctx::Ptr{Cvoid} )
@@ -1576,7 +1576,7 @@ See also: `DMField`, `DMFieldCreate()`
 $(_doc_external("DM/DMFieldDestroy"))
 """
 function DMFieldDestroy(petsclib::PetscLibType, field::Union{DMField, Ref{DMField}})
-    error("DMFieldDestroy: no generated method for these argument types")
+    throw(MethodError(DMFieldDestroy, (petsclib, field)))
 end
 
 @for_petsc function DMFieldDestroy(petsclib::$UnionPetscLib, field::Union{DMField, Ref{DMField}} )
@@ -1627,7 +1627,7 @@ See also: `DMField`, `DMFieldGetDM()`, `DMFieldGetNumComponents()`, `DMFieldEval
 $(_doc_external("DM/DMFieldEvaluate"))
 """
 function DMFieldEvaluate(petsclib::PetscLibType, field::DMField, points::AbstractPetscVec, datatype::PetscDataType)
-    error("DMFieldEvaluate: no generated method for these argument types")
+    throw(MethodError(DMFieldEvaluate, (petsclib, field, points, datatype)))
 end
 
 @for_petsc function DMFieldEvaluate(petsclib::$UnionPetscLib, field::DMField, points::AbstractPetscVec, datatype::PetscDataType )
@@ -1684,7 +1684,7 @@ See also: `DMField`, `DM`, `DMFieldGetNumComponents()`, `DMFieldEvaluate()`, `DM
 $(_doc_external("DM/DMFieldEvaluateFE"))
 """
 function DMFieldEvaluateFE(petsclib::PetscLibType, field::DMField, cellIS::AbstractIS, points::PetscQuadrature, datatype::PetscDataType)
-    error("DMFieldEvaluateFE: no generated method for these argument types")
+    throw(MethodError(DMFieldEvaluateFE, (petsclib, field, cellIS, points, datatype)))
 end
 
 @for_petsc function DMFieldEvaluateFE(petsclib::$UnionPetscLib, field::DMField, cellIS::AbstractIS, points::PetscQuadrature, datatype::PetscDataType )
@@ -1738,7 +1738,7 @@ See also: `DMField`, `IS`, `DMFieldGetNumComponents()`, `DMFieldEvaluate()`, `DM
 $(_doc_external("DM/DMFieldEvaluateFV"))
 """
 function DMFieldEvaluateFV(petsclib::PetscLibType, field::DMField, cellIS::AbstractIS, datatype::PetscDataType)
-    error("DMFieldEvaluateFV: no generated method for these argument types")
+    throw(MethodError(DMFieldEvaluateFV, (petsclib, field, cellIS, datatype)))
 end
 
 @for_petsc function DMFieldEvaluateFV(petsclib::$UnionPetscLib, field::DMField, cellIS::AbstractIS, datatype::PetscDataType )
@@ -1774,7 +1774,7 @@ See also: `DMFieldInitializePackage()`
 $(_doc_external("DM/DMFieldFinalizePackage"))
 """
 function DMFieldFinalizePackage(petsclib::PetscLibType)
-    error("DMFieldFinalizePackage: no generated method for these argument types")
+    throw(MethodError(DMFieldFinalizePackage, (petsclib, )))
 end
 
 @for_petsc function DMFieldFinalizePackage(petsclib::$UnionPetscLib)
@@ -1809,7 +1809,7 @@ See also: `DMField`, `DM`, `DMFieldEvaluate()`
 $(_doc_external("DM/DMFieldGetDM"))
 """
 function DMFieldGetDM(petsclib::PetscLibType, field::DMField)
-    error("DMFieldGetDM: no generated method for these argument types")
+    throw(MethodError(DMFieldGetDM, (petsclib, field)))
 end
 
 @for_petsc function DMFieldGetDM(petsclib::$UnionPetscLib, field::DMField )
@@ -1850,7 +1850,7 @@ See also: `DMField`, `IS`, `DMFieldEvaluateFE()`
 $(_doc_external("DM/DMFieldGetDegree"))
 """
 function DMFieldGetDegree(petsclib::PetscLibType, field::DMField, cellIS::AbstractIS)
-    error("DMFieldGetDegree: no generated method for these argument types")
+    throw(MethodError(DMFieldGetDegree, (petsclib, field, cellIS)))
 end
 
 @for_petsc function DMFieldGetDegree(petsclib::$UnionPetscLib, field::DMField, cellIS::AbstractIS )
@@ -1890,7 +1890,7 @@ See also: `DMField`, `DMFieldEvaluate()`
 $(_doc_external("DM/DMFieldGetNumComponents"))
 """
 function DMFieldGetNumComponents(petsclib::PetscLibType, field::DMField)
-    error("DMFieldGetNumComponents: no generated method for these argument types")
+    throw(MethodError(DMFieldGetNumComponents, (petsclib, field)))
 end
 
 @for_petsc function DMFieldGetNumComponents(petsclib::$UnionPetscLib, field::DMField )
@@ -1928,7 +1928,7 @@ See also: `DMField`, `DMFieldSetType()`, `DMFieldType`, `PetscObjectTypeCompare(
 $(_doc_external("DM/DMFieldGetType"))
 """
 function DMFieldGetType(petsclib::PetscLibType, field::DMField)
-    error("DMFieldGetType: no generated method for these argument types")
+    throw(MethodError(DMFieldGetType, (petsclib, field)))
 end
 
 @for_petsc function DMFieldGetType(petsclib::$UnionPetscLib, field::DMField )
@@ -1960,7 +1960,7 @@ See also: `DMFieldFinalizePackage()`
 $(_doc_external("DM/DMFieldInitializePackage"))
 """
 function DMFieldInitializePackage(petsclib::PetscLibType)
-    error("DMFieldInitializePackage: no generated method for these argument types")
+    throw(MethodError(DMFieldInitializePackage, (petsclib, )))
 end
 
 @for_petsc function DMFieldInitializePackage(petsclib::$UnionPetscLib)
@@ -1991,7 +1991,7 @@ See also: `DMField`, `DMFieldRegisterAll()`, `DMFieldRegisterDestroy()`
 $(_doc_external("DM/DMFieldRegister"))
 """
 function DMFieldRegister(petsclib::PetscLibType, sname::String, fnc::external)
-    error("DMFieldRegister: no generated method for these argument types")
+    throw(MethodError(DMFieldRegister, (petsclib, sname, fnc)))
 end
 
 @for_petsc function DMFieldRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
@@ -2025,7 +2025,7 @@ See also: `DMField`, `DMFieldGetType()`, `DMFieldType`
 $(_doc_external("DM/DMFieldSetType"))
 """
 function DMFieldSetType(petsclib::PetscLibType, field::DMField, type::String)
-    error("DMFieldSetType: no generated method for these argument types")
+    throw(MethodError(DMFieldSetType, (petsclib, field, type)))
 end
 
 @for_petsc function DMFieldSetType(petsclib::$UnionPetscLib, field::DMField, type::String )
@@ -2066,7 +2066,7 @@ See also: `DMField`, `DMFIELDSHELL`, `DMFieldShellSetEvaluateFE()`, `DMFieldShel
 $(_doc_external("DM/DMFieldShellEvaluateFEDefault"))
 """
 function DMFieldShellEvaluateFEDefault(petsclib::PetscLibType, field::DMField, pointIS::AbstractIS, quad::PetscQuadrature, type::PetscDataType)
-    error("DMFieldShellEvaluateFEDefault: no generated method for these argument types")
+    throw(MethodError(DMFieldShellEvaluateFEDefault, (petsclib, field, pointIS, quad, type)))
 end
 
 @for_petsc function DMFieldShellEvaluateFEDefault(petsclib::$UnionPetscLib, field::DMField, pointIS::AbstractIS, quad::PetscQuadrature, type::PetscDataType )
@@ -2112,7 +2112,7 @@ See also: `DMField`, `DMFIELDSHELL`, `DMFieldShellSetEvaluateFV()`, `DMFieldShel
 $(_doc_external("DM/DMFieldShellEvaluateFVDefault"))
 """
 function DMFieldShellEvaluateFVDefault(petsclib::PetscLibType, field::DMField, pointIS::AbstractIS, type::PetscDataType)
-    error("DMFieldShellEvaluateFVDefault: no generated method for these argument types")
+    throw(MethodError(DMFieldShellEvaluateFVDefault, (petsclib, field, pointIS, type)))
 end
 
 @for_petsc function DMFieldShellEvaluateFVDefault(petsclib::$UnionPetscLib, field::DMField, pointIS::AbstractIS, type::PetscDataType )
@@ -2154,7 +2154,7 @@ See also: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`
 $(_doc_external("DM/DMFieldShellGetContext"))
 """
 function DMFieldShellGetContext(petsclib::PetscLibType, field::DMField)
-    error("DMFieldShellGetContext: no generated method for these argument types")
+    throw(MethodError(DMFieldShellGetContext, (petsclib, field)))
 end
 
 @for_petsc function DMFieldShellGetContext(petsclib::$UnionPetscLib, field::DMField )
@@ -2195,7 +2195,7 @@ See also: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`, `DMFieldCreateDefau
 $(_doc_external("DM/DMFieldShellSetCreateDefaultQuadrature"))
 """
 function DMFieldShellSetCreateDefaultQuadrature(petsclib::PetscLibType, field::DMField, create::external)
-    error("DMFieldShellSetCreateDefaultQuadrature: no generated method for these argument types")
+    throw(MethodError(DMFieldShellSetCreateDefaultQuadrature, (petsclib, field, create)))
 end
 
 @for_petsc function DMFieldShellSetCreateDefaultQuadrature(petsclib::$UnionPetscLib, field::DMField, create::external )
@@ -2232,7 +2232,7 @@ See also: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`, `DMFieldDestroy()`
 $(_doc_external("DM/DMFieldShellSetDestroy"))
 """
 function DMFieldShellSetDestroy(petsclib::PetscLibType, field::DMField, destroy::external)
-    error("DMFieldShellSetDestroy: no generated method for these argument types")
+    throw(MethodError(DMFieldShellSetDestroy, (petsclib, field, destroy)))
 end
 
 @for_petsc function DMFieldShellSetDestroy(petsclib::$UnionPetscLib, field::DMField, destroy::external )
@@ -2274,7 +2274,7 @@ See also: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`, `DMFieldEvaluate()`
 $(_doc_external("DM/DMFieldShellSetEvaluate"))
 """
 function DMFieldShellSetEvaluate(petsclib::PetscLibType, field::DMField, evaluate::external)
-    error("DMFieldShellSetEvaluate: no generated method for these argument types")
+    throw(MethodError(DMFieldShellSetEvaluate, (petsclib, field, evaluate)))
 end
 
 @for_petsc function DMFieldShellSetEvaluate(petsclib::$UnionPetscLib, field::DMField, evaluate::external )
@@ -2317,7 +2317,7 @@ See also: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`, `DMFieldEvaluateFE(
 $(_doc_external("DM/DMFieldShellSetEvaluateFE"))
 """
 function DMFieldShellSetEvaluateFE(petsclib::PetscLibType, field::DMField, evaluateFE::external)
-    error("DMFieldShellSetEvaluateFE: no generated method for these argument types")
+    throw(MethodError(DMFieldShellSetEvaluateFE, (petsclib, field, evaluateFE)))
 end
 
 @for_petsc function DMFieldShellSetEvaluateFE(petsclib::$UnionPetscLib, field::DMField, evaluateFE::external )
@@ -2359,7 +2359,7 @@ See also: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`, `DMFieldEvaluateFV(
 $(_doc_external("DM/DMFieldShellSetEvaluateFV"))
 """
 function DMFieldShellSetEvaluateFV(petsclib::PetscLibType, field::DMField, evaluateFV::external)
-    error("DMFieldShellSetEvaluateFV: no generated method for these argument types")
+    throw(MethodError(DMFieldShellSetEvaluateFV, (petsclib, field, evaluateFV)))
 end
 
 @for_petsc function DMFieldShellSetEvaluateFV(petsclib::$UnionPetscLib, field::DMField, evaluateFV::external )
@@ -2399,7 +2399,7 @@ See also: `DMField`, `DMFIELDSHELL`, `DMFieldCreateShell()`, `DMFieldGetDegree()
 $(_doc_external("DM/DMFieldShellSetGetDegree"))
 """
 function DMFieldShellSetGetDegree(petsclib::PetscLibType, field::DMField, getDegree::external)
-    error("DMFieldShellSetGetDegree: no generated method for these argument types")
+    throw(MethodError(DMFieldShellSetGetDegree, (petsclib, field, getDegree)))
 end
 
 @for_petsc function DMFieldShellSetGetDegree(petsclib::$UnionPetscLib, field::DMField, getDegree::external )
@@ -2433,7 +2433,7 @@ See also: `DMField`, `DMFieldCreate()`
 $(_doc_external("DM/DMFieldView"))
 """
 function DMFieldView(petsclib::PetscLibType, field::DMField, viewer::PetscViewer)
-    error("DMFieldView: no generated method for these argument types")
+    throw(MethodError(DMFieldView, (petsclib, field, viewer)))
 end
 
 @for_petsc function DMFieldView(petsclib::$UnionPetscLib, field::DMField, viewer::PetscViewer )
@@ -2468,7 +2468,7 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelDestroy()`
 $(_doc_external("DMLabel/DMLabelAddStrata"))
 """
 function DMLabelAddStrata(petsclib::PetscLibType, label::DMLabel, numStrata::Integer, stratumValues::AbstractVector{<:Number})
-    error("DMLabelAddStrata: no generated method for these argument types")
+    throw(MethodError(DMLabelAddStrata, (petsclib, label, numStrata, stratumValues)))
 end
 
 @for_petsc function DMLabelAddStrata(petsclib::$UnionPetscLib, label::DMLabel, numStrata::$PetscInt, stratumValues::Vector{$PetscInt} )
@@ -2502,7 +2502,7 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelDestroy()`
 $(_doc_external("DMLabel/DMLabelAddStrataIS"))
 """
 function DMLabelAddStrataIS(petsclib::PetscLibType, label::DMLabel, valueIS::AbstractIS)
-    error("DMLabelAddStrataIS: no generated method for these argument types")
+    throw(MethodError(DMLabelAddStrataIS, (petsclib, label, valueIS)))
 end
 
 @for_petsc function DMLabelAddStrataIS(petsclib::$UnionPetscLib, label::DMLabel, valueIS::AbstractIS )
@@ -2534,7 +2534,7 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelDestroy()`
 $(_doc_external("DMLabel/DMLabelAddStratum"))
 """
 function DMLabelAddStratum(petsclib::PetscLibType, label::DMLabel, value::Integer)
-    error("DMLabelAddStratum: no generated method for these argument types")
+    throw(MethodError(DMLabelAddStratum, (petsclib, label, value)))
 end
 
 @for_petsc function DMLabelAddStratum(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt )
@@ -2568,7 +2568,7 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetVa
 $(_doc_external("DMLabel/DMLabelClearStratum"))
 """
 function DMLabelClearStratum(petsclib::PetscLibType, label::DMLabel, value::Integer)
-    error("DMLabelClearStratum: no generated method for these argument types")
+    throw(MethodError(DMLabelClearStratum, (petsclib, label, value)))
 end
 
 @for_petsc function DMLabelClearStratum(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt )
@@ -2603,7 +2603,7 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetVa
 $(_doc_external("DMLabel/DMLabelClearValue"))
 """
 function DMLabelClearValue(petsclib::PetscLibType, label::DMLabel, point::Integer, value::Integer)
-    error("DMLabelClearValue: no generated method for these argument types")
+    throw(MethodError(DMLabelClearValue, (petsclib, label, point, value)))
 end
 
 @for_petsc function DMLabelClearValue(petsclib::$UnionPetscLib, label::DMLabel, point::$PetscInt, value::$PetscInt )
@@ -2642,7 +2642,7 @@ See also: `DMLabel`, `DM`, `DMCompareLabels()`, `DMLabelGetNumValues()`, `DMLabe
 $(_doc_external("DMLabel/DMLabelCompare"))
 """
 function DMLabelCompare(petsclib::PetscLibType, comm::MPI_Comm, l0::DMLabel, l1::DMLabel)
-    error("DMLabelCompare: no generated method for these argument types")
+    throw(MethodError(DMLabelCompare, (petsclib, comm, l0, l1)))
 end
 
 @for_petsc function DMLabelCompare(petsclib::$UnionPetscLib, comm::MPI_Comm, l0::DMLabel, l1::DMLabel )
@@ -2679,7 +2679,7 @@ See also: `DMLabel`, `DM`, `DMLabelHasPoint()`, `DMLabelCreateIndex()`, `DMLabel
 $(_doc_external("DMLabel/DMLabelComputeIndex"))
 """
 function DMLabelComputeIndex(petsclib::PetscLibType, label::DMLabel)
-    error("DMLabelComputeIndex: no generated method for these argument types")
+    throw(MethodError(DMLabelComputeIndex, (petsclib, label)))
 end
 
 @for_petsc function DMLabelComputeIndex(petsclib::$UnionPetscLib, label::DMLabel )
@@ -2716,7 +2716,7 @@ See also: `DMLabel`, `DM`, `DMLabelDistribute()`
 $(_doc_external("DMLabel/DMLabelConvertToSection"))
 """
 function DMLabelConvertToSection(petsclib::PetscLibType, label::DMLabel)
-    error("DMLabelConvertToSection: no generated method for these argument types")
+    throw(MethodError(DMLabelConvertToSection, (petsclib, label)))
 end
 
 @for_petsc function DMLabelConvertToSection(petsclib::$UnionPetscLib, label::DMLabel )
@@ -2757,7 +2757,7 @@ See also: `DMLabel`, `DM`, `DMLabelDestroy()`
 $(_doc_external("DMLabel/DMLabelCreate"))
 """
 function DMLabelCreate(petsclib::PetscLibType, comm::MPI_Comm, name::String)
-    error("DMLabelCreate: no generated method for these argument types")
+    throw(MethodError(DMLabelCreate, (petsclib, comm, name)))
 end
 
 @for_petsc function DMLabelCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, name::String )
@@ -2794,7 +2794,7 @@ See also: `DMLabel`, `DM`, `DMLabelHasPoint()`, `DMLabelComputeIndex()`, `DMLabe
 $(_doc_external("DMLabel/DMLabelCreateIndex"))
 """
 function DMLabelCreateIndex(petsclib::PetscLibType, label::DMLabel, pStart::Integer, pEnd::Integer)
-    error("DMLabelCreateIndex: no generated method for these argument types")
+    throw(MethodError(DMLabelCreateIndex, (petsclib, label, pStart, pEnd)))
 end
 
 @for_petsc function DMLabelCreateIndex(petsclib::$UnionPetscLib, label::DMLabel, pStart::$PetscInt, pEnd::$PetscInt )
@@ -2827,7 +2827,7 @@ See also: `DMLabel`, `DM`, `DMLabelReset()`, `DMLabelCreate()`
 $(_doc_external("DMLabel/DMLabelDestroy"))
 """
 function DMLabelDestroy(petsclib::PetscLibType, label::Union{DMLabel, Ref{DMLabel}})
-    error("DMLabelDestroy: no generated method for these argument types")
+    throw(MethodError(DMLabelDestroy, (petsclib, label)))
 end
 
 @for_petsc function DMLabelDestroy(petsclib::$UnionPetscLib, label::Union{DMLabel, Ref{DMLabel}} )
@@ -2861,7 +2861,7 @@ See also: `DMLabel`, `DM`, `DMLabelHasPoint()`, `DMLabelCreateIndex()`, `DMLabel
 $(_doc_external("DMLabel/DMLabelDestroyIndex"))
 """
 function DMLabelDestroyIndex(petsclib::PetscLibType, label::DMLabel)
-    error("DMLabelDestroyIndex: no generated method for these argument types")
+    throw(MethodError(DMLabelDestroyIndex, (petsclib, label)))
 end
 
 @for_petsc function DMLabelDestroyIndex(petsclib::$UnionPetscLib, label::DMLabel )
@@ -2898,7 +2898,7 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetVa
 $(_doc_external("DMLabel/DMLabelDistribute"))
 """
 function DMLabelDistribute(petsclib::PetscLibType, label::DMLabel, sf::PetscSF)
-    error("DMLabelDistribute: no generated method for these argument types")
+    throw(MethodError(DMLabelDistribute, (petsclib, label, sf)))
 end
 
 @for_petsc function DMLabelDistribute(petsclib::$UnionPetscLib, label::DMLabel, sf::PetscSF )
@@ -2936,7 +2936,7 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelDestroy()`
 $(_doc_external("DMLabel/DMLabelDuplicate"))
 """
 function DMLabelDuplicate(petsclib::PetscLibType, label::DMLabel)
-    error("DMLabelDuplicate: no generated method for these argument types")
+    throw(MethodError(DMLabelDuplicate, (petsclib, label)))
 end
 
 @for_petsc function DMLabelDuplicate(petsclib::$UnionPetscLib, label::DMLabel )
@@ -2974,7 +2974,7 @@ See also: `DMLabelEphemeralSetLabel()`, `DMLabelEphemeralGetTransform()`, `DMLab
 $(_doc_external("DMLabel/DMLabelEphemeralGetLabel"))
 """
 function DMLabelEphemeralGetLabel(petsclib::PetscLibType, label::DMLabel)
-    error("DMLabelEphemeralGetLabel: no generated method for these argument types")
+    throw(MethodError(DMLabelEphemeralGetLabel, (petsclib, label)))
 end
 
 @for_petsc function DMLabelEphemeralGetLabel(petsclib::$UnionPetscLib, label::DMLabel )
@@ -3012,7 +3012,7 @@ See also: `DMLabelEphemeralSetTransform()`, `DMLabelEphemeralGetLabel()`, `DMLab
 $(_doc_external("DMLabel/DMLabelEphemeralGetTransform"))
 """
 function DMLabelEphemeralGetTransform(petsclib::PetscLibType, label::DMLabel)
-    error("DMLabelEphemeralGetTransform: no generated method for these argument types")
+    throw(MethodError(DMLabelEphemeralGetTransform, (petsclib, label)))
 end
 
 @for_petsc function DMLabelEphemeralGetTransform(petsclib::$UnionPetscLib, label::DMLabel )
@@ -3048,7 +3048,7 @@ See also: `DMLabelEphemeralGetLabel()`, `DMLabelEphemeralSetTransform()`, `DMLab
 $(_doc_external("DMLabel/DMLabelEphemeralSetLabel"))
 """
 function DMLabelEphemeralSetLabel(petsclib::PetscLibType, label::DMLabel, olabel::DMLabel)
-    error("DMLabelEphemeralSetLabel: no generated method for these argument types")
+    throw(MethodError(DMLabelEphemeralSetLabel, (petsclib, label, olabel)))
 end
 
 @for_petsc function DMLabelEphemeralSetLabel(petsclib::$UnionPetscLib, label::DMLabel, olabel::DMLabel )
@@ -3082,7 +3082,7 @@ See also: `DMLabelEphemeralGetTransform()`, `DMLabelEphemeralSetLabel()`, `DMLab
 $(_doc_external("DMLabel/DMLabelEphemeralSetTransform"))
 """
 function DMLabelEphemeralSetTransform(petsclib::PetscLibType, label::DMLabel, tr::DMPlexTransform)
-    error("DMLabelEphemeralSetTransform: no generated method for these argument types")
+    throw(MethodError(DMLabelEphemeralSetTransform, (petsclib, label, tr)))
 end
 
 @for_petsc function DMLabelEphemeralSetTransform(petsclib::$UnionPetscLib, label::DMLabel, tr::DMPlexTransform )
@@ -3117,7 +3117,7 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetVa
 $(_doc_external("DMLabel/DMLabelFilter"))
 """
 function DMLabelFilter(petsclib::PetscLibType, label::DMLabel, start::Integer, end_::Integer)
-    error("DMLabelFilter: no generated method for these argument types")
+    throw(MethodError(DMLabelFilter, (petsclib, label, start, end_)))
 end
 
 @for_petsc function DMLabelFilter(petsclib::$UnionPetscLib, label::DMLabel, start::$PetscInt, end_::$PetscInt )
@@ -3154,7 +3154,7 @@ See also: `DMLabel`, `DM`, `DMLabelDistribute()`
 $(_doc_external("DMLabel/DMLabelGather"))
 """
 function DMLabelGather(petsclib::PetscLibType, label::DMLabel, sf::PetscSF)
-    error("DMLabelGather: no generated method for these argument types")
+    throw(MethodError(DMLabelGather, (petsclib, label, sf)))
 end
 
 @for_petsc function DMLabelGather(petsclib::$UnionPetscLib, label::DMLabel, sf::PetscSF )
@@ -3193,7 +3193,7 @@ See also: `DMLabel`, `DM`, `DMLabelHasPoint()`, `DMLabelCreateIndex()`, `DMLabel
 $(_doc_external("DMLabel/DMLabelGetBounds"))
 """
 function DMLabelGetBounds(petsclib::PetscLibType, label::DMLabel)
-    error("DMLabelGetBounds: no generated method for these argument types")
+    throw(MethodError(DMLabelGetBounds, (petsclib, label)))
 end
 
 @for_petsc function DMLabelGetBounds(petsclib::$UnionPetscLib, label::DMLabel )
@@ -3234,7 +3234,7 @@ See also: `DMLabel`, `DM`, `DMLabelSetDefaultValue()`, `DMLabelGetValue()`, `DML
 $(_doc_external("DMLabel/DMLabelGetDefaultValue"))
 """
 function DMLabelGetDefaultValue(petsclib::PetscLibType, label::DMLabel)
-    error("DMLabelGetDefaultValue: no generated method for these argument types")
+    throw(MethodError(DMLabelGetDefaultValue, (petsclib, label)))
 end
 
 @for_petsc function DMLabelGetDefaultValue(petsclib::$UnionPetscLib, label::DMLabel )
@@ -3272,7 +3272,7 @@ See also: `DMLabel`, `DM`, `DMLabelGetValueIS()`, `DMLabelGetValueISGlobal()`, `
 $(_doc_external("DMLabel/DMLabelGetNonEmptyStratumValuesIS"))
 """
 function DMLabelGetNonEmptyStratumValuesIS(petsclib::PetscLibType, label::DMLabel)
-    error("DMLabelGetNonEmptyStratumValuesIS: no generated method for these argument types")
+    throw(MethodError(DMLabelGetNonEmptyStratumValuesIS, (petsclib, label)))
 end
 
 @for_petsc function DMLabelGetNonEmptyStratumValuesIS(petsclib::$UnionPetscLib, label::DMLabel )
@@ -3310,7 +3310,7 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetVa
 $(_doc_external("DMLabel/DMLabelGetNumValues"))
 """
 function DMLabelGetNumValues(petsclib::PetscLibType, label::DMLabel)
-    error("DMLabelGetNumValues: no generated method for these argument types")
+    throw(MethodError(DMLabelGetNumValues, (petsclib, label)))
 end
 
 @for_petsc function DMLabelGetNumValues(petsclib::$UnionPetscLib, label::DMLabel )
@@ -3350,7 +3350,7 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetVa
 $(_doc_external("DMLabel/DMLabelGetStratumBounds"))
 """
 function DMLabelGetStratumBounds(petsclib::PetscLibType, label::DMLabel, value::Integer)
-    error("DMLabelGetStratumBounds: no generated method for these argument types")
+    throw(MethodError(DMLabelGetStratumBounds, (petsclib, label, value)))
 end
 
 @for_petsc function DMLabelGetStratumBounds(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt )
@@ -3391,7 +3391,7 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetVa
 $(_doc_external("DMLabel/DMLabelGetStratumIS"))
 """
 function DMLabelGetStratumIS(petsclib::PetscLibType, label::DMLabel, value::Integer)
-    error("DMLabelGetStratumIS: no generated method for these argument types")
+    throw(MethodError(DMLabelGetStratumIS, (petsclib, label, value)))
 end
 
 @for_petsc function DMLabelGetStratumIS(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt )
@@ -3431,7 +3431,7 @@ See also: `DMLabel`, `DM`, `DMLabelGetValueIndex()`, `DMLabelGetStratumIS()`, `D
 $(_doc_external("DMLabel/DMLabelGetStratumPointIndex"))
 """
 function DMLabelGetStratumPointIndex(petsclib::PetscLibType, label::DMLabel, value::Integer, p::Integer)
-    error("DMLabelGetStratumPointIndex: no generated method for these argument types")
+    throw(MethodError(DMLabelGetStratumPointIndex, (petsclib, label, value, p)))
 end
 
 @for_petsc function DMLabelGetStratumPointIndex(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt, p::$PetscInt )
@@ -3470,7 +3470,7 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetVa
 $(_doc_external("DMLabel/DMLabelGetStratumSize"))
 """
 function DMLabelGetStratumSize(petsclib::PetscLibType, label::DMLabel, value::Integer)
-    error("DMLabelGetStratumSize: no generated method for these argument types")
+    throw(MethodError(DMLabelGetStratumSize, (petsclib, label, value)))
 end
 
 @for_petsc function DMLabelGetStratumSize(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt )
@@ -3508,7 +3508,7 @@ See also: `DMLabel`, `DM`, `DMLabelSetType()`, `DMLabelCreate()`
 $(_doc_external("DMLabel/DMLabelGetType"))
 """
 function DMLabelGetType(petsclib::PetscLibType, label::DMLabel)
-    error("DMLabelGetType: no generated method for these argument types")
+    throw(MethodError(DMLabelGetType, (petsclib, label)))
 end
 
 @for_petsc function DMLabelGetType(petsclib::$UnionPetscLib, label::DMLabel )
@@ -3548,7 +3548,7 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelSetValue()`, `DMLabelClear
 $(_doc_external("DMLabel/DMLabelGetValue"))
 """
 function DMLabelGetValue(petsclib::PetscLibType, label::DMLabel, point::Integer)
-    error("DMLabelGetValue: no generated method for these argument types")
+    throw(MethodError(DMLabelGetValue, (petsclib, label, point)))
 end
 
 @for_petsc function DMLabelGetValue(petsclib::$UnionPetscLib, label::DMLabel, point::$PetscInt )
@@ -3587,7 +3587,7 @@ See also: `DMLabel`, `DM`, `DMLabelGetBounds()`, `DMLabelGetValue()`, `DMLabelSe
 $(_doc_external("DMLabel/DMLabelGetValueBounds"))
 """
 function DMLabelGetValueBounds(petsclib::PetscLibType, label::DMLabel)
-    error("DMLabelGetValueBounds: no generated method for these argument types")
+    throw(MethodError(DMLabelGetValueBounds, (petsclib, label)))
 end
 
 @for_petsc function DMLabelGetValueBounds(petsclib::$UnionPetscLib, label::DMLabel )
@@ -3627,7 +3627,7 @@ See also: `DMLabel`, `DM`, `DMLabelGetNonEmptyStratumValuesIS()`, `DMLabelGetVal
 $(_doc_external("DMLabel/DMLabelGetValueIS"))
 """
 function DMLabelGetValueIS(petsclib::PetscLibType, label::DMLabel)
-    error("DMLabelGetValueIS: no generated method for these argument types")
+    throw(MethodError(DMLabelGetValueIS, (petsclib, label)))
 end
 
 @for_petsc function DMLabelGetValueIS(petsclib::$UnionPetscLib, label::DMLabel )
@@ -3667,7 +3667,7 @@ See also: `DMLabel`, `DM`, `DMLabelGetValueIS()`, `DMLabelGetNonEmptyStratumValu
 $(_doc_external("DMLabel/DMLabelGetValueISGlobal"))
 """
 function DMLabelGetValueISGlobal(petsclib::PetscLibType, comm::MPI_Comm, label::DMLabel, get_nonempty::PetscBool)
-    error("DMLabelGetValueISGlobal: no generated method for these argument types")
+    throw(MethodError(DMLabelGetValueISGlobal, (petsclib, comm, label, get_nonempty)))
 end
 
 @for_petsc function DMLabelGetValueISGlobal(petsclib::$UnionPetscLib, comm::MPI_Comm, label::DMLabel, get_nonempty::PetscBool )
@@ -3706,7 +3706,7 @@ See also: `DMLabel`, `DM`, `DMLabelGetValueIS()`, `DMLabelCreate()`, `DMLabelGet
 $(_doc_external("DMLabel/DMLabelGetValueIndex"))
 """
 function DMLabelGetValueIndex(petsclib::PetscLibType, label::DMLabel, value::Integer)
-    error("DMLabelGetValueIndex: no generated method for these argument types")
+    throw(MethodError(DMLabelGetValueIndex, (petsclib, label, value)))
 end
 
 @for_petsc function DMLabelGetValueIndex(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt )
@@ -3745,7 +3745,7 @@ See also: `DMLabel`, `DM`, `DMLabelCreateIndex()`, `DMLabelGetValue()`, `DMLabel
 $(_doc_external("DMLabel/DMLabelHasPoint"))
 """
 function DMLabelHasPoint(petsclib::PetscLibType, label::DMLabel, point::Integer)
-    error("DMLabelHasPoint: no generated method for these argument types")
+    throw(MethodError(DMLabelHasPoint, (petsclib, label, point)))
 end
 
 @for_petsc function DMLabelHasPoint(petsclib::$UnionPetscLib, label::DMLabel, point::$PetscInt )
@@ -3784,7 +3784,7 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetVa
 $(_doc_external("DMLabel/DMLabelHasStratum"))
 """
 function DMLabelHasStratum(petsclib::PetscLibType, label::DMLabel, value::Integer)
-    error("DMLabelHasStratum: no generated method for these argument types")
+    throw(MethodError(DMLabelHasStratum, (petsclib, label, value)))
 end
 
 @for_petsc function DMLabelHasStratum(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt )
@@ -3823,7 +3823,7 @@ See also: `DMLabel`, `DM`, `DMLabelHasPoint()`, `DMLabelGetValue()`, `DMLabelSet
 $(_doc_external("DMLabel/DMLabelHasValue"))
 """
 function DMLabelHasValue(petsclib::PetscLibType, label::DMLabel, value::Integer)
-    error("DMLabelHasValue: no generated method for these argument types")
+    throw(MethodError(DMLabelHasValue, (petsclib, label, value)))
 end
 
 @for_petsc function DMLabelHasValue(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt )
@@ -3860,7 +3860,7 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetVa
 $(_doc_external("DMLabel/DMLabelInsertIS"))
 """
 function DMLabelInsertIS(petsclib::PetscLibType, label::DMLabel, is::AbstractIS, value::Integer)
-    error("DMLabelInsertIS: no generated method for these argument types")
+    throw(MethodError(DMLabelInsertIS, (petsclib, label, is, value)))
 end
 
 @for_petsc function DMLabelInsertIS(petsclib::$UnionPetscLib, label::DMLabel, is::AbstractIS, value::$PetscInt )
@@ -3897,7 +3897,7 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetVa
 $(_doc_external("DMLabel/DMLabelPermute"))
 """
 function DMLabelPermute(petsclib::PetscLibType, label::DMLabel, permutation::AbstractIS)
-    error("DMLabelPermute: no generated method for these argument types")
+    throw(MethodError(DMLabelPermute, (petsclib, label, permutation)))
 end
 
 @for_petsc function DMLabelPermute(petsclib::$UnionPetscLib, label::DMLabel, permutation::AbstractIS )
@@ -3934,7 +3934,7 @@ See also: `DMLabelRewriteValues()`, `DMLabel`, `DM`, `DMLabelPermute()`, `DMLabe
 $(_doc_external("DMLabel/DMLabelPermuteValues"))
 """
 function DMLabelPermuteValues(petsclib::PetscLibType, label::DMLabel, permutation::AbstractIS)
-    error("DMLabelPermuteValues: no generated method for these argument types")
+    throw(MethodError(DMLabelPermuteValues, (petsclib, label, permutation)))
 end
 
 @for_petsc function DMLabelPermuteValues(petsclib::$UnionPetscLib, label::DMLabel, permutation::AbstractIS )
@@ -3968,7 +3968,7 @@ See also: `DMLabel`, `DM`, `DMLabelPropagateEnd()`, `DMLabelPropagatePush()`
 $(_doc_external("DMLabel/DMLabelPropagateBegin"))
 """
 function DMLabelPropagateBegin(petsclib::PetscLibType, label::DMLabel, sf::PetscSF)
-    error("DMLabelPropagateBegin: no generated method for these argument types")
+    throw(MethodError(DMLabelPropagateBegin, (petsclib, label, sf)))
 end
 
 @for_petsc function DMLabelPropagateBegin(petsclib::$UnionPetscLib, label::DMLabel, sf::PetscSF )
@@ -4002,7 +4002,7 @@ See also: `DMLabel`, `DM`, `DMLabelPropagateBegin()`, `DMLabelPropagatePush()`
 $(_doc_external("DMLabel/DMLabelPropagateEnd"))
 """
 function DMLabelPropagateEnd(petsclib::PetscLibType, label::DMLabel, pointSF::PetscSF)
-    error("DMLabelPropagateEnd: no generated method for these argument types")
+    throw(MethodError(DMLabelPropagateEnd, (petsclib, label, pointSF)))
 end
 
 @for_petsc function DMLabelPropagateEnd(petsclib::$UnionPetscLib, label::DMLabel, pointSF::PetscSF )
@@ -4044,7 +4044,7 @@ See also: `DMLabel`, `DM`, `DMLabelPropagateBegin()`, `DMLabelPropagateEnd()`
 $(_doc_external("DMLabel/DMLabelPropagatePush"))
 """
 function DMLabelPropagatePush(petsclib::PetscLibType, label::DMLabel, pointSF::PetscSF, markPoint::external, ctx::Ptr{Cvoid})
-    error("DMLabelPropagatePush: no generated method for these argument types")
+    throw(MethodError(DMLabelPropagatePush, (petsclib, label, pointSF, markPoint, ctx)))
 end
 
 @for_petsc function DMLabelPropagatePush(petsclib::$UnionPetscLib, label::DMLabel, pointSF::PetscSF, markPoint::external, ctx::Ptr{Cvoid} )
@@ -4076,7 +4076,7 @@ See also: `DMLabel`, `DM`, `DMLabelType`, `DMLabelRegisterAll()`, `DMLabelRegist
 $(_doc_external("DMLabel/DMLabelRegister"))
 """
 function DMLabelRegister(petsclib::PetscLibType, name::String, noname::Ptr{Cvoid})
-    error("DMLabelRegister: no generated method for these argument types")
+    throw(MethodError(DMLabelRegister, (petsclib, name, noname)))
 end
 
 @for_petsc function DMLabelRegister(petsclib::$UnionPetscLib, name::String, noname::Ptr{Cvoid} )
@@ -4106,7 +4106,7 @@ See also: `DMLabel`, `DM`, `DMRegisterAll()`, `DMLabelRegisterDestroy()`
 $(_doc_external("DMLabel/DMLabelRegisterAll"))
 """
 function DMLabelRegisterAll(petsclib::PetscLibType)
-    error("DMLabelRegisterAll: no generated method for these argument types")
+    throw(MethodError(DMLabelRegisterAll, (petsclib, )))
 end
 
 @for_petsc function DMLabelRegisterAll(petsclib::$UnionPetscLib)
@@ -4133,7 +4133,7 @@ See also: `DMLabel`, `DM`, `PetscInitialize()`
 $(_doc_external("DMLabel/DMLabelRegisterDestroy"))
 """
 function DMLabelRegisterDestroy(petsclib::PetscLibType)
-    error("DMLabelRegisterDestroy: no generated method for these argument types")
+    throw(MethodError(DMLabelRegisterDestroy, (petsclib, )))
 end
 
 @for_petsc function DMLabelRegisterDestroy(petsclib::$UnionPetscLib)
@@ -4165,7 +4165,7 @@ See also: `DMLabel`, `DM`, `DMLabelDestroy()`, `DMLabelCreate()`
 $(_doc_external("DMLabel/DMLabelReset"))
 """
 function DMLabelReset(petsclib::PetscLibType, label::DMLabel)
-    error("DMLabelReset: no generated method for these argument types")
+    throw(MethodError(DMLabelReset, (petsclib, label)))
 end
 
 @for_petsc function DMLabelReset(petsclib::$UnionPetscLib, label::DMLabel )
@@ -4200,7 +4200,7 @@ See also: `DMLabelPermuteValues()`, `DMLabel`, `DM`, `DMLabelPermute()`, `DMLabe
 $(_doc_external("DMLabel/DMLabelRewriteValues"))
 """
 function DMLabelRewriteValues(petsclib::PetscLibType, label::DMLabel, permutation::AbstractIS)
-    error("DMLabelRewriteValues: no generated method for these argument types")
+    throw(MethodError(DMLabelRewriteValues, (petsclib, label, permutation)))
 end
 
 @for_petsc function DMLabelRewriteValues(petsclib::$UnionPetscLib, label::DMLabel, permutation::AbstractIS )
@@ -4237,7 +4237,7 @@ See also: `DMLabel`, `DM`, `DMLabelGetDefaultValue()`, `DMLabelGetValue()`, `DML
 $(_doc_external("DMLabel/DMLabelSetDefaultValue"))
 """
 function DMLabelSetDefaultValue(petsclib::PetscLibType, label::DMLabel, defaultValue::Integer)
-    error("DMLabelSetDefaultValue: no generated method for these argument types")
+    throw(MethodError(DMLabelSetDefaultValue, (petsclib, label, defaultValue)))
 end
 
 @for_petsc function DMLabelSetDefaultValue(petsclib::$UnionPetscLib, label::DMLabel, defaultValue::$PetscInt )
@@ -4273,7 +4273,7 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelSetStratumIS()`, `DMLabelG
 $(_doc_external("DMLabel/DMLabelSetStratumBounds"))
 """
 function DMLabelSetStratumBounds(petsclib::PetscLibType, label::DMLabel, value::Integer, pStart::Integer, pEnd::Integer)
-    error("DMLabelSetStratumBounds: no generated method for these argument types")
+    throw(MethodError(DMLabelSetStratumBounds, (petsclib, label, value, pStart, pEnd)))
 end
 
 @for_petsc function DMLabelSetStratumBounds(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt, pStart::$PetscInt, pEnd::$PetscInt )
@@ -4308,7 +4308,7 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetVa
 $(_doc_external("DMLabel/DMLabelSetStratumIS"))
 """
 function DMLabelSetStratumIS(petsclib::PetscLibType, label::DMLabel, value::Integer, is::AbstractIS)
-    error("DMLabelSetStratumIS: no generated method for these argument types")
+    throw(MethodError(DMLabelSetStratumIS, (petsclib, label, value, is)))
 end
 
 @for_petsc function DMLabelSetStratumIS(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt, is::AbstractIS )
@@ -4345,7 +4345,7 @@ See also: `DMLabel`, `DM`, `DMLabelGetType()`, `DMLabelCreate()`, `DMLabelType`
 $(_doc_external("DMLabel/DMLabelSetType"))
 """
 function DMLabelSetType(petsclib::PetscLibType, label::DMLabel, method::String)
-    error("DMLabelSetType: no generated method for these argument types")
+    throw(MethodError(DMLabelSetType, (petsclib, label, method)))
 end
 
 @for_petsc function DMLabelSetType(petsclib::$UnionPetscLib, label::DMLabel, method::String )
@@ -4378,7 +4378,7 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelDestroy()`
 $(_doc_external("DMLabel/DMLabelSetUp"))
 """
 function DMLabelSetUp(petsclib::PetscLibType, label::DMLabel)
-    error("DMLabelSetUp: no generated method for these argument types")
+    throw(MethodError(DMLabelSetUp, (petsclib, label)))
 end
 
 @for_petsc function DMLabelSetUp(petsclib::$UnionPetscLib, label::DMLabel )
@@ -4414,7 +4414,7 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelClear
 $(_doc_external("DMLabel/DMLabelSetValue"))
 """
 function DMLabelSetValue(petsclib::PetscLibType, label::DMLabel, point::Integer, value::Integer)
-    error("DMLabelSetValue: no generated method for these argument types")
+    throw(MethodError(DMLabelSetValue, (petsclib, label, point, value)))
 end
 
 @for_petsc function DMLabelSetValue(petsclib::$UnionPetscLib, label::DMLabel, point::$PetscInt, value::$PetscInt )
@@ -4452,7 +4452,7 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelSetValue()`, `DMLabelClear
 $(_doc_external("DMLabel/DMLabelStratumHasPoint"))
 """
 function DMLabelStratumHasPoint(petsclib::PetscLibType, label::DMLabel, value::Integer, point::Integer)
-    error("DMLabelStratumHasPoint: no generated method for these argument types")
+    throw(MethodError(DMLabelStratumHasPoint, (petsclib, label, value, point)))
 end
 
 @for_petsc function DMLabelStratumHasPoint(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt, point::$PetscInt )
@@ -4488,7 +4488,7 @@ See also: `DMLabel`, `PetscViewer`, `DM`, `DMLabelCreate()`, `DMLabelDestroy()`
 $(_doc_external("DMLabel/DMLabelView"))
 """
 function DMLabelView(petsclib::PetscLibType, label::DMLabel, viewer::PetscViewer)
-    error("DMLabelView: no generated method for these argument types")
+    throw(MethodError(DMLabelView, (petsclib, label, viewer)))
 end
 
 @for_petsc function DMLabelView(petsclib::$UnionPetscLib, label::DMLabel, viewer::PetscViewer )
@@ -4526,7 +4526,7 @@ See also: `DMLabel`, `DMLabelView()`, `PetscObjectViewFromOptions()`, `DMLabelCr
 $(_doc_external("DMLabel/DMLabelViewFromOptions"))
 """
 function DMLabelViewFromOptions(petsclib::PetscLibType, label::DMLabel, obj, name::String)
-    error("DMLabelViewFromOptions: no generated method for these argument types")
+    throw(MethodError(DMLabelViewFromOptions, (petsclib, label, obj, name)))
 end
 
 @for_petsc function DMLabelViewFromOptions(petsclib::$UnionPetscLib, label::DMLabel, obj, name::String )
@@ -4569,7 +4569,7 @@ See also: `DM`, `DMNETWORK`, `DMNetworkMonitor`, `DMNetworkMonitorCreate()`, `DM
 $(_doc_external("DMNetwork/DMNetworkMonitorAdd"))
 """
 function DMNetworkMonitorAdd(petsclib::PetscLibType, monitor::DMNetworkMonitor, name::String, element::Integer, nodes::Integer, start::Integer, blocksize::Integer, xmin::Real, xmax::Real, ymin::Real, ymax::Real, hold::PetscBool)
-    error("DMNetworkMonitorAdd: no generated method for these argument types")
+    throw(MethodError(DMNetworkMonitorAdd, (petsclib, monitor, name, element, nodes, start, blocksize, xmin, xmax, ymin, ymax, hold)))
 end
 
 @for_petsc function DMNetworkMonitorAdd(petsclib::$UnionPetscLib, monitor::DMNetworkMonitor, name::String, element::$PetscInt, nodes::$PetscInt, start::$PetscInt, blocksize::$PetscInt, xmin::$PetscReal, xmax::$PetscReal, ymin::$PetscReal, ymax::$PetscReal, hold::PetscBool )
@@ -4605,7 +4605,7 @@ See also: `DM`, `DMNETWORK`, `DMNetworkMonitor`, `DMNetworkMonitorDestroy()`, `D
 $(_doc_external("DMNetwork/DMNetworkMonitorCreate"))
 """
 function DMNetworkMonitorCreate(petsclib::PetscLibType, network::AbstractPetscDM)
-    error("DMNetworkMonitorCreate: no generated method for these argument types")
+    throw(MethodError(DMNetworkMonitorCreate, (petsclib, network)))
 end
 
 @for_petsc function DMNetworkMonitorCreate(petsclib::$UnionPetscLib, network::AbstractPetscDM )
@@ -4640,7 +4640,7 @@ See also: `DM`, `DMNETWORK`, `DMNetworkMonitor`, `DMNetworkMonitorCreate()`, `DM
 $(_doc_external("DMNetwork/DMNetworkMonitorDestroy"))
 """
 function DMNetworkMonitorDestroy(petsclib::PetscLibType, monitor::Union{DMNetworkMonitor, Ref{DMNetworkMonitor}})
-    error("DMNetworkMonitorDestroy: no generated method for these argument types")
+    throw(MethodError(DMNetworkMonitorDestroy, (petsclib, monitor)))
 end
 
 @for_petsc function DMNetworkMonitorDestroy(petsclib::$UnionPetscLib, monitor::Union{DMNetworkMonitor, Ref{DMNetworkMonitor}} )
@@ -4674,7 +4674,7 @@ See also: `DM`, `DMNETWORK`, `DMNetworkMonitor`, `DMNetworkMonitorCreate()`, `DM
 $(_doc_external("DMNetwork/DMNetworkMonitorPop"))
 """
 function DMNetworkMonitorPop(petsclib::PetscLibType, monitor::DMNetworkMonitor)
-    error("DMNetworkMonitorPop: no generated method for these argument types")
+    throw(MethodError(DMNetworkMonitorPop, (petsclib, monitor)))
 end
 
 @for_petsc function DMNetworkMonitorPop(petsclib::$UnionPetscLib, monitor::DMNetworkMonitor )
@@ -4708,7 +4708,7 @@ See also: `DM`, `DMNETWORK`, `DMNetworkMonitor`, `DMNetworkMonitorCreate()`, `DM
 $(_doc_external("DMNetwork/DMNetworkMonitorView"))
 """
 function DMNetworkMonitorView(petsclib::PetscLibType, monitor::DMNetworkMonitor, x::AbstractPetscVec)
-    error("DMNetworkMonitorView: no generated method for these argument types")
+    throw(MethodError(DMNetworkMonitorView, (petsclib, monitor, x)))
 end
 
 @for_petsc function DMNetworkMonitorView(petsclib::$UnionPetscLib, monitor::DMNetworkMonitor, x::AbstractPetscVec )
@@ -4744,7 +4744,7 @@ See also: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueFront()`, `DMPlexPointQ
 $(_doc_external("DMPlex/DMPlexPointQueueBack"))
 """
 function DMPlexPointQueueBack(petsclib::PetscLibType, queue::DMPlexPoCintQueue)
-    error("DMPlexPointQueueBack: no generated method for these argument types")
+    throw(MethodError(DMPlexPointQueueBack, (petsclib, queue)))
 end
 
 @for_petsc function DMPlexPointQueueBack(petsclib::$UnionPetscLib, queue::DMPlexPoCintQueue )
@@ -4782,7 +4782,7 @@ See also: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueDestroy()`, `DMPlexPoin
 $(_doc_external("DMPlex/DMPlexPointQueueCreate"))
 """
 function DMPlexPointQueueCreate(petsclib::PetscLibType, size::Integer)
-    error("DMPlexPointQueueCreate: no generated method for these argument types")
+    throw(MethodError(DMPlexPointQueueCreate, (petsclib, size)))
 end
 
 @for_petsc function DMPlexPointQueueCreate(petsclib::$UnionPetscLib, size::$PetscInt )
@@ -4820,7 +4820,7 @@ See also: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueEnqueue()`, `DMPlexPoin
 $(_doc_external("DMPlex/DMPlexPointQueueDequeue"))
 """
 function DMPlexPointQueueDequeue(petsclib::PetscLibType, queue::DMPlexPoCintQueue)
-    error("DMPlexPointQueueDequeue: no generated method for these argument types")
+    throw(MethodError(DMPlexPointQueueDequeue, (petsclib, queue)))
 end
 
 @for_petsc function DMPlexPointQueueDequeue(petsclib::$UnionPetscLib, queue::DMPlexPoCintQueue )
@@ -4855,7 +4855,7 @@ See also: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueCreate()`
 $(_doc_external("DMPlex/DMPlexPointQueueDestroy"))
 """
 function DMPlexPointQueueDestroy(petsclib::PetscLibType, queue::Union{DMPlexPoCintQueue, Ref{DMPlexPoCintQueue}})
-    error("DMPlexPointQueueDestroy: no generated method for these argument types")
+    throw(MethodError(DMPlexPointQueueDestroy, (petsclib, queue)))
 end
 
 @for_petsc function DMPlexPointQueueDestroy(petsclib::$UnionPetscLib, queue::Union{DMPlexPoCintQueue, Ref{DMPlexPoCintQueue}} )
@@ -4893,7 +4893,7 @@ See also: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueEmpty()`
 $(_doc_external("DMPlex/DMPlexPointQueueEmptyCollective"))
 """
 function DMPlexPointQueueEmptyCollective(petsclib::PetscLibType, obj, queue::DMPlexPoCintQueue)
-    error("DMPlexPointQueueEmptyCollective: no generated method for these argument types")
+    throw(MethodError(DMPlexPointQueueEmptyCollective, (petsclib, obj, queue)))
 end
 
 @for_petsc function DMPlexPointQueueEmptyCollective(petsclib::$UnionPetscLib, obj, queue::DMPlexPoCintQueue )
@@ -4929,7 +4929,7 @@ See also: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueDequeue()`, `DMPlexPoin
 $(_doc_external("DMPlex/DMPlexPointQueueEnqueue"))
 """
 function DMPlexPointQueueEnqueue(petsclib::PetscLibType, queue::DMPlexPoCintQueue, p::Integer)
-    error("DMPlexPointQueueEnqueue: no generated method for these argument types")
+    throw(MethodError(DMPlexPointQueueEnqueue, (petsclib, queue, p)))
 end
 
 @for_petsc function DMPlexPointQueueEnqueue(petsclib::$UnionPetscLib, queue::DMPlexPoCintQueue, p::$PetscInt )
@@ -4962,7 +4962,7 @@ See also: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueCreate()`, `DMPlexPoint
 $(_doc_external("DMPlex/DMPlexPointQueueEnsureSize"))
 """
 function DMPlexPointQueueEnsureSize(petsclib::PetscLibType, queue::DMPlexPoCintQueue)
-    error("DMPlexPointQueueEnsureSize: no generated method for these argument types")
+    throw(MethodError(DMPlexPointQueueEnsureSize, (petsclib, queue)))
 end
 
 @for_petsc function DMPlexPointQueueEnsureSize(petsclib::$UnionPetscLib, queue::DMPlexPoCintQueue )
@@ -4998,7 +4998,7 @@ See also: `DMPLEX`, `DMPlexPointQueue`, `DMPlexPointQueueBack()`, `DMPlexPointQu
 $(_doc_external("DMPlex/DMPlexPointQueueFront"))
 """
 function DMPlexPointQueueFront(petsclib::PetscLibType, queue::DMPlexPoCintQueue)
-    error("DMPlexPointQueueFront: no generated method for these argument types")
+    throw(MethodError(DMPlexPointQueueFront, (petsclib, queue)))
 end
 
 @for_petsc function DMPlexPointQueueFront(petsclib::$UnionPetscLib, queue::DMPlexPoCintQueue )
@@ -5039,7 +5039,7 @@ See also: `DMPLEX`, `DMPlexTransform`, `DMAdaptLabel()`, `DMPlexTransformApply()
 $(_doc_external("DMPlex/DMPlexTransformAdaptLabel"))
 """
 function DMPlexTransformAdaptLabel(petsclib::PetscLibType, dm::AbstractPetscDM, metric::AbstractPetscVec, adaptLabel::DMLabel, rgLabel::DMLabel)
-    error("DMPlexTransformAdaptLabel: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformAdaptLabel, (petsclib, dm, metric, adaptLabel, rgLabel)))
 end
 
 @for_petsc function DMPlexTransformAdaptLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, metric::AbstractPetscVec, adaptLabel::DMLabel, rgLabel::DMLabel )
@@ -5083,7 +5083,7 @@ See also: [](plex_transform_table), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTr
 $(_doc_external("DMPlex/DMPlexTransformApply"))
 """
 function DMPlexTransformApply(petsclib::PetscLibType, tr::DMPlexTransform, dm::AbstractPetscDM)
-    error("DMPlexTransformApply: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformApply, (petsclib, tr, dm)))
 end
 
 @for_petsc function DMPlexTransformApply(petsclib::$UnionPetscLib, tr::DMPlexTransform, dm::AbstractPetscDM )
@@ -5126,7 +5126,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformA
 $(_doc_external("DMPlex/DMPlexTransformCellTransform"))
 """
 function DMPlexTransformCellTransform(petsclib::PetscLibType, tr::DMPlexTransform, source::DMPolytopeType, p::Integer)
-    error("DMPlexTransformCellTransform: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformCellTransform, (petsclib, tr, source, p)))
 end
 
 @for_petsc function DMPlexTransformCellTransform(petsclib::$UnionPetscLib, tr::DMPlexTransform, source::DMPolytopeType, p::$PetscInt )
@@ -5181,7 +5181,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformC
 $(_doc_external("DMPlex/DMPlexTransformCellTransformIdentity"))
 """
 function DMPlexTransformCellTransformIdentity(petsclib::PetscLibType, tr::DMPlexTransform, source::DMPolytopeType, p::Integer)
-    error("DMPlexTransformCellTransformIdentity: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformCellTransformIdentity, (petsclib, tr, source, p)))
 end
 
 @for_petsc function DMPlexTransformCellTransformIdentity(petsclib::$UnionPetscLib, tr::DMPlexTransform, source::DMPolytopeType, p::$PetscInt )
@@ -5227,7 +5227,7 @@ See also: `DMPlexTransform`, `DMPlexTransformCohesiveExtrudeSetTensor()`, `DMPle
 $(_doc_external("DMPlex/DMPlexTransformCohesiveExtrudeGetTensor"))
 """
 function DMPlexTransformCohesiveExtrudeGetTensor(petsclib::PetscLibType, tr::DMPlexTransform)
-    error("DMPlexTransformCohesiveExtrudeGetTensor: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformCohesiveExtrudeGetTensor, (petsclib, tr)))
 end
 
 @for_petsc function DMPlexTransformCohesiveExtrudeGetTensor(petsclib::$UnionPetscLib, tr::DMPlexTransform )
@@ -5265,7 +5265,7 @@ See also: `DMPlexTransform`, `DMPlexTransformGetTransformTypes()`
 $(_doc_external("DMPlex/DMPlexTransformCohesiveExtrudeGetUnsplit"))
 """
 function DMPlexTransformCohesiveExtrudeGetUnsplit(petsclib::PetscLibType, tr::DMPlexTransform)
-    error("DMPlexTransformCohesiveExtrudeGetUnsplit: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformCohesiveExtrudeGetUnsplit, (petsclib, tr)))
 end
 
 @for_petsc function DMPlexTransformCohesiveExtrudeGetUnsplit(petsclib::$UnionPetscLib, tr::DMPlexTransform )
@@ -5303,7 +5303,7 @@ See also: `DMPlexTransform`, `DMPlexTransformCohesiveExtrudeSetWidth()`
 $(_doc_external("DMPlex/DMPlexTransformCohesiveExtrudeGetWidth"))
 """
 function DMPlexTransformCohesiveExtrudeGetWidth(petsclib::PetscLibType, tr::DMPlexTransform)
-    error("DMPlexTransformCohesiveExtrudeGetWidth: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformCohesiveExtrudeGetWidth, (petsclib, tr)))
 end
 
 @for_petsc function DMPlexTransformCohesiveExtrudeGetWidth(petsclib::$UnionPetscLib, tr::DMPlexTransform )
@@ -5337,7 +5337,7 @@ See also: `DMPlexTransform`, `DMPlexTransformCohesiveExtrudeGetTensor()`, `DMPle
 $(_doc_external("DMPlex/DMPlexTransformCohesiveExtrudeSetTensor"))
 """
 function DMPlexTransformCohesiveExtrudeSetTensor(petsclib::PetscLibType, tr::DMPlexTransform, useTensor::PetscBool)
-    error("DMPlexTransformCohesiveExtrudeSetTensor: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformCohesiveExtrudeSetTensor, (petsclib, tr, useTensor)))
 end
 
 @for_petsc function DMPlexTransformCohesiveExtrudeSetTensor(petsclib::$UnionPetscLib, tr::DMPlexTransform, useTensor::PetscBool )
@@ -5371,7 +5371,7 @@ See also: `DMPlexTransform`, `DMPlexTransformCohesiveExtrudeGetWidth()`
 $(_doc_external("DMPlex/DMPlexTransformCohesiveExtrudeSetWidth"))
 """
 function DMPlexTransformCohesiveExtrudeSetWidth(petsclib::PetscLibType, tr::DMPlexTransform, width::Real)
-    error("DMPlexTransformCohesiveExtrudeSetWidth: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformCohesiveExtrudeSetWidth, (petsclib, tr, width)))
 end
 
 @for_petsc function DMPlexTransformCohesiveExtrudeSetWidth(petsclib::$UnionPetscLib, tr::DMPlexTransform, width::$PetscReal )
@@ -5407,7 +5407,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformType`, `DMPlexTrans
 $(_doc_external("DMPlex/DMPlexTransformCreate"))
 """
 function DMPlexTransformCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("DMPlexTransformCreate: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformCreate, (petsclib, comm)))
 end
 
 @for_petsc function DMPlexTransformCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -5443,7 +5443,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformApply()`, `DMSetFie
 $(_doc_external("DMPlex/DMPlexTransformCreateDiscLabels"))
 """
 function DMPlexTransformCreateDiscLabels(petsclib::PetscLibType, tr::DMPlexTransform, rdm::AbstractPetscDM)
-    error("DMPlexTransformCreateDiscLabels: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformCreateDiscLabels, (petsclib, tr, rdm)))
 end
 
 @for_petsc function DMPlexTransformCreateDiscLabels(petsclib::$UnionPetscLib, tr::DMPlexTransform, rdm::AbstractPetscDM )
@@ -5476,7 +5476,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformView()`, `DMPlexTra
 $(_doc_external("DMPlex/DMPlexTransformDestroy"))
 """
 function DMPlexTransformDestroy(petsclib::PetscLibType, tr::Union{DMPlexTransform, Ref{DMPlexTransform}})
-    error("DMPlexTransformDestroy: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformDestroy, (petsclib, tr)))
 end
 
 @for_petsc function DMPlexTransformDestroy(petsclib::$UnionPetscLib, tr::Union{DMPlexTransform, Ref{DMPlexTransform}} )
@@ -5513,7 +5513,7 @@ See also: `DMPlexTransform`, `DMPlexTransformExtrudeSetLayers()`
 $(_doc_external("DMPlex/DMPlexTransformExtrudeGetLayers"))
 """
 function DMPlexTransformExtrudeGetLayers(petsclib::PetscLibType, tr::DMPlexTransform)
-    error("DMPlexTransformExtrudeGetLayers: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformExtrudeGetLayers, (petsclib, tr)))
 end
 
 @for_petsc function DMPlexTransformExtrudeGetLayers(petsclib::$UnionPetscLib, tr::DMPlexTransform )
@@ -5549,7 +5549,7 @@ See also: `DMPlexTransform`, `DMPlexTransformExtrudeSetNormal()`
 $(_doc_external("DMPlex/DMPlexTransformExtrudeGetNormal"))
 """
 function DMPlexTransformExtrudeGetNormal(petsclib::PetscLibType, tr::DMPlexTransform, normal::AbstractVector{<:Number})
-    error("DMPlexTransformExtrudeGetNormal: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformExtrudeGetNormal, (petsclib, tr, normal)))
 end
 
 @for_petsc function DMPlexTransformExtrudeGetNormal(petsclib::$UnionPetscLib, tr::DMPlexTransform, normal::Vector{$PetscReal} )
@@ -5585,7 +5585,7 @@ See also: `DMPlexTransform`, `DMPlexTransformExtrudeSetPeriodic()`, `DMPlexTrans
 $(_doc_external("DMPlex/DMPlexTransformExtrudeGetPeriodic"))
 """
 function DMPlexTransformExtrudeGetPeriodic(petsclib::PetscLibType, tr::DMPlexTransform)
-    error("DMPlexTransformExtrudeGetPeriodic: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformExtrudeGetPeriodic, (petsclib, tr)))
 end
 
 @for_petsc function DMPlexTransformExtrudeGetPeriodic(petsclib::$UnionPetscLib, tr::DMPlexTransform )
@@ -5623,7 +5623,7 @@ See also: `DMPlexTransform`, `DMPlexTransformExtrudeSetSymmetric()`, `DMPlexTran
 $(_doc_external("DMPlex/DMPlexTransformExtrudeGetSymmetric"))
 """
 function DMPlexTransformExtrudeGetSymmetric(petsclib::PetscLibType, tr::DMPlexTransform)
-    error("DMPlexTransformExtrudeGetSymmetric: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformExtrudeGetSymmetric, (petsclib, tr)))
 end
 
 @for_petsc function DMPlexTransformExtrudeGetSymmetric(petsclib::$UnionPetscLib, tr::DMPlexTransform )
@@ -5659,7 +5659,7 @@ See also: `DMPlexTransform`, `DMPlexTransformExtrudeSetTensor()`
 $(_doc_external("DMPlex/DMPlexTransformExtrudeGetTensor"))
 """
 function DMPlexTransformExtrudeGetTensor(petsclib::PetscLibType, tr::DMPlexTransform)
-    error("DMPlexTransformExtrudeGetTensor: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformExtrudeGetTensor, (petsclib, tr)))
 end
 
 @for_petsc function DMPlexTransformExtrudeGetTensor(petsclib::$UnionPetscLib, tr::DMPlexTransform )
@@ -5697,7 +5697,7 @@ See also: `DMPlexTransform`, `DMPlexTransformExtrudeSetThickness()`
 $(_doc_external("DMPlex/DMPlexTransformExtrudeGetThickness"))
 """
 function DMPlexTransformExtrudeGetThickness(petsclib::PetscLibType, tr::DMPlexTransform)
-    error("DMPlexTransformExtrudeGetThickness: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformExtrudeGetThickness, (petsclib, tr)))
 end
 
 @for_petsc function DMPlexTransformExtrudeGetThickness(petsclib::$UnionPetscLib, tr::DMPlexTransform )
@@ -5733,7 +5733,7 @@ See also: `DMPlexTransform`, `DMPlexTransformExtrudeGetLayers()`
 $(_doc_external("DMPlex/DMPlexTransformExtrudeSetLayers"))
 """
 function DMPlexTransformExtrudeSetLayers(petsclib::PetscLibType, tr::DMPlexTransform, layers::Integer)
-    error("DMPlexTransformExtrudeSetLayers: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformExtrudeSetLayers, (petsclib, tr, layers)))
 end
 
 @for_petsc function DMPlexTransformExtrudeSetLayers(petsclib::$UnionPetscLib, tr::DMPlexTransform, layers::$PetscInt )
@@ -5767,7 +5767,7 @@ See also: `DMPlexTransform`, `DMPlexTransformExtrudeGetNormal()`
 $(_doc_external("DMPlex/DMPlexTransformExtrudeSetNormal"))
 """
 function DMPlexTransformExtrudeSetNormal(petsclib::PetscLibType, tr::DMPlexTransform, normal::AbstractVector{<:Number})
-    error("DMPlexTransformExtrudeSetNormal: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformExtrudeSetNormal, (petsclib, tr, normal)))
 end
 
 @for_petsc function DMPlexTransformExtrudeSetNormal(petsclib::$UnionPetscLib, tr::DMPlexTransform, normal::Vector{$PetscReal} )
@@ -5801,7 +5801,7 @@ See also: `DMPlexTransform`, `DMPlexTransformExtrudeGetNormal()`, `PetscSimplePo
 $(_doc_external("DMPlex/DMPlexTransformExtrudeSetNormalFunction"))
 """
 function DMPlexTransformExtrudeSetNormalFunction(petsclib::PetscLibType, tr::DMPlexTransform, normalFunc::Ptr{Cvoid})
-    error("DMPlexTransformExtrudeSetNormalFunction: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformExtrudeSetNormalFunction, (petsclib, tr, normalFunc)))
 end
 
 @for_petsc function DMPlexTransformExtrudeSetNormalFunction(petsclib::$UnionPetscLib, tr::DMPlexTransform, normalFunc::Ptr{Cvoid} )
@@ -5835,7 +5835,7 @@ See also: `DMPlexTransform`, `DMPlexTransformExtrudeGetPeriodic()`, `DMPlexTrans
 $(_doc_external("DMPlex/DMPlexTransformExtrudeSetPeriodic"))
 """
 function DMPlexTransformExtrudeSetPeriodic(petsclib::PetscLibType, tr::DMPlexTransform, periodic::PetscBool)
-    error("DMPlexTransformExtrudeSetPeriodic: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformExtrudeSetPeriodic, (petsclib, tr, periodic)))
 end
 
 @for_petsc function DMPlexTransformExtrudeSetPeriodic(petsclib::$UnionPetscLib, tr::DMPlexTransform, periodic::PetscBool )
@@ -5869,7 +5869,7 @@ See also: `DMPlexTransform`, `DMPlexTransformExtrudeGetSymmetric()`, `DMPlexTran
 $(_doc_external("DMPlex/DMPlexTransformExtrudeSetSymmetric"))
 """
 function DMPlexTransformExtrudeSetSymmetric(petsclib::PetscLibType, tr::DMPlexTransform, symmetric::PetscBool)
-    error("DMPlexTransformExtrudeSetSymmetric: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformExtrudeSetSymmetric, (petsclib, tr, symmetric)))
 end
 
 @for_petsc function DMPlexTransformExtrudeSetSymmetric(petsclib::$UnionPetscLib, tr::DMPlexTransform, symmetric::PetscBool )
@@ -5901,7 +5901,7 @@ See also: `DMPlexTransform`, `DMPlexTransformExtrudeGetTensor()`
 $(_doc_external("DMPlex/DMPlexTransformExtrudeSetTensor"))
 """
 function DMPlexTransformExtrudeSetTensor(petsclib::PetscLibType, tr::DMPlexTransform, useTensor::PetscBool)
-    error("DMPlexTransformExtrudeSetTensor: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformExtrudeSetTensor, (petsclib, tr, useTensor)))
 end
 
 @for_petsc function DMPlexTransformExtrudeSetTensor(petsclib::$UnionPetscLib, tr::DMPlexTransform, useTensor::PetscBool )
@@ -5935,7 +5935,7 @@ See also: `DMPlexTransform`, `DMPlexTransformExtrudeGetThickness()`
 $(_doc_external("DMPlex/DMPlexTransformExtrudeSetThickness"))
 """
 function DMPlexTransformExtrudeSetThickness(petsclib::PetscLibType, tr::DMPlexTransform, thickness::Real)
-    error("DMPlexTransformExtrudeSetThickness: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformExtrudeSetThickness, (petsclib, tr, thickness)))
 end
 
 @for_petsc function DMPlexTransformExtrudeSetThickness(petsclib::$UnionPetscLib, tr::DMPlexTransform, thickness::$PetscReal )
@@ -5970,7 +5970,7 @@ See also: `DMPlexTransform`, `DMPlexTransformExtrudeSetThickness()`, `DMPlexTran
 $(_doc_external("DMPlex/DMPlexTransformExtrudeSetThicknesses"))
 """
 function DMPlexTransformExtrudeSetThicknesses(petsclib::PetscLibType, tr::DMPlexTransform, Nth::Integer, thicknesses::AbstractVector{<:Number})
-    error("DMPlexTransformExtrudeSetThicknesses: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformExtrudeSetThicknesses, (petsclib, tr, Nth, thicknesses)))
 end
 
 @for_petsc function DMPlexTransformExtrudeSetThicknesses(petsclib::$UnionPetscLib, tr::DMPlexTransform, Nth::$PetscInt, thicknesses::Vector{$PetscReal} )
@@ -6004,7 +6004,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformSetActive()`, `DMPl
 $(_doc_external("DMPlex/DMPlexTransformGetActive"))
 """
 function DMPlexTransformGetActive(petsclib::PetscLibType, tr::DMPlexTransform)
-    error("DMPlexTransformGetActive: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformGetActive, (petsclib, tr)))
 end
 
 @for_petsc function DMPlexTransformGetActive(petsclib::$UnionPetscLib, tr::DMPlexTransform )
@@ -6043,7 +6043,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformG
 $(_doc_external("DMPlex/DMPlexTransformGetCellType"))
 """
 function DMPlexTransformGetCellType(petsclib::PetscLibType, tr::DMPlexTransform, cell::Integer)
-    error("DMPlexTransformGetCellType: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformGetCellType, (petsclib, tr, cell)))
 end
 
 @for_petsc function DMPlexTransformGetCellType(petsclib::$UnionPetscLib, tr::DMPlexTransform, cell::$PetscInt )
@@ -6083,7 +6083,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformG
 $(_doc_external("DMPlex/DMPlexTransformGetCellTypeStratum"))
 """
 function DMPlexTransformGetCellTypeStratum(petsclib::PetscLibType, tr::DMPlexTransform, celltype::DMPolytopeType)
-    error("DMPlexTransformGetCellTypeStratum: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformGetCellTypeStratum, (petsclib, tr, celltype)))
 end
 
 @for_petsc function DMPlexTransformGetCellTypeStratum(petsclib::$UnionPetscLib, tr::DMPlexTransform, celltype::DMPolytopeType )
@@ -6123,7 +6123,7 @@ See also: `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformGetSubc
 $(_doc_external("DMPlex/DMPlexTransformGetCellVertices"))
 """
 function DMPlexTransformGetCellVertices(petsclib::PetscLibType, tr::DMPlexTransform, ct::DMPolytopeType)
-    error("DMPlexTransformGetCellVertices: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformGetCellVertices, (petsclib, tr, ct)))
 end
 
 @for_petsc function DMPlexTransformGetCellVertices(petsclib::$UnionPetscLib, tr::DMPlexTransform, ct::DMPolytopeType )
@@ -6164,7 +6164,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformApply()`, `DMPlexTr
 $(_doc_external("DMPlex/DMPlexTransformGetChart"))
 """
 function DMPlexTransformGetChart(petsclib::PetscLibType, tr::DMPlexTransform)
-    error("DMPlexTransformGetChart: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformGetChart, (petsclib, tr)))
 end
 
 @for_petsc function DMPlexTransformGetChart(petsclib::$UnionPetscLib, tr::DMPlexTransform )
@@ -6206,7 +6206,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformRestoreCone()`, `DM
 $(_doc_external("DMPlex/DMPlexTransformGetCone"))
 """
 function DMPlexTransformGetCone(petsclib::PetscLibType, tr::DMPlexTransform, q::Integer)
-    error("DMPlexTransformGetCone: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformGetCone, (petsclib, tr, q)))
 end
 
 @for_petsc function DMPlexTransformGetCone(petsclib::$UnionPetscLib, tr::DMPlexTransform, q::$PetscInt )
@@ -6249,7 +6249,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetCone()`, `DMPlex
 $(_doc_external("DMPlex/DMPlexTransformGetConeOriented"))
 """
 function DMPlexTransformGetConeOriented(petsclib::PetscLibType, tr::DMPlexTransform, q::Integer, po::Integer)
-    error("DMPlexTransformGetConeOriented: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformGetConeOriented, (petsclib, tr, q, po)))
 end
 
 @for_petsc function DMPlexTransformGetConeOriented(petsclib::$UnionPetscLib, tr::DMPlexTransform, q::$PetscInt, po::$PetscInt )
@@ -6290,7 +6290,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetCone()`, `DMPlex
 $(_doc_external("DMPlex/DMPlexTransformGetConeSize"))
 """
 function DMPlexTransformGetConeSize(petsclib::PetscLibType, tr::DMPlexTransform, q::Integer)
-    error("DMPlexTransformGetConeSize: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformGetConeSize, (petsclib, tr, q)))
 end
 
 @for_petsc function DMPlexTransformGetConeSize(petsclib::$UnionPetscLib, tr::DMPlexTransform, q::$PetscInt )
@@ -6326,7 +6326,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformSetDM()`, `DMPlexTr
 $(_doc_external("DMPlex/DMPlexTransformGetDM"))
 """
 function DMPlexTransformGetDM(petsclib::PetscLibType, tr::DMPlexTransform)
-    error("DMPlexTransformGetDM: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformGetDM, (petsclib, tr)))
 end
 
 @for_petsc function DMPlexTransformGetDM(petsclib::$UnionPetscLib, tr::DMPlexTransform )
@@ -6364,7 +6364,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetDepthStratum()`,
 $(_doc_external("DMPlex/DMPlexTransformGetDepth"))
 """
 function DMPlexTransformGetDepth(petsclib::PetscLibType, tr::DMPlexTransform)
-    error("DMPlexTransformGetDepth: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformGetDepth, (petsclib, tr)))
 end
 
 @for_petsc function DMPlexTransformGetDepth(petsclib::$UnionPetscLib, tr::DMPlexTransform )
@@ -6404,7 +6404,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetDepth()`, `DMPle
 $(_doc_external("DMPlex/DMPlexTransformGetDepthStratum"))
 """
 function DMPlexTransformGetDepthStratum(petsclib::PetscLibType, tr::DMPlexTransform, depth::Integer)
-    error("DMPlexTransformGetDepthStratum: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformGetDepthStratum, (petsclib, tr, depth)))
 end
 
 @for_petsc function DMPlexTransformGetDepthStratum(petsclib::$UnionPetscLib, tr::DMPlexTransform, depth::$PetscInt )
@@ -6444,7 +6444,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformSetMatchStrata()`, 
 $(_doc_external("DMPlex/DMPlexTransformGetMatchStrata"))
 """
 function DMPlexTransformGetMatchStrata(petsclib::PetscLibType, tr::DMPlexTransform)
-    error("DMPlexTransformGetMatchStrata: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformGetMatchStrata, (petsclib, tr)))
 end
 
 @for_petsc function DMPlexTransformGetMatchStrata(petsclib::$UnionPetscLib, tr::DMPlexTransform )
@@ -6486,7 +6486,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformG
 $(_doc_external("DMPlex/DMPlexTransformGetSourcePoint"))
 """
 function DMPlexTransformGetSourcePoint(petsclib::PetscLibType, tr::DMPlexTransform, pNew::Integer)
-    error("DMPlexTransformGetSourcePoint: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformGetSourcePoint, (petsclib, tr, pNew)))
 end
 
 @for_petsc function DMPlexTransformGetSourcePoint(petsclib::$UnionPetscLib, tr::DMPlexTransform, pNew::$PetscInt )
@@ -6537,7 +6537,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformC
 $(_doc_external("DMPlex/DMPlexTransformGetSubcellOrientation"))
 """
 function DMPlexTransformGetSubcellOrientation(petsclib::PetscLibType, tr::DMPlexTransform, sct::DMPolytopeType, sp::Integer, so::Integer, tct::DMPolytopeType, r::Integer, o::Integer)
-    error("DMPlexTransformGetSubcellOrientation: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformGetSubcellOrientation, (petsclib, tr, sct, sp, so, tct, r, o)))
 end
 
 @for_petsc function DMPlexTransformGetSubcellOrientation(petsclib::$UnionPetscLib, tr::DMPlexTransform, sct::DMPolytopeType, sp::$PetscInt, so::$PetscInt, tct::DMPolytopeType, r::$PetscInt, o::$PetscInt )
@@ -6584,7 +6584,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetSubcellOrientati
 $(_doc_external("DMPlex/DMPlexTransformGetSubcellOrientationIdentity"))
 """
 function DMPlexTransformGetSubcellOrientationIdentity(petsclib::PetscLibType, tr::DMPlexTransform, sct::DMPolytopeType, sp::Integer, so::Integer, tct::DMPolytopeType, r::Integer, o::Integer)
-    error("DMPlexTransformGetSubcellOrientationIdentity: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformGetSubcellOrientationIdentity, (petsclib, tr, sct, sp, so, tct, r, o)))
 end
 
 @for_petsc function DMPlexTransformGetSubcellOrientationIdentity(petsclib::$UnionPetscLib, tr::DMPlexTransform, sct::DMPolytopeType, sp::$PetscInt, so::$PetscInt, tct::DMPolytopeType, r::$PetscInt, o::$PetscInt )
@@ -6625,7 +6625,7 @@ See also: `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformGetCell
 $(_doc_external("DMPlex/DMPlexTransformGetSubcellVertices"))
 """
 function DMPlexTransformGetSubcellVertices(petsclib::PetscLibType, tr::DMPlexTransform, ct::DMPolytopeType, rct::DMPolytopeType, r::Integer)
-    error("DMPlexTransformGetSubcellVertices: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformGetSubcellVertices, (petsclib, tr, ct, rct, r)))
 end
 
 @for_petsc function DMPlexTransformGetSubcellVertices(petsclib::$UnionPetscLib, tr::DMPlexTransform, ct::DMPolytopeType, rct::DMPolytopeType, r::$PetscInt )
@@ -6667,7 +6667,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformG
 $(_doc_external("DMPlex/DMPlexTransformGetTargetPoint"))
 """
 function DMPlexTransformGetTargetPoint(petsclib::PetscLibType, tr::DMPlexTransform, ct::DMPolytopeType, ctNew::DMPolytopeType, p::Integer, r::Integer)
-    error("DMPlexTransformGetTargetPoint: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformGetTargetPoint, (petsclib, tr, ct, ctNew, p, r)))
 end
 
 @for_petsc function DMPlexTransformGetTargetPoint(petsclib::$UnionPetscLib, tr::DMPlexTransform, ct::DMPolytopeType, ctNew::DMPolytopeType, p::$PetscInt, r::$PetscInt )
@@ -6703,7 +6703,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexSetTransformType()`, `DMPlex
 $(_doc_external("DMPlex/DMPlexTransformGetTransformTypes"))
 """
 function DMPlexTransformGetTransformTypes(petsclib::PetscLibType, tr::DMPlexTransform)
-    error("DMPlexTransformGetTransformTypes: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformGetTransformTypes, (petsclib, tr)))
 end
 
 @for_petsc function DMPlexTransformGetTransformTypes(petsclib::$UnionPetscLib, tr::DMPlexTransform )
@@ -6741,7 +6741,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformType`, `DMPlexTrans
 $(_doc_external("DMPlex/DMPlexTransformGetType"))
 """
 function DMPlexTransformGetType(petsclib::PetscLibType, tr::DMPlexTransform)
-    error("DMPlexTransformGetType: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformGetType, (petsclib, tr)))
 end
 
 @for_petsc function DMPlexTransformGetType(petsclib::$UnionPetscLib, tr::DMPlexTransform )
@@ -6786,7 +6786,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPolytopeType`, `DMPlexTransformA
 $(_doc_external("DMPlex/DMPlexTransformMapCoordinates"))
 """
 function DMPlexTransformMapCoordinates(petsclib::PetscLibType, tr::DMPlexTransform, pct::DMPolytopeType, ct::DMPolytopeType, p::Integer, r::Integer, Nv::Integer, dE::Integer, in::AbstractVector{<:Number}, out::AbstractVector{<:Number})
-    error("DMPlexTransformMapCoordinates: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformMapCoordinates, (petsclib, tr, pct, ct, p, r, Nv, dE, in, out)))
 end
 
 @for_petsc function DMPlexTransformMapCoordinates(petsclib::$UnionPetscLib, tr::DMPlexTransform, pct::DMPolytopeType, ct::DMPolytopeType, p::$PetscInt, r::$PetscInt, Nv::$PetscInt, dE::$PetscInt, in::Vector{$PetscScalar}, out::Vector{$PetscScalar} )
@@ -6818,7 +6818,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformRegisterAll()`, `DM
 $(_doc_external("DMPlex/DMPlexTransformRegister"))
 """
 function DMPlexTransformRegister(petsclib::PetscLibType, name::String, noname::Ptr{Cvoid})
-    error("DMPlexTransformRegister: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformRegister, (petsclib, name, noname)))
 end
 
 @for_petsc function DMPlexTransformRegister(petsclib::$UnionPetscLib, name::String, noname::Ptr{Cvoid} )
@@ -6848,7 +6848,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransformType`, `DMRegisterAll()`, `DMPlexTrans
 $(_doc_external("DMPlex/DMPlexTransformRegisterAll"))
 """
 function DMPlexTransformRegisterAll(petsclib::PetscLibType)
-    error("DMPlexTransformRegisterAll: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformRegisterAll, (petsclib, )))
 end
 
 @for_petsc function DMPlexTransformRegisterAll(petsclib::$UnionPetscLib)
@@ -6877,7 +6877,7 @@ See also: `DM`, `DMPLEX`, `DMRegisterAll()`, `DMPlexTransformType`, `PetscInitia
 $(_doc_external("DMPlex/DMPlexTransformRegisterDestroy"))
 """
 function DMPlexTransformRegisterDestroy(petsclib::PetscLibType)
-    error("DMPlexTransformRegisterDestroy: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformRegisterDestroy, (petsclib, )))
 end
 
 @for_petsc function DMPlexTransformRegisterDestroy(petsclib::$UnionPetscLib)
@@ -6912,7 +6912,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetCone()`, `DMPlex
 $(_doc_external("DMPlex/DMPlexTransformRestoreCone"))
 """
 function DMPlexTransformRestoreCone(petsclib::PetscLibType, tr::DMPlexTransform, q::Integer, cone::Union{Ptr, AbstractArray{<:Number}}, ornt::Union{Ptr, AbstractArray{<:Number}})
-    error("DMPlexTransformRestoreCone: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformRestoreCone, (petsclib, tr, q, cone, ornt)))
 end
 
 @for_petsc function DMPlexTransformRestoreCone(petsclib::$UnionPetscLib, tr::DMPlexTransform, q::$PetscInt, cone::Union{Ptr, AbstractArray{$PetscInt}}, ornt::Union{Ptr, AbstractArray{$PetscInt}} )
@@ -6946,7 +6946,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetActive()`, `DMPl
 $(_doc_external("DMPlex/DMPlexTransformSetActive"))
 """
 function DMPlexTransformSetActive(petsclib::PetscLibType, tr::DMPlexTransform, active::DMLabel)
-    error("DMPlexTransformSetActive: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformSetActive, (petsclib, tr, active)))
 end
 
 @for_petsc function DMPlexTransformSetActive(petsclib::$UnionPetscLib, tr::DMPlexTransform, active::DMLabel )
@@ -6978,7 +6978,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetDM()`, `DMPlexTr
 $(_doc_external("DMPlex/DMPlexTransformSetDM"))
 """
 function DMPlexTransformSetDM(petsclib::PetscLibType, tr::DMPlexTransform, dm::AbstractPetscDM)
-    error("DMPlexTransformSetDM: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformSetDM, (petsclib, tr, dm)))
 end
 
 @for_petsc function DMPlexTransformSetDM(petsclib::$UnionPetscLib, tr::DMPlexTransform, dm::AbstractPetscDM )
@@ -7013,7 +7013,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformApply()`, `DMPlexTr
 $(_doc_external("DMPlex/DMPlexTransformSetDimensions"))
 """
 function DMPlexTransformSetDimensions(petsclib::PetscLibType, tr::DMPlexTransform, dm::AbstractPetscDM, trdm::AbstractPetscDM)
-    error("DMPlexTransformSetDimensions: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformSetDimensions, (petsclib, tr, dm, trdm)))
 end
 
 @for_petsc function DMPlexTransformSetDimensions(petsclib::$UnionPetscLib, tr::DMPlexTransform, dm::AbstractPetscDM, trdm::AbstractPetscDM )
@@ -7053,7 +7053,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformView()`, `DMPlexTra
 $(_doc_external("DMPlex/DMPlexTransformSetFromOptions"))
 """
 function DMPlexTransformSetFromOptions(petsclib::PetscLibType, tr::DMPlexTransform)
-    error("DMPlexTransformSetFromOptions: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformSetFromOptions, (petsclib, tr)))
 end
 
 @for_petsc function DMPlexTransformSetFromOptions(petsclib::$UnionPetscLib, tr::DMPlexTransform )
@@ -7087,7 +7087,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetMatchStrata()`, 
 $(_doc_external("DMPlex/DMPlexTransformSetMatchStrata"))
 """
 function DMPlexTransformSetMatchStrata(petsclib::PetscLibType, tr::DMPlexTransform, match::PetscBool)
-    error("DMPlexTransformSetMatchStrata: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformSetMatchStrata, (petsclib, tr, match)))
 end
 
 @for_petsc function DMPlexTransformSetMatchStrata(petsclib::$UnionPetscLib, tr::DMPlexTransform, match::PetscBool )
@@ -7119,7 +7119,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetTransformTypes()
 $(_doc_external("DMPlex/DMPlexTransformSetTransformTypes"))
 """
 function DMPlexTransformSetTransformTypes(petsclib::PetscLibType, tr::DMPlexTransform, trType::DMLabel)
-    error("DMPlexTransformSetTransformTypes: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformSetTransformTypes, (petsclib, tr, trType)))
 end
 
 @for_petsc function DMPlexTransformSetTransformTypes(petsclib::$UnionPetscLib, tr::DMPlexTransform, trType::DMLabel )
@@ -7156,7 +7156,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformType`, `DMPlexTrans
 $(_doc_external("DMPlex/DMPlexTransformSetType"))
 """
 function DMPlexTransformSetType(petsclib::PetscLibType, tr::DMPlexTransform, method::String)
-    error("DMPlexTransformSetType: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformSetType, (petsclib, tr, method)))
 end
 
 @for_petsc function DMPlexTransformSetType(petsclib::$UnionPetscLib, tr::DMPlexTransform, method::String )
@@ -7187,7 +7187,7 @@ See also: [](plex_transform_table), `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTr
 $(_doc_external("DMPlex/DMPlexTransformSetUp"))
 """
 function DMPlexTransformSetUp(petsclib::PetscLibType, tr::DMPlexTransform)
-    error("DMPlexTransformSetUp: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformSetUp, (petsclib, tr)))
 end
 
 @for_petsc function DMPlexTransformSetUp(petsclib::$UnionPetscLib, tr::DMPlexTransform )
@@ -7221,7 +7221,7 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformType`, `PetscViewer
 $(_doc_external("DMPlex/DMPlexTransformView"))
 """
 function DMPlexTransformView(petsclib::PetscLibType, tr::DMPlexTransform, v::PetscViewer)
-    error("DMPlexTransformView: no generated method for these argument types")
+    throw(MethodError(DMPlexTransformView, (petsclib, tr, v)))
 end
 
 @for_petsc function DMPlexTransformView(petsclib::$UnionPetscLib, tr::DMPlexTransform, v::PetscViewer )
@@ -7261,7 +7261,7 @@ See also: `DMSwarmCellDM`, `DMSWARM`, `DMSetType()`
 $(_doc_external("DMSwarm/DMSwarmCellDMCreate"))
 """
 function DMSwarmCellDMCreate(petsclib::PetscLibType, dm::AbstractPetscDM, Nf::Integer, dmFields::String, Nfc::Integer, coordFields::String)
-    error("DMSwarmCellDMCreate: no generated method for these argument types")
+    throw(MethodError(DMSwarmCellDMCreate, (petsclib, dm, Nf, dmFields, Nfc, coordFields)))
 end
 
 @for_petsc function DMSwarmCellDMCreate(petsclib::$UnionPetscLib, dm::AbstractPetscDM, Nf::$PetscInt, dmFields::String, Nfc::$PetscInt, coordFields::String )
@@ -7298,7 +7298,7 @@ See also: `DMSwarmCellDM`, `DMSwarmCellDMCreate()`
 $(_doc_external("DMSwarm/DMSwarmCellDMDestroy"))
 """
 function DMSwarmCellDMDestroy(petsclib::PetscLibType, celldm::Union{DMSwarmCellDM, Ref{DMSwarmCellDM}})
-    error("DMSwarmCellDMDestroy: no generated method for these argument types")
+    throw(MethodError(DMSwarmCellDMDestroy, (petsclib, celldm)))
 end
 
 @for_petsc function DMSwarmCellDMDestroy(petsclib::$UnionPetscLib, celldm::Union{DMSwarmCellDM, Ref{DMSwarmCellDM}} )
@@ -7336,7 +7336,7 @@ See also: `DMSwarmCellDM`, `DM`, `DMSwarmSetCellDM()`
 $(_doc_external("DMSwarm/DMSwarmCellDMGetBlockSize"))
 """
 function DMSwarmCellDMGetBlockSize(petsclib::PetscLibType, celldm::DMSwarmCellDM, sw::AbstractPetscDM)
-    error("DMSwarmCellDMGetBlockSize: no generated method for these argument types")
+    throw(MethodError(DMSwarmCellDMGetBlockSize, (petsclib, celldm, sw)))
 end
 
 @for_petsc function DMSwarmCellDMGetBlockSize(petsclib::$UnionPetscLib, celldm::DMSwarmCellDM, sw::AbstractPetscDM )
@@ -7374,7 +7374,7 @@ See also: `DMSwarmCellDM`, `DM`, `DMSwarmSetCellDM()`
 $(_doc_external("DMSwarm/DMSwarmCellDMGetCellID"))
 """
 function DMSwarmCellDMGetCellID(petsclib::PetscLibType, celldm::DMSwarmCellDM)
-    error("DMSwarmCellDMGetCellID: no generated method for these argument types")
+    throw(MethodError(DMSwarmCellDMGetCellID, (petsclib, celldm)))
 end
 
 @for_petsc function DMSwarmCellDMGetCellID(petsclib::$UnionPetscLib, celldm::DMSwarmCellDM )
@@ -7413,7 +7413,7 @@ See also: `DMSwarmCellDM`, `DM`, `DMSwarmSetCellDM()`
 $(_doc_external("DMSwarm/DMSwarmCellDMGetCoordinateFields"))
 """
 function DMSwarmCellDMGetCoordinateFields(petsclib::PetscLibType, celldm::DMSwarmCellDM)
-    error("DMSwarmCellDMGetCoordinateFields: no generated method for these argument types")
+    throw(MethodError(DMSwarmCellDMGetCoordinateFields, (petsclib, celldm)))
 end
 
 @for_petsc function DMSwarmCellDMGetCoordinateFields(petsclib::$UnionPetscLib, celldm::DMSwarmCellDM )
@@ -7453,7 +7453,7 @@ See also: `DMSwarmCellDM`, `DM`, `DMSwarmSetCellDM()`
 $(_doc_external("DMSwarm/DMSwarmCellDMGetDM"))
 """
 function DMSwarmCellDMGetDM(petsclib::PetscLibType, celldm::DMSwarmCellDM)
-    error("DMSwarmCellDMGetDM: no generated method for these argument types")
+    throw(MethodError(DMSwarmCellDMGetDM, (petsclib, celldm)))
 end
 
 @for_petsc function DMSwarmCellDMGetDM(petsclib::$UnionPetscLib, celldm::DMSwarmCellDM )
@@ -7492,7 +7492,7 @@ See also: `DMSwarmCellDM`, `DM`, `DMSwarmSetCellDM()`
 $(_doc_external("DMSwarm/DMSwarmCellDMGetFields"))
 """
 function DMSwarmCellDMGetFields(petsclib::PetscLibType, celldm::DMSwarmCellDM)
-    error("DMSwarmCellDMGetFields: no generated method for these argument types")
+    throw(MethodError(DMSwarmCellDMGetFields, (petsclib, celldm)))
 end
 
 @for_petsc function DMSwarmCellDMGetFields(petsclib::$UnionPetscLib, celldm::DMSwarmCellDM )
@@ -7532,7 +7532,7 @@ See also: `DMSwarmCellDM`, `DM`, `DMSwarmSetCellDM()`
 $(_doc_external("DMSwarm/DMSwarmCellDMGetSort"))
 """
 function DMSwarmCellDMGetSort(petsclib::PetscLibType, celldm::DMSwarmCellDM)
-    error("DMSwarmCellDMGetSort: no generated method for these argument types")
+    throw(MethodError(DMSwarmCellDMGetSort, (petsclib, celldm)))
 end
 
 @for_petsc function DMSwarmCellDMGetSort(petsclib::$UnionPetscLib, celldm::DMSwarmCellDM )
@@ -7568,7 +7568,7 @@ See also: `DMSwarmCellDM`, `DM`, `DMSwarmSetCellDM()`
 $(_doc_external("DMSwarm/DMSwarmCellDMSetSort"))
 """
 function DMSwarmCellDMSetSort(petsclib::PetscLibType, celldm::DMSwarmCellDM, sort::DMSwarmSort)
-    error("DMSwarmCellDMSetSort: no generated method for these argument types")
+    throw(MethodError(DMSwarmCellDMSetSort, (petsclib, celldm, sort)))
 end
 
 @for_petsc function DMSwarmCellDMSetSort(petsclib::$UnionPetscLib, celldm::DMSwarmCellDM, sort::DMSwarmSort )
@@ -7602,7 +7602,7 @@ See also: `DMSwarmCellDM`, `DMSwarmCellDMCreate()`
 $(_doc_external("DMSwarm/DMSwarmCellDMView"))
 """
 function DMSwarmCellDMView(petsclib::PetscLibType, celldm::DMSwarmCellDM, viewer::PetscViewer)
-    error("DMSwarmCellDMView: no generated method for these argument types")
+    throw(MethodError(DMSwarmCellDMView, (petsclib, celldm, viewer)))
 end
 
 @for_petsc function DMSwarmCellDMView(petsclib::$UnionPetscLib, celldm::DMSwarmCellDM, viewer::PetscViewer )
@@ -7639,7 +7639,7 @@ See also: `DMSwarmDataBucket`, `DMSwarmDataField`, `DMSwarmDataBucketGetDMSwarmD
 $(_doc_external("DMSwarm/DMSwarmDataBucketGetDMSwarmDataFieldByName"))
 """
 function DMSwarmDataBucketGetDMSwarmDataFieldByName(petsclib::PetscLibType, db::DMSwarmDataBucket, name::String)
-    error("DMSwarmDataBucketGetDMSwarmDataFieldByName: no generated method for these argument types")
+    throw(MethodError(DMSwarmDataBucketGetDMSwarmDataFieldByName, (petsclib, db, name)))
 end
 
 @for_petsc function DMSwarmDataBucketGetDMSwarmDataFieldByName(petsclib::$UnionPetscLib, db::DMSwarmDataBucket, name::String )
@@ -7678,7 +7678,7 @@ See also: `DMSwarmDataBucket`, `DMSwarmDataField`, `DMSwarmDataBucketGetDMSwarmD
 $(_doc_external("DMSwarm/DMSwarmDataBucketGetDMSwarmDataFieldIdByName"))
 """
 function DMSwarmDataBucketGetDMSwarmDataFieldIdByName(petsclib::PetscLibType, db::DMSwarmDataBucket, name::String)
-    error("DMSwarmDataBucketGetDMSwarmDataFieldIdByName: no generated method for these argument types")
+    throw(MethodError(DMSwarmDataBucketGetDMSwarmDataFieldIdByName, (petsclib, db, name)))
 end
 
 @for_petsc function DMSwarmDataBucketGetDMSwarmDataFieldIdByName(petsclib::$UnionPetscLib, db::DMSwarmDataBucket, name::String )
@@ -7717,7 +7717,7 @@ See also: `DMSwarmDataBucket`, `DMSwarmDataField`, `DMSwarmDataBucketGetDMSwarmD
 $(_doc_external("DMSwarm/DMSwarmDataBucketQueryDMSwarmDataFieldByName"))
 """
 function DMSwarmDataBucketQueryDMSwarmDataFieldByName(petsclib::PetscLibType, db::DMSwarmDataBucket, name::String)
-    error("DMSwarmDataBucketQueryDMSwarmDataFieldByName: no generated method for these argument types")
+    throw(MethodError(DMSwarmDataBucketQueryDMSwarmDataFieldByName, (petsclib, db, name)))
 end
 
 @for_petsc function DMSwarmDataBucketQueryDMSwarmDataFieldByName(petsclib::$UnionPetscLib, db::DMSwarmDataBucket, name::String )
@@ -7755,7 +7755,7 @@ See also: `DMSwarmDataField`, `DMSwarmDataFieldRestoreEntries()`, `DMSwarmDataFi
 $(_doc_external("DMSwarm/DMSwarmDataFieldGetEntries"))
 """
 function DMSwarmDataFieldGetEntries(petsclib::PetscLibType, gfield::DMSwarmDataField)
-    error("DMSwarmDataFieldGetEntries: no generated method for these argument types")
+    throw(MethodError(DMSwarmDataFieldGetEntries, (petsclib, gfield)))
 end
 
 @for_petsc function DMSwarmDataFieldGetEntries(petsclib::$UnionPetscLib, gfield::DMSwarmDataField )
@@ -7793,7 +7793,7 @@ See also: `DMSwarmDataField`, `DMSwarmDataFieldGetEntries()`
 $(_doc_external("DMSwarm/DMSwarmDataFieldRestoreEntries"))
 """
 function DMSwarmDataFieldRestoreEntries(petsclib::PetscLibType, gfield::DMSwarmDataField)
-    error("DMSwarmDataFieldRestoreEntries: no generated method for these argument types")
+    throw(MethodError(DMSwarmDataFieldRestoreEntries, (petsclib, gfield)))
 end
 
 @for_petsc function DMSwarmDataFieldRestoreEntries(petsclib::$UnionPetscLib, gfield::DMSwarmDataField )
@@ -7818,7 +7818,7 @@ end
 $(_doc_external("DMSwarm/DMSwarmSortDestroy"))
 """
 function DMSwarmSortDestroy(petsclib::PetscLibType, ctx::Union{DMSwarmSort, Ref{DMSwarmSort}})
-    error("DMSwarmSortDestroy: no generated method for these argument types")
+    throw(MethodError(DMSwarmSortDestroy, (petsclib, ctx)))
 end
 
 @for_petsc function DMSwarmSortDestroy(petsclib::$UnionPetscLib, ctx::Union{DMSwarmSort, Ref{DMSwarmSort}} )
@@ -7852,7 +7852,7 @@ See also: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmSortRestoreAccess()`
 $(_doc_external("DMSwarm/DMSwarmSortGetAccess"))
 """
 function DMSwarmSortGetAccess(petsclib::PetscLibType, sw::AbstractPetscDM)
-    error("DMSwarmSortGetAccess: no generated method for these argument types")
+    throw(MethodError(DMSwarmSortGetAccess, (petsclib, sw)))
 end
 
 @for_petsc function DMSwarmSortGetAccess(petsclib::$UnionPetscLib, sw::AbstractPetscDM )
@@ -7888,7 +7888,7 @@ See also: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmSortGetAccess()`
 $(_doc_external("DMSwarm/DMSwarmSortGetIsValid"))
 """
 function DMSwarmSortGetIsValid(petsclib::PetscLibType, sw::AbstractPetscDM)
-    error("DMSwarmSortGetIsValid: no generated method for these argument types")
+    throw(MethodError(DMSwarmSortGetIsValid, (petsclib, sw)))
 end
 
 @for_petsc function DMSwarmSortGetIsValid(petsclib::$UnionPetscLib, sw::AbstractPetscDM )
@@ -7927,7 +7927,7 @@ See also: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmSortGetAccess()`, `DMSwarmSortG
 $(_doc_external("DMSwarm/DMSwarmSortGetNumberOfPointsPerCell"))
 """
 function DMSwarmSortGetNumberOfPointsPerCell(petsclib::PetscLibType, sw::AbstractPetscDM, cell::Integer)
-    error("DMSwarmSortGetNumberOfPointsPerCell: no generated method for these argument types")
+    throw(MethodError(DMSwarmSortGetNumberOfPointsPerCell, (petsclib, sw, cell)))
 end
 
 @for_petsc function DMSwarmSortGetNumberOfPointsPerCell(petsclib::$UnionPetscLib, sw::AbstractPetscDM, cell::$PetscInt )
@@ -7965,7 +7965,7 @@ See also: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmRestorePointsPerCell()`, `DMSwa
 $(_doc_external("DMSwarm/DMSwarmSortGetPointsPerCell"))
 """
 function DMSwarmSortGetPointsPerCell(petsclib::PetscLibType, sw::AbstractPetscDM, cell::Integer, pidlist::Integer)
-    error("DMSwarmSortGetPointsPerCell: no generated method for these argument types")
+    throw(MethodError(DMSwarmSortGetPointsPerCell, (petsclib, sw, cell, pidlist)))
 end
 
 @for_petsc function DMSwarmSortGetPointsPerCell(petsclib::$UnionPetscLib, sw::AbstractPetscDM, cell::$PetscInt, pidlist::$PetscInt )
@@ -8004,7 +8004,7 @@ See also: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmSortGetAccess()`
 $(_doc_external("DMSwarm/DMSwarmSortGetSizes"))
 """
 function DMSwarmSortGetSizes(petsclib::PetscLibType, sw::AbstractPetscDM)
-    error("DMSwarmSortGetSizes: no generated method for these argument types")
+    throw(MethodError(DMSwarmSortGetSizes, (petsclib, sw)))
 end
 
 @for_petsc function DMSwarmSortGetSizes(petsclib::$UnionPetscLib, sw::AbstractPetscDM )
@@ -8041,7 +8041,7 @@ See also: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmSortGetAccess()`
 $(_doc_external("DMSwarm/DMSwarmSortRestoreAccess"))
 """
 function DMSwarmSortRestoreAccess(petsclib::PetscLibType, sw::AbstractPetscDM)
-    error("DMSwarmSortRestoreAccess: no generated method for these argument types")
+    throw(MethodError(DMSwarmSortRestoreAccess, (petsclib, sw)))
 end
 
 @for_petsc function DMSwarmSortRestoreAccess(petsclib::$UnionPetscLib, sw::AbstractPetscDM )
@@ -8077,7 +8077,7 @@ See also: `DMSWARM`, `DMSwarmSetType()`, `DMSwarmSortGetPointsPerCell()`, `DMSwa
 $(_doc_external("DMSwarm/DMSwarmSortRestorePointsPerCell"))
 """
 function DMSwarmSortRestorePointsPerCell(petsclib::PetscLibType, dm::AbstractPetscDM, e::Integer, npoints::Integer, pidlist::Integer)
-    error("DMSwarmSortRestorePointsPerCell: no generated method for these argument types")
+    throw(MethodError(DMSwarmSortRestorePointsPerCell, (petsclib, dm, e, npoints, pidlist)))
 end
 
 @for_petsc function DMSwarmSortRestorePointsPerCell(petsclib::$UnionPetscLib, dm::AbstractPetscDM, e::$PetscInt, npoints::$PetscInt, pidlist::$PetscInt )

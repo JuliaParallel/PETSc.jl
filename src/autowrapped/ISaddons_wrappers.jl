@@ -25,7 +25,7 @@ See also: `ISColoring`, `ISColoringValue`, `MatColoringCreate()`, `ISColoringVie
 $(_doc_external("IS/ISColoringCreate"))
 """
 function ISColoringCreate(petsclib::PetscLibType, comm::MPI_Comm, ncolors::Integer, n::Integer, colors::Vector{ISColoringValue}, mode::PetscCopyMode)
-    error("ISColoringCreate: no generated method for these argument types")
+    throw(MethodError(ISColoringCreate, (petsclib, comm, ncolors, n, colors, mode)))
 end
 
 @for_petsc function ISColoringCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, ncolors::$PetscInt, n::$PetscInt, colors::Vector{ISColoringValue}, mode::PetscCopyMode )
@@ -60,7 +60,7 @@ See also: `ISColoring`, `ISColoringView()`, `MatColoring`
 $(_doc_external("IS/ISColoringDestroy"))
 """
 function ISColoringDestroy(petsclib::PetscLibType, iscoloring::Union{ISColoring, Ref{ISColoring}})
-    error("ISColoringDestroy: no generated method for these argument types")
+    throw(MethodError(ISColoringDestroy, (petsclib, iscoloring)))
 end
 
 @for_petsc function ISColoringDestroy(petsclib::$UnionPetscLib, iscoloring::Union{ISColoring, Ref{ISColoring}} )
@@ -196,7 +196,7 @@ See also: `MatFDColoringCreate()`, `ISColoring`, `ISColoringType`, `ISColoringCr
 $(_doc_external("IS/ISColoringGetType"))
 """
 function ISColoringGetType(petsclib::PetscLibType, coloring::ISColoring)
-    error("ISColoringGetType: no generated method for these argument types")
+    throw(MethodError(ISColoringGetType, (petsclib, coloring)))
 end
 
 @for_petsc function ISColoringGetType(petsclib::$UnionPetscLib, coloring::ISColoring )
@@ -231,7 +231,7 @@ See also: `ISColoring`, `ISColoringCreate()`, `ISColoringDestroy()`
 $(_doc_external("IS/ISColoringReference"))
 """
 function ISColoringReference(petsclib::PetscLibType, coloring::ISColoring)
-    error("ISColoringReference: no generated method for these argument types")
+    throw(MethodError(ISColoringReference, (petsclib, coloring)))
 end
 
 @for_petsc function ISColoringReference(petsclib::$UnionPetscLib, coloring::ISColoring )
@@ -300,7 +300,7 @@ See also: `MatFDColoringCreate()`, `ISColoring`, `ISColoringType`, `ISColoringCr
 $(_doc_external("IS/ISColoringSetType"))
 """
 function ISColoringSetType(petsclib::PetscLibType, coloring::ISColoring, type::ISColoringType)
-    error("ISColoringSetType: no generated method for these argument types")
+    throw(MethodError(ISColoringSetType, (petsclib, coloring, type)))
 end
 
 @for_petsc function ISColoringSetType(petsclib::$UnionPetscLib, coloring::ISColoring, type::ISColoringType )
@@ -334,7 +334,7 @@ See also: `ISColoring()`, `ISColoringViewFromOptions()`, `ISColoringDestroy()`, 
 $(_doc_external("IS/ISColoringView"))
 """
 function ISColoringView(petsclib::PetscLibType, iscoloring::ISColoring, viewer::PetscViewer)
-    error("ISColoringView: no generated method for these argument types")
+    throw(MethodError(ISColoringView, (petsclib, iscoloring, viewer)))
 end
 
 @for_petsc function ISColoringView(petsclib::$UnionPetscLib, iscoloring::ISColoring, viewer::PetscViewer )
@@ -372,7 +372,7 @@ See also: `ISColoring`, `ISColoringView()`, `PetscObjectViewFromOptions()`
 $(_doc_external("IS/ISColoringViewFromOptions"))
 """
 function ISColoringViewFromOptions(petsclib::PetscLibType, obj::ISColoring, bobj, name::String)
-    error("ISColoringViewFromOptions: no generated method for these argument types")
+    throw(MethodError(ISColoringViewFromOptions, (petsclib, obj, bobj, name)))
 end
 
 @for_petsc function ISColoringViewFromOptions(petsclib::$UnionPetscLib, obj::ISColoring, bobj, name::String )
@@ -413,7 +413,7 @@ See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingApplyBlock()`, `ISLoc
 $(_doc_external("IS/ISLocalToGlobalMappingApply"))
 """
 function ISLocalToGlobalMappingApply(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, N::Integer, in::AbstractVector{<:Number})
-    error("ISLocalToGlobalMappingApply: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingApply, (petsclib, mapping, N, in)))
 end
 
 @for_petsc function ISLocalToGlobalMappingApply(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, N::$PetscInt, in::Vector{$PetscInt} )
@@ -458,7 +458,7 @@ See also: `ISLocalToGlobalMappingApply()`, `ISLocalToGlobalMappingCreate()`, `IS
 $(_doc_external("IS/ISLocalToGlobalMappingApplyBlock"))
 """
 function ISLocalToGlobalMappingApplyBlock(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, N::Integer, in::AbstractVector{<:Number})
-    error("ISLocalToGlobalMappingApplyBlock: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingApplyBlock, (petsclib, mapping, N, in)))
 end
 
 @for_petsc function ISLocalToGlobalMappingApplyBlock(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, N::$PetscInt, in::Vector{$PetscInt} )
@@ -499,7 +499,7 @@ See also: `ISLocalToGlobalMappingApply()`, `ISLocalToGlobalMappingCreate()`,
 $(_doc_external("IS/ISLocalToGlobalMappingApplyIS"))
 """
 function ISLocalToGlobalMappingApplyIS(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, is::AbstractIS)
-    error("ISLocalToGlobalMappingApplyIS: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingApplyIS, (petsclib, mapping, is)))
 end
 
 @for_petsc function ISLocalToGlobalMappingApplyIS(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, is::AbstractIS )
@@ -539,7 +539,7 @@ See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingCreate()`
 $(_doc_external("IS/ISLocalToGlobalMappingConcatenate"))
 """
 function ISLocalToGlobalMappingConcatenate(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, ltogs::Vector{ISLocalToGlobalMapping})
-    error("ISLocalToGlobalMappingConcatenate: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingConcatenate, (petsclib, comm, n, ltogs)))
 end
 
 @for_petsc function ISLocalToGlobalMappingConcatenate(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, ltogs::Vector{ISLocalToGlobalMapping} )
@@ -584,7 +584,7 @@ See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalT
 $(_doc_external("IS/ISLocalToGlobalMappingCreate"))
 """
 function ISLocalToGlobalMappingCreate(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, n::Integer, indices::AbstractVector{<:Number}, mode::PetscCopyMode)
-    error("ISLocalToGlobalMappingCreate: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingCreate, (petsclib, comm, bs, n, indices, mode)))
 end
 
 @for_petsc function ISLocalToGlobalMappingCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, n::$PetscInt, indices::Vector{$PetscInt}, mode::PetscCopyMode )
@@ -623,7 +623,7 @@ See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalT
 $(_doc_external("IS/ISLocalToGlobalMappingCreateIS"))
 """
 function ISLocalToGlobalMappingCreateIS(petsclib::PetscLibType, is::AbstractIS)
-    error("ISLocalToGlobalMappingCreateIS: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingCreateIS, (petsclib, is)))
 end
 
 @for_petsc function ISLocalToGlobalMappingCreateIS(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -662,7 +662,7 @@ See also: `PetscSF`, `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingC
 $(_doc_external("IS/ISLocalToGlobalMappingCreateSF"))
 """
 function ISLocalToGlobalMappingCreateSF(petsclib::PetscLibType, sf::PetscSF, start::Integer)
-    error("ISLocalToGlobalMappingCreateSF: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingCreateSF, (petsclib, sf, start)))
 end
 
 @for_petsc function ISLocalToGlobalMappingCreateSF(petsclib::$UnionPetscLib, sf::PetscSF, start::$PetscInt )
@@ -698,7 +698,7 @@ See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingCreate()`
 $(_doc_external("IS/ISLocalToGlobalMappingDestroy"))
 """
 function ISLocalToGlobalMappingDestroy(petsclib::PetscLibType, mapping::Union{ISLocalToGlobalMapping, Ref{ISLocalToGlobalMapping}})
-    error("ISLocalToGlobalMappingDestroy: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingDestroy, (petsclib, mapping)))
 end
 
 @for_petsc function ISLocalToGlobalMappingDestroy(petsclib::$UnionPetscLib, mapping::Union{ISLocalToGlobalMapping, Ref{ISLocalToGlobalMapping}} )
@@ -735,7 +735,7 @@ See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalT
 $(_doc_external("IS/ISLocalToGlobalMappingDuplicate"))
 """
 function ISLocalToGlobalMappingDuplicate(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping)
-    error("ISLocalToGlobalMappingDuplicate: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingDuplicate, (petsclib, ltog)))
 end
 
 @for_petsc function ISLocalToGlobalMappingDuplicate(petsclib::$UnionPetscLib, ltog::ISLocalToGlobalMapping )
@@ -774,7 +774,7 @@ See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingCreate()`, `ISLocalTo
 $(_doc_external("IS/ISLocalToGlobalMappingGetBlockIndices"))
 """
 function ISLocalToGlobalMappingGetBlockIndices(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping)
-    error("ISLocalToGlobalMappingGetBlockIndices: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingGetBlockIndices, (petsclib, ltog)))
 end
 
 @for_petsc function ISLocalToGlobalMappingGetBlockIndices(petsclib::$UnionPetscLib, ltog::ISLocalToGlobalMapping )
@@ -817,7 +817,7 @@ See also: `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`,
 $(_doc_external("IS/ISLocalToGlobalMappingGetBlockInfo"))
 """
 function ISLocalToGlobalMappingGetBlockInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping)
-    error("ISLocalToGlobalMappingGetBlockInfo: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingGetBlockInfo, (petsclib, mapping)))
 end
 
 @for_petsc function ISLocalToGlobalMappingGetBlockInfo(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping )
@@ -861,7 +861,7 @@ See also: `ISLocalToGlobalMappingGetBlockNodeInfo()`, `PetscSF`
 $(_doc_external("IS/ISLocalToGlobalMappingGetBlockMultiLeavesSF"))
 """
 function ISLocalToGlobalMappingGetBlockMultiLeavesSF(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping)
-    error("ISLocalToGlobalMappingGetBlockMultiLeavesSF: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingGetBlockMultiLeavesSF, (petsclib, mapping)))
 end
 
 @for_petsc function ISLocalToGlobalMappingGetBlockMultiLeavesSF(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping )
@@ -902,7 +902,7 @@ See also: `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`,
 $(_doc_external("IS/ISLocalToGlobalMappingGetBlockNodeInfo"))
 """
 function ISLocalToGlobalMappingGetBlockNodeInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping)
-    error("ISLocalToGlobalMappingGetBlockNodeInfo: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingGetBlockNodeInfo, (petsclib, mapping)))
 end
 
 @for_petsc function ISLocalToGlobalMappingGetBlockNodeInfo(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping )
@@ -945,7 +945,7 @@ See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalT
 $(_doc_external("IS/ISLocalToGlobalMappingGetBlockSize"))
 """
 function ISLocalToGlobalMappingGetBlockSize(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping)
-    error("ISLocalToGlobalMappingGetBlockSize: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingGetBlockSize, (petsclib, mapping)))
 end
 
 @for_petsc function ISLocalToGlobalMappingGetBlockSize(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping )
@@ -984,7 +984,7 @@ See also: `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingApply()`, `IS
 $(_doc_external("IS/ISLocalToGlobalMappingGetIndices"))
 """
 function ISLocalToGlobalMappingGetIndices(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping)
-    error("ISLocalToGlobalMappingGetIndices: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingGetIndices, (petsclib, ltog)))
 end
 
 @for_petsc function ISLocalToGlobalMappingGetIndices(petsclib::$UnionPetscLib, ltog::ISLocalToGlobalMapping )
@@ -1027,7 +1027,7 @@ See also: `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`,
 $(_doc_external("IS/ISLocalToGlobalMappingGetInfo"))
 """
 function ISLocalToGlobalMappingGetInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping)
-    error("ISLocalToGlobalMappingGetInfo: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingGetInfo, (petsclib, mapping)))
 end
 
 @for_petsc function ISLocalToGlobalMappingGetInfo(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping )
@@ -1074,7 +1074,7 @@ See also: `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`,
 $(_doc_external("IS/ISLocalToGlobalMappingGetNodeInfo"))
 """
 function ISLocalToGlobalMappingGetNodeInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping)
-    error("ISLocalToGlobalMappingGetNodeInfo: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingGetNodeInfo, (petsclib, mapping)))
 end
 
 @for_petsc function ISLocalToGlobalMappingGetNodeInfo(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping )
@@ -1116,7 +1116,7 @@ See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalT
 $(_doc_external("IS/ISLocalToGlobalMappingGetSize"))
 """
 function ISLocalToGlobalMappingGetSize(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping)
-    error("ISLocalToGlobalMappingGetSize: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingGetSize, (petsclib, mapping)))
 end
 
 @for_petsc function ISLocalToGlobalMappingGetSize(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping )
@@ -1155,7 +1155,7 @@ See also: `ISLocalToGlobalMappingType`, `ISLocalToGlobalMappingRegister()`, `ISL
 $(_doc_external("IS/ISLocalToGlobalMappingGetType"))
 """
 function ISLocalToGlobalMappingGetType(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping)
-    error("ISLocalToGlobalMappingGetType: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingGetType, (petsclib, ltog)))
 end
 
 @for_petsc function ISLocalToGlobalMappingGetType(petsclib::$UnionPetscLib, ltog::ISLocalToGlobalMapping )
@@ -1191,7 +1191,7 @@ See also: `PetscViewer`, `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingView()
 $(_doc_external("IS/ISLocalToGlobalMappingLoad"))
 """
 function ISLocalToGlobalMappingLoad(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, viewer::PetscViewer)
-    error("ISLocalToGlobalMappingLoad: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingLoad, (petsclib, mapping, viewer)))
 end
 
 @for_petsc function ISLocalToGlobalMappingLoad(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, viewer::PetscViewer )
@@ -1224,7 +1224,7 @@ See also: `ISLocalToGlobalMappingRegisterAll()`, `ISLocalToGlobalMappingRegister
 $(_doc_external("IS/ISLocalToGlobalMappingRegister"))
 """
 function ISLocalToGlobalMappingRegister(petsclib::PetscLibType, sname::String, fnc::external)
-    error("ISLocalToGlobalMappingRegister: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingRegister, (petsclib, sname, fnc)))
 end
 
 @for_petsc function ISLocalToGlobalMappingRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
@@ -1254,7 +1254,7 @@ See also: `ISRegister()`, `ISLocalToGlobalRegister()`
 $(_doc_external("IS/ISLocalToGlobalMappingRegisterAll"))
 """
 function ISLocalToGlobalMappingRegisterAll(petsclib::PetscLibType)
-    error("ISLocalToGlobalMappingRegisterAll: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingRegisterAll, (petsclib, )))
 end
 
 @for_petsc function ISLocalToGlobalMappingRegisterAll(petsclib::$UnionPetscLib)
@@ -1287,7 +1287,7 @@ See also: `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingApply()`, `IS
 $(_doc_external("IS/ISLocalToGlobalMappingRestoreBlockIndices"))
 """
 function ISLocalToGlobalMappingRestoreBlockIndices(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping, array::Union{Ptr, AbstractArray{<:Number}})
-    error("ISLocalToGlobalMappingRestoreBlockIndices: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingRestoreBlockIndices, (petsclib, ltog, array)))
 end
 
 @for_petsc function ISLocalToGlobalMappingRestoreBlockIndices(petsclib::$UnionPetscLib, ltog::ISLocalToGlobalMapping, array::Union{Ptr, AbstractArray{$PetscInt}} )
@@ -1326,7 +1326,7 @@ See also: `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`,
 $(_doc_external("IS/ISLocalToGlobalMappingRestoreBlockInfo"))
 """
 function ISLocalToGlobalMappingRestoreBlockInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, nproc::Integer, procs::Union{Ptr, AbstractArray{<:Number}}, numprocs::Union{Ptr, AbstractArray{<:Number}}, indices::AbstractVector{<:Number})
-    error("ISLocalToGlobalMappingRestoreBlockInfo: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingRestoreBlockInfo, (petsclib, mapping, nproc, procs, numprocs, indices)))
 end
 
 @for_petsc function ISLocalToGlobalMappingRestoreBlockInfo(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, nproc::$PetscInt, procs::Union{Ptr, AbstractArray{$PetscInt}}, numprocs::Union{Ptr, AbstractArray{$PetscInt}}, indices::Vector{$PetscInt} )
@@ -1366,7 +1366,7 @@ See also: `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`,
 $(_doc_external("IS/ISLocalToGlobalMappingRestoreBlockNodeInfo"))
 """
 function ISLocalToGlobalMappingRestoreBlockNodeInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, n::Integer, n_procs::Union{Ptr, AbstractArray{<:Number}}, procs::AbstractVector{<:Number})
-    error("ISLocalToGlobalMappingRestoreBlockNodeInfo: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingRestoreBlockNodeInfo, (petsclib, mapping, n, n_procs, procs)))
 end
 
 @for_petsc function ISLocalToGlobalMappingRestoreBlockNodeInfo(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, n::$PetscInt, n_procs::Union{Ptr, AbstractArray{$PetscInt}}, procs::Vector{$PetscInt} )
@@ -1402,7 +1402,7 @@ See also: `ISLocalToGlobalMappingCreate()`, `ISLocalToGlobalMappingApply()`, `IS
 $(_doc_external("IS/ISLocalToGlobalMappingRestoreIndices"))
 """
 function ISLocalToGlobalMappingRestoreIndices(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping, array::Union{Ptr, AbstractArray{<:Number}})
-    error("ISLocalToGlobalMappingRestoreIndices: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingRestoreIndices, (petsclib, ltog, array)))
 end
 
 @for_petsc function ISLocalToGlobalMappingRestoreIndices(petsclib::$UnionPetscLib, ltog::ISLocalToGlobalMapping, array::Union{Ptr, AbstractArray{$PetscInt}} )
@@ -1441,7 +1441,7 @@ See also: `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`,
 $(_doc_external("IS/ISLocalToGlobalMappingRestoreInfo"))
 """
 function ISLocalToGlobalMappingRestoreInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, nproc::Integer, procs::Union{Ptr, AbstractArray{<:Number}}, numprocs::Union{Ptr, AbstractArray{<:Number}}, indices::AbstractVector{<:Number})
-    error("ISLocalToGlobalMappingRestoreInfo: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingRestoreInfo, (petsclib, mapping, nproc, procs, numprocs, indices)))
 end
 
 @for_petsc function ISLocalToGlobalMappingRestoreInfo(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, nproc::$PetscInt, procs::Union{Ptr, AbstractArray{$PetscInt}}, numprocs::Union{Ptr, AbstractArray{$PetscInt}}, indices::Vector{$PetscInt} )
@@ -1481,7 +1481,7 @@ See also: `ISLocalToGlobalMappingDestroy()`, `ISLocalToGlobalMappingCreateIS()`,
 $(_doc_external("IS/ISLocalToGlobalMappingRestoreNodeInfo"))
 """
 function ISLocalToGlobalMappingRestoreNodeInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, n::Integer, n_procs::Union{Ptr, AbstractArray{<:Number}}, procs::AbstractVector{<:Number})
-    error("ISLocalToGlobalMappingRestoreNodeInfo: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingRestoreNodeInfo, (petsclib, mapping, n, n_procs, procs)))
 end
 
 @for_petsc function ISLocalToGlobalMappingRestoreNodeInfo(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, n::$PetscInt, n_procs::Union{Ptr, AbstractArray{$PetscInt}}, procs::Vector{$PetscInt} )
@@ -1517,7 +1517,7 @@ See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`, `ISLocalT
 $(_doc_external("IS/ISLocalToGlobalMappingSetBlockSize"))
 """
 function ISLocalToGlobalMappingSetBlockSize(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, bs::Integer)
-    error("ISLocalToGlobalMappingSetBlockSize: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingSetBlockSize, (petsclib, mapping, bs)))
 end
 
 @for_petsc function ISLocalToGlobalMappingSetBlockSize(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, bs::$PetscInt )
@@ -1555,7 +1555,7 @@ See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestroy()`,
 $(_doc_external("IS/ISLocalToGlobalMappingSetFromOptions"))
 """
 function ISLocalToGlobalMappingSetFromOptions(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping)
-    error("ISLocalToGlobalMappingSetFromOptions: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingSetFromOptions, (petsclib, mapping)))
 end
 
 @for_petsc function ISLocalToGlobalMappingSetFromOptions(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping )
@@ -1592,7 +1592,7 @@ See also: `ISLocalToGlobalMappingType`, `ISLocalToGlobalMappingRegister()`, `ISL
 $(_doc_external("IS/ISLocalToGlobalMappingSetType"))
 """
 function ISLocalToGlobalMappingSetType(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping, type::String)
-    error("ISLocalToGlobalMappingSetType: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingSetType, (petsclib, ltog, type)))
 end
 
 @for_petsc function ISLocalToGlobalMappingSetType(petsclib::$UnionPetscLib, ltog::ISLocalToGlobalMapping, type::String )
@@ -1626,7 +1626,7 @@ See also: `PetscViewer`, `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingDestro
 $(_doc_external("IS/ISLocalToGlobalMappingView"))
 """
 function ISLocalToGlobalMappingView(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, viewer::PetscViewer)
-    error("ISLocalToGlobalMappingView: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingView, (petsclib, mapping, viewer)))
 end
 
 @for_petsc function ISLocalToGlobalMappingView(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, viewer::PetscViewer )
@@ -1664,7 +1664,7 @@ See also: `PetscViewer`, `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingView`,
 $(_doc_external("IS/ISLocalToGlobalMappingViewFromOptions"))
 """
 function ISLocalToGlobalMappingViewFromOptions(petsclib::PetscLibType, A::ISLocalToGlobalMapping, obj, name::String)
-    error("ISLocalToGlobalMappingViewFromOptions: no generated method for these argument types")
+    throw(MethodError(ISLocalToGlobalMappingViewFromOptions, (petsclib, A, obj, name)))
 end
 
 @for_petsc function ISLocalToGlobalMappingViewFromOptions(petsclib::$UnionPetscLib, A::ISLocalToGlobalMapping, obj, name::String )

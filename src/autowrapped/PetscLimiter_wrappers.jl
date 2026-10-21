@@ -18,7 +18,7 @@ See also: `PetscLimiter`, `PetscLimiterType`, `PetscLimiterSetType()`, `PETSCLIM
 $(_doc_external("FV/PetscLimiterCreate"))
 """
 function PetscLimiterCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("PetscLimiterCreate: no generated method for these argument types")
+    throw(MethodError(PetscLimiterCreate, (petsclib, comm)))
 end
 
 @for_petsc function PetscLimiterCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -53,7 +53,7 @@ See also: `PetscLimiter`, `PetscLimiterView()`
 $(_doc_external("FV/PetscLimiterDestroy"))
 """
 function PetscLimiterDestroy(petsclib::PetscLibType, lim::Union{PetscLimiter, Ref{PetscLimiter}})
-    error("PetscLimiterDestroy: no generated method for these argument types")
+    throw(MethodError(PetscLimiterDestroy, (petsclib, lim)))
 end
 
 @for_petsc function PetscLimiterDestroy(petsclib::$UnionPetscLib, lim::Union{PetscLimiter, Ref{PetscLimiter}} )
@@ -90,7 +90,7 @@ See also: `PetscLimiter`, `PetscLimiterType`, `PetscLimiterSetType()`, `PetscLim
 $(_doc_external("FV/PetscLimiterGetType"))
 """
 function PetscLimiterGetType(petsclib::PetscLibType, lim::PetscLimiter)
-    error("PetscLimiterGetType: no generated method for these argument types")
+    throw(MethodError(PetscLimiterGetType, (petsclib, lim)))
 end
 
 @for_petsc function PetscLimiterGetType(petsclib::$UnionPetscLib, lim::PetscLimiter )
@@ -127,7 +127,7 @@ See also: `PetscLimiter`, `PetscLimiterType`, `PetscLimiterSetType()`, `PetscLim
 $(_doc_external("FV/PetscLimiterLimit"))
 """
 function PetscLimiterLimit(petsclib::PetscLibType, lim::PetscLimiter, flim::Real)
-    error("PetscLimiterLimit: no generated method for these argument types")
+    throw(MethodError(PetscLimiterLimit, (petsclib, lim, flim)))
 end
 
 @for_petsc function PetscLimiterLimit(petsclib::$UnionPetscLib, lim::PetscLimiter, flim::$PetscReal )
@@ -161,7 +161,7 @@ See also: `PetscLimiter`, `PetscLimiterType`, `PetscLimiterRegisterAll()`, `Pets
 $(_doc_external("FV/PetscLimiterRegister"))
 """
 function PetscLimiterRegister(petsclib::PetscLibType, sname::String, fnc::external)
-    error("PetscLimiterRegister: no generated method for these argument types")
+    throw(MethodError(PetscLimiterRegister, (petsclib, sname, fnc)))
 end
 
 @for_petsc function PetscLimiterRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
@@ -194,7 +194,7 @@ See also: `PetscLimiter`, `PetscLimiterView()`
 $(_doc_external("FV/PetscLimiterSetFromOptions"))
 """
 function PetscLimiterSetFromOptions(petsclib::PetscLibType, lim::PetscLimiter)
-    error("PetscLimiterSetFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscLimiterSetFromOptions, (petsclib, lim)))
 end
 
 @for_petsc function PetscLimiterSetFromOptions(petsclib::$UnionPetscLib, lim::PetscLimiter )
@@ -231,7 +231,7 @@ See also: `PetscLimiter`, `PetscLimiterType`, `PetscLimiterGetType()`, `PetscLim
 $(_doc_external("FV/PetscLimiterSetType"))
 """
 function PetscLimiterSetType(petsclib::PetscLibType, lim::PetscLimiter, name::String)
-    error("PetscLimiterSetType: no generated method for these argument types")
+    throw(MethodError(PetscLimiterSetType, (petsclib, lim, name)))
 end
 
 @for_petsc function PetscLimiterSetType(petsclib::$UnionPetscLib, lim::PetscLimiter, name::String )
@@ -264,7 +264,7 @@ See also: `PetscLimiter`, `PetscLimiterView()`, `PetscLimiterDestroy()`
 $(_doc_external("FV/PetscLimiterSetUp"))
 """
 function PetscLimiterSetUp(petsclib::PetscLibType, lim::PetscLimiter)
-    error("PetscLimiterSetUp: no generated method for these argument types")
+    throw(MethodError(PetscLimiterSetUp, (petsclib, lim)))
 end
 
 @for_petsc function PetscLimiterSetUp(petsclib::$UnionPetscLib, lim::PetscLimiter )
@@ -298,7 +298,7 @@ See also: `PetscLimiter`, `PetscViewer`, `PetscLimiterDestroy()`, `PetscLimiterV
 $(_doc_external("FV/PetscLimiterView"))
 """
 function PetscLimiterView(petsclib::PetscLibType, lim::PetscLimiter, v::PetscViewer)
-    error("PetscLimiterView: no generated method for these argument types")
+    throw(MethodError(PetscLimiterView, (petsclib, lim, v)))
 end
 
 @for_petsc function PetscLimiterView(petsclib::$UnionPetscLib, lim::PetscLimiter, v::PetscViewer )
@@ -336,7 +336,7 @@ See also: `PetscLimiter`, `PetscLimiterView()`, `PetscObjectViewFromOptions()`, 
 $(_doc_external("FV/PetscLimiterViewFromOptions"))
 """
 function PetscLimiterViewFromOptions(petsclib::PetscLibType, A::PetscLimiter, obj, name::String)
-    error("PetscLimiterViewFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscLimiterViewFromOptions, (petsclib, A, obj, name)))
 end
 
 @for_petsc function PetscLimiterViewFromOptions(petsclib::$UnionPetscLib, A::PetscLimiter, obj, name::String )

@@ -29,7 +29,7 @@ See also: `KSPSolve()`, `KSPGuessDestroy()`, `KSPGuess`, `KSPGuessType`, `KSP`
 $(_doc_external("KSP/KSPGuessCreate"))
 """
 function KSPGuessCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("KSPGuessCreate: no generated method for these argument types")
+    throw(MethodError(KSPGuessCreate, (petsclib, comm)))
 end
 
 @for_petsc function KSPGuessCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -64,7 +64,7 @@ See also: `KSPGuessCreate()`, `KSPGuess`, `KSPGuessType`
 $(_doc_external("KSP/KSPGuessDestroy"))
 """
 function KSPGuessDestroy(petsclib::PetscLibType, guess::Union{KSPGuess, Ref{KSPGuess}})
-    error("KSPGuessDestroy: no generated method for these argument types")
+    throw(MethodError(KSPGuessDestroy, (petsclib, guess)))
 end
 
 @for_petsc function KSPGuessDestroy(petsclib::$UnionPetscLib, guess::Union{KSPGuess, Ref{KSPGuess}} )
@@ -103,7 +103,7 @@ See also: `KSPGuess`, `KSPGuessCreate()`, `KSPSetUseFischerGuess()`, `KSPSetGues
 $(_doc_external("KSP/KSPGuessFischerSetModel"))
 """
 function KSPGuessFischerSetModel(petsclib::PetscLibType, guess::KSPGuess, model::Integer, size::Integer)
-    error("KSPGuessFischerSetModel: no generated method for these argument types")
+    throw(MethodError(KSPGuessFischerSetModel, (petsclib, guess, model, size)))
 end
 
 @for_petsc function KSPGuessFischerSetModel(petsclib::$UnionPetscLib, guess::KSPGuess, model::$PetscInt, size::$PetscInt )
@@ -138,7 +138,7 @@ See also: `KSPGuessCreate()`, `KSPGuess`
 $(_doc_external("KSP/KSPGuessFormGuess"))
 """
 function KSPGuessFormGuess(petsclib::PetscLibType, guess::KSPGuess, rhs::AbstractPetscVec, sol::AbstractPetscVec)
-    error("KSPGuessFormGuess: no generated method for these argument types")
+    throw(MethodError(KSPGuessFormGuess, (petsclib, guess, rhs, sol)))
 end
 
 @for_petsc function KSPGuessFormGuess(petsclib::$UnionPetscLib, guess::KSPGuess, rhs::AbstractPetscVec, sol::AbstractPetscVec )
@@ -174,7 +174,7 @@ See also: `KSPGuess`, `KSPGuessSetType()`
 $(_doc_external("KSP/KSPGuessGetType"))
 """
 function KSPGuessGetType(petsclib::PetscLibType, guess::KSPGuess)
-    error("KSPGuessGetType: no generated method for these argument types")
+    throw(MethodError(KSPGuessGetType, (petsclib, guess)))
 end
 
 @for_petsc function KSPGuessGetType(petsclib::$UnionPetscLib, guess::KSPGuess )
@@ -208,7 +208,7 @@ See also: `KSPGuess`, `KSPGuessRegisterAll()`
 $(_doc_external("KSP/KSPGuessRegister"))
 """
 function KSPGuessRegister(petsclib::PetscLibType, sname::String, fnc::external)
-    error("KSPGuessRegister: no generated method for these argument types")
+    throw(MethodError(KSPGuessRegister, (petsclib, sname, fnc)))
 end
 
 @for_petsc function KSPGuessRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
@@ -252,7 +252,7 @@ See also: `KSPGuess`, `KSPGetGuess()`, `KSPGuessSetType()`, `KSPGuessType`
 $(_doc_external("KSP/KSPGuessSetFromOptions"))
 """
 function KSPGuessSetFromOptions(petsclib::PetscLibType, guess::KSPGuess)
-    error("KSPGuessSetFromOptions: no generated method for these argument types")
+    throw(MethodError(KSPGuessSetFromOptions, (petsclib, guess)))
 end
 
 @for_petsc function KSPGuessSetFromOptions(petsclib::$UnionPetscLib, guess::KSPGuess )
@@ -290,7 +290,7 @@ See also: `KSPGuess`, `KSPGuessType`, `KSPGuessSetFromOptions()`
 $(_doc_external("KSP/KSPGuessSetTolerance"))
 """
 function KSPGuessSetTolerance(petsclib::PetscLibType, guess::KSPGuess, tol::Real)
-    error("KSPGuessSetTolerance: no generated method for these argument types")
+    throw(MethodError(KSPGuessSetTolerance, (petsclib, guess, tol)))
 end
 
 @for_petsc function KSPGuessSetTolerance(petsclib::$UnionPetscLib, guess::KSPGuess, tol::$PetscReal )
@@ -327,7 +327,7 @@ See also: `KSP`, `KSPGuess`, `KSPGuessType`, `KSPGuessRegister()`, `KSPGuessCrea
 $(_doc_external("KSP/KSPGuessSetType"))
 """
 function KSPGuessSetType(petsclib::PetscLibType, guess::KSPGuess, type::String)
-    error("KSPGuessSetType: no generated method for these argument types")
+    throw(MethodError(KSPGuessSetType, (petsclib, guess, type)))
 end
 
 @for_petsc function KSPGuessSetType(petsclib::$UnionPetscLib, guess::KSPGuess, type::String )
@@ -360,7 +360,7 @@ See also: `KSPGuessCreate()`, `KSPGuess`
 $(_doc_external("KSP/KSPGuessSetUp"))
 """
 function KSPGuessSetUp(petsclib::PetscLibType, guess::KSPGuess)
-    error("KSPGuessSetUp: no generated method for these argument types")
+    throw(MethodError(KSPGuessSetUp, (petsclib, guess)))
 end
 
 @for_petsc function KSPGuessSetUp(petsclib::$UnionPetscLib, guess::KSPGuess )
@@ -395,7 +395,7 @@ See also: `KSPGuessCreate()`, `KSPGuess`
 $(_doc_external("KSP/KSPGuessUpdate"))
 """
 function KSPGuessUpdate(petsclib::PetscLibType, guess::KSPGuess, rhs::AbstractPetscVec, sol::AbstractPetscVec)
-    error("KSPGuessUpdate: no generated method for these argument types")
+    throw(MethodError(KSPGuessUpdate, (petsclib, guess, rhs, sol)))
 end
 
 @for_petsc function KSPGuessUpdate(petsclib::$UnionPetscLib, guess::KSPGuess, rhs::AbstractPetscVec, sol::AbstractPetscVec )
@@ -432,7 +432,7 @@ See also: `KSP`, `KSPGuess`, `KSPGuessType`, `KSPGuessRegister()`, `KSPGuessCrea
 $(_doc_external("KSP/KSPGuessView"))
 """
 function KSPGuessView(petsclib::PetscLibType, guess::KSPGuess, view::PetscViewer)
-    error("KSPGuessView: no generated method for these argument types")
+    throw(MethodError(KSPGuessView, (petsclib, guess, view)))
 end
 
 @for_petsc function KSPGuessView(petsclib::$UnionPetscLib, guess::KSPGuess, view::PetscViewer )

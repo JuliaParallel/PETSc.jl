@@ -27,7 +27,7 @@ See also: `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestr
 $(_doc_external("Viewer/PetscViewerADIOSOpen"))
 """
 function PetscViewerADIOSOpen(petsclib::PetscLibType, comm::MPI_Comm, name::String, type::PetscFileMode)
-    error("PetscViewerADIOSOpen: no generated method for these argument types")
+    throw(MethodError(PetscViewerADIOSOpen, (petsclib, comm, name, type)))
 end
 
 @for_petsc function PetscViewerADIOSOpen(petsclib::$UnionPetscLib, comm::MPI_Comm, name::String, type::PetscFileMode )
@@ -65,7 +65,7 @@ See also: `PETSCVIEWERASCII`, `PetscPrintf()`, `PetscSynchronizedPrintf()`, `Pet
 $(_doc_external("Viewer/PetscViewerASCIIAddTab"))
 """
 function PetscViewerASCIIAddTab(petsclib::PetscLibType, viewer::PetscViewer, tabs::Integer)
-    error("PetscViewerASCIIAddTab: no generated method for these argument types")
+    throw(MethodError(PetscViewerASCIIAddTab, (petsclib, viewer, tabs)))
 end
 
 @for_petsc function PetscViewerASCIIAddTab(petsclib::$UnionPetscLib, viewer::PetscViewer, tabs::$PetscInt )
@@ -102,7 +102,7 @@ See also: `PETSCVIEWERASCII`, `PetscViewerASCIIOpen()`, `PetscViewerDestroy()`, 
 $(_doc_external("Viewer/PetscViewerASCIIGetPointer"))
 """
 function PetscViewerASCIIGetPointer(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerASCIIGetPointer: no generated method for these argument types")
+    throw(MethodError(PetscViewerASCIIGetPointer, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerASCIIGetPointer(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -142,7 +142,7 @@ See also: `PetscViewerASCIIGetStdout()`, `PETSC_VIEWER_DRAW_()`, `PetscViewerASC
 $(_doc_external("Viewer/PetscViewerASCIIGetStderr"))
 """
 function PetscViewerASCIIGetStderr(petsclib::PetscLibType, comm::MPI_Comm)
-    error("PetscViewerASCIIGetStderr: no generated method for these argument types")
+    throw(MethodError(PetscViewerASCIIGetStderr, (petsclib, comm)))
 end
 
 @for_petsc function PetscViewerASCIIGetStderr(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -182,7 +182,7 @@ See also: `PetscViewerASCIIGetStderr()`, `PETSC_VIEWER_DRAW_()`, `PetscViewerASC
 $(_doc_external("Viewer/PetscViewerASCIIGetStdout"))
 """
 function PetscViewerASCIIGetStdout(petsclib::PetscLibType, comm::MPI_Comm)
-    error("PetscViewerASCIIGetStdout: no generated method for these argument types")
+    throw(MethodError(PetscViewerASCIIGetStdout, (petsclib, comm)))
 end
 
 @for_petsc function PetscViewerASCIIGetStdout(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -223,7 +223,7 @@ See also: `PETSCVIEWERASCII`, `PetscPrintf()`, `PetscSynchronizedPrintf()`, `Pet
 $(_doc_external("Viewer/PetscViewerASCIIGetTab"))
 """
 function PetscViewerASCIIGetTab(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerASCIIGetTab: no generated method for these argument types")
+    throw(MethodError(PetscViewerASCIIGetTab, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerASCIIGetTab(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -264,7 +264,7 @@ See also: `MatView()`, `VecView()`, `PetscViewerDestroy()`, `PetscViewerBinaryOp
 $(_doc_external("Viewer/PetscViewerASCIIOpen"))
 """
 function PetscViewerASCIIOpen(petsclib::PetscLibType, comm::MPI_Comm, name::String)
-    error("PetscViewerASCIIOpen: no generated method for these argument types")
+    throw(MethodError(PetscViewerASCIIOpen, (petsclib, comm, name)))
 end
 
 @for_petsc function PetscViewerASCIIOpen(petsclib::$UnionPetscLib, comm::MPI_Comm, name::String )
@@ -305,7 +305,7 @@ See also: `MatView()`, `VecView()`, `PetscViewerDestroy()`, `PetscViewerBinaryOp
 $(_doc_external("Viewer/PetscViewerASCIIOpenWithFILE"))
 """
 function PetscViewerASCIIOpenWithFILE(petsclib::PetscLibType, comm::MPI_Comm, fd::Libc.FILE)
-    error("PetscViewerASCIIOpenWithFILE: no generated method for these argument types")
+    throw(MethodError(PetscViewerASCIIOpenWithFILE, (petsclib, comm, fd)))
 end
 
 @for_petsc function PetscViewerASCIIOpenWithFILE(petsclib::$UnionPetscLib, comm::MPI_Comm, fd::Libc.FILE )
@@ -342,7 +342,7 @@ See also: `PetscViewerASCIIPushSynchronized()`, `PetscViewerASCIISynchronizedPri
 $(_doc_external("Viewer/PetscViewerASCIIPopSynchronized"))
 """
 function PetscViewerASCIIPopSynchronized(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerASCIIPopSynchronized: no generated method for these argument types")
+    throw(MethodError(PetscViewerASCIIPopSynchronized, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerASCIIPopSynchronized(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -378,7 +378,7 @@ See also: `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf(
 $(_doc_external("Viewer/PetscViewerASCIIPopTab"))
 """
 function PetscViewerASCIIPopTab(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerASCIIPopTab: no generated method for these argument types")
+    throw(MethodError(PetscViewerASCIIPopTab, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerASCIIPopTab(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -413,7 +413,7 @@ See also: `PetscViewerASCIISynchronizedPrintf()`, `PetscViewerFlush()`, `PetscVi
 $(_doc_external("Viewer/PetscViewerASCIIPushSynchronized"))
 """
 function PetscViewerASCIIPushSynchronized(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerASCIIPushSynchronized: no generated method for these argument types")
+    throw(MethodError(PetscViewerASCIIPushSynchronized, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerASCIIPushSynchronized(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -449,7 +449,7 @@ See also: `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf(
 $(_doc_external("Viewer/PetscViewerASCIIPushTab"))
 """
 function PetscViewerASCIIPushTab(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerASCIIPushTab: no generated method for these argument types")
+    throw(MethodError(PetscViewerASCIIPushTab, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerASCIIPushTab(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -490,7 +490,7 @@ See also: `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `PetscViewerDestr
 $(_doc_external("Viewer/PetscViewerASCIIRead"))
 """
 function PetscViewerASCIIRead(petsclib::PetscLibType, viewer::PetscViewer, data::Ptr{Cvoid}, num::Integer, dtype::PetscDataType)
-    error("PetscViewerASCIIRead: no generated method for these argument types")
+    throw(MethodError(PetscViewerASCIIRead, (petsclib, viewer, data, num, dtype)))
 end
 
 @for_petsc function PetscViewerASCIIRead(petsclib::$UnionPetscLib, viewer::PetscViewer, data::Ptr{Cvoid}, num::$PetscInt, dtype::PetscDataType )
@@ -528,7 +528,7 @@ See also: `MatView()`, `VecView()`, `PetscViewerDestroy()`, `PetscViewerBinaryOp
 $(_doc_external("Viewer/PetscViewerASCIISetFILE"))
 """
 function PetscViewerASCIISetFILE(petsclib::PetscLibType, viewer::PetscViewer, fd::Libc.FILE)
-    error("PetscViewerASCIISetFILE: no generated method for these argument types")
+    throw(MethodError(PetscViewerASCIISetFILE, (petsclib, viewer, fd)))
 end
 
 @for_petsc function PetscViewerASCIISetFILE(petsclib::$UnionPetscLib, viewer::PetscViewer, fd::Libc.FILE )
@@ -566,7 +566,7 @@ See also: `PETSCVIEWERASCII`, `PetscPrintf()`, `PetscSynchronizedPrintf()`, `Pet
 $(_doc_external("Viewer/PetscViewerASCIISetTab"))
 """
 function PetscViewerASCIISetTab(petsclib::PetscLibType, viewer::PetscViewer, tabs::Integer)
-    error("PetscViewerASCIISetTab: no generated method for these argument types")
+    throw(MethodError(PetscViewerASCIISetTab, (petsclib, viewer, tabs)))
 end
 
 @for_petsc function PetscViewerASCIISetTab(petsclib::$UnionPetscLib, viewer::PetscViewer, tabs::$PetscInt )
@@ -603,7 +603,7 @@ See also: `PETSCVIEWERASCII`, `PetscPrintf()`, `PetscSynchronizedPrintf()`, `Pet
 $(_doc_external("Viewer/PetscViewerASCIISubtractTab"))
 """
 function PetscViewerASCIISubtractTab(petsclib::PetscLibType, viewer::PetscViewer, tabs::Integer)
-    error("PetscViewerASCIISubtractTab: no generated method for these argument types")
+    throw(MethodError(PetscViewerASCIISubtractTab, (petsclib, viewer, tabs)))
 end
 
 @for_petsc function PetscViewerASCIISubtractTab(petsclib::$UnionPetscLib, viewer::PetscViewer, tabs::$PetscInt )
@@ -639,7 +639,7 @@ See also: `PetscPrintf()`, `PetscSynchronizedPrintf()`, `PetscViewerASCIIPrintf(
 $(_doc_external("Viewer/PetscViewerASCIIUseTabs"))
 """
 function PetscViewerASCIIUseTabs(petsclib::PetscLibType, viewer::PetscViewer, flg::PetscBool)
-    error("PetscViewerASCIIUseTabs: no generated method for these argument types")
+    throw(MethodError(PetscViewerASCIIUseTabs, (petsclib, viewer, flg)))
 end
 
 @for_petsc function PetscViewerASCIIUseTabs(petsclib::$UnionPetscLib, viewer::PetscViewer, flg::PetscBool )
@@ -677,7 +677,7 @@ See also: `PetscViewer`, `PetscViewerAndFormat`, `PetscViewerFormat`, `PetscView
 $(_doc_external("Viewer/PetscViewerAndFormatCreate"))
 """
 function PetscViewerAndFormatCreate(petsclib::PetscLibType, viewer::PetscViewer, format::PetscViewerFormat)
-    error("PetscViewerAndFormatCreate: no generated method for these argument types")
+    throw(MethodError(PetscViewerAndFormatCreate, (petsclib, viewer, format)))
 end
 
 @for_petsc function PetscViewerAndFormatCreate(petsclib::$UnionPetscLib, viewer::PetscViewer, format::PetscViewerFormat )
@@ -713,7 +713,7 @@ See also: `PetscViewer`, `PetscViewerAndFormat`, `PetscViewerFormat`, `PetscView
 $(_doc_external("Viewer/PetscViewerAndFormatDestroy"))
 """
 function PetscViewerAndFormatDestroy(petsclib::PetscLibType, vf::PetscViewerAndFormat)
-    error("PetscViewerAndFormatDestroy: no generated method for these argument types")
+    throw(MethodError(PetscViewerAndFormatDestroy, (petsclib, vf)))
 end
 
 @for_petsc function PetscViewerAndFormatDestroy(petsclib::$UnionPetscLib, vf::PetscViewerAndFormat )
@@ -748,7 +748,7 @@ See also: `PetscViewer`, `PetscViewerGetOptionsPrefix()`, `PetscViewerSetOptions
 $(_doc_external("Viewer/PetscViewerAppendOptionsPrefix"))
 """
 function PetscViewerAppendOptionsPrefix(petsclib::PetscLibType, viewer::PetscViewer, prefix::String)
-    error("PetscViewerAppendOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(PetscViewerAppendOptionsPrefix, (petsclib, viewer, prefix)))
 end
 
 @for_petsc function PetscViewerAppendOptionsPrefix(petsclib::$UnionPetscLib, viewer::PetscViewer, prefix::String )
@@ -782,7 +782,7 @@ See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetI
 $(_doc_external("Viewer/PetscViewerBinaryAddMPIIOOffset"))
 """
 function PetscViewerBinaryAddMPIIOOffset(petsclib::PetscLibType, viewer::PetscViewer, off::MPI_Offset)
-    error("PetscViewerBinaryAddMPIIOOffset: no generated method for these argument types")
+    throw(MethodError(PetscViewerBinaryAddMPIIOOffset, (petsclib, viewer, off)))
 end
 
 @for_petsc function PetscViewerBinaryAddMPIIOOffset(petsclib::$UnionPetscLib, viewer::PetscViewer, off::MPI_Offset )
@@ -818,7 +818,7 @@ See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetI
 $(_doc_external("Viewer/PetscViewerBinaryGetDescriptor"))
 """
 function PetscViewerBinaryGetDescriptor(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerBinaryGetDescriptor: no generated method for these argument types")
+    throw(MethodError(PetscViewerBinaryGetDescriptor, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerBinaryGetDescriptor(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -856,7 +856,7 @@ See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetI
 $(_doc_external("Viewer/PetscViewerBinaryGetFlowControl"))
 """
 function PetscViewerBinaryGetFlowControl(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerBinaryGetFlowControl: no generated method for these argument types")
+    throw(MethodError(PetscViewerBinaryGetFlowControl, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerBinaryGetFlowControl(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -896,7 +896,7 @@ See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetD
 $(_doc_external("Viewer/PetscViewerBinaryGetInfoPointer"))
 """
 function PetscViewerBinaryGetInfoPointer(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerBinaryGetInfoPointer: no generated method for these argument types")
+    throw(MethodError(PetscViewerBinaryGetInfoPointer, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerBinaryGetInfoPointer(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -934,7 +934,7 @@ See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetI
 $(_doc_external("Viewer/PetscViewerBinaryGetMPIIODescriptor"))
 """
 function PetscViewerBinaryGetMPIIODescriptor(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerBinaryGetMPIIODescriptor: no generated method for these argument types")
+    throw(MethodError(PetscViewerBinaryGetMPIIODescriptor, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerBinaryGetMPIIODescriptor(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -972,7 +972,7 @@ See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetI
 $(_doc_external("Viewer/PetscViewerBinaryGetMPIIOOffset"))
 """
 function PetscViewerBinaryGetMPIIOOffset(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerBinaryGetMPIIOOffset: no generated method for these argument types")
+    throw(MethodError(PetscViewerBinaryGetMPIIOOffset, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerBinaryGetMPIIOOffset(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -1011,7 +1011,7 @@ See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetD
 $(_doc_external("Viewer/PetscViewerBinaryGetSkipHeader"))
 """
 function PetscViewerBinaryGetSkipHeader(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerBinaryGetSkipHeader: no generated method for these argument types")
+    throw(MethodError(PetscViewerBinaryGetSkipHeader, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerBinaryGetSkipHeader(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -1050,7 +1050,7 @@ See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetD
 $(_doc_external("Viewer/PetscViewerBinaryGetSkipInfo"))
 """
 function PetscViewerBinaryGetSkipInfo(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerBinaryGetSkipInfo: no generated method for these argument types")
+    throw(MethodError(PetscViewerBinaryGetSkipInfo, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerBinaryGetSkipInfo(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -1089,7 +1089,7 @@ See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetD
 $(_doc_external("Viewer/PetscViewerBinaryGetSkipOptions"))
 """
 function PetscViewerBinaryGetSkipOptions(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerBinaryGetSkipOptions: no generated method for these argument types")
+    throw(MethodError(PetscViewerBinaryGetSkipOptions, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerBinaryGetSkipOptions(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -1127,7 +1127,7 @@ See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetI
 $(_doc_external("Viewer/PetscViewerBinaryGetUseMPIIO"))
 """
 function PetscViewerBinaryGetUseMPIIO(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerBinaryGetUseMPIIO: no generated method for these argument types")
+    throw(MethodError(PetscViewerBinaryGetUseMPIIO, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerBinaryGetUseMPIIO(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -1182,7 +1182,7 @@ See also: `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat(
 $(_doc_external("Viewer/PetscViewerBinaryOpen"))
 """
 function PetscViewerBinaryOpen(petsclib::PetscLibType, comm::MPI_Comm, name::String, mode::PetscFileMode)
-    error("PetscViewerBinaryOpen: no generated method for these argument types")
+    throw(MethodError(PetscViewerBinaryOpen, (petsclib, comm, name, mode)))
 end
 
 @for_petsc function PetscViewerBinaryOpen(petsclib::$UnionPetscLib, comm::MPI_Comm, name::String, mode::PetscFileMode )
@@ -1225,7 +1225,7 @@ See also: `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat(
 $(_doc_external("Viewer/PetscViewerBinaryRead"))
 """
 function PetscViewerBinaryRead(petsclib::PetscLibType, viewer::PetscViewer, num::Integer, dtype::PetscDataType)
-    error("PetscViewerBinaryRead: no generated method for these argument types")
+    throw(MethodError(PetscViewerBinaryRead, (petsclib, viewer, num, dtype)))
 end
 
 @for_petsc function PetscViewerBinaryRead(petsclib::$UnionPetscLib, viewer::PetscViewer, num::$PetscInt, dtype::PetscDataType )
@@ -1269,7 +1269,7 @@ See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinarySetU
 $(_doc_external("Viewer/PetscViewerBinaryReadAll"))
 """
 function PetscViewerBinaryReadAll(petsclib::PetscLibType, viewer::PetscViewer, count::PetscCount, start::PetscCount, total::PetscCount, dtype::PetscDataType)
-    error("PetscViewerBinaryReadAll: no generated method for these argument types")
+    throw(MethodError(PetscViewerBinaryReadAll, (petsclib, viewer, count, start, total, dtype)))
 end
 
 @for_petsc function PetscViewerBinaryReadAll(petsclib::$UnionPetscLib, viewer::PetscViewer, count::PetscCount, start::PetscCount, total::PetscCount, dtype::PetscDataType )
@@ -1309,7 +1309,7 @@ See also: `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat(
 $(_doc_external("Viewer/PetscViewerBinaryReadStringArray"))
 """
 function PetscViewerBinaryReadStringArray(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerBinaryReadStringArray: no generated method for these argument types")
+    throw(MethodError(PetscViewerBinaryReadStringArray, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerBinaryReadStringArray(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -1345,7 +1345,7 @@ See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetI
 $(_doc_external("Viewer/PetscViewerBinarySetFlowControl"))
 """
 function PetscViewerBinarySetFlowControl(petsclib::PetscLibType, viewer::PetscViewer, fc::Integer)
-    error("PetscViewerBinarySetFlowControl: no generated method for these argument types")
+    throw(MethodError(PetscViewerBinarySetFlowControl, (petsclib, viewer, fc)))
 end
 
 @for_petsc function PetscViewerBinarySetFlowControl(petsclib::$UnionPetscLib, viewer::PetscViewer, fc::$PetscInt )
@@ -1383,7 +1383,7 @@ See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetD
 $(_doc_external("Viewer/PetscViewerBinarySetSkipHeader"))
 """
 function PetscViewerBinarySetSkipHeader(petsclib::PetscLibType, viewer::PetscViewer, skip::PetscBool)
-    error("PetscViewerBinarySetSkipHeader: no generated method for these argument types")
+    throw(MethodError(PetscViewerBinarySetSkipHeader, (petsclib, viewer, skip)))
 end
 
 @for_petsc function PetscViewerBinarySetSkipHeader(petsclib::$UnionPetscLib, viewer::PetscViewer, skip::PetscBool )
@@ -1421,7 +1421,7 @@ See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetD
 $(_doc_external("Viewer/PetscViewerBinarySetSkipInfo"))
 """
 function PetscViewerBinarySetSkipInfo(petsclib::PetscLibType, viewer::PetscViewer, skip::PetscBool)
-    error("PetscViewerBinarySetSkipInfo: no generated method for these argument types")
+    throw(MethodError(PetscViewerBinarySetSkipInfo, (petsclib, viewer, skip)))
 end
 
 @for_petsc function PetscViewerBinarySetSkipInfo(petsclib::$UnionPetscLib, viewer::PetscViewer, skip::PetscBool )
@@ -1459,7 +1459,7 @@ See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetD
 $(_doc_external("Viewer/PetscViewerBinarySetSkipOptions"))
 """
 function PetscViewerBinarySetSkipOptions(petsclib::PetscLibType, viewer::PetscViewer, skip::PetscBool)
-    error("PetscViewerBinarySetSkipOptions: no generated method for these argument types")
+    throw(MethodError(PetscViewerBinarySetSkipOptions, (petsclib, viewer, skip)))
 end
 
 @for_petsc function PetscViewerBinarySetSkipOptions(petsclib::$UnionPetscLib, viewer::PetscViewer, skip::PetscBool )
@@ -1498,7 +1498,7 @@ See also: `PETSCVIEWERBINARY`, `PetscViewerFileSetMode()`, `PetscViewerCreate()`
 $(_doc_external("Viewer/PetscViewerBinarySetUseMPIIO"))
 """
 function PetscViewerBinarySetUseMPIIO(petsclib::PetscLibType, viewer::PetscViewer, use::PetscBool)
-    error("PetscViewerBinarySetUseMPIIO: no generated method for these argument types")
+    throw(MethodError(PetscViewerBinarySetUseMPIIO, (petsclib, viewer, use)))
 end
 
 @for_petsc function PetscViewerBinarySetUseMPIIO(petsclib::$UnionPetscLib, viewer::PetscViewer, use::PetscBool )
@@ -1535,7 +1535,7 @@ See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinaryGetD
 $(_doc_external("Viewer/PetscViewerBinarySkipInfo"))
 """
 function PetscViewerBinarySkipInfo(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerBinarySkipInfo: no generated method for these argument types")
+    throw(MethodError(PetscViewerBinarySkipInfo, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerBinarySkipInfo(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -1573,7 +1573,7 @@ See also: `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat(
 $(_doc_external("Viewer/PetscViewerBinaryWrite"))
 """
 function PetscViewerBinaryWrite(petsclib::PetscLibType, viewer::PetscViewer, data::Ptr{Cvoid}, count::Integer, dtype::PetscDataType)
-    error("PetscViewerBinaryWrite: no generated method for these argument types")
+    throw(MethodError(PetscViewerBinaryWrite, (petsclib, viewer, data, count, dtype)))
 end
 
 @for_petsc function PetscViewerBinaryWrite(petsclib::$UnionPetscLib, viewer::PetscViewer, data::Ptr{Cvoid}, count::$PetscInt, dtype::PetscDataType )
@@ -1611,7 +1611,7 @@ See also: `PETSCVIEWERBINARY`, `PetscViewerBinaryOpen()`, `PetscViewerBinarySetU
 $(_doc_external("Viewer/PetscViewerBinaryWriteAll"))
 """
 function PetscViewerBinaryWriteAll(petsclib::PetscLibType, viewer::PetscViewer, data::Ptr{Cvoid}, count::PetscCount, start::PetscCount, total::PetscCount, dtype::PetscDataType)
-    error("PetscViewerBinaryWriteAll: no generated method for these argument types")
+    throw(MethodError(PetscViewerBinaryWriteAll, (petsclib, viewer, data, count, start, total, dtype)))
 end
 
 @for_petsc function PetscViewerBinaryWriteAll(petsclib::$UnionPetscLib, viewer::PetscViewer, data::Ptr{Cvoid}, count::PetscCount, start::PetscCount, total::PetscCount, dtype::PetscDataType )
@@ -1647,7 +1647,7 @@ See also: `PETSCVIEWERBINARY`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat(
 $(_doc_external("Viewer/PetscViewerBinaryWriteStringArray"))
 """
 function PetscViewerBinaryWriteStringArray(petsclib::PetscLibType, viewer::PetscViewer, data::String)
-    error("PetscViewerBinaryWriteStringArray: no generated method for these argument types")
+    throw(MethodError(PetscViewerBinaryWriteStringArray, (petsclib, viewer, data)))
 end
 
 @for_petsc function PetscViewerBinaryWriteStringArray(petsclib::$UnionPetscLib, viewer::PetscViewer, data::String )
@@ -1684,7 +1684,7 @@ See also: `PETSCVIEWERCGNS`, `PetscViewerCGNSSetSolutionIndex()`, `PetscViewerCG
 $(_doc_external("Viewer/PetscViewerCGNSGetSolutionIndex"))
 """
 function PetscViewerCGNSGetSolutionIndex(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerCGNSGetSolutionIndex: no generated method for these argument types")
+    throw(MethodError(PetscViewerCGNSGetSolutionIndex, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerCGNSGetSolutionIndex(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -1723,7 +1723,7 @@ See also: `PETSCVIEWERCGNS`, `PetscViewer`, `PetscViewerCGNSGetSolutionTime()`, 
 $(_doc_external("Viewer/PetscViewerCGNSGetSolutionIteration"))
 """
 function PetscViewerCGNSGetSolutionIteration(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerCGNSGetSolutionIteration: no generated method for these argument types")
+    throw(MethodError(PetscViewerCGNSGetSolutionIteration, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerCGNSGetSolutionIteration(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -1763,7 +1763,7 @@ See also: `PETSCVIEWERCGNS`, `PetscViewer`, `PetscViewerCGNSSetSolutionIndex()`,
 $(_doc_external("Viewer/PetscViewerCGNSGetSolutionName"))
 """
 function PetscViewerCGNSGetSolutionName(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerCGNSGetSolutionName: no generated method for these argument types")
+    throw(MethodError(PetscViewerCGNSGetSolutionName, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerCGNSGetSolutionName(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -1802,7 +1802,7 @@ See also: `PETSCVIEWERCGNS`, `PetscViewer`, `PetscViewerCGNSGetSolutionIteration
 $(_doc_external("Viewer/PetscViewerCGNSGetSolutionTime"))
 """
 function PetscViewerCGNSGetSolutionTime(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerCGNSGetSolutionTime: no generated method for these argument types")
+    throw(MethodError(PetscViewerCGNSGetSolutionTime, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerCGNSGetSolutionTime(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -1850,7 +1850,7 @@ See also: `PETSCVIEWERCGNS`, `PetscViewer`, `PetscViewerPushFormat()`, `PetscVie
 $(_doc_external("Viewer/PetscViewerCGNSOpen"))
 """
 function PetscViewerCGNSOpen(petsclib::PetscLibType, comm::MPI_Comm, name::String, type::PetscFileMode)
-    error("PetscViewerCGNSOpen: no generated method for these argument types")
+    throw(MethodError(PetscViewerCGNSOpen, (petsclib, comm, name, type)))
 end
 
 @for_petsc function PetscViewerCGNSOpen(petsclib::$UnionPetscLib, comm::MPI_Comm, name::String, type::PetscFileMode )
@@ -1886,7 +1886,7 @@ See also: `PETSCVIEWERCGNS`, `PetscViewerCGNSGetSolutionIndex()`, `PetscViewerCG
 $(_doc_external("Viewer/PetscViewerCGNSSetSolutionIndex"))
 """
 function PetscViewerCGNSSetSolutionIndex(petsclib::PetscLibType, viewer::PetscViewer, solution_id::Integer)
-    error("PetscViewerCGNSSetSolutionIndex: no generated method for these argument types")
+    throw(MethodError(PetscViewerCGNSSetSolutionIndex, (petsclib, viewer, solution_id)))
 end
 
 @for_petsc function PetscViewerCGNSSetSolutionIndex(petsclib::$UnionPetscLib, viewer::PetscViewer, solution_id::$PetscInt )
@@ -1919,7 +1919,7 @@ See also: `PetscViewer`, `PetscViewerReadable()`, `PetscViewerCheckWritable()`, 
 $(_doc_external("Viewer/PetscViewerCheckReadable"))
 """
 function PetscViewerCheckReadable(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerCheckReadable: no generated method for these argument types")
+    throw(MethodError(PetscViewerCheckReadable, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerCheckReadable(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -1952,7 +1952,7 @@ See also: `PetscViewer`, `PetscViewerWritable()`, `PetscViewerCheckReadable()`, 
 $(_doc_external("Viewer/PetscViewerCheckWritable"))
 """
 function PetscViewerCheckWritable(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerCheckWritable: no generated method for these argument types")
+    throw(MethodError(PetscViewerCheckWritable, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerCheckWritable(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -1989,7 +1989,7 @@ See also: `PetscViewer`, `PetscViewerDestroy()`, `PetscViewerSetType()`, `PetscV
 $(_doc_external("Viewer/PetscViewerCreate"))
 """
 function PetscViewerCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("PetscViewerCreate: no generated method for these argument types")
+    throw(MethodError(PetscViewerCreate, (petsclib, comm)))
 end
 
 @for_petsc function PetscViewerCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -2024,7 +2024,7 @@ See also: `PetscViewer`, `PetscViewerCreate()`, `PetscViewerSocketOpen()`, `Pets
 $(_doc_external("Viewer/PetscViewerDestroy"))
 """
 function PetscViewerDestroy(petsclib::PetscLibType, viewer::Union{PetscViewer, Ref{PetscViewer}})
-    error("PetscViewerDestroy: no generated method for these argument types")
+    throw(MethodError(PetscViewerDestroy, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerDestroy(petsclib::$UnionPetscLib, viewer::Union{PetscViewer, Ref{PetscViewer}} )
@@ -2059,7 +2059,7 @@ See also: `PetscViewerDrawGetLG()`, `PetscViewerDrawGetAxis()`, `PetscViewerDraw
 $(_doc_external("Viewer/PetscViewerDrawBaseAdd"))
 """
 function PetscViewerDrawBaseAdd(petsclib::PetscLibType, viewer::PetscViewer, windownumber::Integer)
-    error("PetscViewerDrawBaseAdd: no generated method for these argument types")
+    throw(MethodError(PetscViewerDrawBaseAdd, (petsclib, viewer, windownumber)))
 end
 
 @for_petsc function PetscViewerDrawBaseAdd(petsclib::$UnionPetscLib, viewer::PetscViewer, windownumber::$PetscInt )
@@ -2093,7 +2093,7 @@ See also: `PetscViewerDrawGetLG()`, `PetscViewerDrawGetAxis()`, `PetscViewerDraw
 $(_doc_external("Viewer/PetscViewerDrawBaseSet"))
 """
 function PetscViewerDrawBaseSet(petsclib::PetscLibType, viewer::PetscViewer, windownumber::Integer)
-    error("PetscViewerDrawBaseSet: no generated method for these argument types")
+    throw(MethodError(PetscViewerDrawBaseSet, (petsclib, viewer, windownumber)))
 end
 
 @for_petsc function PetscViewerDrawBaseSet(petsclib::$UnionPetscLib, viewer::PetscViewer, windownumber::$PetscInt )
@@ -2126,7 +2126,7 @@ See also: `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
 $(_doc_external("Viewer/PetscViewerDrawClear"))
 """
 function PetscViewerDrawClear(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerDrawClear: no generated method for these argument types")
+    throw(MethodError(PetscViewerDrawClear, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerDrawClear(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -2163,7 +2163,7 @@ See also: `PETSCVIEWERDRAW`, `PetscViewerDrawGetLG()`, `PetscViewerDrawGetAxis()
 $(_doc_external("Viewer/PetscViewerDrawGetBounds"))
 """
 function PetscViewerDrawGetBounds(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerDrawGetBounds: no generated method for these argument types")
+    throw(MethodError(PetscViewerDrawGetBounds, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerDrawGetBounds(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -2205,7 +2205,7 @@ See also: `PETSCVIEWERDRAW`, `PetscViewerDrawGetLG()`, `PetscViewerDrawGetAxis()
 $(_doc_external("Draw/PetscViewerDrawGetDraw"))
 """
 function PetscViewerDrawGetDraw(petsclib::PetscLibType, viewer::PetscViewer, windownumber::Integer)
-    error("PetscViewerDrawGetDraw: no generated method for these argument types")
+    throw(MethodError(PetscViewerDrawGetDraw, (petsclib, viewer, windownumber)))
 end
 
 @for_petsc function PetscViewerDrawGetDraw(petsclib::$UnionPetscLib, viewer::PetscViewer, windownumber::$PetscInt )
@@ -2245,7 +2245,7 @@ See also: `PetscViewerDrawGetDraw()`, `PetscViewerDrawGetLG()`, `PetscViewerDraw
 $(_doc_external("Draw/PetscViewerDrawGetDrawAxis"))
 """
 function PetscViewerDrawGetDrawAxis(petsclib::PetscLibType, viewer::PetscViewer, windownumber::Integer)
-    error("PetscViewerDrawGetDrawAxis: no generated method for these argument types")
+    throw(MethodError(PetscViewerDrawGetDrawAxis, (petsclib, viewer, windownumber)))
 end
 
 @for_petsc function PetscViewerDrawGetDrawAxis(petsclib::$UnionPetscLib, viewer::PetscViewer, windownumber::$PetscInt )
@@ -2285,7 +2285,7 @@ See also: `PetscDrawLG`, `PetscViewerDrawGetDraw()`, `PetscViewerDrawGetAxis()`,
 $(_doc_external("Draw/PetscViewerDrawGetDrawLG"))
 """
 function PetscViewerDrawGetDrawLG(petsclib::PetscLibType, viewer::PetscViewer, windownumber::Integer)
-    error("PetscViewerDrawGetDrawLG: no generated method for these argument types")
+    throw(MethodError(PetscViewerDrawGetDrawLG, (petsclib, viewer, windownumber)))
 end
 
 @for_petsc function PetscViewerDrawGetDrawLG(petsclib::$UnionPetscLib, viewer::PetscViewer, windownumber::$PetscInt )
@@ -2323,7 +2323,7 @@ See also: `PetscViewer`, `PETSCVIEWERDRAW`, `PetscDrawType`, `PetscViewerDrawSet
 $(_doc_external("Draw/PetscViewerDrawGetDrawType"))
 """
 function PetscViewerDrawGetDrawType(petsclib::PetscLibType, v::PetscViewer)
-    error("PetscViewerDrawGetDrawType: no generated method for these argument types")
+    throw(MethodError(PetscViewerDrawGetDrawType, (petsclib, v)))
 end
 
 @for_petsc function PetscViewerDrawGetDrawType(petsclib::$UnionPetscLib, v::PetscViewer )
@@ -2361,7 +2361,7 @@ See also: `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
 $(_doc_external("Viewer/PetscViewerDrawGetHold"))
 """
 function PetscViewerDrawGetHold(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerDrawGetHold: no generated method for these argument types")
+    throw(MethodError(PetscViewerDrawGetHold, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerDrawGetHold(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -2399,7 +2399,7 @@ See also: `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
 $(_doc_external("Viewer/PetscViewerDrawGetPause"))
 """
 function PetscViewerDrawGetPause(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerDrawGetPause: no generated method for these argument types")
+    throw(MethodError(PetscViewerDrawGetPause, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerDrawGetPause(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -2437,7 +2437,7 @@ See also: `PetscViewer`, `PETSCVIEWERDRAW`, `PetscViewerDrawSetTitle()`, `PetscV
 $(_doc_external("Viewer/PetscViewerDrawGetTitle"))
 """
 function PetscViewerDrawGetTitle(petsclib::PetscLibType, v::PetscViewer)
-    error("PetscViewerDrawGetTitle: no generated method for these argument types")
+    throw(MethodError(PetscViewerDrawGetTitle, (petsclib, v)))
 end
 
 @for_petsc function PetscViewerDrawGetTitle(petsclib::$UnionPetscLib, v::PetscViewer )
@@ -2492,7 +2492,7 @@ See also: `PETSCVIEWERDRAW`, `PetscDrawCreate()`, `PetscViewerDestroy()`, `Petsc
 $(_doc_external("Viewer/PetscViewerDrawOpen"))
 """
 function PetscViewerDrawOpen(petsclib::PetscLibType, comm::MPI_Comm, display::String, title::String, x::Cint, y::Cint, w::Cint, h::Cint)
-    error("PetscViewerDrawOpen: no generated method for these argument types")
+    throw(MethodError(PetscViewerDrawOpen, (petsclib, comm, display, title, x, y, w, h)))
 end
 
 @for_petsc function PetscViewerDrawOpen(petsclib::$UnionPetscLib, comm::MPI_Comm, display::String, title::String, x::Cint, y::Cint, w::Cint, h::Cint )
@@ -2529,7 +2529,7 @@ See also: `PetscViewer`, `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewe
 $(_doc_external("Viewer/PetscViewerDrawResize"))
 """
 function PetscViewerDrawResize(petsclib::PetscLibType, v::PetscViewer, w::Cint, h::Cint)
-    error("PetscViewerDrawResize: no generated method for these argument types")
+    throw(MethodError(PetscViewerDrawResize, (petsclib, v, w, h)))
 end
 
 @for_petsc function PetscViewerDrawResize(petsclib::$UnionPetscLib, v::PetscViewer, w::Cint, h::Cint )
@@ -2567,7 +2567,7 @@ See also: `PETSCVIEWERDRAW`, `PetscViewerDrawGetLG()`, `PetscViewerDrawGetAxis()
 $(_doc_external("Viewer/PetscViewerDrawSetBounds"))
 """
 function PetscViewerDrawSetBounds(petsclib::PetscLibType, viewer::PetscViewer, nbounds::Integer, bounds::AbstractVector{<:Number})
-    error("PetscViewerDrawSetBounds: no generated method for these argument types")
+    throw(MethodError(PetscViewerDrawSetBounds, (petsclib, viewer, nbounds, bounds)))
 end
 
 @for_petsc function PetscViewerDrawSetBounds(petsclib::$UnionPetscLib, viewer::PetscViewer, nbounds::$PetscInt, bounds::Vector{$PetscReal} )
@@ -2601,7 +2601,7 @@ See also: `PetscViewer`, `PETSCVIEWERDRAW`, `PetscDrawType`, `PetscViewerDrawGet
 $(_doc_external("Draw/PetscViewerDrawSetDrawType"))
 """
 function PetscViewerDrawSetDrawType(petsclib::PetscLibType, v::PetscViewer, drawtype::String)
-    error("PetscViewerDrawSetDrawType: no generated method for these argument types")
+    throw(MethodError(PetscViewerDrawSetDrawType, (petsclib, v, drawtype)))
 end
 
 @for_petsc function PetscViewerDrawSetDrawType(petsclib::$UnionPetscLib, v::PetscViewer, drawtype::String )
@@ -2635,7 +2635,7 @@ See also: `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
 $(_doc_external("Viewer/PetscViewerDrawSetHold"))
 """
 function PetscViewerDrawSetHold(petsclib::PetscLibType, viewer::PetscViewer, hold::PetscBool)
-    error("PetscViewerDrawSetHold: no generated method for these argument types")
+    throw(MethodError(PetscViewerDrawSetHold, (petsclib, viewer, hold)))
 end
 
 @for_petsc function PetscViewerDrawSetHold(petsclib::$UnionPetscLib, viewer::PetscViewer, hold::PetscBool )
@@ -2675,7 +2675,7 @@ See also: `PetscViewer`, `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewe
 $(_doc_external("Viewer/PetscViewerDrawSetInfo"))
 """
 function PetscViewerDrawSetInfo(petsclib::PetscLibType, v::PetscViewer, display::String, title::String, x::Cint, y::Cint, w::Cint, h::Cint)
-    error("PetscViewerDrawSetInfo: no generated method for these argument types")
+    throw(MethodError(PetscViewerDrawSetInfo, (petsclib, v, display, title, x, y, w, h)))
 end
 
 @for_petsc function PetscViewerDrawSetInfo(petsclib::$UnionPetscLib, v::PetscViewer, display::String, title::String, x::Cint, y::Cint, w::Cint, h::Cint )
@@ -2709,7 +2709,7 @@ See also: `PETSCVIEWERDRAW`, `PetscViewerDrawOpen()`, `PetscViewerDrawGetDraw()`
 $(_doc_external("Viewer/PetscViewerDrawSetPause"))
 """
 function PetscViewerDrawSetPause(petsclib::PetscLibType, viewer::PetscViewer, pause::Real)
-    error("PetscViewerDrawSetPause: no generated method for these argument types")
+    throw(MethodError(PetscViewerDrawSetPause, (petsclib, viewer, pause)))
 end
 
 @for_petsc function PetscViewerDrawSetPause(petsclib::$UnionPetscLib, viewer::PetscViewer, pause::$PetscReal )
@@ -2743,7 +2743,7 @@ See also: `PetscViewer`, `PETSCVIEWERDRAW`, `PetscViewerDrawGetTitle()`, `PetscV
 $(_doc_external("Viewer/PetscViewerDrawSetTitle"))
 """
 function PetscViewerDrawSetTitle(petsclib::PetscLibType, v::PetscViewer, title::String)
-    error("PetscViewerDrawSetTitle: no generated method for these argument types")
+    throw(MethodError(PetscViewerDrawSetTitle, (petsclib, v, title)))
 end
 
 @for_petsc function PetscViewerDrawSetTitle(petsclib::$UnionPetscLib, v::PetscViewer, title::String )
@@ -2779,7 +2779,7 @@ See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerFileSetMode()`, `Pet
 $(_doc_external("DMPlex/PetscViewerExodusIIGetId"))
 """
 function PetscViewerExodusIIGetId(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerExodusIIGetId: no generated method for these argument types")
+    throw(MethodError(PetscViewerExodusIIGetId, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerExodusIIGetId(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -2817,7 +2817,7 @@ See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscVie
 $(_doc_external("DMPlex/PetscViewerExodusIIGetNodalVariable"))
 """
 function PetscViewerExodusIIGetNodalVariable(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerExodusIIGetNodalVariable: no generated method for these argument types")
+    throw(MethodError(PetscViewerExodusIIGetNodalVariable, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerExodusIIGetNodalVariable(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -2856,7 +2856,7 @@ See also: `PetscViewerExodusIISetNodalVariable()`, `PetscViewerExodusIIGetNodalV
 $(_doc_external("DMPlex/PetscViewerExodusIIGetNodalVariableIndex"))
 """
 function PetscViewerExodusIIGetNodalVariableIndex(petsclib::PetscLibType, viewer::PetscViewer, name::String)
-    error("PetscViewerExodusIIGetNodalVariableIndex: no generated method for these argument types")
+    throw(MethodError(PetscViewerExodusIIGetNodalVariableIndex, (petsclib, viewer, name)))
 end
 
 @for_petsc function PetscViewerExodusIIGetNodalVariableIndex(petsclib::$UnionPetscLib, viewer::PetscViewer, name::String )
@@ -2895,7 +2895,7 @@ See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscVie
 $(_doc_external("DMPlex/PetscViewerExodusIIGetNodalVariableName"))
 """
 function PetscViewerExodusIIGetNodalVariableName(petsclib::PetscLibType, viewer::PetscViewer, idx::PetscExodusIIInt)
-    error("PetscViewerExodusIIGetNodalVariableName: no generated method for these argument types")
+    throw(MethodError(PetscViewerExodusIIGetNodalVariableName, (petsclib, viewer, idx)))
 end
 
 @for_petsc function PetscViewerExodusIIGetNodalVariableName(petsclib::$UnionPetscLib, viewer::PetscViewer, idx::PetscExodusIIInt )
@@ -2934,7 +2934,7 @@ See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscVie
 $(_doc_external("DMPlex/PetscViewerExodusIIGetNodalVariableNames"))
 """
 function PetscViewerExodusIIGetNodalVariableNames(petsclib::PetscLibType, viewer::PetscViewer, numVars::PetscExodusIIInt)
-    error("PetscViewerExodusIIGetNodalVariableNames: no generated method for these argument types")
+    throw(MethodError(PetscViewerExodusIIGetNodalVariableNames, (petsclib, viewer, numVars)))
 end
 
 @for_petsc function PetscViewerExodusIIGetNodalVariableNames(petsclib::$UnionPetscLib, viewer::PetscViewer, numVars::PetscExodusIIInt )
@@ -2972,7 +2972,7 @@ See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerExodusIIGetId()`, `P
 $(_doc_external("DMPlex/PetscViewerExodusIIGetOrder"))
 """
 function PetscViewerExodusIIGetOrder(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerExodusIIGetOrder: no generated method for these argument types")
+    throw(MethodError(PetscViewerExodusIIGetOrder, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerExodusIIGetOrder(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -3010,7 +3010,7 @@ See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscVie
 $(_doc_external("DMPlex/PetscViewerExodusIIGetZonalVariable"))
 """
 function PetscViewerExodusIIGetZonalVariable(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerExodusIIGetZonalVariable: no generated method for these argument types")
+    throw(MethodError(PetscViewerExodusIIGetZonalVariable, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerExodusIIGetZonalVariable(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -3049,7 +3049,7 @@ See also: `PetscViewerExodusIISetNodalVariable()`, `PetscViewerExodusIIGetNodalV
 $(_doc_external("DMPlex/PetscViewerExodusIIGetZonalVariableIndex"))
 """
 function PetscViewerExodusIIGetZonalVariableIndex(petsclib::PetscLibType, viewer::PetscViewer, name::String)
-    error("PetscViewerExodusIIGetZonalVariableIndex: no generated method for these argument types")
+    throw(MethodError(PetscViewerExodusIIGetZonalVariableIndex, (petsclib, viewer, name)))
 end
 
 @for_petsc function PetscViewerExodusIIGetZonalVariableIndex(petsclib::$UnionPetscLib, viewer::PetscViewer, name::String )
@@ -3088,7 +3088,7 @@ See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscVie
 $(_doc_external("DMPlex/PetscViewerExodusIIGetZonalVariableName"))
 """
 function PetscViewerExodusIIGetZonalVariableName(petsclib::PetscLibType, viewer::PetscViewer, idx::PetscExodusIIInt)
-    error("PetscViewerExodusIIGetZonalVariableName: no generated method for these argument types")
+    throw(MethodError(PetscViewerExodusIIGetZonalVariableName, (petsclib, viewer, idx)))
 end
 
 @for_petsc function PetscViewerExodusIIGetZonalVariableName(petsclib::$UnionPetscLib, viewer::PetscViewer, idx::PetscExodusIIInt )
@@ -3127,7 +3127,7 @@ See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscVie
 $(_doc_external("DMPlex/PetscViewerExodusIIGetZonalVariableNames"))
 """
 function PetscViewerExodusIIGetZonalVariableNames(petsclib::PetscLibType, viewer::PetscViewer, numVars::PetscExodusIIInt)
-    error("PetscViewerExodusIIGetZonalVariableNames: no generated method for these argument types")
+    throw(MethodError(PetscViewerExodusIIGetZonalVariableNames, (petsclib, viewer, numVars)))
 end
 
 @for_petsc function PetscViewerExodusIIGetZonalVariableNames(petsclib::$UnionPetscLib, viewer::PetscViewer, numVars::PetscExodusIIInt )
@@ -3173,7 +3173,7 @@ See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerPushFormat()`, `Pets
 $(_doc_external("DMPlex/PetscViewerExodusIIOpen"))
 """
 function PetscViewerExodusIIOpen(petsclib::PetscLibType, comm::MPI_Comm, name::String, type::PetscFileMode)
-    error("PetscViewerExodusIIOpen: no generated method for these argument types")
+    throw(MethodError(PetscViewerExodusIIOpen, (petsclib, comm, name, type)))
 end
 
 @for_petsc function PetscViewerExodusIIOpen(petsclib::$UnionPetscLib, comm::MPI_Comm, name::String, type::PetscFileMode )
@@ -3209,7 +3209,7 @@ See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscVie
 $(_doc_external("DMPlex/PetscViewerExodusIISetNodalVariable"))
 """
 function PetscViewerExodusIISetNodalVariable(petsclib::PetscLibType, viewer::PetscViewer, num::PetscExodusIIInt)
-    error("PetscViewerExodusIISetNodalVariable: no generated method for these argument types")
+    throw(MethodError(PetscViewerExodusIISetNodalVariable, (petsclib, viewer, num)))
 end
 
 @for_petsc function PetscViewerExodusIISetNodalVariable(petsclib::$UnionPetscLib, viewer::PetscViewer, num::PetscExodusIIInt )
@@ -3244,7 +3244,7 @@ See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscVie
 $(_doc_external("DMPlex/PetscViewerExodusIISetNodalVariableName"))
 """
 function PetscViewerExodusIISetNodalVariableName(petsclib::PetscLibType, viewer::PetscViewer, idx::PetscExodusIIInt, name::String)
-    error("PetscViewerExodusIISetNodalVariableName: no generated method for these argument types")
+    throw(MethodError(PetscViewerExodusIISetNodalVariableName, (petsclib, viewer, idx, name)))
 end
 
 @for_petsc function PetscViewerExodusIISetNodalVariableName(petsclib::$UnionPetscLib, viewer::PetscViewer, idx::PetscExodusIIInt, name::String )
@@ -3278,7 +3278,7 @@ See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscVie
 $(_doc_external("DMPlex/PetscViewerExodusIISetNodalVariableNames"))
 """
 function PetscViewerExodusIISetNodalVariableNames(petsclib::PetscLibType, viewer::PetscViewer, names::String)
-    error("PetscViewerExodusIISetNodalVariableNames: no generated method for these argument types")
+    throw(MethodError(PetscViewerExodusIISetNodalVariableNames, (petsclib, viewer, names)))
 end
 
 @for_petsc function PetscViewerExodusIISetNodalVariableNames(petsclib::$UnionPetscLib, viewer::PetscViewer, names::String )
@@ -3315,7 +3315,7 @@ See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerExodusIIGetId()`, `P
 $(_doc_external("DMPlex/PetscViewerExodusIISetOrder"))
 """
 function PetscViewerExodusIISetOrder(petsclib::PetscLibType, viewer::PetscViewer, order::Integer)
-    error("PetscViewerExodusIISetOrder: no generated method for these argument types")
+    throw(MethodError(PetscViewerExodusIISetOrder, (petsclib, viewer, order)))
 end
 
 @for_petsc function PetscViewerExodusIISetOrder(petsclib::$UnionPetscLib, viewer::PetscViewer, order::$PetscInt )
@@ -3349,7 +3349,7 @@ See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscVie
 $(_doc_external("DMPlex/PetscViewerExodusIISetZonalVariable"))
 """
 function PetscViewerExodusIISetZonalVariable(petsclib::PetscLibType, viewer::PetscViewer, num::PetscExodusIIInt)
-    error("PetscViewerExodusIISetZonalVariable: no generated method for these argument types")
+    throw(MethodError(PetscViewerExodusIISetZonalVariable, (petsclib, viewer, num)))
 end
 
 @for_petsc function PetscViewerExodusIISetZonalVariable(petsclib::$UnionPetscLib, viewer::PetscViewer, num::PetscExodusIIInt )
@@ -3384,7 +3384,7 @@ See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscVie
 $(_doc_external("DMPlex/PetscViewerExodusIISetZonalVariableName"))
 """
 function PetscViewerExodusIISetZonalVariableName(petsclib::PetscLibType, viewer::PetscViewer, idx::PetscExodusIIInt, name::String)
-    error("PetscViewerExodusIISetZonalVariableName: no generated method for these argument types")
+    throw(MethodError(PetscViewerExodusIISetZonalVariableName, (petsclib, viewer, idx, name)))
 end
 
 @for_petsc function PetscViewerExodusIISetZonalVariableName(petsclib::$UnionPetscLib, viewer::PetscViewer, idx::PetscExodusIIInt, name::String )
@@ -3418,7 +3418,7 @@ See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscVie
 $(_doc_external("DMPlex/PetscViewerExodusIISetZonalVariableNames"))
 """
 function PetscViewerExodusIISetZonalVariableNames(petsclib::PetscLibType, viewer::PetscViewer, names::String)
-    error("PetscViewerExodusIISetZonalVariableNames: no generated method for these argument types")
+    throw(MethodError(PetscViewerExodusIISetZonalVariableNames, (petsclib, viewer, names)))
 end
 
 @for_petsc function PetscViewerExodusIISetZonalVariableNames(petsclib::$UnionPetscLib, viewer::PetscViewer, names::String )
@@ -3460,7 +3460,7 @@ See also: `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType
 $(_doc_external("Viewer/PetscViewerFileGetMode"))
 """
 function PetscViewerFileGetMode(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerFileGetMode: no generated method for these argument types")
+    throw(MethodError(PetscViewerFileGetMode, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerFileGetMode(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -3498,7 +3498,7 @@ See also: `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerASCIIOpen()
 $(_doc_external("Viewer/PetscViewerFileGetName"))
 """
 function PetscViewerFileGetName(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerFileGetName: no generated method for these argument types")
+    throw(MethodError(PetscViewerFileGetName, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerFileGetName(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -3539,7 +3539,7 @@ See also: `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen(
 $(_doc_external("Viewer/PetscViewerFileSetMode"))
 """
 function PetscViewerFileSetMode(petsclib::PetscLibType, viewer::PetscViewer, mode::PetscFileMode)
-    error("PetscViewerFileSetMode: no generated method for these argument types")
+    throw(MethodError(PetscViewerFileSetMode, (petsclib, viewer, mode)))
 end
 
 @for_petsc function PetscViewerFileSetMode(petsclib::$UnionPetscLib, viewer::PetscViewer, mode::PetscFileMode )
@@ -3574,7 +3574,7 @@ See also: `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerASCIIOpen()
 $(_doc_external("Viewer/PetscViewerFileSetName"))
 """
 function PetscViewerFileSetName(petsclib::PetscLibType, viewer::PetscViewer, name::String)
-    error("PetscViewerFileSetName: no generated method for these argument types")
+    throw(MethodError(PetscViewerFileSetName, (petsclib, viewer, name)))
 end
 
 @for_petsc function PetscViewerFileSetName(petsclib::$UnionPetscLib, viewer::PetscViewer, name::String )
@@ -3603,7 +3603,7 @@ See also: `PetscViewer`, `PetscFinalize()`, `PetscViewerInitializePackage()`
 $(_doc_external("Viewer/PetscViewerFinalizePackage"))
 """
 function PetscViewerFinalizePackage(petsclib::PetscLibType)
-    error("PetscViewerFinalizePackage: no generated method for these argument types")
+    throw(MethodError(PetscViewerFinalizePackage, (petsclib, )))
 end
 
 @for_petsc function PetscViewerFinalizePackage(petsclib::$UnionPetscLib)
@@ -3639,7 +3639,7 @@ See also: `PetscViewer`, `PetscViewerFlowControlStart()`, `PetscViewerFlowContro
 $(_doc_external("Viewer/PetscViewerFlowControlEndMain"))
 """
 function PetscViewerFlowControlEndMain(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerFlowControlEndMain: no generated method for these argument types")
+    throw(MethodError(PetscViewerFlowControlEndMain, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerFlowControlEndMain(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -3678,7 +3678,7 @@ See also: `PetscViewer`, `PetscViewerFlowControlStart()`, `PetscViewerFlowContro
 $(_doc_external("Viewer/PetscViewerFlowControlEndWorker"))
 """
 function PetscViewerFlowControlEndWorker(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerFlowControlEndWorker: no generated method for these argument types")
+    throw(MethodError(PetscViewerFlowControlEndWorker, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerFlowControlEndWorker(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -3718,7 +3718,7 @@ See also: `PetscViewer`, `PetscViewerFlowControlStepMain()`, `PetscViewerFlowCon
 $(_doc_external("Viewer/PetscViewerFlowControlStart"))
 """
 function PetscViewerFlowControlStart(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerFlowControlStart: no generated method for these argument types")
+    throw(MethodError(PetscViewerFlowControlStart, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerFlowControlStart(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -3761,7 +3761,7 @@ See also: `PetscViewer`, `PetscViewerFlowControlStart()`, `PetscViewerFlowContro
 $(_doc_external("Viewer/PetscViewerFlowControlStepMain"))
 """
 function PetscViewerFlowControlStepMain(petsclib::PetscLibType, viewer::PetscViewer, i::Integer, cnt::Integer)
-    error("PetscViewerFlowControlStepMain: no generated method for these argument types")
+    throw(MethodError(PetscViewerFlowControlStepMain, (petsclib, viewer, i, cnt)))
 end
 
 @for_petsc function PetscViewerFlowControlStepMain(petsclib::$UnionPetscLib, viewer::PetscViewer, i::$PetscInt, cnt::$PetscInt )
@@ -3801,7 +3801,7 @@ See also: `PetscViewer`, `PetscViewerFlowControlStart()`, `PetscViewerFlowContro
 $(_doc_external("Viewer/PetscViewerFlowControlStepWorker"))
 """
 function PetscViewerFlowControlStepWorker(petsclib::PetscLibType, viewer::PetscViewer, rank::PetscMPIInt)
-    error("PetscViewerFlowControlStepWorker: no generated method for these argument types")
+    throw(MethodError(PetscViewerFlowControlStepWorker, (petsclib, viewer, rank)))
 end
 
 @for_petsc function PetscViewerFlowControlStepWorker(petsclib::$UnionPetscLib, viewer::PetscViewer, rank::PetscMPIInt )
@@ -3838,7 +3838,7 @@ See also: `PetscViewer`, `PetscViewerWriteable()`, `PetscViewerSocketOpen()`, `P
 $(_doc_external("Viewer/PetscViewerFlush"))
 """
 function PetscViewerFlush(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerFlush: no generated method for these argument types")
+    throw(MethodError(PetscViewerFlush, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerFlush(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -3885,7 +3885,7 @@ See also: `PETSCVIEWERGLVIS`, `PetscViewerCreate()`, `PetscViewerSetType()`, `Pe
 $(_doc_external("Viewer/PetscViewerGLVisOpen"))
 """
 function PetscViewerGLVisOpen(petsclib::PetscLibType, comm::MPI_Comm, type::PetscViewerGLVisType, name::String, port::Integer)
-    error("PetscViewerGLVisOpen: no generated method for these argument types")
+    throw(MethodError(PetscViewerGLVisOpen, (petsclib, comm, type, name, port)))
 end
 
 @for_petsc function PetscViewerGLVisOpen(petsclib::$UnionPetscLib, comm::MPI_Comm, type::PetscViewerGLVisType, name::String, port::$PetscInt )
@@ -3927,7 +3927,7 @@ See also: `PETSCVIEWERGLVIS`, `PetscViewerGLVisOpen()`, `PetscViewerCreate()`, `
 $(_doc_external("Viewer/PetscViewerGLVisSetFields"))
 """
 function PetscViewerGLVisSetFields(petsclib::PetscLibType, viewer::PetscViewer, nf::Integer, fec_type::String, dim::AbstractVector{<:Number}, g2l::external, Vfield::Vector{PetscObject}, ctx::Ptr{Cvoid}, destroyctx::Ptr{Cvoid})
-    error("PetscViewerGLVisSetFields: no generated method for these argument types")
+    throw(MethodError(PetscViewerGLVisSetFields, (petsclib, viewer, nf, fec_type, dim, g2l, Vfield, ctx, destroyctx)))
 end
 
 @for_petsc function PetscViewerGLVisSetFields(petsclib::$UnionPetscLib, viewer::PetscViewer, nf::$PetscInt, fec_type::String, dim::Vector{$PetscInt}, g2l::external, Vfield::Vector{PetscObject}, ctx::Ptr{Cvoid}, destroyctx::Ptr{Cvoid} )
@@ -3962,7 +3962,7 @@ See also: `PETSCVIEWERGLVIS`, `PetscViewerGLVisOpen()`, `PetscViewerGLVisSetFiel
 $(_doc_external("Viewer/PetscViewerGLVisSetPrecision"))
 """
 function PetscViewerGLVisSetPrecision(petsclib::PetscLibType, viewer::PetscViewer, prec::Integer)
-    error("PetscViewerGLVisSetPrecision: no generated method for these argument types")
+    throw(MethodError(PetscViewerGLVisSetPrecision, (petsclib, viewer, prec)))
 end
 
 @for_petsc function PetscViewerGLVisSetPrecision(petsclib::$UnionPetscLib, viewer::PetscViewer, prec::$PetscInt )
@@ -3996,7 +3996,7 @@ See also: `PETSCVIEWERGLVIS`, `PetscViewerGLVisOpen()`, `PetscViewerGLVisSetFiel
 $(_doc_external("Viewer/PetscViewerGLVisSetSnapId"))
 """
 function PetscViewerGLVisSetSnapId(petsclib::PetscLibType, viewer::PetscViewer, id::Integer)
-    error("PetscViewerGLVisSetSnapId: no generated method for these argument types")
+    throw(MethodError(PetscViewerGLVisSetSnapId, (petsclib, viewer, id)))
 end
 
 @for_petsc function PetscViewerGLVisSetSnapId(petsclib::$UnionPetscLib, viewer::PetscViewer, id::$PetscInt )
@@ -4033,7 +4033,7 @@ See also: `PetscViewer`, `PetscViewerASCIIOpen()`, `PetscViewerBinaryOpen()`, `M
 $(_doc_external("Viewer/PetscViewerGetFormat"))
 """
 function PetscViewerGetFormat(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerGetFormat: no generated method for these argument types")
+    throw(MethodError(PetscViewerGetFormat, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerGetFormat(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -4072,7 +4072,7 @@ See also: `PetscViewer`, `PetscViewerAppendOptionsPrefix()`, `PetscViewerSetOpti
 $(_doc_external("Viewer/PetscViewerGetOptionsPrefix"))
 """
 function PetscViewerGetOptionsPrefix(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerGetOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(PetscViewerGetOptionsPrefix, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerGetOptionsPrefix(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -4113,7 +4113,7 @@ See also: `PetscViewer`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `P
 $(_doc_external("Viewer/PetscViewerGetSubViewer"))
 """
 function PetscViewerGetSubViewer(petsclib::PetscLibType, viewer::PetscViewer, comm::MPI_Comm)
-    error("PetscViewerGetSubViewer: no generated method for these argument types")
+    throw(MethodError(PetscViewerGetSubViewer, (petsclib, viewer, comm)))
 end
 
 @for_petsc function PetscViewerGetSubViewer(petsclib::$UnionPetscLib, viewer::PetscViewer, comm::MPI_Comm )
@@ -4151,7 +4151,7 @@ See also: `PetscViewerType`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerS
 $(_doc_external("Viewer/PetscViewerGetType"))
 """
 function PetscViewerGetType(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerGetType: no generated method for these argument types")
+    throw(MethodError(PetscViewerGetType, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerGetType(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -4190,7 +4190,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerFileSetMode()`, `PetscViewerCreate()`, 
 $(_doc_external("Viewer/PetscViewerHDF5GetBaseDimension2"))
 """
 function PetscViewerHDF5GetBaseDimension2(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerHDF5GetBaseDimension2: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5GetBaseDimension2, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerHDF5GetBaseDimension2(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -4228,7 +4228,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5SetCollective()`, `PetscViewerCreat
 $(_doc_external("Viewer/PetscViewerHDF5GetCollective"))
 """
 function PetscViewerHDF5GetCollective(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerHDF5GetCollective: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5GetCollective, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerHDF5GetCollective(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -4266,7 +4266,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5SetCompress()`
 $(_doc_external("Viewer/PetscViewerHDF5GetCompress"))
 """
 function PetscViewerHDF5GetCompress(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerHDF5GetCompress: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5GetCompress, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerHDF5GetCompress(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -4307,7 +4307,7 @@ See also: `DM`, `PetscViewerHDF5SetDMPlexStorageVersionReading()`, `PetscViewerH
 $(_doc_external("DMPlex/PetscViewerHDF5GetDMPlexStorageVersionReading"))
 """
 function PetscViewerHDF5GetDMPlexStorageVersionReading(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerHDF5GetDMPlexStorageVersionReading: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5GetDMPlexStorageVersionReading, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerHDF5GetDMPlexStorageVersionReading(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -4348,7 +4348,7 @@ See also: `DM`, `PetscViewerHDF5SetDMPlexStorageVersionWriting()`, `PetscViewerH
 $(_doc_external("DMPlex/PetscViewerHDF5GetDMPlexStorageVersionWriting"))
 """
 function PetscViewerHDF5GetDMPlexStorageVersionWriting(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerHDF5GetDMPlexStorageVersionWriting: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5GetDMPlexStorageVersionWriting, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerHDF5GetDMPlexStorageVersionWriting(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -4386,7 +4386,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5SetDefaultTimestepping()`, `PetscVi
 $(_doc_external("Viewer/PetscViewerHDF5GetDefaultTimestepping"))
 """
 function PetscViewerHDF5GetDefaultTimestepping(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerHDF5GetDefaultTimestepping: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5GetDefaultTimestepping, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerHDF5GetDefaultTimestepping(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -4424,7 +4424,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`
 $(_doc_external("Viewer/PetscViewerHDF5GetFileId"))
 """
 function PetscViewerHDF5GetFileId(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerHDF5GetFileId: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5GetFileId, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerHDF5GetFileId(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -4463,7 +4463,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushGroup(
 $(_doc_external("Viewer/PetscViewerHDF5GetGroup"))
 """
 function PetscViewerHDF5GetGroup(petsclib::PetscLibType, viewer::PetscViewer, path::String)
-    error("PetscViewerHDF5GetGroup: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5GetGroup, (petsclib, viewer, path)))
 end
 
 @for_petsc function PetscViewerHDF5GetGroup(petsclib::$UnionPetscLib, viewer::PetscViewer, path::String )
@@ -4503,7 +4503,7 @@ See also: `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType
 $(_doc_external("Viewer/PetscViewerHDF5GetSPOutput"))
 """
 function PetscViewerHDF5GetSPOutput(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerHDF5GetSPOutput: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5GetSPOutput, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerHDF5GetSPOutput(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -4541,7 +4541,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushTimest
 $(_doc_external("Viewer/PetscViewerHDF5GetTimestep"))
 """
 function PetscViewerHDF5GetTimestep(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerHDF5GetTimestep: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5GetTimestep, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerHDF5GetTimestep(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -4581,7 +4581,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5HasObjectA
 $(_doc_external("Viewer/PetscViewerHDF5HasAttribute"))
 """
 function PetscViewerHDF5HasAttribute(petsclib::PetscLibType, viewer::PetscViewer, parent::String, name::String)
-    error("PetscViewerHDF5HasAttribute: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5HasAttribute, (petsclib, viewer, parent, name)))
 end
 
 @for_petsc function PetscViewerHDF5HasAttribute(petsclib::$UnionPetscLib, viewer::PetscViewer, parent::String, name::String )
@@ -4620,7 +4620,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5HasObject()`, `PetscViewerHDF5HasAt
 $(_doc_external("Viewer/PetscViewerHDF5HasDataset"))
 """
 function PetscViewerHDF5HasDataset(petsclib::PetscLibType, viewer::PetscViewer, path::String)
-    error("PetscViewerHDF5HasDataset: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5HasDataset, (petsclib, viewer, path)))
 end
 
 @for_petsc function PetscViewerHDF5HasDataset(petsclib::$UnionPetscLib, viewer::PetscViewer, path::String )
@@ -4659,7 +4659,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5HasAttribute()`, `PetscViewerHDF5Ha
 $(_doc_external("Viewer/PetscViewerHDF5HasGroup"))
 """
 function PetscViewerHDF5HasGroup(petsclib::PetscLibType, viewer::PetscViewer, path::String)
-    error("PetscViewerHDF5HasGroup: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5HasGroup, (petsclib, viewer, path)))
 end
 
 @for_petsc function PetscViewerHDF5HasGroup(petsclib::$UnionPetscLib, viewer::PetscViewer, path::String )
@@ -4698,7 +4698,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5HasDataset
 $(_doc_external("Viewer/PetscViewerHDF5HasObject"))
 """
 function PetscViewerHDF5HasObject(petsclib::PetscLibType, viewer::PetscViewer, obj)
-    error("PetscViewerHDF5HasObject: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5HasObject, (petsclib, viewer, obj)))
 end
 
 @for_petsc function PetscViewerHDF5HasObject(petsclib::$UnionPetscLib, viewer::PetscViewer, obj )
@@ -4738,7 +4738,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5HasAttribu
 $(_doc_external("Viewer/PetscViewerHDF5HasObjectAttribute"))
 """
 function PetscViewerHDF5HasObjectAttribute(petsclib::PetscLibType, viewer::PetscViewer, obj, name::String)
-    error("PetscViewerHDF5HasObjectAttribute: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5HasObjectAttribute, (petsclib, viewer, obj, name)))
 end
 
 @for_petsc function PetscViewerHDF5HasObjectAttribute(petsclib::$UnionPetscLib, viewer::PetscViewer, obj, name::String )
@@ -4773,7 +4773,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushTimest
 $(_doc_external("Viewer/PetscViewerHDF5IncrementTimestep"))
 """
 function PetscViewerHDF5IncrementTimestep(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerHDF5IncrementTimestep: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5IncrementTimestep, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerHDF5IncrementTimestep(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -4809,7 +4809,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushTimest
 $(_doc_external("Viewer/PetscViewerHDF5IsTimestepping"))
 """
 function PetscViewerHDF5IsTimestepping(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerHDF5IsTimestepping: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5IsTimestepping, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerHDF5IsTimestepping(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -4854,7 +4854,7 @@ See also: `PetscViewer`, `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewe
 $(_doc_external("Viewer/PetscViewerHDF5Load"))
 """
 function PetscViewerHDF5Load(petsclib::PetscLibType, viewer::PetscViewer, name::String, map::PetscLayout, datatype::hid_t)
-    error("PetscViewerHDF5Load: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5Load, (petsclib, viewer, name, map, datatype)))
 end
 
 @for_petsc function PetscViewerHDF5Load(petsclib::$UnionPetscLib, viewer::PetscViewer, name::String, map::PetscLayout, datatype::hid_t )
@@ -4900,7 +4900,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`
 $(_doc_external("Viewer/PetscViewerHDF5Open"))
 """
 function PetscViewerHDF5Open(petsclib::PetscLibType, comm::MPI_Comm, name::String, type::PetscFileMode)
-    error("PetscViewerHDF5Open: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5Open, (petsclib, comm, name, type)))
 end
 
 @for_petsc function PetscViewerHDF5Open(petsclib::$UnionPetscLib, comm::MPI_Comm, name::String, type::PetscFileMode )
@@ -4942,7 +4942,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushGroup(
 $(_doc_external("Viewer/PetscViewerHDF5OpenGroup"))
 """
 function PetscViewerHDF5OpenGroup(petsclib::PetscLibType, viewer::PetscViewer, path::String)
-    error("PetscViewerHDF5OpenGroup: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5OpenGroup, (petsclib, viewer, path)))
 end
 
 @for_petsc function PetscViewerHDF5OpenGroup(petsclib::$UnionPetscLib, viewer::PetscViewer, path::String )
@@ -4979,7 +4979,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushGroup(
 $(_doc_external("Viewer/PetscViewerHDF5PopGroup"))
 """
 function PetscViewerHDF5PopGroup(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerHDF5PopGroup: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5PopGroup, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerHDF5PopGroup(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -5012,7 +5012,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushTimest
 $(_doc_external("Viewer/PetscViewerHDF5PopTimestepping"))
 """
 function PetscViewerHDF5PopTimestepping(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerHDF5PopTimestepping: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5PopTimestepping, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerHDF5PopTimestepping(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -5046,7 +5046,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PopGroup()
 $(_doc_external("Viewer/PetscViewerHDF5PushGroup"))
 """
 function PetscViewerHDF5PushGroup(petsclib::PetscLibType, viewer::PetscViewer, name::String)
-    error("PetscViewerHDF5PushGroup: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5PushGroup, (petsclib, viewer, name)))
 end
 
 @for_petsc function PetscViewerHDF5PushGroup(petsclib::$UnionPetscLib, viewer::PetscViewer, name::String )
@@ -5079,7 +5079,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PopTimeste
 $(_doc_external("Viewer/PetscViewerHDF5PushTimestepping"))
 """
 function PetscViewerHDF5PushTimestepping(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerHDF5PushTimestepping: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5PushTimestepping, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerHDF5PushTimestepping(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -5119,7 +5119,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5ReadObject
 $(_doc_external("Viewer/PetscViewerHDF5ReadAttribute"))
 """
 function PetscViewerHDF5ReadAttribute(petsclib::PetscLibType, viewer::PetscViewer, parent::String, name::String, datatype::PetscDataType, defaultValue::Ptr{Cvoid})
-    error("PetscViewerHDF5ReadAttribute: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5ReadAttribute, (petsclib, viewer, parent, name, datatype, defaultValue)))
 end
 
 @for_petsc function PetscViewerHDF5ReadAttribute(petsclib::$UnionPetscLib, viewer::PetscViewer, parent::String, name::String, datatype::PetscDataType, defaultValue::Ptr{Cvoid} )
@@ -5162,7 +5162,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5ReadAttrib
 $(_doc_external("Viewer/PetscViewerHDF5ReadObjectAttribute"))
 """
 function PetscViewerHDF5ReadObjectAttribute(petsclib::PetscLibType, viewer::PetscViewer, obj, name::String, datatype::PetscDataType, defaultValue::Ptr{Cvoid})
-    error("PetscViewerHDF5ReadObjectAttribute: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5ReadObjectAttribute, (petsclib, viewer, obj, name, datatype, defaultValue)))
 end
 
 @for_petsc function PetscViewerHDF5ReadObjectAttribute(petsclib::$UnionPetscLib, viewer::PetscViewer, obj, name::String, datatype::PetscDataType, defaultValue::Ptr{Cvoid} )
@@ -5200,7 +5200,7 @@ See also: `PetscViewer`, `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `VecLoad()`
 $(_doc_external("Viewer/PetscViewerHDF5ReadSizes"))
 """
 function PetscViewerHDF5ReadSizes(petsclib::PetscLibType, viewer::PetscViewer, name::String)
-    error("PetscViewerHDF5ReadSizes: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5ReadSizes, (petsclib, viewer, name)))
 end
 
 @for_petsc function PetscViewerHDF5ReadSizes(petsclib::$UnionPetscLib, viewer::PetscViewer, name::String )
@@ -5242,7 +5242,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerFileSetMode()`, `PetscViewerCreate()`, 
 $(_doc_external("Viewer/PetscViewerHDF5SetBaseDimension2"))
 """
 function PetscViewerHDF5SetBaseDimension2(petsclib::PetscLibType, viewer::PetscViewer, flg::PetscBool)
-    error("PetscViewerHDF5SetBaseDimension2: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5SetBaseDimension2, (petsclib, viewer, flg)))
 end
 
 @for_petsc function PetscViewerHDF5SetBaseDimension2(petsclib::$UnionPetscLib, viewer::PetscViewer, flg::PetscBool )
@@ -5279,7 +5279,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5GetCollective()`, `PetscViewerCreat
 $(_doc_external("Viewer/PetscViewerHDF5SetCollective"))
 """
 function PetscViewerHDF5SetCollective(petsclib::PetscLibType, viewer::PetscViewer, flg::PetscBool)
-    error("PetscViewerHDF5SetCollective: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5SetCollective, (petsclib, viewer, flg)))
 end
 
 @for_petsc function PetscViewerHDF5SetCollective(petsclib::$UnionPetscLib, viewer::PetscViewer, flg::PetscBool )
@@ -5316,7 +5316,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5GetCompress()`
 $(_doc_external("Viewer/PetscViewerHDF5SetCompress"))
 """
 function PetscViewerHDF5SetCompress(petsclib::PetscLibType, viewer::PetscViewer, flg::PetscBool)
-    error("PetscViewerHDF5SetCompress: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5SetCompress, (petsclib, viewer, flg)))
 end
 
 @for_petsc function PetscViewerHDF5SetCompress(petsclib::$UnionPetscLib, viewer::PetscViewer, flg::PetscBool )
@@ -5350,7 +5350,7 @@ See also: `DM`, `PetscViewerHDF5GetDMPlexStorageVersionReading()`, `PetscViewerH
 $(_doc_external("DMPlex/PetscViewerHDF5SetDMPlexStorageVersionReading"))
 """
 function PetscViewerHDF5SetDMPlexStorageVersionReading(petsclib::PetscLibType, viewer::PetscViewer, version::DMPlexStorageVersion)
-    error("PetscViewerHDF5SetDMPlexStorageVersionReading: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5SetDMPlexStorageVersionReading, (petsclib, viewer, version)))
 end
 
 @for_petsc function PetscViewerHDF5SetDMPlexStorageVersionReading(petsclib::$UnionPetscLib, viewer::PetscViewer, version::DMPlexStorageVersion )
@@ -5384,7 +5384,7 @@ See also: `DM`, `PetscViewerHDF5GetDMPlexStorageVersionWriting()`, `PetscViewerH
 $(_doc_external("DMPlex/PetscViewerHDF5SetDMPlexStorageVersionWriting"))
 """
 function PetscViewerHDF5SetDMPlexStorageVersionWriting(petsclib::PetscLibType, viewer::PetscViewer, version::DMPlexStorageVersion)
-    error("PetscViewerHDF5SetDMPlexStorageVersionWriting: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5SetDMPlexStorageVersionWriting, (petsclib, viewer, version)))
 end
 
 @for_petsc function PetscViewerHDF5SetDMPlexStorageVersionWriting(petsclib::$UnionPetscLib, viewer::PetscViewer, version::DMPlexStorageVersion )
@@ -5421,7 +5421,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5GetDefaultTimestepping()`, `PetscVi
 $(_doc_external("Viewer/PetscViewerHDF5SetDefaultTimestepping"))
 """
 function PetscViewerHDF5SetDefaultTimestepping(petsclib::PetscLibType, viewer::PetscViewer, flg::PetscBool)
-    error("PetscViewerHDF5SetDefaultTimestepping: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5SetDefaultTimestepping, (petsclib, viewer, flg)))
 end
 
 @for_petsc function PetscViewerHDF5SetDefaultTimestepping(petsclib::$UnionPetscLib, viewer::PetscViewer, flg::PetscBool )
@@ -5460,7 +5460,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerFileSetMode()`, `PetscViewerCreate()`, 
 $(_doc_external("Viewer/PetscViewerHDF5SetSPOutput"))
 """
 function PetscViewerHDF5SetSPOutput(petsclib::PetscLibType, viewer::PetscViewer, flg::PetscBool)
-    error("PetscViewerHDF5SetSPOutput: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5SetSPOutput, (petsclib, viewer, flg)))
 end
 
 @for_petsc function PetscViewerHDF5SetSPOutput(petsclib::$UnionPetscLib, viewer::PetscViewer, flg::PetscBool )
@@ -5494,7 +5494,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushTimest
 $(_doc_external("Viewer/PetscViewerHDF5SetTimestep"))
 """
 function PetscViewerHDF5SetTimestep(petsclib::PetscLibType, viewer::PetscViewer, timestep::Integer)
-    error("PetscViewerHDF5SetTimestep: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5SetTimestep, (petsclib, viewer, timestep)))
 end
 
 @for_petsc function PetscViewerHDF5SetTimestep(petsclib::$UnionPetscLib, viewer::PetscViewer, timestep::$PetscInt )
@@ -5532,7 +5532,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5WriteObjec
 $(_doc_external("Viewer/PetscViewerHDF5WriteAttribute"))
 """
 function PetscViewerHDF5WriteAttribute(petsclib::PetscLibType, viewer::PetscViewer, parent::String, name::String, datatype::PetscDataType, value::Ptr{Cvoid})
-    error("PetscViewerHDF5WriteAttribute: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5WriteAttribute, (petsclib, viewer, parent, name, datatype, value)))
 end
 
 @for_petsc function PetscViewerHDF5WriteAttribute(petsclib::$UnionPetscLib, viewer::PetscViewer, parent::String, name::String, datatype::PetscDataType, value::Ptr{Cvoid} )
@@ -5566,7 +5566,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5PushGroup(
 $(_doc_external("Viewer/PetscViewerHDF5WriteGroup"))
 """
 function PetscViewerHDF5WriteGroup(petsclib::PetscLibType, viewer::PetscViewer, path::String)
-    error("PetscViewerHDF5WriteGroup: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5WriteGroup, (petsclib, viewer, path)))
 end
 
 @for_petsc function PetscViewerHDF5WriteGroup(petsclib::$UnionPetscLib, viewer::PetscViewer, path::String )
@@ -5604,7 +5604,7 @@ See also: `PETSCVIEWERHDF5`, `PetscViewerHDF5Open()`, `PetscViewerHDF5WriteAttri
 $(_doc_external("Viewer/PetscViewerHDF5WriteObjectAttribute"))
 """
 function PetscViewerHDF5WriteObjectAttribute(petsclib::PetscLibType, viewer::PetscViewer, obj, name::String, datatype::PetscDataType, value::Ptr{Cvoid})
-    error("PetscViewerHDF5WriteObjectAttribute: no generated method for these argument types")
+    throw(MethodError(PetscViewerHDF5WriteObjectAttribute, (petsclib, viewer, obj, name, datatype, value)))
 end
 
 @for_petsc function PetscViewerHDF5WriteObjectAttribute(petsclib::$UnionPetscLib, viewer::PetscViewer, obj, name::String, datatype::PetscDataType, value::Ptr{Cvoid} )
@@ -5632,7 +5632,7 @@ See also: `PetscViewer`, `PetscInitialize()`, `PetscViewerFinalizePackage()`
 $(_doc_external("Viewer/PetscViewerInitializePackage"))
 """
 function PetscViewerInitializePackage(petsclib::PetscLibType)
-    error("PetscViewerInitializePackage: no generated method for these argument types")
+    throw(MethodError(PetscViewerInitializePackage, (petsclib, )))
 end
 
 @for_petsc function PetscViewerInitializePackage(petsclib::$UnionPetscLib)
@@ -5662,7 +5662,7 @@ See also: `PETSCVIEWERMATHEMATICA`, `PetscViewerMathematicaGetName()`, `PetscVie
 $(_doc_external("Viewer/PetscViewerMathematicaClearName"))
 """
 function PetscViewerMathematicaClearName(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerMathematicaClearName: no generated method for these argument types")
+    throw(MethodError(PetscViewerMathematicaClearName, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerMathematicaClearName(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -5691,7 +5691,7 @@ See also: `PetscFinalize()`
 $(_doc_external("Viewer/PetscViewerMathematicaFinalizePackage"))
 """
 function PetscViewerMathematicaFinalizePackage(petsclib::PetscLibType)
-    error("PetscViewerMathematicaFinalizePackage: no generated method for these argument types")
+    throw(MethodError(PetscViewerMathematicaFinalizePackage, (petsclib, )))
 end
 
 @for_petsc function PetscViewerMathematicaFinalizePackage(petsclib::$UnionPetscLib)
@@ -5724,7 +5724,7 @@ See also: `PETSCVIEWERMATHEMATICA`, `PetscViewerMathematicaSetName()`, `PetscVie
 $(_doc_external("Viewer/PetscViewerMathematicaGetName"))
 """
 function PetscViewerMathematicaGetName(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerMathematicaGetName: no generated method for these argument types")
+    throw(MethodError(PetscViewerMathematicaGetName, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerMathematicaGetName(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -5755,7 +5755,7 @@ See also: `PetscSysInitializePackage()`, `PetscInitialize()`
 $(_doc_external("Viewer/PetscViewerMathematicaInitializePackage"))
 """
 function PetscViewerMathematicaInitializePackage(petsclib::PetscLibType)
-    error("PetscViewerMathematicaInitializePackage: no generated method for these argument types")
+    throw(MethodError(PetscViewerMathematicaInitializePackage, (petsclib, )))
 end
 
 @for_petsc function PetscViewerMathematicaInitializePackage(petsclib::$UnionPetscLib)
@@ -5801,7 +5801,7 @@ See also: `PETSCVIEWERMATHEMATICA`, `MatView()`, `VecView()`
 $(_doc_external("Viewer/PetscViewerMathematicaOpen"))
 """
 function PetscViewerMathematicaOpen(petsclib::PetscLibType, comm::MPI_Comm, port::Cint, machine::String, mode::String)
-    error("PetscViewerMathematicaOpen: no generated method for these argument types")
+    throw(MethodError(PetscViewerMathematicaOpen, (petsclib, comm, port, machine, mode)))
 end
 
 @for_petsc function PetscViewerMathematicaOpen(petsclib::$UnionPetscLib, comm::MPI_Comm, port::Cint, machine::String, mode::String )
@@ -5842,7 +5842,7 @@ See also: `PetscViewer`, `PETSCVIEWERMATHEMATICA`, `PetscViewerMathematicaPutMat
 $(_doc_external("Viewer/PetscViewerMathematicaPutCSRMatrix"))
 """
 function PetscViewerMathematicaPutCSRMatrix(petsclib::PetscLibType, viewer::PetscViewer, m::Cint, n::Cint)
-    error("PetscViewerMathematicaPutCSRMatrix: no generated method for these argument types")
+    throw(MethodError(PetscViewerMathematicaPutCSRMatrix, (petsclib, viewer, m, n)))
 end
 
 @for_petsc function PetscViewerMathematicaPutCSRMatrix(petsclib::$UnionPetscLib, viewer::PetscViewer, m::Cint, n::Cint )
@@ -5885,7 +5885,7 @@ See also: `PetscViewer`, `PETSCVIEWERMATHEMATICA`, `PetscViewerMathematicaPutCSR
 $(_doc_external("Viewer/PetscViewerMathematicaPutMatrix"))
 """
 function PetscViewerMathematicaPutMatrix(petsclib::PetscLibType, viewer::PetscViewer, m::Cint, n::Cint)
-    error("PetscViewerMathematicaPutMatrix: no generated method for these argument types")
+    throw(MethodError(PetscViewerMathematicaPutMatrix, (petsclib, viewer, m, n)))
 end
 
 @for_petsc function PetscViewerMathematicaPutMatrix(petsclib::$UnionPetscLib, viewer::PetscViewer, m::Cint, n::Cint )
@@ -5919,7 +5919,7 @@ See also: `PETSCVIEWERMATHEMATICA`, `PetscViewerMathematicaClearName()`
 $(_doc_external("Viewer/PetscViewerMathematicaSetName"))
 """
 function PetscViewerMathematicaSetName(petsclib::PetscLibType, viewer::PetscViewer, name::String)
-    error("PetscViewerMathematicaSetName: no generated method for these argument types")
+    throw(MethodError(PetscViewerMathematicaSetName, (petsclib, viewer, name)))
 end
 
 @for_petsc function PetscViewerMathematicaSetName(petsclib::$UnionPetscLib, viewer::PetscViewer, name::String )
@@ -5951,7 +5951,7 @@ See also: `PetscViewerMathematicaSetName()`, `PetscViewerMathematicaGetVector()`
 $(_doc_external("Viewer/PetscViewerMathematicaSkipPackets"))
 """
 function PetscViewerMathematicaSkipPackets(petsclib::PetscLibType, viewer::PetscViewer, type::Cint)
-    error("PetscViewerMathematicaSkipPackets: no generated method for these argument types")
+    throw(MethodError(PetscViewerMathematicaSkipPackets, (petsclib, viewer, type)))
 end
 
 @for_petsc function PetscViewerMathematicaSkipPackets(petsclib::$UnionPetscLib, viewer::PetscViewer, type::Cint )
@@ -5988,7 +5988,7 @@ See also: `PETSCVIEWERMATLAB`, `PetscViewerMatlabPutArray()`
 $(_doc_external("Viewer/PetscViewerMatlabGetArray"))
 """
 function PetscViewerMatlabGetArray(petsclib::PetscLibType, mfile::PetscViewer, m::Cint, n::Cint, array::AbstractVector{<:Number}, name::String)
-    error("PetscViewerMatlabGetArray: no generated method for these argument types")
+    throw(MethodError(PetscViewerMatlabGetArray, (petsclib, mfile, m, n, array, name)))
 end
 
 @for_petsc function PetscViewerMatlabGetArray(petsclib::$UnionPetscLib, mfile::PetscViewer, m::Cint, n::Cint, array::Vector{$PetscScalar}, name::String )
@@ -6032,7 +6032,7 @@ See also: `PETSCVIEWERMATLAB`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat(
 $(_doc_external("Viewer/PetscViewerMatlabOpen"))
 """
 function PetscViewerMatlabOpen(petsclib::PetscLibType, comm::MPI_Comm, name::String, type::PetscFileMode)
-    error("PetscViewerMatlabOpen: no generated method for these argument types")
+    throw(MethodError(PetscViewerMatlabOpen, (petsclib, comm, name, type)))
 end
 
 @for_petsc function PetscViewerMatlabOpen(petsclib::$UnionPetscLib, comm::MPI_Comm, name::String, type::PetscFileMode )
@@ -6071,7 +6071,7 @@ See also: `PETSCVIEWERMATLAB`, `PetscViewerMatlabGetArray()`
 $(_doc_external("Viewer/PetscViewerMatlabPutArray"))
 """
 function PetscViewerMatlabPutArray(petsclib::PetscLibType, mfile::PetscViewer, m::Cint, n::Cint, array::AbstractVector{<:Number}, name::String)
-    error("PetscViewerMatlabPutArray: no generated method for these argument types")
+    throw(MethodError(PetscViewerMatlabPutArray, (petsclib, mfile, m, n, array, name)))
 end
 
 @for_petsc function PetscViewerMatlabPutArray(petsclib::$UnionPetscLib, mfile::PetscViewer, m::Cint, n::Cint, array::Vector{$PetscScalar}, name::String )
@@ -6106,7 +6106,7 @@ See also: `PetscViewer`, `PETSCVIEWERMATLAB`, `PetscViewerMatlabPutArray()`, `Pe
 $(_doc_external("Viewer/PetscViewerMatlabPutVariable"))
 """
 function PetscViewerMatlabPutVariable(petsclib::PetscLibType, viewer::PetscViewer, name::String, mat::Ptr{Cvoid})
-    error("PetscViewerMatlabPutVariable: no generated method for these argument types")
+    throw(MethodError(PetscViewerMatlabPutVariable, (petsclib, viewer, name, mat)))
 end
 
 @for_petsc function PetscViewerMatlabPutVariable(petsclib::$UnionPetscLib, viewer::PetscViewer, name::String, mat::Ptr{Cvoid} )
@@ -6148,7 +6148,7 @@ See also: `PetscViewer()`, `PETSCVIEWERDRAW`, `PetscViewerDrawGetDrawLG()`, `Pet
 $(_doc_external("Viewer/PetscViewerMonitorLGSetUp"))
 """
 function PetscViewerMonitorLGSetUp(petsclib::PetscLibType, viewer::PetscViewer, host::String, title::String, metric::String, l::Integer, names::String, x::Cint, y::Cint, m::Cint, n::Cint)
-    error("PetscViewerMonitorLGSetUp: no generated method for these argument types")
+    throw(MethodError(PetscViewerMonitorLGSetUp, (petsclib, viewer, host, title, metric, l, names, x, y, m, n)))
 end
 
 @for_petsc function PetscViewerMonitorLGSetUp(petsclib::$UnionPetscLib, viewer::PetscViewer, host::String, title::String, metric::String, l::$PetscInt, names::String, x::Cint, y::Cint, m::Cint, n::Cint )
@@ -6183,7 +6183,7 @@ See also: `PetscViewer`, `PetscViewerFormat`, `PetscViewerASCIIOpen()`, `PetscVi
 $(_doc_external("Viewer/PetscViewerPopFormat"))
 """
 function PetscViewerPopFormat(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerPopFormat: no generated method for these argument types")
+    throw(MethodError(PetscViewerPopFormat, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerPopFormat(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -6218,7 +6218,7 @@ See also: `PetscViewer`, `PetscViewerFormat`, `PetscViewerASCIIOpen()`, `PetscVi
 $(_doc_external("Viewer/PetscViewerPushFormat"))
 """
 function PetscViewerPushFormat(petsclib::PetscLibType, viewer::PetscViewer, format::PetscViewerFormat)
-    error("PetscViewerPushFormat: no generated method for these argument types")
+    throw(MethodError(PetscViewerPushFormat, (petsclib, viewer, format)))
 end
 
 @for_petsc function PetscViewerPushFormat(petsclib::$UnionPetscLib, viewer::PetscViewer, format::PetscViewerFormat )
@@ -6255,7 +6255,7 @@ See also: `PetscViewer`, `PetscViewerType`, `PETSCVIEWERPYTHON`, `PetscViewerPyt
 $(_doc_external("Viewer/PetscViewerPythonCreate"))
 """
 function PetscViewerPythonCreate(petsclib::PetscLibType, comm::MPI_Comm, pyname::String)
-    error("PetscViewerPythonCreate: no generated method for these argument types")
+    throw(MethodError(PetscViewerPythonCreate, (petsclib, comm, pyname)))
 end
 
 @for_petsc function PetscViewerPythonCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, pyname::String )
@@ -6293,7 +6293,7 @@ See also: `PetscViewer`, `PetscViewerType`, `PetscViewerCreate()`, `PetscViewerS
 $(_doc_external("Viewer/PetscViewerPythonGetType"))
 """
 function PetscViewerPythonGetType(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerPythonGetType: no generated method for these argument types")
+    throw(MethodError(PetscViewerPythonGetType, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerPythonGetType(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -6332,7 +6332,7 @@ See also: `PetscViewer`, `PetscViewerType`, `PetscViewerCreate()`, `PetscViewerS
 $(_doc_external("Viewer/PetscViewerPythonSetType"))
 """
 function PetscViewerPythonSetType(petsclib::PetscLibType, viewer::PetscViewer, pyname::String)
-    error("PetscViewerPythonSetType: no generated method for these argument types")
+    throw(MethodError(PetscViewerPythonSetType, (petsclib, viewer, pyname)))
 end
 
 @for_petsc function PetscViewerPythonSetType(petsclib::$UnionPetscLib, viewer::PetscViewer, pyname::String )
@@ -6366,7 +6366,7 @@ See also: `PetscViewer`, `PetscViewerPythonCreate()`
 $(_doc_external("Viewer/PetscViewerPythonViewObject"))
 """
 function PetscViewerPythonViewObject(petsclib::PetscLibType, viewer::PetscViewer, obj)
-    error("PetscViewerPythonViewObject: no generated method for these argument types")
+    throw(MethodError(PetscViewerPythonViewObject, (petsclib, viewer, obj)))
 end
 
 @for_petsc function PetscViewerPythonViewObject(petsclib::$UnionPetscLib, viewer::PetscViewer, obj )
@@ -6407,7 +6407,7 @@ See also: `PetscViewer`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`, `P
 $(_doc_external("Viewer/PetscViewerRead"))
 """
 function PetscViewerRead(petsclib::PetscLibType, viewer::PetscViewer, data::Ptr{Cvoid}, num::Integer, dtype::PetscDataType)
-    error("PetscViewerRead: no generated method for these argument types")
+    throw(MethodError(PetscViewerRead, (petsclib, viewer, data, num, dtype)))
 end
 
 @for_petsc function PetscViewerRead(petsclib::$UnionPetscLib, viewer::PetscViewer, data::Ptr{Cvoid}, num::$PetscInt, dtype::PetscDataType )
@@ -6445,7 +6445,7 @@ See also: `PetscViewerRead()`, `PetscViewer`, `PetscViewerWritable()`, `PetscVie
 $(_doc_external("Viewer/PetscViewerReadable"))
 """
 function PetscViewerReadable(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerReadable: no generated method for these argument types")
+    throw(MethodError(PetscViewerReadable, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerReadable(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -6481,7 +6481,7 @@ See also: `PetscViewerRegisterAll()`
 $(_doc_external("Viewer/PetscViewerRegister"))
 """
 function PetscViewerRegister(petsclib::PetscLibType, sname::String, fnc::external)
-    error("PetscViewerRegister: no generated method for these argument types")
+    throw(MethodError(PetscViewerRegister, (petsclib, sname, fnc)))
 end
 
 @for_petsc function PetscViewerRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
@@ -6517,7 +6517,7 @@ See also: `PetscViewer`, `PetscViewerSocketOpen()`, `PetscViewerASCIIOpen()`, `P
 $(_doc_external("Viewer/PetscViewerRestoreSubViewer"))
 """
 function PetscViewerRestoreSubViewer(petsclib::PetscLibType, viewer::PetscViewer, comm::MPI_Comm, outviewer::PetscViewer)
-    error("PetscViewerRestoreSubViewer: no generated method for these argument types")
+    throw(MethodError(PetscViewerRestoreSubViewer, (petsclib, viewer, comm, outviewer)))
 end
 
 @for_petsc function PetscViewerRestoreSubViewer(petsclib::$UnionPetscLib, viewer::PetscViewer, comm::MPI_Comm, outviewer::PetscViewer )
@@ -6560,7 +6560,7 @@ See also: `PetscViewerDestroy()`, `PetscViewerStringSPrintf()`, `PETSC_VIEWER_SA
 $(_doc_external("Viewer/PetscViewerSAWsOpen"))
 """
 function PetscViewerSAWsOpen(petsclib::PetscLibType, comm::MPI_Comm)
-    error("PetscViewerSAWsOpen: no generated method for these argument types")
+    throw(MethodError(PetscViewerSAWsOpen, (petsclib, comm)))
 end
 
 @for_petsc function PetscViewerSAWsOpen(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -6595,7 +6595,7 @@ See also: `PetscViewer`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscVi
 $(_doc_external("Viewer/PetscViewerSetFromOptions"))
 """
 function PetscViewerSetFromOptions(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerSetFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscViewerSetFromOptions, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerSetFromOptions(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -6628,7 +6628,7 @@ See also: `PetscViewer`, `PetscViewerSetFromOptions()`, `PetscViewerAppendOption
 $(_doc_external("Viewer/PetscViewerSetOptionsPrefix"))
 """
 function PetscViewerSetOptionsPrefix(petsclib::PetscLibType, viewer::PetscViewer, prefix::String)
-    error("PetscViewerSetOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(PetscViewerSetOptionsPrefix, (petsclib, viewer, prefix)))
 end
 
 @for_petsc function PetscViewerSetOptionsPrefix(petsclib::$UnionPetscLib, viewer::PetscViewer, prefix::String )
@@ -6665,7 +6665,7 @@ See also: `PetscViewer`, `PetscViewerCreate()`, `PetscViewerGetType()`, `PetscVi
 $(_doc_external("Viewer/PetscViewerSetType"))
 """
 function PetscViewerSetType(petsclib::PetscLibType, viewer::PetscViewer, type::String)
-    error("PetscViewerSetType: no generated method for these argument types")
+    throw(MethodError(PetscViewerSetType, (petsclib, viewer, type)))
 end
 
 @for_petsc function PetscViewerSetType(petsclib::$UnionPetscLib, viewer::PetscViewer, type::String )
@@ -6698,7 +6698,7 @@ See also: `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`
 $(_doc_external("Viewer/PetscViewerSetUp"))
 """
 function PetscViewerSetUp(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerSetUp: no generated method for these argument types")
+    throw(MethodError(PetscViewerSetUp, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerSetUp(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -6751,7 +6751,7 @@ See also: `PETSCVIEWERBINARY`, `PETSCVIEWERSOCKET`, `MatView()`, `VecView()`, `P
 $(_doc_external("Viewer/PetscViewerSocketOpen"))
 """
 function PetscViewerSocketOpen(petsclib::PetscLibType, comm::MPI_Comm, machine::String, port::Cint)
-    error("PetscViewerSocketOpen: no generated method for these argument types")
+    throw(MethodError(PetscViewerSocketOpen, (petsclib, comm, machine, port)))
 end
 
 @for_petsc function PetscViewerSocketOpen(petsclib::$UnionPetscLib, comm::MPI_Comm, machine::String, port::Cint )
@@ -6790,7 +6790,7 @@ See also: `PETSCVIEWERMATLAB`, `PETSCVIEWERSOCKET`, `PetscViewerSocketOpen()`
 $(_doc_external("Viewer/PetscViewerSocketSetConnection"))
 """
 function PetscViewerSocketSetConnection(petsclib::PetscLibType, v::PetscViewer, machine::String, port::Cint)
-    error("PetscViewerSocketSetConnection: no generated method for these argument types")
+    throw(MethodError(PetscViewerSocketSetConnection, (petsclib, v, machine, port)))
 end
 
 @for_petsc function PetscViewerSocketSetConnection(petsclib::$UnionPetscLib, v::PetscViewer, machine::String, port::Cint )
@@ -6828,7 +6828,7 @@ See also: `PetscViewerStringOpen()`, `PETSCVIEWERSTRING`, `PetscViewerStringSetS
 $(_doc_external("Viewer/PetscViewerStringGetStringRead"))
 """
 function PetscViewerStringGetStringRead(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerStringGetStringRead: no generated method for these argument types")
+    throw(MethodError(PetscViewerStringGetStringRead, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerStringGetStringRead(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -6872,7 +6872,7 @@ See also: `PETSCVIEWERSTRING`, `PetscViewerDestroy()`, `PetscViewerStringSPrintf
 $(_doc_external("Viewer/PetscViewerStringOpen"))
 """
 function PetscViewerStringOpen(petsclib::PetscLibType, comm::MPI_Comm, string::String, len::Csize_t)
-    error("PetscViewerStringOpen: no generated method for these argument types")
+    throw(MethodError(PetscViewerStringOpen, (petsclib, comm, string, len)))
 end
 
 @for_petsc function PetscViewerStringOpen(petsclib::$UnionPetscLib, comm::MPI_Comm, string::String, len::Csize_t )
@@ -6908,7 +6908,7 @@ See also: `PetscViewerStringOpen()`, `PETSCVIEWERSTRING`, `PetscViewerStringGetS
 $(_doc_external("Viewer/PetscViewerStringSetOwnString"))
 """
 function PetscViewerStringSetOwnString(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerStringSetOwnString: no generated method for these argument types")
+    throw(MethodError(PetscViewerStringSetOwnString, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerStringSetOwnString(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -6944,7 +6944,7 @@ See also: `PetscViewerStringOpen()`, `PETSCVIEWERSTRING`, `PetscViewerStringGetS
 $(_doc_external("Viewer/PetscViewerStringSetString"))
 """
 function PetscViewerStringSetString(petsclib::PetscLibType, viewer::PetscViewer, string::String, len::Csize_t)
-    error("PetscViewerStringSetString: no generated method for these argument types")
+    throw(MethodError(PetscViewerStringSetString, (petsclib, viewer, string, len)))
 end
 
 @for_petsc function PetscViewerStringSetString(petsclib::$UnionPetscLib, viewer::PetscViewer, string::String, len::Csize_t )
@@ -6983,7 +6983,7 @@ See also: `PETSCVIEWERVTK`, `PetscViewerVTKOpen()`, `DMDAVTKWriteAll()`, `PetscV
 $(_doc_external("Viewer/PetscViewerVTKAddField"))
 """
 function PetscViewerVTKAddField(petsclib::PetscLibType, viewer::PetscViewer, dm, PetscViewerVTKWriteFunction::external, fieldnum::Integer, fieldtype::PetscViewerVTKFieldType, checkdm::PetscBool, vec)
-    error("PetscViewerVTKAddField: no generated method for these argument types")
+    throw(MethodError(PetscViewerVTKAddField, (petsclib, viewer, dm, PetscViewerVTKWriteFunction, fieldnum, fieldtype, checkdm, vec)))
 end
 
 @for_petsc function PetscViewerVTKAddField(petsclib::$UnionPetscLib, viewer::PetscViewer, dm, PetscViewerVTKWriteFunction::external, fieldnum::$PetscInt, fieldtype::PetscViewerVTKFieldType, checkdm::PetscBool, vec )
@@ -7017,7 +7017,7 @@ See also: `PETSCVIEWERVTK`, `PetscViewerVTKOpen()`, `DMDAVTKWriteAll()`, `PetscV
 $(_doc_external("Viewer/PetscViewerVTKGetDM"))
 """
 function PetscViewerVTKGetDM(petsclib::PetscLibType, viewer::PetscViewer, dm::PetscObject)
-    error("PetscViewerVTKGetDM: no generated method for these argument types")
+    throw(MethodError(PetscViewerVTKGetDM, (petsclib, viewer, dm)))
 end
 
 @for_petsc function PetscViewerVTKGetDM(petsclib::$UnionPetscLib, viewer::PetscViewer, dm::PetscObject )
@@ -7062,7 +7062,7 @@ See also: `PETSCVIEWERVTK`, `PetscViewerASCIIOpen()`, `PetscViewerPushFormat()`,
 $(_doc_external("Viewer/PetscViewerVTKOpen"))
 """
 function PetscViewerVTKOpen(petsclib::PetscLibType, comm::MPI_Comm, name::String, type::PetscFileMode)
-    error("PetscViewerVTKOpen: no generated method for these argument types")
+    throw(MethodError(PetscViewerVTKOpen, (petsclib, comm, name, type)))
 end
 
 @for_petsc function PetscViewerVTKOpen(petsclib::$UnionPetscLib, comm::MPI_Comm, name::String, type::PetscFileMode )
@@ -7097,7 +7097,7 @@ See also: `PETSCVIEWERVU`, `PetscViewerVUPrintDeferred()`
 $(_doc_external("Viewer/PetscViewerVUFlushDeferred"))
 """
 function PetscViewerVUFlushDeferred(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerVUFlushDeferred: no generated method for these argument types")
+    throw(MethodError(PetscViewerVUFlushDeferred, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerVUFlushDeferred(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -7133,7 +7133,7 @@ See also: `PETSCVIEWERVU`, `PetscViewerASCIIGetPointer()`
 $(_doc_external("Viewer/PetscViewerVUGetPointer"))
 """
 function PetscViewerVUGetPointer(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerVUGetPointer: no generated method for these argument types")
+    throw(MethodError(PetscViewerVUGetPointer, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerVUGetPointer(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -7172,7 +7172,7 @@ See also: `PETSCVIEWERVU`
 $(_doc_external("Viewer/PetscViewerVUGetVecSeen"))
 """
 function PetscViewerVUGetVecSeen(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerVUGetVecSeen: no generated method for these argument types")
+    throw(MethodError(PetscViewerVUGetVecSeen, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerVUGetVecSeen(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -7209,7 +7209,7 @@ See also: `PETSCVIEWERVU`, `PetscViewerVUGetVecSeen()`
 $(_doc_external("Viewer/PetscViewerVUSetVecSeen"))
 """
 function PetscViewerVUSetVecSeen(petsclib::PetscLibType, viewer::PetscViewer, vecSeen::PetscBool)
-    error("PetscViewerVUSetVecSeen: no generated method for these argument types")
+    throw(MethodError(PetscViewerVUSetVecSeen, (petsclib, viewer, vecSeen)))
 end
 
 @for_petsc function PetscViewerVUSetVecSeen(petsclib::$UnionPetscLib, viewer::PetscViewer, vecSeen::PetscBool )
@@ -7244,7 +7244,7 @@ See also: `PetscViewer`, `PetscViewerPushFormat()`, `PetscViewerASCIIOpen()`, `P
 $(_doc_external("Viewer/PetscViewerView"))
 """
 function PetscViewerView(petsclib::PetscLibType, v::PetscViewer, viewer::PetscViewer)
-    error("PetscViewerView: no generated method for these argument types")
+    throw(MethodError(PetscViewerView, (petsclib, v, viewer)))
 end
 
 @for_petsc function PetscViewerView(petsclib::$UnionPetscLib, v::PetscViewer, viewer::PetscViewer )
@@ -7279,7 +7279,7 @@ See also: `PetscViewer`, `PetscViewerView`, `PetscObjectViewFromOptions()`, `Pet
 $(_doc_external("Viewer/PetscViewerViewFromOptions"))
 """
 function PetscViewerViewFromOptions(petsclib::PetscLibType, A::PetscViewer, obj, name::String)
-    error("PetscViewerViewFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscViewerViewFromOptions, (petsclib, A, obj, name)))
 end
 
 @for_petsc function PetscViewerViewFromOptions(petsclib::$UnionPetscLib, A::PetscViewer, obj, name::String )
@@ -7315,7 +7315,7 @@ See also: `PetscViewer`, `PetscViewerReadable()`, `PetscViewerCheckWritable()`, 
 $(_doc_external("Viewer/PetscViewerWritable"))
 """
 function PetscViewerWritable(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscViewerWritable: no generated method for these argument types")
+    throw(MethodError(PetscViewerWritable, (petsclib, viewer)))
 end
 
 @for_petsc function PetscViewerWritable(petsclib::$UnionPetscLib, viewer::PetscViewer )
@@ -7353,7 +7353,7 @@ See also: `PetscViewer`, `PetscViewers`, `PetscViewerCreate()`, `PetscViewersDes
 $(_doc_external("Viewer/PetscViewersCreate"))
 """
 function PetscViewersCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("PetscViewersCreate: no generated method for these argument types")
+    throw(MethodError(PetscViewersCreate, (petsclib, comm)))
 end
 
 @for_petsc function PetscViewersCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -7388,7 +7388,7 @@ See also: `PetscViewer`, `PetscViewerDestroy()`, `PetscViewers`, `PetscViewerSoc
 $(_doc_external("Viewer/PetscViewersDestroy"))
 """
 function PetscViewersDestroy(petsclib::PetscLibType, v::Union{PetscViewers, Ref{PetscViewers}})
-    error("PetscViewersDestroy: no generated method for these argument types")
+    throw(MethodError(PetscViewersDestroy, (petsclib, v)))
 end
 
 @for_petsc function PetscViewersDestroy(petsclib::$UnionPetscLib, v::Union{PetscViewers, Ref{PetscViewers}} )
@@ -7426,7 +7426,7 @@ See also: `PetscViewer`, `PetscViewers`, `PetscViewersCreate()`, `PetscViewersDe
 $(_doc_external("Viewer/PetscViewersGetViewer"))
 """
 function PetscViewersGetViewer(petsclib::PetscLibType, viewers::PetscViewers, n::Integer)
-    error("PetscViewersGetViewer: no generated method for these argument types")
+    throw(MethodError(PetscViewersGetViewer, (petsclib, viewers, n)))
 end
 
 @for_petsc function PetscViewersGetViewer(petsclib::$UnionPetscLib, viewers::PetscViewers, n::$PetscInt )

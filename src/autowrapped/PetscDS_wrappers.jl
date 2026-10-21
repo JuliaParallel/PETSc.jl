@@ -33,7 +33,7 @@ See also: `PetscDS`, `PetscWeakForm`, `DMLabel`, `DMBoundaryConditionType`, `Pet
 $(_doc_external("DT/PetscDSAddBoundary"))
 """
 function PetscDSAddBoundary(petsclib::PetscLibType, ds::PetscDS, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::Integer, values::AbstractVector{<:Number}, field::Integer, Nc::Integer, comps::AbstractVector{<:Number}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid})
-    error("PetscDSAddBoundary: no generated method for these argument types")
+    throw(MethodError(PetscDSAddBoundary, (petsclib, ds, type, name, label, Nv, values, field, Nc, comps, bcFunc, bcFunc_t, ctx)))
 end
 
 @for_petsc function PetscDSAddBoundary(petsclib::$UnionPetscLib, ds::PetscDS, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::$PetscInt, values::Vector{$PetscInt}, field::$PetscInt, Nc::$PetscInt, comps::Vector{$PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
@@ -116,7 +116,7 @@ See also: `PetscDS`, `PetscWeakForm`, `DMLabel`, `DMBoundaryConditionType`, `Pet
 $(_doc_external("DT/PetscDSAddBoundaryByName"))
 """
 function PetscDSAddBoundaryByName(petsclib::PetscLibType, ds::PetscDS, type::DMBoundaryConditionType, name::String, lname::String, Nv::Integer, values::AbstractVector{<:Number}, field::Integer, Nc::Integer, comps::AbstractVector{<:Number}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid})
-    error("PetscDSAddBoundaryByName: no generated method for these argument types")
+    throw(MethodError(PetscDSAddBoundaryByName, (petsclib, ds, type, name, lname, Nv, values, field, Nc, comps, bcFunc, bcFunc_t, ctx)))
 end
 
 @for_petsc function PetscDSAddBoundaryByName(petsclib::$UnionPetscLib, ds::PetscDS, type::DMBoundaryConditionType, name::String, lname::String, Nv::$PetscInt, values::Vector{$PetscInt}, field::$PetscInt, Nc::$PetscInt, comps::Vector{$PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
@@ -152,7 +152,7 @@ See also: `PetscWeakForm`, `PetscFE`, `PetscFV`, `PetscDSGetDiscretization()`, `
 $(_doc_external("DT/PetscDSAddDiscretization"))
 """
 function PetscDSAddDiscretization(petsclib::PetscLibType, prob::PetscDS, disc)
-    error("PetscDSAddDiscretization: no generated method for these argument types")
+    throw(MethodError(PetscDSAddDiscretization, (petsclib, prob, disc)))
 end
 
 @for_petsc function PetscDSAddDiscretization(petsclib::$UnionPetscLib, prob::PetscDS, disc )
@@ -191,7 +191,7 @@ See also: `PetscDS`, `PetscDSCopyEquations()`, `PetscDSCopyConstants()`, `PetscD
 $(_doc_external("DT/PetscDSCopy"))
 """
 function PetscDSCopy(petsclib::PetscLibType, ds::PetscDS, minDegree::Integer, maxDegree::Integer, dmNew::AbstractPetscDM, dsNew::PetscDS)
-    error("PetscDSCopy: no generated method for these argument types")
+    throw(MethodError(PetscDSCopy, (petsclib, ds, minDegree, maxDegree, dmNew, dsNew)))
 end
 
 @for_petsc function PetscDSCopy(petsclib::$UnionPetscLib, ds::PetscDS, minDegree::$PetscInt, maxDegree::$PetscInt, dmNew::AbstractPetscDM, dsNew::PetscDS )
@@ -229,7 +229,7 @@ See also: `PetscDS`, `DMBoundary`, `PetscDSCopyEquations()`, `PetscDSSetResidual
 $(_doc_external("DT/PetscDSCopyBoundary"))
 """
 function PetscDSCopyBoundary(petsclib::PetscLibType, ds::PetscDS, numFields::Integer, fields::AbstractVector{<:Number}, newds::PetscDS)
-    error("PetscDSCopyBoundary: no generated method for these argument types")
+    throw(MethodError(PetscDSCopyBoundary, (petsclib, ds, numFields, fields, newds)))
 end
 
 @for_petsc function PetscDSCopyBoundary(petsclib::$UnionPetscLib, ds::PetscDS, numFields::$PetscInt, fields::Vector{$PetscInt}, newds::PetscDS )
@@ -265,7 +265,7 @@ See also: `PetscDS`, `PetscDSCopyBoundary()`, `PetscDSCopyEquations()`, `PetscDS
 $(_doc_external("DT/PetscDSCopyBounds"))
 """
 function PetscDSCopyBounds(petsclib::PetscLibType, ds::PetscDS, newds::PetscDS)
-    error("PetscDSCopyBounds: no generated method for these argument types")
+    throw(MethodError(PetscDSCopyBounds, (petsclib, ds, newds)))
 end
 
 @for_petsc function PetscDSCopyBounds(petsclib::$UnionPetscLib, ds::PetscDS, newds::PetscDS )
@@ -301,7 +301,7 @@ See also: `PetscDS`, `PetscDSCopyBoundary()`, `PetscDSCopyEquations()`, `PetscDS
 $(_doc_external("DT/PetscDSCopyConstants"))
 """
 function PetscDSCopyConstants(petsclib::PetscLibType, prob::PetscDS, newprob::PetscDS)
-    error("PetscDSCopyConstants: no generated method for these argument types")
+    throw(MethodError(PetscDSCopyConstants, (petsclib, prob, newprob)))
 end
 
 @for_petsc function PetscDSCopyConstants(petsclib::$UnionPetscLib, prob::PetscDS, newprob::PetscDS )
@@ -337,7 +337,7 @@ See also: `PetscDS`, `PetscDSCopyBoundary()`, `PetscDSSetResidual()`, `PetscDSSe
 $(_doc_external("DT/PetscDSCopyEquations"))
 """
 function PetscDSCopyEquations(petsclib::PetscLibType, prob::PetscDS, newprob::PetscDS)
-    error("PetscDSCopyEquations: no generated method for these argument types")
+    throw(MethodError(PetscDSCopyEquations, (petsclib, prob, newprob)))
 end
 
 @for_petsc function PetscDSCopyEquations(petsclib::$UnionPetscLib, prob::PetscDS, newprob::PetscDS )
@@ -373,7 +373,7 @@ See also: `PetscDS`, `PetscDSCopyBoundary()`, `PetscDSCopyEquations()`, `PetscDS
 $(_doc_external("DT/PetscDSCopyExactSolutions"))
 """
 function PetscDSCopyExactSolutions(petsclib::PetscLibType, ds::PetscDS, newds::PetscDS)
-    error("PetscDSCopyExactSolutions: no generated method for these argument types")
+    throw(MethodError(PetscDSCopyExactSolutions, (petsclib, ds, newds)))
 end
 
 @for_petsc function PetscDSCopyExactSolutions(petsclib::$UnionPetscLib, ds::PetscDS, newds::PetscDS )
@@ -409,7 +409,7 @@ See also: `PetscDS`, `PetscDSSetType()`, `PETSCDSBASIC`, `PetscDSType`, `PetscDS
 $(_doc_external("DT/PetscDSCreate"))
 """
 function PetscDSCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("PetscDSCreate: no generated method for these argument types")
+    throw(MethodError(PetscDSCreate, (petsclib, comm)))
 end
 
 @for_petsc function PetscDSCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -444,7 +444,7 @@ See also: `PetscDSView()`
 $(_doc_external("DT/PetscDSDestroy"))
 """
 function PetscDSDestroy(petsclib::PetscLibType, ds::Union{PetscDS, Ref{PetscDS}})
-    error("PetscDSDestroy: no generated method for these argument types")
+    throw(MethodError(PetscDSDestroy, (petsclib, ds)))
 end
 
 @for_petsc function PetscDSDestroy(petsclib::$UnionPetscLib, ds::Union{PetscDS, Ref{PetscDS}} )
@@ -478,7 +478,7 @@ See also: `PetscDS`, `DMBoundary`, `PetscDSCopyBoundary()`, `PetscDSCopyEquation
 $(_doc_external("DT/PetscDSDestroyBoundary"))
 """
 function PetscDSDestroyBoundary(petsclib::PetscLibType, ds::PetscDS)
-    error("PetscDSDestroyBoundary: no generated method for these argument types")
+    throw(MethodError(PetscDSDestroyBoundary, (petsclib, ds)))
 end
 
 @for_petsc function PetscDSDestroyBoundary(petsclib::$UnionPetscLib, ds::PetscDS )
@@ -507,7 +507,7 @@ See also: `PetscInitialize()`
 $(_doc_external("DM/PetscDSFinalizePackage"))
 """
 function PetscDSFinalizePackage(petsclib::PetscLibType)
-    error("PetscDSFinalizePackage: no generated method for these argument types")
+    throw(MethodError(PetscDSFinalizePackage, (petsclib, )))
 end
 
 @for_petsc function PetscDSFinalizePackage(petsclib::$UnionPetscLib)
@@ -547,7 +547,7 @@ See also: `PetscDS`, `PetscBdPointJacFn`, `PetscDSSetBdJacobian()`
 $(_doc_external("DT/PetscDSGetBdJacobian"))
 """
 function PetscDSGetBdJacobian(petsclib::PetscLibType, ds::PetscDS, f::Integer, g::Integer)
-    error("PetscDSGetBdJacobian: no generated method for these argument types")
+    throw(MethodError(PetscDSGetBdJacobian, (petsclib, ds, f, g)))
 end
 
 @for_petsc function PetscDSGetBdJacobian(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, g::$PetscInt )
@@ -597,7 +597,7 @@ See also: `PetscDS`, `PetscBdPointJacFn`, `PetscDSSetBdJacobianPreconditioner()`
 $(_doc_external("DT/PetscDSGetBdJacobianPreconditioner"))
 """
 function PetscDSGetBdJacobianPreconditioner(petsclib::PetscLibType, ds::PetscDS, f::Integer, g::Integer)
-    error("PetscDSGetBdJacobianPreconditioner: no generated method for these argument types")
+    throw(MethodError(PetscDSGetBdJacobianPreconditioner, (petsclib, ds, f, g)))
 end
 
 @for_petsc function PetscDSGetBdJacobianPreconditioner(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, g::$PetscInt )
@@ -643,7 +643,7 @@ See also: `PetscDS`, `PetscBdPointFn`, `PetscDSSetBdResidual()`
 $(_doc_external("DT/PetscDSGetBdResidual"))
 """
 function PetscDSGetBdResidual(petsclib::PetscLibType, ds::PetscDS, f::Integer)
-    error("PetscDSGetBdResidual: no generated method for these argument types")
+    throw(MethodError(PetscDSGetBdResidual, (petsclib, ds, f)))
 end
 
 @for_petsc function PetscDSGetBdResidual(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt )
@@ -757,7 +757,7 @@ See also: `PetscDS`, `PetscDSSetCohesive()`, `PetscDSIsCohesive()`, `PetscDSCrea
 $(_doc_external("DT/PetscDSGetCohesive"))
 """
 function PetscDSGetCohesive(petsclib::PetscLibType, ds::PetscDS, f::Integer)
-    error("PetscDSGetCohesive: no generated method for these argument types")
+    throw(MethodError(PetscDSGetCohesive, (petsclib, ds, f)))
 end
 
 @for_petsc function PetscDSGetCohesive(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt )
@@ -795,7 +795,7 @@ See also: `PetscDS`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 $(_doc_external("DT/PetscDSGetComponentDerivativeOffsets"))
 """
 function PetscDSGetComponentDerivativeOffsets(petsclib::PetscLibType, prob::PetscDS)
-    error("PetscDSGetComponentDerivativeOffsets: no generated method for these argument types")
+    throw(MethodError(PetscDSGetComponentDerivativeOffsets, (petsclib, prob)))
 end
 
 @for_petsc function PetscDSGetComponentDerivativeOffsets(petsclib::$UnionPetscLib, prob::PetscDS )
@@ -835,7 +835,7 @@ See also: `PetscDS`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 $(_doc_external("DT/PetscDSGetComponentDerivativeOffsetsCohesive"))
 """
 function PetscDSGetComponentDerivativeOffsetsCohesive(petsclib::PetscLibType, ds::PetscDS, s::Integer)
-    error("PetscDSGetComponentDerivativeOffsetsCohesive: no generated method for these argument types")
+    throw(MethodError(PetscDSGetComponentDerivativeOffsetsCohesive, (petsclib, ds, s)))
 end
 
 @for_petsc function PetscDSGetComponentDerivativeOffsetsCohesive(petsclib::$UnionPetscLib, ds::PetscDS, s::$PetscInt )
@@ -875,7 +875,7 @@ See also: `PetscDS`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 $(_doc_external("DT/PetscDSGetComponentOffset"))
 """
 function PetscDSGetComponentOffset(petsclib::PetscLibType, prob::PetscDS, f::Integer)
-    error("PetscDSGetComponentOffset: no generated method for these argument types")
+    throw(MethodError(PetscDSGetComponentOffset, (petsclib, prob, f)))
 end
 
 @for_petsc function PetscDSGetComponentOffset(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt )
@@ -913,7 +913,7 @@ See also: `PetscDS`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 $(_doc_external("DT/PetscDSGetComponentOffsets"))
 """
 function PetscDSGetComponentOffsets(petsclib::PetscLibType, prob::PetscDS)
-    error("PetscDSGetComponentOffsets: no generated method for these argument types")
+    throw(MethodError(PetscDSGetComponentOffsets, (petsclib, prob)))
 end
 
 @for_petsc function PetscDSGetComponentOffsets(petsclib::$UnionPetscLib, prob::PetscDS )
@@ -953,7 +953,7 @@ See also: `PetscDS`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 $(_doc_external("DT/PetscDSGetComponentOffsetsCohesive"))
 """
 function PetscDSGetComponentOffsetsCohesive(petsclib::PetscLibType, ds::PetscDS, s::Integer)
-    error("PetscDSGetComponentOffsetsCohesive: no generated method for these argument types")
+    throw(MethodError(PetscDSGetComponentOffsetsCohesive, (petsclib, ds, s)))
 end
 
 @for_petsc function PetscDSGetComponentOffsetsCohesive(petsclib::$UnionPetscLib, ds::PetscDS, s::$PetscInt )
@@ -992,7 +992,7 @@ See also: `PetscDS`, `PetscDSGetComponentOffsets()`, `PetscDSGetNumFields()`, `P
 $(_doc_external("DT/PetscDSGetComponents"))
 """
 function PetscDSGetComponents(petsclib::PetscLibType, prob::PetscDS)
-    error("PetscDSGetComponents: no generated method for these argument types")
+    throw(MethodError(PetscDSGetComponents, (petsclib, prob)))
 end
 
 @for_petsc function PetscDSGetComponents(petsclib::$UnionPetscLib, prob::PetscDS )
@@ -1032,7 +1032,7 @@ See also: `PetscDS`, `PetscDSSetConstants()`, `PetscDSCreate()`
 $(_doc_external("DT/PetscDSGetConstants"))
 """
 function PetscDSGetConstants(petsclib::PetscLibType, ds::PetscDS)
-    error("PetscDSGetConstants: no generated method for these argument types")
+    throw(MethodError(PetscDSGetConstants, (petsclib, ds)))
 end
 
 @for_petsc function PetscDSGetConstants(petsclib::$UnionPetscLib, ds::PetscDS )
@@ -1071,7 +1071,7 @@ See also: `PetscDS`, `PetscPointFn`, `PetscDSSetContext()`
 $(_doc_external("DT/PetscDSGetContext"))
 """
 function PetscDSGetContext(petsclib::PetscLibType, ds::PetscDS, f::Integer, ctx::Ptr{Cvoid})
-    error("PetscDSGetContext: no generated method for these argument types")
+    throw(MethodError(PetscDSGetContext, (petsclib, ds, f, ctx)))
 end
 
 @for_petsc function PetscDSGetContext(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, ctx::Ptr{Cvoid} )
@@ -1107,7 +1107,7 @@ See also: `PetscDS`, `PetscDSSetCoordinateDimension()`, `PetscDSGetSpatialDimens
 $(_doc_external("DT/PetscDSGetCoordinateDimension"))
 """
 function PetscDSGetCoordinateDimension(petsclib::PetscLibType, prob::PetscDS)
-    error("PetscDSGetCoordinateDimension: no generated method for these argument types")
+    throw(MethodError(PetscDSGetCoordinateDimension, (petsclib, prob)))
 end
 
 @for_petsc function PetscDSGetCoordinateDimension(petsclib::$UnionPetscLib, prob::PetscDS )
@@ -1145,7 +1145,7 @@ See also: `PetscDS`, `PetscDSGetComponentOffsets()`, `PetscDSGetNumFields()`, `P
 $(_doc_external("DT/PetscDSGetDimensions"))
 """
 function PetscDSGetDimensions(petsclib::PetscLibType, prob::PetscDS)
-    error("PetscDSGetDimensions: no generated method for these argument types")
+    throw(MethodError(PetscDSGetDimensions, (petsclib, prob)))
 end
 
 @for_petsc function PetscDSGetDimensions(petsclib::$UnionPetscLib, prob::PetscDS )
@@ -1185,7 +1185,7 @@ See also: `PetscDS`, `PetscFE`, `PetscFV`, `PetscDSSetDiscretization()`, `PetscD
 $(_doc_external("DT/PetscDSGetDiscretization"))
 """
 function PetscDSGetDiscretization(petsclib::PetscLibType, prob::PetscDS, f::Integer)
-    error("PetscDSGetDiscretization: no generated method for these argument types")
+    throw(MethodError(PetscDSGetDiscretization, (petsclib, prob, f)))
 end
 
 @for_petsc function PetscDSGetDiscretization(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt )
@@ -1228,7 +1228,7 @@ See also: `PetscDS`, `PetscDSSetJacobian()`, `PetscDSSetDynamicJacobian()`, `Pet
 $(_doc_external("DT/PetscDSGetDynamicJacobian"))
 """
 function PetscDSGetDynamicJacobian(petsclib::PetscLibType, ds::PetscDS, f::Integer, g::Integer)
-    error("PetscDSGetDynamicJacobian: no generated method for these argument types")
+    throw(MethodError(PetscDSGetDynamicJacobian, (petsclib, ds, f, g)))
 end
 
 @for_petsc function PetscDSGetDynamicJacobian(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, g::$PetscInt )
@@ -1274,7 +1274,7 @@ See also: `PetscDS`, `PetscDSGetWeakFormArrays()`, `PetscDSGetWorkspace()`
 $(_doc_external("DT/PetscDSGetEvaluationArrays"))
 """
 function PetscDSGetEvaluationArrays(petsclib::PetscLibType, prob::PetscDS)
-    error("PetscDSGetEvaluationArrays: no generated method for these argument types")
+    throw(MethodError(PetscDSGetEvaluationArrays, (petsclib, prob)))
 end
 
 @for_petsc function PetscDSGetEvaluationArrays(petsclib::$UnionPetscLib, prob::PetscDS )
@@ -1318,7 +1318,7 @@ See also: `PetscDS`, `PetscPointExactSolutionFn`, `PetscDSSetExactSolution()`, `
 $(_doc_external("DT/PetscDSGetExactSolution"))
 """
 function PetscDSGetExactSolution(petsclib::PetscLibType, prob::PetscDS, f::Integer)
-    error("PetscDSGetExactSolution: no generated method for these argument types")
+    throw(MethodError(PetscDSGetExactSolution, (petsclib, prob, f)))
 end
 
 @for_petsc function PetscDSGetExactSolution(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt )
@@ -1360,7 +1360,7 @@ See also: `PetscDS`, `PetscPointExactSolutionFn`, `PetscDSSetExactSolutionTimeDe
 $(_doc_external("DT/PetscDSGetExactSolutionTimeDerivative"))
 """
 function PetscDSGetExactSolutionTimeDerivative(petsclib::PetscLibType, prob::PetscDS, f::Integer)
-    error("PetscDSGetExactSolutionTimeDerivative: no generated method for these argument types")
+    throw(MethodError(PetscDSGetExactSolutionTimeDerivative, (petsclib, prob, f)))
 end
 
 @for_petsc function PetscDSGetExactSolutionTimeDerivative(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt )
@@ -1400,7 +1400,7 @@ See also: `PetscTabulation`, `PetscDS`, `PetscDSGetTabulation()`, `PetscDSCreate
 $(_doc_external("DT/PetscDSGetFaceTabulation"))
 """
 function PetscDSGetFaceTabulation(petsclib::PetscLibType, prob::PetscDS)
-    error("PetscDSGetFaceTabulation: no generated method for these argument types")
+    throw(MethodError(PetscDSGetFaceTabulation, (petsclib, prob)))
 end
 
 @for_petsc function PetscDSGetFaceTabulation(petsclib::$UnionPetscLib, prob::PetscDS )
@@ -1439,7 +1439,7 @@ See also: `PetscDS`, `PetscGetDiscretization()`, `PetscDSGetNumFields()`, `Petsc
 $(_doc_external("DT/PetscDSGetFieldIndex"))
 """
 function PetscDSGetFieldIndex(petsclib::PetscLibType, prob::PetscDS, disc)
-    error("PetscDSGetFieldIndex: no generated method for these argument types")
+    throw(MethodError(PetscDSGetFieldIndex, (petsclib, prob, disc)))
 end
 
 @for_petsc function PetscDSGetFieldIndex(petsclib::$UnionPetscLib, prob::PetscDS, disc )
@@ -1478,7 +1478,7 @@ See also: `PetscDS`, `PetscDSGetFieldSize()`, `PetscDSGetNumFields()`, `PetscDSC
 $(_doc_external("DT/PetscDSGetFieldOffset"))
 """
 function PetscDSGetFieldOffset(petsclib::PetscLibType, prob::PetscDS, f::Integer)
-    error("PetscDSGetFieldOffset: no generated method for these argument types")
+    throw(MethodError(PetscDSGetFieldOffset, (petsclib, prob, f)))
 end
 
 @for_petsc function PetscDSGetFieldOffset(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt )
@@ -1517,7 +1517,7 @@ See also: `PetscDS`, `PetscDSGetFieldSize()`, `PetscDSGetNumFields()`, `PetscDSC
 $(_doc_external("DT/PetscDSGetFieldOffsetCohesive"))
 """
 function PetscDSGetFieldOffsetCohesive(petsclib::PetscLibType, ds::PetscDS, f::Integer)
-    error("PetscDSGetFieldOffsetCohesive: no generated method for these argument types")
+    throw(MethodError(PetscDSGetFieldOffsetCohesive, (petsclib, ds, f)))
 end
 
 @for_petsc function PetscDSGetFieldOffsetCohesive(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt )
@@ -1556,7 +1556,7 @@ See also: `PetscDS`, `PetscDSGetFieldOffset()`, `PetscDSGetNumFields()`, `PetscD
 $(_doc_external("DT/PetscDSGetFieldSize"))
 """
 function PetscDSGetFieldSize(petsclib::PetscLibType, prob::PetscDS, f::Integer)
-    error("PetscDSGetFieldSize: no generated method for these argument types")
+    throw(MethodError(PetscDSGetFieldSize, (petsclib, prob, f)))
 end
 
 @for_petsc function PetscDSGetFieldSize(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt )
@@ -1594,7 +1594,7 @@ See also: `PetscDS`, `PetscDSSetForceQuad()`, `PetscDSGetDiscretization()`, `Pet
 $(_doc_external("DT/PetscDSGetForceQuad"))
 """
 function PetscDSGetForceQuad(petsclib::PetscLibType, ds::PetscDS)
-    error("PetscDSGetForceQuad: no generated method for these argument types")
+    throw(MethodError(PetscDSGetForceQuad, (petsclib, ds)))
 end
 
 @for_petsc function PetscDSGetForceQuad(petsclib::$UnionPetscLib, ds::PetscDS )
@@ -1633,7 +1633,7 @@ See also: `PetscDS`, `PetscFE`, `PetscFEGetHeightSubspace()`, `PetscDSGetSpatial
 $(_doc_external("DT/PetscDSGetHeightSubspace"))
 """
 function PetscDSGetHeightSubspace(petsclib::PetscLibType, prob::PetscDS, height::Integer)
-    error("PetscDSGetHeightSubspace: no generated method for these argument types")
+    throw(MethodError(PetscDSGetHeightSubspace, (petsclib, prob, height)))
 end
 
 @for_petsc function PetscDSGetHeightSubspace(petsclib::$UnionPetscLib, prob::PetscDS, height::$PetscInt )
@@ -1672,7 +1672,7 @@ See also: `TSARKIMEX`, `PetscDS`, `PetscDSSetImplicit()`, `PetscDSSetDiscretizat
 $(_doc_external("DT/PetscDSGetImplicit"))
 """
 function PetscDSGetImplicit(petsclib::PetscLibType, prob::PetscDS, f::Integer)
-    error("PetscDSGetImplicit: no generated method for these argument types")
+    throw(MethodError(PetscDSGetImplicit, (petsclib, prob, f)))
 end
 
 @for_petsc function PetscDSGetImplicit(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt )
@@ -1715,7 +1715,7 @@ See also: `PetscDS`, `PetscDSSetJacobian()`, `PetscPointJacFn`
 $(_doc_external("DT/PetscDSGetJacobian"))
 """
 function PetscDSGetJacobian(petsclib::PetscLibType, ds::PetscDS, f::Integer, g::Integer)
-    error("PetscDSGetJacobian: no generated method for these argument types")
+    throw(MethodError(PetscDSGetJacobian, (petsclib, ds, f, g)))
 end
 
 @for_petsc function PetscDSGetJacobian(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, g::$PetscInt )
@@ -1765,7 +1765,7 @@ See also: `PetscDS`, `PetscDSSetJacobianPreconditioner()`, `PetscDSGetJacobian()
 $(_doc_external("DT/PetscDSGetJacobianPreconditioner"))
 """
 function PetscDSGetJacobianPreconditioner(petsclib::PetscLibType, ds::PetscDS, f::Integer, g::Integer)
-    error("PetscDSGetJacobianPreconditioner: no generated method for these argument types")
+    throw(MethodError(PetscDSGetJacobianPreconditioner, (petsclib, ds, f, g)))
 end
 
 @for_petsc function PetscDSGetJacobianPreconditioner(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, g::$PetscInt )
@@ -1810,7 +1810,7 @@ See also: `PetscDS`, `PetscDSSetJetDegree()`, `PetscDSSetDiscretization()`, `Pet
 $(_doc_external("DT/PetscDSGetJetDegree"))
 """
 function PetscDSGetJetDegree(petsclib::PetscLibType, ds::PetscDS, f::Integer)
-    error("PetscDSGetJetDegree: no generated method for these argument types")
+    throw(MethodError(PetscDSGetJetDegree, (petsclib, ds, f)))
 end
 
 @for_petsc function PetscDSGetJetDegree(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt )
@@ -1850,7 +1850,7 @@ See also: `PetscDS`, `PetscPointBoundFn`, `PetscDSSetLowerBound()`, `PetscDSGetU
 $(_doc_external("DT/PetscDSGetLowerBound"))
 """
 function PetscDSGetLowerBound(petsclib::PetscLibType, ds::PetscDS, f::Integer)
-    error("PetscDSGetLowerBound: no generated method for these argument types")
+    throw(MethodError(PetscDSGetLowerBound, (petsclib, ds, f)))
 end
 
 @for_petsc function PetscDSGetLowerBound(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt )
@@ -1888,7 +1888,7 @@ See also: `PetscDS`, `PetscDSAddBoundary()`, `PetscDSGetBoundary()`
 $(_doc_external("DT/PetscDSGetNumBoundary"))
 """
 function PetscDSGetNumBoundary(petsclib::PetscLibType, ds::PetscDS)
-    error("PetscDSGetNumBoundary: no generated method for these argument types")
+    throw(MethodError(PetscDSGetNumBoundary, (petsclib, ds)))
 end
 
 @for_petsc function PetscDSGetNumBoundary(petsclib::$UnionPetscLib, ds::PetscDS )
@@ -1926,7 +1926,7 @@ See also: `PetscDS`, `PetscDSSetCohesive()`, `PetscDSCreate()`
 $(_doc_external("DT/PetscDSGetNumCohesive"))
 """
 function PetscDSGetNumCohesive(petsclib::PetscLibType, ds::PetscDS)
-    error("PetscDSGetNumCohesive: no generated method for these argument types")
+    throw(MethodError(PetscDSGetNumCohesive, (petsclib, ds)))
 end
 
 @for_petsc function PetscDSGetNumCohesive(petsclib::$UnionPetscLib, ds::PetscDS )
@@ -1964,7 +1964,7 @@ See also: `PetscDS`, `PetscDSGetSpatialDimension()`, `PetscDSCreate()`
 $(_doc_external("DT/PetscDSGetNumFields"))
 """
 function PetscDSGetNumFields(petsclib::PetscLibType, prob::PetscDS)
-    error("PetscDSGetNumFields: no generated method for these argument types")
+    throw(MethodError(PetscDSGetNumFields, (petsclib, prob)))
 end
 
 @for_petsc function PetscDSGetNumFields(petsclib::$UnionPetscLib, prob::PetscDS )
@@ -2003,7 +2003,7 @@ See also: `PetscPointFn`, `PetscDS`, `PetscDSSetObjective()`, `PetscDSGetResidua
 $(_doc_external("DT/PetscDSGetObjective"))
 """
 function PetscDSGetObjective(petsclib::PetscLibType, ds::PetscDS, f::Integer)
-    error("PetscDSGetObjective: no generated method for these argument types")
+    throw(MethodError(PetscDSGetObjective, (petsclib, ds, f)))
 end
 
 @for_petsc function PetscDSGetObjective(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt )
@@ -2041,7 +2041,7 @@ See also: `PetscDS`, `PetscQuadrature`, `PetscDSSetImplicit()`, `PetscDSSetDiscr
 $(_doc_external("DT/PetscDSGetQuadrature"))
 """
 function PetscDSGetQuadrature(petsclib::PetscLibType, prob::PetscDS)
-    error("PetscDSGetQuadrature: no generated method for these argument types")
+    throw(MethodError(PetscDSGetQuadrature, (petsclib, prob)))
 end
 
 @for_petsc function PetscDSGetQuadrature(petsclib::$UnionPetscLib, prob::PetscDS )
@@ -2081,7 +2081,7 @@ See also: `PetscPointFn`, `PetscDS`, `PetscDSSetRHSResidual()`
 $(_doc_external("DT/PetscDSGetRHSResidual"))
 """
 function PetscDSGetRHSResidual(petsclib::PetscLibType, ds::PetscDS, f::Integer)
-    error("PetscDSGetRHSResidual: no generated method for these argument types")
+    throw(MethodError(PetscDSGetRHSResidual, (petsclib, ds, f)))
 end
 
 @for_petsc function PetscDSGetRHSResidual(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt )
@@ -2123,7 +2123,7 @@ See also: `PetscPointFn`, `PetscDS`, `PetscDSSetResidual()`
 $(_doc_external("DT/PetscDSGetResidual"))
 """
 function PetscDSGetResidual(petsclib::PetscLibType, ds::PetscDS, f::Integer)
-    error("PetscDSGetResidual: no generated method for these argument types")
+    throw(MethodError(PetscDSGetResidual, (petsclib, ds, f)))
 end
 
 @for_petsc function PetscDSGetResidual(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt )
@@ -2164,7 +2164,7 @@ See also: `PetscDS`, `PetscRiemannFn`, `PetscDSSetRiemannSolver()`
 $(_doc_external("DT/PetscDSGetRiemannSolver"))
 """
 function PetscDSGetRiemannSolver(petsclib::PetscLibType, ds::PetscDS, f::Integer)
-    error("PetscDSGetRiemannSolver: no generated method for these argument types")
+    throw(MethodError(PetscDSGetRiemannSolver, (petsclib, ds, f)))
 end
 
 @for_petsc function PetscDSGetRiemannSolver(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt )
@@ -2202,7 +2202,7 @@ See also: `PetscDS`, `PetscDSGetCoordinateDimension()`, `PetscDSGetNumFields()`,
 $(_doc_external("DT/PetscDSGetSpatialDimension"))
 """
 function PetscDSGetSpatialDimension(petsclib::PetscLibType, prob::PetscDS)
-    error("PetscDSGetSpatialDimension: no generated method for these argument types")
+    throw(MethodError(PetscDSGetSpatialDimension, (petsclib, prob)))
 end
 
 @for_petsc function PetscDSGetSpatialDimension(petsclib::$UnionPetscLib, prob::PetscDS )
@@ -2240,7 +2240,7 @@ See also: `PetscDS`, `PetscTabulation`, `PetscDSCreate()`
 $(_doc_external("DT/PetscDSGetTabulation"))
 """
 function PetscDSGetTabulation(petsclib::PetscLibType, prob::PetscDS)
-    error("PetscDSGetTabulation: no generated method for these argument types")
+    throw(MethodError(PetscDSGetTabulation, (petsclib, prob)))
 end
 
 @for_petsc function PetscDSGetTabulation(petsclib::$UnionPetscLib, prob::PetscDS )
@@ -2278,7 +2278,7 @@ See also: `PetscDS`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 $(_doc_external("DT/PetscDSGetTotalComponents"))
 """
 function PetscDSGetTotalComponents(petsclib::PetscLibType, prob::PetscDS)
-    error("PetscDSGetTotalComponents: no generated method for these argument types")
+    throw(MethodError(PetscDSGetTotalComponents, (petsclib, prob)))
 end
 
 @for_petsc function PetscDSGetTotalComponents(petsclib::$UnionPetscLib, prob::PetscDS )
@@ -2316,7 +2316,7 @@ See also: `PetscDS`, `PetscDSGetNumFields()`, `PetscDSCreate()`
 $(_doc_external("DT/PetscDSGetTotalDimension"))
 """
 function PetscDSGetTotalDimension(petsclib::PetscLibType, prob::PetscDS)
-    error("PetscDSGetTotalDimension: no generated method for these argument types")
+    throw(MethodError(PetscDSGetTotalDimension, (petsclib, prob)))
 end
 
 @for_petsc function PetscDSGetTotalDimension(petsclib::$UnionPetscLib, prob::PetscDS )
@@ -2354,7 +2354,7 @@ See also: `PetscDSType`, `PetscDS`, `PetscDSSetType()`, `PetscDSCreate()`
 $(_doc_external("DT/PetscDSGetType"))
 """
 function PetscDSGetType(petsclib::PetscLibType, prob::PetscDS)
-    error("PetscDSGetType: no generated method for these argument types")
+    throw(MethodError(PetscDSGetType, (petsclib, prob)))
 end
 
 @for_petsc function PetscDSGetType(petsclib::$UnionPetscLib, prob::PetscDS )
@@ -2393,7 +2393,7 @@ See also: `PetscDS`, `PetscPointFn`, `PetscDSSetUpdate()`, `PetscDSSetResidual()
 $(_doc_external("DT/PetscDSGetUpdate"))
 """
 function PetscDSGetUpdate(petsclib::PetscLibType, ds::PetscDS, f::Integer)
-    error("PetscDSGetUpdate: no generated method for these argument types")
+    throw(MethodError(PetscDSGetUpdate, (petsclib, ds, f)))
 end
 
 @for_petsc function PetscDSGetUpdate(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt )
@@ -2433,7 +2433,7 @@ See also: `PetscDS`, `PetscPointBoundFn`, `PetscDSSetUpperBound()`, `PetscDSGetL
 $(_doc_external("DT/PetscDSGetUpperBound"))
 """
 function PetscDSGetUpperBound(petsclib::PetscLibType, ds::PetscDS, f::Integer)
-    error("PetscDSGetUpperBound: no generated method for these argument types")
+    throw(MethodError(PetscDSGetUpperBound, (petsclib, ds, f)))
 end
 
 @for_petsc function PetscDSGetUpperBound(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt )
@@ -2473,7 +2473,7 @@ See also: `PetscWeakForm`, `PetscDSSetWeakForm()`, `PetscDSGetNumFields()`, `Pet
 $(_doc_external("DT/PetscDSGetWeakForm"))
 """
 function PetscDSGetWeakForm(petsclib::PetscLibType, ds::PetscDS)
-    error("PetscDSGetWeakForm: no generated method for these argument types")
+    throw(MethodError(PetscDSGetWeakForm, (petsclib, ds)))
 end
 
 @for_petsc function PetscDSGetWeakForm(petsclib::$UnionPetscLib, ds::PetscDS )
@@ -2498,7 +2498,7 @@ end
 $(_doc_external("DT/PetscDSGetWeakFormArrays"))
 """
 function PetscDSGetWeakFormArrays(petsclib::PetscLibType, prob::PetscDS)
-    error("PetscDSGetWeakFormArrays: no generated method for these argument types")
+    throw(MethodError(PetscDSGetWeakFormArrays, (petsclib, prob)))
 end
 
 @for_petsc function PetscDSGetWeakFormArrays(petsclib::$UnionPetscLib, prob::PetscDS )
@@ -2550,7 +2550,7 @@ See also: `PetscDS`, `PetscDSGetEvaluationArrays()`, `PetscDSGetWeakFormArrays()
 $(_doc_external("DT/PetscDSGetWorkspace"))
 """
 function PetscDSGetWorkspace(petsclib::PetscLibType, prob::PetscDS)
-    error("PetscDSGetWorkspace: no generated method for these argument types")
+    throw(MethodError(PetscDSGetWorkspace, (petsclib, prob)))
 end
 
 @for_petsc function PetscDSGetWorkspace(petsclib::$UnionPetscLib, prob::PetscDS )
@@ -2596,7 +2596,7 @@ See also: `PetscDS`, `PetscDSHasJacobian()`, `PetscDSSetBdJacobian()`, `PetscDSG
 $(_doc_external("DT/PetscDSHasBdJacobian"))
 """
 function PetscDSHasBdJacobian(petsclib::PetscLibType, ds::PetscDS)
-    error("PetscDSHasBdJacobian: no generated method for these argument types")
+    throw(MethodError(PetscDSHasBdJacobian, (petsclib, ds)))
 end
 
 @for_petsc function PetscDSHasBdJacobian(petsclib::$UnionPetscLib, ds::PetscDS )
@@ -2634,7 +2634,7 @@ See also: `PetscDS`, `PetscDSHasJacobian()`, `PetscDSSetBdJacobian()`, `PetscDSG
 $(_doc_external("DT/PetscDSHasBdJacobianPreconditioner"))
 """
 function PetscDSHasBdJacobianPreconditioner(petsclib::PetscLibType, ds::PetscDS)
-    error("PetscDSHasBdJacobianPreconditioner: no generated method for these argument types")
+    throw(MethodError(PetscDSHasBdJacobianPreconditioner, (petsclib, ds)))
 end
 
 @for_petsc function PetscDSHasBdJacobianPreconditioner(petsclib::$UnionPetscLib, ds::PetscDS )
@@ -2672,7 +2672,7 @@ See also: `PetscDS`, `PetscDSGetDynamicJacobian()`, `PetscDSSetDynamicJacobian()
 $(_doc_external("DT/PetscDSHasDynamicJacobian"))
 """
 function PetscDSHasDynamicJacobian(petsclib::PetscLibType, ds::PetscDS)
-    error("PetscDSHasDynamicJacobian: no generated method for these argument types")
+    throw(MethodError(PetscDSHasDynamicJacobian, (petsclib, ds)))
 end
 
 @for_petsc function PetscDSHasDynamicJacobian(petsclib::$UnionPetscLib, ds::PetscDS )
@@ -2710,7 +2710,7 @@ See also: `PetscDS`, `PetscDSGetJacobianPreconditioner()`, `PetscDSSetJacobianPr
 $(_doc_external("DT/PetscDSHasJacobian"))
 """
 function PetscDSHasJacobian(petsclib::PetscLibType, ds::PetscDS)
-    error("PetscDSHasJacobian: no generated method for these argument types")
+    throw(MethodError(PetscDSHasJacobian, (petsclib, ds)))
 end
 
 @for_petsc function PetscDSHasJacobian(petsclib::$UnionPetscLib, ds::PetscDS )
@@ -2748,7 +2748,7 @@ See also: `PetscDS`, `PetscDSGetJacobianPreconditioner()`, `PetscDSSetJacobianPr
 $(_doc_external("DT/PetscDSHasJacobianPreconditioner"))
 """
 function PetscDSHasJacobianPreconditioner(petsclib::PetscLibType, ds::PetscDS)
-    error("PetscDSHasJacobianPreconditioner: no generated method for these argument types")
+    throw(MethodError(PetscDSHasJacobianPreconditioner, (petsclib, ds)))
 end
 
 @for_petsc function PetscDSHasJacobianPreconditioner(petsclib::$UnionPetscLib, ds::PetscDS )
@@ -2780,7 +2780,7 @@ See also: `PetscInitialize()`
 $(_doc_external("DM/PetscDSInitializePackage"))
 """
 function PetscDSInitializePackage(petsclib::PetscLibType)
-    error("PetscDSInitializePackage: no generated method for these argument types")
+    throw(MethodError(PetscDSInitializePackage, (petsclib, )))
 end
 
 @for_petsc function PetscDSInitializePackage(petsclib::$UnionPetscLib)
@@ -2815,7 +2815,7 @@ See also: `PetscDS`, `PetscDSGetNumCohesive()`, `PetscDSGetCohesive()`, `PetscDS
 $(_doc_external("DT/PetscDSIsCohesive"))
 """
 function PetscDSIsCohesive(petsclib::PetscLibType, ds::PetscDS)
-    error("PetscDSIsCohesive: no generated method for these argument types")
+    throw(MethodError(PetscDSIsCohesive, (petsclib, ds)))
 end
 
 @for_petsc function PetscDSIsCohesive(petsclib::$UnionPetscLib, ds::PetscDS )
@@ -2856,7 +2856,7 @@ See also: `PetscDS`, `PetscQuadrature`, `PetscQuadratureComputePermutations()`, 
 $(_doc_external("DT/PetscDSPermuteQuadPoint"))
 """
 function PetscDSPermuteQuadPoint(petsclib::PetscLibType, ds::PetscDS, ornt::Integer, field::Integer, q::Integer)
-    error("PetscDSPermuteQuadPoint: no generated method for these argument types")
+    throw(MethodError(PetscDSPermuteQuadPoint, (petsclib, ds, ornt, field, q)))
 end
 
 @for_petsc function PetscDSPermuteQuadPoint(petsclib::$UnionPetscLib, ds::PetscDS, ornt::$PetscInt, field::$PetscInt, q::$PetscInt )
@@ -2890,7 +2890,7 @@ See also: `PetscDSType`, `PetscDS`, `PetscDSRegisterAll()`, `PetscDSRegisterDest
 $(_doc_external("DT/PetscDSRegister"))
 """
 function PetscDSRegister(petsclib::PetscLibType, sname::String, fnc::external)
-    error("PetscDSRegister: no generated method for these argument types")
+    throw(MethodError(PetscDSRegister, (petsclib, sname, fnc)))
 end
 
 @for_petsc function PetscDSRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
@@ -2930,7 +2930,7 @@ See also: `PetscDS`, `PetscDSSelectEquations()`, `PetscDSCopyBoundary()`, `Petsc
 $(_doc_external("DT/PetscDSSelectDiscretizations"))
 """
 function PetscDSSelectDiscretizations(petsclib::PetscLibType, prob::PetscDS, numFields::Integer, fields::AbstractVector{<:Number}, minDegree::Integer, maxDegree::Integer, newprob::PetscDS)
-    error("PetscDSSelectDiscretizations: no generated method for these argument types")
+    throw(MethodError(PetscDSSelectDiscretizations, (petsclib, prob, numFields, fields, minDegree, maxDegree, newprob)))
 end
 
 @for_petsc function PetscDSSelectDiscretizations(petsclib::$UnionPetscLib, prob::PetscDS, numFields::$PetscInt, fields::Vector{$PetscInt}, minDegree::$PetscInt, maxDegree::$PetscInt, newprob::PetscDS )
@@ -2968,7 +2968,7 @@ See also: `PetscDS`, `PetscDSSelectDiscretizations()`, `PetscDSCopyBoundary()`, 
 $(_doc_external("DT/PetscDSSelectEquations"))
 """
 function PetscDSSelectEquations(petsclib::PetscLibType, prob::PetscDS, numFields::Integer, fields::AbstractVector{<:Number}, newprob::PetscDS)
-    error("PetscDSSelectEquations: no generated method for these argument types")
+    throw(MethodError(PetscDSSelectEquations, (petsclib, prob, numFields, fields, newprob)))
 end
 
 @for_petsc function PetscDSSelectEquations(petsclib::$UnionPetscLib, prob::PetscDS, numFields::$PetscInt, fields::Vector{$PetscInt}, newprob::PetscDS )
@@ -3007,7 +3007,7 @@ See also: `PetscDS`, `PetscBdPointJacFn`, `PetscDSGetBdJacobian()`
 $(_doc_external("DT/PetscDSSetBdJacobian"))
 """
 function PetscDSSetBdJacobian(petsclib::PetscLibType, ds::PetscDS, f::Integer, g::Integer, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid})
-    error("PetscDSSetBdJacobian: no generated method for these argument types")
+    throw(MethodError(PetscDSSetBdJacobian, (petsclib, ds, f, g, g0, g1, g2, g3)))
 end
 
 @for_petsc function PetscDSSetBdJacobian(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, g::$PetscInt, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid} )
@@ -3047,7 +3047,7 @@ See also: `PetscDS`, `PetscBdPointJacFn`, `PetscDSGetBdJacobianPreconditioner()`
 $(_doc_external("DT/PetscDSSetBdJacobianPreconditioner"))
 """
 function PetscDSSetBdJacobianPreconditioner(petsclib::PetscLibType, ds::PetscDS, f::Integer, g::Integer, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid})
-    error("PetscDSSetBdJacobianPreconditioner: no generated method for these argument types")
+    throw(MethodError(PetscDSSetBdJacobianPreconditioner, (petsclib, ds, f, g, g0, g1, g2, g3)))
 end
 
 @for_petsc function PetscDSSetBdJacobianPreconditioner(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, g::$PetscInt, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid} )
@@ -3083,7 +3083,7 @@ See also: `PetscDS`, `PetscBdPointFn`, `PetscDSGetBdResidual()`
 $(_doc_external("DT/PetscDSSetBdResidual"))
 """
 function PetscDSSetBdResidual(petsclib::PetscLibType, ds::PetscDS, f::Integer, f0::Ptr{Cvoid}, f1::Ptr{Cvoid})
-    error("PetscDSSetBdResidual: no generated method for these argument types")
+    throw(MethodError(PetscDSSetBdResidual, (petsclib, ds, f, f0, f1)))
 end
 
 @for_petsc function PetscDSSetBdResidual(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, f0::Ptr{Cvoid}, f1::Ptr{Cvoid} )
@@ -3117,7 +3117,7 @@ See also: `PetscDS`, `PetscDSSetConstants()`, `PetscDSGetConstants()`, `PetscDSC
 $(_doc_external("DT/PetscDSSetCellParameters"))
 """
 function PetscDSSetCellParameters(petsclib::PetscLibType, ds::PetscDS, volume::Real)
-    error("PetscDSSetCellParameters: no generated method for these argument types")
+    throw(MethodError(PetscDSSetCellParameters, (petsclib, ds, volume)))
 end
 
 @for_petsc function PetscDSSetCellParameters(petsclib::$UnionPetscLib, ds::PetscDS, volume::$PetscReal )
@@ -3152,7 +3152,7 @@ See also: `PetscDS`, `PetscDSGetCohesive()`, `PetscDSIsCohesive()`, `PetscDSCrea
 $(_doc_external("DT/PetscDSSetCohesive"))
 """
 function PetscDSSetCohesive(petsclib::PetscLibType, ds::PetscDS, f::Integer, isCohesive::PetscBool)
-    error("PetscDSSetCohesive: no generated method for these argument types")
+    throw(MethodError(PetscDSSetCohesive, (petsclib, ds, f, isCohesive)))
 end
 
 @for_petsc function PetscDSSetCohesive(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, isCohesive::PetscBool )
@@ -3187,7 +3187,7 @@ See also: `PetscDS`, `PetscDSGetConstants()`, `PetscDSCreate()`
 $(_doc_external("DT/PetscDSSetConstants"))
 """
 function PetscDSSetConstants(petsclib::PetscLibType, ds::PetscDS, numConstants::Integer, constants::AbstractVector{<:Number})
-    error("PetscDSSetConstants: no generated method for these argument types")
+    throw(MethodError(PetscDSSetConstants, (petsclib, ds, numConstants, constants)))
 end
 
 @for_petsc function PetscDSSetConstants(petsclib::$UnionPetscLib, ds::PetscDS, numConstants::$PetscInt, constants::Vector{$PetscScalar} )
@@ -3222,7 +3222,7 @@ See also: `PetscDS`, `PetscPointFn`, `PetscDSGetContext()`
 $(_doc_external("DT/PetscDSSetContext"))
 """
 function PetscDSSetContext(petsclib::PetscLibType, ds::PetscDS, f::Integer, ctx::Ptr{Cvoid})
-    error("PetscDSSetContext: no generated method for these argument types")
+    throw(MethodError(PetscDSSetContext, (petsclib, ds, f, ctx)))
 end
 
 @for_petsc function PetscDSSetContext(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, ctx::Ptr{Cvoid} )
@@ -3256,7 +3256,7 @@ See also: `PetscDS`, `PetscDSGetCoordinateDimension()`, `PetscDSGetSpatialDimens
 $(_doc_external("DT/PetscDSSetCoordinateDimension"))
 """
 function PetscDSSetCoordinateDimension(petsclib::PetscLibType, prob::PetscDS, dimEmbed::Integer)
-    error("PetscDSSetCoordinateDimension: no generated method for these argument types")
+    throw(MethodError(PetscDSSetCoordinateDimension, (petsclib, prob, dimEmbed)))
 end
 
 @for_petsc function PetscDSSetCoordinateDimension(petsclib::$UnionPetscLib, prob::PetscDS, dimEmbed::$PetscInt )
@@ -3291,7 +3291,7 @@ See also: `PetscDS`, `PetscFE`, `PetscFV`, `PetscDSGetDiscretization()`, `PetscD
 $(_doc_external("DT/PetscDSSetDiscretization"))
 """
 function PetscDSSetDiscretization(petsclib::PetscLibType, prob::PetscDS, f::Integer, disc)
-    error("PetscDSSetDiscretization: no generated method for these argument types")
+    throw(MethodError(PetscDSSetDiscretization, (petsclib, prob, f, disc)))
 end
 
 @for_petsc function PetscDSSetDiscretization(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt, disc )
@@ -3330,7 +3330,7 @@ See also: `PetscDS`, `PetscDSGetDynamicJacobian()`, `PetscDSGetJacobian()`, `Pet
 $(_doc_external("DT/PetscDSSetDynamicJacobian"))
 """
 function PetscDSSetDynamicJacobian(petsclib::PetscLibType, ds::PetscDS, f::Integer, g::Integer, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid})
-    error("PetscDSSetDynamicJacobian: no generated method for these argument types")
+    throw(MethodError(PetscDSSetDynamicJacobian, (petsclib, ds, f, g, g0, g1, g2, g3)))
 end
 
 @for_petsc function PetscDSSetDynamicJacobian(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, g::$PetscInt, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid} )
@@ -3366,7 +3366,7 @@ See also: `PetscDS`, `PetscPointExactSolutionFn`, `PetscDSGetExactSolution()`
 $(_doc_external("DT/PetscDSSetExactSolution"))
 """
 function PetscDSSetExactSolution(petsclib::PetscLibType, prob::PetscDS, f::Integer, sol::Ptr{Cvoid}, ctx::Ptr{Cvoid})
-    error("PetscDSSetExactSolution: no generated method for these argument types")
+    throw(MethodError(PetscDSSetExactSolution, (petsclib, prob, f, sol, ctx)))
 end
 
 @for_petsc function PetscDSSetExactSolution(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt, sol::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
@@ -3402,7 +3402,7 @@ See also: `PetscDS`, `PetscPointExactSolutionFn`, `PetscDSGetExactSolutionTimeDe
 $(_doc_external("DT/PetscDSSetExactSolutionTimeDerivative"))
 """
 function PetscDSSetExactSolutionTimeDerivative(petsclib::PetscLibType, prob::PetscDS, f::Integer, sol::Ptr{Cvoid}, ctx::Ptr{Cvoid})
-    error("PetscDSSetExactSolutionTimeDerivative: no generated method for these argument types")
+    throw(MethodError(PetscDSSetExactSolutionTimeDerivative, (petsclib, prob, f, sol, ctx)))
 end
 
 @for_petsc function PetscDSSetExactSolutionTimeDerivative(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt, sol::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
@@ -3436,7 +3436,7 @@ See also: `PetscDS`, `PetscDSGetForceQuad()`, `PetscDSGetDiscretization()`, `Pet
 $(_doc_external("DT/PetscDSSetForceQuad"))
 """
 function PetscDSSetForceQuad(petsclib::PetscLibType, ds::PetscDS, forceQuad::PetscBool)
-    error("PetscDSSetForceQuad: no generated method for these argument types")
+    throw(MethodError(PetscDSSetForceQuad, (petsclib, ds, forceQuad)))
 end
 
 @for_petsc function PetscDSSetForceQuad(petsclib::$UnionPetscLib, ds::PetscDS, forceQuad::PetscBool )
@@ -3476,7 +3476,7 @@ See also: `PetscDS`, `PetscDSView()`
 $(_doc_external("DT/PetscDSSetFromOptions"))
 """
 function PetscDSSetFromOptions(petsclib::PetscLibType, prob::PetscDS)
-    error("PetscDSSetFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscDSSetFromOptions, (petsclib, prob)))
 end
 
 @for_petsc function PetscDSSetFromOptions(petsclib::$UnionPetscLib, prob::PetscDS )
@@ -3511,7 +3511,7 @@ See also: `TSARKIMEX`, `PetscDSGetImplicit()`, `PetscDSSetDiscretization()`, `Pe
 $(_doc_external("DT/PetscDSSetImplicit"))
 """
 function PetscDSSetImplicit(petsclib::PetscLibType, prob::PetscDS, f::Integer, implicit::PetscBool)
-    error("PetscDSSetImplicit: no generated method for these argument types")
+    throw(MethodError(PetscDSSetImplicit, (petsclib, prob, f, implicit)))
 end
 
 @for_petsc function PetscDSSetImplicit(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt, implicit::PetscBool )
@@ -3546,7 +3546,7 @@ See also: `PetscDS`, `PetscDSSetConstants()`, `PetscDSGetConstants()`, `PetscDSC
 $(_doc_external("DT/PetscDSSetIntegrationParameters"))
 """
 function PetscDSSetIntegrationParameters(petsclib::PetscLibType, ds::PetscDS, fieldI::Integer, fieldJ::Integer)
-    error("PetscDSSetIntegrationParameters: no generated method for these argument types")
+    throw(MethodError(PetscDSSetIntegrationParameters, (petsclib, ds, fieldI, fieldJ)))
 end
 
 @for_petsc function PetscDSSetIntegrationParameters(petsclib::$UnionPetscLib, ds::PetscDS, fieldI::$PetscInt, fieldJ::$PetscInt )
@@ -3585,7 +3585,7 @@ See also: `PetscDS`, `PetscDSGetJacobian()`, `PetscPointJacFn`
 $(_doc_external("DT/PetscDSSetJacobian"))
 """
 function PetscDSSetJacobian(petsclib::PetscLibType, ds::PetscDS, f::Integer, g::Integer, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid})
-    error("PetscDSSetJacobian: no generated method for these argument types")
+    throw(MethodError(PetscDSSetJacobian, (petsclib, ds, f, g, g0, g1, g2, g3)))
 end
 
 @for_petsc function PetscDSSetJacobian(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, g::$PetscInt, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid} )
@@ -3625,7 +3625,7 @@ See also: `PetscDS`, `PetscDSGetJacobianPreconditioner()`, `PetscDSSetJacobian()
 $(_doc_external("DT/PetscDSSetJacobianPreconditioner"))
 """
 function PetscDSSetJacobianPreconditioner(petsclib::PetscLibType, ds::PetscDS, f::Integer, g::Integer, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid})
-    error("PetscDSSetJacobianPreconditioner: no generated method for these argument types")
+    throw(MethodError(PetscDSSetJacobianPreconditioner, (petsclib, ds, f, g, g0, g1, g2, g3)))
 end
 
 @for_petsc function PetscDSSetJacobianPreconditioner(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, g::$PetscInt, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid} )
@@ -3660,7 +3660,7 @@ See also: `PetscDS`, `PetscDSGetJetDegree()`, `PetscDSSetDiscretization()`, `Pet
 $(_doc_external("DT/PetscDSSetJetDegree"))
 """
 function PetscDSSetJetDegree(petsclib::PetscLibType, ds::PetscDS, f::Integer, k::Integer)
-    error("PetscDSSetJetDegree: no generated method for these argument types")
+    throw(MethodError(PetscDSSetJetDegree, (petsclib, ds, f, k)))
 end
 
 @for_petsc function PetscDSSetJetDegree(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, k::$PetscInt )
@@ -3696,7 +3696,7 @@ See also: `PetscDS`, `PetscPointBoundFn`, `PetscDSGetLowerBound()`, `PetscDSGetU
 $(_doc_external("DT/PetscDSSetLowerBound"))
 """
 function PetscDSSetLowerBound(petsclib::PetscLibType, ds::PetscDS, f::Integer, lb::Ptr{Cvoid}, ctx::Ptr{Cvoid})
-    error("PetscDSSetLowerBound: no generated method for these argument types")
+    throw(MethodError(PetscDSSetLowerBound, (petsclib, ds, f, lb, ctx)))
 end
 
 @for_petsc function PetscDSSetLowerBound(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, lb::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
@@ -3731,7 +3731,7 @@ See also: `PetscPointFn`, `PetscDS`, `PetscDSGetObjective()`, `PetscDSSetResidua
 $(_doc_external("DT/PetscDSSetObjective"))
 """
 function PetscDSSetObjective(petsclib::PetscLibType, ds::PetscDS, f::Integer, obj::Ptr{Cvoid})
-    error("PetscDSSetObjective: no generated method for these argument types")
+    throw(MethodError(PetscDSSetObjective, (petsclib, ds, f, obj)))
 end
 
 @for_petsc function PetscDSSetObjective(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, obj::Ptr{Cvoid} )
@@ -3767,7 +3767,7 @@ See also: `PetscDS`, `PetscDSGetResidual()`
 $(_doc_external("DT/PetscDSSetRHSResidual"))
 """
 function PetscDSSetRHSResidual(petsclib::PetscLibType, ds::PetscDS, f::Integer, f0::Ptr{Cvoid}, f1::Ptr{Cvoid})
-    error("PetscDSSetRHSResidual: no generated method for these argument types")
+    throw(MethodError(PetscDSSetRHSResidual, (petsclib, ds, f, f0, f1)))
 end
 
 @for_petsc function PetscDSSetRHSResidual(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, f0::Ptr{Cvoid}, f1::Ptr{Cvoid} )
@@ -3803,7 +3803,7 @@ See also: `PetscPointFn`, `PetscDS`, `PetscDSGetResidual()`
 $(_doc_external("DT/PetscDSSetResidual"))
 """
 function PetscDSSetResidual(petsclib::PetscLibType, ds::PetscDS, f::Integer, f0::Ptr{Cvoid}, f1::Ptr{Cvoid})
-    error("PetscDSSetResidual: no generated method for these argument types")
+    throw(MethodError(PetscDSSetResidual, (petsclib, ds, f, f0, f1)))
 end
 
 @for_petsc function PetscDSSetResidual(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, f0::Ptr{Cvoid}, f1::Ptr{Cvoid} )
@@ -3838,7 +3838,7 @@ See also: `PetscDS`, `PetscRiemannFn`, `PetscDSGetRiemannSolver()`
 $(_doc_external("DT/PetscDSSetRiemannSolver"))
 """
 function PetscDSSetRiemannSolver(petsclib::PetscLibType, ds::PetscDS, f::Integer, r::Ptr{Cvoid})
-    error("PetscDSSetRiemannSolver: no generated method for these argument types")
+    throw(MethodError(PetscDSSetRiemannSolver, (petsclib, ds, f, r)))
 end
 
 @for_petsc function PetscDSSetRiemannSolver(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, r::Ptr{Cvoid} )
@@ -3875,7 +3875,7 @@ See also: `PetscDSType`, `PetscDS`, `PetscDSGetType()`, `PetscDSCreate()`
 $(_doc_external("DT/PetscDSSetType"))
 """
 function PetscDSSetType(petsclib::PetscLibType, prob::PetscDS, name::String)
-    error("PetscDSSetType: no generated method for these argument types")
+    throw(MethodError(PetscDSSetType, (petsclib, prob, name)))
 end
 
 @for_petsc function PetscDSSetType(petsclib::$UnionPetscLib, prob::PetscDS, name::String )
@@ -3908,7 +3908,7 @@ See also: `PetscDS`, `PetscDSView()`, `PetscDSDestroy()`
 $(_doc_external("DT/PetscDSSetUp"))
 """
 function PetscDSSetUp(petsclib::PetscLibType, prob::PetscDS)
-    error("PetscDSSetUp: no generated method for these argument types")
+    throw(MethodError(PetscDSSetUp, (petsclib, prob)))
 end
 
 @for_petsc function PetscDSSetUp(petsclib::$UnionPetscLib, prob::PetscDS )
@@ -3943,7 +3943,7 @@ See also: `PetscDS`, `PetscPointFn`, `PetscDSGetResidual()`
 $(_doc_external("DT/PetscDSSetUpdate"))
 """
 function PetscDSSetUpdate(petsclib::PetscLibType, ds::PetscDS, f::Integer, update::Ptr{Cvoid})
-    error("PetscDSSetUpdate: no generated method for these argument types")
+    throw(MethodError(PetscDSSetUpdate, (petsclib, ds, f, update)))
 end
 
 @for_petsc function PetscDSSetUpdate(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, update::Ptr{Cvoid} )
@@ -3979,7 +3979,7 @@ See also: `PetscDS`, `PetscPointBoundFn`, `PetscDSGetUpperBound()`, `PetscDSGetL
 $(_doc_external("DT/PetscDSSetUpperBound"))
 """
 function PetscDSSetUpperBound(petsclib::PetscLibType, ds::PetscDS, f::Integer, ub::Ptr{Cvoid}, ctx::Ptr{Cvoid})
-    error("PetscDSSetUpperBound: no generated method for these argument types")
+    throw(MethodError(PetscDSSetUpperBound, (petsclib, ds, f, ub, ctx)))
 end
 
 @for_petsc function PetscDSSetUpperBound(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, ub::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
@@ -4013,7 +4013,7 @@ See also: `PetscWeakForm`, `PetscDSGetWeakForm()`, `PetscDSGetNumFields()`, `Pet
 $(_doc_external("DT/PetscDSSetWeakForm"))
 """
 function PetscDSSetWeakForm(petsclib::PetscLibType, ds::PetscDS, wf::PetscWeakForm)
-    error("PetscDSSetWeakForm: no generated method for these argument types")
+    throw(MethodError(PetscDSSetWeakForm, (petsclib, ds, wf)))
 end
 
 @for_petsc function PetscDSSetWeakForm(petsclib::$UnionPetscLib, ds::PetscDS, wf::PetscWeakForm )
@@ -4056,7 +4056,7 @@ See also: `PetscDS`, `PetscWeakForm`, `DMBoundaryConditionType`, `PetscDSAddBoun
 $(_doc_external("DT/PetscDSUpdateBoundary"))
 """
 function PetscDSUpdateBoundary(petsclib::PetscLibType, ds::PetscDS, bd::Integer, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::Integer, values::AbstractVector{<:Number}, field::Integer, Nc::Integer, comps::AbstractVector{<:Number}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid})
-    error("PetscDSUpdateBoundary: no generated method for these argument types")
+    throw(MethodError(PetscDSUpdateBoundary, (petsclib, ds, bd, type, name, label, Nv, values, field, Nc, comps, bcFunc, bcFunc_t, ctx)))
 end
 
 @for_petsc function PetscDSUpdateBoundary(petsclib::$UnionPetscLib, ds::PetscDS, bd::$PetscInt, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::$PetscInt, values::Vector{$PetscInt}, field::$PetscInt, Nc::$PetscInt, comps::Vector{$PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
@@ -4090,7 +4090,7 @@ See also: `PetscDS`, `DMBoundary`, `DM`, `PetscDSCopyBoundary()`, `PetscDSCreate
 $(_doc_external("DT/PetscDSUpdateBoundaryLabels"))
 """
 function PetscDSUpdateBoundaryLabels(petsclib::PetscLibType, ds::PetscDS, dm::AbstractPetscDM)
-    error("PetscDSUpdateBoundaryLabels: no generated method for these argument types")
+    throw(MethodError(PetscDSUpdateBoundaryLabels, (petsclib, ds, dm)))
 end
 
 @for_petsc function PetscDSUpdateBoundaryLabels(petsclib::$UnionPetscLib, ds::PetscDS, dm::AbstractPetscDM )
@@ -4124,7 +4124,7 @@ See also: `PetscDS`, `PetscDSGetJacobianPreconditioner()`, `PetscDSSetJacobianPr
 $(_doc_external("DT/PetscDSUseJacobianPreconditioner"))
 """
 function PetscDSUseJacobianPreconditioner(petsclib::PetscLibType, prob::PetscDS, useJacPre::PetscBool)
-    error("PetscDSUseJacobianPreconditioner: no generated method for these argument types")
+    throw(MethodError(PetscDSUseJacobianPreconditioner, (petsclib, prob, useJacPre)))
 end
 
 @for_petsc function PetscDSUseJacobianPreconditioner(petsclib::$UnionPetscLib, prob::PetscDS, useJacPre::PetscBool )
@@ -4158,7 +4158,7 @@ See also: `PetscDSType`, `PetscDS`, `PetscViewer`, `PetscDSDestroy()`, `PetscDSV
 $(_doc_external("DT/PetscDSView"))
 """
 function PetscDSView(petsclib::PetscLibType, prob::PetscDS, v::PetscViewer)
-    error("PetscDSView: no generated method for these argument types")
+    throw(MethodError(PetscDSView, (petsclib, prob, v)))
 end
 
 @for_petsc function PetscDSView(petsclib::$UnionPetscLib, prob::PetscDS, v::PetscViewer )
@@ -4196,7 +4196,7 @@ See also: `PetscDSType`, `PetscDS`, `PetscDSView()`, `PetscObjectViewFromOptions
 $(_doc_external("DT/PetscDSViewFromOptions"))
 """
 function PetscDSViewFromOptions(petsclib::PetscLibType, A::PetscDS, obj, name::String)
-    error("PetscDSViewFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscDSViewFromOptions, (petsclib, A, obj, name)))
 end
 
 @for_petsc function PetscDSViewFromOptions(petsclib::$UnionPetscLib, A::PetscDS, obj, name::String )

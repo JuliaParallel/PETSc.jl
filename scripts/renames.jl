@@ -449,6 +449,8 @@ const INTERNAL = Set{Symbol}([
     # other internals
     :check_initialized,
     :isdestroyable,
+    :destroy_handle!,
+    :destroy_options!,
     :as_petsc_vec,
     :csr_from_csc,
     :mat_seqaij_with_arrays,

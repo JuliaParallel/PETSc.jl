@@ -17,7 +17,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionAddDof()`, `PetscSectionGet
 $(_doc_external("PetscSection/PetscSectionAddConstraintDof"))
 """
 function PetscSectionAddConstraintDof(petsclib::PetscLibType, s::PetscSection, point::Integer, numDof::Integer)
-    error("PetscSectionAddConstraintDof: no generated method for these argument types")
+    throw(MethodError(PetscSectionAddConstraintDof, (petsclib, s, point, numDof)))
 end
 
 @for_petsc function PetscSectionAddConstraintDof(petsclib::$UnionPetscLib, s::PetscSection, point::$PetscInt, numDof::$PetscInt )
@@ -52,7 +52,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionGetDof()`, `PetscSectionSet
 $(_doc_external("PetscSection/PetscSectionAddDof"))
 """
 function PetscSectionAddDof(petsclib::PetscLibType, s::PetscSection, point::Integer, numDof::Integer)
-    error("PetscSectionAddDof: no generated method for these argument types")
+    throw(MethodError(PetscSectionAddDof, (petsclib, s, point, numDof)))
 end
 
 @for_petsc function PetscSectionAddDof(petsclib::$UnionPetscLib, s::PetscSection, point::$PetscInt, numDof::$PetscInt )
@@ -88,7 +88,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionAddDof()`, `PetscSectionGet
 $(_doc_external("PetscSection/PetscSectionAddFieldConstraintDof"))
 """
 function PetscSectionAddFieldConstraintDof(petsclib::PetscLibType, s::PetscSection, point::Integer, field::Integer, numDof::Integer)
-    error("PetscSectionAddFieldConstraintDof: no generated method for these argument types")
+    throw(MethodError(PetscSectionAddFieldConstraintDof, (petsclib, s, point, field, numDof)))
 end
 
 @for_petsc function PetscSectionAddFieldConstraintDof(petsclib::$UnionPetscLib, s::PetscSection, point::$PetscInt, field::$PetscInt, numDof::$PetscInt )
@@ -124,7 +124,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionSetFieldDof()`, `PetscSecti
 $(_doc_external("PetscSection/PetscSectionAddFieldDof"))
 """
 function PetscSectionAddFieldDof(petsclib::PetscLibType, s::PetscSection, point::Integer, field::Integer, numDof::Integer)
-    error("PetscSectionAddFieldDof: no generated method for these argument types")
+    throw(MethodError(PetscSectionAddFieldDof, (petsclib, s, point, field, numDof)))
 end
 
 @for_petsc function PetscSectionAddFieldDof(petsclib::$UnionPetscLib, s::PetscSection, point::$PetscInt, field::$PetscInt, numDof::$PetscInt )
@@ -160,7 +160,7 @@ See also: `PetscSection`, `PetscViewer`, `PetscSectionCreate()`, `VecSetValuesSe
 $(_doc_external("PetscSection/PetscSectionArrayView"))
 """
 function PetscSectionArrayView(petsclib::PetscLibType, s::PetscSection, array::Ptr{Cvoid}, data_type::PetscDataType, viewer::PetscViewer)
-    error("PetscSectionArrayView: no generated method for these argument types")
+    throw(MethodError(PetscSectionArrayView, (petsclib, s, array, data_type, viewer)))
 end
 
 @for_petsc function PetscSectionArrayView(petsclib::$UnionPetscLib, s::PetscSection, array::Ptr{Cvoid}, data_type::PetscDataType, viewer::PetscViewer )
@@ -196,7 +196,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionCreate()`, `PetscSectionDes
 $(_doc_external("PetscSection/PetscSectionClone"))
 """
 function PetscSectionClone(petsclib::PetscLibType, section::PetscSection)
-    error("PetscSectionClone: no generated method for these argument types")
+    throw(MethodError(PetscSectionClone, (petsclib, section)))
 end
 
 @for_petsc function PetscSectionClone(petsclib::$UnionPetscLib, section::PetscSection )
@@ -235,7 +235,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionCreate()`, `PetscSectionCop
 $(_doc_external("PetscSection/PetscSectionCompare"))
 """
 function PetscSectionCompare(petsclib::PetscLibType, s1::PetscSection, s2::PetscSection)
-    error("PetscSectionCompare: no generated method for these argument types")
+    throw(MethodError(PetscSectionCompare, (petsclib, s1, s2)))
 end
 
 @for_petsc function PetscSectionCompare(petsclib::$UnionPetscLib, s1::PetscSection, s2::PetscSection )
@@ -273,7 +273,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionCreate()`, `PetscSectionDes
 $(_doc_external("PetscSection/PetscSectionCopy"))
 """
 function PetscSectionCopy(petsclib::PetscLibType, section::PetscSection, newSection::PetscSection)
-    error("PetscSectionCopy: no generated method for these argument types")
+    throw(MethodError(PetscSectionCopy, (petsclib, section, newSection)))
 end
 
 @for_petsc function PetscSectionCopy(petsclib::$UnionPetscLib, section::PetscSection, newSection::PetscSection )
@@ -307,7 +307,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionSetChart()`, `PetscSectionD
 $(_doc_external("PetscSection/PetscSectionCreate"))
 """
 function PetscSectionCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("PetscSectionCreate: no generated method for these argument types")
+    throw(MethodError(PetscSectionCreate, (petsclib, comm)))
 end
 
 @for_petsc function PetscSectionCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -347,7 +347,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionCreateSupersection()`, `Pet
 $(_doc_external("PetscSection/PetscSectionCreateComponentSubsection"))
 """
 function PetscSectionCreateComponentSubsection(petsclib::PetscLibType, s::PetscSection, len::Integer, comps::AbstractVector{<:Number})
-    error("PetscSectionCreateComponentSubsection: no generated method for these argument types")
+    throw(MethodError(PetscSectionCreateComponentSubsection, (petsclib, s, len, comps)))
 end
 
 @for_petsc function PetscSectionCreateComponentSubsection(petsclib::$UnionPetscLib, s::PetscSection, len::$PetscInt, comps::Vector{$PetscInt} )
@@ -388,7 +388,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionCreate()`, `PetscSectionCre
 $(_doc_external("PetscSection/PetscSectionCreateGlobalSection"))
 """
 function PetscSectionCreateGlobalSection(petsclib::PetscLibType, s::PetscSection, sf::PetscSF, usePermutation::PetscBool, includeConstraints::PetscBool, localOffsets::PetscBool)
-    error("PetscSectionCreateGlobalSection: no generated method for these argument types")
+    throw(MethodError(PetscSectionCreateGlobalSection, (petsclib, s, sf, usePermutation, includeConstraints, localOffsets)))
 end
 
 @for_petsc function PetscSectionCreateGlobalSection(petsclib::$UnionPetscLib, s::PetscSection, sf::PetscSF, usePermutation::PetscBool, includeConstraints::PetscBool, localOffsets::PetscBool )
@@ -429,7 +429,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionCreate()`
 $(_doc_external("PetscSection/PetscSectionCreateGlobalSectionCensored"))
 """
 function PetscSectionCreateGlobalSectionCensored(petsclib::PetscLibType, s::PetscSection, sf::PetscSF, includeConstraints::PetscBool, numExcludes::Integer, excludes::AbstractVector{<:Number})
-    error("PetscSectionCreateGlobalSectionCensored: no generated method for these argument types")
+    throw(MethodError(PetscSectionCreateGlobalSectionCensored, (petsclib, s, sf, includeConstraints, numExcludes, excludes)))
 end
 
 @for_petsc function PetscSectionCreateGlobalSectionCensored(petsclib::$UnionPetscLib, s::PetscSection, sf::PetscSF, includeConstraints::PetscBool, numExcludes::$PetscInt, excludes::Vector{$PetscInt} )
@@ -472,7 +472,7 @@ See also: `DMLabel`, `DM`, `PetscSectionCreate()`
 $(_doc_external("DMLabel/PetscSectionCreateGlobalSectionLabel"))
 """
 function PetscSectionCreateGlobalSectionLabel(petsclib::PetscLibType, s::PetscSection, sf::PetscSF, includeConstraints::PetscBool, label::DMLabel, labelValue::Integer)
-    error("PetscSectionCreateGlobalSectionLabel: no generated method for these argument types")
+    throw(MethodError(PetscSectionCreateGlobalSectionLabel, (petsclib, s, sf, includeConstraints, label, labelValue)))
 end
 
 @for_petsc function PetscSectionCreateGlobalSectionLabel(petsclib::$UnionPetscLib, s::PetscSection, sf::PetscSF, includeConstraints::PetscBool, label::DMLabel, labelValue::$PetscInt )
@@ -511,7 +511,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionCreateSubmeshSection()`, `P
 $(_doc_external("PetscSection/PetscSectionCreateSubdomainSection"))
 """
 function PetscSectionCreateSubdomainSection(petsclib::PetscLibType, s::PetscSection, subpointMap::AbstractIS)
-    error("PetscSectionCreateSubdomainSection: no generated method for these argument types")
+    throw(MethodError(PetscSectionCreateSubdomainSection, (petsclib, s, subpointMap)))
 end
 
 @for_petsc function PetscSectionCreateSubdomainSection(petsclib::$UnionPetscLib, s::PetscSection, subpointMap::AbstractIS )
@@ -550,7 +550,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionCreateSubdomainSection()`, 
 $(_doc_external("PetscSection/PetscSectionCreateSubmeshSection"))
 """
 function PetscSectionCreateSubmeshSection(petsclib::PetscLibType, s::PetscSection, subpointIS::AbstractIS)
-    error("PetscSectionCreateSubmeshSection: no generated method for these argument types")
+    throw(MethodError(PetscSectionCreateSubmeshSection, (petsclib, s, subpointIS)))
 end
 
 @for_petsc function PetscSectionCreateSubmeshSection(petsclib::$UnionPetscLib, s::PetscSection, subpointIS::AbstractIS )
@@ -590,7 +590,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionCreateSupersection()`, `Pet
 $(_doc_external("PetscSection/PetscSectionCreateSubsection"))
 """
 function PetscSectionCreateSubsection(petsclib::PetscLibType, s::PetscSection, len::Integer, fields::AbstractVector{<:Number})
-    error("PetscSectionCreateSubsection: no generated method for these argument types")
+    throw(MethodError(PetscSectionCreateSubsection, (petsclib, s, len, fields)))
 end
 
 @for_petsc function PetscSectionCreateSubsection(petsclib::$UnionPetscLib, s::PetscSection, len::$PetscInt, fields::Vector{$PetscInt} )
@@ -629,7 +629,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionCreateSubsection()`, `Petsc
 $(_doc_external("PetscSection/PetscSectionCreateSupersection"))
 """
 function PetscSectionCreateSupersection(petsclib::PetscLibType, s::Vector{PetscSection}, len::Integer)
-    error("PetscSectionCreateSupersection: no generated method for these argument types")
+    throw(MethodError(PetscSectionCreateSupersection, (petsclib, s, len)))
 end
 
 @for_petsc function PetscSectionCreateSupersection(petsclib::$UnionPetscLib, s::Vector{PetscSection}, len::$PetscInt )
@@ -664,7 +664,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionCreate()`, `PetscSectionRes
 $(_doc_external("PetscSection/PetscSectionDestroy"))
 """
 function PetscSectionDestroy(petsclib::PetscLibType, s::Union{PetscSection, Ref{PetscSection}})
-    error("PetscSectionDestroy: no generated method for these argument types")
+    throw(MethodError(PetscSectionDestroy, (petsclib, s)))
 end
 
 @for_petsc function PetscSectionDestroy(petsclib::$UnionPetscLib, s::Union{PetscSection, Ref{PetscSection}} )
@@ -699,7 +699,7 @@ See also: `IS`, `PetscSection`, `PetscSectionSetBlockStarts()`, `PetscSectionCre
 $(_doc_external("PetscSection/PetscSectionGetBlockStarts"))
 """
 function PetscSectionGetBlockStarts(petsclib::PetscLibType, s::PetscSection)
-    error("PetscSectionGetBlockStarts: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetBlockStarts, (petsclib, s)))
 end
 
 @for_petsc function PetscSectionGetBlockStarts(petsclib::$UnionPetscLib, s::PetscSection )
@@ -738,7 +738,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionSetChart()`, `PetscSectionC
 $(_doc_external("PetscSection/PetscSectionGetChart"))
 """
 function PetscSectionGetChart(petsclib::PetscLibType, s::PetscSection)
-    error("PetscSectionGetChart: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetChart, (petsclib, s)))
 end
 
 @for_petsc function PetscSectionGetChart(petsclib::$UnionPetscLib, s::PetscSection )
@@ -780,7 +780,7 @@ See also: PetscSection, `PetscSectionSetClosureIndex()`, `DMPlexCreateClosureInd
 $(_doc_external("PetscSection/PetscSectionGetClosureIndex"))
 """
 function PetscSectionGetClosureIndex(petsclib::PetscLibType, section::PetscSection, obj)
-    error("PetscSectionGetClosureIndex: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetClosureIndex, (petsclib, section, obj)))
 end
 
 @for_petsc function PetscSectionGetClosureIndex(petsclib::$UnionPetscLib, section::PetscSection, obj )
@@ -823,7 +823,7 @@ See also: PetscSection, `PetscSection`, `IS`, `PetscSectionSetClosurePermutation
 $(_doc_external("PetscSection/PetscSectionGetClosureInversePermutation"))
 """
 function PetscSectionGetClosureInversePermutation(petsclib::PetscLibType, section::PetscSection, obj, depth::Integer, clSize::Integer)
-    error("PetscSectionGetClosureInversePermutation: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetClosureInversePermutation, (petsclib, section, obj, depth, clSize)))
 end
 
 @for_petsc function PetscSectionGetClosureInversePermutation(petsclib::$UnionPetscLib, section::PetscSection, obj, depth::$PetscInt, clSize::$PetscInt )
@@ -864,7 +864,7 @@ See also: PetscSection, `PetscSection`, `IS`, `PetscSectionSetClosurePermutation
 $(_doc_external("PetscSection/PetscSectionGetClosurePermutation"))
 """
 function PetscSectionGetClosurePermutation(petsclib::PetscLibType, section::PetscSection, obj, depth::Integer, clSize::Integer)
-    error("PetscSectionGetClosurePermutation: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetClosurePermutation, (petsclib, section, obj, depth, clSize)))
 end
 
 @for_petsc function PetscSectionGetClosurePermutation(petsclib::$UnionPetscLib, section::PetscSection, obj, depth::$PetscInt, clSize::$PetscInt )
@@ -905,7 +905,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionGetFieldName()`, `PetscSect
 $(_doc_external("PetscSection/PetscSectionGetComponentName"))
 """
 function PetscSectionGetComponentName(petsclib::PetscLibType, s::PetscSection, field::Integer, comp::Integer)
-    error("PetscSectionGetComponentName: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetComponentName, (petsclib, s, field, comp)))
 end
 
 @for_petsc function PetscSectionGetComponentName(petsclib::$UnionPetscLib, s::PetscSection, field::$PetscInt, comp::$PetscInt )
@@ -943,7 +943,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionGetStorageSize()`, `PetscSe
 $(_doc_external("PetscSection/PetscSectionGetConstrainedStorageSize"))
 """
 function PetscSectionGetConstrainedStorageSize(petsclib::PetscLibType, s::PetscSection)
-    error("PetscSectionGetConstrainedStorageSize: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetConstrainedStorageSize, (petsclib, s)))
 end
 
 @for_petsc function PetscSectionGetConstrainedStorageSize(petsclib::$UnionPetscLib, s::PetscSection )
@@ -982,7 +982,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionGetDof()`, `PetscSectionSet
 $(_doc_external("PetscSection/PetscSectionGetConstraintDof"))
 """
 function PetscSectionGetConstraintDof(petsclib::PetscLibType, s::PetscSection, point::Integer)
-    error("PetscSectionGetConstraintDof: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetConstraintDof, (petsclib, s, point)))
 end
 
 @for_petsc function PetscSectionGetConstraintDof(petsclib::$UnionPetscLib, s::PetscSection, point::$PetscInt )
@@ -1021,7 +1021,7 @@ See also: PetscSection, `PetscSectionSetConstraintIndices()`, `PetscSectionGetCo
 $(_doc_external("PetscSection/PetscSectionGetConstraintIndices"))
 """
 function PetscSectionGetConstraintIndices(petsclib::PetscLibType, s::PetscSection, point::Integer)
-    error("PetscSectionGetConstraintIndices: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetConstraintIndices, (petsclib, s, point)))
 end
 
 @for_petsc function PetscSectionGetConstraintIndices(petsclib::$UnionPetscLib, s::PetscSection, point::$PetscInt )
@@ -1061,7 +1061,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionSetDof()`, `PetscSectionCre
 $(_doc_external("PetscSection/PetscSectionGetDof"))
 """
 function PetscSectionGetDof(petsclib::PetscLibType, s::PetscSection, point::Integer)
-    error("PetscSectionGetDof: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetDof, (petsclib, s, point)))
 end
 
 @for_petsc function PetscSectionGetDof(petsclib::$UnionPetscLib, s::PetscSection, point::$PetscInt )
@@ -1098,7 +1098,7 @@ See also: PetscSection, `PetscSection`, `IS`, `PetscSectionSetNumFields()`
 $(_doc_external("PetscSection/PetscSectionGetField"))
 """
 function PetscSectionGetField(petsclib::PetscLibType, s::PetscSection, field::Integer)
-    error("PetscSectionGetField: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetField, (petsclib, s, field)))
 end
 
 @for_petsc function PetscSectionGetField(petsclib::$UnionPetscLib, s::PetscSection, field::$PetscInt )
@@ -1138,7 +1138,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionSetFieldComponents()`, `Pet
 $(_doc_external("PetscSection/PetscSectionGetFieldComponents"))
 """
 function PetscSectionGetFieldComponents(petsclib::PetscLibType, s::PetscSection, field::Integer)
-    error("PetscSectionGetFieldComponents: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetFieldComponents, (petsclib, s, field)))
 end
 
 @for_petsc function PetscSectionGetFieldComponents(petsclib::$UnionPetscLib, s::PetscSection, field::$PetscInt )
@@ -1178,7 +1178,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionGetDof()`, `PetscSectionSet
 $(_doc_external("PetscSection/PetscSectionGetFieldConstraintDof"))
 """
 function PetscSectionGetFieldConstraintDof(petsclib::PetscLibType, s::PetscSection, point::Integer, field::Integer)
-    error("PetscSectionGetFieldConstraintDof: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetFieldConstraintDof, (petsclib, s, point, field)))
 end
 
 @for_petsc function PetscSectionGetFieldConstraintDof(petsclib::$UnionPetscLib, s::PetscSection, point::$PetscInt, field::$PetscInt )
@@ -1218,7 +1218,7 @@ See also: PetscSection, `PetscSectionSetFieldConstraintIndices()`, `PetscSection
 $(_doc_external("PetscSection/PetscSectionGetFieldConstraintIndices"))
 """
 function PetscSectionGetFieldConstraintIndices(petsclib::PetscLibType, s::PetscSection, point::Integer, field::Integer)
-    error("PetscSectionGetFieldConstraintIndices: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetFieldConstraintIndices, (petsclib, s, point, field)))
 end
 
 @for_petsc function PetscSectionGetFieldConstraintIndices(petsclib::$UnionPetscLib, s::PetscSection, point::$PetscInt, field::$PetscInt )
@@ -1259,7 +1259,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionSetFieldDof()`, `PetscSecti
 $(_doc_external("PetscSection/PetscSectionGetFieldDof"))
 """
 function PetscSectionGetFieldDof(petsclib::PetscLibType, s::PetscSection, point::Integer, field::Integer)
-    error("PetscSectionGetFieldDof: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetFieldDof, (petsclib, s, point, field)))
 end
 
 @for_petsc function PetscSectionGetFieldDof(petsclib::$UnionPetscLib, s::PetscSection, point::$PetscInt, field::$PetscInt )
@@ -1298,7 +1298,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionSetFieldName()`, `PetscSect
 $(_doc_external("PetscSection/PetscSectionGetFieldName"))
 """
 function PetscSectionGetFieldName(petsclib::PetscLibType, s::PetscSection, field::Integer)
-    error("PetscSectionGetFieldName: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetFieldName, (petsclib, s, field)))
 end
 
 @for_petsc function PetscSectionGetFieldName(petsclib::$UnionPetscLib, s::PetscSection, field::$PetscInt )
@@ -1338,7 +1338,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionGetOffset()`, `PetscSection
 $(_doc_external("PetscSection/PetscSectionGetFieldOffset"))
 """
 function PetscSectionGetFieldOffset(petsclib::PetscLibType, s::PetscSection, point::Integer, field::Integer)
-    error("PetscSectionGetFieldOffset: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetFieldOffset, (petsclib, s, point, field)))
 end
 
 @for_petsc function PetscSectionGetFieldOffset(petsclib::$UnionPetscLib, s::PetscSection, point::$PetscInt, field::$PetscInt )
@@ -1379,7 +1379,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionGetOffset()`, `PetscSection
 $(_doc_external("PetscSection/PetscSectionGetFieldPointOffset"))
 """
 function PetscSectionGetFieldPointOffset(petsclib::PetscLibType, s::PetscSection, point::Integer, field::Integer)
-    error("PetscSectionGetFieldPointOffset: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetFieldPointOffset, (petsclib, s, point, field)))
 end
 
 @for_petsc function PetscSectionGetFieldPointOffset(petsclib::$UnionPetscLib, s::PetscSection, point::$PetscInt, field::$PetscInt )
@@ -1424,7 +1424,7 @@ See also: PetscSection, `PetscSectionSym`, `PetscSectionGetPointSyms()`, `PetscS
 $(_doc_external("PetscSection/PetscSectionGetFieldPointSyms"))
 """
 function PetscSectionGetFieldPointSyms(petsclib::PetscLibType, section::PetscSection, field::Integer, numPoints::Integer, points::AbstractVector{<:Number})
-    error("PetscSectionGetFieldPointSyms: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetFieldPointSyms, (petsclib, section, field, numPoints, points)))
 end
 
 @for_petsc function PetscSectionGetFieldPointSyms(petsclib::$UnionPetscLib, section::PetscSection, field::$PetscInt, numPoints::$PetscInt, points::Vector{$PetscInt} )
@@ -1465,7 +1465,7 @@ See also: PetscSection, `PetscSectionSym`, `PetscSectionSetFieldSym()`, `PetscSe
 $(_doc_external("PetscSection/PetscSectionGetFieldSym"))
 """
 function PetscSectionGetFieldSym(petsclib::PetscLibType, section::PetscSection, field::Integer)
-    error("PetscSectionGetFieldSym: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetFieldSym, (petsclib, section, field)))
 end
 
 @for_petsc function PetscSectionGetFieldSym(petsclib::$UnionPetscLib, section::PetscSection, field::$PetscInt )
@@ -1504,7 +1504,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionSetIncludesConstraints()`
 $(_doc_external("PetscSection/PetscSectionGetIncludesConstraints"))
 """
 function PetscSectionGetIncludesConstraints(petsclib::PetscLibType, s::PetscSection)
-    error("PetscSectionGetIncludesConstraints: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetIncludesConstraints, (petsclib, s)))
 end
 
 @for_petsc function PetscSectionGetIncludesConstraints(petsclib::$UnionPetscLib, s::PetscSection )
@@ -1542,7 +1542,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionGetDof()`, `PetscSectionSet
 $(_doc_external("PetscSection/PetscSectionGetMaxDof"))
 """
 function PetscSectionGetMaxDof(petsclib::PetscLibType, s::PetscSection)
-    error("PetscSectionGetMaxDof: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetMaxDof, (petsclib, s)))
 end
 
 @for_petsc function PetscSectionGetMaxDof(petsclib::$UnionPetscLib, s::PetscSection )
@@ -1580,7 +1580,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionSetNumFields()`
 $(_doc_external("PetscSection/PetscSectionGetNumFields"))
 """
 function PetscSectionGetNumFields(petsclib::PetscLibType, s::PetscSection)
-    error("PetscSectionGetNumFields: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetNumFields, (petsclib, s)))
 end
 
 @for_petsc function PetscSectionGetNumFields(petsclib::$UnionPetscLib, s::PetscSection )
@@ -1619,7 +1619,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionGetFieldOffset()`, `PetscSe
 $(_doc_external("PetscSection/PetscSectionGetOffset"))
 """
 function PetscSectionGetOffset(petsclib::PetscLibType, s::PetscSection, point::Integer)
-    error("PetscSectionGetOffset: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetOffset, (petsclib, s, point)))
 end
 
 @for_petsc function PetscSectionGetOffset(petsclib::$UnionPetscLib, s::PetscSection, point::$PetscInt )
@@ -1658,7 +1658,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionGetOffset()`, `PetscSection
 $(_doc_external("PetscSection/PetscSectionGetOffsetRange"))
 """
 function PetscSectionGetOffsetRange(petsclib::PetscLibType, s::PetscSection)
-    error("PetscSectionGetOffsetRange: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetOffsetRange, (petsclib, s)))
 end
 
 @for_petsc function PetscSectionGetOffsetRange(petsclib::$UnionPetscLib, s::PetscSection )
@@ -1698,7 +1698,7 @@ See also: `IS`, `PetscSection`, `PetscSectionSetPermutation()`, `PetscSectionCre
 $(_doc_external("PetscSection/PetscSectionGetPermutation"))
 """
 function PetscSectionGetPermutation(petsclib::PetscLibType, s::PetscSection)
-    error("PetscSectionGetPermutation: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetPermutation, (petsclib, s)))
 end
 
 @for_petsc function PetscSectionGetPermutation(petsclib::$UnionPetscLib, s::PetscSection )
@@ -1737,7 +1737,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionGetValueLayout()`, `PetscSe
 $(_doc_external("PetscSection/PetscSectionGetPointLayout"))
 """
 function PetscSectionGetPointLayout(petsclib::PetscLibType, comm::MPI_Comm, s::PetscSection)
-    error("PetscSectionGetPointLayout: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetPointLayout, (petsclib, comm, s)))
 end
 
 @for_petsc function PetscSectionGetPointLayout(petsclib::$UnionPetscLib, comm::MPI_Comm, s::PetscSection )
@@ -1775,7 +1775,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionSetPointMajor()`
 $(_doc_external("PetscSection/PetscSectionGetPointMajor"))
 """
 function PetscSectionGetPointMajor(petsclib::PetscLibType, s::PetscSection)
-    error("PetscSectionGetPointMajor: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetPointMajor, (petsclib, s)))
 end
 
 @for_petsc function PetscSectionGetPointMajor(petsclib::$UnionPetscLib, s::PetscSection )
@@ -1864,7 +1864,7 @@ See also: PetscSection, `PetscSectionSym`, `PetscSectionRestorePointSyms()`, `Pe
 $(_doc_external("PetscSection/PetscSectionGetPointSyms"))
 """
 function PetscSectionGetPointSyms(petsclib::PetscLibType, section::PetscSection, numPoints::Integer, points::AbstractVector{<:Number})
-    error("PetscSectionGetPointSyms: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetPointSyms, (petsclib, section, numPoints, points)))
 end
 
 @for_petsc function PetscSectionGetPointSyms(petsclib::$UnionPetscLib, section::PetscSection, numPoints::$PetscInt, points::Vector{$PetscInt} )
@@ -1904,7 +1904,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionGetOffset()`, `PetscSection
 $(_doc_external("PetscSection/PetscSectionGetStorageSize"))
 """
 function PetscSectionGetStorageSize(petsclib::PetscLibType, s::PetscSection)
-    error("PetscSectionGetStorageSize: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetStorageSize, (petsclib, s)))
 end
 
 @for_petsc function PetscSectionGetStorageSize(petsclib::$UnionPetscLib, s::PetscSection )
@@ -1942,7 +1942,7 @@ See also: PetscSection, `PetscSectionSym`, `PetscSectionSetSym()`, `PetscSection
 $(_doc_external("PetscSection/PetscSectionGetSym"))
 """
 function PetscSectionGetSym(petsclib::PetscLibType, section::PetscSection)
-    error("PetscSectionGetSym: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetSym, (petsclib, section)))
 end
 
 @for_petsc function PetscSectionGetSym(petsclib::$UnionPetscLib, section::PetscSection )
@@ -1980,7 +1980,7 @@ See also: PetscSection, `PetscSectionSym`, `PetscSectionSetChart()`, `PetscSecti
 $(_doc_external("PetscSection/PetscSectionGetUseFieldOffsets"))
 """
 function PetscSectionGetUseFieldOffsets(petsclib::PetscLibType, s::PetscSection)
-    error("PetscSectionGetUseFieldOffsets: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetUseFieldOffsets, (petsclib, s)))
 end
 
 @for_petsc function PetscSectionGetUseFieldOffsets(petsclib::$UnionPetscLib, s::PetscSection )
@@ -2019,7 +2019,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionGetPointLayout()`, `PetscSe
 $(_doc_external("PetscSection/PetscSectionGetValueLayout"))
 """
 function PetscSectionGetValueLayout(petsclib::PetscLibType, comm::MPI_Comm, s::PetscSection)
-    error("PetscSectionGetValueLayout: no generated method for these argument types")
+    throw(MethodError(PetscSectionGetValueLayout, (petsclib, comm, s)))
 end
 
 @for_petsc function PetscSectionGetValueLayout(petsclib::$UnionPetscLib, comm::MPI_Comm, s::PetscSection )
@@ -2057,7 +2057,7 @@ See also: PetscSection, `PetscSectionSetConstraintIndices()`, `PetscSectionGetCo
 $(_doc_external("PetscSection/PetscSectionHasConstraints"))
 """
 function PetscSectionHasConstraints(petsclib::PetscLibType, s::PetscSection)
-    error("PetscSectionHasConstraints: no generated method for these argument types")
+    throw(MethodError(PetscSectionHasConstraints, (petsclib, s)))
 end
 
 @for_petsc function PetscSectionHasConstraints(petsclib::$UnionPetscLib, s::PetscSection )
@@ -2093,7 +2093,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionCreate()`, `PetscSectionDes
 $(_doc_external("PetscSection/PetscSectionLoad"))
 """
 function PetscSectionLoad(petsclib::PetscLibType, s::PetscSection, viewer::PetscViewer)
-    error("PetscSectionLoad: no generated method for these argument types")
+    throw(MethodError(PetscSectionLoad, (petsclib, s, viewer)))
 end
 
 @for_petsc function PetscSectionLoad(petsclib::$UnionPetscLib, s::PetscSection, viewer::PetscViewer )
@@ -2130,7 +2130,7 @@ See also: PetscSection, `IS`, `PetscSection`, `MatPermute()`, `PetscSectionSetPe
 $(_doc_external("PetscSection/PetscSectionPermute"))
 """
 function PetscSectionPermute(petsclib::PetscLibType, section::PetscSection, permutation::AbstractIS)
-    error("PetscSectionPermute: no generated method for these argument types")
+    throw(MethodError(PetscSectionPermute, (petsclib, section, permutation)))
 end
 
 @for_petsc function PetscSectionPermute(petsclib::$UnionPetscLib, section::PetscSection, permutation::AbstractIS )
@@ -2165,7 +2165,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionCreate()`
 $(_doc_external("PetscSection/PetscSectionReset"))
 """
 function PetscSectionReset(petsclib::PetscLibType, s::PetscSection)
-    error("PetscSectionReset: no generated method for these argument types")
+    throw(MethodError(PetscSectionReset, (petsclib, s)))
 end
 
 @for_petsc function PetscSectionReset(petsclib::$UnionPetscLib, s::PetscSection )
@@ -2196,7 +2196,7 @@ See also: `PetscSectionSetClosurePermutation()`, `PetscSectionSetClosureIndex()`
 $(_doc_external("PetscSection/PetscSectionResetClosurePermutation"))
 """
 function PetscSectionResetClosurePermutation(petsclib::PetscLibType, section::PetscSection)
-    error("PetscSectionResetClosurePermutation: no generated method for these argument types")
+    throw(MethodError(PetscSectionResetClosurePermutation, (petsclib, section)))
 end
 
 @for_petsc function PetscSectionResetClosurePermutation(petsclib::$UnionPetscLib, section::PetscSection )
@@ -2236,7 +2236,7 @@ See also: PetscSection, `PetscSectionSym`, `PetscSectionRestorePointSyms()`, `pe
 $(_doc_external("PetscSection/PetscSectionRestoreFieldPointSyms"))
 """
 function PetscSectionRestoreFieldPointSyms(petsclib::PetscLibType, section::PetscSection, field::Integer, numPoints::Integer, points::Integer, perms::Integer, rots::Number)
-    error("PetscSectionRestoreFieldPointSyms: no generated method for these argument types")
+    throw(MethodError(PetscSectionRestoreFieldPointSyms, (petsclib, section, field, numPoints, points, perms, rots)))
 end
 
 @for_petsc function PetscSectionRestoreFieldPointSyms(petsclib::$UnionPetscLib, section::PetscSection, field::$PetscInt, numPoints::$PetscInt, points::$PetscInt, perms::$PetscInt, rots::$PetscScalar )
@@ -2276,7 +2276,7 @@ See also: PetscSection, `PetscSectionSym`, `PetscSectionGetPointSyms()`, `PetscS
 $(_doc_external("PetscSection/PetscSectionRestorePointSyms"))
 """
 function PetscSectionRestorePointSyms(petsclib::PetscLibType, section::PetscSection, numPoints::Integer, points::Integer, perms::Integer, rots::Number)
-    error("PetscSectionRestorePointSyms: no generated method for these argument types")
+    throw(MethodError(PetscSectionRestorePointSyms, (petsclib, section, numPoints, points, perms, rots)))
 end
 
 @for_petsc function PetscSectionRestorePointSyms(petsclib::$UnionPetscLib, section::PetscSection, numPoints::$PetscInt, points::$PetscInt, perms::$PetscInt, rots::$PetscScalar )
@@ -2311,7 +2311,7 @@ See also: `IS`, `PetscSection`, `PetscSectionGetBlockStarts()`, `PetscSectionCre
 $(_doc_external("PetscSection/PetscSectionSetBlockStarts"))
 """
 function PetscSectionSetBlockStarts(petsclib::PetscLibType, s::PetscSection, blockStarts::PetscBT)
-    error("PetscSectionSetBlockStarts: no generated method for these argument types")
+    throw(MethodError(PetscSectionSetBlockStarts, (petsclib, s, blockStarts)))
 end
 
 @for_petsc function PetscSectionSetBlockStarts(petsclib::$UnionPetscLib, s::PetscSection, blockStarts::PetscBT )
@@ -2346,7 +2346,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionGetChart()`, `PetscSectionC
 $(_doc_external("PetscSection/PetscSectionSetChart"))
 """
 function PetscSectionSetChart(petsclib::PetscLibType, s::PetscSection, pStart::Integer, pEnd::Integer)
-    error("PetscSectionSetChart: no generated method for these argument types")
+    throw(MethodError(PetscSectionSetChart, (petsclib, s, pStart, pEnd)))
 end
 
 @for_petsc function PetscSectionSetChart(petsclib::$UnionPetscLib, s::PetscSection, pStart::$PetscInt, pEnd::$PetscInt )
@@ -2382,7 +2382,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionGetClosureIndex()`, `DMPlex
 $(_doc_external("PetscSection/PetscSectionSetClosureIndex"))
 """
 function PetscSectionSetClosureIndex(petsclib::PetscLibType, section::PetscSection, obj, clSection::PetscSection, clPoints::AbstractIS)
-    error("PetscSectionSetClosureIndex: no generated method for these argument types")
+    throw(MethodError(PetscSectionSetClosureIndex, (petsclib, section, obj, clSection, clPoints)))
 end
 
 @for_petsc function PetscSectionSetClosureIndex(petsclib::$UnionPetscLib, section::PetscSection, obj, clSection::PetscSection, clPoints::AbstractIS )
@@ -2418,7 +2418,7 @@ See also: PetscSection, `PetscSection`, `IS`, `PetscSectionGetClosurePermutation
 $(_doc_external("PetscSection/PetscSectionSetClosurePermutation"))
 """
 function PetscSectionSetClosurePermutation(petsclib::PetscLibType, section::PetscSection, obj, depth::Integer, perm::AbstractIS)
-    error("PetscSectionSetClosurePermutation: no generated method for these argument types")
+    throw(MethodError(PetscSectionSetClosurePermutation, (petsclib, section, obj, depth, perm)))
 end
 
 @for_petsc function PetscSectionSetClosurePermutation(petsclib::$UnionPetscLib, section::PetscSection, obj, depth::$PetscInt, perm::AbstractIS )
@@ -2455,7 +2455,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionGetComponentName()`, `Petsc
 $(_doc_external("PetscSection/PetscSectionSetComponentName"))
 """
 function PetscSectionSetComponentName(petsclib::PetscLibType, s::PetscSection, field::Integer, comp::Integer, compName::String)
-    error("PetscSectionSetComponentName: no generated method for these argument types")
+    throw(MethodError(PetscSectionSetComponentName, (petsclib, s, field, comp, compName)))
 end
 
 @for_petsc function PetscSectionSetComponentName(petsclib::$UnionPetscLib, s::PetscSection, field::$PetscInt, comp::$PetscInt, compName::String )
@@ -2490,7 +2490,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionSetDof()`, `PetscSectionGet
 $(_doc_external("PetscSection/PetscSectionSetConstraintDof"))
 """
 function PetscSectionSetConstraintDof(petsclib::PetscLibType, s::PetscSection, point::Integer, numDof::Integer)
-    error("PetscSectionSetConstraintDof: no generated method for these argument types")
+    throw(MethodError(PetscSectionSetConstraintDof, (petsclib, s, point, numDof)))
 end
 
 @for_petsc function PetscSectionSetConstraintDof(petsclib::$UnionPetscLib, s::PetscSection, point::$PetscInt, numDof::$PetscInt )
@@ -2525,7 +2525,7 @@ See also: PetscSection, `PetscSectionGetConstraintIndices()`, `PetscSectionGetCo
 $(_doc_external("PetscSection/PetscSectionSetConstraintIndices"))
 """
 function PetscSectionSetConstraintIndices(petsclib::PetscLibType, s::PetscSection, point::Integer, indices::AbstractVector{<:Number})
-    error("PetscSectionSetConstraintIndices: no generated method for these argument types")
+    throw(MethodError(PetscSectionSetConstraintIndices, (petsclib, s, point, indices)))
 end
 
 @for_petsc function PetscSectionSetConstraintIndices(petsclib::$UnionPetscLib, s::PetscSection, point::$PetscInt, indices::Vector{$PetscInt} )
@@ -2560,7 +2560,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionGetDof()`, `PetscSectionAdd
 $(_doc_external("PetscSection/PetscSectionSetDof"))
 """
 function PetscSectionSetDof(petsclib::PetscLibType, s::PetscSection, point::Integer, numDof::Integer)
-    error("PetscSectionSetDof: no generated method for these argument types")
+    throw(MethodError(PetscSectionSetDof, (petsclib, s, point, numDof)))
 end
 
 @for_petsc function PetscSectionSetDof(petsclib::$UnionPetscLib, s::PetscSection, point::$PetscInt, numDof::$PetscInt )
@@ -2596,7 +2596,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionGetFieldComponents()`, `Pet
 $(_doc_external("PetscSection/PetscSectionSetFieldComponents"))
 """
 function PetscSectionSetFieldComponents(petsclib::PetscLibType, s::PetscSection, field::Integer, numComp::Integer)
-    error("PetscSectionSetFieldComponents: no generated method for these argument types")
+    throw(MethodError(PetscSectionSetFieldComponents, (petsclib, s, field, numComp)))
 end
 
 @for_petsc function PetscSectionSetFieldComponents(petsclib::$UnionPetscLib, s::PetscSection, field::$PetscInt, numComp::$PetscInt )
@@ -2632,7 +2632,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionSetDof()`, `PetscSectionGet
 $(_doc_external("PetscSection/PetscSectionSetFieldConstraintDof"))
 """
 function PetscSectionSetFieldConstraintDof(petsclib::PetscLibType, s::PetscSection, point::Integer, field::Integer, numDof::Integer)
-    error("PetscSectionSetFieldConstraintDof: no generated method for these argument types")
+    throw(MethodError(PetscSectionSetFieldConstraintDof, (petsclib, s, point, field, numDof)))
 end
 
 @for_petsc function PetscSectionSetFieldConstraintDof(petsclib::$UnionPetscLib, s::PetscSection, point::$PetscInt, field::$PetscInt, numDof::$PetscInt )
@@ -2668,7 +2668,7 @@ See also: PetscSection, `PetscSectionSetConstraintIndices()`, `PetscSectionGetFi
 $(_doc_external("PetscSection/PetscSectionSetFieldConstraintIndices"))
 """
 function PetscSectionSetFieldConstraintIndices(petsclib::PetscLibType, s::PetscSection, point::Integer, field::Integer, indices::AbstractVector{<:Number})
-    error("PetscSectionSetFieldConstraintIndices: no generated method for these argument types")
+    throw(MethodError(PetscSectionSetFieldConstraintIndices, (petsclib, s, point, field, indices)))
 end
 
 @for_petsc function PetscSectionSetFieldConstraintIndices(petsclib::$UnionPetscLib, s::PetscSection, point::$PetscInt, field::$PetscInt, indices::Vector{$PetscInt} )
@@ -2704,7 +2704,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionGetFieldDof()`, `PetscSecti
 $(_doc_external("PetscSection/PetscSectionSetFieldDof"))
 """
 function PetscSectionSetFieldDof(petsclib::PetscLibType, s::PetscSection, point::Integer, field::Integer, numDof::Integer)
-    error("PetscSectionSetFieldDof: no generated method for these argument types")
+    throw(MethodError(PetscSectionSetFieldDof, (petsclib, s, point, field, numDof)))
 end
 
 @for_petsc function PetscSectionSetFieldDof(petsclib::$UnionPetscLib, s::PetscSection, point::$PetscInt, field::$PetscInt, numDof::$PetscInt )
@@ -2739,7 +2739,7 @@ See also: PetscSection, `PetscSectionGetFieldName()`, `PetscSectionSetNumFields(
 $(_doc_external("PetscSection/PetscSectionSetFieldName"))
 """
 function PetscSectionSetFieldName(petsclib::PetscLibType, s::PetscSection, field::Integer, fieldName::String)
-    error("PetscSectionSetFieldName: no generated method for these argument types")
+    throw(MethodError(PetscSectionSetFieldName, (petsclib, s, field, fieldName)))
 end
 
 @for_petsc function PetscSectionSetFieldName(petsclib::$UnionPetscLib, s::PetscSection, field::$PetscInt, fieldName::String )
@@ -2775,7 +2775,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionGetFieldOffset()`, `PetscSe
 $(_doc_external("PetscSection/PetscSectionSetFieldOffset"))
 """
 function PetscSectionSetFieldOffset(petsclib::PetscLibType, s::PetscSection, point::Integer, field::Integer, offset::Integer)
-    error("PetscSectionSetFieldOffset: no generated method for these argument types")
+    throw(MethodError(PetscSectionSetFieldOffset, (petsclib, s, point, field, offset)))
 end
 
 @for_petsc function PetscSectionSetFieldOffset(petsclib::$UnionPetscLib, s::PetscSection, point::$PetscInt, field::$PetscInt, offset::$PetscInt )
@@ -2810,7 +2810,7 @@ See also: PetscSection, `PetscSectionSym`, `PetscSectionGetFieldSym()`, `PetscSe
 $(_doc_external("PetscSection/PetscSectionSetFieldSym"))
 """
 function PetscSectionSetFieldSym(petsclib::PetscLibType, section::PetscSection, field::Integer, sym::PetscSectionSym)
-    error("PetscSectionSetFieldSym: no generated method for these argument types")
+    throw(MethodError(PetscSectionSetFieldSym, (petsclib, section, field, sym)))
 end
 
 @for_petsc function PetscSectionSetFieldSym(petsclib::$UnionPetscLib, section::PetscSection, field::$PetscInt, sym::PetscSectionSym )
@@ -2846,7 +2846,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionCreate()`, `PetscSectionDes
 $(_doc_external("PetscSection/PetscSectionSetFromOptions"))
 """
 function PetscSectionSetFromOptions(petsclib::PetscLibType, s::PetscSection)
-    error("PetscSectionSetFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscSectionSetFromOptions, (petsclib, s)))
 end
 
 @for_petsc function PetscSectionSetFromOptions(petsclib::$UnionPetscLib, s::PetscSection )
@@ -2880,7 +2880,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionGetIncludesConstraints()`
 $(_doc_external("PetscSection/PetscSectionSetIncludesConstraints"))
 """
 function PetscSectionSetIncludesConstraints(petsclib::PetscLibType, s::PetscSection, includesConstraints::PetscBool)
-    error("PetscSectionSetIncludesConstraints: no generated method for these argument types")
+    throw(MethodError(PetscSectionSetIncludesConstraints, (petsclib, s, includesConstraints)))
 end
 
 @for_petsc function PetscSectionSetIncludesConstraints(petsclib::$UnionPetscLib, s::PetscSection, includesConstraints::PetscBool )
@@ -2914,7 +2914,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionGetNumFields()`, `PetscSect
 $(_doc_external("PetscSection/PetscSectionSetNumFields"))
 """
 function PetscSectionSetNumFields(petsclib::PetscLibType, s::PetscSection, numFields::Integer)
-    error("PetscSectionSetNumFields: no generated method for these argument types")
+    throw(MethodError(PetscSectionSetNumFields, (petsclib, s, numFields)))
 end
 
 @for_petsc function PetscSectionSetNumFields(petsclib::$UnionPetscLib, s::PetscSection, numFields::$PetscInt )
@@ -2949,7 +2949,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionGetFieldOffset()`, `PetscSe
 $(_doc_external("PetscSection/PetscSectionSetOffset"))
 """
 function PetscSectionSetOffset(petsclib::PetscLibType, s::PetscSection, point::Integer, offset::Integer)
-    error("PetscSectionSetOffset: no generated method for these argument types")
+    throw(MethodError(PetscSectionSetOffset, (petsclib, s, point, offset)))
 end
 
 @for_petsc function PetscSectionSetOffset(petsclib::$UnionPetscLib, s::PetscSection, point::$PetscInt, offset::$PetscInt )
@@ -2983,7 +2983,7 @@ See also: `IS`, `PetscSection`, `PetscSectionSetUp()`, `PetscSectionGetPermutati
 $(_doc_external("PetscSection/PetscSectionSetPermutation"))
 """
 function PetscSectionSetPermutation(petsclib::PetscLibType, s::PetscSection, perm::AbstractIS)
-    error("PetscSectionSetPermutation: no generated method for these argument types")
+    throw(MethodError(PetscSectionSetPermutation, (petsclib, s, perm)))
 end
 
 @for_petsc function PetscSectionSetPermutation(petsclib::$UnionPetscLib, s::PetscSection, perm::AbstractIS )
@@ -3017,7 +3017,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionGetPointMajor()`, `PetscSec
 $(_doc_external("PetscSection/PetscSectionSetPointMajor"))
 """
 function PetscSectionSetPointMajor(petsclib::PetscLibType, s::PetscSection, pm::PetscBool)
-    error("PetscSectionSetPointMajor: no generated method for these argument types")
+    throw(MethodError(PetscSectionSetPointMajor, (petsclib, s, pm)))
 end
 
 @for_petsc function PetscSectionSetPointMajor(petsclib::$UnionPetscLib, s::PetscSection, pm::PetscBool )
@@ -3051,7 +3051,7 @@ See also: PetscSection, `PetscSectionSym`, `PetscSectionGetSym()`, `PetscSection
 $(_doc_external("PetscSection/PetscSectionSetSym"))
 """
 function PetscSectionSetSym(petsclib::PetscLibType, section::PetscSection, sym::PetscSectionSym)
-    error("PetscSectionSetSym: no generated method for these argument types")
+    throw(MethodError(PetscSectionSetSym, (petsclib, section, sym)))
 end
 
 @for_petsc function PetscSectionSetSym(petsclib::$UnionPetscLib, section::PetscSection, sym::PetscSectionSym )
@@ -3084,7 +3084,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionCreate()`, `PetscSectionSet
 $(_doc_external("PetscSection/PetscSectionSetUp"))
 """
 function PetscSectionSetUp(petsclib::PetscLibType, s::PetscSection)
-    error("PetscSectionSetUp: no generated method for these argument types")
+    throw(MethodError(PetscSectionSetUp, (petsclib, s)))
 end
 
 @for_petsc function PetscSectionSetUp(petsclib::$UnionPetscLib, s::PetscSection )
@@ -3117,7 +3117,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionSetUp()`, `PetscSectionCrea
 $(_doc_external("PetscSection/PetscSectionSetUpBC"))
 """
 function PetscSectionSetUpBC(petsclib::PetscLibType, s::PetscSection)
-    error("PetscSectionSetUpBC: no generated method for these argument types")
+    throw(MethodError(PetscSectionSetUpBC, (petsclib, s)))
 end
 
 @for_petsc function PetscSectionSetUpBC(petsclib::$UnionPetscLib, s::PetscSection )
@@ -3151,7 +3151,7 @@ See also: PetscSection, `PetscSectionSym`, `PetscSectionGetUseFieldOffsets()`, `
 $(_doc_external("PetscSection/PetscSectionSetUseFieldOffsets"))
 """
 function PetscSectionSetUseFieldOffsets(petsclib::PetscLibType, s::PetscSection, flg::PetscBool)
-    error("PetscSectionSetUseFieldOffsets: no generated method for these argument types")
+    throw(MethodError(PetscSectionSetUseFieldOffsets, (petsclib, s, flg)))
 end
 
 @for_petsc function PetscSectionSetUseFieldOffsets(petsclib::$UnionPetscLib, s::PetscSection, flg::PetscBool )
@@ -3187,7 +3187,7 @@ See also: PetscSection, `PetscSectionSym`, `PetscSectionSymCreate()`, `PetscSect
 $(_doc_external("PetscSection/PetscSectionSymCopy"))
 """
 function PetscSectionSymCopy(petsclib::PetscLibType, sym::PetscSectionSym, nsym::PetscSectionSym)
-    error("PetscSectionSymCopy: no generated method for these argument types")
+    throw(MethodError(PetscSectionSymCopy, (petsclib, sym, nsym)))
 end
 
 @for_petsc function PetscSectionSymCopy(petsclib::$UnionPetscLib, sym::PetscSectionSym, nsym::PetscSectionSym )
@@ -3223,7 +3223,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionSym`, `PetscSectionSymDestr
 $(_doc_external("PetscSection/PetscSectionSymCreate"))
 """
 function PetscSectionSymCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("PetscSectionSymCreate: no generated method for these argument types")
+    throw(MethodError(PetscSectionSymCreate, (petsclib, comm)))
 end
 
 @for_petsc function PetscSectionSymCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -3262,7 +3262,7 @@ See also: `DMLabel`, `DM`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `P
 $(_doc_external("DMLabel/PetscSectionSymCreateLabel"))
 """
 function PetscSectionSymCreateLabel(petsclib::PetscLibType, comm::MPI_Comm, label::DMLabel)
-    error("PetscSectionSymCreateLabel: no generated method for these argument types")
+    throw(MethodError(PetscSectionSymCreateLabel, (petsclib, comm, label)))
 end
 
 @for_petsc function PetscSectionSymCreateLabel(petsclib::$UnionPetscLib, comm::MPI_Comm, label::DMLabel )
@@ -3297,7 +3297,7 @@ See also: PetscSection, `PetscSectionSym`, `PetscSectionSymCreate()`
 $(_doc_external("PetscSection/PetscSectionSymDestroy"))
 """
 function PetscSectionSymDestroy(petsclib::PetscLibType, sym::Union{PetscSectionSym, Ref{PetscSectionSym}})
-    error("PetscSectionSymDestroy: no generated method for these argument types")
+    throw(MethodError(PetscSectionSymDestroy, (petsclib, sym)))
 end
 
 @for_petsc function PetscSectionSymDestroy(petsclib::$UnionPetscLib, sym::Union{PetscSectionSym, Ref{PetscSectionSym}} )
@@ -3335,7 +3335,7 @@ See also: PetscSection, `PetscSectionSym`, `PetscSectionSymCreate()`, `PetscSect
 $(_doc_external("PetscSection/PetscSectionSymDistribute"))
 """
 function PetscSectionSymDistribute(petsclib::PetscLibType, sym::PetscSectionSym, migrationSF::PetscSF)
-    error("PetscSectionSymDistribute: no generated method for these argument types")
+    throw(MethodError(PetscSectionSymDistribute, (petsclib, sym, migrationSF)))
 end
 
 @for_petsc function PetscSectionSymDistribute(petsclib::$UnionPetscLib, sym::PetscSectionSym, migrationSF::PetscSF )
@@ -3373,7 +3373,7 @@ See also: PetscSection, `PetscSectionSym`, `PetscSectionSymType`, `PetscSectionS
 $(_doc_external("PetscSection/PetscSectionSymGetType"))
 """
 function PetscSectionSymGetType(petsclib::PetscLibType, sym::PetscSectionSym)
-    error("PetscSectionSymGetType: no generated method for these argument types")
+    throw(MethodError(PetscSectionSymGetType, (petsclib, sym)))
 end
 
 @for_petsc function PetscSectionSymGetType(petsclib::$UnionPetscLib, sym::PetscSectionSym )
@@ -3416,7 +3416,7 @@ See also: `DMLabel`, `DM`, `PetscSectionSymLabelSetStratum()`, `PetscSectionSymC
 $(_doc_external("DMLabel/PetscSectionSymLabelGetStratum"))
 """
 function PetscSectionSymLabelGetStratum(petsclib::PetscLibType, sym::PetscSectionSym, stratum::Integer)
-    error("PetscSectionSymLabelGetStratum: no generated method for these argument types")
+    throw(MethodError(PetscSectionSymLabelGetStratum, (petsclib, sym, stratum)))
 end
 
 @for_petsc function PetscSectionSymLabelGetStratum(petsclib::$UnionPetscLib, sym::PetscSectionSym, stratum::$PetscInt )
@@ -3460,7 +3460,7 @@ See also: `DMLabel`, `DM`, `PetscSectionSymLabelSetStratum()`, `PetscSectionSymC
 $(_doc_external("DMLabel/PetscSectionSymLabelSetLabel"))
 """
 function PetscSectionSymLabelSetLabel(petsclib::PetscLibType, sym::PetscSectionSym, label::DMLabel)
-    error("PetscSectionSymLabelSetLabel: no generated method for these argument types")
+    throw(MethodError(PetscSectionSymLabelSetLabel, (petsclib, sym, label)))
 end
 
 @for_petsc function PetscSectionSymLabelSetLabel(petsclib::$UnionPetscLib, sym::PetscSectionSym, label::DMLabel )
@@ -3500,7 +3500,7 @@ See also: `DMLabel`, `DM`, `PetscSectionSymLabelGetStratum()`, `PetscSectionSymC
 $(_doc_external("DMLabel/PetscSectionSymLabelSetStratum"))
 """
 function PetscSectionSymLabelSetStratum(petsclib::PetscLibType, sym::PetscSectionSym, stratum::Integer, size::Integer, minOrient::Integer, maxOrient::Integer, mode::PetscCopyMode, perms::Integer, rots::Number)
-    error("PetscSectionSymLabelSetStratum: no generated method for these argument types")
+    throw(MethodError(PetscSectionSymLabelSetStratum, (petsclib, sym, stratum, size, minOrient, maxOrient, mode, perms, rots)))
 end
 
 @for_petsc function PetscSectionSymLabelSetStratum(petsclib::$UnionPetscLib, sym::PetscSectionSym, stratum::$PetscInt, size::$PetscInt, minOrient::$PetscInt, maxOrient::$PetscInt, mode::PetscCopyMode, perms::$PetscInt, rots::$PetscScalar )
@@ -3534,7 +3534,7 @@ See also: PetscSection, `PetscSectionSym`, `PetscSectionSymType`, `PetscSectionS
 $(_doc_external("PetscSection/PetscSectionSymRegister"))
 """
 function PetscSectionSymRegister(petsclib::PetscLibType, sname::String, fnc::external)
-    error("PetscSectionSymRegister: no generated method for these argument types")
+    throw(MethodError(PetscSectionSymRegister, (petsclib, sname, fnc)))
 end
 
 @for_petsc function PetscSectionSymRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
@@ -3568,7 +3568,7 @@ See also: PetscSection, `PetscSectionSym`, `PetscSectionSymType`, `PetscSectionS
 $(_doc_external("PetscSection/PetscSectionSymSetType"))
 """
 function PetscSectionSymSetType(petsclib::PetscLibType, sym::PetscSectionSym, method::String)
-    error("PetscSectionSymSetType: no generated method for these argument types")
+    throw(MethodError(PetscSectionSymSetType, (petsclib, sym, method)))
 end
 
 @for_petsc function PetscSectionSymSetType(petsclib::$UnionPetscLib, sym::PetscSectionSym, method::String )
@@ -3602,7 +3602,7 @@ See also: `PetscSectionSym`, `PetscViewer`, `PetscViewerASCIIOpen()`
 $(_doc_external("PetscSection/PetscSectionSymView"))
 """
 function PetscSectionSymView(petsclib::PetscLibType, sym::PetscSectionSym, viewer::PetscViewer)
-    error("PetscSectionSymView: no generated method for these argument types")
+    throw(MethodError(PetscSectionSymView, (petsclib, sym, viewer)))
 end
 
 @for_petsc function PetscSectionSymView(petsclib::$UnionPetscLib, sym::PetscSectionSym, viewer::PetscViewer )
@@ -3639,7 +3639,7 @@ See also: `VecNorm()`, `PetscSectionCreate()`
 $(_doc_external("Vec/PetscSectionVecNorm"))
 """
 function PetscSectionVecNorm(petsclib::PetscLibType, s::PetscSection, gs::PetscSection, x::AbstractPetscVec, type::NormType, val::AbstractVector{<:Number})
-    error("PetscSectionVecNorm: no generated method for these argument types")
+    throw(MethodError(PetscSectionVecNorm, (petsclib, s, gs, x, type, val)))
 end
 
 @for_petsc function PetscSectionVecNorm(petsclib::$UnionPetscLib, s::PetscSection, gs::PetscSection, x::AbstractPetscVec, type::NormType, val::Vector{$PetscReal} )
@@ -3674,7 +3674,7 @@ See also: `PetscSection`, `PetscViewer`, `PetscSectionCreate()`, `VecSetValuesSe
 $(_doc_external("Vec/PetscSectionVecView"))
 """
 function PetscSectionVecView(petsclib::PetscLibType, s::PetscSection, v::AbstractPetscVec, viewer::PetscViewer)
-    error("PetscSectionVecView: no generated method for these argument types")
+    throw(MethodError(PetscSectionVecView, (petsclib, s, v, viewer)))
 end
 
 @for_petsc function PetscSectionVecView(petsclib::$UnionPetscLib, s::PetscSection, v::AbstractPetscVec, viewer::PetscViewer )
@@ -3708,7 +3708,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionCreate()`, `PetscSectionDes
 $(_doc_external("PetscSection/PetscSectionView"))
 """
 function PetscSectionView(petsclib::PetscLibType, s::PetscSection, viewer::PetscViewer)
-    error("PetscSectionView: no generated method for these argument types")
+    throw(MethodError(PetscSectionView, (petsclib, s, viewer)))
 end
 
 @for_petsc function PetscSectionView(petsclib::$UnionPetscLib, s::PetscSection, viewer::PetscViewer )
@@ -3746,7 +3746,7 @@ See also: PetscSection, `PetscSection`, `PetscSectionView`, `PetscObjectViewFrom
 $(_doc_external("PetscSection/PetscSectionViewFromOptions"))
 """
 function PetscSectionViewFromOptions(petsclib::PetscLibType, A::PetscSection, obj, name::String)
-    error("PetscSectionViewFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscSectionViewFromOptions, (petsclib, A, obj, name)))
 end
 
 @for_petsc function PetscSectionViewFromOptions(petsclib::$UnionPetscLib, A::PetscSection, obj, name::String )

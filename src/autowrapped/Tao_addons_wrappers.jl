@@ -17,7 +17,7 @@ See also: `Tao`, `TaoLineSearch`, `TaoLineSearchSetOptionsPrefix()`, `TaoLineSea
 $(_doc_external("TaoLineSearch/TaoLineSearchAppendOptionsPrefix"))
 """
 function TaoLineSearchAppendOptionsPrefix(petsclib::PetscLibType, ls::TaoLineSearch, p::String)
-    error("TaoLineSearchAppendOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchAppendOptionsPrefix, (petsclib, ls, p)))
 end
 
 @for_petsc function TaoLineSearchAppendOptionsPrefix(petsclib::$UnionPetscLib, ls::TaoLineSearch, p::String )
@@ -60,7 +60,7 @@ See also: `Tao`, `TaoLineSearchConvergedReason`, `TaoLineSearch`, `TaoLineSearch
 $(_doc_external("TaoLineSearch/TaoLineSearchApply"))
 """
 function TaoLineSearchApply(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec, s::AbstractPetscVec)
-    error("TaoLineSearchApply: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchApply, (petsclib, ls, x, g, s)))
 end
 
 @for_petsc function TaoLineSearchApply(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec, s::AbstractPetscVec )
@@ -103,7 +103,7 @@ See also: `Tao`, `TaoLineSearch`, `TaoLineSearchComputeObjective()`, `TaoLineSea
 $(_doc_external("TaoLineSearch/TaoLineSearchComputeGradient"))
 """
 function TaoLineSearchComputeGradient(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec)
-    error("TaoLineSearchComputeGradient: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchComputeGradient, (petsclib, ls, x, g)))
 end
 
 @for_petsc function TaoLineSearchComputeGradient(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec )
@@ -140,7 +140,7 @@ See also: `Tao`, `TaoLineSearch`, `TaoLineSearchComputeGradient()`, `TaoLineSear
 $(_doc_external("TaoLineSearch/TaoLineSearchComputeObjective"))
 """
 function TaoLineSearchComputeObjective(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec)
-    error("TaoLineSearchComputeObjective: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchComputeObjective, (petsclib, ls, x)))
 end
 
 @for_petsc function TaoLineSearchComputeObjective(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::AbstractPetscVec )
@@ -181,7 +181,7 @@ See also: `Tao`, `TaoLineSearch`, `TaoLineSearchComputeGradient()`, `TaoLineSear
 $(_doc_external("TaoLineSearch/TaoLineSearchComputeObjectiveAndGTS"))
 """
 function TaoLineSearchComputeObjectiveAndGTS(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec)
-    error("TaoLineSearchComputeObjectiveAndGTS: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchComputeObjectiveAndGTS, (petsclib, ls, x)))
 end
 
 @for_petsc function TaoLineSearchComputeObjectiveAndGTS(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::AbstractPetscVec )
@@ -223,7 +223,7 @@ See also: `Tao`, `TaoLineSearch`, `TaoLineSearchComputeGradient()`, `TaoLineSear
 $(_doc_external("TaoLineSearch/TaoLineSearchComputeObjectiveAndGradient"))
 """
 function TaoLineSearchComputeObjectiveAndGradient(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec)
-    error("TaoLineSearchComputeObjectiveAndGradient: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchComputeObjectiveAndGradient, (petsclib, ls, x, g)))
 end
 
 @for_petsc function TaoLineSearchComputeObjectiveAndGradient(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec )
@@ -265,7 +265,7 @@ See also: `Tao`, `TaoLineSearch`, `TaoLineSearchType`, `TaoLineSearchSetType()`,
 $(_doc_external("TaoLineSearch/TaoLineSearchCreate"))
 """
 function TaoLineSearchCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("TaoLineSearchCreate: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchCreate, (petsclib, comm)))
 end
 
 @for_petsc function TaoLineSearchCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -301,7 +301,7 @@ See also: `TaoLineSearch`, `TaoLineSearchCreate()`, `TaoLineSearchApple()`
 $(_doc_external("TaoLineSearch/TaoLineSearchDestroy"))
 """
 function TaoLineSearchDestroy(petsclib::PetscLibType, ls::Union{TaoLineSearch, Ref{TaoLineSearch}})
-    error("TaoLineSearchDestroy: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchDestroy, (petsclib, ls)))
 end
 
 @for_petsc function TaoLineSearchDestroy(petsclib::$UnionPetscLib, ls::Union{TaoLineSearch, Ref{TaoLineSearch}} )
@@ -330,7 +330,7 @@ See also: `Tao`, `TaoLineSearch`
 $(_doc_external("TaoLineSearch/TaoLineSearchFinalizePackage"))
 """
 function TaoLineSearchFinalizePackage(petsclib::PetscLibType)
-    error("TaoLineSearchFinalizePackage: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchFinalizePackage, (petsclib, )))
 end
 
 @for_petsc function TaoLineSearchFinalizePackage(petsclib::$UnionPetscLib)
@@ -365,7 +365,7 @@ See also: `TaoLineSearchGetSolution()`, `TaoLineSearchGetStartingVector()`, `Tao
 $(_doc_external("TaoLineSearch/TaoLineSearchGetFullStepObjective"))
 """
 function TaoLineSearchGetFullStepObjective(petsclib::PetscLibType, ls::TaoLineSearch)
-    error("TaoLineSearchGetFullStepObjective: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchGetFullStepObjective, (petsclib, ls)))
 end
 
 @for_petsc function TaoLineSearchGetFullStepObjective(petsclib::$UnionPetscLib, ls::TaoLineSearch )
@@ -406,7 +406,7 @@ See also: `TaoLineSearch`
 $(_doc_external("TaoLineSearch/TaoLineSearchGetNumberFunctionEvaluations"))
 """
 function TaoLineSearchGetNumberFunctionEvaluations(petsclib::PetscLibType, ls::TaoLineSearch)
-    error("TaoLineSearchGetNumberFunctionEvaluations: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchGetNumberFunctionEvaluations, (petsclib, ls)))
 end
 
 @for_petsc function TaoLineSearchGetNumberFunctionEvaluations(petsclib::$UnionPetscLib, ls::TaoLineSearch )
@@ -449,7 +449,7 @@ See also: `Tao`, `TaoLineSearch`, `TaoLineSearchSetOptionsPrefix()`, `TaoLineSea
 $(_doc_external("TaoLineSearch/TaoLineSearchGetOptionsPrefix"))
 """
 function TaoLineSearchGetOptionsPrefix(petsclib::PetscLibType, ls::TaoLineSearch)
-    error("TaoLineSearchGetOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchGetOptionsPrefix, (petsclib, ls)))
 end
 
 @for_petsc function TaoLineSearchGetOptionsPrefix(petsclib::$UnionPetscLib, ls::TaoLineSearch )
@@ -491,7 +491,7 @@ See also: `TaoLineSearchGetStartingVector()`, `TaoLineSearchGetStepDirection()`
 $(_doc_external("TaoLineSearch/TaoLineSearchGetSolution"))
 """
 function TaoLineSearchGetSolution(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec)
-    error("TaoLineSearchGetSolution: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchGetSolution, (petsclib, ls, x, g)))
 end
 
 @for_petsc function TaoLineSearchGetSolution(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec )
@@ -534,7 +534,7 @@ See also: `TaoLineSearchGetSolution()`, `TaoLineSearchGetStepDirection()`
 $(_doc_external("TaoLineSearch/TaoLineSearchGetStartingVector"))
 """
 function TaoLineSearchGetStartingVector(petsclib::PetscLibType, ls::TaoLineSearch)
-    error("TaoLineSearchGetStartingVector: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchGetStartingVector, (petsclib, ls)))
 end
 
 @for_petsc function TaoLineSearchGetStartingVector(petsclib::$UnionPetscLib, ls::TaoLineSearch )
@@ -573,7 +573,7 @@ See also: `TaoLineSearchGetSolution()`, `TaoLineSearchGetStartingVector()`
 $(_doc_external("TaoLineSearch/TaoLineSearchGetStepDirection"))
 """
 function TaoLineSearchGetStepDirection(petsclib::PetscLibType, ls::TaoLineSearch)
-    error("TaoLineSearchGetStepDirection: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchGetStepDirection, (petsclib, ls)))
 end
 
 @for_petsc function TaoLineSearchGetStepDirection(petsclib::$UnionPetscLib, ls::TaoLineSearch )
@@ -611,7 +611,7 @@ See also: `Tao`, `TaoLineSearch`, `TaoLineSearchSetInitialStepLength()`, `TaoLin
 $(_doc_external("TaoLineSearch/TaoLineSearchGetStepLength"))
 """
 function TaoLineSearchGetStepLength(petsclib::PetscLibType, ls::TaoLineSearch)
-    error("TaoLineSearchGetStepLength: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchGetStepLength, (petsclib, ls)))
 end
 
 @for_petsc function TaoLineSearchGetStepLength(petsclib::$UnionPetscLib, ls::TaoLineSearch )
@@ -649,7 +649,7 @@ See also: `TaoLineSearch`, `TaoLineSearchSetType()`, `TaoLineSearchType`, `Petsc
 $(_doc_external("TaoLineSearch/TaoLineSearchGetType"))
 """
 function TaoLineSearchGetType(petsclib::PetscLibType, ls::TaoLineSearch)
-    error("TaoLineSearchGetType: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchGetType, (petsclib, ls)))
 end
 
 @for_petsc function TaoLineSearchGetType(petsclib::$UnionPetscLib, ls::TaoLineSearch )
@@ -682,7 +682,7 @@ See also: `Tao`, `TaoLineSearch`, `TaoLineSearchCreate()`
 $(_doc_external("TaoLineSearch/TaoLineSearchInitializePackage"))
 """
 function TaoLineSearchInitializePackage(petsclib::PetscLibType)
-    error("TaoLineSearchInitializePackage: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchInitializePackage, (petsclib, )))
 end
 
 @for_petsc function TaoLineSearchInitializePackage(petsclib::$UnionPetscLib)
@@ -719,7 +719,7 @@ See also: `TaoLineSearch`
 $(_doc_external("TaoLineSearch/TaoLineSearchIsUsingTaoRoutines"))
 """
 function TaoLineSearchIsUsingTaoRoutines(petsclib::PetscLibType, ls::TaoLineSearch)
-    error("TaoLineSearchIsUsingTaoRoutines: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchIsUsingTaoRoutines, (petsclib, ls)))
 end
 
 @for_petsc function TaoLineSearchIsUsingTaoRoutines(petsclib::$UnionPetscLib, ls::TaoLineSearch )
@@ -760,7 +760,7 @@ See also: `TaoLineSearch`
 $(_doc_external("TaoLineSearch/TaoLineSearchMonitor"))
 """
 function TaoLineSearchMonitor(petsclib::PetscLibType, ls::TaoLineSearch, its::Integer, f::Real, step::Real)
-    error("TaoLineSearchMonitor: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchMonitor, (petsclib, ls, its, f, step)))
 end
 
 @for_petsc function TaoLineSearchMonitor(petsclib::$UnionPetscLib, ls::TaoLineSearch, its::$PetscInt, f::$PetscReal, step::$PetscReal )
@@ -795,7 +795,7 @@ See also: `Tao`, `TaoLineSearch`
 $(_doc_external("TaoLineSearch/TaoLineSearchRegister"))
 """
 function TaoLineSearchRegister(petsclib::PetscLibType, sname::String, func::external)
-    error("TaoLineSearchRegister: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchRegister, (petsclib, sname, func)))
 end
 
 @for_petsc function TaoLineSearchRegister(petsclib::$UnionPetscLib, sname::String, func::external )
@@ -830,7 +830,7 @@ See also: `Tao`, `TaoLineSearch`, `TaoLineSearchCreate()`, `TaoLineSearchApply()
 $(_doc_external("TaoLineSearch/TaoLineSearchReset"))
 """
 function TaoLineSearchReset(petsclib::PetscLibType, ls::TaoLineSearch)
-    error("TaoLineSearchReset: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchReset, (petsclib, ls)))
 end
 
 @for_petsc function TaoLineSearchReset(petsclib::$UnionPetscLib, ls::TaoLineSearch )
@@ -875,7 +875,7 @@ See also: `Tao`, `TaoLineSearch`, `TaoGetLineSearch()`
 $(_doc_external("TaoLineSearch/TaoLineSearchSetFromOptions"))
 """
 function TaoLineSearchSetFromOptions(petsclib::PetscLibType, ls::TaoLineSearch)
-    error("TaoLineSearchSetFromOptions: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchSetFromOptions, (petsclib, ls)))
 end
 
 @for_petsc function TaoLineSearchSetFromOptions(petsclib::$UnionPetscLib, ls::TaoLineSearch )
@@ -916,7 +916,7 @@ See also: `Tao`, `TaoLineSearch`, `TaoLineSearchCreate()`, `TaoLineSearchSetObje
 $(_doc_external("TaoLineSearch/TaoLineSearchSetGradientRoutine"))
 """
 function TaoLineSearchSetGradientRoutine(petsclib::PetscLibType, ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid})
-    error("TaoLineSearchSetGradientRoutine: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchSetGradientRoutine, (petsclib, ls, func, ctx)))
 end
 
 @for_petsc function TaoLineSearchSetGradientRoutine(petsclib::$UnionPetscLib, ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid} )
@@ -951,7 +951,7 @@ See also: `Tao`, `TaoLineSearch`, `TaoLineSearchGetStepLength()`, `TaoLineSearch
 $(_doc_external("TaoLineSearch/TaoLineSearchSetInitialStepLength"))
 """
 function TaoLineSearchSetInitialStepLength(petsclib::PetscLibType, ls::TaoLineSearch, s::Real)
-    error("TaoLineSearchSetInitialStepLength: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchSetInitialStepLength, (petsclib, ls, s)))
 end
 
 @for_petsc function TaoLineSearchSetInitialStepLength(petsclib::$UnionPetscLib, ls::TaoLineSearch, s::$PetscReal )
@@ -995,7 +995,7 @@ See also: `Tao`, `TaoLineSearch`, `TaoLineSearchCreate()`, `TaoLineSearchSetObje
 $(_doc_external("TaoLineSearch/TaoLineSearchSetObjectiveAndGTSRoutine"))
 """
 function TaoLineSearchSetObjectiveAndGTSRoutine(petsclib::PetscLibType, ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid})
-    error("TaoLineSearchSetObjectiveAndGTSRoutine: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchSetObjectiveAndGTSRoutine, (petsclib, ls, func, ctx)))
 end
 
 @for_petsc function TaoLineSearchSetObjectiveAndGTSRoutine(petsclib::$UnionPetscLib, ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid} )
@@ -1037,7 +1037,7 @@ See also: `Tao`, `TaoLineSearch`, `TaoLineSearchCreate()`, `TaoLineSearchSetObje
 $(_doc_external("TaoLineSearch/TaoLineSearchSetObjectiveAndGradientRoutine"))
 """
 function TaoLineSearchSetObjectiveAndGradientRoutine(petsclib::PetscLibType, ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid})
-    error("TaoLineSearchSetObjectiveAndGradientRoutine: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchSetObjectiveAndGradientRoutine, (petsclib, ls, func, ctx)))
 end
 
 @for_petsc function TaoLineSearchSetObjectiveAndGradientRoutine(petsclib::$UnionPetscLib, ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid} )
@@ -1078,7 +1078,7 @@ See also: `Tao`, `TaoLineSearch`, `TaoLineSearchCreate()`, `TaoLineSearchSetGrad
 $(_doc_external("TaoLineSearch/TaoLineSearchSetObjectiveRoutine"))
 """
 function TaoLineSearchSetObjectiveRoutine(petsclib::PetscLibType, ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid})
-    error("TaoLineSearchSetObjectiveRoutine: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchSetObjectiveRoutine, (petsclib, ls, func, ctx)))
 end
 
 @for_petsc function TaoLineSearchSetObjectiveRoutine(petsclib::$UnionPetscLib, ls::TaoLineSearch, func::external, ctx::Ptr{Cvoid} )
@@ -1113,7 +1113,7 @@ See also: `Tao`, `TaoLineSearch`, `TaoLineSearchAppendOptionsPrefix()`, `TaoLine
 $(_doc_external("TaoLineSearch/TaoLineSearchSetOptionsPrefix"))
 """
 function TaoLineSearchSetOptionsPrefix(petsclib::PetscLibType, ls::TaoLineSearch, p::String)
-    error("TaoLineSearchSetOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchSetOptionsPrefix, (petsclib, ls, p)))
 end
 
 @for_petsc function TaoLineSearchSetOptionsPrefix(petsclib::$UnionPetscLib, ls::TaoLineSearch, p::String )
@@ -1151,7 +1151,7 @@ See also: `Tao`, `TaoLineSearch`, `TaoLineSearchType`, `TaoLineSearchCreate()`, 
 $(_doc_external("TaoLineSearch/TaoLineSearchSetType"))
 """
 function TaoLineSearchSetType(petsclib::PetscLibType, ls::TaoLineSearch, type::String)
-    error("TaoLineSearchSetType: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchSetType, (petsclib, ls, type)))
 end
 
 @for_petsc function TaoLineSearchSetType(petsclib::$UnionPetscLib, ls::TaoLineSearch, type::String )
@@ -1185,7 +1185,7 @@ See also: `Tao`, `TaoLineSearch`, `TaoLineSearchCreate()`, `TaoLineSearchApply()
 $(_doc_external("TaoLineSearch/TaoLineSearchSetUp"))
 """
 function TaoLineSearchSetUp(petsclib::PetscLibType, ls::TaoLineSearch)
-    error("TaoLineSearchSetUp: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchSetUp, (petsclib, ls)))
 end
 
 @for_petsc function TaoLineSearchSetUp(petsclib::$UnionPetscLib, ls::TaoLineSearch )
@@ -1220,7 +1220,7 @@ See also: `Tao`, `TaoLineSearch`, `TaoSetVariableBounds()`, `TaoLineSearchCreate
 $(_doc_external("TaoLineSearch/TaoLineSearchSetVariableBounds"))
 """
 function TaoLineSearchSetVariableBounds(petsclib::PetscLibType, ls::TaoLineSearch, xl::AbstractPetscVec, xu::AbstractPetscVec)
-    error("TaoLineSearchSetVariableBounds: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchSetVariableBounds, (petsclib, ls, xl, xu)))
 end
 
 @for_petsc function TaoLineSearchSetVariableBounds(petsclib::$UnionPetscLib, ls::TaoLineSearch, xl::AbstractPetscVec, xu::AbstractPetscVec )
@@ -1255,7 +1255,7 @@ See also: `Tao`, `TaoLineSearch`, `TaoLineSearchCreate()`
 $(_doc_external("TaoLineSearch/TaoLineSearchUseTaoRoutines"))
 """
 function TaoLineSearchUseTaoRoutines(petsclib::PetscLibType, ls::TaoLineSearch, ts::AbstractTao)
-    error("TaoLineSearchUseTaoRoutines: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchUseTaoRoutines, (petsclib, ls, ts)))
 end
 
 @for_petsc function TaoLineSearchUseTaoRoutines(petsclib::$UnionPetscLib, ls::TaoLineSearch, ts::AbstractTao )
@@ -1292,7 +1292,7 @@ See also: `Tao`, `TaoLineSearch`, `PetscViewerASCIIOpen()`, `TaoLineSearchViewFr
 $(_doc_external("TaoLineSearch/TaoLineSearchView"))
 """
 function TaoLineSearchView(petsclib::PetscLibType, ls::TaoLineSearch, viewer::PetscViewer)
-    error("TaoLineSearchView: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchView, (petsclib, ls, viewer)))
 end
 
 @for_petsc function TaoLineSearchView(petsclib::$UnionPetscLib, ls::TaoLineSearch, viewer::PetscViewer )
@@ -1330,7 +1330,7 @@ See also: `Tao`, `TaoLineSearch`, `TaoLineSearchView()`, `PetscObjectViewFromOpt
 $(_doc_external("TaoLineSearch/TaoLineSearchViewFromOptions"))
 """
 function TaoLineSearchViewFromOptions(petsclib::PetscLibType, A::TaoLineSearch, obj, name::String)
-    error("TaoLineSearchViewFromOptions: no generated method for these argument types")
+    throw(MethodError(TaoLineSearchViewFromOptions, (petsclib, A, obj, name)))
 end
 
 @for_petsc function TaoLineSearchViewFromOptions(petsclib::$UnionPetscLib, A::TaoLineSearch, obj, name::String )
@@ -1377,7 +1377,7 @@ See also: `Tao`, `TaoMonitorSet()`, `TaoMonitorDefault()`, `VecView()`, `TaoMoni
 $(_doc_external("Tao/TaoMonitorDrawCtxCreate"))
 """
 function TaoMonitorDrawCtxCreate(petsclib::PetscLibType, comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::Integer)
-    error("TaoMonitorDrawCtxCreate: no generated method for these argument types")
+    throw(MethodError(TaoMonitorDrawCtxCreate, (petsclib, comm, host, label, x, y, m, n, howoften)))
 end
 
 @for_petsc function TaoMonitorDrawCtxCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::$PetscInt )
@@ -1412,7 +1412,7 @@ See also: `Tao`, `TaoMonitorSet()`, `TaoMonitorDefault()`, `VecView()`, `TaoMoni
 $(_doc_external("Tao/TaoMonitorDrawCtxDestroy"))
 """
 function TaoMonitorDrawCtxDestroy(petsclib::PetscLibType, ictx::Union{TaoMonitorDrawCtx, Ref{TaoMonitorDrawCtx}})
-    error("TaoMonitorDrawCtxDestroy: no generated method for these argument types")
+    throw(MethodError(TaoMonitorDrawCtxDestroy, (petsclib, ictx)))
 end
 
 @for_petsc function TaoMonitorDrawCtxDestroy(petsclib::$UnionPetscLib, ictx::Union{TaoMonitorDrawCtx, Ref{TaoMonitorDrawCtx}} )
@@ -1455,7 +1455,7 @@ Level: developer
 $(_doc_external("TaoTerm/TaoTermComputeGradient"))
 """
 function TaoTermComputeGradient(petsclib::PetscLibType, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, g::AbstractPetscVec)
-    error("TaoTermComputeGradient: no generated method for these argument types")
+    throw(MethodError(TaoTermComputeGradient, (petsclib, term, x, params, g)))
 end
 
 @for_petsc function TaoTermComputeGradient(petsclib::$UnionPetscLib, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, g::AbstractPetscVec )
@@ -1509,7 +1509,7 @@ this routine in `TaoTermComputeGradient()`.
 $(_doc_external("TaoTerm/TaoTermComputeGradientFD"))
 """
 function TaoTermComputeGradientFD(petsclib::PetscLibType, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, g::AbstractPetscVec)
-    error("TaoTermComputeGradientFD: no generated method for these argument types")
+    throw(MethodError(TaoTermComputeGradientFD, (petsclib, term, x, params, g)))
 end
 
 @for_petsc function TaoTermComputeGradientFD(petsclib::$UnionPetscLib, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, g::AbstractPetscVec )
@@ -1552,7 +1552,7 @@ Level: advanced
 $(_doc_external("TaoTerm/TaoTermComputeGradientGetUseFD"))
 """
 function TaoTermComputeGradientGetUseFD(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermComputeGradientGetUseFD: no generated method for these argument types")
+    throw(MethodError(TaoTermComputeGradientGetUseFD, (petsclib, term)))
 end
 
 @for_petsc function TaoTermComputeGradientGetUseFD(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -1598,7 +1598,7 @@ Level: advanced
 $(_doc_external("TaoTerm/TaoTermComputeGradientSetUseFD"))
 """
 function TaoTermComputeGradientSetUseFD(petsclib::PetscLibType, term::TaoTerm, use_fd::PetscBool)
-    error("TaoTermComputeGradientSetUseFD: no generated method for these argument types")
+    throw(MethodError(TaoTermComputeGradientSetUseFD, (petsclib, term, use_fd)))
 end
 
 @for_petsc function TaoTermComputeGradientSetUseFD(petsclib::$UnionPetscLib, term::TaoTerm, use_fd::PetscBool )
@@ -1646,7 +1646,7 @@ and `TaoTermComputeHessian(term, x, params, H, H)` are equivalent.
 $(_doc_external("TaoTerm/TaoTermComputeHessian"))
 """
 function TaoTermComputeHessian(petsclib::PetscLibType, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, H::AbstractPetscMat, Hpre::AbstractPetscMat)
-    error("TaoTermComputeHessian: no generated method for these argument types")
+    throw(MethodError(TaoTermComputeHessian, (petsclib, term, x, params, H, Hpre)))
 end
 
 @for_petsc function TaoTermComputeHessian(petsclib::$UnionPetscLib, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, H::AbstractPetscMat, Hpre::AbstractPetscMat )
@@ -1701,7 +1701,7 @@ this routine in `TaoTermComputeHessian()`.
 $(_doc_external("TaoTerm/TaoTermComputeHessianFD"))
 """
 function TaoTermComputeHessianFD(petsclib::PetscLibType, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, H::AbstractPetscMat, Hpre::AbstractPetscMat)
-    error("TaoTermComputeHessianFD: no generated method for these argument types")
+    throw(MethodError(TaoTermComputeHessianFD, (petsclib, term, x, params, H, Hpre)))
 end
 
 @for_petsc function TaoTermComputeHessianFD(petsclib::$UnionPetscLib, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, H::AbstractPetscMat, Hpre::AbstractPetscMat )
@@ -1744,7 +1744,7 @@ Level: advanced
 $(_doc_external("TaoTerm/TaoTermComputeHessianGetUseFD"))
 """
 function TaoTermComputeHessianGetUseFD(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermComputeHessianGetUseFD: no generated method for these argument types")
+    throw(MethodError(TaoTermComputeHessianGetUseFD, (petsclib, term)))
 end
 
 @for_petsc function TaoTermComputeHessianGetUseFD(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -1786,7 +1786,7 @@ See also: `TaoTerm`, `TaoTermCreateHessianMFFD()`, `TaoTermComputeHessian()`, `M
 $(_doc_external("TaoTerm/TaoTermComputeHessianMFFD"))
 """
 function TaoTermComputeHessianMFFD(petsclib::PetscLibType, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat)
-    error("TaoTermComputeHessianMFFD: no generated method for these argument types")
+    throw(MethodError(TaoTermComputeHessianMFFD, (petsclib, term, x, params, H, B)))
 end
 
 @for_petsc function TaoTermComputeHessianMFFD(petsclib::$UnionPetscLib, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat )
@@ -1830,7 +1830,7 @@ Level: advanced
 $(_doc_external("TaoTerm/TaoTermComputeHessianSetUseFD"))
 """
 function TaoTermComputeHessianSetUseFD(petsclib::PetscLibType, term::TaoTerm, use_fd::PetscBool)
-    error("TaoTermComputeHessianSetUseFD: no generated method for these argument types")
+    throw(MethodError(TaoTermComputeHessianSetUseFD, (petsclib, term, use_fd)))
 end
 
 @for_petsc function TaoTermComputeHessianSetUseFD(petsclib::$UnionPetscLib, term::TaoTerm, use_fd::PetscBool )
@@ -1872,7 +1872,7 @@ Level: developer
 $(_doc_external("TaoTerm/TaoTermComputeObjective"))
 """
 function TaoTermComputeObjective(petsclib::PetscLibType, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec)
-    error("TaoTermComputeObjective: no generated method for these argument types")
+    throw(MethodError(TaoTermComputeObjective, (petsclib, term, x, params)))
 end
 
 @for_petsc function TaoTermComputeObjective(petsclib::$UnionPetscLib, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec )
@@ -1918,7 +1918,7 @@ Level: developer
 $(_doc_external("TaoTerm/TaoTermComputeObjectiveAndGradient"))
 """
 function TaoTermComputeObjectiveAndGradient(petsclib::PetscLibType, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, g::AbstractPetscVec)
-    error("TaoTermComputeObjectiveAndGradient: no generated method for these argument types")
+    throw(MethodError(TaoTermComputeObjectiveAndGradient, (petsclib, term, x, params, g)))
 end
 
 @for_petsc function TaoTermComputeObjectiveAndGradient(petsclib::$UnionPetscLib, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, g::AbstractPetscVec )
@@ -1962,7 +1962,7 @@ Level: beginner
 $(_doc_external("TaoTerm/TaoTermCreate"))
 """
 function TaoTermCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("TaoTermCreate: no generated method for these argument types")
+    throw(MethodError(TaoTermCreate, (petsclib, comm)))
 end
 
 @for_petsc function TaoTermCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -2018,7 +2018,7 @@ TaoAddTerm(tao, "reg_", alpha, term, p, NULL);
 $(_doc_external("TaoTerm/TaoTermCreateHalfL2Squared"))
 """
 function TaoTermCreateHalfL2Squared(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
-    error("TaoTermCreateHalfL2Squared: no generated method for these argument types")
+    throw(MethodError(TaoTermCreateHalfL2Squared, (petsclib, comm, n, M_N)))
 end
 
 @for_petsc function TaoTermCreateHalfL2Squared(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
@@ -2056,7 +2056,7 @@ See also: `TaoTerm`, `TaoTermComputeHessianFD()`
 $(_doc_external("TaoTerm/TaoTermCreateHessianMFFD"))
 """
 function TaoTermCreateHessianMFFD(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermCreateHessianMFFD: no generated method for these argument types")
+    throw(MethodError(TaoTermCreateHessianMFFD, (petsclib, term)))
 end
 
 @for_petsc function TaoTermCreateHessianMFFD(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -2110,7 +2110,7 @@ their Hessian matrices: the behavior of that function can be controlled by
 $(_doc_external("TaoTerm/TaoTermCreateHessianMatrices"))
 """
 function TaoTermCreateHessianMatrices(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermCreateHessianMatrices: no generated method for these argument types")
+    throw(MethodError(TaoTermCreateHessianMatrices, (petsclib, term)))
 end
 
 @for_petsc function TaoTermCreateHessianMatrices(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -2161,7 +2161,7 @@ If either type is `MATMFFD`, then it will create a shell matrix with `TaoTermCre
 $(_doc_external("TaoTerm/TaoTermCreateHessianMatricesDefault"))
 """
 function TaoTermCreateHessianMatricesDefault(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermCreateHessianMatricesDefault: no generated method for these argument types")
+    throw(MethodError(TaoTermCreateHessianMatricesDefault, (petsclib, term)))
 end
 
 @for_petsc function TaoTermCreateHessianMatricesDefault(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -2227,7 +2227,7 @@ TaoTermDestroy(&term);
 $(_doc_external("TaoTerm/TaoTermCreateL1"))
 """
 function TaoTermCreateL1(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer, epsilon::Real)
-    error("TaoTermCreateL1: no generated method for these argument types")
+    throw(MethodError(TaoTermCreateL1, (petsclib, comm, n, M_N, epsilon)))
 end
 
 @for_petsc function TaoTermCreateL1(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt, epsilon::$PetscReal )
@@ -2285,7 +2285,7 @@ You can also call `TaoTermSetParametersVecType()` to set the type of vector crea
 $(_doc_external("TaoTerm/TaoTermCreateParametersVec"))
 """
 function TaoTermCreateParametersVec(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermCreateParametersVec: no generated method for these argument types")
+    throw(MethodError(TaoTermCreateParametersVec, (petsclib, term)))
 end
 
 @for_petsc function TaoTermCreateParametersVec(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -2327,7 +2327,7 @@ Level: beginner
 $(_doc_external("TaoTerm/TaoTermCreateQuadratic"))
 """
 function TaoTermCreateQuadratic(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("TaoTermCreateQuadratic: no generated method for these argument types")
+    throw(MethodError(TaoTermCreateQuadratic, (petsclib, A)))
 end
 
 @for_petsc function TaoTermCreateQuadratic(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -2367,7 +2367,7 @@ See also: `TaoTerm`, `TAOTERMSHELL`
 $(_doc_external("TaoTerm/TaoTermCreateShell"))
 """
 function TaoTermCreateShell(petsclib::PetscLibType, comm::MPI_Comm, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid})
-    error("TaoTermCreateShell: no generated method for these argument types")
+    throw(MethodError(TaoTermCreateShell, (petsclib, comm, ctx, destroy)))
 end
 
 @for_petsc function TaoTermCreateShell(petsclib::$UnionPetscLib, comm::MPI_Comm, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid} )
@@ -2425,7 +2425,7 @@ You can also call `TaoTermSetSolutionVecType()` to set the type of vector create
 $(_doc_external("TaoTerm/TaoTermCreateSolutionVec"))
 """
 function TaoTermCreateSolutionVec(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermCreateSolutionVec: no generated method for these argument types")
+    throw(MethodError(TaoTermCreateSolutionVec, (petsclib, term)))
 end
 
 @for_petsc function TaoTermCreateSolutionVec(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -2465,7 +2465,7 @@ Level: beginner
 $(_doc_external("TaoTerm/TaoTermDestroy"))
 """
 function TaoTermDestroy(petsclib::PetscLibType, term::Union{TaoTerm, Ref{TaoTerm}})
-    error("TaoTermDestroy: no generated method for these argument types")
+    throw(MethodError(TaoTermDestroy, (petsclib, term)))
 end
 
 @for_petsc function TaoTermDestroy(petsclib::$UnionPetscLib, term::Union{TaoTerm, Ref{TaoTerm}} )
@@ -2513,7 +2513,7 @@ Level: intermediate
 $(_doc_external("TaoTerm/TaoTermDuplicate"))
 """
 function TaoTermDuplicate(petsclib::PetscLibType, term::TaoTerm, opt::TaoTermDuplicateOption)
-    error("TaoTermDuplicate: no generated method for these argument types")
+    throw(MethodError(TaoTermDuplicate, (petsclib, term, opt)))
 end
 
 @for_petsc function TaoTermDuplicate(petsclib::$UnionPetscLib, term::TaoTerm, opt::TaoTermDuplicateOption )
@@ -2557,7 +2557,7 @@ Level: developer
 $(_doc_external("TaoTerm/TaoTermGetCreateHessianMode"))
 """
 function TaoTermGetCreateHessianMode(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermGetCreateHessianMode: no generated method for these argument types")
+    throw(MethodError(TaoTermGetCreateHessianMode, (petsclib, term)))
 end
 
 @for_petsc function TaoTermGetCreateHessianMode(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -2606,7 +2606,7 @@ Level: advanced
 $(_doc_external("TaoTerm/TaoTermGetFDDelta"))
 """
 function TaoTermGetFDDelta(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermGetFDDelta: no generated method for these argument types")
+    throw(MethodError(TaoTermGetFDDelta, (petsclib, term)))
 end
 
 @for_petsc function TaoTermGetFDDelta(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -2650,7 +2650,7 @@ Level: intermediate
 $(_doc_external("TaoTerm/TaoTermGetParametersLayout"))
 """
 function TaoTermGetParametersLayout(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermGetParametersLayout: no generated method for these argument types")
+    throw(MethodError(TaoTermGetParametersLayout, (petsclib, term)))
 end
 
 @for_petsc function TaoTermGetParametersLayout(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -2690,7 +2690,7 @@ Level: intermediate
 $(_doc_external("TaoTerm/TaoTermGetParametersMode"))
 """
 function TaoTermGetParametersMode(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermGetParametersMode: no generated method for these argument types")
+    throw(MethodError(TaoTermGetParametersMode, (petsclib, term)))
 end
 
 @for_petsc function TaoTermGetParametersMode(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -2737,7 +2737,7 @@ Level: beginner
 $(_doc_external("TaoTerm/TaoTermGetParametersSizes"))
 """
 function TaoTermGetParametersSizes(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermGetParametersSizes: no generated method for these argument types")
+    throw(MethodError(TaoTermGetParametersSizes, (petsclib, term)))
 end
 
 @for_petsc function TaoTermGetParametersSizes(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -2785,7 +2785,7 @@ Level: advanced
 $(_doc_external("TaoTerm/TaoTermGetParametersVecType"))
 """
 function TaoTermGetParametersVecType(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermGetParametersVecType: no generated method for these argument types")
+    throw(MethodError(TaoTermGetParametersVecType, (petsclib, term)))
 end
 
 @for_petsc function TaoTermGetParametersVecType(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -2829,7 +2829,7 @@ Level: intermediate
 $(_doc_external("TaoTerm/TaoTermGetSolutionLayout"))
 """
 function TaoTermGetSolutionLayout(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermGetSolutionLayout: no generated method for these argument types")
+    throw(MethodError(TaoTermGetSolutionLayout, (petsclib, term)))
 end
 
 @for_petsc function TaoTermGetSolutionLayout(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -2876,7 +2876,7 @@ Level: beginner
 $(_doc_external("TaoTerm/TaoTermGetSolutionSizes"))
 """
 function TaoTermGetSolutionSizes(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermGetSolutionSizes: no generated method for these argument types")
+    throw(MethodError(TaoTermGetSolutionSizes, (petsclib, term)))
 end
 
 @for_petsc function TaoTermGetSolutionSizes(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -2924,7 +2924,7 @@ Level: advanced
 $(_doc_external("TaoTerm/TaoTermGetSolutionVecType"))
 """
 function TaoTermGetSolutionVecType(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermGetSolutionVecType: no generated method for these argument types")
+    throw(MethodError(TaoTermGetSolutionVecType, (petsclib, term)))
 end
 
 @for_petsc function TaoTermGetSolutionVecType(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -2969,7 +2969,7 @@ Level: beginner
 $(_doc_external("TaoTerm/TaoTermGetType"))
 """
 function TaoTermGetType(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermGetType: no generated method for these argument types")
+    throw(MethodError(TaoTermGetType, (petsclib, term)))
 end
 
 @for_petsc function TaoTermGetType(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -3013,7 +3013,7 @@ Level: developer
 $(_doc_external("TaoTerm/TaoTermIsComputeHessianFDPossible"))
 """
 function TaoTermIsComputeHessianFDPossible(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermIsComputeHessianFDPossible: no generated method for these argument types")
+    throw(MethodError(TaoTermIsComputeHessianFDPossible, (petsclib, term)))
 end
 
 @for_petsc function TaoTermIsComputeHessianFDPossible(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -3057,7 +3057,7 @@ Level: developer
 $(_doc_external("TaoTerm/TaoTermIsCreateHessianMatricesDefined"))
 """
 function TaoTermIsCreateHessianMatricesDefined(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermIsCreateHessianMatricesDefined: no generated method for these argument types")
+    throw(MethodError(TaoTermIsCreateHessianMatricesDefined, (petsclib, term)))
 end
 
 @for_petsc function TaoTermIsCreateHessianMatricesDefined(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -3106,7 +3106,7 @@ Level: developer
 $(_doc_external("TaoTerm/TaoTermIsGradientDefined"))
 """
 function TaoTermIsGradientDefined(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermIsGradientDefined: no generated method for these argument types")
+    throw(MethodError(TaoTermIsGradientDefined, (petsclib, term)))
 end
 
 @for_petsc function TaoTermIsGradientDefined(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -3154,7 +3154,7 @@ Level: developer
 $(_doc_external("TaoTerm/TaoTermIsHessianDefined"))
 """
 function TaoTermIsHessianDefined(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermIsHessianDefined: no generated method for these argument types")
+    throw(MethodError(TaoTermIsHessianDefined, (petsclib, term)))
 end
 
 @for_petsc function TaoTermIsHessianDefined(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -3203,7 +3203,7 @@ Level: developer
 $(_doc_external("TaoTerm/TaoTermIsObjectiveAndGradientDefined"))
 """
 function TaoTermIsObjectiveAndGradientDefined(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermIsObjectiveAndGradientDefined: no generated method for these argument types")
+    throw(MethodError(TaoTermIsObjectiveAndGradientDefined, (petsclib, term)))
 end
 
 @for_petsc function TaoTermIsObjectiveAndGradientDefined(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -3251,7 +3251,7 @@ Level: developer
 $(_doc_external("TaoTerm/TaoTermIsObjectiveDefined"))
 """
 function TaoTermIsObjectiveDefined(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermIsObjectiveDefined: no generated method for these argument types")
+    throw(MethodError(TaoTermIsObjectiveDefined, (petsclib, term)))
 end
 
 @for_petsc function TaoTermIsObjectiveDefined(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -3291,7 +3291,7 @@ Level: advanced
 $(_doc_external("TaoTerm/TaoTermL1GetEpsilon"))
 """
 function TaoTermL1GetEpsilon(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermL1GetEpsilon: no generated method for these argument types")
+    throw(MethodError(TaoTermL1GetEpsilon, (petsclib, term)))
 end
 
 @for_petsc function TaoTermL1GetEpsilon(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -3335,7 +3335,7 @@ If \\epsilon = 0 (the default), then `term` computes \\|x - p\\|_1, but if \\eps
 $(_doc_external("TaoTerm/TaoTermL1SetEpsilon"))
 """
 function TaoTermL1SetEpsilon(petsclib::PetscLibType, term::TaoTerm, epsilon::Real)
-    error("TaoTermL1SetEpsilon: no generated method for these argument types")
+    throw(MethodError(TaoTermL1SetEpsilon, (petsclib, term, epsilon)))
 end
 
 @for_petsc function TaoTermL1SetEpsilon(petsclib::$UnionPetscLib, term::TaoTerm, epsilon::$PetscReal )
@@ -3376,7 +3376,7 @@ This function will return `NULL` if the term is not a `TAOTERMQUADRATIC`.
 $(_doc_external("TaoTerm/TaoTermQuadraticGetMat"))
 """
 function TaoTermQuadraticGetMat(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermQuadraticGetMat: no generated method for these argument types")
+    throw(MethodError(TaoTermQuadraticGetMat, (petsclib, term)))
 end
 
 @for_petsc function TaoTermQuadraticGetMat(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -3414,7 +3414,7 @@ Level: intermediate
 $(_doc_external("TaoTerm/TaoTermQuadraticSetMat"))
 """
 function TaoTermQuadraticSetMat(petsclib::PetscLibType, term::TaoTerm, A::AbstractPetscMat)
-    error("TaoTermQuadraticSetMat: no generated method for these argument types")
+    throw(MethodError(TaoTermQuadraticSetMat, (petsclib, term, A)))
 end
 
 @for_petsc function TaoTermQuadraticSetMat(petsclib::$UnionPetscLib, term::TaoTerm, A::AbstractPetscMat )
@@ -3446,7 +3446,7 @@ See also: `TaoTerm`, `TaoTermSetType()`
 $(_doc_external("TaoTerm/TaoTermRegister"))
 """
 function TaoTermRegister(petsclib::PetscLibType, sname::String, func::external)
-    error("TaoTermRegister: no generated method for these argument types")
+    throw(MethodError(TaoTermRegister, (petsclib, sname, func)))
 end
 
 @for_petsc function TaoTermRegister(petsclib::$UnionPetscLib, sname::String, func::external )
@@ -3491,7 +3491,7 @@ Level: developer
 $(_doc_external("TaoTerm/TaoTermSetCreateHessianMode"))
 """
 function TaoTermSetCreateHessianMode(petsclib::PetscLibType, term::TaoTerm, Hpre_is_H::PetscBool, H_mattype::String, Hpre_mattype::String)
-    error("TaoTermSetCreateHessianMode: no generated method for these argument types")
+    throw(MethodError(TaoTermSetCreateHessianMode, (petsclib, term, Hpre_is_H, H_mattype, Hpre_mattype)))
 end
 
 @for_petsc function TaoTermSetCreateHessianMode(petsclib::$UnionPetscLib, term::TaoTerm, Hpre_is_H::PetscBool, H_mattype::String, Hpre_mattype::String )
@@ -3535,7 +3535,7 @@ Level: advanced
 $(_doc_external("TaoTerm/TaoTermSetFDDelta"))
 """
 function TaoTermSetFDDelta(petsclib::PetscLibType, term::TaoTerm, delta::Real)
-    error("TaoTermSetFDDelta: no generated method for these argument types")
+    throw(MethodError(TaoTermSetFDDelta, (petsclib, term, delta)))
 end
 
 @for_petsc function TaoTermSetFDDelta(petsclib::$UnionPetscLib, term::TaoTerm, delta::$PetscReal )
@@ -3585,7 +3585,7 @@ Level: beginner
 $(_doc_external("TaoTerm/TaoTermSetFromOptions"))
 """
 function TaoTermSetFromOptions(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermSetFromOptions: no generated method for these argument types")
+    throw(MethodError(TaoTermSetFromOptions, (petsclib, term)))
 end
 
 @for_petsc function TaoTermSetFromOptions(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -3634,7 +3634,7 @@ Alternatively, one may use `TaoTermSetParametersSizes()` or `TaoTermSetParameter
 $(_doc_external("TaoTerm/TaoTermSetParametersLayout"))
 """
 function TaoTermSetParametersLayout(petsclib::PetscLibType, term::TaoTerm, parameters_layout::PetscLayout)
-    error("TaoTermSetParametersLayout: no generated method for these argument types")
+    throw(MethodError(TaoTermSetParametersLayout, (petsclib, term, parameters_layout)))
 end
 
 @for_petsc function TaoTermSetParametersLayout(petsclib::$UnionPetscLib, term::TaoTerm, parameters_layout::PetscLayout )
@@ -3673,7 +3673,7 @@ Level: advanced
 $(_doc_external("TaoTerm/TaoTermSetParametersMode"))
 """
 function TaoTermSetParametersMode(petsclib::PetscLibType, term::TaoTerm, parameters_mode::TaoTermParametersMode)
-    error("TaoTermSetParametersMode: no generated method for these argument types")
+    throw(MethodError(TaoTermSetParametersMode, (petsclib, term, parameters_mode)))
 end
 
 @for_petsc function TaoTermSetParametersMode(petsclib::$UnionPetscLib, term::TaoTerm, parameters_mode::TaoTermParametersMode )
@@ -3725,7 +3725,7 @@ Alternatively, one may use `TaoTermSetParametersLayout()` or `TaoTermSetParamete
 $(_doc_external("TaoTerm/TaoTermSetParametersSizes"))
 """
 function TaoTermSetParametersSizes(petsclib::PetscLibType, term::TaoTerm, k::Integer, M_K::Integer, bs::Integer)
-    error("TaoTermSetParametersSizes: no generated method for these argument types")
+    throw(MethodError(TaoTermSetParametersSizes, (petsclib, term, k, M_K, bs)))
 end
 
 @for_petsc function TaoTermSetParametersSizes(petsclib::$UnionPetscLib, term::TaoTerm, k::$PetscInt, M_K::$PetscInt, bs::$PetscInt )
@@ -3774,7 +3774,7 @@ Alternatively, one may use `TaoTermSetParametersSizes()` or `TaoTermSetParameter
 $(_doc_external("TaoTerm/TaoTermSetParametersTemplate"))
 """
 function TaoTermSetParametersTemplate(petsclib::PetscLibType, term::TaoTerm, params_template::AbstractPetscVec)
-    error("TaoTermSetParametersTemplate: no generated method for these argument types")
+    throw(MethodError(TaoTermSetParametersTemplate, (petsclib, term, params_template)))
 end
 
 @for_petsc function TaoTermSetParametersTemplate(petsclib::$UnionPetscLib, term::TaoTerm, params_template::AbstractPetscVec )
@@ -3816,7 +3816,7 @@ Level: advanced
 $(_doc_external("TaoTerm/TaoTermSetParametersVecType"))
 """
 function TaoTermSetParametersVecType(petsclib::PetscLibType, term::TaoTerm, parameters_type::String)
-    error("TaoTermSetParametersVecType: no generated method for these argument types")
+    throw(MethodError(TaoTermSetParametersVecType, (petsclib, term, parameters_type)))
 end
 
 @for_petsc function TaoTermSetParametersVecType(petsclib::$UnionPetscLib, term::TaoTerm, parameters_type::String )
@@ -3870,7 +3870,7 @@ Alternatively, one may use `TaoTermSetSolutionSizes()` or `TaoTermSetSolutionTem
 $(_doc_external("TaoTerm/TaoTermSetSolutionLayout"))
 """
 function TaoTermSetSolutionLayout(petsclib::PetscLibType, term::TaoTerm, solution_layout::PetscLayout)
-    error("TaoTermSetSolutionLayout: no generated method for these argument types")
+    throw(MethodError(TaoTermSetSolutionLayout, (petsclib, term, solution_layout)))
 end
 
 @for_petsc function TaoTermSetSolutionLayout(petsclib::$UnionPetscLib, term::TaoTerm, solution_layout::PetscLayout )
@@ -3927,7 +3927,7 @@ Alternatively, one may use `TaoTermSetSolutionLayout()` or `TaoTermSetSolutionTe
 $(_doc_external("TaoTerm/TaoTermSetSolutionSizes"))
 """
 function TaoTermSetSolutionSizes(petsclib::PetscLibType, term::TaoTerm, n::Integer, M_N::Integer, bs::Integer)
-    error("TaoTermSetSolutionSizes: no generated method for these argument types")
+    throw(MethodError(TaoTermSetSolutionSizes, (petsclib, term, n, M_N, bs)))
 end
 
 @for_petsc function TaoTermSetSolutionSizes(petsclib::$UnionPetscLib, term::TaoTerm, n::$PetscInt, M_N::$PetscInt, bs::$PetscInt )
@@ -3981,7 +3981,7 @@ Alternatively, one may use `TaoTermSetSolutionSizes()` or `TaoTermSetSolutionLay
 $(_doc_external("TaoTerm/TaoTermSetSolutionTemplate"))
 """
 function TaoTermSetSolutionTemplate(petsclib::PetscLibType, term::TaoTerm, sol_template::AbstractPetscVec)
-    error("TaoTermSetSolutionTemplate: no generated method for these argument types")
+    throw(MethodError(TaoTermSetSolutionTemplate, (petsclib, term, sol_template)))
 end
 
 @for_petsc function TaoTermSetSolutionTemplate(petsclib::$UnionPetscLib, term::TaoTerm, sol_template::AbstractPetscVec )
@@ -4024,7 +4024,7 @@ Level: advanced
 $(_doc_external("TaoTerm/TaoTermSetSolutionVecType"))
 """
 function TaoTermSetSolutionVecType(petsclib::PetscLibType, term::TaoTerm, solution_type::String)
-    error("TaoTermSetSolutionVecType: no generated method for these argument types")
+    throw(MethodError(TaoTermSetSolutionVecType, (petsclib, term, solution_type)))
 end
 
 @for_petsc function TaoTermSetSolutionVecType(petsclib::$UnionPetscLib, term::TaoTerm, solution_type::String )
@@ -4073,7 +4073,7 @@ New types of `TaoTerm` can be created with `TaoTermRegister()`
 $(_doc_external("TaoTerm/TaoTermSetType"))
 """
 function TaoTermSetType(petsclib::PetscLibType, term::TaoTerm, type::String)
-    error("TaoTermSetType: no generated method for these argument types")
+    throw(MethodError(TaoTermSetType, (petsclib, term, type)))
 end
 
 @for_petsc function TaoTermSetType(petsclib::$UnionPetscLib, term::TaoTerm, type::String )
@@ -4111,7 +4111,7 @@ Level: intermediate
 $(_doc_external("TaoTerm/TaoTermSetUp"))
 """
 function TaoTermSetUp(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermSetUp: no generated method for these argument types")
+    throw(MethodError(TaoTermSetUp, (petsclib, term)))
 end
 
 @for_petsc function TaoTermSetUp(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -4147,7 +4147,7 @@ See also: `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellSetContext()`, `TaoTermShellSe
 $(_doc_external("TaoTerm/TaoTermShellGetContext"))
 """
 function TaoTermShellGetContext(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermShellGetContext: no generated method for these argument types")
+    throw(MethodError(TaoTermShellGetContext, (petsclib, term)))
 end
 
 @for_petsc function TaoTermShellGetContext(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -4183,7 +4183,7 @@ See also: `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSe
 $(_doc_external("TaoTerm/TaoTermShellSetContext"))
 """
 function TaoTermShellSetContext(petsclib::PetscLibType, term::TaoTerm, ctx::Ptr{Cvoid})
-    error("TaoTermShellSetContext: no generated method for these argument types")
+    throw(MethodError(TaoTermShellSetContext, (petsclib, term, ctx)))
 end
 
 @for_petsc function TaoTermShellSetContext(petsclib::$UnionPetscLib, term::TaoTerm, ctx::Ptr{Cvoid} )
@@ -4217,7 +4217,7 @@ See also: `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellSetContext()`, `TaoTermShellGe
 $(_doc_external("TaoTerm/TaoTermShellSetContextDestroy"))
 """
 function TaoTermShellSetContextDestroy(petsclib::PetscLibType, term::TaoTerm, destroy::Ptr{Cvoid})
-    error("TaoTermShellSetContextDestroy: no generated method for these argument types")
+    throw(MethodError(TaoTermShellSetContextDestroy, (petsclib, term, destroy)))
 end
 
 @for_petsc function TaoTermShellSetContextDestroy(petsclib::$UnionPetscLib, term::TaoTerm, destroy::Ptr{Cvoid} )
@@ -4257,7 +4257,7 @@ See also: `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSe
 $(_doc_external("TaoTerm/TaoTermShellSetCreateHessianMatrices"))
 """
 function TaoTermShellSetCreateHessianMatrices(petsclib::PetscLibType, term::TaoTerm, createmats::external)
-    error("TaoTermShellSetCreateHessianMatrices: no generated method for these argument types")
+    throw(MethodError(TaoTermShellSetCreateHessianMatrices, (petsclib, term, createmats)))
 end
 
 @for_petsc function TaoTermShellSetCreateHessianMatrices(petsclib::$UnionPetscLib, term::TaoTerm, createmats::external )
@@ -4296,7 +4296,7 @@ See also: `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSe
 $(_doc_external("TaoTerm/TaoTermShellSetCreateParametersVec"))
 """
 function TaoTermShellSetCreateParametersVec(petsclib::PetscLibType, term::TaoTerm, createparametersvec::external)
-    error("TaoTermShellSetCreateParametersVec: no generated method for these argument types")
+    throw(MethodError(TaoTermShellSetCreateParametersVec, (petsclib, term, createparametersvec)))
 end
 
 @for_petsc function TaoTermShellSetCreateParametersVec(petsclib::$UnionPetscLib, term::TaoTerm, createparametersvec::external )
@@ -4335,7 +4335,7 @@ See also: `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSe
 $(_doc_external("TaoTerm/TaoTermShellSetCreateSolutionVec"))
 """
 function TaoTermShellSetCreateSolutionVec(petsclib::PetscLibType, term::TaoTerm, createsolutionvec::external)
-    error("TaoTermShellSetCreateSolutionVec: no generated method for these argument types")
+    throw(MethodError(TaoTermShellSetCreateSolutionVec, (petsclib, term, createsolutionvec)))
 end
 
 @for_petsc function TaoTermShellSetCreateSolutionVec(petsclib::$UnionPetscLib, term::TaoTerm, createsolutionvec::external )
@@ -4374,7 +4374,7 @@ See also: `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSe
 $(_doc_external("TaoTerm/TaoTermShellSetGradient"))
 """
 function TaoTermShellSetGradient(petsclib::PetscLibType, term::TaoTerm, gradient::Ptr{Cvoid})
-    error("TaoTermShellSetGradient: no generated method for these argument types")
+    throw(MethodError(TaoTermShellSetGradient, (petsclib, term, gradient)))
 end
 
 @for_petsc function TaoTermShellSetGradient(petsclib::$UnionPetscLib, term::TaoTerm, gradient::Ptr{Cvoid} )
@@ -4413,7 +4413,7 @@ See also: `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSe
 $(_doc_external("TaoTerm/TaoTermShellSetHessian"))
 """
 function TaoTermShellSetHessian(petsclib::PetscLibType, term::TaoTerm, hessian::Ptr{Cvoid})
-    error("TaoTermShellSetHessian: no generated method for these argument types")
+    throw(MethodError(TaoTermShellSetHessian, (petsclib, term, hessian)))
 end
 
 @for_petsc function TaoTermShellSetHessian(petsclib::$UnionPetscLib, term::TaoTerm, hessian::Ptr{Cvoid} )
@@ -4452,7 +4452,7 @@ See also: `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSe
 $(_doc_external("TaoTerm/TaoTermShellSetIsComputeHessianFDPossible"))
 """
 function TaoTermShellSetIsComputeHessianFDPossible(petsclib::PetscLibType, term::TaoTerm, ispossible::PetscBool3)
-    error("TaoTermShellSetIsComputeHessianFDPossible: no generated method for these argument types")
+    throw(MethodError(TaoTermShellSetIsComputeHessianFDPossible, (petsclib, term, ispossible)))
 end
 
 @for_petsc function TaoTermShellSetIsComputeHessianFDPossible(petsclib::$UnionPetscLib, term::TaoTerm, ispossible::PetscBool3 )
@@ -4491,7 +4491,7 @@ See also: `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSe
 $(_doc_external("TaoTerm/TaoTermShellSetObjective"))
 """
 function TaoTermShellSetObjective(petsclib::PetscLibType, term::TaoTerm, objective::Ptr{Cvoid})
-    error("TaoTermShellSetObjective: no generated method for these argument types")
+    throw(MethodError(TaoTermShellSetObjective, (petsclib, term, objective)))
 end
 
 @for_petsc function TaoTermShellSetObjective(petsclib::$UnionPetscLib, term::TaoTerm, objective::Ptr{Cvoid} )
@@ -4530,7 +4530,7 @@ See also: `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSe
 $(_doc_external("TaoTerm/TaoTermShellSetObjectiveAndGradient"))
 """
 function TaoTermShellSetObjectiveAndGradient(petsclib::PetscLibType, term::TaoTerm, objandgrad::Ptr{Cvoid})
-    error("TaoTermShellSetObjectiveAndGradient: no generated method for these argument types")
+    throw(MethodError(TaoTermShellSetObjectiveAndGradient, (petsclib, term, objandgrad)))
 end
 
 @for_petsc function TaoTermShellSetObjectiveAndGradient(petsclib::$UnionPetscLib, term::TaoTerm, objandgrad::Ptr{Cvoid} )
@@ -4572,7 +4572,7 @@ See also: `TaoTerm`, `TAOTERMSHELL`, `TaoTermShellGetContext()`, `TaoTermShellSe
 $(_doc_external("TaoTerm/TaoTermShellSetView"))
 """
 function TaoTermShellSetView(petsclib::PetscLibType, term::TaoTerm, view::external)
-    error("TaoTermShellSetView: no generated method for these argument types")
+    throw(MethodError(TaoTermShellSetView, (petsclib, term, view)))
 end
 
 @for_petsc function TaoTermShellSetView(petsclib::$UnionPetscLib, term::TaoTerm, view::external )
@@ -4612,7 +4612,7 @@ See also: `TaoTerm`, `TAOTERMSUM`
 $(_doc_external("TaoTerm/TaoTermSumAddTerm"))
 """
 function TaoTermSumAddTerm(petsclib::PetscLibType, sumterm::TaoTerm, prefix::String, scale::Real, term::TaoTerm, map::AbstractPetscMat)
-    error("TaoTermSumAddTerm: no generated method for these argument types")
+    throw(MethodError(TaoTermSumAddTerm, (petsclib, sumterm, prefix, scale, term, map)))
 end
 
 @for_petsc function TaoTermSumAddTerm(petsclib::$UnionPetscLib, sumterm::TaoTerm, prefix::String, scale::$PetscReal, term::TaoTerm, map::AbstractPetscMat )
@@ -4652,7 +4652,7 @@ Level: developer
 $(_doc_external("TaoTerm/TaoTermSumGetLastTermObjectives"))
 """
 function TaoTermSumGetLastTermObjectives(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermSumGetLastTermObjectives: no generated method for these argument types")
+    throw(MethodError(TaoTermSumGetLastTermObjectives, (petsclib, term)))
 end
 
 @for_petsc function TaoTermSumGetLastTermObjectives(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -4692,7 +4692,7 @@ Level: developer
 $(_doc_external("TaoTerm/TaoTermSumGetNumberTerms"))
 """
 function TaoTermSumGetNumberTerms(petsclib::PetscLibType, term::TaoTerm)
-    error("TaoTermSumGetNumberTerms: no generated method for these argument types")
+    throw(MethodError(TaoTermSumGetNumberTerms, (petsclib, term)))
 end
 
 @for_petsc function TaoTermSumGetNumberTerms(petsclib::$UnionPetscLib, term::TaoTerm )
@@ -4737,7 +4737,7 @@ Level: developer
 $(_doc_external("TaoTerm/TaoTermSumGetTerm"))
 """
 function TaoTermSumGetTerm(petsclib::PetscLibType, sumterm::TaoTerm, index::Integer)
-    error("TaoTermSumGetTerm: no generated method for these argument types")
+    throw(MethodError(TaoTermSumGetTerm, (petsclib, sumterm, index)))
 end
 
 @for_petsc function TaoTermSumGetTerm(petsclib::$UnionPetscLib, sumterm::TaoTerm, index::$PetscInt )
@@ -4788,7 +4788,7 @@ Level: developer
 $(_doc_external("TaoTerm/TaoTermSumGetTermHessianMatrices"))
 """
 function TaoTermSumGetTermHessianMatrices(petsclib::PetscLibType, term::TaoTerm, index::Integer)
-    error("TaoTermSumGetTermHessianMatrices: no generated method for these argument types")
+    throw(MethodError(TaoTermSumGetTermHessianMatrices, (petsclib, term, index)))
 end
 
 @for_petsc function TaoTermSumGetTermHessianMatrices(petsclib::$UnionPetscLib, term::TaoTerm, index::$PetscInt )
@@ -4835,7 +4835,7 @@ Level: developer
 $(_doc_external("TaoTerm/TaoTermSumGetTermMask"))
 """
 function TaoTermSumGetTermMask(petsclib::PetscLibType, term::TaoTerm, index::Integer)
-    error("TaoTermSumGetTermMask: no generated method for these argument types")
+    throw(MethodError(TaoTermSumGetTermMask, (petsclib, term, index)))
 end
 
 @for_petsc function TaoTermSumGetTermMask(petsclib::$UnionPetscLib, term::TaoTerm, index::$PetscInt )
@@ -4883,7 +4883,7 @@ vector will be created for each `NULL` `Vec` that will be internally ignored by 
 $(_doc_external("TaoTerm/TaoTermSumParametersPack"))
 """
 function TaoTermSumParametersPack(petsclib::PetscLibType, term::TaoTerm, p_arr::Vector{<:AbstractPetscVec})
-    error("TaoTermSumParametersPack: no generated method for these argument types")
+    throw(MethodError(TaoTermSumParametersPack, (petsclib, term, p_arr)))
 end
 
 @for_petsc function TaoTermSumParametersPack(petsclib::$UnionPetscLib, term::TaoTerm, p_arr::Vector{<:AbstractPetscVec} )
@@ -4925,7 +4925,7 @@ Level: intermediate
 $(_doc_external("TaoTerm/TaoTermSumParametersUnpack"))
 """
 function TaoTermSumParametersUnpack(petsclib::PetscLibType, term::TaoTerm, params::AbstractPetscVec, p_arr::Vector{<:AbstractPetscVec})
-    error("TaoTermSumParametersUnpack: no generated method for these argument types")
+    throw(MethodError(TaoTermSumParametersUnpack, (petsclib, term, params, p_arr)))
 end
 
 @for_petsc function TaoTermSumParametersUnpack(petsclib::$UnionPetscLib, term::TaoTerm, params::AbstractPetscVec, p_arr::Vector{<:AbstractPetscVec} )
@@ -4966,7 +4966,7 @@ If `n_terms` is smaller than the current number of terms, the trailing terms wil
 $(_doc_external("TaoTerm/TaoTermSumSetNumberTerms"))
 """
 function TaoTermSumSetNumberTerms(petsclib::PetscLibType, term::TaoTerm, n_terms::Integer)
-    error("TaoTermSumSetNumberTerms: no generated method for these argument types")
+    throw(MethodError(TaoTermSumSetNumberTerms, (petsclib, term, n_terms)))
 end
 
 @for_petsc function TaoTermSumSetNumberTerms(petsclib::$UnionPetscLib, term::TaoTerm, n_terms::$PetscInt )
@@ -5007,7 +5007,7 @@ Level: developer
 $(_doc_external("TaoTerm/TaoTermSumSetTerm"))
 """
 function TaoTermSumSetTerm(petsclib::PetscLibType, sumterm::TaoTerm, index::Integer, prefix::String, scale::Real, term::TaoTerm, map::AbstractPetscMat)
-    error("TaoTermSumSetTerm: no generated method for these argument types")
+    throw(MethodError(TaoTermSumSetTerm, (petsclib, sumterm, index, prefix, scale, term, map)))
 end
 
 @for_petsc function TaoTermSumSetTerm(petsclib::$UnionPetscLib, sumterm::TaoTerm, index::$PetscInt, prefix::String, scale::$PetscReal, term::TaoTerm, map::AbstractPetscMat )
@@ -5053,7 +5053,7 @@ just pass the unmapped Hessians (e.g. `TaoTermSumSetTermHessianMatrices(term, 0,
 $(_doc_external("TaoTerm/TaoTermSumSetTermHessianMatrices"))
 """
 function TaoTermSumSetTermHessianMatrices(petsclib::PetscLibType, term::TaoTerm, index::Integer, unmapped_H::AbstractPetscMat, unmapped_Hpre::AbstractPetscMat, mapped_H::AbstractPetscMat, mapped_Hpre::AbstractPetscMat)
-    error("TaoTermSumSetTermHessianMatrices: no generated method for these argument types")
+    throw(MethodError(TaoTermSumSetTermHessianMatrices, (petsclib, term, index, unmapped_H, unmapped_Hpre, mapped_H, mapped_Hpre)))
 end
 
 @for_petsc function TaoTermSumSetTermHessianMatrices(petsclib::$UnionPetscLib, term::TaoTerm, index::$PetscInt, unmapped_H::AbstractPetscMat, unmapped_Hpre::AbstractPetscMat, mapped_H::AbstractPetscMat, mapped_Hpre::AbstractPetscMat )
@@ -5099,7 +5099,7 @@ the regularizer has index `1`, then this can be accomplished with
 $(_doc_external("TaoTerm/TaoTermSumSetTermMask"))
 """
 function TaoTermSumSetTermMask(petsclib::PetscLibType, term::TaoTerm, index::Integer, mask::TaoTermMask)
-    error("TaoTermSumSetTermMask: no generated method for these argument types")
+    throw(MethodError(TaoTermSumSetTermMask, (petsclib, term, index, mask)))
 end
 
 @for_petsc function TaoTermSumSetTermMask(petsclib::$UnionPetscLib, term::TaoTerm, index::$PetscInt, mask::TaoTermMask )
@@ -5139,7 +5139,7 @@ Level: beginner
 $(_doc_external("TaoTerm/TaoTermView"))
 """
 function TaoTermView(petsclib::PetscLibType, term::TaoTerm, viewer::PetscViewer)
-    error("TaoTermView: no generated method for these argument types")
+    throw(MethodError(TaoTermView, (petsclib, term, viewer)))
 end
 
 @for_petsc function TaoTermView(petsclib::$UnionPetscLib, term::TaoTerm, viewer::PetscViewer )

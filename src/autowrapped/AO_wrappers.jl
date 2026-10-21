@@ -22,7 +22,7 @@ See also: `AOCreateBasic()`, `AOView()`, `AOPetscToApplication()`,
 $(_doc_external("AO/AOApplicationToPetsc"))
 """
 function AOApplicationToPetsc(petsclib::PetscLibType, ao::AbstractAO, n::Integer, ia::AbstractVector{<:Number})
-    error("AOApplicationToPetsc: no generated method for these argument types")
+    throw(MethodError(AOApplicationToPetsc, (petsclib, ao, n, ia)))
 end
 
 @for_petsc function AOApplicationToPetsc(petsclib::$UnionPetscLib, ao::AbstractAO, n::$PetscInt, ia::Vector{$PetscInt} )
@@ -61,7 +61,7 @@ See also: `AO`, `AOCreateBasic()`, `AOView()`, `AOPetscToApplication()`,
 $(_doc_external("AO/AOApplicationToPetscIS"))
 """
 function AOApplicationToPetscIS(petsclib::PetscLibType, ao::AbstractAO, is::AbstractIS)
-    error("AOApplicationToPetscIS: no generated method for these argument types")
+    throw(MethodError(AOApplicationToPetscIS, (petsclib, ao, is)))
 end
 
 @for_petsc function AOApplicationToPetscIS(petsclib::$UnionPetscLib, ao::AbstractAO, is::AbstractIS )
@@ -100,7 +100,7 @@ See also: `AO`, `AOCreateBasic()`, `AOView()`, `AOPetscToApplicationIS()`, `AOAp
 $(_doc_external("AO/AOApplicationToPetscPermuteInt"))
 """
 function AOApplicationToPetscPermuteInt(petsclib::PetscLibType, ao::AbstractAO, block::Integer, array::AbstractVector{<:Number})
-    error("AOApplicationToPetscPermuteInt: no generated method for these argument types")
+    throw(MethodError(AOApplicationToPetscPermuteInt, (petsclib, ao, block, array)))
 end
 
 @for_petsc function AOApplicationToPetscPermuteInt(petsclib::$UnionPetscLib, ao::AbstractAO, block::$PetscInt, array::Vector{$PetscInt} )
@@ -139,7 +139,7 @@ See also: `AO`, `AOCreateBasic()`, `AOView()`, `AOApplicationToPetsc()`, `AOPets
 $(_doc_external("AO/AOApplicationToPetscPermuteReal"))
 """
 function AOApplicationToPetscPermuteReal(petsclib::PetscLibType, ao::AbstractAO, block::Integer, array::AbstractVector{<:Number})
-    error("AOApplicationToPetscPermuteReal: no generated method for these argument types")
+    throw(MethodError(AOApplicationToPetscPermuteReal, (petsclib, ao, block, array)))
 end
 
 @for_petsc function AOApplicationToPetscPermuteReal(petsclib::$UnionPetscLib, ao::AbstractAO, block::$PetscInt, array::Vector{$PetscReal} )
@@ -179,7 +179,7 @@ See also: `AO`, `AOView()`, `AOSetIS()`, `AODestroy()`, `AOPetscToApplication()`
 $(_doc_external("AO/AOCreate"))
 """
 function AOCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("AOCreate: no generated method for these argument types")
+    throw(MethodError(AOCreate, (petsclib, comm)))
 end
 
 @for_petsc function AOCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -221,7 +221,7 @@ See also: `AO`, `AOCreateBasicIS()`, `AODestroy()`, `AOPetscToApplication()`, `A
 $(_doc_external("AO/AOCreateBasic"))
 """
 function AOCreateBasic(petsclib::PetscLibType, comm::MPI_Comm, napp::Integer, myapp::AbstractVector{<:Number}, mypetsc::AbstractVector{<:Number})
-    error("AOCreateBasic: no generated method for these argument types")
+    throw(MethodError(AOCreateBasic, (petsclib, comm, napp, myapp, mypetsc)))
 end
 
 @for_petsc function AOCreateBasic(petsclib::$UnionPetscLib, comm::MPI_Comm, napp::$PetscInt, myapp::Vector{$PetscInt}, mypetsc::Vector{$PetscInt} )
@@ -260,7 +260,7 @@ See also: `IS`, `AO`, `AOCreateBasic()`, `AODestroy()`
 $(_doc_external("AO/AOCreateBasicIS"))
 """
 function AOCreateBasicIS(petsclib::PetscLibType, isapp::AbstractIS, ispetsc::AbstractIS)
-    error("AOCreateBasicIS: no generated method for these argument types")
+    throw(MethodError(AOCreateBasicIS, (petsclib, isapp, ispetsc)))
 end
 
 @for_petsc function AOCreateBasicIS(petsclib::$UnionPetscLib, isapp::AbstractIS, ispetsc::AbstractIS )
@@ -302,7 +302,7 @@ See also: `AOCreateBasic()`, `AOCreateMappingIS()`, `AODestroy()`
 $(_doc_external("AO/AOCreateMapping"))
 """
 function AOCreateMapping(petsclib::PetscLibType, comm::MPI_Comm, napp::Integer, myapp::AbstractVector{<:Number}, mypetsc::AbstractVector{<:Number})
-    error("AOCreateMapping: no generated method for these argument types")
+    throw(MethodError(AOCreateMapping, (petsclib, comm, napp, myapp, mypetsc)))
 end
 
 @for_petsc function AOCreateMapping(petsclib::$UnionPetscLib, comm::MPI_Comm, napp::$PetscInt, myapp::Vector{$PetscInt}, mypetsc::Vector{$PetscInt} )
@@ -342,7 +342,7 @@ See also: `AOCreateBasic()`, `AOCreateMapping()`, `AODestroy()`
 $(_doc_external("AO/AOCreateMappingIS"))
 """
 function AOCreateMappingIS(petsclib::PetscLibType, isapp::AbstractIS, ispetsc::AbstractIS)
-    error("AOCreateMappingIS: no generated method for these argument types")
+    throw(MethodError(AOCreateMappingIS, (petsclib, isapp, ispetsc)))
 end
 
 @for_petsc function AOCreateMappingIS(petsclib::$UnionPetscLib, isapp::AbstractIS, ispetsc::AbstractIS )
@@ -383,7 +383,7 @@ See also: `AO`, `AOCreateMemoryScalableIS()`, `AODestroy()`, `AOPetscToApplicati
 $(_doc_external("AO/AOCreateMemoryScalable"))
 """
 function AOCreateMemoryScalable(petsclib::PetscLibType, comm::MPI_Comm, napp::Integer, myapp::AbstractVector{<:Number}, mypetsc::AbstractVector{<:Number})
-    error("AOCreateMemoryScalable: no generated method for these argument types")
+    throw(MethodError(AOCreateMemoryScalable, (petsclib, comm, napp, myapp, mypetsc)))
 end
 
 @for_petsc function AOCreateMemoryScalable(petsclib::$UnionPetscLib, comm::MPI_Comm, napp::$PetscInt, myapp::Vector{$PetscInt}, mypetsc::Vector{$PetscInt} )
@@ -422,7 +422,7 @@ See also: `AO`, `AOCreateBasicIS()`, `AOCreateMemoryScalable()`, `AODestroy()`
 $(_doc_external("AO/AOCreateMemoryScalableIS"))
 """
 function AOCreateMemoryScalableIS(petsclib::PetscLibType, isapp::AbstractIS, ispetsc::AbstractIS)
-    error("AOCreateMemoryScalableIS: no generated method for these argument types")
+    throw(MethodError(AOCreateMemoryScalableIS, (petsclib, isapp, ispetsc)))
 end
 
 @for_petsc function AOCreateMemoryScalableIS(petsclib::$UnionPetscLib, isapp::AbstractIS, ispetsc::AbstractIS )
@@ -457,7 +457,7 @@ See also: `AO`, `AOCreate()`
 $(_doc_external("AO/AODestroy"))
 """
 function AODestroy(petsclib::PetscLibType, ao::AbstractAO)
-    error("AODestroy: no generated method for these argument types")
+    throw(MethodError(AODestroy, (petsclib, ao)))
 end
 
 @for_petsc function AODestroy(petsclib::$UnionPetscLib, ao::AbstractAO )
@@ -488,7 +488,7 @@ See also: `AOInitializePackage()`, `PetscInitialize()`
 $(_doc_external("AO/AOFinalizePackage"))
 """
 function AOFinalizePackage(petsclib::PetscLibType)
-    error("AOFinalizePackage: no generated method for these argument types")
+    throw(MethodError(AOFinalizePackage, (petsclib, )))
 end
 
 @for_petsc function AOFinalizePackage(petsclib::$UnionPetscLib)
@@ -523,7 +523,7 @@ See also: `AO`, `AOType`, `AOSetType()`, `AOCreate()`, `PetscObjectTypeCompare()
 $(_doc_external("AO/AOGetType"))
 """
 function AOGetType(petsclib::PetscLibType, ao::AbstractAO)
-    error("AOGetType: no generated method for these argument types")
+    throw(MethodError(AOGetType, (petsclib, ao)))
 end
 
 @for_petsc function AOGetType(petsclib::$UnionPetscLib, ao::AbstractAO )
@@ -555,7 +555,7 @@ See also: `AOFinalizePackage()`, `PetscInitialize()`
 $(_doc_external("Sys/AOInitializePackage"))
 """
 function AOInitializePackage(petsclib::PetscLibType)
-    error("AOInitializePackage: no generated method for these argument types")
+    throw(MethodError(AOInitializePackage, (petsclib, )))
 end
 
 @for_petsc function AOInitializePackage(petsclib::$UnionPetscLib)
@@ -591,7 +591,7 @@ See also: `AOMappingHasPetscIndex()`, `AOCreateMapping()`, `AO`
 $(_doc_external("AO/AOMappingHasApplicationIndex"))
 """
 function AOMappingHasApplicationIndex(petsclib::PetscLibType, ao::AbstractAO, idex::Integer)
-    error("AOMappingHasApplicationIndex: no generated method for these argument types")
+    throw(MethodError(AOMappingHasApplicationIndex, (petsclib, ao, idex)))
 end
 
 @for_petsc function AOMappingHasApplicationIndex(petsclib::$UnionPetscLib, ao::AbstractAO, idex::$PetscInt )
@@ -630,7 +630,7 @@ See also: `AOMappingHasApplicationIndex()`, `AOCreateMapping()`
 $(_doc_external("AO/AOMappingHasPetscIndex"))
 """
 function AOMappingHasPetscIndex(petsclib::PetscLibType, ao::AbstractAO, idex::Integer)
-    error("AOMappingHasPetscIndex: no generated method for these argument types")
+    throw(MethodError(AOMappingHasPetscIndex, (petsclib, ao, idex)))
 end
 
 @for_petsc function AOMappingHasPetscIndex(petsclib::$UnionPetscLib, ao::AbstractAO, idex::$PetscInt )
@@ -672,7 +672,7 @@ See also: `AO`, `AOCreateBasic()`, `AOView()`, `AOApplicationToPetsc()`,
 $(_doc_external("AO/AOPetscToApplication"))
 """
 function AOPetscToApplication(petsclib::PetscLibType, ao::AbstractAO, n::Integer, ia::AbstractVector{<:Number})
-    error("AOPetscToApplication: no generated method for these argument types")
+    throw(MethodError(AOPetscToApplication, (petsclib, ao, n, ia)))
 end
 
 @for_petsc function AOPetscToApplication(petsclib::$UnionPetscLib, ao::AbstractAO, n::$PetscInt, ia::Vector{$PetscInt} )
@@ -711,7 +711,7 @@ See also: `AO`, `AOCreateBasic()`, `AOView()`, `AOApplicationToPetsc()`,
 $(_doc_external("AO/AOPetscToApplicationIS"))
 """
 function AOPetscToApplicationIS(petsclib::PetscLibType, ao::AbstractAO, is::AbstractIS)
-    error("AOPetscToApplicationIS: no generated method for these argument types")
+    throw(MethodError(AOPetscToApplicationIS, (petsclib, ao, is)))
 end
 
 @for_petsc function AOPetscToApplicationIS(petsclib::$UnionPetscLib, ao::AbstractAO, is::AbstractIS )
@@ -750,7 +750,7 @@ See also: `AO`, `AOCreateBasic()`, `AOView()`, `AOApplicationToPetsc()`, `AOPets
 $(_doc_external("AO/AOPetscToApplicationPermuteInt"))
 """
 function AOPetscToApplicationPermuteInt(petsclib::PetscLibType, ao::AbstractAO, block::Integer, array::AbstractVector{<:Number})
-    error("AOPetscToApplicationPermuteInt: no generated method for these argument types")
+    throw(MethodError(AOPetscToApplicationPermuteInt, (petsclib, ao, block, array)))
 end
 
 @for_petsc function AOPetscToApplicationPermuteInt(petsclib::$UnionPetscLib, ao::AbstractAO, block::$PetscInt, array::Vector{$PetscInt} )
@@ -789,7 +789,7 @@ See also: `AO`, `AOCreateBasic()`, `AOView()`, `AOApplicationToPetsc()`, `AOPets
 $(_doc_external("AO/AOPetscToApplicationPermuteReal"))
 """
 function AOPetscToApplicationPermuteReal(petsclib::PetscLibType, ao::AbstractAO, block::Integer, array::AbstractVector{<:Number})
-    error("AOPetscToApplicationPermuteReal: no generated method for these argument types")
+    throw(MethodError(AOPetscToApplicationPermuteReal, (petsclib, ao, block, array)))
 end
 
 @for_petsc function AOPetscToApplicationPermuteReal(petsclib::$UnionPetscLib, ao::AbstractAO, block::$PetscInt, array::Vector{$PetscReal} )
@@ -823,7 +823,7 @@ See also: `AO`, `AOType`, `AOCreate()`, `AORegisterAll()`, `AOBASIC`, `AOADVANCE
 $(_doc_external("AO/AORegister"))
 """
 function AORegister(petsclib::PetscLibType, sname::String, fnc::external)
-    error("AORegister: no generated method for these argument types")
+    throw(MethodError(AORegister, (petsclib, sname, fnc)))
 end
 
 @for_petsc function AORegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
@@ -853,7 +853,7 @@ See also: `AO`, `AOType`, `AORegister()`, `AORegisterDestroy()`
 $(_doc_external("AO/AORegisterAll"))
 """
 function AORegisterAll(petsclib::PetscLibType)
-    error("AORegisterAll: no generated method for these argument types")
+    throw(MethodError(AORegisterAll, (petsclib, )))
 end
 
 @for_petsc function AORegisterAll(petsclib::$UnionPetscLib)
@@ -888,7 +888,7 @@ See also: `AO`, `AOCreate()`, `AOSetType()`, `AODestroy()`, `AOPetscToApplicatio
 $(_doc_external("AO/AOSetFromOptions"))
 """
 function AOSetFromOptions(petsclib::PetscLibType, ao::AbstractAO)
-    error("AOSetFromOptions: no generated method for these argument types")
+    throw(MethodError(AOSetFromOptions, (petsclib, ao)))
 end
 
 @for_petsc function AOSetFromOptions(petsclib::$UnionPetscLib, ao::AbstractAO )
@@ -923,7 +923,7 @@ See also: `AO`, `AOCreate()`, `AODestroy()`, `AOPetscToApplication()`, `AOApplic
 $(_doc_external("AO/AOSetIS"))
 """
 function AOSetIS(petsclib::PetscLibType, ao::AbstractAO, isapp::AbstractIS, ispetsc::AbstractIS)
-    error("AOSetIS: no generated method for these argument types")
+    throw(MethodError(AOSetIS, (petsclib, ao, isapp, ispetsc)))
 end
 
 @for_petsc function AOSetIS(petsclib::$UnionPetscLib, ao::AbstractAO, isapp::AbstractIS, ispetsc::AbstractIS )
@@ -960,7 +960,7 @@ See also: `AO`, `AOType`, `AOCreateBasic()`, `AOCreateMemoryScalable()`, `AOGetT
 $(_doc_external("AO/AOSetType"))
 """
 function AOSetType(petsclib::PetscLibType, ao::AbstractAO, method::String)
-    error("AOSetType: no generated method for these argument types")
+    throw(MethodError(AOSetType, (petsclib, ao, method)))
 end
 
 @for_petsc function AOSetType(petsclib::$UnionPetscLib, ao::AbstractAO, method::String )
@@ -997,7 +997,7 @@ See also: `AO`, `PetscViewer`, `PetscViewerASCIIOpen()`, `AOViewFromOptions()`
 $(_doc_external("AO/AOView"))
 """
 function AOView(petsclib::PetscLibType, ao::AbstractAO, viewer::PetscViewer)
-    error("AOView: no generated method for these argument types")
+    throw(MethodError(AOView, (petsclib, ao, viewer)))
 end
 
 @for_petsc function AOView(petsclib::$UnionPetscLib, ao::AbstractAO, viewer::PetscViewer )
@@ -1035,7 +1035,7 @@ See also: `AO`, `AOView()`, `PetscObjectViewFromOptions()`, `AOCreate()`
 $(_doc_external("AO/AOViewFromOptions"))
 """
 function AOViewFromOptions(petsclib::PetscLibType, ao::AbstractAO, obj, name::String)
-    error("AOViewFromOptions: no generated method for these argument types")
+    throw(MethodError(AOViewFromOptions, (petsclib, ao, obj, name)))
 end
 
 @for_petsc function AOViewFromOptions(petsclib::$UnionPetscLib, ao::AbstractAO, obj, name::String )

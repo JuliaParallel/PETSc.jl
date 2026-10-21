@@ -19,14 +19,8 @@ Destroy the preconditioner `p` holds. Does nothing on the borrowed handle
 # External Links
 $(doc_external("PC/PCDestroy"))
 """
-function destroy!(p::AbstractPC{PetscLib}) where {PetscLib}
-    owns(p) || return nothing
-    if isdestroyable(p, PetscLib)
-        LibPETSc.PCDestroy(PetscLib, p)
-    end
-    p.ptr = C_NULL
-    return nothing
-end
+destroy!(p::AbstractPC{PetscLib}) where {PetscLib} =
+    destroy_handle!(LibPETSc.PCDestroy, p, PetscLib)
 
 """
     pc(ksp::AbstractKSP)

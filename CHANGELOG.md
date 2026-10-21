@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Behaviour changes
+
+- A `LibPETSc` call whose arguments match no generated method, such as an `Int` where the library takes its scalar type, throws a `MethodError` naming the argument types, instead of an `ErrorException` with the text "no generated method for these argument types".
+- `library_info()` prints as the `NamedTuple` it returns. The report it printed came from a `show` method that also changed how any other `NamedTuple` with the same five field names printed. `PETSc.petsclibs` lists the libraries loaded in the session.
+
 ### Added
 
 - The handle types are public API, with docstrings: the abstract types to annotate with (`AbstractPetscVec`, `AbstractPetscMat`, `AbstractPetscDM`, `AbstractKSP`, `AbstractPC`, `AbstractSNES`, `AbstractTS`, `AbstractPetscOptions`, `AbstractIS`, `AbstractAO`, `AbstractPF`, `AbstractTao`) and the handles `PetscDM`, `PC`, `IS`, `AO`, `PF` and `Tao`, all reachable as `PETSc.X`. `PETSc.realtype(petsclib)` gives the library's real type.
@@ -11,6 +16,7 @@
 - A dense matrix made with `PetscMat(petsclib, A::Matrix)` or `PetscMat(petsclib, m, n; type = :dense)` could lose its storage while a KSP still used it: once the Julia handle was collected, the array went with it, and the next solve read freed memory (a wrong answer or a PETSc zero-pivot error). The array now lives as long as the PETSc matrix, as it already did for CSR matrices and vectors on Julia arrays. `type = :dense` lets PETSc allocate the storage.
 - A `DMDA`, `DMStag` or `DMPlex` constructor, or `fe_create_default`, that threw inside PETSc (for example on `da_refine = "abc"`) left its options pushed on PETSc's options stack. Every object created afterwards read them, and the options could no longer be destroyed. The options are now popped whether or not the call throws.
 - `PETSc.scalartype` and `PETSc.inttype` are now the same functions as `LibPETSc.scalartype` and `LibPETSc.inttype`. They were two separate copies, so a method added to one was missing from the other.
+- `mul!`, `ksp \ b`, `ldiv!` and `solve!(x, ksp, b)` took only `PetscVec`, so a borrowed `VecPtr` gave a `MethodError` (`A * x` with a `VecPtr` failed inside). They take any vector handle.
 
 ## v0.5.3
 

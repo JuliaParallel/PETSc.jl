@@ -20,7 +20,7 @@ See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `Pets
 $(_doc_external("IS/PetscLayoutCompare"))
 """
 function PetscLayoutCompare(petsclib::PetscLibType, mapa::PetscLayout, mapb::PetscLayout)
-    error("PetscLayoutCompare: no generated method for these argument types")
+    throw(MethodError(PetscLayoutCompare, (petsclib, mapa, mapb)))
 end
 
 @for_petsc function PetscLayoutCompare(petsclib::$UnionPetscLib, mapa::PetscLayout, mapb::PetscLayout )
@@ -61,7 +61,7 @@ See also: PetscLayout, `PetscLayoutSetLocalSize()`, `PetscLayoutSetSize()`, `Pet
 $(_doc_external("IS/PetscLayoutCreate"))
 """
 function PetscLayoutCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("PetscLayoutCreate: no generated method for these argument types")
+    throw(MethodError(PetscLayoutCreate, (petsclib, comm)))
 end
 
 @for_petsc function PetscLayoutCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -104,7 +104,7 @@ See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `Pets
 $(_doc_external("IS/PetscLayoutCreateFromRanges"))
 """
 function PetscLayoutCreateFromRanges(petsclib::PetscLibType, comm::MPI_Comm, range::AbstractVector{<:Number}, mode::PetscCopyMode, bs::Integer)
-    error("PetscLayoutCreateFromRanges: no generated method for these argument types")
+    throw(MethodError(PetscLayoutCreateFromRanges, (petsclib, comm, range, mode, bs)))
 end
 
 @for_petsc function PetscLayoutCreateFromRanges(petsclib::$UnionPetscLib, comm::MPI_Comm, range::Vector{$PetscInt}, mode::PetscCopyMode, bs::$PetscInt )
@@ -146,7 +146,7 @@ See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `Pets
 $(_doc_external("IS/PetscLayoutCreateFromSizes"))
 """
 function PetscLayoutCreateFromSizes(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer, bs::Integer)
-    error("PetscLayoutCreateFromSizes: no generated method for these argument types")
+    throw(MethodError(PetscLayoutCreateFromSizes, (petsclib, comm, n, M_N, bs)))
 end
 
 @for_petsc function PetscLayoutCreateFromSizes(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt, bs::$PetscInt )
@@ -183,7 +183,7 @@ See also: PetscLayout, `PetscLayoutSetLocalSize()`, `PetscLayoutSetSize()`, `Pet
 $(_doc_external("IS/PetscLayoutDestroy"))
 """
 function PetscLayoutDestroy(petsclib::PetscLibType, map::Union{PetscLayout, Ref{PetscLayout}})
-    error("PetscLayoutDestroy: no generated method for these argument types")
+    throw(MethodError(PetscLayoutDestroy, (petsclib, map)))
 end
 
 @for_petsc function PetscLayoutDestroy(petsclib::$UnionPetscLib, map::Union{PetscLayout, Ref{PetscLayout}} )
@@ -220,7 +220,7 @@ See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutDestroy()`, `PetscLayo
 $(_doc_external("IS/PetscLayoutDuplicate"))
 """
 function PetscLayoutDuplicate(petsclib::PetscLibType, in::PetscLayout)
-    error("PetscLayoutDuplicate: no generated method for these argument types")
+    throw(MethodError(PetscLayoutDuplicate, (petsclib, in)))
 end
 
 @for_petsc function PetscLayoutDuplicate(petsclib::$UnionPetscLib, in::PetscLayout )
@@ -259,7 +259,7 @@ See also: `PetscLayout`, `PetscLayoutFindOwnerIndex()`
 $(_doc_external("IS/PetscLayoutFindOwner"))
 """
 function PetscLayoutFindOwner(petsclib::PetscLibType, map::PetscLayout, idx::Integer)
-    error("PetscLayoutFindOwner: no generated method for these argument types")
+    throw(MethodError(PetscLayoutFindOwner, (petsclib, map, idx)))
 end
 
 @for_petsc function PetscLayoutFindOwner(petsclib::$UnionPetscLib, map::PetscLayout, idx::$PetscInt )
@@ -299,7 +299,7 @@ See also: `PetscLayout`, `PetscLayoutFindOwner()`
 $(_doc_external("IS/PetscLayoutFindOwnerIndex"))
 """
 function PetscLayoutFindOwnerIndex(petsclib::PetscLibType, map::PetscLayout, idx::Integer)
-    error("PetscLayoutFindOwnerIndex: no generated method for these argument types")
+    throw(MethodError(PetscLayoutFindOwnerIndex, (petsclib, map, idx)))
 end
 
 @for_petsc function PetscLayoutFindOwnerIndex(petsclib::$UnionPetscLib, map::PetscLayout, idx::$PetscInt )
@@ -340,7 +340,7 @@ See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `Pets
 $(_doc_external("IS/PetscLayoutGetBlockSize"))
 """
 function PetscLayoutGetBlockSize(petsclib::PetscLibType, map::PetscLayout)
-    error("PetscLayoutGetBlockSize: no generated method for these argument types")
+    throw(MethodError(PetscLayoutGetBlockSize, (petsclib, map)))
 end
 
 @for_petsc function PetscLayoutGetBlockSize(petsclib::$UnionPetscLib, map::PetscLayout )
@@ -379,7 +379,7 @@ See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutSetSize()`, `PetscLayo
 $(_doc_external("IS/PetscLayoutGetLocalSize"))
 """
 function PetscLayoutGetLocalSize(petsclib::PetscLibType, map::PetscLayout)
-    error("PetscLayoutGetLocalSize: no generated method for these argument types")
+    throw(MethodError(PetscLayoutGetLocalSize, (petsclib, map)))
 end
 
 @for_petsc function PetscLayoutGetLocalSize(petsclib::$UnionPetscLib, map::PetscLayout )
@@ -419,7 +419,7 @@ See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `Pets
 $(_doc_external("IS/PetscLayoutGetRange"))
 """
 function PetscLayoutGetRange(petsclib::PetscLibType, map::PetscLayout)
-    error("PetscLayoutGetRange: no generated method for these argument types")
+    throw(MethodError(PetscLayoutGetRange, (petsclib, map)))
 end
 
 @for_petsc function PetscLayoutGetRange(petsclib::$UnionPetscLib, map::PetscLayout )
@@ -462,7 +462,7 @@ See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `Pets
 $(_doc_external("IS/PetscLayoutGetRanges"))
 """
 function PetscLayoutGetRanges(petsclib::PetscLibType, map::PetscLayout)
-    error("PetscLayoutGetRanges: no generated method for these argument types")
+    throw(MethodError(PetscLayoutGetRanges, (petsclib, map)))
 end
 
 @for_petsc function PetscLayoutGetRanges(petsclib::$UnionPetscLib, map::PetscLayout )
@@ -501,7 +501,7 @@ See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `Pets
 $(_doc_external("IS/PetscLayoutGetSize"))
 """
 function PetscLayoutGetSize(petsclib::PetscLibType, map::PetscLayout)
-    error("PetscLayoutGetSize: no generated method for these argument types")
+    throw(MethodError(PetscLayoutGetSize, (petsclib, map)))
 end
 
 @for_petsc function PetscLayoutGetSize(petsclib::$UnionPetscLib, map::PetscLayout )
@@ -543,7 +543,7 @@ See also: `PetscLayout`, `PetscSF`, `PetscLayoutFindOwner()`, `PetscSFCreateFrom
 $(_doc_external("PetscSF/PetscLayoutMapLocal"))
 """
 function PetscLayoutMapLocal(petsclib::PetscLibType, map::PetscLayout, N::Integer, idxs::AbstractVector{<:Number})
-    error("PetscLayoutMapLocal: no generated method for these argument types")
+    throw(MethodError(PetscLayoutMapLocal, (petsclib, map, N, idxs)))
 end
 
 @for_petsc function PetscLayoutMapLocal(petsclib::$UnionPetscLib, map::PetscLayout, N::$PetscInt, idxs::Vector{$PetscInt} )
@@ -585,7 +585,7 @@ See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutDestroy()`, `PetscLayo
 $(_doc_external("IS/PetscLayoutReference"))
 """
 function PetscLayoutReference(petsclib::PetscLibType, in::PetscLayout)
-    error("PetscLayoutReference: no generated method for these argument types")
+    throw(MethodError(PetscLayoutReference, (petsclib, in)))
 end
 
 @for_petsc function PetscLayoutReference(petsclib::$UnionPetscLib, in::PetscLayout )
@@ -622,7 +622,7 @@ See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `Pets
 $(_doc_external("IS/PetscLayoutSetBlockSize"))
 """
 function PetscLayoutSetBlockSize(petsclib::PetscLibType, map::PetscLayout, bs::Integer)
-    error("PetscLayoutSetBlockSize: no generated method for these argument types")
+    throw(MethodError(PetscLayoutSetBlockSize, (petsclib, map, bs)))
 end
 
 @for_petsc function PetscLayoutSetBlockSize(petsclib::$UnionPetscLib, map::PetscLayout, bs::$PetscInt )
@@ -656,7 +656,7 @@ See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutDestroy()`, `PetscLayo
 $(_doc_external("IS/PetscLayoutSetISLocalToGlobalMapping"))
 """
 function PetscLayoutSetISLocalToGlobalMapping(petsclib::PetscLibType, in::PetscLayout, ltog::ISLocalToGlobalMapping)
-    error("PetscLayoutSetISLocalToGlobalMapping: no generated method for these argument types")
+    throw(MethodError(PetscLayoutSetISLocalToGlobalMapping, (petsclib, in, ltog)))
 end
 
 @for_petsc function PetscLayoutSetISLocalToGlobalMapping(petsclib::$UnionPetscLib, in::PetscLayout, ltog::ISLocalToGlobalMapping )
@@ -691,7 +691,7 @@ See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutSetSize()`, `PetscLayo
 $(_doc_external("IS/PetscLayoutSetLocalSize"))
 """
 function PetscLayoutSetLocalSize(petsclib::PetscLibType, map::PetscLayout, n::Integer)
-    error("PetscLayoutSetLocalSize: no generated method for these argument types")
+    throw(MethodError(PetscLayoutSetLocalSize, (petsclib, map, n)))
 end
 
 @for_petsc function PetscLayoutSetLocalSize(petsclib::$UnionPetscLib, map::PetscLayout, n::$PetscInt )
@@ -726,7 +726,7 @@ See also: PetscLayout, `PetscLayoutCreate()`, `PetscLayoutSetLocalSize()`, `Pets
 $(_doc_external("IS/PetscLayoutSetSize"))
 """
 function PetscLayoutSetSize(petsclib::PetscLibType, map::PetscLayout, n::Integer)
-    error("PetscLayoutSetSize: no generated method for these argument types")
+    throw(MethodError(PetscLayoutSetSize, (petsclib, map, n)))
 end
 
 @for_petsc function PetscLayoutSetSize(petsclib::$UnionPetscLib, map::PetscLayout, n::$PetscInt )
@@ -762,7 +762,7 @@ See also: PetscLayout, `PetscLayoutSetLocalSize()`, `PetscLayoutSetSize()`, `Pet
 $(_doc_external("IS/PetscLayoutSetUp"))
 """
 function PetscLayoutSetUp(petsclib::PetscLibType, map::PetscLayout)
-    error("PetscLayoutSetUp: no generated method for these argument types")
+    throw(MethodError(PetscLayoutSetUp, (petsclib, map)))
 end
 
 @for_petsc function PetscLayoutSetUp(petsclib::$UnionPetscLib, map::PetscLayout )

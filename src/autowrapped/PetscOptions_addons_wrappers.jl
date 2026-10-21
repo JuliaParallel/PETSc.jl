@@ -20,7 +20,7 @@ See also: `PetscOptionsHelpPrintedCreate()`
 $(_doc_external("Viewer/PetscOptionsHelpPrintedCheck"))
 """
 function PetscOptionsHelpPrintedCheck(petsclib::PetscLibType, hp::PetscOptionsHelpPrCinted, pre::String, name::String)
-    error("PetscOptionsHelpPrintedCheck: no generated method for these argument types")
+    throw(MethodError(PetscOptionsHelpPrintedCheck, (petsclib, hp, pre, name)))
 end
 
 @for_petsc function PetscOptionsHelpPrintedCheck(petsclib::$UnionPetscLib, hp::PetscOptionsHelpPrCinted, pre::String, name::String )
@@ -56,7 +56,7 @@ See also: `PetscOptionsHelpPrintedCheck()`, `PetscOptionsHelpPrintChecked()`
 $(_doc_external("Viewer/PetscOptionsHelpPrintedCreate"))
 """
 function PetscOptionsHelpPrintedCreate(petsclib::PetscLibType)
-    error("PetscOptionsHelpPrintedCreate: no generated method for these argument types")
+    throw(MethodError(PetscOptionsHelpPrintedCreate, (petsclib, )))
 end
 
 @for_petsc function PetscOptionsHelpPrintedCreate(petsclib::$UnionPetscLib)
@@ -91,7 +91,7 @@ See also: `PetscOptionsHelpPrintedCreate()`, `PetscOptionsHelpPrintedCheck()`
 $(_doc_external("Viewer/PetscOptionsHelpPrintedDestroy"))
 """
 function PetscOptionsHelpPrintedDestroy(petsclib::PetscLibType, hp::Union{PetscOptionsHelpPrCinted, Ref{PetscOptionsHelpPrCinted}})
-    error("PetscOptionsHelpPrintedDestroy: no generated method for these argument types")
+    throw(MethodError(PetscOptionsHelpPrintedDestroy, (petsclib, hp)))
 end
 
 @for_petsc function PetscOptionsHelpPrintedDestroy(petsclib::$UnionPetscLib, hp::Union{PetscOptionsHelpPrCinted, Ref{PetscOptionsHelpPrCinted}} )

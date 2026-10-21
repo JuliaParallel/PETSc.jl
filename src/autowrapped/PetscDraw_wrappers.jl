@@ -16,7 +16,7 @@ See also: `PetscDraw`, `PetscDrawSetTitle()`, `PetscDrawGetTitle()`
 $(_doc_external("Draw/PetscDrawAppendTitle"))
 """
 function PetscDrawAppendTitle(petsclib::PetscLibType, draw::PetscDraw, title::String)
-    error("PetscDrawAppendTitle: no generated method for these argument types")
+    throw(MethodError(PetscDrawAppendTitle, (petsclib, draw, title)))
 end
 
 @for_petsc function PetscDrawAppendTitle(petsclib::$UnionPetscLib, draw::PetscDraw, title::String )
@@ -55,7 +55,7 @@ See also: `PetscDraw`, `PetscDrawLine()`, `PetscDrawLineSetWidth()`, `PetscDrawL
 $(_doc_external("Draw/PetscDrawArrow"))
 """
 function PetscDrawArrow(petsclib::PetscLibType, draw::PetscDraw, xl::Real, yl::Real, xr::Real, yr::Real, cl::Cint)
-    error("PetscDrawArrow: no generated method for these argument types")
+    throw(MethodError(PetscDrawArrow, (petsclib, draw, xl, yl, xr, yr, cl)))
 end
 
 @for_petsc function PetscDrawArrow(petsclib::$UnionPetscLib, draw::PetscDraw, xl::$PetscReal, yl::$PetscReal, xr::$PetscReal, yr::$PetscReal, cl::Cint )
@@ -91,7 +91,7 @@ See also: `PetscDrawLGCreate()`, `PetscDrawLG`, `PetscDrawSPCreate()`, `PetscDra
 $(_doc_external("Draw/PetscDrawAxisCreate"))
 """
 function PetscDrawAxisCreate(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawAxisCreate: no generated method for these argument types")
+    throw(MethodError(PetscDrawAxisCreate, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawAxisCreate(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -126,7 +126,7 @@ See also: `PetscDraw`, `PetscDrawAxisCreate()`, `PetscDrawAxis`
 $(_doc_external("Draw/PetscDrawAxisDestroy"))
 """
 function PetscDrawAxisDestroy(petsclib::PetscLibType, axis::Union{PetscDrawAxis, Ref{PetscDrawAxis}})
-    error("PetscDrawAxisDestroy: no generated method for these argument types")
+    throw(MethodError(PetscDrawAxisDestroy, (petsclib, axis)))
 end
 
 @for_petsc function PetscDrawAxisDestroy(petsclib::$UnionPetscLib, axis::Union{PetscDrawAxis, Ref{PetscDrawAxis}} )
@@ -160,7 +160,7 @@ See also: `PetscDrawAxisCreate()`, `PetscDrawAxis`, `PetscDrawAxisGetLimits()`, 
 $(_doc_external("Draw/PetscDrawAxisDraw"))
 """
 function PetscDrawAxisDraw(petsclib::PetscLibType, axis::PetscDrawAxis)
-    error("PetscDrawAxisDraw: no generated method for these argument types")
+    throw(MethodError(PetscDrawAxisDraw, (petsclib, axis)))
 end
 
 @for_petsc function PetscDrawAxisDraw(petsclib::$UnionPetscLib, axis::PetscDrawAxis )
@@ -197,7 +197,7 @@ See also: `PetscDrawAxisCreate()`, `PetscDrawAxis`, `PetscDrawAxisSetHoldLimits(
 $(_doc_external("Draw/PetscDrawAxisGetLimits"))
 """
 function PetscDrawAxisGetLimits(petsclib::PetscLibType, axis::PetscDrawAxis)
-    error("PetscDrawAxisGetLimits: no generated method for these argument types")
+    throw(MethodError(PetscDrawAxisGetLimits, (petsclib, axis)))
 end
 
 @for_petsc function PetscDrawAxisGetLimits(petsclib::$UnionPetscLib, axis::PetscDrawAxis )
@@ -242,7 +242,7 @@ See also: `PetscDraw`, `PetscDrawAxisCreate()`, `PetscDrawAxis`, `PetscDrawAxisS
 $(_doc_external("Draw/PetscDrawAxisSetColors"))
 """
 function PetscDrawAxisSetColors(petsclib::PetscLibType, axis::PetscDrawAxis, ac::Cint, tc::Cint, cc::Cint)
-    error("PetscDrawAxisSetColors: no generated method for these argument types")
+    throw(MethodError(PetscDrawAxisSetColors, (petsclib, axis, ac, tc, cc)))
 end
 
 @for_petsc function PetscDrawAxisSetColors(petsclib::$UnionPetscLib, axis::PetscDrawAxis, ac::Cint, tc::Cint, cc::Cint )
@@ -277,7 +277,7 @@ See also: `PetscDrawAxisCreate()`, `PetscDrawAxis`, `PetscDrawAxisGetLimits()`, 
 $(_doc_external("Draw/PetscDrawAxisSetHoldLimits"))
 """
 function PetscDrawAxisSetHoldLimits(petsclib::PetscLibType, axis::PetscDrawAxis, hold::PetscBool)
-    error("PetscDrawAxisSetHoldLimits: no generated method for these argument types")
+    throw(MethodError(PetscDrawAxisSetHoldLimits, (petsclib, axis, hold)))
 end
 
 @for_petsc function PetscDrawAxisSetHoldLimits(petsclib::$UnionPetscLib, axis::PetscDrawAxis, hold::PetscBool )
@@ -313,7 +313,7 @@ See also: `PetscDraw`, `PetscDrawAxisCreate()`, `PetscDrawAxis`, `PetscDrawAxisS
 $(_doc_external("Draw/PetscDrawAxisSetLabels"))
 """
 function PetscDrawAxisSetLabels(petsclib::PetscLibType, axis::PetscDrawAxis, top::String, xlabel::String, ylabel::String)
-    error("PetscDrawAxisSetLabels: no generated method for these argument types")
+    throw(MethodError(PetscDrawAxisSetLabels, (petsclib, axis, top, xlabel, ylabel)))
 end
 
 @for_petsc function PetscDrawAxisSetLabels(petsclib::$UnionPetscLib, axis::PetscDrawAxis, top::String, xlabel::String, ylabel::String )
@@ -353,7 +353,7 @@ See also: `PetscDrawAxisSetHoldLimits()`, `PetscDrawAxisGetLimits()`, `PetscDraw
 $(_doc_external("Draw/PetscDrawAxisSetLimits"))
 """
 function PetscDrawAxisSetLimits(petsclib::PetscLibType, axis::PetscDrawAxis, xmin::Real, xmax::Real, ymin::Real, ymax::Real)
-    error("PetscDrawAxisSetLimits: no generated method for these argument types")
+    throw(MethodError(PetscDrawAxisSetLimits, (petsclib, axis, xmin, xmax, ymin, ymax)))
 end
 
 @for_petsc function PetscDrawAxisSetLimits(petsclib::$UnionPetscLib, axis::PetscDrawAxis, xmin::$PetscReal, xmax::$PetscReal, ymin::$PetscReal, ymax::$PetscReal )
@@ -386,7 +386,7 @@ See also: `PetscDrawEOP()`, `PetscDrawClear()`
 $(_doc_external("Draw/PetscDrawBOP"))
 """
 function PetscDrawBOP(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawBOP: no generated method for these argument types")
+    throw(MethodError(PetscDrawBOP, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawBOP(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -422,7 +422,7 @@ See also: `PetscDrawBar`, `PetscDrawLGCreate()`, `PetscDrawLG`, `PetscDrawSPCrea
 $(_doc_external("Draw/PetscDrawBarCreate"))
 """
 function PetscDrawBarCreate(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawBarCreate: no generated method for these argument types")
+    throw(MethodError(PetscDrawBarCreate, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawBarCreate(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -457,7 +457,7 @@ See also: `PetscDrawBar`, `PetscDrawBarCreate()`
 $(_doc_external("Draw/PetscDrawBarDestroy"))
 """
 function PetscDrawBarDestroy(petsclib::PetscLibType, bar::Union{PetscDrawBar, Ref{PetscDrawBar}})
-    error("PetscDrawBarDestroy: no generated method for these argument types")
+    throw(MethodError(PetscDrawBarDestroy, (petsclib, bar)))
 end
 
 @for_petsc function PetscDrawBarDestroy(petsclib::$UnionPetscLib, bar::Union{PetscDrawBar, Ref{PetscDrawBar}} )
@@ -491,7 +491,7 @@ See also: `PetscDrawBar`, `PetscDrawBarCreate()`, `PetscDrawBarSetData()`
 $(_doc_external("Draw/PetscDrawBarDraw"))
 """
 function PetscDrawBarDraw(petsclib::PetscLibType, bar::PetscDrawBar)
-    error("PetscDrawBarDraw: no generated method for these argument types")
+    throw(MethodError(PetscDrawBarDraw, (petsclib, bar)))
 end
 
 @for_petsc function PetscDrawBarDraw(petsclib::$UnionPetscLib, bar::PetscDrawBar )
@@ -530,7 +530,7 @@ See also: `PetscDrawBar`, `PetscDrawBarCreate()`, `PetscDrawAxis`, `PetscDrawAxi
 $(_doc_external("Draw/PetscDrawBarGetAxis"))
 """
 function PetscDrawBarGetAxis(petsclib::PetscLibType, bar::PetscDrawBar)
-    error("PetscDrawBarGetAxis: no generated method for these argument types")
+    throw(MethodError(PetscDrawBarGetAxis, (petsclib, bar)))
 end
 
 @for_petsc function PetscDrawBarGetAxis(petsclib::$UnionPetscLib, bar::PetscDrawBar )
@@ -568,7 +568,7 @@ See also: `PetscDrawBar`, `PetscDraw`, `PetscDrawBarCreate()`, `PetscDrawBarDraw
 $(_doc_external("Draw/PetscDrawBarGetDraw"))
 """
 function PetscDrawBarGetDraw(petsclib::PetscLibType, bar::PetscDrawBar)
-    error("PetscDrawBarGetDraw: no generated method for these argument types")
+    throw(MethodError(PetscDrawBarGetDraw, (petsclib, bar)))
 end
 
 @for_petsc function PetscDrawBarGetDraw(petsclib::$UnionPetscLib, bar::PetscDrawBar )
@@ -603,7 +603,7 @@ See also: `PetscDrawSave()`, `PetscDrawBar`, `PetscDrawBarCreate()`, `PetscDrawB
 $(_doc_external("Draw/PetscDrawBarSave"))
 """
 function PetscDrawBarSave(petsclib::PetscLibType, bar::PetscDrawBar)
-    error("PetscDrawBarSave: no generated method for these argument types")
+    throw(MethodError(PetscDrawBarSave, (petsclib, bar)))
 end
 
 @for_petsc function PetscDrawBarSave(petsclib::$UnionPetscLib, bar::PetscDrawBar )
@@ -638,7 +638,7 @@ See also: `PetscDrawBarCreate()`, `PetscDrawBar`, `PetscDrawBarSetData()`, `Pets
 $(_doc_external("Draw/PetscDrawBarSetColor"))
 """
 function PetscDrawBarSetColor(petsclib::PetscLibType, bar::PetscDrawBar, color::Cint)
-    error("PetscDrawBarSetColor: no generated method for these argument types")
+    throw(MethodError(PetscDrawBarSetColor, (petsclib, bar, color)))
 end
 
 @for_petsc function PetscDrawBarSetColor(petsclib::$UnionPetscLib, bar::PetscDrawBar, color::Cint )
@@ -674,7 +674,7 @@ See also: `PetscDrawBar`, `PetscDrawBarCreate()`, `PetscDrawBarDraw()`
 $(_doc_external("Draw/PetscDrawBarSetData"))
 """
 function PetscDrawBarSetData(petsclib::PetscLibType, bar::PetscDrawBar, bins::Integer, data::AbstractVector{<:Number}, labels::String)
-    error("PetscDrawBarSetData: no generated method for these argument types")
+    throw(MethodError(PetscDrawBarSetData, (petsclib, bar, bins, data, labels)))
 end
 
 @for_petsc function PetscDrawBarSetData(petsclib::$UnionPetscLib, bar::PetscDrawBar, bins::$PetscInt, data::Vector{$PetscReal}, labels::String )
@@ -711,7 +711,7 @@ See also: `PetscDrawBar`, `PetscDrawBarDestroy()`, `PetscDrawBarCreate()`, `Pets
 $(_doc_external("Draw/PetscDrawBarSetFromOptions"))
 """
 function PetscDrawBarSetFromOptions(petsclib::PetscLibType, bar::PetscDrawBar)
-    error("PetscDrawBarSetFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscDrawBarSetFromOptions, (petsclib, bar)))
 end
 
 @for_petsc function PetscDrawBarSetFromOptions(petsclib::$UnionPetscLib, bar::PetscDrawBar )
@@ -748,7 +748,7 @@ See also: `PetscDrawBar`, `PetscDrawBarCreate()`, `PetscDrawBarGetAxis()`, `Pets
 $(_doc_external("Draw/PetscDrawBarSetLimits"))
 """
 function PetscDrawBarSetLimits(petsclib::PetscLibType, bar::PetscDrawBar, y_min::Real, y_max::Real)
-    error("PetscDrawBarSetLimits: no generated method for these argument types")
+    throw(MethodError(PetscDrawBarSetLimits, (petsclib, bar, y_min, y_max)))
 end
 
 @for_petsc function PetscDrawBarSetLimits(petsclib::$UnionPetscLib, bar::PetscDrawBar, y_min::$PetscReal, y_max::$PetscReal )
@@ -783,7 +783,7 @@ See also: `PetscDrawBar`, `PetscDrawBarCreate()`, `PetscDrawBarSetData()`, `Pets
 $(_doc_external("Draw/PetscDrawBarSort"))
 """
 function PetscDrawBarSort(petsclib::PetscLibType, bar::PetscDrawBar, sort::PetscBool, tolerance::Real)
-    error("PetscDrawBarSort: no generated method for these argument types")
+    throw(MethodError(PetscDrawBarSort, (petsclib, bar, sort, tolerance)))
 end
 
 @for_petsc function PetscDrawBarSort(petsclib::$UnionPetscLib, bar::PetscDrawBar, sort::PetscBool, tolerance::$PetscReal )
@@ -816,7 +816,7 @@ See also: `PetscDraw`, `PetscDrawResizeWindow()`
 $(_doc_external("Draw/PetscDrawCheckResizedWindow"))
 """
 function PetscDrawCheckResizedWindow(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawCheckResizedWindow: no generated method for these argument types")
+    throw(MethodError(PetscDrawCheckResizedWindow, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawCheckResizedWindow(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -850,7 +850,7 @@ See also: `PetscDrawBOP()`, `PetscDrawEOP()`
 $(_doc_external("Draw/PetscDrawClear"))
 """
 function PetscDrawClear(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawClear: no generated method for these argument types")
+    throw(MethodError(PetscDrawClear, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawClear(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -889,7 +889,7 @@ See also: `PetscDraw`
 $(_doc_external("Draw/PetscDrawCoordinateToPixel"))
 """
 function PetscDrawCoordinateToPixel(petsclib::PetscLibType, draw::PetscDraw, x::Real, y::Real)
-    error("PetscDrawCoordinateToPixel: no generated method for these argument types")
+    throw(MethodError(PetscDrawCoordinateToPixel, (petsclib, draw, x, y)))
 end
 
 @for_petsc function PetscDrawCoordinateToPixel(petsclib::$UnionPetscLib, draw::PetscDraw, x::$PetscReal, y::$PetscReal )
@@ -944,7 +944,7 @@ See also: `PetscDrawSetType()`, `PetscDrawSetFromOptions()`, `PetscDrawDestroy()
 $(_doc_external("Draw/PetscDrawCreate"))
 """
 function PetscDrawCreate(petsclib::PetscLibType, comm::MPI_Comm, display::String, title::String, x::Cint, y::Cint, w::Cint, h::Cint)
-    error("PetscDrawCreate: no generated method for these argument types")
+    throw(MethodError(PetscDrawCreate, (petsclib, comm, display, title, x, y, w, h)))
 end
 
 @for_petsc function PetscDrawCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, display::String, title::String, x::Cint, y::Cint, w::Cint, h::Cint )
@@ -979,7 +979,7 @@ See also: `PetscDraw`, `PetscDrawCreate()`
 $(_doc_external("Draw/PetscDrawDestroy"))
 """
 function PetscDrawDestroy(petsclib::PetscLibType, draw::Union{PetscDraw, Ref{PetscDraw}})
-    error("PetscDrawDestroy: no generated method for these argument types")
+    throw(MethodError(PetscDrawDestroy, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawDestroy(petsclib::$UnionPetscLib, draw::Union{PetscDraw, Ref{PetscDraw}} )
@@ -1013,7 +1013,7 @@ See also: `PetscDrawBOP()`, `PetscDrawClear()`
 $(_doc_external("Draw/PetscDrawEOP"))
 """
 function PetscDrawEOP(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawEOP: no generated method for these argument types")
+    throw(MethodError(PetscDrawEOP, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawEOP(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -1051,7 +1051,7 @@ See also: `PetscDraw`, `PetscDrawRectangle()`, `PetscDrawTriangle()`, `PetscDraw
 $(_doc_external("Draw/PetscDrawEllipse"))
 """
 function PetscDrawEllipse(petsclib::PetscLibType, draw::PetscDraw, x::Real, y::Real, a::Real, b::Real, c::Cint)
-    error("PetscDrawEllipse: no generated method for these argument types")
+    throw(MethodError(PetscDrawEllipse, (petsclib, draw, x, y, a, b, c)))
 end
 
 @for_petsc function PetscDrawEllipse(petsclib::$UnionPetscLib, draw::PetscDraw, x::$PetscReal, y::$PetscReal, a::$PetscReal, b::$PetscReal, c::Cint )
@@ -1080,7 +1080,7 @@ See also: `PetscDraw`, `PetscFinalize()`
 $(_doc_external("Draw/PetscDrawFinalizePackage"))
 """
 function PetscDrawFinalizePackage(petsclib::PetscLibType)
-    error("PetscDrawFinalizePackage: no generated method for these argument types")
+    throw(MethodError(PetscDrawFinalizePackage, (petsclib, )))
 end
 
 @for_petsc function PetscDrawFinalizePackage(petsclib::$UnionPetscLib)
@@ -1112,7 +1112,7 @@ See also: `PetscDraw`, `PetscDrawClear()`
 $(_doc_external("Draw/PetscDrawFlush"))
 """
 function PetscDrawFlush(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawFlush: no generated method for these argument types")
+    throw(MethodError(PetscDrawFlush, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawFlush(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -1151,7 +1151,7 @@ See also: `PetscDraw`, `PetscDrawPushCurrentPoint()`, `PetscDrawPopCurrentPoint(
 $(_doc_external("Draw/PetscDrawGetBoundingBox"))
 """
 function PetscDrawGetBoundingBox(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawGetBoundingBox: no generated method for these argument types")
+    throw(MethodError(PetscDrawGetBoundingBox, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawGetBoundingBox(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -1199,7 +1199,7 @@ See also: `PetscDraw`, `PetscDrawSetCoordinates()`
 $(_doc_external("Draw/PetscDrawGetCoordinates"))
 """
 function PetscDrawGetCoordinates(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawGetCoordinates: no generated method for these argument types")
+    throw(MethodError(PetscDrawGetCoordinates, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawGetCoordinates(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -1244,7 +1244,7 @@ See also: `PetscDraw`, `PetscDrawPushCurrentPoint()`, `PetscDrawPopCurrentPoint(
 $(_doc_external("Draw/PetscDrawGetCurrentPoint"))
 """
 function PetscDrawGetCurrentPoint(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawGetCurrentPoint: no generated method for these argument types")
+    throw(MethodError(PetscDrawGetCurrentPoint, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawGetCurrentPoint(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -1282,7 +1282,7 @@ See also: `PetscDraw`, `PetscDrawPoint()`, `PetscDrawMarker()`, `PetscDrawSetMar
 $(_doc_external("Draw/PetscDrawGetMarkerType"))
 """
 function PetscDrawGetMarkerType(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawGetMarkerType: no generated method for these argument types")
+    throw(MethodError(PetscDrawGetMarkerType, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawGetMarkerType(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -1323,7 +1323,7 @@ See also: `PetscDraw`, `PetscDrawButton`
 $(_doc_external("Draw/PetscDrawGetMouseButton"))
 """
 function PetscDrawGetMouseButton(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawGetMouseButton: no generated method for these argument types")
+    throw(MethodError(PetscDrawGetMouseButton, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawGetMouseButton(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -1368,7 +1368,7 @@ See also: `PetscDraw`, `PetscDrawSetPause()`, `PetscDrawPause()`
 $(_doc_external("Draw/PetscDrawGetPause"))
 """
 function PetscDrawGetPause(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawGetPause: no generated method for these argument types")
+    throw(MethodError(PetscDrawGetPause, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawGetPause(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -1406,7 +1406,7 @@ See also: `PetscDraw`, `PetscDrawScalePopup()`, `PetscDrawCreate()`
 $(_doc_external("Draw/PetscDrawGetPopup"))
 """
 function PetscDrawGetPopup(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawGetPopup: no generated method for these argument types")
+    throw(MethodError(PetscDrawGetPopup, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawGetPopup(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -1445,7 +1445,7 @@ See also: `PetscDraw`, `PetscDrawRestoreSingleton()`, `PetscViewerGetSingleton()
 $(_doc_external("Draw/PetscDrawGetSingleton"))
 """
 function PetscDrawGetSingleton(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawGetSingleton: no generated method for these argument types")
+    throw(MethodError(PetscDrawGetSingleton, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawGetSingleton(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -1483,7 +1483,7 @@ See also: `PetscDraw`, `PetscDrawSetTitle()`
 $(_doc_external("Draw/PetscDrawGetTitle"))
 """
 function PetscDrawGetTitle(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawGetTitle: no generated method for these argument types")
+    throw(MethodError(PetscDrawGetTitle, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawGetTitle(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -1521,7 +1521,7 @@ See also: `PetscDraw`, `PetscDrawType`, `PetscDrawSetType()`, `PetscDrawCreate()
 $(_doc_external("Draw/PetscDrawGetType"))
 """
 function PetscDrawGetType(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawGetType: no generated method for these argument types")
+    throw(MethodError(PetscDrawGetType, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawGetType(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -1563,7 +1563,7 @@ See also: `PetscDraw`, `PetscDrawSplitViewPort()`, `PetscDrawSetViewPort()`
 $(_doc_external("Draw/PetscDrawGetViewPort"))
 """
 function PetscDrawGetViewPort(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawGetViewPort: no generated method for these argument types")
+    throw(MethodError(PetscDrawGetViewPort, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawGetViewPort(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -1608,7 +1608,7 @@ See also: `PetscDraw`, `PetscDrawResizeWindow()`, `PetscDrawCheckResizedWindow()
 $(_doc_external("Draw/PetscDrawGetWindowSize"))
 """
 function PetscDrawGetWindowSize(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawGetWindowSize: no generated method for these argument types")
+    throw(MethodError(PetscDrawGetWindowSize, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawGetWindowSize(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -1646,7 +1646,7 @@ See also: `PetscDrawHGCreate()`, `PetscDrawHG`, `PetscDrawHGDraw()`, `PetscDrawH
 $(_doc_external("Draw/PetscDrawHGAddValue"))
 """
 function PetscDrawHGAddValue(petsclib::PetscLibType, hist::PetscDrawHG, value::Real)
-    error("PetscDrawHGAddValue: no generated method for these argument types")
+    throw(MethodError(PetscDrawHGAddValue, (petsclib, hist, value)))
 end
 
 @for_petsc function PetscDrawHGAddValue(petsclib::$UnionPetscLib, hist::PetscDrawHG, value::$PetscReal )
@@ -1681,7 +1681,7 @@ See also: `PetscDrawHGCreate()`, `PetscDrawHG`, `PetscDrawHGDraw()`, `PetscDrawH
 $(_doc_external("Draw/PetscDrawHGAddWeightedValue"))
 """
 function PetscDrawHGAddWeightedValue(petsclib::PetscLibType, hist::PetscDrawHG, value::Real, weight::Real)
-    error("PetscDrawHGAddWeightedValue: no generated method for these argument types")
+    throw(MethodError(PetscDrawHGAddWeightedValue, (petsclib, hist, value, weight)))
 end
 
 @for_petsc function PetscDrawHGAddWeightedValue(petsclib::$UnionPetscLib, hist::PetscDrawHG, value::$PetscReal, weight::$PetscReal )
@@ -1715,7 +1715,7 @@ See also: `PetscDrawHG`, `PetscDrawHGCreate()`, `PetscDrawHGAddValue()`, `PetscD
 $(_doc_external("Draw/PetscDrawHGCalcStats"))
 """
 function PetscDrawHGCalcStats(petsclib::PetscLibType, hist::PetscDrawHG, calc::PetscBool)
-    error("PetscDrawHGCalcStats: no generated method for these argument types")
+    throw(MethodError(PetscDrawHGCalcStats, (petsclib, hist, calc)))
 end
 
 @for_petsc function PetscDrawHGCalcStats(petsclib::$UnionPetscLib, hist::PetscDrawHG, calc::PetscBool )
@@ -1754,7 +1754,7 @@ See also: `PetscDrawHGDestroy()`, `PetscDrawHG`, `PetscDrawBarCreate()`, `PetscD
 $(_doc_external("Draw/PetscDrawHGCreate"))
 """
 function PetscDrawHGCreate(petsclib::PetscLibType, draw::PetscDraw, bins::Cint)
-    error("PetscDrawHGCreate: no generated method for these argument types")
+    throw(MethodError(PetscDrawHGCreate, (petsclib, draw, bins)))
 end
 
 @for_petsc function PetscDrawHGCreate(petsclib::$UnionPetscLib, draw::PetscDraw, bins::Cint )
@@ -1789,7 +1789,7 @@ See also: `PetscDrawHGCreate()`, `PetscDrawHG`
 $(_doc_external("Draw/PetscDrawHGDestroy"))
 """
 function PetscDrawHGDestroy(petsclib::PetscLibType, hist::Union{PetscDrawHG, Ref{PetscDrawHG}})
-    error("PetscDrawHGDestroy: no generated method for these argument types")
+    throw(MethodError(PetscDrawHGDestroy, (petsclib, hist)))
 end
 
 @for_petsc function PetscDrawHGDestroy(petsclib::$UnionPetscLib, hist::Union{PetscDrawHG, Ref{PetscDrawHG}} )
@@ -1823,7 +1823,7 @@ See also: `PetscDrawHGCreate()`, `PetscDrawHG`, `PetscDrawHGAddValue()`, `PetscD
 $(_doc_external("Draw/PetscDrawHGDraw"))
 """
 function PetscDrawHGDraw(petsclib::PetscLibType, hist::PetscDrawHG)
-    error("PetscDrawHGDraw: no generated method for these argument types")
+    throw(MethodError(PetscDrawHGDraw, (petsclib, hist)))
 end
 
 @for_petsc function PetscDrawHGDraw(petsclib::$UnionPetscLib, hist::PetscDrawHG )
@@ -1862,7 +1862,7 @@ See also: `PetscDrawHG`, `PetscDrawAxis`, `PetscDrawHGCreate()`, `PetscDrawHGAdd
 $(_doc_external("Draw/PetscDrawHGGetAxis"))
 """
 function PetscDrawHGGetAxis(petsclib::PetscLibType, hist::PetscDrawHG)
-    error("PetscDrawHGGetAxis: no generated method for these argument types")
+    throw(MethodError(PetscDrawHGGetAxis, (petsclib, hist)))
 end
 
 @for_petsc function PetscDrawHGGetAxis(petsclib::$UnionPetscLib, hist::PetscDrawHG )
@@ -1900,7 +1900,7 @@ See also: `PetscDraw`, `PetscDrawHG`, `PetscDrawHGCreate()`, `PetscDrawHGAddValu
 $(_doc_external("Draw/PetscDrawHGGetDraw"))
 """
 function PetscDrawHGGetDraw(petsclib::PetscLibType, hist::PetscDrawHG)
-    error("PetscDrawHGGetDraw: no generated method for these argument types")
+    throw(MethodError(PetscDrawHGGetDraw, (petsclib, hist)))
 end
 
 @for_petsc function PetscDrawHGGetDraw(petsclib::$UnionPetscLib, hist::PetscDrawHG )
@@ -1936,7 +1936,7 @@ See also: `PetscDrawHG`, `PetscDrawHGCreate()`, `PetscDrawHGAddValue()`, `PetscD
 $(_doc_external("Draw/PetscDrawHGIntegerBins"))
 """
 function PetscDrawHGIntegerBins(petsclib::PetscLibType, hist::PetscDrawHG, ints::PetscBool)
-    error("PetscDrawHGIntegerBins: no generated method for these argument types")
+    throw(MethodError(PetscDrawHGIntegerBins, (petsclib, hist, ints)))
 end
 
 @for_petsc function PetscDrawHGIntegerBins(petsclib::$UnionPetscLib, hist::PetscDrawHG, ints::PetscBool )
@@ -1969,7 +1969,7 @@ See also: `PetscDrawHGCreate()`, `PetscDrawHG`, `PetscDrawHGDraw()`, `PetscDrawH
 $(_doc_external("Draw/PetscDrawHGReset"))
 """
 function PetscDrawHGReset(petsclib::PetscLibType, hist::PetscDrawHG)
-    error("PetscDrawHGReset: no generated method for these argument types")
+    throw(MethodError(PetscDrawHGReset, (petsclib, hist)))
 end
 
 @for_petsc function PetscDrawHGReset(petsclib::$UnionPetscLib, hist::PetscDrawHG )
@@ -2002,7 +2002,7 @@ See also: `PetscDrawSave()`, `PetscDrawHGCreate()`, `PetscDrawHGGetDraw()`, `Pet
 $(_doc_external("Draw/PetscDrawHGSave"))
 """
 function PetscDrawHGSave(petsclib::PetscLibType, hg::PetscDrawHG)
-    error("PetscDrawHGSave: no generated method for these argument types")
+    throw(MethodError(PetscDrawHGSave, (petsclib, hg)))
 end
 
 @for_petsc function PetscDrawHGSave(petsclib::$UnionPetscLib, hg::PetscDrawHG )
@@ -2036,7 +2036,7 @@ See also: `PetscDrawHG`, `PetscDrawHGCreate()`, `PetscDrawHGGetDraw()`, `PetscDr
 $(_doc_external("Draw/PetscDrawHGSetColor"))
 """
 function PetscDrawHGSetColor(petsclib::PetscLibType, hist::PetscDrawHG, color::Cint)
-    error("PetscDrawHGSetColor: no generated method for these argument types")
+    throw(MethodError(PetscDrawHGSetColor, (petsclib, hist, color)))
 end
 
 @for_petsc function PetscDrawHGSetColor(petsclib::$UnionPetscLib, hist::PetscDrawHG, color::Cint )
@@ -2075,7 +2075,7 @@ See also: `PetscDrawHG`, `PetscDrawHGCreate()`, `PetscDrawHGGetDraw()`, `PetscDr
 $(_doc_external("Draw/PetscDrawHGSetLimits"))
 """
 function PetscDrawHGSetLimits(petsclib::PetscLibType, hist::PetscDrawHG, x_min::Real, x_max::Real, y_min::Cint, y_max::Cint)
-    error("PetscDrawHGSetLimits: no generated method for these argument types")
+    throw(MethodError(PetscDrawHGSetLimits, (petsclib, hist, x_min, x_max, y_min, y_max)))
 end
 
 @for_petsc function PetscDrawHGSetLimits(petsclib::$UnionPetscLib, hist::PetscDrawHG, x_min::$PetscReal, x_max::$PetscReal, y_min::Cint, y_max::Cint )
@@ -2109,7 +2109,7 @@ See also: `PetscDrawHGCreate()`, `PetscDrawHG`, `PetscDrawHGDraw()`, `PetscDrawH
 $(_doc_external("Draw/PetscDrawHGSetNumberBins"))
 """
 function PetscDrawHGSetNumberBins(petsclib::PetscLibType, hist::PetscDrawHG, bins::Cint)
-    error("PetscDrawHGSetNumberBins: no generated method for these argument types")
+    throw(MethodError(PetscDrawHGSetNumberBins, (petsclib, hist, bins)))
 end
 
 @for_petsc function PetscDrawHGSetNumberBins(petsclib::$UnionPetscLib, hist::PetscDrawHG, bins::Cint )
@@ -2143,7 +2143,7 @@ See also: `PetscDrawHG`, `PetscViewer`, `PetscDrawHGCreate()`, `PetscDrawHGGetDr
 $(_doc_external("Draw/PetscDrawHGView"))
 """
 function PetscDrawHGView(petsclib::PetscLibType, hist::PetscDrawHG, viewer::PetscViewer)
-    error("PetscDrawHGView: no generated method for these argument types")
+    throw(MethodError(PetscDrawHGView, (petsclib, hist, viewer)))
 end
 
 @for_petsc function PetscDrawHGView(petsclib::$UnionPetscLib, hist::PetscDrawHG, viewer::PetscViewer )
@@ -2183,7 +2183,7 @@ See also: `PetscDraw`
 $(_doc_external("Draw/PetscDrawIndicatorFunction"))
 """
 function PetscDrawIndicatorFunction(petsclib::PetscLibType, draw::PetscDraw, xmin::Real, xmax::Real, ymin::Real, ymax::Real, c::Cint, indicator::external, ctx::Ptr{Cvoid})
-    error("PetscDrawIndicatorFunction: no generated method for these argument types")
+    throw(MethodError(PetscDrawIndicatorFunction, (petsclib, draw, xmin, xmax, ymin, ymax, c, indicator, ctx)))
 end
 
 @for_petsc function PetscDrawIndicatorFunction(petsclib::$UnionPetscLib, draw::PetscDraw, xmin::$PetscReal, xmax::$PetscReal, ymin::$PetscReal, ymax::$PetscReal, c::Cint, indicator::external, ctx::Ptr{Cvoid} )
@@ -2213,7 +2213,7 @@ See also: `PetscDraw`, `PetscInitialize()`
 $(_doc_external("Draw/PetscDrawInitializePackage"))
 """
 function PetscDrawInitializePackage(petsclib::PetscLibType)
-    error("PetscDrawInitializePackage: no generated method for these argument types")
+    throw(MethodError(PetscDrawInitializePackage, (petsclib, )))
 end
 
 @for_petsc function PetscDrawInitializePackage(petsclib::$UnionPetscLib)
@@ -2248,7 +2248,7 @@ See also: `PetscDraw`, `PETSC_DRAW_NULL`, `PetscDrawOpenX()`
 $(_doc_external("Draw/PetscDrawIsNull"))
 """
 function PetscDrawIsNull(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawIsNull: no generated method for these argument types")
+    throw(MethodError(PetscDrawIsNull, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawIsNull(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -2286,7 +2286,7 @@ See also: `PetscDrawLG`, `PetscDrawLGCreate()`, `PetscDrawLGAddPoints()`, `Petsc
 $(_doc_external("Draw/PetscDrawLGAddCommonPoint"))
 """
 function PetscDrawLGAddCommonPoint(petsclib::PetscLibType, lg::PetscDrawLG, x::Real, y::AbstractVector{<:Number})
-    error("PetscDrawLGAddCommonPoint: no generated method for these argument types")
+    throw(MethodError(PetscDrawLGAddCommonPoint, (petsclib, lg, x, y)))
 end
 
 @for_petsc function PetscDrawLGAddCommonPoint(petsclib::$UnionPetscLib, lg::PetscDrawLG, x::$PetscReal, y::Vector{$PetscReal} )
@@ -2322,7 +2322,7 @@ See also: `PetscDrawLG`, `PetscDrawLGCreate()`, `PetscDrawLGAddPoints()`, `Petsc
 $(_doc_external("Draw/PetscDrawLGAddPoint"))
 """
 function PetscDrawLGAddPoint(petsclib::PetscLibType, lg::PetscDrawLG, x::AbstractVector{<:Number}, y::AbstractVector{<:Number})
-    error("PetscDrawLGAddPoint: no generated method for these argument types")
+    throw(MethodError(PetscDrawLGAddPoint, (petsclib, lg, x, y)))
 end
 
 @for_petsc function PetscDrawLGAddPoint(petsclib::$UnionPetscLib, lg::PetscDrawLG, x::Vector{$PetscReal}, y::Vector{$PetscReal} )
@@ -2359,7 +2359,7 @@ See also: `PetscDrawLG`, `PetscDrawLGCreate()`, `PetscDrawLGAddPoint()`, `PetscD
 $(_doc_external("Draw/PetscDrawLGAddPoints"))
 """
 function PetscDrawLGAddPoints(petsclib::PetscLibType, lg::PetscDrawLG, n::Integer, xx::Union{Ptr, AbstractArray{<:Number}}, yy::Union{Ptr, AbstractArray{<:Number}})
-    error("PetscDrawLGAddPoints: no generated method for these argument types")
+    throw(MethodError(PetscDrawLGAddPoints, (petsclib, lg, n, xx, yy)))
 end
 
 @for_petsc function PetscDrawLGAddPoints(petsclib::$UnionPetscLib, lg::PetscDrawLG, n::$PetscInt, xx::Union{Ptr, AbstractArray{$PetscReal}}, yy::Union{Ptr, AbstractArray{$PetscReal}} )
@@ -2400,7 +2400,7 @@ See also: `PetscDrawLGDestroy()`, `PetscDrawLGAddPoint()`, `PetscDrawLGAddCommon
 $(_doc_external("Draw/PetscDrawLGCreate"))
 """
 function PetscDrawLGCreate(petsclib::PetscLibType, draw::PetscDraw, dim::Integer)
-    error("PetscDrawLGCreate: no generated method for these argument types")
+    throw(MethodError(PetscDrawLGCreate, (petsclib, draw, dim)))
 end
 
 @for_petsc function PetscDrawLGCreate(petsclib::$UnionPetscLib, draw::PetscDraw, dim::$PetscInt )
@@ -2435,7 +2435,7 @@ See also: `PetscDrawLG`, `PetscDrawLGCreate()`
 $(_doc_external("Draw/PetscDrawLGDestroy"))
 """
 function PetscDrawLGDestroy(petsclib::PetscLibType, lg::Union{PetscDrawLG, Ref{PetscDrawLG}})
-    error("PetscDrawLGDestroy: no generated method for these argument types")
+    throw(MethodError(PetscDrawLGDestroy, (petsclib, lg)))
 end
 
 @for_petsc function PetscDrawLGDestroy(petsclib::$UnionPetscLib, lg::Union{PetscDrawLG, Ref{PetscDrawLG}} )
@@ -2469,7 +2469,7 @@ See also: `PetscDrawLG`, `PetscDrawSPDraw()`, `PetscDrawLGSPDraw()`, `PetscDrawL
 $(_doc_external("Draw/PetscDrawLGDraw"))
 """
 function PetscDrawLGDraw(petsclib::PetscLibType, lg::PetscDrawLG)
-    error("PetscDrawLGDraw: no generated method for these argument types")
+    throw(MethodError(PetscDrawLGDraw, (petsclib, lg)))
 end
 
 @for_petsc function PetscDrawLGDraw(petsclib::$UnionPetscLib, lg::PetscDrawLG )
@@ -2508,7 +2508,7 @@ See also: `PetscDrawLGCreate()`, `PetscDrawAxis`, `PetscDrawLG`
 $(_doc_external("Draw/PetscDrawLGGetAxis"))
 """
 function PetscDrawLGGetAxis(petsclib::PetscLibType, lg::PetscDrawLG)
-    error("PetscDrawLGGetAxis: no generated method for these argument types")
+    throw(MethodError(PetscDrawLGGetAxis, (petsclib, lg)))
 end
 
 @for_petsc function PetscDrawLGGetAxis(petsclib::$UnionPetscLib, lg::PetscDrawLG )
@@ -2549,7 +2549,7 @@ See also: `PetscDrawLGC`, `PetscDrawLGCreate()`, `PetscDrawLGGetDimension()`
 $(_doc_external("Draw/PetscDrawLGGetData"))
 """
 function PetscDrawLGGetData(petsclib::PetscLibType, lg::PetscDrawLG)
-    error("PetscDrawLGGetData: no generated method for these argument types")
+    throw(MethodError(PetscDrawLGGetData, (petsclib, lg)))
 end
 
 @for_petsc function PetscDrawLGGetData(petsclib::$UnionPetscLib, lg::PetscDrawLG )
@@ -2593,7 +2593,7 @@ See also: `PetscDrawLGC`, `PetscDrawLGCreate()`, `PetscDrawLGSetDimension()`
 $(_doc_external("Draw/PetscDrawLGGetDimension"))
 """
 function PetscDrawLGGetDimension(petsclib::PetscLibType, lg::PetscDrawLG)
-    error("PetscDrawLGGetDimension: no generated method for these argument types")
+    throw(MethodError(PetscDrawLGGetDimension, (petsclib, lg)))
 end
 
 @for_petsc function PetscDrawLGGetDimension(petsclib::$UnionPetscLib, lg::PetscDrawLG )
@@ -2631,7 +2631,7 @@ See also: `PetscDrawLGCreate()`, `PetscDraw`, `PetscDrawLG`
 $(_doc_external("Draw/PetscDrawLGGetDraw"))
 """
 function PetscDrawLGGetDraw(petsclib::PetscLibType, lg::PetscDrawLG)
-    error("PetscDrawLGGetDraw: no generated method for these argument types")
+    throw(MethodError(PetscDrawLGGetDraw, (petsclib, lg)))
 end
 
 @for_petsc function PetscDrawLGGetDraw(petsclib::$UnionPetscLib, lg::PetscDrawLG )
@@ -2666,7 +2666,7 @@ See also: `PetscDrawLG`, `PetscDrawLGCreate()`
 $(_doc_external("Draw/PetscDrawLGReset"))
 """
 function PetscDrawLGReset(petsclib::PetscLibType, lg::PetscDrawLG)
-    error("PetscDrawLGReset: no generated method for these argument types")
+    throw(MethodError(PetscDrawLGReset, (petsclib, lg)))
 end
 
 @for_petsc function PetscDrawLGReset(petsclib::$UnionPetscLib, lg::PetscDrawLG )
@@ -2700,7 +2700,7 @@ See also: `PetscDrawLGDraw()`, `PetscDrawSPDraw()`
 $(_doc_external("Draw/PetscDrawLGSPDraw"))
 """
 function PetscDrawLGSPDraw(petsclib::PetscLibType, lg::PetscDrawLG, spin::PetscDrawSP)
-    error("PetscDrawLGSPDraw: no generated method for these argument types")
+    throw(MethodError(PetscDrawLGSPDraw, (petsclib, lg, spin)))
 end
 
 @for_petsc function PetscDrawLGSPDraw(petsclib::$UnionPetscLib, lg::PetscDrawLG, spin::PetscDrawSP )
@@ -2733,7 +2733,7 @@ See also: `PetscDrawLG`, `PetscDrawSave()`, `PetscDrawLGCreate()`, `PetscDrawLGG
 $(_doc_external("Draw/PetscDrawLGSave"))
 """
 function PetscDrawLGSave(petsclib::PetscLibType, lg::PetscDrawLG)
-    error("PetscDrawLGSave: no generated method for these argument types")
+    throw(MethodError(PetscDrawLGSave, (petsclib, lg)))
 end
 
 @for_petsc function PetscDrawLGSave(petsclib::$UnionPetscLib, lg::PetscDrawLG )
@@ -2767,7 +2767,7 @@ See also: `PetscDrawLG`, `PetscDrawLGCreate()`, `PetscDrawLGSetDimension()`, `Pe
 $(_doc_external("Draw/PetscDrawLGSetColors"))
 """
 function PetscDrawLGSetColors(petsclib::PetscLibType, lg::PetscDrawLG, colors::Vector{Cint})
-    error("PetscDrawLGSetColors: no generated method for these argument types")
+    throw(MethodError(PetscDrawLGSetColors, (petsclib, lg, colors)))
 end
 
 @for_petsc function PetscDrawLGSetColors(petsclib::$UnionPetscLib, lg::PetscDrawLG, colors::Vector{Cint} )
@@ -2801,7 +2801,7 @@ See also: `PetscDrawLGCreate()`, `PetscDrawLGGetDimension()`
 $(_doc_external("Draw/PetscDrawLGSetDimension"))
 """
 function PetscDrawLGSetDimension(petsclib::PetscLibType, lg::PetscDrawLG, dim::Integer)
-    error("PetscDrawLGSetDimension: no generated method for these argument types")
+    throw(MethodError(PetscDrawLGSetDimension, (petsclib, lg, dim)))
 end
 
 @for_petsc function PetscDrawLGSetDimension(petsclib::$UnionPetscLib, lg::PetscDrawLG, dim::$PetscInt )
@@ -2837,7 +2837,7 @@ See also: `PetscDrawLG`, `PetscDrawLGDestroy()`, `PetscDrawLGCreate()`
 $(_doc_external("Draw/PetscDrawLGSetFromOptions"))
 """
 function PetscDrawLGSetFromOptions(petsclib::PetscLibType, lg::PetscDrawLG)
-    error("PetscDrawLGSetFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscDrawLGSetFromOptions, (petsclib, lg)))
 end
 
 @for_petsc function PetscDrawLGSetFromOptions(petsclib::$UnionPetscLib, lg::PetscDrawLG )
@@ -2871,7 +2871,7 @@ See also: `PetscDrawLGGetAxis()`, `PetscDrawAxis`, `PetscDrawAxisSetColors()`, `
 $(_doc_external("Draw/PetscDrawLGSetLegend"))
 """
 function PetscDrawLGSetLegend(petsclib::PetscLibType, lg::PetscDrawLG, names::String)
-    error("PetscDrawLGSetLegend: no generated method for these argument types")
+    throw(MethodError(PetscDrawLGSetLegend, (petsclib, lg, names)))
 end
 
 @for_petsc function PetscDrawLGSetLegend(petsclib::$UnionPetscLib, lg::PetscDrawLG, names::String )
@@ -2911,7 +2911,7 @@ See also: `PetscDrawLGCreate()`, `PetscDrawLG`, `PetscDrawAxis`
 $(_doc_external("Draw/PetscDrawLGSetLimits"))
 """
 function PetscDrawLGSetLimits(petsclib::PetscLibType, lg::PetscDrawLG, x_min::Real, x_max::Real, y_min::Real, y_max::Real)
-    error("PetscDrawLGSetLimits: no generated method for these argument types")
+    throw(MethodError(PetscDrawLGSetLimits, (petsclib, lg, x_min, x_max, y_min, y_max)))
 end
 
 @for_petsc function PetscDrawLGSetLimits(petsclib::$UnionPetscLib, lg::PetscDrawLG, x_min::$PetscReal, x_max::$PetscReal, y_min::$PetscReal, y_max::$PetscReal )
@@ -2946,7 +2946,7 @@ See also: `PetscDrawLG`, `PetscDrawLGSetFromOptions()`, `PetscDrawLGCreate()`
 $(_doc_external("Draw/PetscDrawLGSetOptionsPrefix"))
 """
 function PetscDrawLGSetOptionsPrefix(petsclib::PetscLibType, lg::PetscDrawLG, prefix::String)
-    error("PetscDrawLGSetOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(PetscDrawLGSetOptionsPrefix, (petsclib, lg, prefix)))
 end
 
 @for_petsc function PetscDrawLGSetOptionsPrefix(petsclib::$UnionPetscLib, lg::PetscDrawLG, prefix::String )
@@ -2983,7 +2983,7 @@ See also: `PetscDrawLG`, `PetscDrawLGCreate()`
 $(_doc_external("Draw/PetscDrawLGSetUseMarkers"))
 """
 function PetscDrawLGSetUseMarkers(petsclib::PetscLibType, lg::PetscDrawLG, flg::PetscBool)
-    error("PetscDrawLGSetUseMarkers: no generated method for these argument types")
+    throw(MethodError(PetscDrawLGSetUseMarkers, (petsclib, lg, flg)))
 end
 
 @for_petsc function PetscDrawLGSetUseMarkers(petsclib::$UnionPetscLib, lg::PetscDrawLG, flg::PetscBool )
@@ -3017,7 +3017,7 @@ See also: `PetscDrawLG`, `PetscDrawLGCreate()`
 $(_doc_external("Draw/PetscDrawLGView"))
 """
 function PetscDrawLGView(petsclib::PetscLibType, lg::PetscDrawLG, viewer::PetscViewer)
-    error("PetscDrawLGView: no generated method for these argument types")
+    throw(MethodError(PetscDrawLGView, (petsclib, lg, viewer)))
 end
 
 @for_petsc function PetscDrawLGView(petsclib::$UnionPetscLib, lg::PetscDrawLG, viewer::PetscViewer )
@@ -3056,7 +3056,7 @@ See also: `PetscDraw`, `PetscDrawArrow()`, `PetscDrawLineSetWidth()`, `PetscDraw
 $(_doc_external("Draw/PetscDrawLine"))
 """
 function PetscDrawLine(petsclib::PetscLibType, draw::PetscDraw, xl::Real, yl::Real, xr::Real, yr::Real, cl::Cint)
-    error("PetscDrawLine: no generated method for these argument types")
+    throw(MethodError(PetscDrawLine, (petsclib, draw, xl, yl, xr, yr, cl)))
 end
 
 @for_petsc function PetscDrawLine(petsclib::$UnionPetscLib, draw::PetscDraw, xl::$PetscReal, yl::$PetscReal, xr::$PetscReal, yr::$PetscReal, cl::Cint )
@@ -3094,7 +3094,7 @@ See also: `PetscDraw`, `PetscDrawLineSetWidth()`, `PetscDrawLine()`, `PetscDrawA
 $(_doc_external("Draw/PetscDrawLineGetWidth"))
 """
 function PetscDrawLineGetWidth(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawLineGetWidth: no generated method for these argument types")
+    throw(MethodError(PetscDrawLineGetWidth, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawLineGetWidth(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -3132,7 +3132,7 @@ See also: `PetscDraw`, `PetscDrawLineGetWidth()`, `PetscDrawLine()`, `PetscDrawA
 $(_doc_external("Draw/PetscDrawLineSetWidth"))
 """
 function PetscDrawLineSetWidth(petsclib::PetscLibType, draw::PetscDraw, width::Real)
-    error("PetscDrawLineSetWidth: no generated method for these argument types")
+    throw(MethodError(PetscDrawLineSetWidth, (petsclib, draw, width)))
 end
 
 @for_petsc function PetscDrawLineSetWidth(petsclib::$UnionPetscLib, draw::PetscDraw, width::$PetscReal )
@@ -3168,7 +3168,7 @@ See also: `PetscDraw`, `PetscDrawPoint()`, `PetscDrawString()`, `PetscDrawSetMar
 $(_doc_external("Draw/PetscDrawMarker"))
 """
 function PetscDrawMarker(petsclib::PetscLibType, draw::PetscDraw, xl::Real, yl::Real, cl::Cint)
-    error("PetscDrawMarker: no generated method for these argument types")
+    throw(MethodError(PetscDrawMarker, (petsclib, draw, xl, yl, cl)))
 end
 
 @for_petsc function PetscDrawMarker(petsclib::$UnionPetscLib, draw::PetscDraw, xl::$PetscReal, yl::$PetscReal, cl::Cint )
@@ -3207,7 +3207,7 @@ See also: `PetscDraw`, `PETSC_DRAW_IMAGE`, `PETSC_DRAW_X`, `PetscDrawSetSave()`,
 $(_doc_external("Draw/PetscDrawOpenImage"))
 """
 function PetscDrawOpenImage(petsclib::PetscLibType, comm::MPI_Comm, filename::String, w::Cint, h::Cint)
-    error("PetscDrawOpenImage: no generated method for these argument types")
+    throw(MethodError(PetscDrawOpenImage, (petsclib, comm, filename, w, h)))
 end
 
 @for_petsc function PetscDrawOpenImage(petsclib::$UnionPetscLib, comm::MPI_Comm, filename::String, w::Cint, h::Cint )
@@ -3244,7 +3244,7 @@ See also: `PetscDraw`, `PetscDrawIsNull()`, `PETSC_DRAW_NULL`, `PetscDrawOpenX()
 $(_doc_external("Draw/PetscDrawOpenNull"))
 """
 function PetscDrawOpenNull(petsclib::PetscLibType, comm::MPI_Comm)
-    error("PetscDrawOpenNull: no generated method for these argument types")
+    throw(MethodError(PetscDrawOpenNull, (petsclib, comm)))
 end
 
 @for_petsc function PetscDrawOpenNull(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -3305,7 +3305,7 @@ See also: `PetscDrawFlush()`, `PetscDrawDestroy()`, `PetscDrawCreate()`
 $(_doc_external("Draw/PetscDrawOpenX"))
 """
 function PetscDrawOpenX(petsclib::PetscLibType, comm::MPI_Comm, display::String, title::String, x::Cint, y::Cint, w::Cint, h::Cint)
-    error("PetscDrawOpenX: no generated method for these argument types")
+    throw(MethodError(PetscDrawOpenX, (petsclib, comm, display, title, x, y, w, h)))
 end
 
 @for_petsc function PetscDrawOpenX(petsclib::$UnionPetscLib, comm::MPI_Comm, display::String, title::String, x::Cint, y::Cint, w::Cint, h::Cint )
@@ -3341,7 +3341,7 @@ See also: `PetscDraw`, `PetscDrawSetPause()`, `PetscDrawGetPause()`
 $(_doc_external("Draw/PetscDrawPause"))
 """
 function PetscDrawPause(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawPause: no generated method for these argument types")
+    throw(MethodError(PetscDrawPause, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawPause(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -3380,7 +3380,7 @@ See also: `PetscDraw`
 $(_doc_external("Draw/PetscDrawPixelToCoordinate"))
 """
 function PetscDrawPixelToCoordinate(petsclib::PetscLibType, draw::PetscDraw, i::Cint, j::Cint)
-    error("PetscDrawPixelToCoordinate: no generated method for these argument types")
+    throw(MethodError(PetscDrawPixelToCoordinate, (petsclib, draw, i, j)))
 end
 
 @for_petsc function PetscDrawPixelToCoordinate(petsclib::$UnionPetscLib, draw::PetscDraw, i::Cint, j::Cint )
@@ -3421,7 +3421,7 @@ See also: `PetscDraw`, `PetscDrawPointPixel()`, `PetscDrawPointSetSize()`, `Pets
 $(_doc_external("Draw/PetscDrawPoint"))
 """
 function PetscDrawPoint(petsclib::PetscLibType, draw::PetscDraw, xl::Real, yl::Real, cl::Cint)
-    error("PetscDrawPoint: no generated method for these argument types")
+    throw(MethodError(PetscDrawPoint, (petsclib, draw, xl, yl, cl)))
 end
 
 @for_petsc function PetscDrawPoint(petsclib::$UnionPetscLib, draw::PetscDraw, xl::$PetscReal, yl::$PetscReal, cl::Cint )
@@ -3457,7 +3457,7 @@ See also: `PetscDraw`, `PetscDrawPoint()`, `PetscDrawPointSetSize()`
 $(_doc_external("Draw/PetscDrawPointPixel"))
 """
 function PetscDrawPointPixel(petsclib::PetscLibType, draw::PetscDraw, x::Cint, y::Cint, c::Cint)
-    error("PetscDrawPointPixel: no generated method for these argument types")
+    throw(MethodError(PetscDrawPointPixel, (petsclib, draw, x, y, c)))
 end
 
 @for_petsc function PetscDrawPointPixel(petsclib::$UnionPetscLib, draw::PetscDraw, x::Cint, y::Cint, c::Cint )
@@ -3493,7 +3493,7 @@ See also: `PetscDraw`, `PetscDrawPoint()`, `PetscDrawMarker()`
 $(_doc_external("Draw/PetscDrawPointSetSize"))
 """
 function PetscDrawPointSetSize(petsclib::PetscLibType, draw::PetscDraw, width::Real)
-    error("PetscDrawPointSetSize: no generated method for these argument types")
+    throw(MethodError(PetscDrawPointSetSize, (petsclib, draw, width)))
 end
 
 @for_petsc function PetscDrawPointSetSize(petsclib::$UnionPetscLib, draw::PetscDraw, width::$PetscReal )
@@ -3526,7 +3526,7 @@ See also: `PetscDraw`, `PetscDrawPushCurrentPoint()`, `PetscDrawSetCurrentPoint(
 $(_doc_external("Draw/PetscDrawPopCurrentPoint"))
 """
 function PetscDrawPopCurrentPoint(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawPopCurrentPoint: no generated method for these argument types")
+    throw(MethodError(PetscDrawPopCurrentPoint, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawPopCurrentPoint(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -3561,7 +3561,7 @@ See also: `PetscDraw`, `PetscDrawPopCurrentPoint()`, `PetscDrawGetCurrentPoint()
 $(_doc_external("Draw/PetscDrawPushCurrentPoint"))
 """
 function PetscDrawPushCurrentPoint(petsclib::PetscLibType, draw::PetscDraw, x::Real, y::Real)
-    error("PetscDrawPushCurrentPoint: no generated method for these argument types")
+    throw(MethodError(PetscDrawPushCurrentPoint, (petsclib, draw, x, y)))
 end
 
 @for_petsc function PetscDrawPushCurrentPoint(petsclib::$UnionPetscLib, draw::PetscDraw, x::$PetscReal, y::$PetscReal )
@@ -3603,7 +3603,7 @@ See also: `PetscDraw`, `PetscDrawLine()`, `PetscDrawTriangle()`, `PetscDrawEllip
 $(_doc_external("Draw/PetscDrawRectangle"))
 """
 function PetscDrawRectangle(petsclib::PetscLibType, draw::PetscDraw, xl::Real, yl::Real, xr::Real, yr::Real, c1::Cint, c2::Cint, c3::Cint, c4::Cint)
-    error("PetscDrawRectangle: no generated method for these argument types")
+    throw(MethodError(PetscDrawRectangle, (petsclib, draw, xl, yl, xr, yr, c1, c2, c3, c4)))
 end
 
 @for_petsc function PetscDrawRectangle(petsclib::$UnionPetscLib, draw::PetscDraw, xl::$PetscReal, yl::$PetscReal, xr::$PetscReal, yr::$PetscReal, c1::Cint, c2::Cint, c3::Cint, c4::Cint )
@@ -3637,7 +3637,7 @@ See also: `PetscDraw`, `PetscDrawRegisterAll()`, `PetscDrawRegisterDestroy()`, `
 $(_doc_external("Draw/PetscDrawRegister"))
 """
 function PetscDrawRegister(petsclib::PetscLibType, sname::String, fnc::external)
-    error("PetscDrawRegister: no generated method for these argument types")
+    throw(MethodError(PetscDrawRegister, (petsclib, sname, fnc)))
 end
 
 @for_petsc function PetscDrawRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
@@ -3672,7 +3672,7 @@ See also: `PetscDraw`, `PetscDrawCheckResizedWindow()`
 $(_doc_external("Draw/PetscDrawResizeWindow"))
 """
 function PetscDrawResizeWindow(petsclib::PetscLibType, draw::PetscDraw, w::Cint, h::Cint)
-    error("PetscDrawResizeWindow: no generated method for these argument types")
+    throw(MethodError(PetscDrawResizeWindow, (petsclib, draw, w, h)))
 end
 
 @for_petsc function PetscDrawResizeWindow(petsclib::$UnionPetscLib, draw::PetscDraw, w::Cint, h::Cint )
@@ -3707,7 +3707,7 @@ See also: `PetscDraw`, `PetscDrawGetSingleton()`, `PetscViewerGetSingleton()`, `
 $(_doc_external("Draw/PetscDrawRestoreSingleton"))
 """
 function PetscDrawRestoreSingleton(petsclib::PetscLibType, draw::PetscDraw, sdraw::PetscDraw)
-    error("PetscDrawRestoreSingleton: no generated method for these argument types")
+    throw(MethodError(PetscDrawRestoreSingleton, (petsclib, draw, sdraw)))
 end
 
 @for_petsc function PetscDrawRestoreSingleton(petsclib::$UnionPetscLib, draw::PetscDraw, sdraw::PetscDraw )
@@ -3742,7 +3742,7 @@ See also: `PetscDrawSPAddPoints()`, `PetscDrawSP`, `PetscDrawSPCreate()`, `Petsc
 $(_doc_external("Draw/PetscDrawSPAddPoint"))
 """
 function PetscDrawSPAddPoint(petsclib::PetscLibType, sp::PetscDrawSP)
-    error("PetscDrawSPAddPoint: no generated method for these argument types")
+    throw(MethodError(PetscDrawSPAddPoint, (petsclib, sp)))
 end
 
 @for_petsc function PetscDrawSPAddPoint(petsclib::$UnionPetscLib, sp::PetscDrawSP )
@@ -3782,7 +3782,7 @@ See also: `PetscDrawSPAddPoints()`, `PetscDrawSP`, `PetscDrawSPCreate()`, `Petsc
 $(_doc_external("Draw/PetscDrawSPAddPointColorized"))
 """
 function PetscDrawSPAddPointColorized(petsclib::PetscLibType, sp::PetscDrawSP)
-    error("PetscDrawSPAddPointColorized: no generated method for these argument types")
+    throw(MethodError(PetscDrawSPAddPointColorized, (petsclib, sp)))
 end
 
 @for_petsc function PetscDrawSPAddPointColorized(petsclib::$UnionPetscLib, sp::PetscDrawSP )
@@ -3824,7 +3824,7 @@ See also: `PetscDrawSPAddPoint()`, `PetscDrawSP`, `PetscDrawSPCreate()`, `PetscD
 $(_doc_external("Draw/PetscDrawSPAddPoints"))
 """
 function PetscDrawSPAddPoints(petsclib::PetscLibType, sp::PetscDrawSP, n::Cint, xx::Union{Ptr, AbstractArray{<:Number}}, yy::Union{Ptr, AbstractArray{<:Number}})
-    error("PetscDrawSPAddPoints: no generated method for these argument types")
+    throw(MethodError(PetscDrawSPAddPoints, (petsclib, sp, n, xx, yy)))
 end
 
 @for_petsc function PetscDrawSPAddPoints(petsclib::$UnionPetscLib, sp::PetscDrawSP, n::Cint, xx::Union{Ptr, AbstractArray{$PetscReal}}, yy::Union{Ptr, AbstractArray{$PetscReal}} )
@@ -3864,7 +3864,7 @@ See also: `PetscDrawLGCreate()`, `PetscDrawLG`, `PetscDrawBarCreate()`, `PetscDr
 $(_doc_external("Draw/PetscDrawSPCreate"))
 """
 function PetscDrawSPCreate(petsclib::PetscLibType, draw::PetscDraw, dim::Cint)
-    error("PetscDrawSPCreate: no generated method for these argument types")
+    throw(MethodError(PetscDrawSPCreate, (petsclib, draw, dim)))
 end
 
 @for_petsc function PetscDrawSPCreate(petsclib::$UnionPetscLib, draw::PetscDraw, dim::Cint )
@@ -3899,7 +3899,7 @@ See also: `PetscDrawSPCreate()`, `PetscDrawSP`, `PetscDrawSPReset()`
 $(_doc_external("Draw/PetscDrawSPDestroy"))
 """
 function PetscDrawSPDestroy(petsclib::PetscLibType, sp::Union{PetscDrawSP, Ref{PetscDrawSP}})
-    error("PetscDrawSPDestroy: no generated method for these argument types")
+    throw(MethodError(PetscDrawSPDestroy, (petsclib, sp)))
 end
 
 @for_petsc function PetscDrawSPDestroy(petsclib::$UnionPetscLib, sp::Union{PetscDrawSP, Ref{PetscDrawSP}} )
@@ -3934,7 +3934,7 @@ See also: `PetscDrawLGDraw()`, `PetscDrawLGSPDraw()`, `PetscDrawSP`, `PetscDrawS
 $(_doc_external("Draw/PetscDrawSPDraw"))
 """
 function PetscDrawSPDraw(petsclib::PetscLibType, sp::PetscDrawSP, clear::PetscBool)
-    error("PetscDrawSPDraw: no generated method for these argument types")
+    throw(MethodError(PetscDrawSPDraw, (petsclib, sp, clear)))
 end
 
 @for_petsc function PetscDrawSPDraw(petsclib::$UnionPetscLib, sp::PetscDrawSP, clear::PetscBool )
@@ -3970,7 +3970,7 @@ See also: `PetscDrawSP`, `PetscDrawSPCreate()`, `PetscDrawSPDraw()`, `PetscDrawS
 $(_doc_external("Draw/PetscDrawSPGetAxis"))
 """
 function PetscDrawSPGetAxis(petsclib::PetscLibType, sp::PetscDrawSP)
-    error("PetscDrawSPGetAxis: no generated method for these argument types")
+    throw(MethodError(PetscDrawSPGetAxis, (petsclib, sp)))
 end
 
 @for_petsc function PetscDrawSPGetAxis(petsclib::$UnionPetscLib, sp::PetscDrawSP )
@@ -4008,7 +4008,7 @@ See also: `PetscDrawSP`, `PetscDrawSPCreate()`, `PetscDrawSPAddPoint()`, `PetscD
 $(_doc_external("Draw/PetscDrawSPGetDimension"))
 """
 function PetscDrawSPGetDimension(petsclib::PetscLibType, sp::PetscDrawSP)
-    error("PetscDrawSPGetDimension: no generated method for these argument types")
+    throw(MethodError(PetscDrawSPGetDimension, (petsclib, sp)))
 end
 
 @for_petsc function PetscDrawSPGetDimension(petsclib::$UnionPetscLib, sp::PetscDrawSP )
@@ -4046,7 +4046,7 @@ See also: `PetscDrawSP`, `PetscDrawSPCreate()`, `PetscDrawSPDraw()`, `PetscDraw`
 $(_doc_external("Draw/PetscDrawSPGetDraw"))
 """
 function PetscDrawSPGetDraw(petsclib::PetscLibType, sp::PetscDrawSP)
-    error("PetscDrawSPGetDraw: no generated method for these argument types")
+    throw(MethodError(PetscDrawSPGetDraw, (petsclib, sp)))
 end
 
 @for_petsc function PetscDrawSPGetDraw(petsclib::$UnionPetscLib, sp::PetscDrawSP )
@@ -4081,7 +4081,7 @@ See also: `PetscDrawSP`, `PetscDrawSPCreate()`, `PetscDrawSPAddPoint()`, `PetscD
 $(_doc_external("Draw/PetscDrawSPReset"))
 """
 function PetscDrawSPReset(petsclib::PetscLibType, sp::PetscDrawSP)
-    error("PetscDrawSPReset: no generated method for these argument types")
+    throw(MethodError(PetscDrawSPReset, (petsclib, sp)))
 end
 
 @for_petsc function PetscDrawSPReset(petsclib::$UnionPetscLib, sp::PetscDrawSP )
@@ -4114,7 +4114,7 @@ See also: `PetscDrawSPCreate()`, `PetscDrawSPGetDraw()`, `PetscDrawSetSave()`, `
 $(_doc_external("Draw/PetscDrawSPSave"))
 """
 function PetscDrawSPSave(petsclib::PetscLibType, sp::PetscDrawSP)
-    error("PetscDrawSPSave: no generated method for these argument types")
+    throw(MethodError(PetscDrawSPSave, (petsclib, sp)))
 end
 
 @for_petsc function PetscDrawSPSave(petsclib::$UnionPetscLib, sp::PetscDrawSP )
@@ -4148,7 +4148,7 @@ See also: `PetscDrawSP`, `PetscDrawSPCreate()`, `PetscDrawSPAddPoint()`, `PetscD
 $(_doc_external("Draw/PetscDrawSPSetDimension"))
 """
 function PetscDrawSPSetDimension(petsclib::PetscLibType, sp::PetscDrawSP, dim::Cint)
-    error("PetscDrawSPSetDimension: no generated method for these argument types")
+    throw(MethodError(PetscDrawSPSetDimension, (petsclib, sp, dim)))
 end
 
 @for_petsc function PetscDrawSPSetDimension(petsclib::$UnionPetscLib, sp::PetscDrawSP, dim::Cint )
@@ -4185,7 +4185,7 @@ See also: `PetscDrawSP`, `PetscDrawAxis`, `PetscDrawSPCreate()`, `PetscDrawSPDra
 $(_doc_external("Draw/PetscDrawSPSetLimits"))
 """
 function PetscDrawSPSetLimits(petsclib::PetscLibType, sp::PetscDrawSP, x_min::Real, x_max::Real, y_min::Real, y_max::Real)
-    error("PetscDrawSPSetLimits: no generated method for these argument types")
+    throw(MethodError(PetscDrawSPSetLimits, (petsclib, sp, x_min, x_max, y_min, y_max)))
 end
 
 @for_petsc function PetscDrawSPSetLimits(petsclib::$UnionPetscLib, sp::PetscDrawSP, x_min::$PetscReal, x_max::$PetscReal, y_min::$PetscReal, y_max::$PetscReal )
@@ -4218,7 +4218,7 @@ See also: `PetscDraw`, `PetscDrawSetSave()`
 $(_doc_external("Draw/PetscDrawSave"))
 """
 function PetscDrawSave(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawSave: no generated method for these argument types")
+    throw(MethodError(PetscDrawSave, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawSave(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -4251,7 +4251,7 @@ See also: `PetscDraw`, `PetscDrawSetSave()`, `PetscDrawSetSaveMovie()`
 $(_doc_external("Draw/PetscDrawSaveMovie"))
 """
 function PetscDrawSaveMovie(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawSaveMovie: no generated method for these argument types")
+    throw(MethodError(PetscDrawSaveMovie, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawSaveMovie(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -4286,7 +4286,7 @@ See also: `PetscDraw`, `PetscDrawGetPopup()`, `PetscDrawTensorContour()`
 $(_doc_external("Draw/PetscDrawScalePopup"))
 """
 function PetscDrawScalePopup(petsclib::PetscLibType, popup::PetscDraw, min::Real, max::Real)
-    error("PetscDrawScalePopup: no generated method for these argument types")
+    throw(MethodError(PetscDrawScalePopup, (petsclib, popup, min, max)))
 end
 
 @for_petsc function PetscDrawScalePopup(petsclib::$UnionPetscLib, popup::PetscDraw, min::$PetscReal, max::$PetscReal )
@@ -4324,7 +4324,7 @@ See also: `PetscDraw`, `PetscDrawGetCoordinates()`
 $(_doc_external("Draw/PetscDrawSetCoordinates"))
 """
 function PetscDrawSetCoordinates(petsclib::PetscLibType, draw::PetscDraw, xl::Real, yl::Real, xr::Real, yr::Real)
-    error("PetscDrawSetCoordinates: no generated method for these argument types")
+    throw(MethodError(PetscDrawSetCoordinates, (petsclib, draw, xl, yl, xr, yr)))
 end
 
 @for_petsc function PetscDrawSetCoordinates(petsclib::$UnionPetscLib, draw::PetscDraw, xl::$PetscReal, yl::$PetscReal, xr::$PetscReal, yr::$PetscReal )
@@ -4359,7 +4359,7 @@ See also: `PetscDraw`, `PetscDrawPushCurrentPoint()`, `PetscDrawPopCurrentPoint(
 $(_doc_external("Draw/PetscDrawSetCurrentPoint"))
 """
 function PetscDrawSetCurrentPoint(petsclib::PetscLibType, draw::PetscDraw, x::Real, y::Real)
-    error("PetscDrawSetCurrentPoint: no generated method for these argument types")
+    throw(MethodError(PetscDrawSetCurrentPoint, (petsclib, draw, x, y)))
 end
 
 @for_petsc function PetscDrawSetCurrentPoint(petsclib::$UnionPetscLib, draw::PetscDraw, x::$PetscReal, y::$PetscReal )
@@ -4391,7 +4391,7 @@ See also: `PetscDraw`, `PetscDrawOpenX()`, `PetscDrawCreate()`
 $(_doc_external("Draw/PetscDrawSetDisplay"))
 """
 function PetscDrawSetDisplay(petsclib::PetscLibType, draw::PetscDraw, display::String)
-    error("PetscDrawSetDisplay: no generated method for these argument types")
+    throw(MethodError(PetscDrawSetDisplay, (petsclib, draw, display)))
 end
 
 @for_petsc function PetscDrawSetDisplay(petsclib::$UnionPetscLib, draw::PetscDraw, display::String )
@@ -4424,7 +4424,7 @@ See also: `PetscDraw`, `PetscDrawOpenX()`, `PetscDrawCreate()`
 $(_doc_external("Draw/PetscDrawSetDoubleBuffer"))
 """
 function PetscDrawSetDoubleBuffer(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawSetDoubleBuffer: no generated method for these argument types")
+    throw(MethodError(PetscDrawSetDoubleBuffer, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawSetDoubleBuffer(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -4470,7 +4470,7 @@ See also: `PetscDraw`, `PetscDrawCreate()`, `PetscDrawSetType()`, `PetscDrawSetS
 $(_doc_external("Draw/PetscDrawSetFromOptions"))
 """
 function PetscDrawSetFromOptions(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawSetFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscDrawSetFromOptions, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawSetFromOptions(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -4507,7 +4507,7 @@ See also: `PetscDraw`, `PetscDrawPoint()`, `PetscDrawMarker()`, `PetscDrawGetMar
 $(_doc_external("Draw/PetscDrawSetMarkerType"))
 """
 function PetscDrawSetMarkerType(petsclib::PetscLibType, draw::PetscDraw, mtype::PetscDrawMarkerType)
-    error("PetscDrawSetMarkerType: no generated method for these argument types")
+    throw(MethodError(PetscDrawSetMarkerType, (petsclib, draw, mtype)))
 end
 
 @for_petsc function PetscDrawSetMarkerType(petsclib::$UnionPetscLib, draw::PetscDraw, mtype::PetscDrawMarkerType )
@@ -4542,7 +4542,7 @@ See also: `PetscDraw`, `PetscDrawSetFromOptions()`, `PetscDrawCreate()`
 $(_doc_external("Draw/PetscDrawSetOptionsPrefix"))
 """
 function PetscDrawSetOptionsPrefix(petsclib::PetscLibType, draw::PetscDraw, prefix::String)
-    error("PetscDrawSetOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(PetscDrawSetOptionsPrefix, (petsclib, draw, prefix)))
 end
 
 @for_petsc function PetscDrawSetOptionsPrefix(petsclib::$UnionPetscLib, draw::PetscDraw, prefix::String )
@@ -4580,7 +4580,7 @@ See also: `PetscDraw`, `PetscDrawGetPause()`, `PetscDrawPause()`
 $(_doc_external("Draw/PetscDrawSetPause"))
 """
 function PetscDrawSetPause(petsclib::PetscLibType, draw::PetscDraw, lpause::Real)
-    error("PetscDrawSetPause: no generated method for these argument types")
+    throw(MethodError(PetscDrawSetPause, (petsclib, draw, lpause)))
 end
 
 @for_petsc function PetscDrawSetPause(petsclib::$UnionPetscLib, draw::PetscDraw, lpause::$PetscReal )
@@ -4619,7 +4619,7 @@ See also: `PetscDraw`, `PetscDrawOpenX()`, `PetscDrawOpenImage()`, `PetscDrawSet
 $(_doc_external("Draw/PetscDrawSetSave"))
 """
 function PetscDrawSetSave(petsclib::PetscLibType, draw::PetscDraw, filename::String)
-    error("PetscDrawSetSave: no generated method for these argument types")
+    throw(MethodError(PetscDrawSetSave, (petsclib, draw, filename)))
 end
 
 @for_petsc function PetscDrawSetSave(petsclib::$UnionPetscLib, draw::PetscDraw, filename::String )
@@ -4656,7 +4656,7 @@ See also: `PetscDraw`, `PetscDrawSetSave()`, `PetscDrawSetFromOptions()`, `Petsc
 $(_doc_external("Draw/PetscDrawSetSaveFinalImage"))
 """
 function PetscDrawSetSaveFinalImage(petsclib::PetscLibType, draw::PetscDraw, filename::String)
-    error("PetscDrawSetSaveFinalImage: no generated method for these argument types")
+    throw(MethodError(PetscDrawSetSaveFinalImage, (petsclib, draw, filename)))
 end
 
 @for_petsc function PetscDrawSetSaveFinalImage(petsclib::$UnionPetscLib, draw::PetscDraw, filename::String )
@@ -4693,7 +4693,7 @@ See also: `PetscDraw`, `PetscDrawSetSave()`, `PetscDrawSetFromOptions()`, `Petsc
 $(_doc_external("Draw/PetscDrawSetSaveMovie"))
 """
 function PetscDrawSetSaveMovie(petsclib::PetscLibType, draw::PetscDraw, movieext::String)
-    error("PetscDrawSetSaveMovie: no generated method for these argument types")
+    throw(MethodError(PetscDrawSetSaveMovie, (petsclib, draw, movieext)))
 end
 
 @for_petsc function PetscDrawSetSaveMovie(petsclib::$UnionPetscLib, draw::PetscDraw, movieext::String )
@@ -4727,7 +4727,7 @@ See also: `PetscDraw`, `PetscDrawGetTitle()`, `PetscDrawAppendTitle()`
 $(_doc_external("Draw/PetscDrawSetTitle"))
 """
 function PetscDrawSetTitle(petsclib::PetscLibType, draw::PetscDraw, title::String)
-    error("PetscDrawSetTitle: no generated method for these argument types")
+    throw(MethodError(PetscDrawSetTitle, (petsclib, draw, title)))
 end
 
 @for_petsc function PetscDrawSetTitle(petsclib::$UnionPetscLib, draw::PetscDraw, title::String )
@@ -4764,7 +4764,7 @@ See also: `PetscDraw`, `PETSC_DRAW_X`, `PETSC_DRAW_TIKZ`, `PETSC_DRAW_IMAGE`, `P
 $(_doc_external("Draw/PetscDrawSetType"))
 """
 function PetscDrawSetType(petsclib::PetscLibType, draw::PetscDraw, type::String)
-    error("PetscDrawSetType: no generated method for these argument types")
+    throw(MethodError(PetscDrawSetType, (petsclib, draw, type)))
 end
 
 @for_petsc function PetscDrawSetType(petsclib::$UnionPetscLib, draw::PetscDraw, type::String )
@@ -4802,7 +4802,7 @@ See also: `PetscDrawGetViewPort()`, `PetscDraw`, `PetscDrawSplitViewPort()`, `Pe
 $(_doc_external("Draw/PetscDrawSetViewPort"))
 """
 function PetscDrawSetViewPort(petsclib::PetscLibType, draw::PetscDraw, xl::Real, yl::Real, xr::Real, yr::Real)
-    error("PetscDrawSetViewPort: no generated method for these argument types")
+    throw(MethodError(PetscDrawSetViewPort, (petsclib, draw, xl, yl, xr, yr)))
 end
 
 @for_petsc function PetscDrawSetViewPort(petsclib::$UnionPetscLib, draw::PetscDraw, xl::$PetscReal, yl::$PetscReal, xr::$PetscReal, yr::$PetscReal )
@@ -4834,7 +4834,7 @@ See also: `PetscDraw`
 $(_doc_external("Draw/PetscDrawSetVisible"))
 """
 function PetscDrawSetVisible(petsclib::PetscLibType, draw::PetscDraw, visible::PetscBool)
-    error("PetscDrawSetVisible: no generated method for these argument types")
+    throw(MethodError(PetscDrawSetVisible, (petsclib, draw, visible)))
 end
 
 @for_petsc function PetscDrawSetVisible(petsclib::$UnionPetscLib, draw::PetscDraw, visible::PetscBool )
@@ -4868,7 +4868,7 @@ See also: `PetscDrawDivideViewPort()`, `PetscDrawSetViewPort()`
 $(_doc_external("Draw/PetscDrawSplitViewPort"))
 """
 function PetscDrawSplitViewPort(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawSplitViewPort: no generated method for these argument types")
+    throw(MethodError(PetscDrawSplitViewPort, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawSplitViewPort(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -4907,7 +4907,7 @@ See also: `PetscDraw`, `PetscDrawStringVertical()`, `PetscDrawStringCentered()`,
 $(_doc_external("Draw/PetscDrawString"))
 """
 function PetscDrawString(petsclib::PetscLibType, draw::PetscDraw, xl::Real, yl::Real, cl::Cint, text::String)
-    error("PetscDrawString: no generated method for these argument types")
+    throw(MethodError(PetscDrawString, (petsclib, draw, xl, yl, cl, text)))
 end
 
 @for_petsc function PetscDrawString(petsclib::$UnionPetscLib, draw::PetscDraw, xl::$PetscReal, yl::$PetscReal, cl::Cint, text::String )
@@ -4950,7 +4950,7 @@ See also: `PetscDraw`, `PetscDrawStringVertical()`, `PetscDrawString()`, `PetscD
 $(_doc_external("Draw/PetscDrawStringBoxed"))
 """
 function PetscDrawStringBoxed(petsclib::PetscLibType, draw::PetscDraw, sxl::Real, syl::Real, sc::Cint, bc::Cint, text::String)
-    error("PetscDrawStringBoxed: no generated method for these argument types")
+    throw(MethodError(PetscDrawStringBoxed, (petsclib, draw, sxl, syl, sc, bc, text)))
 end
 
 @for_petsc function PetscDrawStringBoxed(petsclib::$UnionPetscLib, draw::PetscDraw, sxl::$PetscReal, syl::$PetscReal, sc::Cint, bc::Cint, text::String )
@@ -4992,7 +4992,7 @@ See also: `PetscDraw`, `PetscDrawStringVertical()`, `PetscDrawString()`, `PetscD
 $(_doc_external("Draw/PetscDrawStringCentered"))
 """
 function PetscDrawStringCentered(petsclib::PetscLibType, draw::PetscDraw, xc::Real, yl::Real, cl::Cint, text::String)
-    error("PetscDrawStringCentered: no generated method for these argument types")
+    throw(MethodError(PetscDrawStringCentered, (petsclib, draw, xc, yl, cl, text)))
 end
 
 @for_petsc function PetscDrawStringCentered(petsclib::$UnionPetscLib, draw::PetscDraw, xc::$PetscReal, yl::$PetscReal, cl::Cint, text::String )
@@ -5029,7 +5029,7 @@ See also: `PetscDraw`, `PetscDrawStringVertical()`, `PetscDrawString()`, `PetscD
 $(_doc_external("Draw/PetscDrawStringGetSize"))
 """
 function PetscDrawStringGetSize(petsclib::PetscLibType, draw::PetscDraw)
-    error("PetscDrawStringGetSize: no generated method for these argument types")
+    throw(MethodError(PetscDrawStringGetSize, (petsclib, draw)))
 end
 
 @for_petsc function PetscDrawStringGetSize(petsclib::$UnionPetscLib, draw::PetscDraw )
@@ -5069,7 +5069,7 @@ See also: `PetscDraw`, `PetscDrawStringVertical()`, `PetscDrawString()`, `PetscD
 $(_doc_external("Draw/PetscDrawStringSetSize"))
 """
 function PetscDrawStringSetSize(petsclib::PetscLibType, draw::PetscDraw, width::Real, height::Real)
-    error("PetscDrawStringSetSize: no generated method for these argument types")
+    throw(MethodError(PetscDrawStringSetSize, (petsclib, draw, width, height)))
 end
 
 @for_petsc function PetscDrawStringSetSize(petsclib::$UnionPetscLib, draw::PetscDraw, width::$PetscReal, height::$PetscReal )
@@ -5107,7 +5107,7 @@ See also: `PetscDraw`, `PetscDrawString()`, `PetscDrawStringCentered()`, `PetscD
 $(_doc_external("Draw/PetscDrawStringVertical"))
 """
 function PetscDrawStringVertical(petsclib::PetscLibType, draw::PetscDraw, xl::Real, yl::Real, cl::Cint, text::String)
-    error("PetscDrawStringVertical: no generated method for these argument types")
+    throw(MethodError(PetscDrawStringVertical, (petsclib, draw, xl, yl, cl, text)))
 end
 
 @for_petsc function PetscDrawStringVertical(petsclib::$UnionPetscLib, draw::PetscDraw, xl::$PetscReal, yl::$PetscReal, cl::Cint, text::String )
@@ -5149,7 +5149,7 @@ See also: `PetscDraw`, `PetscDrawTensorContourPatch()`, `PetscDrawScalePopup()`
 $(_doc_external("Draw/PetscDrawTensorContour"))
 """
 function PetscDrawTensorContour(petsclib::PetscLibType, draw::PetscDraw, m::Cint, n::Cint, xi::AbstractVector{<:Number}, yi::AbstractVector{<:Number}, v::AbstractVector{<:Number})
-    error("PetscDrawTensorContour: no generated method for these argument types")
+    throw(MethodError(PetscDrawTensorContour, (petsclib, draw, m, n, xi, yi, v)))
 end
 
 @for_petsc function PetscDrawTensorContour(petsclib::$UnionPetscLib, draw::PetscDraw, m::Cint, n::Cint, xi::Vector{$PetscReal}, yi::Vector{$PetscReal}, v::Vector{$PetscReal} )
@@ -5193,7 +5193,7 @@ See also: `PetscDraw`, `PetscDrawTensorContour()`
 $(_doc_external("Draw/PetscDrawTensorContourPatch"))
 """
 function PetscDrawTensorContourPatch(petsclib::PetscLibType, draw::PetscDraw, m::Cint, n::Cint, min::Real, max::Real)
-    error("PetscDrawTensorContourPatch: no generated method for these argument types")
+    throw(MethodError(PetscDrawTensorContourPatch, (petsclib, draw, m, n, min, max)))
 end
 
 @for_petsc function PetscDrawTensorContourPatch(petsclib::$UnionPetscLib, draw::PetscDraw, m::Cint, n::Cint, min::$PetscReal, max::$PetscReal )
@@ -5241,7 +5241,7 @@ See also: `PetscDraw`, `PetscDrawLine()`, `PetscDrawRectangle()`, `PetscDrawElli
 $(_doc_external("Draw/PetscDrawTriangle"))
 """
 function PetscDrawTriangle(petsclib::PetscLibType, draw::PetscDraw, x1::Real, y_1::Real, x2::Real, y2::Real, x3::Real, y3::Real, c1::Cint, c2::Cint, c3::Cint)
-    error("PetscDrawTriangle: no generated method for these argument types")
+    throw(MethodError(PetscDrawTriangle, (petsclib, draw, x1, y_1, x2, y2, x3, y3, c1, c2, c3)))
 end
 
 @for_petsc function PetscDrawTriangle(petsclib::$UnionPetscLib, draw::PetscDraw, x1::$PetscReal, y_1::$PetscReal, x2::$PetscReal, y2::$PetscReal, x3::$PetscReal, y3::$PetscReal, c1::Cint, c2::Cint, c3::Cint )
@@ -5286,7 +5286,7 @@ See also: `PetscDraw`, `PetscDrawUtilitySetGamma()`
 $(_doc_external("Draw/PetscDrawUtilitySetCmap"))
 """
 function PetscDrawUtilitySetCmap(petsclib::PetscLibType, colormap::String, mapsize::Cint, char::Vector{Cuchar}, M_char::Vector{Cuchar}, M_char_2::Vector{Cuchar})
-    error("PetscDrawUtilitySetCmap: no generated method for these argument types")
+    throw(MethodError(PetscDrawUtilitySetCmap, (petsclib, colormap, mapsize, char, M_char, M_char_2)))
 end
 
 @for_petsc function PetscDrawUtilitySetCmap(petsclib::$UnionPetscLib, colormap::String, mapsize::Cint, char::Vector{Cuchar}, M_char::Vector{Cuchar}, M_char_2::Vector{Cuchar} )
@@ -5319,7 +5319,7 @@ See also: `PetscDraw`, `PetscDrawUtilitySetCmap()`
 $(_doc_external("Draw/PetscDrawUtilitySetGamma"))
 """
 function PetscDrawUtilitySetGamma(petsclib::PetscLibType, g::Real)
-    error("PetscDrawUtilitySetGamma: no generated method for these argument types")
+    throw(MethodError(PetscDrawUtilitySetGamma, (petsclib, g)))
 end
 
 @for_petsc function PetscDrawUtilitySetGamma(petsclib::$UnionPetscLib, g::$PetscReal )
@@ -5353,7 +5353,7 @@ See also: `PetscDraw`, `PetscViewerASCIIOpen()`, `PetscViewer`
 $(_doc_external("Draw/PetscDrawView"))
 """
 function PetscDrawView(petsclib::PetscLibType, indraw::PetscDraw, viewer::PetscViewer)
-    error("PetscDrawView: no generated method for these argument types")
+    throw(MethodError(PetscDrawView, (petsclib, indraw, viewer)))
 end
 
 @for_petsc function PetscDrawView(petsclib::$UnionPetscLib, indraw::PetscDraw, viewer::PetscViewer )
@@ -5391,7 +5391,7 @@ See also: `PetscDraw`, `PetscDrawView`, `PetscObjectViewFromOptions()`, `PetscDr
 $(_doc_external("Draw/PetscDrawViewFromOptions"))
 """
 function PetscDrawViewFromOptions(petsclib::PetscLibType, A::PetscDraw, obj, name::String)
-    error("PetscDrawViewFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscDrawViewFromOptions, (petsclib, A, obj, name)))
 end
 
 @for_petsc function PetscDrawViewFromOptions(petsclib::$UnionPetscLib, A::PetscDraw, obj, name::String )
@@ -5431,7 +5431,7 @@ See also: `PetscDrawSplitViewPort()`, `PetscDrawSetViewPort()`, `PetscDrawViewPo
 $(_doc_external("Draw/PetscDrawViewPortsCreate"))
 """
 function PetscDrawViewPortsCreate(petsclib::PetscLibType, draw::PetscDraw, nports::Integer)
-    error("PetscDrawViewPortsCreate: no generated method for these argument types")
+    throw(MethodError(PetscDrawViewPortsCreate, (petsclib, draw, nports)))
 end
 
 @for_petsc function PetscDrawViewPortsCreate(petsclib::$UnionPetscLib, draw::PetscDraw, nports::$PetscInt )
@@ -5473,7 +5473,7 @@ See also: `PetscDrawSplitViewPort()`, `PetscDrawSetViewPort()`, `PetscDrawViewPo
 $(_doc_external("Draw/PetscDrawViewPortsCreateRect"))
 """
 function PetscDrawViewPortsCreateRect(petsclib::PetscLibType, draw::PetscDraw, nx::Integer, ny::Integer)
-    error("PetscDrawViewPortsCreateRect: no generated method for these argument types")
+    throw(MethodError(PetscDrawViewPortsCreateRect, (petsclib, draw, nx, ny)))
 end
 
 @for_petsc function PetscDrawViewPortsCreateRect(petsclib::$UnionPetscLib, draw::PetscDraw, nx::$PetscInt, ny::$PetscInt )
@@ -5508,7 +5508,7 @@ See also: `PetscDrawViewPorts`, `PetscDrawSplitViewPort()`, `PetscDrawSetViewPor
 $(_doc_external("Draw/PetscDrawViewPortsDestroy"))
 """
 function PetscDrawViewPortsDestroy(petsclib::PetscLibType, ports::Vector{PetscDrawViewPorts})
-    error("PetscDrawViewPortsDestroy: no generated method for these argument types")
+    throw(MethodError(PetscDrawViewPortsDestroy, (petsclib, ports)))
 end
 
 @for_petsc function PetscDrawViewPortsDestroy(petsclib::$UnionPetscLib, ports::Vector{PetscDrawViewPorts} )
@@ -5542,7 +5542,7 @@ See also: `PetscDrawViewPorts`, `PetscDrawSplitViewPort()`, `PetscDrawSetViewPor
 $(_doc_external("Draw/PetscDrawViewPortsSet"))
 """
 function PetscDrawViewPortsSet(petsclib::PetscLibType, ports::Vector{PetscDrawViewPorts}, port::Integer)
-    error("PetscDrawViewPortsSet: no generated method for these argument types")
+    throw(MethodError(PetscDrawViewPortsSet, (petsclib, ports, port)))
 end
 
 @for_petsc function PetscDrawViewPortsSet(petsclib::$UnionPetscLib, ports::Vector{PetscDrawViewPorts}, port::$PetscInt )
@@ -5581,7 +5581,7 @@ See also: `PetscDraw`, `PetscDrawCreate()`
 $(_doc_external("Draw/PetscDrawZoom"))
 """
 function PetscDrawZoom(petsclib::PetscLibType, draw::PetscDraw, func::external, ctx::Ptr{Cvoid})
-    error("PetscDrawZoom: no generated method for these argument types")
+    throw(MethodError(PetscDrawZoom, (petsclib, draw, func, ctx)))
 end
 
 @for_petsc function PetscDrawZoom(petsclib::$UnionPetscLib, draw::PetscDraw, func::external, ctx::Ptr{Cvoid} )

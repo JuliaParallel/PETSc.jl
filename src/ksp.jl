@@ -197,7 +197,7 @@ end
 
 
 """
-    solve!(x::PetscVec, ksp::KSP, b::PetscVec; check = nothing)
+    solve!(x::AbstractPetscVec, ksp::AbstractKSP, b::AbstractPetscVec; check = nothing)
     solve!(ksp::KSP; check = nothing)
 
 Solve the linear system of `ksp` for the right-hand side `b` into `x`, and return
@@ -218,9 +218,9 @@ $(doc_external("KSP/KSPSolve"))
 $(doc_external("KSP/KSPGetConvergedReason"))
 """
 function solve!(
-    x::PetscVec{PetscLib},
-    ksp::KSP{PetscLib},
-    b::PetscVec{PetscLib};
+    x::AbstractPetscVec{PetscLib},
+    ksp::AbstractKSP{PetscLib},
+    b::AbstractPetscVec{PetscLib};
     check::Union{Nothing, Bool} = nothing,
 ) where {PetscLib}
     with_solver_options(ksp; solving = true) do
@@ -247,7 +247,8 @@ function solve!(
     return ksp
 end
 
-LinearAlgebra.ldiv!(x::PetscVec{PetscLib}, ksp::KSP{PetscLib}, b::PetscVec{PetscLib}) where {PetscLib} = solve!(x, ksp, b)
+LinearAlgebra.ldiv!(x::AbstractPetscVec{PetscLib}, ksp::AbstractKSP{PetscLib}, b::AbstractPetscVec{PetscLib}) where {PetscLib} =
+    solve!(x, ksp, b)
 
 """
     setup!(ksp::AbstractKSP)
@@ -317,7 +318,7 @@ LibPETSc.@for_petsc function set_pre_solve!(pre_solve!, ksp::AbstractKSP{$PetscL
     return ksp
 end
 
-function Base.:\(ksp::KSP, b::PetscVec{PetscLib}) where {PetscLib}
+function Base.:\(ksp::AbstractKSP{PetscLib}, b::AbstractPetscVec{PetscLib}) where {PetscLib}
     x = similar(b)
     ldiv!(x, ksp, b)
     return x
@@ -361,16 +362,8 @@ one `ksp(ts)` hands back: see [`owns`](@ref).
 $(doc_external("KSP/KSPDestroy"))
 """
 function destroy!(ksp::KSP{PetscLib}) where {PetscLib}
-    owns(ksp) || return nothing
-    if !isnothing(ksp.opts)
-        destroy!(ksp.opts)
-        ksp.opts = nothing
-    end
-    if isdestroyable(ksp, PetscLib)
-        LibPETSc.KSPDestroy(PetscLib, ksp)
-    end
-    ksp.ptr = C_NULL
-    return nothing
+    owns(ksp) && destroy_options!(ksp)
+    return destroy_handle!(LibPETSc.KSPDestroy, ksp, PetscLib)
 end
 
 

@@ -19,7 +19,7 @@ See also: `PetscBench`, `PetscBenchSetFromOptions()`, `PetscBenchRun()`, `PetscB
 $(_doc_external("BM/PetscBenchCreate"))
 """
 function PetscBenchCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("PetscBenchCreate: no generated method for these argument types")
+    throw(MethodError(PetscBenchCreate, (petsclib, comm)))
 end
 
 @for_petsc function PetscBenchCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -54,7 +54,7 @@ See also: `PetscBench`, `PetscBenchView()`, `PetscBenchSetFromOptions()`, `Petsc
 $(_doc_external("BM/PetscBenchDestroy"))
 """
 function PetscBenchDestroy(petsclib::PetscLibType, bm::Union{PetscBench, Ref{PetscBench}})
-    error("PetscBenchDestroy: no generated method for these argument types")
+    throw(MethodError(PetscBenchDestroy, (petsclib, bm)))
 end
 
 @for_petsc function PetscBenchDestroy(petsclib::$UnionPetscLib, bm::Union{PetscBench, Ref{PetscBench}} )
@@ -92,7 +92,7 @@ See also: `PetscBench`, `PetscBenchSetFromOptions()`, `PetscBenchRun()`, `PetscB
 $(_doc_external("BM/PetscBenchGetSize"))
 """
 function PetscBenchGetSize(petsclib::PetscLibType, bm::PetscBench)
-    error("PetscBenchGetSize: no generated method for these argument types")
+    throw(MethodError(PetscBenchGetSize, (petsclib, bm)))
 end
 
 @for_petsc function PetscBenchGetSize(petsclib::$UnionPetscLib, bm::PetscBench )
@@ -131,7 +131,7 @@ See also: `PetscBench`, `PetscBenchType`, `PetscBenchSetType()`, `PetscBenchCrea
 $(_doc_external("BM/PetscBenchGetType"))
 """
 function PetscBenchGetType(petsclib::PetscLibType, bm::PetscBench)
-    error("PetscBenchGetType: no generated method for these argument types")
+    throw(MethodError(PetscBenchGetType, (petsclib, bm)))
 end
 
 @for_petsc function PetscBenchGetType(petsclib::$UnionPetscLib, bm::PetscBench )
@@ -161,7 +161,7 @@ See also: `PetscInitialize()`, `PetscBenchCreate()`, `PetscBench`, `PetscBenchTy
 $(_doc_external("BM/PetscBenchInitializePackage"))
 """
 function PetscBenchInitializePackage(petsclib::PetscLibType)
-    error("PetscBenchInitializePackage: no generated method for these argument types")
+    throw(MethodError(PetscBenchInitializePackage, (petsclib, )))
 end
 
 @for_petsc function PetscBenchInitializePackage(petsclib::$UnionPetscLib)
@@ -197,7 +197,7 @@ See also: `PetscBenchInitializePackage()`, `PetscBenchCreate()`, `PetscBench`, `
 $(_doc_external("BM/PetscBenchRegister"))
 """
 function PetscBenchRegister(petsclib::PetscLibType, sname::String, fnc::external)
-    error("PetscBenchRegister: no generated method for these argument types")
+    throw(MethodError(PetscBenchRegister, (petsclib, sname, fnc)))
 end
 
 @for_petsc function PetscBenchRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
@@ -230,7 +230,7 @@ See also: `PetscBench`, `PetscBenchView()`, `PetscBenchSetFromOptions()`, `Petsc
 $(_doc_external("BM/PetscBenchReset"))
 """
 function PetscBenchReset(petsclib::PetscLibType, bm::PetscBench)
-    error("PetscBenchReset: no generated method for these argument types")
+    throw(MethodError(PetscBenchReset, (petsclib, bm)))
 end
 
 @for_petsc function PetscBenchReset(petsclib::$UnionPetscLib, bm::PetscBench )
@@ -264,7 +264,7 @@ See also: `PetscBench`, `PetscBenchView()`, `PetscBenchSetFromOptions()`, `Petsc
 $(_doc_external("BM/PetscBenchRun"))
 """
 function PetscBenchRun(petsclib::PetscLibType, bm::PetscBench)
-    error("PetscBenchRun: no generated method for these argument types")
+    throw(MethodError(PetscBenchRun, (petsclib, bm)))
 end
 
 @for_petsc function PetscBenchRun(petsclib::$UnionPetscLib, bm::PetscBench )
@@ -298,7 +298,7 @@ See also: `PetscBench`, `PetscBenchView()`, `PetscBenchRun()`, `PetscBenchCreate
 $(_doc_external("BM/PetscBenchSetFromOptions"))
 """
 function PetscBenchSetFromOptions(petsclib::PetscLibType, bm::PetscBench)
-    error("PetscBenchSetFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscBenchSetFromOptions, (petsclib, bm)))
 end
 
 @for_petsc function PetscBenchSetFromOptions(petsclib::$UnionPetscLib, bm::PetscBench )
@@ -333,7 +333,7 @@ See also: `PetscBench`, `PetscBenchSetFromOptions()`, `PetscBenchRun()`, `PetscB
 $(_doc_external("BM/PetscBenchSetOptionsPrefix"))
 """
 function PetscBenchSetOptionsPrefix(petsclib::PetscLibType, bm::PetscBench, pre::String)
-    error("PetscBenchSetOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(PetscBenchSetOptionsPrefix, (petsclib, bm, pre)))
 end
 
 @for_petsc function PetscBenchSetOptionsPrefix(petsclib::$UnionPetscLib, bm::PetscBench, pre::String )
@@ -368,7 +368,7 @@ See also: `PetscBench`, `PetscBenchSetFromOptions()`, `PetscBenchRun()`, `PetscB
 $(_doc_external("BM/PetscBenchSetSize"))
 """
 function PetscBenchSetSize(petsclib::PetscLibType, bm::PetscBench, n::Integer)
-    error("PetscBenchSetSize: no generated method for these argument types")
+    throw(MethodError(PetscBenchSetSize, (petsclib, bm, n)))
 end
 
 @for_petsc function PetscBenchSetSize(petsclib::$UnionPetscLib, bm::PetscBench, n::$PetscInt )
@@ -406,7 +406,7 @@ See also: `PetscBench`, `PetscBenchSetFromOptions()`, `PetscBenchRun()`, `PetscB
 $(_doc_external("BM/PetscBenchSetType"))
 """
 function PetscBenchSetType(petsclib::PetscLibType, bm::PetscBench, type::String)
-    error("PetscBenchSetType: no generated method for these argument types")
+    throw(MethodError(PetscBenchSetType, (petsclib, bm, type)))
 end
 
 @for_petsc function PetscBenchSetType(petsclib::$UnionPetscLib, bm::PetscBench, type::String )
@@ -440,7 +440,7 @@ See also: `PetscBench`, `PetscBenchView()`, `PetscBenchSetFromOptions()`, `Petsc
 $(_doc_external("BM/PetscBenchSetUp"))
 """
 function PetscBenchSetUp(petsclib::PetscLibType, bm::PetscBench)
-    error("PetscBenchSetUp: no generated method for these argument types")
+    throw(MethodError(PetscBenchSetUp, (petsclib, bm)))
 end
 
 @for_petsc function PetscBenchSetUp(petsclib::$UnionPetscLib, bm::PetscBench )
@@ -475,7 +475,7 @@ See also: `PetscBench`, `PetscBenchSetFromOptions()`, `PetscBenchRun()`, `PetscB
 $(_doc_external("BM/PetscBenchView"))
 """
 function PetscBenchView(petsclib::PetscLibType, bm::PetscBench, viewer::PetscViewer)
-    error("PetscBenchView: no generated method for these argument types")
+    throw(MethodError(PetscBenchView, (petsclib, bm, viewer)))
 end
 
 @for_petsc function PetscBenchView(petsclib::$UnionPetscLib, bm::PetscBench, viewer::PetscViewer )
@@ -514,7 +514,7 @@ See also: `PetscBench`, `PetscBenchSetFromOptions()`, `PetscBenchRun()`, `PetscB
 $(_doc_external("BM/PetscBenchViewFromOptions"))
 """
 function PetscBenchViewFromOptions(petsclib::PetscLibType, bm::PetscBench, bobj, name::String)
-    error("PetscBenchViewFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscBenchViewFromOptions, (petsclib, bm, bobj, name)))
 end
 
 @for_petsc function PetscBenchViewFromOptions(petsclib::$UnionPetscLib, bm::PetscBench, bobj, name::String )

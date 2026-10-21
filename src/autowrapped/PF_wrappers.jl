@@ -17,7 +17,7 @@ See also: `PF`, `PFSetFromOptions()`, `PFSetOptionsPrefix()`, `PFGetOptionsPrefi
 $(_doc_external("PF/PFAppendOptionsPrefix"))
 """
 function PFAppendOptionsPrefix(petsclib::PetscLibType, pf::AbstractPF, prefix::String)
-    error("PFAppendOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(PFAppendOptionsPrefix, (petsclib, pf, prefix)))
 end
 
 @for_petsc function PFAppendOptionsPrefix(petsclib::$UnionPetscLib, pf::AbstractPF, prefix::String )
@@ -57,7 +57,7 @@ See also: `PF`, `PFApplyVec()`, `PFCreate()`, `PFDestroy()`, `PFSetType()`, `PFS
 $(_doc_external("PF/PFApply"))
 """
 function PFApply(petsclib::PetscLibType, pf::AbstractPF, n::Integer, x::AbstractVector{<:Number})
-    error("PFApply: no generated method for these argument types")
+    throw(MethodError(PFApply, (petsclib, pf, n, x)))
 end
 
 @for_petsc function PFApply(petsclib::$UnionPetscLib, pf::AbstractPF, n::$PetscInt, x::Vector{$PetscScalar} )
@@ -96,7 +96,7 @@ See also: `PF`, `PFApply()`, `PFCreate()`, `PFDestroy()`, `PFSetType()`, `PFSet(
 $(_doc_external("PF/PFApplyVec"))
 """
 function PFApplyVec(petsclib::PetscLibType, pf::AbstractPF, x::AbstractPetscVec, y::AbstractPetscVec)
-    error("PFApplyVec: no generated method for these argument types")
+    throw(MethodError(PFApplyVec, (petsclib, pf, x, y)))
 end
 
 @for_petsc function PFApplyVec(petsclib::$UnionPetscLib, pf::AbstractPF, x::AbstractPetscVec, y::AbstractPetscVec )
@@ -134,7 +134,7 @@ See also: `PF`, `PFSet()`, `PFApply()`, `PFDestroy()`, `PFApplyVec()`
 $(_doc_external("PF/PFCreate"))
 """
 function PFCreate(petsclib::PetscLibType, comm::MPI_Comm, dimin::Integer, dimout::Integer)
-    error("PFCreate: no generated method for these argument types")
+    throw(MethodError(PFCreate, (petsclib, comm, dimin, dimout)))
 end
 
 @for_petsc function PFCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, dimin::$PetscInt, dimout::$PetscInt )
@@ -169,7 +169,7 @@ See also: `PF`, `PFCreate()`, `PFSet()`, `PFSetType()`
 $(_doc_external("PF/PFDestroy"))
 """
 function PFDestroy(petsclib::PetscLibType, pf::AbstractPF)
-    error("PFDestroy: no generated method for these argument types")
+    throw(MethodError(PFDestroy, (petsclib, pf)))
 end
 
 @for_petsc function PFDestroy(petsclib::$UnionPetscLib, pf::AbstractPF )
@@ -200,7 +200,7 @@ See also: `PF`, `PetscFinalize()`
 $(_doc_external("PF/PFFinalizePackage"))
 """
 function PFFinalizePackage(petsclib::PetscLibType)
-    error("PFFinalizePackage: no generated method for these argument types")
+    throw(MethodError(PFFinalizePackage, (petsclib, )))
 end
 
 @for_petsc function PFFinalizePackage(petsclib::$UnionPetscLib)
@@ -236,7 +236,7 @@ See also: `PF`, `PFSetFromOptions()`, `PFSetOptionsPrefix()`, `PFAppendOptionsPr
 $(_doc_external("PF/PFGetOptionsPrefix"))
 """
 function PFGetOptionsPrefix(petsclib::PetscLibType, pf::AbstractPF)
-    error("PFGetOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(PFGetOptionsPrefix, (petsclib, pf)))
 end
 
 @for_petsc function PFGetOptionsPrefix(petsclib::$UnionPetscLib, pf::AbstractPF )
@@ -275,7 +275,7 @@ See also: `PF`, `PFSetType()`, `PFType`, `PetscObjectTypeCompare()`, `PetscObjec
 $(_doc_external("PF/PFGetType"))
 """
 function PFGetType(petsclib::PetscLibType, pf::AbstractPF)
-    error("PFGetType: no generated method for these argument types")
+    throw(MethodError(PFGetType, (petsclib, pf)))
 end
 
 @for_petsc function PFGetType(petsclib::$UnionPetscLib, pf::AbstractPF )
@@ -307,7 +307,7 @@ See also: `PF`, `PetscInitialize()`
 $(_doc_external("PF/PFInitializePackage"))
 """
 function PFInitializePackage(petsclib::PetscLibType)
-    error("PFInitializePackage: no generated method for these argument types")
+    throw(MethodError(PFInitializePackage, (petsclib, )))
 end
 
 @for_petsc function PFInitializePackage(petsclib::$UnionPetscLib)
@@ -338,7 +338,7 @@ See also: `PF`, `PFRegisterAll()`, `PFRegisterDestroy()`
 $(_doc_external("PF/PFRegister"))
 """
 function PFRegister(petsclib::PetscLibType, sname::String, fnc::external)
-    error("PFRegister: no generated method for these argument types")
+    throw(MethodError(PFRegister, (petsclib, sname, fnc)))
 end
 
 @for_petsc function PFRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
@@ -376,7 +376,7 @@ See also: `PF`, `PFCreate()`, `PFDestroy()`, `PFSetType()`, `PFApply()`, `PFAppl
 $(_doc_external("PF/PFSet"))
 """
 function PFSet(petsclib::PetscLibType, pf::AbstractPF, apply::external, applyvec::external, view::external, destroy::external, ctx::Ptr{Cvoid})
-    error("PFSet: no generated method for these argument types")
+    throw(MethodError(PFSet, (petsclib, pf, apply, applyvec, view, destroy, ctx)))
 end
 
 @for_petsc function PFSet(petsclib::$UnionPetscLib, pf::AbstractPF, apply::external, applyvec::external, view::external, destroy::external, ctx::Ptr{Cvoid} )
@@ -409,7 +409,7 @@ See also: `PF`
 $(_doc_external("PF/PFSetFromOptions"))
 """
 function PFSetFromOptions(petsclib::PetscLibType, pf::AbstractPF)
-    error("PFSetFromOptions: no generated method for these argument types")
+    throw(MethodError(PFSetFromOptions, (petsclib, pf)))
 end
 
 @for_petsc function PFSetFromOptions(petsclib::$UnionPetscLib, pf::AbstractPF )
@@ -444,7 +444,7 @@ See also: `PF`, `PFSetFromOptions()`, `PFAppendOptionsPrefix()`, `PFGetOptionsPr
 $(_doc_external("PF/PFSetOptionsPrefix"))
 """
 function PFSetOptionsPrefix(petsclib::PetscLibType, pf::AbstractPF, prefix::String)
-    error("PFSetOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(PFSetOptionsPrefix, (petsclib, pf, prefix)))
 end
 
 @for_petsc function PFSetOptionsPrefix(petsclib::$UnionPetscLib, pf::AbstractPF, prefix::String )
@@ -482,7 +482,7 @@ See also: `PF`, `PFSet()`, `PFRegister()`, `PFCreate()`, `DMDACreatePF()`, `PFTy
 $(_doc_external("PF/PFSetType"))
 """
 function PFSetType(petsclib::PetscLibType, pf::AbstractPF, type::String, ctx::Ptr{Cvoid})
-    error("PFSetType: no generated method for these argument types")
+    throw(MethodError(PFSetType, (petsclib, pf, type, ctx)))
 end
 
 @for_petsc function PFSetType(petsclib::$UnionPetscLib, pf::AbstractPF, type::String, ctx::Ptr{Cvoid} )
@@ -516,7 +516,7 @@ See also: `PFSetFromOptions()`
 $(_doc_external("PF/PFStringSetFunction"))
 """
 function PFStringSetFunction(petsclib::PetscLibType, pf::AbstractPF, string::String)
-    error("PFStringSetFunction: no generated method for these argument types")
+    throw(MethodError(PFStringSetFunction, (petsclib, pf, string)))
 end
 
 @for_petsc function PFStringSetFunction(petsclib::$UnionPetscLib, pf::AbstractPF, string::String )
@@ -550,7 +550,7 @@ See also: `PF`, `PetscViewerCreate()`, `PetscViewerASCIIOpen()`
 $(_doc_external("PF/PFView"))
 """
 function PFView(petsclib::PetscLibType, pf::AbstractPF, viewer::PetscViewer)
-    error("PFView: no generated method for these argument types")
+    throw(MethodError(PFView, (petsclib, pf, viewer)))
 end
 
 @for_petsc function PFView(petsclib::$UnionPetscLib, pf::AbstractPF, viewer::PetscViewer )
@@ -588,7 +588,7 @@ See also: `PF`, `PFView`, `PetscObjectViewFromOptions()`, `PFCreate()`
 $(_doc_external("PF/PFViewFromOptions"))
 """
 function PFViewFromOptions(petsclib::PetscLibType, A::AbstractPF, obj, name::String)
-    error("PFViewFromOptions: no generated method for these argument types")
+    throw(MethodError(PFViewFromOptions, (petsclib, A, obj, name)))
 end
 
 @for_petsc function PFViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPF, obj, name::String )

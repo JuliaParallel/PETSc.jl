@@ -192,6 +192,16 @@ the caller destroys the result), and the objects a callback receives.
 """
 owns(obj) = obj.own
 
+# What every `destroy!` does: release the PETSc object with `destroy_fn` (the
+# class's `XDestroy`) if `obj` owns it and it belongs to the current
+# initialize/finalize cycle, then null the handle. A borrowed handle is left as is.
+function destroy_handle!(destroy_fn, obj, ::Type{PetscLib}) where {PetscLib}
+    owns(obj) || return nothing
+    isdestroyable(obj, PetscLib) && destroy_fn(PetscLib, obj)
+    obj.ptr = C_NULL
+    return nothing
+end
+
 # The command line PETSc is initialized with: the options go in as arguments,
 # not through `PETSC_OPTIONS`, which PETSc on Windows cannot see once set from
 # Julia. An entry holding several words, such as "-ksp_type cg", is split.
@@ -411,14 +421,6 @@ function library_path_string(lib)
 end
 
 """
-    LibraryInfo
-
-The shape of the `NamedTuple` [`library_info`](@ref) returns, and the type its
-`show` method is written for.
-"""
-const LibraryInfo = NamedTuple{(:source, :path, :scalar, :int, :real)}
-
-"""
     library_info()
 
 Report the PETSc library configuration as a `NamedTuple` (§12).
@@ -434,9 +436,8 @@ Report the PETSc library configuration as a `NamedTuple` (§12).
 The preferred library is `petsclibs[1]`: the configured one when a preference is
 set, and the first of the bundled builds otherwise.
 
-v0.4 printed a report and returned `nothing`, so the name promised data it never
-handed back. The report is unchanged — it is now the `show` method — and the
-values are reachable from code.
+It prints as the `NamedTuple` it is. `PETSc.petsclibs` lists every library
+loaded in this session.
 
 ```julia
 info = library_info()
@@ -462,29 +463,6 @@ function library_info()
         int    = lib === nothing ? nothing : lib.PetscInt,
         real   = lib === nothing ? nothing : lib.PetscReal,
     )
-end
-
-# The report v0.4's `library_info` printed. It is written for the exact field
-# names `library_info` returns, so it cannot claim a `NamedTuple` this package
-# does not own.
-function Base.show(io::IO, ::MIME"text/plain", info::LibraryInfo)
-    if info.source === :preferences
-        println(io, "Source  : LocalPreferences.toml")
-        println(io, "Path    : ", info.path)
-        println(io, "Scalar  : ", info.scalar)
-        println(io, "Int     : ", info.int)
-    else
-        println(io, "Source  : PETSc_jll (default precompiled binaries)")
-    end
-
-    println(io, "\nLoaded libraries (this session):")
-    for lib in petsclibs
-        println(
-            io,
-            "  [$(lib.PetscScalar), $(lib.PetscInt)]: ",
-            library_path_string(lib),
-        )
-    end
 end
 
 """

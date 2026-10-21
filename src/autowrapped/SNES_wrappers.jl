@@ -18,7 +18,7 @@ See also: `SNES`, `SNESSetFromOptions()`
 $(_doc_external("SNES/SNESAddOptionsChecker"))
 """
 function SNESAddOptionsChecker(petsclib::PetscLibType, snescheck::external)
-    error("SNESAddOptionsChecker: no generated method for these argument types")
+    throw(MethodError(SNESAddOptionsChecker, (petsclib, snescheck)))
 end
 
 @for_petsc function SNESAddOptionsChecker(petsclib::$UnionPetscLib, snescheck::external )
@@ -53,7 +53,7 @@ See also: `SNESGetOptionsPrefix()`, `SNESSetOptionsPrefix()`
 $(_doc_external("SNES/SNESAppendOptionsPrefix"))
 """
 function SNESAppendOptionsPrefix(petsclib::PetscLibType, snes::AbstractSNES, prefix::String)
-    error("SNESAppendOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(SNESAppendOptionsPrefix, (petsclib, snes, prefix)))
 end
 
 @for_petsc function SNESAppendOptionsPrefix(petsclib::$UnionPetscLib, snes::AbstractSNES, prefix::String )
@@ -91,7 +91,7 @@ See also: `SNES`, `SNESGetNPC()`, `SNESSetNPC()`, `SNESComputeFunction()`
 $(_doc_external("SNES/SNESApplyNPC"))
 """
 function SNESApplyNPC(petsclib::PetscLibType, snes::AbstractSNES, x::AbstractPetscVec, f::AbstractPetscVec, y::AbstractPetscVec)
-    error("SNESApplyNPC: no generated method for these argument types")
+    throw(MethodError(SNESApplyNPC, (petsclib, snes, x, f, y)))
 end
 
 @for_petsc function SNESApplyNPC(petsclib::$UnionPetscLib, snes::AbstractSNES, x::AbstractPetscVec, f::AbstractPetscVec, y::AbstractPetscVec )
@@ -125,7 +125,7 @@ See also: `SNES`, `SNESCOMPOSITE`, `SNESCompositeGetSNES()`
 $(_doc_external("SNES/SNESCompositeAddSNES"))
 """
 function SNESCompositeAddSNES(petsclib::PetscLibType, snes::AbstractSNES, type::String)
-    error("SNESCompositeAddSNES: no generated method for these argument types")
+    throw(MethodError(SNESCompositeAddSNES, (petsclib, snes, type)))
 end
 
 @for_petsc function SNESCompositeAddSNES(petsclib::$UnionPetscLib, snes::AbstractSNES, type::String )
@@ -161,7 +161,7 @@ See also: `SNES`, `SNESCOMPOSITE`, `SNESCompositeAddSNES()`, `SNESCompositeGetSN
 $(_doc_external("SNES/SNESCompositeGetNumber"))
 """
 function SNESCompositeGetNumber(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESCompositeGetNumber: no generated method for these argument types")
+    throw(MethodError(SNESCompositeGetNumber, (petsclib, snes)))
 end
 
 @for_petsc function SNESCompositeGetNumber(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -200,7 +200,7 @@ See also: `SNES`, `SNESCOMPOSITE`, `SNESCompositeAddSNES()`, `SNESCompositeGetNu
 $(_doc_external("SNES/SNESCompositeGetSNES"))
 """
 function SNESCompositeGetSNES(petsclib::PetscLibType, snes::AbstractSNES, n::Integer)
-    error("SNESCompositeGetSNES: no generated method for these argument types")
+    throw(MethodError(SNESCompositeGetSNES, (petsclib, snes, n)))
 end
 
 @for_petsc function SNESCompositeGetSNES(petsclib::$UnionPetscLib, snes::AbstractSNES, n::$PetscInt )
@@ -238,7 +238,7 @@ See also: `SNES`, `SNESCOMPOSITE`, `SNESCompositeAddSNES()`, `SNESCompositeGetSN
 $(_doc_external("SNES/SNESCompositeSetDamping"))
 """
 function SNESCompositeSetDamping(petsclib::PetscLibType, snes::AbstractSNES, n::Integer, dmp::Real)
-    error("SNESCompositeSetDamping: no generated method for these argument types")
+    throw(MethodError(SNESCompositeSetDamping, (petsclib, snes, n, dmp)))
 end
 
 @for_petsc function SNESCompositeSetDamping(petsclib::$UnionPetscLib, snes::AbstractSNES, n::$PetscInt, dmp::$PetscReal )
@@ -276,7 +276,7 @@ See also: `SNES_COMPOSITE_ADDITIVE`, `SNES_COMPOSITE_MULTIPLICATIVE`, `SNESCompo
 $(_doc_external("SNES/SNESCompositeSetType"))
 """
 function SNESCompositeSetType(petsclib::PetscLibType, snes::AbstractSNES, type::SNESCompositeType)
-    error("SNESCompositeSetType: no generated method for these argument types")
+    throw(MethodError(SNESCompositeSetType, (petsclib, snes, type)))
 end
 
 @for_petsc function SNESCompositeSetType(petsclib::$UnionPetscLib, snes::AbstractSNES, type::SNESCompositeType )
@@ -313,7 +313,7 @@ See also: `SNES`, `SNESSetFunction()`, `SNESGetFunction()`, `SNESComputeMFFuncti
 $(_doc_external("SNES/SNESComputeFunction"))
 """
 function SNESComputeFunction(petsclib::PetscLibType, snes::AbstractSNES, x::AbstractPetscVec, f::AbstractPetscVec)
-    error("SNESComputeFunction: no generated method for these argument types")
+    throw(MethodError(SNESComputeFunction, (petsclib, snes, x, f)))
 end
 
 @for_petsc function SNESComputeFunction(petsclib::$UnionPetscLib, snes::AbstractSNES, x::AbstractPetscVec, f::AbstractPetscVec )
@@ -350,7 +350,7 @@ See also: `SNES`, `SNESSetNPC()`, `SNESApplyNPC()`, `SNESComputeFunction()`, `SN
 $(_doc_external("SNES/SNESComputeFunctionDefaultNPC"))
 """
 function SNESComputeFunctionDefaultNPC(petsclib::PetscLibType, snes::AbstractSNES, X::AbstractPetscVec, F::AbstractPetscVec)
-    error("SNESComputeFunctionDefaultNPC: no generated method for these argument types")
+    throw(MethodError(SNESComputeFunctionDefaultNPC, (petsclib, snes, X, F)))
 end
 
 @for_petsc function SNESComputeFunctionDefaultNPC(petsclib::$UnionPetscLib, snes::AbstractSNES, X::AbstractPetscVec, F::AbstractPetscVec )
@@ -407,7 +407,7 @@ See also: `SNESSetJacobian()`, `KSPSetOperators()`, `MatStructure`, `SNESSetLagP
 $(_doc_external("SNES/SNESComputeJacobian"))
 """
 function SNESComputeJacobian(petsclib::PetscLibType, snes::AbstractSNES, X::AbstractPetscVec, A::AbstractPetscMat, B::AbstractPetscMat)
-    error("SNESComputeJacobian: no generated method for these argument types")
+    throw(MethodError(SNESComputeJacobian, (petsclib, snes, X, A, B)))
 end
 
 @for_petsc function SNESComputeJacobian(petsclib::$UnionPetscLib, snes::AbstractSNES, X::AbstractPetscVec, A::AbstractPetscMat, B::AbstractPetscMat )
@@ -453,7 +453,7 @@ See also: `SNES`, `SNESSetJacobian()`, `SNESComputeJacobianDefaultColor()`, `Mat
 $(_doc_external("SNES/SNESComputeJacobianDefault"))
 """
 function SNESComputeJacobianDefault(petsclib::PetscLibType, snes::AbstractSNES, x1::AbstractPetscVec, J::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid})
-    error("SNESComputeJacobianDefault: no generated method for these argument types")
+    throw(MethodError(SNESComputeJacobianDefault, (petsclib, snes, x1, J, B, ctx)))
 end
 
 @for_petsc function SNESComputeJacobianDefault(petsclib::$UnionPetscLib, snes::AbstractSNES, x1::AbstractPetscVec, J::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid} )
@@ -501,7 +501,7 @@ See also: `SNES`, `SNESSetJacobian()`, `SNESTestJacobian()`, `SNESComputeJacobia
 $(_doc_external("SNES/SNESComputeJacobianDefaultColor"))
 """
 function SNESComputeJacobianDefaultColor(petsclib::PetscLibType, snes::AbstractSNES, x1::AbstractPetscVec, J::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid})
-    error("SNESComputeJacobianDefaultColor: no generated method for these argument types")
+    throw(MethodError(SNESComputeJacobianDefaultColor, (petsclib, snes, x1, J, B, ctx)))
 end
 
 @for_petsc function SNESComputeJacobianDefaultColor(petsclib::$UnionPetscLib, snes::AbstractSNES, x1::AbstractPetscVec, J::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid} )
@@ -538,7 +538,7 @@ See also: `SNES`, `SNESSetFunction()`, `SNESGetFunction()`, `SNESComputeFunction
 $(_doc_external("SNES/SNESComputeMFFunction"))
 """
 function SNESComputeMFFunction(petsclib::PetscLibType, snes::AbstractSNES, x::AbstractPetscVec, y::AbstractPetscVec)
-    error("SNESComputeMFFunction: no generated method for these argument types")
+    throw(MethodError(SNESComputeMFFunction, (petsclib, snes, x, y)))
 end
 
 @for_petsc function SNESComputeMFFunction(petsclib::$UnionPetscLib, snes::AbstractSNES, x::AbstractPetscVec, y::AbstractPetscVec )
@@ -576,7 +576,7 @@ See also: `SNESNGSFn`, `SNESSetNGS()`, `SNESComputeFunction()`, `SNESNGS`
 $(_doc_external("SNES/SNESComputeNGS"))
 """
 function SNESComputeNGS(petsclib::PetscLibType, snes::AbstractSNES, b::AbstractPetscVec, x::AbstractPetscVec)
-    error("SNESComputeNGS: no generated method for these argument types")
+    throw(MethodError(SNESComputeNGS, (petsclib, snes, b, x)))
 end
 
 @for_petsc function SNESComputeNGS(petsclib::$UnionPetscLib, snes::AbstractSNES, b::AbstractPetscVec, x::AbstractPetscVec )
@@ -613,7 +613,7 @@ See also: `SNESLineSearch`, `SNES`, `SNESSetObjective()`, `SNESGetSolution()`
 $(_doc_external("SNES/SNESComputeObjective"))
 """
 function SNESComputeObjective(petsclib::PetscLibType, snes::AbstractSNES, X::AbstractPetscVec)
-    error("SNESComputeObjective: no generated method for these argument types")
+    throw(MethodError(SNESComputeObjective, (petsclib, snes, X)))
 end
 
 @for_petsc function SNESComputeObjective(petsclib::$UnionPetscLib, snes::AbstractSNES, X::AbstractPetscVec )
@@ -652,7 +652,7 @@ See also: `SNES`, `SNESSolve`, `SNESSetConvergenceTest()`
 $(_doc_external("SNES/SNESConverged"))
 """
 function SNESConverged(petsclib::PetscLibType, snes::AbstractSNES, it::Integer, xnorm::Real, snorm::Real, fnorm::Real)
-    error("SNESConverged: no generated method for these argument types")
+    throw(MethodError(SNESConverged, (petsclib, snes, it, xnorm, snorm, fnorm)))
 end
 
 @for_petsc function SNESConverged(petsclib::$UnionPetscLib, snes::AbstractSNES, it::$PetscInt, xnorm::$PetscReal, snorm::$PetscReal, fnorm::$PetscReal )
@@ -697,7 +697,7 @@ See also: `SNES`, `DM`, `SNESConvergedDefault()`, `SNESSetConvergenceTest()`, `D
 $(_doc_external("SNES/SNESConvergedCorrectPressure"))
 """
 function SNESConvergedCorrectPressure(petsclib::PetscLibType, snes::AbstractSNES, it::Integer, xnorm::Real, gnorm::Real, f::Real, ctx::Ptr{Cvoid})
-    error("SNESConvergedCorrectPressure: no generated method for these argument types")
+    throw(MethodError(SNESConvergedCorrectPressure, (petsclib, snes, it, xnorm, gnorm, f, ctx)))
 end
 
 @for_petsc function SNESConvergedCorrectPressure(petsclib::$UnionPetscLib, snes::AbstractSNES, it::$PetscInt, xnorm::$PetscReal, gnorm::$PetscReal, f::$PetscReal, ctx::Ptr{Cvoid} )
@@ -751,7 +751,7 @@ See also: `SNES`, `SNESSolve()`, `SNESSetConvergenceTest()`, `SNESConvergedSkip(
 $(_doc_external("SNES/SNESConvergedDefault"))
 """
 function SNESConvergedDefault(petsclib::PetscLibType, snes::AbstractSNES, it::Integer, xnorm::Real, snorm::Real, fnorm::Real, ctx::Ptr{Cvoid})
-    error("SNESConvergedDefault: no generated method for these argument types")
+    throw(MethodError(SNESConvergedDefault, (petsclib, snes, it, xnorm, snorm, fnorm, ctx)))
 end
 
 @for_petsc function SNESConvergedDefault(petsclib::$UnionPetscLib, snes::AbstractSNES, it::$PetscInt, xnorm::$PetscReal, snorm::$PetscReal, fnorm::$PetscReal, ctx::Ptr{Cvoid} )
@@ -794,7 +794,7 @@ See also: `SNESConvergedReason`, `PetscViewer`, `SNES`,
 $(_doc_external("SNES/SNESConvergedReasonView"))
 """
 function SNESConvergedReasonView(petsclib::PetscLibType, snes::AbstractSNES, viewer::PetscViewer)
-    error("SNESConvergedReasonView: no generated method for these argument types")
+    throw(MethodError(SNESConvergedReasonView, (petsclib, snes, viewer)))
 end
 
 @for_petsc function SNESConvergedReasonView(petsclib::$UnionPetscLib, snes::AbstractSNES, viewer::PetscViewer )
@@ -828,7 +828,7 @@ See also: `SNES`, `SNESCreate()`, `SNESDestroy()`, `SNESReset()`, `SNESConverged
 $(_doc_external("SNES/SNESConvergedReasonViewCancel"))
 """
 function SNESConvergedReasonViewCancel(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESConvergedReasonViewCancel: no generated method for these argument types")
+    throw(MethodError(SNESConvergedReasonViewCancel, (petsclib, snes)))
 end
 
 @for_petsc function SNESConvergedReasonViewCancel(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -863,7 +863,7 @@ See also: `SNES`, `SNESConvergedReason`, `SNESConvergedReasonViewSet()`, `SNESCr
 $(_doc_external("SNES/SNESConvergedReasonViewFromOptions"))
 """
 function SNESConvergedReasonViewFromOptions(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESConvergedReasonViewFromOptions: no generated method for these argument types")
+    throw(MethodError(SNESConvergedReasonViewFromOptions, (petsclib, snes)))
 end
 
 @for_petsc function SNESConvergedReasonViewFromOptions(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -910,7 +910,7 @@ See also: `SNES`, `SNESSolve()`, `SNESConvergedReason`, `SNESGetConvergedReason(
 $(_doc_external("SNES/SNESConvergedReasonViewSet"))
 """
 function SNESConvergedReasonViewSet(petsclib::PetscLibType, snes::AbstractSNES, f::external, vctx::Ptr{Cvoid}, reasonviewdestroy::Ptr{Cvoid})
-    error("SNESConvergedReasonViewSet: no generated method for these argument types")
+    throw(MethodError(SNESConvergedReasonViewSet, (petsclib, snes, f, vctx, reasonviewdestroy)))
 end
 
 @for_petsc function SNESConvergedReasonViewSet(petsclib::$UnionPetscLib, snes::AbstractSNES, f::external, vctx::Ptr{Cvoid}, reasonviewdestroy::Ptr{Cvoid} )
@@ -955,7 +955,7 @@ See also: `SNES`, `SNESSolve()`, `SNESConvergedDefault()`, `SNESSetConvergenceTe
 $(_doc_external("SNES/SNESConvergedSkip"))
 """
 function SNESConvergedSkip(petsclib::PetscLibType, snes::AbstractSNES, it::Integer, xnorm::Real, snorm::Real, fnorm::Real, ctx::Ptr{Cvoid})
-    error("SNESConvergedSkip: no generated method for these argument types")
+    throw(MethodError(SNESConvergedSkip, (petsclib, snes, it, xnorm, snorm, fnorm, ctx)))
 end
 
 @for_petsc function SNESConvergedSkip(petsclib::$UnionPetscLib, snes::AbstractSNES, it::$PetscInt, xnorm::$PetscReal, snorm::$PetscReal, fnorm::$PetscReal, ctx::Ptr{Cvoid} )
@@ -999,7 +999,7 @@ See also: `SNES`, `SNESSolve()`, `SNESDestroy()`, `SNESSetLagPreconditioner()`, 
 $(_doc_external("SNES/SNESCreate"))
 """
 function SNESCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("SNESCreate: no generated method for these argument types")
+    throw(MethodError(SNESCreate, (petsclib, comm)))
 end
 
 @for_petsc function SNESCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -1035,7 +1035,7 @@ See also: `SNES`, `SNESCreate()`, `SNESSolve()`
 $(_doc_external("SNES/SNESDestroy"))
 """
 function SNESDestroy(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESDestroy: no generated method for these argument types")
+    throw(MethodError(SNESDestroy, (petsclib, snes)))
 end
 
 @for_petsc function SNESDestroy(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -1073,7 +1073,7 @@ See also: `SNESFASSetRestriction()`, `SNESFASRestrict()`, `SNESFAS`
 $(_doc_external("SNESFAS/SNESFASCreateCoarseVec"))
 """
 function SNESFASCreateCoarseVec(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESFASCreateCoarseVec: no generated method for these argument types")
+    throw(MethodError(SNESFASCreateCoarseVec, (petsclib, snes)))
 end
 
 @for_petsc function SNESFASCreateCoarseVec(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -1111,7 +1111,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASCycleGetSmootherUp()`, `SNESFASCycleGetSmoo
 $(_doc_external("SNESFAS/SNESFASCycleGetCorrection"))
 """
 function SNESFASCycleGetCorrection(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESFASCycleGetCorrection: no generated method for these argument types")
+    throw(MethodError(SNESFASCycleGetCorrection, (petsclib, snes)))
 end
 
 @for_petsc function SNESFASCycleGetCorrection(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -1149,7 +1149,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASGetInjection()`, `SNESFASCycleGetRestrictio
 $(_doc_external("SNESFAS/SNESFASCycleGetInjection"))
 """
 function SNESFASCycleGetInjection(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESFASCycleGetInjection: no generated method for these argument types")
+    throw(MethodError(SNESFASCycleGetInjection, (petsclib, snes)))
 end
 
 @for_petsc function SNESFASCycleGetInjection(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -1187,7 +1187,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASCycleGetSmootherUp()`, `SNESFASCycleGetSmoo
 $(_doc_external("SNESFAS/SNESFASCycleGetInterpolation"))
 """
 function SNESFASCycleGetInterpolation(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESFASCycleGetInterpolation: no generated method for these argument types")
+    throw(MethodError(SNESFASCycleGetInterpolation, (petsclib, snes)))
 end
 
 @for_petsc function SNESFASCycleGetInterpolation(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -1225,7 +1225,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASCycleGetRestriction()`, `SNESFASGetRScale()
 $(_doc_external("SNESFAS/SNESFASCycleGetRScale"))
 """
 function SNESFASCycleGetRScale(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESFASCycleGetRScale: no generated method for these argument types")
+    throw(MethodError(SNESFASCycleGetRScale, (petsclib, snes)))
 end
 
 @for_petsc function SNESFASCycleGetRScale(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -1263,7 +1263,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASGetRestriction()`, `SNESFASCycleGetInterpol
 $(_doc_external("SNESFAS/SNESFASCycleGetRestriction"))
 """
 function SNESFASCycleGetRestriction(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESFASCycleGetRestriction: no generated method for these argument types")
+    throw(MethodError(SNESFASCycleGetRestriction, (petsclib, snes)))
 end
 
 @for_petsc function SNESFASCycleGetRestriction(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -1301,7 +1301,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASCycleGetSmootherUp()`, `SNESFASCycleGetSmoo
 $(_doc_external("SNESFAS/SNESFASCycleGetSmoother"))
 """
 function SNESFASCycleGetSmoother(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESFASCycleGetSmoother: no generated method for these argument types")
+    throw(MethodError(SNESFASCycleGetSmoother, (petsclib, snes)))
 end
 
 @for_petsc function SNESFASCycleGetSmoother(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -1339,7 +1339,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASCycleGetSmootherUp()`, `SNESFASCycleGetSmoo
 $(_doc_external("SNESFAS/SNESFASCycleGetSmootherDown"))
 """
 function SNESFASCycleGetSmootherDown(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESFASCycleGetSmootherDown: no generated method for these argument types")
+    throw(MethodError(SNESFASCycleGetSmootherDown, (petsclib, snes)))
 end
 
 @for_petsc function SNESFASCycleGetSmootherDown(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -1377,7 +1377,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASCycleGetSmoother()`, `SNESFASCycleGetSmooth
 $(_doc_external("SNESFAS/SNESFASCycleGetSmootherUp"))
 """
 function SNESFASCycleGetSmootherUp(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESFASCycleGetSmootherUp: no generated method for these argument types")
+    throw(MethodError(SNESFASCycleGetSmootherUp, (petsclib, snes)))
 end
 
 @for_petsc function SNESFASCycleGetSmootherUp(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -1415,7 +1415,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetLevels()`
 $(_doc_external("SNESFAS/SNESFASCycleIsFine"))
 """
 function SNESFASCycleIsFine(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESFASCycleIsFine: no generated method for these argument types")
+    throw(MethodError(SNESFASCycleIsFine, (petsclib, snes)))
 end
 
 @for_petsc function SNESFASCycleIsFine(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -1451,7 +1451,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetCycles()`
 $(_doc_external("SNESFAS/SNESFASCycleSetCycles"))
 """
 function SNESFASCycleSetCycles(petsclib::PetscLibType, snes::AbstractSNES, cycles::Integer)
-    error("SNESFASCycleSetCycles: no generated method for these argument types")
+    throw(MethodError(SNESFASCycleSetCycles, (petsclib, snes, cycles)))
 end
 
 @for_petsc function SNESFASCycleSetCycles(petsclib::$UnionPetscLib, snes::AbstractSNES, cycles::$PetscInt )
@@ -1487,7 +1487,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetNumberSmoothUp()`, `DMInterpolateSolutio
 $(_doc_external("SNESFAS/SNESFASFullGetTotal"))
 """
 function SNESFASFullGetTotal(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESFASFullGetTotal: no generated method for these argument types")
+    throw(MethodError(SNESFASFullGetTotal, (petsclib, snes)))
 end
 
 @for_petsc function SNESFASFullGetTotal(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -1526,7 +1526,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetNumberSmoothUp()`
 $(_doc_external("SNESFAS/SNESFASFullSetDownSweep"))
 """
 function SNESFASFullSetDownSweep(petsclib::PetscLibType, snes::AbstractSNES, swp::PetscBool)
-    error("SNESFASFullSetDownSweep: no generated method for these argument types")
+    throw(MethodError(SNESFASFullSetDownSweep, (petsclib, snes, swp)))
 end
 
 @for_petsc function SNESFASFullSetDownSweep(petsclib::$UnionPetscLib, snes::AbstractSNES, swp::PetscBool )
@@ -1563,7 +1563,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetNumberSmoothUp()`, `DMInterpolateSolutio
 $(_doc_external("SNESFAS/SNESFASFullSetTotal"))
 """
 function SNESFASFullSetTotal(petsclib::PetscLibType, snes::AbstractSNES, total::PetscBool)
-    error("SNESFASFullSetTotal: no generated method for these argument types")
+    throw(MethodError(SNESFASFullSetTotal, (petsclib, snes, total)))
 end
 
 @for_petsc function SNESFASFullSetTotal(petsclib::$UnionPetscLib, snes::AbstractSNES, total::PetscBool )
@@ -1601,7 +1601,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASGetGalerkin()`, `SNESFASSetGalerkin()`
 $(_doc_external("SNESFAS/SNESFASGalerkinFunctionDefault"))
 """
 function SNESFASGalerkinFunctionDefault(petsclib::PetscLibType, snes::AbstractSNES, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid})
-    error("SNESFASGalerkinFunctionDefault: no generated method for these argument types")
+    throw(MethodError(SNESFASGalerkinFunctionDefault, (petsclib, snes, X, F, ctx)))
 end
 
 @for_petsc function SNESFASGalerkinFunctionDefault(petsclib::$UnionPetscLib, snes::AbstractSNES, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid} )
@@ -1635,7 +1635,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetInjection()`, `SNESFASSetRestriction()`
 $(_doc_external("SNESFAS/SNESFASGetCoarseSolve"))
 """
 function SNESFASGetCoarseSolve(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESFASGetCoarseSolve: no generated method for these argument types")
+    throw(MethodError(SNESFASGetCoarseSolve, (petsclib, snes)))
 end
 
 @for_petsc function SNESFASGetCoarseSolve(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -1672,7 +1672,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetLevels()`, `SNESFASGetLevels()`
 $(_doc_external("SNESFAS/SNESFASGetCycleSNES"))
 """
 function SNESFASGetCycleSNES(petsclib::PetscLibType, snes::AbstractSNES, level::Integer)
-    error("SNESFASGetCycleSNES: no generated method for these argument types")
+    throw(MethodError(SNESFASGetCycleSNES, (petsclib, snes, level)))
 end
 
 @for_petsc function SNESFASGetCycleSNES(petsclib::$UnionPetscLib, snes::AbstractSNES, level::$PetscInt )
@@ -1710,7 +1710,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetLevels()`, `SNESFASSetGalerkin()`
 $(_doc_external("SNESFAS/SNESFASGetGalerkin"))
 """
 function SNESFASGetGalerkin(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESFASGetGalerkin: no generated method for these argument types")
+    throw(MethodError(SNESFASGetGalerkin, (petsclib, snes)))
 end
 
 @for_petsc function SNESFASGetGalerkin(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -1748,7 +1748,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetInjection()`, `SNESFASGetRestriction()`,
 $(_doc_external("SNESFAS/SNESFASGetInjection"))
 """
 function SNESFASGetInjection(petsclib::PetscLibType, snes::AbstractSNES, level::Integer)
-    error("SNESFASGetInjection: no generated method for these argument types")
+    throw(MethodError(SNESFASGetInjection, (petsclib, snes, level)))
 end
 
 @for_petsc function SNESFASGetInjection(petsclib::$UnionPetscLib, snes::AbstractSNES, level::$PetscInt )
@@ -1786,7 +1786,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetInterpolation()`, `SNESFASGetInjection()
 $(_doc_external("SNESFAS/SNESFASGetInterpolation"))
 """
 function SNESFASGetInterpolation(petsclib::PetscLibType, snes::AbstractSNES, level::Integer)
-    error("SNESFASGetInterpolation: no generated method for these argument types")
+    throw(MethodError(SNESFASGetInterpolation, (petsclib, snes, level)))
 end
 
 @for_petsc function SNESFASGetInterpolation(petsclib::$UnionPetscLib, snes::AbstractSNES, level::$PetscInt )
@@ -1822,7 +1822,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetLevels()`, `PCMGGetLevels()`
 $(_doc_external("SNESFAS/SNESFASGetLevels"))
 """
 function SNESFASGetLevels(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESFASGetLevels: no generated method for these argument types")
+    throw(MethodError(SNESFASGetLevels, (petsclib, snes)))
 end
 
 @for_petsc function SNESFASGetLevels(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -1860,7 +1860,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetRestriction()`, `SNESFASGetInjection()`,
 $(_doc_external("SNESFAS/SNESFASGetRestriction"))
 """
 function SNESFASGetRestriction(petsclib::PetscLibType, snes::AbstractSNES, level::Integer)
-    error("SNESFASGetRestriction: no generated method for these argument types")
+    throw(MethodError(SNESFASGetRestriction, (petsclib, snes, level)))
 end
 
 @for_petsc function SNESFASGetRestriction(petsclib::$UnionPetscLib, snes::AbstractSNES, level::$PetscInt )
@@ -1897,7 +1897,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetInjection()`, `SNESFASSetRestriction()`
 $(_doc_external("SNESFAS/SNESFASGetSmoother"))
 """
 function SNESFASGetSmoother(petsclib::PetscLibType, snes::AbstractSNES, level::Integer)
-    error("SNESFASGetSmoother: no generated method for these argument types")
+    throw(MethodError(SNESFASGetSmoother, (petsclib, snes, level)))
 end
 
 @for_petsc function SNESFASGetSmoother(petsclib::$UnionPetscLib, snes::AbstractSNES, level::$PetscInt )
@@ -1934,7 +1934,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetInjection()`, `SNESFASSetRestriction()`
 $(_doc_external("SNESFAS/SNESFASGetSmootherDown"))
 """
 function SNESFASGetSmootherDown(petsclib::PetscLibType, snes::AbstractSNES, level::Integer)
-    error("SNESFASGetSmootherDown: no generated method for these argument types")
+    throw(MethodError(SNESFASGetSmootherDown, (petsclib, snes, level)))
 end
 
 @for_petsc function SNESFASGetSmootherDown(petsclib::$UnionPetscLib, snes::AbstractSNES, level::$PetscInt )
@@ -1971,7 +1971,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetInjection()`, `SNESFASSetRestriction()`
 $(_doc_external("SNESFAS/SNESFASGetSmootherUp"))
 """
 function SNESFASGetSmootherUp(petsclib::PetscLibType, snes::AbstractSNES, level::Integer)
-    error("SNESFASGetSmootherUp: no generated method for these argument types")
+    throw(MethodError(SNESFASGetSmootherUp, (petsclib, snes, level)))
 end
 
 @for_petsc function SNESFASGetSmootherUp(petsclib::$UnionPetscLib, snes::AbstractSNES, level::$PetscInt )
@@ -2009,7 +2009,7 @@ See also: `SNES`, `SNESFAS`, `PCMGSetType()`, `SNESFASSetType()`, `SNES_FAS_ADDI
 $(_doc_external("SNESFAS/SNESFASGetType"))
 """
 function SNESFASGetType(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESFASGetType: no generated method for these argument types")
+    throw(MethodError(SNESFASGetType, (petsclib, snes)))
 end
 
 @for_petsc function SNESFASGetType(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -2048,7 +2048,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetRestriction()`, `SNESFASSetInjection()`,
 $(_doc_external("SNESFAS/SNESFASRestrict"))
 """
 function SNESFASRestrict(petsclib::PetscLibType, fine::AbstractSNES, Xfine::AbstractPetscVec, Xcoarse::AbstractPetscVec)
-    error("SNESFASRestrict: no generated method for these argument types")
+    throw(MethodError(SNESFASRestrict, (petsclib, fine, Xfine, Xcoarse)))
 end
 
 @for_petsc function SNESFASRestrict(petsclib::$UnionPetscLib, fine::AbstractSNES, Xfine::AbstractPetscVec, Xcoarse::AbstractPetscVec )
@@ -2085,7 +2085,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetNumberSmoothUp()`
 $(_doc_external("SNESFAS/SNESFASSetContinuation"))
 """
 function SNESFASSetContinuation(petsclib::PetscLibType, snes::AbstractSNES, continuation::PetscBool)
-    error("SNESFASSetContinuation: no generated method for these argument types")
+    throw(MethodError(SNESFASSetContinuation, (petsclib, snes, continuation)))
 end
 
 @for_petsc function SNESFASSetContinuation(petsclib::$UnionPetscLib, snes::AbstractSNES, continuation::PetscBool )
@@ -2123,7 +2123,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetCyclesOnLevel()`
 $(_doc_external("SNESFAS/SNESFASSetCycles"))
 """
 function SNESFASSetCycles(petsclib::PetscLibType, snes::AbstractSNES, cycles::Integer)
-    error("SNESFASSetCycles: no generated method for these argument types")
+    throw(MethodError(SNESFASSetCycles, (petsclib, snes, cycles)))
 end
 
 @for_petsc function SNESFASSetCycles(petsclib::$UnionPetscLib, snes::AbstractSNES, cycles::$PetscInt )
@@ -2157,7 +2157,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetLevels()`, `SNESFASGetGalerkin()`
 $(_doc_external("SNESFAS/SNESFASSetGalerkin"))
 """
 function SNESFASSetGalerkin(petsclib::PetscLibType, snes::AbstractSNES, flg::PetscBool)
-    error("SNESFASSetGalerkin: no generated method for these argument types")
+    throw(MethodError(SNESFASSetGalerkin, (petsclib, snes, flg)))
 end
 
 @for_petsc function SNESFASSetGalerkin(petsclib::$UnionPetscLib, snes::AbstractSNES, flg::PetscBool )
@@ -2191,7 +2191,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetInterpolation()`, `SNESFASSetRestriction
 $(_doc_external("SNESFAS/SNESFASSetInjection"))
 """
 function SNESFASSetInjection(petsclib::PetscLibType, snes::AbstractSNES, level::Integer, mat::AbstractPetscMat)
-    error("SNESFASSetInjection: no generated method for these argument types")
+    throw(MethodError(SNESFASSetInjection, (petsclib, snes, level, mat)))
 end
 
 @for_petsc function SNESFASSetInjection(petsclib::$UnionPetscLib, snes::AbstractSNES, level::$PetscInt, mat::AbstractPetscMat )
@@ -2225,7 +2225,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetInjection()`, `SNESFASSetRestriction()`,
 $(_doc_external("SNESFAS/SNESFASSetInterpolation"))
 """
 function SNESFASSetInterpolation(petsclib::PetscLibType, snes::AbstractSNES, level::Integer, mat::AbstractPetscMat)
-    error("SNESFASSetInterpolation: no generated method for these argument types")
+    throw(MethodError(SNESFASSetInterpolation, (petsclib, snes, level, mat)))
 end
 
 @for_petsc function SNESFASSetInterpolation(petsclib::$UnionPetscLib, snes::AbstractSNES, level::$PetscInt, mat::AbstractPetscMat )
@@ -2260,7 +2260,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASGetLevels()`
 $(_doc_external("SNESFAS/SNESFASSetLevels"))
 """
 function SNESFASSetLevels(petsclib::PetscLibType, snes::AbstractSNES, levels::Integer)
-    error("SNESFASSetLevels: no generated method for these argument types")
+    throw(MethodError(SNESFASSetLevels, (petsclib, snes, levels)))
 end
 
 @for_petsc function SNESFASSetLevels(petsclib::$UnionPetscLib, snes::AbstractSNES, levels::$PetscInt )
@@ -2296,7 +2296,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetMonitor()`
 $(_doc_external("SNESFAS/SNESFASSetLog"))
 """
 function SNESFASSetLog(petsclib::PetscLibType, snes::AbstractSNES, flg::PetscBool)
-    error("SNESFASSetLog: no generated method for these argument types")
+    throw(MethodError(SNESFASSetLog, (petsclib, snes, flg)))
 end
 
 @for_petsc function SNESFASSetLog(petsclib::$UnionPetscLib, snes::AbstractSNES, flg::PetscBool )
@@ -2331,7 +2331,7 @@ See also: `SNES`, `SNESFAS`, `SNESMonitorSet()`, `SNESFASSetCyclesOnLevel()`
 $(_doc_external("SNESFAS/SNESFASSetMonitor"))
 """
 function SNESFASSetMonitor(petsclib::PetscLibType, snes::AbstractSNES, vf::Vector{PetscViewerAndFormat}, flg::PetscBool)
-    error("SNESFASSetMonitor: no generated method for these argument types")
+    throw(MethodError(SNESFASSetMonitor, (petsclib, snes, vf, flg)))
 end
 
 @for_petsc function SNESFASSetMonitor(petsclib::$UnionPetscLib, snes::AbstractSNES, vf::Vector{PetscViewerAndFormat}, flg::PetscBool )
@@ -2369,7 +2369,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetNumberSmoothUp()`
 $(_doc_external("SNESFAS/SNESFASSetNumberSmoothDown"))
 """
 function SNESFASSetNumberSmoothDown(petsclib::PetscLibType, snes::AbstractSNES, n::Integer)
-    error("SNESFASSetNumberSmoothDown: no generated method for these argument types")
+    throw(MethodError(SNESFASSetNumberSmoothDown, (petsclib, snes, n)))
 end
 
 @for_petsc function SNESFASSetNumberSmoothDown(petsclib::$UnionPetscLib, snes::AbstractSNES, n::$PetscInt )
@@ -2407,7 +2407,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetNumberSmoothDown()`
 $(_doc_external("SNESFAS/SNESFASSetNumberSmoothUp"))
 """
 function SNESFASSetNumberSmoothUp(petsclib::PetscLibType, snes::AbstractSNES, n::Integer)
-    error("SNESFASSetNumberSmoothUp: no generated method for these argument types")
+    throw(MethodError(SNESFASSetNumberSmoothUp, (petsclib, snes, n)))
 end
 
 @for_petsc function SNESFASSetNumberSmoothUp(petsclib::$UnionPetscLib, snes::AbstractSNES, n::$PetscInt )
@@ -2441,7 +2441,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetInjection()`, `SNESFASSetRestriction()`
 $(_doc_external("SNESFAS/SNESFASSetRScale"))
 """
 function SNESFASSetRScale(petsclib::PetscLibType, snes::AbstractSNES, level::Integer, rscale::AbstractPetscVec)
-    error("SNESFASSetRScale: no generated method for these argument types")
+    throw(MethodError(SNESFASSetRScale, (petsclib, snes, level, rscale)))
 end
 
 @for_petsc function SNESFASSetRScale(petsclib::$UnionPetscLib, snes::AbstractSNES, level::$PetscInt, rscale::AbstractPetscVec )
@@ -2475,7 +2475,7 @@ See also: `SNES`, `SNESFAS`, `SNESFASSetInterpolation()`, `SNESFASSetInjection()
 $(_doc_external("SNESFAS/SNESFASSetRestriction"))
 """
 function SNESFASSetRestriction(petsclib::PetscLibType, snes::AbstractSNES, level::Integer, mat::AbstractPetscMat)
-    error("SNESFASSetRestriction: no generated method for these argument types")
+    throw(MethodError(SNESFASSetRestriction, (petsclib, snes, level, mat)))
 end
 
 @for_petsc function SNESFASSetRestriction(petsclib::$UnionPetscLib, snes::AbstractSNES, level::$PetscInt, mat::AbstractPetscMat )
@@ -2509,7 +2509,7 @@ See also: `SNES`, `SNESFAS`, `PCMGSetType()`, `SNESFASGetType()`, `SNES_FAS_ADDI
 $(_doc_external("SNESFAS/SNESFASSetType"))
 """
 function SNESFASSetType(petsclib::PetscLibType, snes::AbstractSNES, fastype::SNESFASType)
-    error("SNESFASSetType: no generated method for these argument types")
+    throw(MethodError(SNESFASSetType, (petsclib, snes, fastype)))
 end
 
 @for_petsc function SNESFASSetType(petsclib::$UnionPetscLib, snes::AbstractSNES, fastype::SNESFASType )
@@ -2538,7 +2538,7 @@ See also: `SNES`, `PetscFinalize()`
 $(_doc_external("SNES/SNESFinalizePackage"))
 """
 function SNESFinalizePackage(petsclib::PetscLibType)
-    error("SNESFinalizePackage: no generated method for these argument types")
+    throw(MethodError(SNESFinalizePackage, (petsclib, )))
 end
 
 @for_petsc function SNESFinalizePackage(petsclib::$UnionPetscLib)
@@ -2573,7 +2573,7 @@ See also: `SNES`, `SNESFAS`, `SNESSolve()`, `SNESSetAlwaysComputesFinalResidual(
 $(_doc_external("SNES/SNESGetAlwaysComputesFinalResidual"))
 """
 function SNESGetAlwaysComputesFinalResidual(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetAlwaysComputesFinalResidual: no generated method for these argument types")
+    throw(MethodError(SNESGetAlwaysComputesFinalResidual, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetAlwaysComputesFinalResidual(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -2612,7 +2612,7 @@ See also: `SNESSetApplicationContext()`, `SNESSetComputeApplicationContext()`
 $(_doc_external("SNES/SNESGetApplicationContext"))
 """
 function SNESGetApplicationContext(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetApplicationContext: no generated method for these argument types")
+    throw(MethodError(SNESGetApplicationContext, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetApplicationContext(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -2650,7 +2650,7 @@ See also: `SNES`, `SNESCreate()`, `SNESSetFunction()`, `SNESFunctionFn`, `SNESSe
 $(_doc_external("SNES/SNESGetCheckJacobianDomainError"))
 """
 function SNESGetCheckJacobianDomainError(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetCheckJacobianDomainError: no generated method for these argument types")
+    throw(MethodError(SNESGetCheckJacobianDomainError, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetCheckJacobianDomainError(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -2691,7 +2691,7 @@ See also: `SNESSolve()`, `SNESSetConvergenceTest()`, `SNESSetConvergedReason()`,
 $(_doc_external("SNES/SNESGetConvergedReason"))
 """
 function SNESGetConvergedReason(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetConvergedReason: no generated method for these argument types")
+    throw(MethodError(SNESGetConvergedReason, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetConvergedReason(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -2729,7 +2729,7 @@ See also: `SNES`, `SNESGetConvergedReason()`
 $(_doc_external("SNES/SNESGetConvergedReasonString"))
 """
 function SNESGetConvergedReasonString(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetConvergedReasonString: no generated method for these argument types")
+    throw(MethodError(SNESGetConvergedReasonString, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetConvergedReasonString(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -2770,7 +2770,7 @@ See also: `SNES`, `SNESSolve()`, `SNESSetConvergenceHistory()`
 $(_doc_external("SNES/SNESGetConvergenceHistory"))
 """
 function SNESGetConvergenceHistory(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetConvergenceHistory: no generated method for these argument types")
+    throw(MethodError(SNESGetConvergenceHistory, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetConvergenceHistory(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -2812,7 +2812,7 @@ See also: `DM`, `SNES`, `SNESSetDM()`, `KSPSetDM()`, `KSPGetDM()`
 $(_doc_external("SNES/SNESGetDM"))
 """
 function SNESGetDM(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetDM: no generated method for these argument types")
+    throw(MethodError(SNESGetDM, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetDM(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -2848,7 +2848,7 @@ See also: `SNES`, `SNESSetDivergenceTolerance()`
 $(_doc_external("SNES/SNESGetDivergenceTolerance"))
 """
 function SNESGetDivergenceTolerance(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetDivergenceTolerance: no generated method for these argument types")
+    throw(MethodError(SNESGetDivergenceTolerance, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetDivergenceTolerance(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -2886,7 +2886,7 @@ See also: `SNES`, `SNESSolve()`, `SNESSetErrorIfNotConverged()`, `KSPGetErrorIfN
 $(_doc_external("SNES/SNESGetErrorIfNotConverged"))
 """
 function SNESGetErrorIfNotConverged(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetErrorIfNotConverged: no generated method for these argument types")
+    throw(MethodError(SNESGetErrorIfNotConverged, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetErrorIfNotConverged(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -2924,7 +2924,7 @@ See also: `SNES`, `SNESSetForceIteration()`, `SNESSetDivergenceTolerance()`
 $(_doc_external("SNES/SNESGetForceIteration"))
 """
 function SNESGetForceIteration(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetForceIteration: no generated method for these argument types")
+    throw(MethodError(SNESGetForceIteration, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetForceIteration(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -2964,7 +2964,7 @@ See also: `SNES`, `SNESSolve()`, `SNESSetFunction()`, `SNESGetSolution()`, `SNES
 $(_doc_external("SNES/SNESGetFunction"))
 """
 function SNESGetFunction(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetFunction: no generated method for these argument types")
+    throw(MethodError(SNESGetFunction, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetFunction(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -3006,7 +3006,7 @@ See also: `SNES`, `SNESSetNormSchedule()`, `SNESComputeFunction()`, `VecNorm()`,
 $(_doc_external("SNES/SNESGetFunctionNorm"))
 """
 function SNESGetFunctionNorm(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetFunctionNorm: no generated method for these argument types")
+    throw(MethodError(SNESGetFunctionNorm, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetFunctionNorm(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -3043,7 +3043,7 @@ See also: `SNESSetFunctionType()`, `SNESFunctionType`, `SNESSetNormSchedule()`, 
 $(_doc_external("SNES/SNESGetFunctionType"))
 """
 function SNESGetFunctionType(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetFunctionType: no generated method for these argument types")
+    throw(MethodError(SNESGetFunctionType, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetFunctionType(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -3081,7 +3081,7 @@ See also: `SNESGetLagPreconditioner()`, `SNESSetLagJacobian()`, `SNESGetLagJacob
 $(_doc_external("SNES/SNESGetGridSequence"))
 """
 function SNESGetGridSequence(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetGridSequence: no generated method for these argument types")
+    throw(MethodError(SNESGetGridSequence, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetGridSequence(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -3119,7 +3119,7 @@ See also: `SNES`, `SNESSolve()`, `SNESSetLagJacobian()`, `SNESGetLinearSolveIter
 $(_doc_external("SNES/SNESGetIterationNumber"))
 """
 function SNESGetIterationNumber(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetIterationNumber: no generated method for these argument types")
+    throw(MethodError(SNESGetIterationNumber, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetIterationNumber(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -3161,7 +3161,7 @@ See also: `SNES`, `Mat`, `SNESSetJacobian()`, `SNESComputeJacobian()`, `SNESJaco
 $(_doc_external("SNES/SNESGetJacobian"))
 """
 function SNESGetJacobian(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetJacobian: no generated method for these argument types")
+    throw(MethodError(SNESGetJacobian, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetJacobian(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -3205,7 +3205,7 @@ See also: `SNES`, `KSP`, `PC`, `KSPGetPC()`, `SNESCreate()`, `KSPCreate()`, `SNE
 $(_doc_external("SNES/SNESGetKSP"))
 """
 function SNESGetKSP(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetKSP: no generated method for these argument types")
+    throw(MethodError(SNESGetKSP, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetKSP(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -3244,7 +3244,7 @@ See also: `SNES`, `SNESSetLagJacobian()`, `SNESSetLagPreconditioner()`, `SNESGet
 $(_doc_external("SNES/SNESGetLagJacobian"))
 """
 function SNESGetLagJacobian(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetLagJacobian: no generated method for these argument types")
+    throw(MethodError(SNESGetLagJacobian, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetLagJacobian(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -3283,7 +3283,7 @@ See also: `SNES`, `SNESSetLagPreconditioner()`, `SNESSetLagJacobianPersists()`, 
 $(_doc_external("SNES/SNESGetLagPreconditioner"))
 """
 function SNESGetLagPreconditioner(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetLagPreconditioner: no generated method for these argument types")
+    throw(MethodError(SNESGetLagPreconditioner, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetLagPreconditioner(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -3321,7 +3321,7 @@ See also: `SNESLineSearch`, `SNESSetLineSearch()`, `SNESLineSearchCreate()`, `SN
 $(_doc_external("SNES/SNESGetLineSearch"))
 """
 function SNESGetLineSearch(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetLineSearch: no generated method for these argument types")
+    throw(MethodError(SNESGetLineSearch, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetLineSearch(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -3363,7 +3363,7 @@ See also: `SNESGetMaxLinearSolveFailures()`, `SNESGetLinearSolveIterations()`, `
 $(_doc_external("SNES/SNESGetLinearSolveFailures"))
 """
 function SNESGetLinearSolveFailures(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetLinearSolveFailures: no generated method for these argument types")
+    throw(MethodError(SNESGetLinearSolveFailures, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetLinearSolveFailures(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -3402,7 +3402,7 @@ See also: `SNES`, `SNESGetIterationNumber()`, `SNESGetLinearSolveFailures()`, `S
 $(_doc_external("SNES/SNESGetLinearSolveIterations"))
 """
 function SNESGetLinearSolveIterations(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetLinearSolveIterations: no generated method for these argument types")
+    throw(MethodError(SNESGetLinearSolveIterations, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetLinearSolveIterations(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -3441,7 +3441,7 @@ See also: `SNESSetErrorIfNotConverged()`, `SNESGetLinearSolveFailures()`, `SNESG
 $(_doc_external("SNES/SNESGetMaxLinearSolveFailures"))
 """
 function SNESGetMaxLinearSolveFailures(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetMaxLinearSolveFailures: no generated method for these argument types")
+    throw(MethodError(SNESGetMaxLinearSolveFailures, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetMaxLinearSolveFailures(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -3481,7 +3481,7 @@ See also: `SNESSetErrorIfNotConverged()`, `SNESGetMaxLinearSolveFailures()`, `SN
 $(_doc_external("SNES/SNESGetMaxNonlinearStepFailures"))
 """
 function SNESGetMaxNonlinearStepFailures(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetMaxNonlinearStepFailures: no generated method for these argument types")
+    throw(MethodError(SNESGetMaxNonlinearStepFailures, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetMaxNonlinearStepFailures(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -3518,7 +3518,7 @@ See also: `SNESSetNGS()`, `SNESGetFunction()`, `SNESNGSFn`
 $(_doc_external("SNES/SNESGetNGS"))
 """
 function SNESGetNGS(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetNGS: no generated method for these argument types")
+    throw(MethodError(SNESGetNGS, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetNGS(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -3561,7 +3561,7 @@ See also: `SNESSetNPC()`, `SNESHasNPC()`, `SNES`, `SNESCreate()`
 $(_doc_external("SNES/SNESGetNPC"))
 """
 function SNESGetNPC(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetNPC: no generated method for these argument types")
+    throw(MethodError(SNESGetNPC, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetNPC(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -3601,7 +3601,7 @@ See also: `SNES`, `SNESGetNPC()`, `SNESSetNPC()`, `SNESComputeFunction()`, `SNES
 $(_doc_external("SNES/SNESGetNPCFunction"))
 """
 function SNESGetNPCFunction(petsclib::PetscLibType, snes::AbstractSNES, F::AbstractPetscVec)
-    error("SNESGetNPCFunction: no generated method for these argument types")
+    throw(MethodError(SNESGetNPCFunction, (petsclib, snes, F)))
 end
 
 @for_petsc function SNESGetNPCFunction(petsclib::$UnionPetscLib, snes::AbstractSNES, F::AbstractPetscVec )
@@ -3643,7 +3643,7 @@ See also: `SNES`, `SNESGetNPC()`, `SNESSetNPCSide()`, `KSPGetPCSide()`, `PC_LEFT
 $(_doc_external("SNES/SNESGetNPCSide"))
 """
 function SNESGetNPCSide(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetNPCSide: no generated method for these argument types")
+    throw(MethodError(SNESGetNPCSide, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetNPCSide(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -3683,7 +3683,7 @@ See also: `SNES`, `SNESGetMaxLinearSolveFailures()`, `SNESGetLinearSolveIteratio
 $(_doc_external("SNES/SNESGetNonlinearStepFailures"))
 """
 function SNESGetNonlinearStepFailures(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetNonlinearStepFailures: no generated method for these argument types")
+    throw(MethodError(SNESGetNonlinearStepFailures, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetNonlinearStepFailures(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -3720,7 +3720,7 @@ See also: `SNES`, `SNESSetNormSchedule()`, `SNESComputeFunction()`, `VecNorm()`,
 $(_doc_external("SNES/SNESGetNormSchedule"))
 """
 function SNESGetNormSchedule(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetNormSchedule: no generated method for these argument types")
+    throw(MethodError(SNESGetNormSchedule, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetNormSchedule(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -3759,7 +3759,7 @@ See also: `SNES`, `SNESGetMaxLinearSolveFailures()`, `SNESGetLinearSolveIteratio
 $(_doc_external("SNES/SNESGetNumberFunctionEvals"))
 """
 function SNESGetNumberFunctionEvals(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetNumberFunctionEvals: no generated method for these argument types")
+    throw(MethodError(SNESGetNumberFunctionEvals, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetNumberFunctionEvals(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -3798,7 +3798,7 @@ See also: `SNES`, `SNESSetObjective()`, `SNESGetSolution()`, `SNESObjectiveFn`
 $(_doc_external("SNES/SNESGetObjective"))
 """
 function SNESGetObjective(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetObjective: no generated method for these argument types")
+    throw(MethodError(SNESGetObjective, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetObjective(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -3839,7 +3839,7 @@ See also: `SNES`, `SNESSetOptionsPrefix()`, `SNESAppendOptionsPrefix()`
 $(_doc_external("SNES/SNESGetOptionsPrefix"))
 """
 function SNESGetOptionsPrefix(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(SNESGetOptionsPrefix, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetOptionsPrefix(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -3882,7 +3882,7 @@ See also: `SNESSetFunction()`, `SNESSetPicard()`, `SNESGetFunction()`, `SNESGetJ
 $(_doc_external("SNES/SNESGetPicard"))
 """
 function SNESGetPicard(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetPicard: no generated method for these argument types")
+    throw(MethodError(SNESGetPicard, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetPicard(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -3931,7 +3931,7 @@ See also: `SNES`, `SNESGetSolution()`, `SNESGetFunction()`, `SNESComputeFunction
 $(_doc_external("SNES/SNESGetRhs"))
 """
 function SNESGetRhs(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetRhs: no generated method for these argument types")
+    throw(MethodError(SNESGetRhs, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetRhs(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -3970,7 +3970,7 @@ See also: `SNESSetSolution()`, `SNESSolve()`, `SNES`, `SNESGetSolutionUpdate()`,
 $(_doc_external("SNES/SNESGetSolution"))
 """
 function SNESGetSolution(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetSolution: no generated method for these argument types")
+    throw(MethodError(SNESGetSolution, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetSolution(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -4008,7 +4008,7 @@ See also: `SNES`, `SNESSetNormSchedule()`, `SNESComputeFunction()`, `SNESGetFunc
 $(_doc_external("SNES/SNESGetSolutionNorm"))
 """
 function SNESGetSolutionNorm(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetSolutionNorm: no generated method for these argument types")
+    throw(MethodError(SNESGetSolutionNorm, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetSolutionNorm(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -4047,7 +4047,7 @@ See also: `SNES`, `SNESGetSolution()`, `SNESGetFunction()`
 $(_doc_external("SNES/SNESGetSolutionUpdate"))
 """
 function SNESGetSolutionUpdate(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetSolutionUpdate: no generated method for these argument types")
+    throw(MethodError(SNESGetSolutionUpdate, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetSolutionUpdate(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -4089,7 +4089,7 @@ See also: `SNES`, `SNESSetTolerances()`
 $(_doc_external("SNES/SNESGetTolerances"))
 """
 function SNESGetTolerances(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetTolerances: no generated method for these argument types")
+    throw(MethodError(SNESGetTolerances, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetTolerances(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -4135,7 +4135,7 @@ See also: `SNESSetType()`, `SNESType`, `SNESSetFromOptions()`, `SNES`, `PetscObj
 $(_doc_external("SNES/SNESGetType"))
 """
 function SNESGetType(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetType: no generated method for these argument types")
+    throw(MethodError(SNESGetType, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetType(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -4173,7 +4173,7 @@ See also: `SNES`, `SNESSetNormSchedule()`, `SNESComputeFunction()`, `SNESGetFunc
 $(_doc_external("SNES/SNESGetUpdateNorm"))
 """
 function SNESGetUpdateNorm(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetUpdateNorm: no generated method for these argument types")
+    throw(MethodError(SNESGetUpdateNorm, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetUpdateNorm(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -4212,7 +4212,7 @@ See also: `SNES`, `SNESSetUseMatrixFree()`, `MatCreateSNESMF()`
 $(_doc_external("SNES/SNESGetUseMatrixFree"))
 """
 function SNESGetUseMatrixFree(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESGetUseMatrixFree: no generated method for these argument types")
+    throw(MethodError(SNESGetUseMatrixFree, (petsclib, snes)))
 end
 
 @for_petsc function SNESGetUseMatrixFree(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -4252,7 +4252,7 @@ See also: `SNESSetNPC()`, `SNESGetNPC()`
 $(_doc_external("SNES/SNESHasNPC"))
 """
 function SNESHasNPC(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESHasNPC: no generated method for these argument types")
+    throw(MethodError(SNESHasNPC, (petsclib, snes)))
 end
 
 @for_petsc function SNESHasNPC(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -4284,7 +4284,7 @@ See also: `SNES`, `PetscInitialize()`
 $(_doc_external("SNES/SNESInitializePackage"))
 """
 function SNESInitializePackage(petsclib::PetscLibType)
-    error("SNESInitializePackage: no generated method for these argument types")
+    throw(MethodError(SNESInitializePackage, (petsclib, )))
 end
 
 @for_petsc function SNESInitializePackage(petsclib::$UnionPetscLib)
@@ -4327,7 +4327,7 @@ See also: `SNES`, `SNESKSPSetUseEW()`, `SNESKSPGetUseEW()`, `SNESKSPSetParameter
 $(_doc_external("SNES/SNESKSPGetParametersEW"))
 """
 function SNESKSPGetParametersEW(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESKSPGetParametersEW: no generated method for these argument types")
+    throw(MethodError(SNESKSPGetParametersEW, (petsclib, snes)))
 end
 
 @for_petsc function SNESKSPGetParametersEW(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -4379,7 +4379,7 @@ See also: `SNESKSPSetUseEW()`, `SNESKSPGetParametersEW()`, `SNESKSPSetParameters
 $(_doc_external("SNES/SNESKSPGetUseEW"))
 """
 function SNESKSPGetUseEW(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESKSPGetUseEW: no generated method for these argument types")
+    throw(MethodError(SNESKSPGetUseEW, (petsclib, snes)))
 end
 
 @for_petsc function SNESKSPGetUseEW(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -4424,7 +4424,7 @@ See also: `SNES`, `SNESKSPSetUseEW()`, `SNESKSPGetUseEW()`, `SNESKSPGetParameter
 $(_doc_external("SNES/SNESKSPSetParametersEW"))
 """
 function SNESKSPSetParametersEW(petsclib::PetscLibType, snes::AbstractSNES, version::Integer, rtol_0::Real, rtol_max::Real, gamma::Real, alpha::Real, alpha2::Real, threshold::Real)
-    error("SNESKSPSetParametersEW: no generated method for these argument types")
+    throw(MethodError(SNESKSPSetParametersEW, (petsclib, snes, version, rtol_0, rtol_max, gamma, alpha, alpha2, threshold)))
 end
 
 @for_petsc function SNESKSPSetParametersEW(petsclib::$UnionPetscLib, snes::AbstractSNES, version::$PetscInt, rtol_0::$PetscReal, rtol_max::$PetscReal, gamma::$PetscReal, alpha::$PetscReal, alpha2::$PetscReal, threshold::$PetscReal )
@@ -4470,7 +4470,7 @@ See also: `KSP`, `SNES`, `SNESKSPGetUseEW()`, `SNESKSPGetParametersEW()`, `SNESK
 $(_doc_external("SNES/SNESKSPSetUseEW"))
 """
 function SNESKSPSetUseEW(petsclib::PetscLibType, snes::AbstractSNES, flag::PetscBool)
-    error("SNESKSPSetUseEW: no generated method for these argument types")
+    throw(MethodError(SNESKSPSetUseEW, (petsclib, snes, flag)))
 end
 
 @for_petsc function SNESKSPSetUseEW(petsclib::$UnionPetscLib, snes::AbstractSNES, flag::PetscBool )
@@ -4505,7 +4505,7 @@ See also: `SNES`, `PetscViewer`, `SNESCreate()`, `SNESType`, `PetscViewerBinaryO
 $(_doc_external("SNES/SNESLoad"))
 """
 function SNESLoad(petsclib::PetscLibType, snes::AbstractSNES, viewer::PetscViewer)
-    error("SNESLoad: no generated method for these argument types")
+    throw(MethodError(SNESLoad, (petsclib, snes, viewer)))
 end
 
 @for_petsc function SNESLoad(petsclib::$UnionPetscLib, snes::AbstractSNES, viewer::PetscViewer )
@@ -4534,7 +4534,7 @@ See also: `SNES`, `SNESMS`, `SNESMSRegister()`, `SNESMSRegisterAll()`, `SNESMSIn
 $(_doc_external("SNES/SNESMSFinalizePackage"))
 """
 function SNESMSFinalizePackage(petsclib::PetscLibType)
-    error("SNESMSFinalizePackage: no generated method for these argument types")
+    throw(MethodError(SNESMSFinalizePackage, (petsclib, )))
 end
 
 @for_petsc function SNESMSFinalizePackage(petsclib::$UnionPetscLib)
@@ -4569,7 +4569,7 @@ See also: `SNESMSSetDamping()`, `SNESMS`
 $(_doc_external("SNES/SNESMSGetDamping"))
 """
 function SNESMSGetDamping(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESMSGetDamping: no generated method for these argument types")
+    throw(MethodError(SNESMSGetDamping, (petsclib, snes)))
 end
 
 @for_petsc function SNESMSGetDamping(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -4607,7 +4607,7 @@ See also: `SNESMS`, `SNESMSSetType()`, `SNESMSType`
 $(_doc_external("SNES/SNESMSGetType"))
 """
 function SNESMSGetType(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESMSGetType: no generated method for these argument types")
+    throw(MethodError(SNESMSGetType, (petsclib, snes)))
 end
 
 @for_petsc function SNESMSGetType(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -4638,7 +4638,7 @@ See also: `SNES`, `SNESMS`, `SNESMSRegister()`, `SNESMSRegisterAll()`, `PetscIni
 $(_doc_external("SNES/SNESMSInitializePackage"))
 """
 function SNESMSInitializePackage(petsclib::PetscLibType)
-    error("SNESMSInitializePackage: no generated method for these argument types")
+    throw(MethodError(SNESMSInitializePackage, (petsclib, )))
 end
 
 @for_petsc function SNESMSInitializePackage(petsclib::$UnionPetscLib)
@@ -4676,7 +4676,7 @@ See also: `SNES`, `SNESMS`
 $(_doc_external("SNES/SNESMSRegister"))
 """
 function SNESMSRegister(petsclib::PetscLibType, name::String, nstages::Integer, nregisters::Integer, stability::Real, gamma::AbstractVector{<:Number}, delta::AbstractVector{<:Number}, betasub::AbstractVector{<:Number})
-    error("SNESMSRegister: no generated method for these argument types")
+    throw(MethodError(SNESMSRegister, (petsclib, name, nstages, nregisters, stability, gamma, delta, betasub)))
 end
 
 @for_petsc function SNESMSRegister(petsclib::$UnionPetscLib, name::String, nstages::$PetscInt, nregisters::$PetscInt, stability::$PetscReal, gamma::Vector{$PetscReal}, delta::Vector{$PetscReal}, betasub::Vector{$PetscReal} )
@@ -4706,7 +4706,7 @@ See also: `SNES`, `SNESMS`, `SNESMSRegisterDestroy()`
 $(_doc_external("SNES/SNESMSRegisterAll"))
 """
 function SNESMSRegisterAll(petsclib::PetscLibType)
-    error("SNESMSRegisterAll: no generated method for these argument types")
+    throw(MethodError(SNESMSRegisterAll, (petsclib, )))
 end
 
 @for_petsc function SNESMSRegisterAll(petsclib::$UnionPetscLib)
@@ -4735,7 +4735,7 @@ See also: `SNES`, `SNESMS`, `SNESMSRegister()`, `SNESMSRegisterAll()`
 $(_doc_external("SNES/SNESMSRegisterDestroy"))
 """
 function SNESMSRegisterDestroy(petsclib::PetscLibType)
-    error("SNESMSRegisterDestroy: no generated method for these argument types")
+    throw(MethodError(SNESMSRegisterDestroy, (petsclib, )))
 end
 
 @for_petsc function SNESMSRegisterDestroy(petsclib::$UnionPetscLib)
@@ -4768,7 +4768,7 @@ See also: `SNESMSGetDamping()`, `SNESMS`
 $(_doc_external("SNES/SNESMSSetDamping"))
 """
 function SNESMSSetDamping(petsclib::PetscLibType, snes::AbstractSNES, damping::Real)
-    error("SNESMSSetDamping: no generated method for these argument types")
+    throw(MethodError(SNESMSSetDamping, (petsclib, snes, damping)))
 end
 
 @for_petsc function SNESMSSetDamping(petsclib::$UnionPetscLib, snes::AbstractSNES, damping::$PetscReal )
@@ -4802,7 +4802,7 @@ See also: `SNESMS`, `SNESMSGetType()`, `SNESMSType`
 $(_doc_external("SNES/SNESMSSetType"))
 """
 function SNESMSSetType(petsclib::PetscLibType, snes::AbstractSNES, mstype::String)
-    error("SNESMSSetType: no generated method for these argument types")
+    throw(MethodError(SNESMSSetType, (petsclib, snes, mstype)))
 end
 
 @for_petsc function SNESMSSetType(petsclib::$UnionPetscLib, snes::AbstractSNES, mstype::String )
@@ -4837,7 +4837,7 @@ See also: `SNES`, `SNESMonitorSet()`
 $(_doc_external("SNES/SNESMonitor"))
 """
 function SNESMonitor(petsclib::PetscLibType, snes::AbstractSNES, iter::Integer, rnorm::Real)
-    error("SNESMonitor: no generated method for these argument types")
+    throw(MethodError(SNESMonitor, (petsclib, snes, iter, rnorm)))
 end
 
 @for_petsc function SNESMonitor(petsclib::$UnionPetscLib, snes::AbstractSNES, iter::$PetscInt, rnorm::$PetscReal )
@@ -4875,7 +4875,7 @@ See also: `SNES`, `SNESMonitorDefault()`, `SNESMonitorSet()`
 $(_doc_external("SNES/SNESMonitorCancel"))
 """
 function SNESMonitorCancel(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESMonitorCancel: no generated method for these argument types")
+    throw(MethodError(SNESMonitorCancel, (petsclib, snes)))
 end
 
 @for_petsc function SNESMonitorCancel(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -4916,7 +4916,7 @@ See also: `SNESMonitorSet()`, `SNESMonitorSolution()`, `SNESMonitorFunction()`, 
 $(_doc_external("SNES/SNESMonitorDefault"))
 """
 function SNESMonitorDefault(petsclib::PetscLibType, snes::AbstractSNES, its::Integer, fgnorm::Real, vf::Vector{PetscViewerAndFormat})
-    error("SNESMonitorDefault: no generated method for these argument types")
+    throw(MethodError(SNESMonitorDefault, (petsclib, snes, its, fgnorm, vf)))
 end
 
 @for_petsc function SNESMonitorDefault(petsclib::$UnionPetscLib, snes::AbstractSNES, its::$PetscInt, fgnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
@@ -4955,7 +4955,7 @@ See also: `SNESMonitorSet()`, `SNESMonitorSolution()`, `SNESMonitorDefault()`, `
 $(_doc_external("SNES/SNESMonitorDefaultField"))
 """
 function SNESMonitorDefaultField(petsclib::PetscLibType, snes::AbstractSNES, its::Integer, fgnorm::Real, vf::Vector{PetscViewerAndFormat})
-    error("SNESMonitorDefaultField: no generated method for these argument types")
+    throw(MethodError(SNESMonitorDefaultField, (petsclib, snes, its, fgnorm, vf)))
 end
 
 @for_petsc function SNESMonitorDefaultField(petsclib::$UnionPetscLib, snes::AbstractSNES, its::$PetscInt, fgnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
@@ -4989,7 +4989,7 @@ See also: `SNES`, `SNESMonitorSet()`, `SNESMonitorDefault()`, `PetscViewerAndFor
 $(_doc_external("SNES/SNESMonitorDefaultSetUp"))
 """
 function SNESMonitorDefaultSetUp(petsclib::PetscLibType, snes::AbstractSNES, vf::Vector{PetscViewerAndFormat})
-    error("SNESMonitorDefaultSetUp: no generated method for these argument types")
+    throw(MethodError(SNESMonitorDefaultSetUp, (petsclib, snes, vf)))
 end
 
 @for_petsc function SNESMonitorDefaultSetUp(petsclib::$UnionPetscLib, snes::AbstractSNES, vf::Vector{PetscViewerAndFormat} )
@@ -5012,7 +5012,7 @@ end
 $(_doc_external("SNES/SNESMonitorDefaultShort"))
 """
 function SNESMonitorDefaultShort(petsclib::PetscLibType, snes::AbstractSNES, its::Integer, fgnorm::Real, vf::Vector{PetscViewerAndFormat})
-    error("SNESMonitorDefaultShort: no generated method for these argument types")
+    throw(MethodError(SNESMonitorDefaultShort, (petsclib, snes, its, fgnorm, vf)))
 end
 
 @for_petsc function SNESMonitorDefaultShort(petsclib::$UnionPetscLib, snes::AbstractSNES, its::$PetscInt, fgnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
@@ -5048,7 +5048,7 @@ See also: `SNES`, `SNESMonitorSet()`, `SNESMonitorDefault()`
 $(_doc_external("SNES/SNESMonitorFields"))
 """
 function SNESMonitorFields(petsclib::PetscLibType, snes::AbstractSNES, its::Integer, fgnorm::Real, vf::Vector{PetscViewerAndFormat})
-    error("SNESMonitorFields: no generated method for these argument types")
+    throw(MethodError(SNESMonitorFields, (petsclib, snes, its, fgnorm, vf)))
 end
 
 @for_petsc function SNESMonitorFields(petsclib::$UnionPetscLib, snes::AbstractSNES, its::$PetscInt, fgnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
@@ -5087,7 +5087,7 @@ See also: `SNESMonitorSet()`, `SNESMonitorSolution()`, `SNESMonitorRange()`, `Pe
 $(_doc_external("SNES/SNESMonitorJacUpdateSpectrum"))
 """
 function SNESMonitorJacUpdateSpectrum(petsclib::PetscLibType, snes::AbstractSNES, it::Integer, fnorm::Real, vf::Vector{PetscViewerAndFormat})
-    error("SNESMonitorJacUpdateSpectrum: no generated method for these argument types")
+    throw(MethodError(SNESMonitorJacUpdateSpectrum, (petsclib, snes, it, fnorm, vf)))
 end
 
 @for_petsc function SNESMonitorJacUpdateSpectrum(petsclib::$UnionPetscLib, snes::AbstractSNES, it::$PetscInt, fnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
@@ -5123,7 +5123,7 @@ See also: `SNES`, `SNESMonitorSet()`, `SNESMonitorDefault()`, `PetscViewerDrawGe
 $(_doc_external("SNES/SNESMonitorLGRange"))
 """
 function SNESMonitorLGRange(petsclib::PetscLibType, snes::AbstractSNES, n::Integer, rnorm::Real, monctx::Ptr{Cvoid})
-    error("SNESMonitorLGRange: no generated method for these argument types")
+    throw(MethodError(SNESMonitorLGRange, (petsclib, snes, n, rnorm, monctx)))
 end
 
 @for_petsc function SNESMonitorLGRange(petsclib::$UnionPetscLib, snes::AbstractSNES, n::$PetscInt, rnorm::$PetscReal, monctx::Ptr{Cvoid} )
@@ -5162,7 +5162,7 @@ See also: `SNESMonitorSet()`, `SNESMonitorDefault()`, `SNESMonitorLGCreate()`, `
 $(_doc_external("SNES/SNESMonitorRange"))
 """
 function SNESMonitorRange(petsclib::PetscLibType, snes::AbstractSNES, it::Integer, rnorm::Real, vf::Vector{PetscViewerAndFormat})
-    error("SNESMonitorRange: no generated method for these argument types")
+    throw(MethodError(SNESMonitorRange, (petsclib, snes, it, rnorm, vf)))
 end
 
 @for_petsc function SNESMonitorRange(petsclib::$UnionPetscLib, snes::AbstractSNES, it::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
@@ -5201,7 +5201,7 @@ See also: `SNESMonitorRationSetUp()`, `SNESMonitorSet()`, `SNESMonitorSolution()
 $(_doc_external("SNES/SNESMonitorRatio"))
 """
 function SNESMonitorRatio(petsclib::PetscLibType, snes::AbstractSNES, its::Integer, fgnorm::Real, vf::Vector{PetscViewerAndFormat})
-    error("SNESMonitorRatio: no generated method for these argument types")
+    throw(MethodError(SNESMonitorRatio, (petsclib, snes, its, fgnorm, vf)))
 end
 
 @for_petsc function SNESMonitorRatio(petsclib::$UnionPetscLib, snes::AbstractSNES, its::$PetscInt, fgnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
@@ -5235,7 +5235,7 @@ See also: `SNESMonitorSet()`, `SNESMonitorSolution()`, `SNESMonitorDefault()`, `
 $(_doc_external("SNES/SNESMonitorRatioSetUp"))
 """
 function SNESMonitorRatioSetUp(petsclib::PetscLibType, snes::AbstractSNES, vf::Vector{PetscViewerAndFormat})
-    error("SNESMonitorRatioSetUp: no generated method for these argument types")
+    throw(MethodError(SNESMonitorRatioSetUp, (petsclib, snes, vf)))
 end
 
 @for_petsc function SNESMonitorRatioSetUp(petsclib::$UnionPetscLib, snes::AbstractSNES, vf::Vector{PetscViewerAndFormat} )
@@ -5275,7 +5275,7 @@ See also: `SNES`, `SNESMonitorSet()`, `SNESMonitorDefault()`, `VecView()`, `SNES
 $(_doc_external("SNES/SNESMonitorResidual"))
 """
 function SNESMonitorResidual(petsclib::PetscLibType, snes::AbstractSNES, its::Integer, fgnorm::Real, vf::Vector{PetscViewerAndFormat})
-    error("SNESMonitorResidual: no generated method for these argument types")
+    throw(MethodError(SNESMonitorResidual, (petsclib, snes, its, fgnorm, vf)))
 end
 
 @for_petsc function SNESMonitorResidual(petsclib::$UnionPetscLib, snes::AbstractSNES, its::$PetscInt, fgnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
@@ -5311,7 +5311,7 @@ See also: `PetscViewerSAWsOpen()`, `SNESMonitorSAWsDestroy()`, `SNESMonitorSAWsC
 $(_doc_external("SNES/SNESMonitorSAWs"))
 """
 function SNESMonitorSAWs(petsclib::PetscLibType, snes::AbstractSNES, n::Integer, rnorm::Real, ctx::Ptr{Cvoid})
-    error("SNESMonitorSAWs: no generated method for these argument types")
+    throw(MethodError(SNESMonitorSAWs, (petsclib, snes, n, rnorm, ctx)))
 end
 
 @for_petsc function SNESMonitorSAWs(petsclib::$UnionPetscLib, snes::AbstractSNES, n::$PetscInt, rnorm::$PetscReal, ctx::Ptr{Cvoid} )
@@ -5347,7 +5347,7 @@ See also: `SNESMonitorSet()`, `SNES`, `SNESMonitorSAWs()`, `SNESMonitorSAWsDestr
 $(_doc_external("SNES/SNESMonitorSAWsCreate"))
 """
 function SNESMonitorSAWsCreate(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESMonitorSAWsCreate: no generated method for these argument types")
+    throw(MethodError(SNESMonitorSAWsCreate, (petsclib, snes)))
 end
 
 @for_petsc function SNESMonitorSAWsCreate(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -5382,7 +5382,7 @@ See also: `SNESMonitorSAWsCreate()`
 $(_doc_external("SNES/SNESMonitorSAWsDestroy"))
 """
 function SNESMonitorSAWsDestroy(petsclib::PetscLibType, ctx::Ptr{Cvoid})
-    error("SNESMonitorSAWsDestroy: no generated method for these argument types")
+    throw(MethodError(SNESMonitorSAWsDestroy, (petsclib, ctx)))
 end
 
 @for_petsc function SNESMonitorSAWsDestroy(petsclib::$UnionPetscLib, ctx::Ptr{Cvoid} )
@@ -5419,7 +5419,7 @@ See also: `SNESMonitorSet()`, `SNESMonitorSolution()`, `SNESMonitorRange()`, `SN
 $(_doc_external("SNES/SNESMonitorScaling"))
 """
 function SNESMonitorScaling(petsclib::PetscLibType, snes::AbstractSNES, its::Integer, fgnorm::Real, vf::Vector{PetscViewerAndFormat})
-    error("SNESMonitorScaling: no generated method for these argument types")
+    throw(MethodError(SNESMonitorScaling, (petsclib, snes, its, fgnorm, vf)))
 end
 
 @for_petsc function SNESMonitorScaling(petsclib::$UnionPetscLib, snes::AbstractSNES, its::$PetscInt, fgnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
@@ -5469,7 +5469,7 @@ See also: `SNES`, `SNESSolve()`, `SNESMonitorDefault()`, `SNESMonitorCancel()`, 
 $(_doc_external("SNES/SNESMonitorSet"))
 """
 function SNESMonitorSet(petsclib::PetscLibType, snes::AbstractSNES, f::external, mctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid})
-    error("SNESMonitorSet: no generated method for these argument types")
+    throw(MethodError(SNESMonitorSet, (petsclib, snes, f, mctx, monitordestroy)))
 end
 
 @for_petsc function SNESMonitorSet(petsclib::$UnionPetscLib, snes::AbstractSNES, f::external, mctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid} )
@@ -5526,7 +5526,7 @@ See also: `PetscOptionsCreateViewer()`, `PetscOptionsGetReal()`, `PetscOptionsHa
 $(_doc_external("SNES/SNESMonitorSetFromOptions"))
 """
 function SNESMonitorSetFromOptions(petsclib::PetscLibType, snes::AbstractSNES, name::String, help::String, manual::String, monitor::external, monitorsetup::external)
-    error("SNESMonitorSetFromOptions: no generated method for these argument types")
+    throw(MethodError(SNESMonitorSetFromOptions, (petsclib, snes, name, help, manual, monitor, monitorsetup)))
 end
 
 @for_petsc function SNESMonitorSetFromOptions(petsclib::$UnionPetscLib, snes::AbstractSNES, name::String, help::String, manual::String, monitor::external, monitorsetup::external )
@@ -5566,7 +5566,7 @@ See also: `SNES`, `SNESMonitorSet()`, `SNESMonitorDefault()`, `VecView()`
 $(_doc_external("SNES/SNESMonitorSolution"))
 """
 function SNESMonitorSolution(petsclib::PetscLibType, snes::AbstractSNES, its::Integer, fgnorm::Real, vf::Vector{PetscViewerAndFormat})
-    error("SNESMonitorSolution: no generated method for these argument types")
+    throw(MethodError(SNESMonitorSolution, (petsclib, snes, its, fgnorm, vf)))
 end
 
 @for_petsc function SNESMonitorSolution(petsclib::$UnionPetscLib, snes::AbstractSNES, its::$PetscInt, fgnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
@@ -5606,7 +5606,7 @@ See also: `SNESMonitorSet()`, `SNESMonitorDefault()`, `VecView()`, `SNESMonitor(
 $(_doc_external("SNES/SNESMonitorSolutionUpdate"))
 """
 function SNESMonitorSolutionUpdate(petsclib::PetscLibType, snes::AbstractSNES, its::Integer, fgnorm::Real, vf::Vector{PetscViewerAndFormat})
-    error("SNESMonitorSolutionUpdate: no generated method for these argument types")
+    throw(MethodError(SNESMonitorSolutionUpdate, (petsclib, snes, its, fgnorm, vf)))
 end
 
 @for_petsc function SNESMonitorSolutionUpdate(petsclib::$UnionPetscLib, snes::AbstractSNES, its::$PetscInt, fgnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
@@ -5643,7 +5643,7 @@ See also: `SNES`, `SNESMULTIBLOCK`, `SNESMultiblockSetIS()`, `SNESMultiblockSetF
 $(_doc_external("SNES/SNESMultiblockGetSubSNES"))
 """
 function SNESMultiblockGetSubSNES(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESMultiblockGetSubSNES: no generated method for these argument types")
+    throw(MethodError(SNESMultiblockGetSubSNES, (petsclib, snes)))
 end
 
 @for_petsc function SNESMultiblockGetSubSNES(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -5681,7 +5681,7 @@ See also: `SNES`, `SNESMULTIBLOCK`, `SNESMultiblockGetSubSNES()`, `SNESMultibloc
 $(_doc_external("SNES/SNESMultiblockSetBlockSize"))
 """
 function SNESMultiblockSetBlockSize(petsclib::PetscLibType, snes::AbstractSNES, bs::Integer)
-    error("SNESMultiblockSetBlockSize: no generated method for these argument types")
+    throw(MethodError(SNESMultiblockSetBlockSize, (petsclib, snes, bs)))
 end
 
 @for_petsc function SNESMultiblockSetBlockSize(petsclib::$UnionPetscLib, snes::AbstractSNES, bs::$PetscInt )
@@ -5717,7 +5717,7 @@ See also: `SNES`, `SNESMULTIBLOCK`, `SNESMultiblockGetSubSNES()`, `SNESMultibloc
 $(_doc_external("SNES/SNESMultiblockSetFields"))
 """
 function SNESMultiblockSetFields(petsclib::PetscLibType, snes::AbstractSNES, name::String, n::Integer, fields::AbstractVector{<:Number})
-    error("SNESMultiblockSetFields: no generated method for these argument types")
+    throw(MethodError(SNESMultiblockSetFields, (petsclib, snes, name, n, fields)))
 end
 
 @for_petsc function SNESMultiblockSetFields(petsclib::$UnionPetscLib, snes::AbstractSNES, name::String, n::$PetscInt, fields::Vector{$PetscInt} )
@@ -5752,7 +5752,7 @@ See also: `SNES`, `SNESMULTIBLOCK`, `SNESMultiblockGetSubSNES()`, `SNESMultibloc
 $(_doc_external("SNES/SNESMultiblockSetIS"))
 """
 function SNESMultiblockSetIS(petsclib::PetscLibType, snes::AbstractSNES, name::String, is::AbstractIS)
-    error("SNESMultiblockSetIS: no generated method for these argument types")
+    throw(MethodError(SNESMultiblockSetIS, (petsclib, snes, name, is)))
 end
 
 @for_petsc function SNESMultiblockSetIS(petsclib::$UnionPetscLib, snes::AbstractSNES, name::String, is::AbstractIS )
@@ -5790,7 +5790,7 @@ See also: `SNES`, `SNESMULTIBLOCK`, `PCCompositeSetType()`, `PC_COMPOSITE_ADDITI
 $(_doc_external("SNES/SNESMultiblockSetType"))
 """
 function SNESMultiblockSetType(petsclib::PetscLibType, snes::AbstractSNES, type::PCCompositeType)
-    error("SNESMultiblockSetType: no generated method for these argument types")
+    throw(MethodError(SNESMultiblockSetType, (petsclib, snes, type)))
 end
 
 @for_petsc function SNESMultiblockSetType(petsclib::$UnionPetscLib, snes::AbstractSNES, type::PCCompositeType )
@@ -5826,7 +5826,7 @@ See also: `SNES`, `SNESNASM`, `SNESNASMSetDamping()`
 $(_doc_external("SNES/SNESNASMGetDamping"))
 """
 function SNESNASMGetDamping(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESNASMGetDamping: no generated method for these argument types")
+    throw(MethodError(SNESNASMGetDamping, (petsclib, snes)))
 end
 
 @for_petsc function SNESNASMGetDamping(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -5864,7 +5864,7 @@ See also: `SNESNASM`, `SNESNASMGetSNES()`
 $(_doc_external("SNES/SNESNASMGetNumber"))
 """
 function SNESNASMGetNumber(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESNASMGetNumber: no generated method for these argument types")
+    throw(MethodError(SNESNASMGetNumber, (petsclib, snes)))
 end
 
 @for_petsc function SNESNASMGetNumber(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -5903,7 +5903,7 @@ See also: `SNESNASM`, `SNESNASMGetNumber()`
 $(_doc_external("SNES/SNESNASMGetSNES"))
 """
 function SNESNASMGetSNES(petsclib::PetscLibType, snes::AbstractSNES, i::Integer)
-    error("SNESNASMGetSNES: no generated method for these argument types")
+    throw(MethodError(SNESNASMGetSNES, (petsclib, snes, i)))
 end
 
 @for_petsc function SNESNASMGetSNES(petsclib::$UnionPetscLib, snes::AbstractSNES, i::$PetscInt )
@@ -5945,7 +5945,7 @@ See also: `SNES`, `SNESNASM`, `SNESNASMGetSubdomains()`
 $(_doc_external("SNES/SNESNASMGetSubdomainVecs"))
 """
 function SNESNASMGetSubdomainVecs(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESNASMGetSubdomainVecs: no generated method for these argument types")
+    throw(MethodError(SNESNASMGetSubdomainVecs, (petsclib, snes)))
 end
 
 @for_petsc function SNESNASMGetSubdomainVecs(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -5995,7 +5995,7 @@ See also: `SNES`, `SNESNASM`, `SNESNASMSetSubdomains()`
 $(_doc_external("SNES/SNESNASMGetSubdomains"))
 """
 function SNESNASMGetSubdomains(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESNASMGetSubdomains: no generated method for these argument types")
+    throw(MethodError(SNESNASMGetSubdomains, (petsclib, snes)))
 end
 
 @for_petsc function SNESNASMGetSubdomains(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -6041,7 +6041,7 @@ See also: `SNES`, `SNESNASM`, `SNESNASMSetType()`, `PCASMGetType()`, `PC_ASM_BAS
 $(_doc_external("SNES/SNESNASMGetType"))
 """
 function SNESNASMGetType(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESNASMGetType: no generated method for these argument types")
+    throw(MethodError(SNESNASMGetType, (petsclib, snes)))
 end
 
 @for_petsc function SNESNASMGetType(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -6078,7 +6078,7 @@ See also: `SNES`, `SNESNASM`, `SNESNASMGetSubdomains()`
 $(_doc_external("SNES/SNESNASMSetComputeFinalJacobian"))
 """
 function SNESNASMSetComputeFinalJacobian(petsclib::PetscLibType, snes::AbstractSNES, flg::PetscBool)
-    error("SNESNASMSetComputeFinalJacobian: no generated method for these argument types")
+    throw(MethodError(SNESNASMSetComputeFinalJacobian, (petsclib, snes, flg)))
 end
 
 @for_petsc function SNESNASMSetComputeFinalJacobian(petsclib::$UnionPetscLib, snes::AbstractSNES, flg::PetscBool )
@@ -6115,7 +6115,7 @@ See also: `SNES`, `SNESNASM`, `SNESNASMGetDamping()`
 $(_doc_external("SNES/SNESNASMSetDamping"))
 """
 function SNESNASMSetDamping(petsclib::PetscLibType, snes::AbstractSNES, dmp::Real)
-    error("SNESNASMSetDamping: no generated method for these argument types")
+    throw(MethodError(SNESNASMSetDamping, (petsclib, snes, dmp)))
 end
 
 @for_petsc function SNESNASMSetDamping(petsclib::$UnionPetscLib, snes::AbstractSNES, dmp::$PetscReal )
@@ -6153,7 +6153,7 @@ See also: `SNES`, `SNESNASM`, `SNESNASMGetSubdomains()`
 $(_doc_external("SNES/SNESNASMSetSubdomains"))
 """
 function SNESNASMSetSubdomains(petsclib::PetscLibType, snes::AbstractSNES, n::Integer, subsnes::Vector{<:AbstractSNES}, iscatter::Vector{VecScatter}, oscatter::Vector{VecScatter}, gscatter::Vector{VecScatter})
-    error("SNESNASMSetSubdomains: no generated method for these argument types")
+    throw(MethodError(SNESNASMSetSubdomains, (petsclib, snes, n, subsnes, iscatter, oscatter, gscatter)))
 end
 
 @for_petsc function SNESNASMSetSubdomains(petsclib::$UnionPetscLib, snes::AbstractSNES, n::$PetscInt, subsnes::Vector{<:AbstractSNES}, iscatter::Vector{VecScatter}, oscatter::Vector{VecScatter}, gscatter::Vector{VecScatter} )
@@ -6190,7 +6190,7 @@ See also: `SNES`, `SNESNASM`, `SNESNASMGetType()`, `PCASMSetType()`, `PC_ASM_BAS
 $(_doc_external("SNES/SNESNASMSetType"))
 """
 function SNESNASMSetType(petsclib::PetscLibType, snes::AbstractSNES, type::PCASMType)
-    error("SNESNASMSetType: no generated method for these argument types")
+    throw(MethodError(SNESNASMSetType, (petsclib, snes, type)))
 end
 
 @for_petsc function SNESNASMSetType(petsclib::$UnionPetscLib, snes::AbstractSNES, type::PCASMType )
@@ -6224,7 +6224,7 @@ See also: `SNESNASM`
 $(_doc_external("SNES/SNESNASMSetWeight"))
 """
 function SNESNASMSetWeight(petsclib::PetscLibType, snes::AbstractSNES, weight::AbstractPetscVec)
-    error("SNESNASMSetWeight: no generated method for these argument types")
+    throw(MethodError(SNESNASMSetWeight, (petsclib, snes, weight)))
 end
 
 @for_petsc function SNESNASMSetWeight(petsclib::$UnionPetscLib, snes::AbstractSNES, weight::AbstractPetscVec )
@@ -6261,7 +6261,7 @@ See also: `SNES`, `SNESNCG`, `SNESNCGType`, `SNES_NCG_FR`, `SNES_NCG_PRP`, `SNES
 $(_doc_external("SNES/SNESNCGSetType"))
 """
 function SNESNCGSetType(petsclib::PetscLibType, snes::AbstractSNES, btype::SNESNCGType)
-    error("SNESNCGSetType: no generated method for these argument types")
+    throw(MethodError(SNESNCGSetType, (petsclib, snes, btype)))
 end
 
 @for_petsc function SNESNCGSetType(petsclib::$UnionPetscLib, snes::AbstractSNES, btype::SNESNCGType )
@@ -6297,7 +6297,7 @@ See also: `SNES`, `SNESNGMRES`, `SNESNGMRESSetRestartFmRise()`, `SNESNGMRESSetRe
 $(_doc_external("SNES/SNESNGMRESGetRestartFmRise"))
 """
 function SNESNGMRESGetRestartFmRise(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESNGMRESGetRestartFmRise: no generated method for these argument types")
+    throw(MethodError(SNESNGMRESGetRestartFmRise, (petsclib, snes)))
 end
 
 @for_petsc function SNESNGMRESGetRestartFmRise(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -6334,7 +6334,7 @@ See also: `SNES`, `SNES_NGMRES_RESTART_DIFFERENCE`, `SNESNGMRES`, `SNESNGMRESRes
 $(_doc_external("SNES/SNESNGMRESSetRestartFmRise"))
 """
 function SNESNGMRESSetRestartFmRise(petsclib::PetscLibType, snes::AbstractSNES, flg::PetscBool)
-    error("SNESNGMRESSetRestartFmRise: no generated method for these argument types")
+    throw(MethodError(SNESNGMRESSetRestartFmRise, (petsclib, snes, flg)))
 end
 
 @for_petsc function SNESNGMRESSetRestartFmRise(petsclib::$UnionPetscLib, snes::AbstractSNES, flg::PetscBool )
@@ -6373,7 +6373,7 @@ See also: `SNES`, `SNES_NGMRES_RESTART_DIFFERENCE`, `SNESNGMRES`, `SNESNGMRESRes
 $(_doc_external("SNES/SNESNGMRESSetRestartType"))
 """
 function SNESNGMRESSetRestartType(petsclib::PetscLibType, snes::AbstractSNES, rtype::SNESNGMRESRestartType)
-    error("SNESNGMRESSetRestartType: no generated method for these argument types")
+    throw(MethodError(SNESNGMRESSetRestartType, (petsclib, snes, rtype)))
 end
 
 @for_petsc function SNESNGMRESSetRestartType(petsclib::$UnionPetscLib, snes::AbstractSNES, rtype::SNESNGMRESRestartType )
@@ -6412,7 +6412,7 @@ See also: `SNES`, `SNESNGMRES`, `SNESNGMRESSelectType`, `SNES_NGMRES_SELECT_NONE
 $(_doc_external("SNES/SNESNGMRESSetSelectType"))
 """
 function SNESNGMRESSetSelectType(petsclib::PetscLibType, snes::AbstractSNES, stype::SNESNGMRESSelectType)
-    error("SNESNGMRESSetSelectType: no generated method for these argument types")
+    throw(MethodError(SNESNGMRESSetSelectType, (petsclib, snes, stype)))
 end
 
 @for_petsc function SNESNGMRESSetSelectType(petsclib::$UnionPetscLib, snes::AbstractSNES, stype::SNESNGMRESSelectType )
@@ -6446,7 +6446,7 @@ See also: `SNES`, `SNESNCG`, `SNESSetNGS()`, `SNESGetNGS()`, `SNESSetNPC()`, `SN
 $(_doc_external("SNES/SNESNGSGetSweeps"))
 """
 function SNESNGSGetSweeps(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESNGSGetSweeps: no generated method for these argument types")
+    throw(MethodError(SNESNGSGetSweeps, (petsclib, snes)))
 end
 
 @for_petsc function SNESNGSGetSweeps(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -6486,7 +6486,7 @@ See also: `SNES`, `SNESNCG`, `SNESSetTolerances()`
 $(_doc_external("SNES/SNESNGSGetTolerances"))
 """
 function SNESNGSGetTolerances(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESNGSGetTolerances: no generated method for these argument types")
+    throw(MethodError(SNESNGSGetTolerances, (petsclib, snes)))
 end
 
 @for_petsc function SNESNGSGetTolerances(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -6531,7 +6531,7 @@ See also: `SNES`, `SNESNCG`, `SNESSetNGS()`, `SNESGetNGS()`, `SNESSetNPC()`, `SN
 $(_doc_external("SNES/SNESNGSSetSweeps"))
 """
 function SNESNGSSetSweeps(petsclib::PetscLibType, snes::AbstractSNES, sweeps::Integer)
-    error("SNESNGSSetSweeps: no generated method for these argument types")
+    throw(MethodError(SNESNGSSetSweeps, (petsclib, snes, sweeps)))
 end
 
 @for_petsc function SNESNGSSetSweeps(petsclib::$UnionPetscLib, snes::AbstractSNES, sweeps::$PetscInt )
@@ -6574,7 +6574,7 @@ See also: `SNES`, `SNESNCG`
 $(_doc_external("SNES/SNESNGSSetTolerances"))
 """
 function SNESNGSSetTolerances(petsclib::PetscLibType, snes::AbstractSNES, abstol::Real, rtol::Real, stol::Real, maxit::Integer)
-    error("SNESNGSSetTolerances: no generated method for these argument types")
+    throw(MethodError(SNESNGSSetTolerances, (petsclib, snes, abstol, rtol, stol, maxit)))
 end
 
 @for_petsc function SNESNGSSetTolerances(petsclib::$UnionPetscLib, snes::AbstractSNES, abstol::$PetscReal, rtol::$PetscReal, stol::$PetscReal, maxit::$PetscInt )
@@ -6611,7 +6611,7 @@ See also: `SNES`, `SNESNewtonALSetFunction()`, `SNESNewtonALGetFunction()`
 $(_doc_external("SNES/SNESNewtonALComputeFunction"))
 """
 function SNESNewtonALComputeFunction(petsclib::PetscLibType, snes::AbstractSNES, X::AbstractPetscVec, Q::AbstractPetscVec)
-    error("SNESNewtonALComputeFunction: no generated method for these argument types")
+    throw(MethodError(SNESNewtonALComputeFunction, (petsclib, snes, X, Q)))
 end
 
 @for_petsc function SNESNewtonALComputeFunction(petsclib::$UnionPetscLib, snes::AbstractSNES, X::AbstractPetscVec, Q::AbstractPetscVec )
@@ -6646,7 +6646,7 @@ See also: `SNES`, `SNESNEWTONAL`, `SNESNewtonALSetFunction()`
 $(_doc_external("SNES/SNESNewtonALGetFunction"))
 """
 function SNESNewtonALGetFunction(petsclib::PetscLibType, snes::AbstractSNES, func::Ptr{Ptr{Cvoid}}, ctx::Ptr{Cvoid})
-    error("SNESNewtonALGetFunction: no generated method for these argument types")
+    throw(MethodError(SNESNewtonALGetFunction, (petsclib, snes, func, ctx)))
 end
 
 @for_petsc function SNESNewtonALGetFunction(petsclib::$UnionPetscLib, snes::AbstractSNES, func::Ptr{Ptr{Cvoid}}, ctx::Ptr{Cvoid} )
@@ -6682,7 +6682,7 @@ See also: `SNES`, `SNESNEWTONAL`, `SNESNewtonALSetFunction()`
 $(_doc_external("SNES/SNESNewtonALGetLoadParameter"))
 """
 function SNESNewtonALGetLoadParameter(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESNewtonALGetLoadParameter: no generated method for these argument types")
+    throw(MethodError(SNESNewtonALGetLoadParameter, (petsclib, snes)))
 end
 
 @for_petsc function SNESNewtonALGetLoadParameter(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -6721,7 +6721,7 @@ See also: `SNES`, `SNESNEWTONAL`, `SNESNewtonALCorrectionType`
 $(_doc_external("SNES/SNESNewtonALSetCorrectionType"))
 """
 function SNESNewtonALSetCorrectionType(petsclib::PetscLibType, snes::AbstractSNES, ctype::SNESNewtonALCorrectionType)
-    error("SNESNewtonALSetCorrectionType: no generated method for these argument types")
+    throw(MethodError(SNESNewtonALSetCorrectionType, (petsclib, snes, ctype)))
 end
 
 @for_petsc function SNESNewtonALSetCorrectionType(petsclib::$UnionPetscLib, snes::AbstractSNES, ctype::SNESNewtonALCorrectionType )
@@ -6753,7 +6753,7 @@ See also: `SNES`, `SNESNEWTONAL`, `SNESNewtonALSetFunction()`, `SNESNewtonALGetL
 $(_doc_external("SNES/SNESNewtonALSetDiagonalScaling"))
 """
 function SNESNewtonALSetDiagonalScaling(petsclib::PetscLibType, snes::AbstractSNES, v::AbstractPetscVec)
-    error("SNESNewtonALSetDiagonalScaling: no generated method for these argument types")
+    throw(MethodError(SNESNewtonALSetDiagonalScaling, (petsclib, snes, v)))
 end
 
 @for_petsc function SNESNewtonALSetDiagonalScaling(petsclib::$UnionPetscLib, snes::AbstractSNES, v::AbstractPetscVec )
@@ -6789,7 +6789,7 @@ See also: `SNES`, `SNESNEWTONAL`, `SNESNewtonALGetFunction()`, `SNESNewtonALGetL
 $(_doc_external("SNES/SNESNewtonALSetFunction"))
 """
 function SNESNewtonALSetFunction(petsclib::PetscLibType, snes::AbstractSNES, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
-    error("SNESNewtonALSetFunction: no generated method for these argument types")
+    throw(MethodError(SNESNewtonALSetFunction, (petsclib, snes, func, ctx)))
 end
 
 @for_petsc function SNESNewtonALSetFunction(petsclib::$UnionPetscLib, snes::AbstractSNES, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
@@ -6835,7 +6835,7 @@ See also: `SNES`, `SNESNEWTONTRDC`, `SNESNewtonTRDCSetPostCheck()`, `SNESNewtonT
 $(_doc_external("SNES/SNESNewtonTRDCGetPostCheck"))
 """
 function SNESNewtonTRDCGetPostCheck(petsclib::PetscLibType, snes::AbstractSNES, noname::Ptr{Cvoid})
-    error("SNESNewtonTRDCGetPostCheck: no generated method for these argument types")
+    throw(MethodError(SNESNewtonTRDCGetPostCheck, (petsclib, snes, noname)))
 end
 
 @for_petsc function SNESNewtonTRDCGetPostCheck(petsclib::$UnionPetscLib, snes::AbstractSNES, noname::Ptr{Cvoid} )
@@ -6879,7 +6879,7 @@ See also: `SNES`, `SNESNEWTONTRDC`, `SNESNewtonTRDCSetPreCheck()`, `SNESNewtonTR
 $(_doc_external("SNES/SNESNewtonTRDCGetPreCheck"))
 """
 function SNESNewtonTRDCGetPreCheck(petsclib::PetscLibType, snes::AbstractSNES, noname::Ptr{Cvoid})
-    error("SNESNewtonTRDCGetPreCheck: no generated method for these argument types")
+    throw(MethodError(SNESNewtonTRDCGetPreCheck, (petsclib, snes, noname)))
 end
 
 @for_petsc function SNESNewtonTRDCGetPreCheck(petsclib::$UnionPetscLib, snes::AbstractSNES, noname::Ptr{Cvoid} )
@@ -6916,7 +6916,7 @@ See also: `SNES`, `SNESNEWTONTRDC`, `SNESNewtonTRDCPreCheck()`, `SNESNewtonTRDCG
 $(_doc_external("SNES/SNESNewtonTRDCGetRhoFlag"))
 """
 function SNESNewtonTRDCGetRhoFlag(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESNewtonTRDCGetRhoFlag: no generated method for these argument types")
+    throw(MethodError(SNESNewtonTRDCGetRhoFlag, (petsclib, snes)))
 end
 
 @for_petsc function SNESNewtonTRDCGetRhoFlag(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -6963,7 +6963,7 @@ See also: `SNES`, `SNESNEWTONTRDC`, `SNESNewtonTRDCPostCheck()`, `SNESNewtonTRDC
 $(_doc_external("SNES/SNESNewtonTRDCSetPostCheck"))
 """
 function SNESNewtonTRDCSetPostCheck(petsclib::PetscLibType, snes::AbstractSNES, func::external, ctx::Ptr{Cvoid})
-    error("SNESNewtonTRDCSetPostCheck: no generated method for these argument types")
+    throw(MethodError(SNESNewtonTRDCSetPostCheck, (petsclib, snes, func, ctx)))
 end
 
 @for_petsc function SNESNewtonTRDCSetPostCheck(petsclib::$UnionPetscLib, snes::AbstractSNES, func::external, ctx::Ptr{Cvoid} )
@@ -7007,7 +7007,7 @@ See also: `SNES`, `SNESNEWTONTRDC`, `SNESNewtonTRDCPreCheck()`, `SNESNewtonTRDCG
 $(_doc_external("SNES/SNESNewtonTRDCSetPreCheck"))
 """
 function SNESNewtonTRDCSetPreCheck(petsclib::PetscLibType, snes::AbstractSNES, func::external, ctx::Ptr{Cvoid})
-    error("SNESNewtonTRDCSetPreCheck: no generated method for these argument types")
+    throw(MethodError(SNESNewtonTRDCSetPreCheck, (petsclib, snes, func, ctx)))
 end
 
 @for_petsc function SNESNewtonTRDCSetPreCheck(petsclib::$UnionPetscLib, snes::AbstractSNES, func::external, ctx::Ptr{Cvoid} )
@@ -7053,7 +7053,7 @@ See also: `SNESNEWTONTR`, `SNESNewtonTRSetPostCheck()`, `SNESNewtonTRPostCheck()
 $(_doc_external("SNES/SNESNewtonTRGetPostCheck"))
 """
 function SNESNewtonTRGetPostCheck(petsclib::PetscLibType, snes::AbstractSNES, noname::Ptr{Cvoid})
-    error("SNESNewtonTRGetPostCheck: no generated method for these argument types")
+    throw(MethodError(SNESNewtonTRGetPostCheck, (petsclib, snes, noname)))
 end
 
 @for_petsc function SNESNewtonTRGetPostCheck(petsclib::$UnionPetscLib, snes::AbstractSNES, noname::Ptr{Cvoid} )
@@ -7097,7 +7097,7 @@ See also: `SNESNEWTONTR`, `SNESNewtonTRSetPreCheck()`, `SNESNewtonTRPreCheck()`
 $(_doc_external("SNES/SNESNewtonTRGetPreCheck"))
 """
 function SNESNewtonTRGetPreCheck(petsclib::PetscLibType, snes::AbstractSNES, noname::Ptr{Cvoid})
-    error("SNESNewtonTRGetPreCheck: no generated method for these argument types")
+    throw(MethodError(SNESNewtonTRGetPreCheck, (petsclib, snes, noname)))
 end
 
 @for_petsc function SNESNewtonTRGetPreCheck(petsclib::$UnionPetscLib, snes::AbstractSNES, noname::Ptr{Cvoid} )
@@ -7135,7 +7135,7 @@ See also: `SNES`, `SNESNEWTONTR`, `SNESNewtonTRSetTolerances()`
 $(_doc_external("SNES/SNESNewtonTRGetTolerances"))
 """
 function SNESNewtonTRGetTolerances(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESNewtonTRGetTolerances: no generated method for these argument types")
+    throw(MethodError(SNESNewtonTRGetTolerances, (petsclib, snes)))
 end
 
 @for_petsc function SNESNewtonTRGetTolerances(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -7181,7 +7181,7 @@ See also: `SNES`, `SNESNEWTONTR`, `SNESNewtonTRSetUpdateParameters()`
 $(_doc_external("SNES/SNESNewtonTRGetUpdateParameters"))
 """
 function SNESNewtonTRGetUpdateParameters(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESNewtonTRGetUpdateParameters: no generated method for these argument types")
+    throw(MethodError(SNESNewtonTRGetUpdateParameters, (petsclib, snes)))
 end
 
 @for_petsc function SNESNewtonTRGetUpdateParameters(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -7229,7 +7229,7 @@ See also: `SNESNEWTONTR`, `SNESNewtonTRSetPostCheck()`, `SNESNewtonTRGetPostChec
 $(_doc_external("SNES/SNESNewtonTRPostCheck"))
 """
 function SNESNewtonTRPostCheck(petsclib::PetscLibType, snes::AbstractSNES, X::AbstractPetscVec, Y::AbstractPetscVec, W::AbstractPetscVec)
-    error("SNESNewtonTRPostCheck: no generated method for these argument types")
+    throw(MethodError(SNESNewtonTRPostCheck, (petsclib, snes, X, Y, W)))
 end
 
 @for_petsc function SNESNewtonTRPostCheck(petsclib::$UnionPetscLib, snes::AbstractSNES, X::AbstractPetscVec, Y::AbstractPetscVec, W::AbstractPetscVec )
@@ -7271,7 +7271,7 @@ See also: `SNESNEWTONTR`, `SNESNewtonTRSetPreCheck()`, `SNESNewtonTRGetPreCheck(
 $(_doc_external("SNES/SNESNewtonTRPreCheck"))
 """
 function SNESNewtonTRPreCheck(petsclib::PetscLibType, snes::AbstractSNES, X::AbstractPetscVec, Y::AbstractPetscVec)
-    error("SNESNewtonTRPreCheck: no generated method for these argument types")
+    throw(MethodError(SNESNewtonTRPreCheck, (petsclib, snes, X, Y)))
 end
 
 @for_petsc function SNESNewtonTRPreCheck(petsclib::$UnionPetscLib, snes::AbstractSNES, X::AbstractPetscVec, Y::AbstractPetscVec )
@@ -7306,7 +7306,7 @@ See also: `SNESNEWTONTR`, `SNESNewtonTRPreCheck()`, `SNESNewtonTRGetPreCheck()`,
 $(_doc_external("SNES/SNESNewtonTRSetFallbackType"))
 """
 function SNESNewtonTRSetFallbackType(petsclib::PetscLibType, snes::AbstractSNES, ftype::SNESNewtonTRFallbackType)
-    error("SNESNewtonTRSetFallbackType: no generated method for these argument types")
+    throw(MethodError(SNESNewtonTRSetFallbackType, (petsclib, snes, ftype)))
 end
 
 @for_petsc function SNESNewtonTRSetFallbackType(petsclib::$UnionPetscLib, snes::AbstractSNES, ftype::SNESNewtonTRFallbackType )
@@ -7338,7 +7338,7 @@ See also: `SNESNEWTONTR`, `NormType`
 $(_doc_external("SNES/SNESNewtonTRSetNormType"))
 """
 function SNESNewtonTRSetNormType(petsclib::PetscLibType, snes::AbstractSNES, norm::NormType)
-    error("SNESNewtonTRSetNormType: no generated method for these argument types")
+    throw(MethodError(SNESNewtonTRSetNormType, (petsclib, snes, norm)))
 end
 
 @for_petsc function SNESNewtonTRSetNormType(petsclib::$UnionPetscLib, snes::AbstractSNES, norm::NormType )
@@ -7383,7 +7383,7 @@ See also: `SNESNEWTONTR`, `SNESNewtonTRPostCheck()`, `SNESNewtonTRGetPostCheck()
 $(_doc_external("SNES/SNESNewtonTRSetPostCheck"))
 """
 function SNESNewtonTRSetPostCheck(petsclib::PetscLibType, snes::AbstractSNES, func::external, ctx::Ptr{Cvoid})
-    error("SNESNewtonTRSetPostCheck: no generated method for these argument types")
+    throw(MethodError(SNESNewtonTRSetPostCheck, (petsclib, snes, func, ctx)))
 end
 
 @for_petsc function SNESNewtonTRSetPostCheck(petsclib::$UnionPetscLib, snes::AbstractSNES, func::external, ctx::Ptr{Cvoid} )
@@ -7426,7 +7426,7 @@ See also: `SNESNEWTONTR`, `SNESNewtonTRPreCheck()`, `SNESNewtonTRGetPreCheck()`,
 $(_doc_external("SNES/SNESNewtonTRSetPreCheck"))
 """
 function SNESNewtonTRSetPreCheck(petsclib::PetscLibType, snes::AbstractSNES, func::external, ctx::Ptr{Cvoid})
-    error("SNESNewtonTRSetPreCheck: no generated method for these argument types")
+    throw(MethodError(SNESNewtonTRSetPreCheck, (petsclib, snes, func, ctx)))
 end
 
 @for_petsc function SNESNewtonTRSetPreCheck(petsclib::$UnionPetscLib, snes::AbstractSNES, func::external, ctx::Ptr{Cvoid} )
@@ -7458,7 +7458,7 @@ See also: `SNESNEWTONTR`, `SNESNewtonTRQNType`, `MATLMVM`
 $(_doc_external("SNES/SNESNewtonTRSetQNType"))
 """
 function SNESNewtonTRSetQNType(petsclib::PetscLibType, snes::AbstractSNES, use::SNESNewtonTRQNType)
-    error("SNESNewtonTRSetQNType: no generated method for these argument types")
+    throw(MethodError(SNESNewtonTRSetQNType, (petsclib, snes, use)))
 end
 
 @for_petsc function SNESNewtonTRSetQNType(petsclib::$UnionPetscLib, snes::AbstractSNES, use::SNESNewtonTRQNType )
@@ -7497,7 +7497,7 @@ See also: `SNES`, `SNESNEWTONTR`, `SNESNewtonTRGetTolerances()`
 $(_doc_external("SNES/SNESNewtonTRSetTolerances"))
 """
 function SNESNewtonTRSetTolerances(petsclib::PetscLibType, snes::AbstractSNES, delta_min::Real, delta_max::Real, delta_0::Real)
-    error("SNESNewtonTRSetTolerances: no generated method for these argument types")
+    throw(MethodError(SNESNewtonTRSetTolerances, (petsclib, snes, delta_min, delta_max, delta_0)))
 end
 
 @for_petsc function SNESNewtonTRSetTolerances(petsclib::$UnionPetscLib, snes::AbstractSNES, delta_min::$PetscReal, delta_max::$PetscReal, delta_0::$PetscReal )
@@ -7540,7 +7540,7 @@ See also: `SNES`, `SNESNEWTONTR`, `SNESSetObjective()`, `SNESNewtonTRGetUpdatePa
 $(_doc_external("SNES/SNESNewtonTRSetUpdateParameters"))
 """
 function SNESNewtonTRSetUpdateParameters(petsclib::PetscLibType, snes::AbstractSNES, eta1::Real, eta2::Real, eta3::Real, t1::Real, t2::Real)
-    error("SNESNewtonTRSetUpdateParameters: no generated method for these argument types")
+    throw(MethodError(SNESNewtonTRSetUpdateParameters, (petsclib, snes, eta1, eta2, eta3, t1, t2)))
 end
 
 @for_petsc function SNESNewtonTRSetUpdateParameters(petsclib::$UnionPetscLib, snes::AbstractSNES, eta1::$PetscReal, eta2::$PetscReal, eta3::$PetscReal, t1::$PetscReal, t2::$PetscReal )
@@ -7582,7 +7582,7 @@ See also: `SNESSetObjective()`, `SNESSetFunction()`, `SNESComputeObjective()`, `
 $(_doc_external("SNES/SNESObjectiveComputeFunctionDefaultFD"))
 """
 function SNESObjectiveComputeFunctionDefaultFD(petsclib::PetscLibType, snes::AbstractSNES, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid})
-    error("SNESObjectiveComputeFunctionDefaultFD: no generated method for these argument types")
+    throw(MethodError(SNESObjectiveComputeFunctionDefaultFD, (petsclib, snes, X, F, ctx)))
 end
 
 @for_petsc function SNESObjectiveComputeFunctionDefaultFD(petsclib::$UnionPetscLib, snes::AbstractSNES, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid} )
@@ -7617,7 +7617,7 @@ See also: `SNES`, `SNESSolve()`, `SNESDestroy()`, `SNESSetLagPreconditioner()`, 
 $(_doc_external("SNES/SNESParametersInitialize"))
 """
 function SNESParametersInitialize(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESParametersInitialize: no generated method for these argument types")
+    throw(MethodError(SNESParametersInitialize, (petsclib, snes)))
 end
 
 @for_petsc function SNESParametersInitialize(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -7651,7 +7651,7 @@ See also: `SNESPATCH`, `PCPATCH`, `PCPatchSetCellNumbering()`, `PetscSection`
 $(_doc_external("SNES/SNESPatchSetCellNumbering"))
 """
 function SNESPatchSetCellNumbering(petsclib::PetscLibType, snes::AbstractSNES, cellNumbering::PetscSection)
-    error("SNESPatchSetCellNumbering: no generated method for these argument types")
+    throw(MethodError(SNESPatchSetCellNumbering, (petsclib, snes, cellNumbering)))
 end
 
 @for_petsc function SNESPatchSetCellNumbering(petsclib::$UnionPetscLib, snes::AbstractSNES, cellNumbering::PetscSection )
@@ -7697,7 +7697,7 @@ See also: `SNESPATCH`, `PCPATCH`, `PCPatchSetComputeFunction()`, `SNESPatchSetCo
 $(_doc_external("SNES/SNESPatchSetComputeFunction"))
 """
 function SNESPatchSetComputeFunction(petsclib::PetscLibType, snes::AbstractSNES, func::external, ctx::Ptr{Cvoid})
-    error("SNESPatchSetComputeFunction: no generated method for these argument types")
+    throw(MethodError(SNESPatchSetComputeFunction, (petsclib, snes, func, ctx)))
 end
 
 @for_petsc function SNESPatchSetComputeFunction(petsclib::$UnionPetscLib, snes::AbstractSNES, func::external, ctx::Ptr{Cvoid} )
@@ -7743,7 +7743,7 @@ See also: `SNESPATCH`, `PCPATCH`, `PCPatchSetComputeOperator()`, `SNESPatchSetCo
 $(_doc_external("SNES/SNESPatchSetComputeOperator"))
 """
 function SNESPatchSetComputeOperator(petsclib::PetscLibType, snes::AbstractSNES, func::external, ctx::Ptr{Cvoid})
-    error("SNESPatchSetComputeOperator: no generated method for these argument types")
+    throw(MethodError(SNESPatchSetComputeOperator, (petsclib, snes, func, ctx)))
 end
 
 @for_petsc function SNESPatchSetComputeOperator(petsclib::$UnionPetscLib, snes::AbstractSNES, func::external, ctx::Ptr{Cvoid} )
@@ -7786,7 +7786,7 @@ See also: `SNESPATCH`, `PCPATCH`, `PCPatchSetConstructType()`, `PCPatchConstruct
 $(_doc_external("SNES/SNESPatchSetConstructType"))
 """
 function SNESPatchSetConstructType(petsclib::PetscLibType, snes::AbstractSNES, ctype::PCPatchConstructType, func::external, ctx::Ptr{Cvoid})
-    error("SNESPatchSetConstructType: no generated method for these argument types")
+    throw(MethodError(SNESPatchSetConstructType, (petsclib, snes, ctype, func, ctx)))
 end
 
 @for_petsc function SNESPatchSetConstructType(petsclib::$UnionPetscLib, snes::AbstractSNES, ctype::PCPatchConstructType, func::external, ctx::Ptr{Cvoid} )
@@ -7829,7 +7829,7 @@ See also: `SNESPATCH`, `PCPATCH`, `PCPatchSetDiscretisationInfo()`, `SNESPatchSe
 $(_doc_external("SNES/SNESPatchSetDiscretisationInfo"))
 """
 function SNESPatchSetDiscretisationInfo(petsclib::PetscLibType, snes::AbstractSNES, nsubspaces::Integer, dms::Vector{<:AbstractPetscDM}, bs::AbstractVector{<:Number}, nodesPerCell::AbstractVector{<:Number}, cellNodeMap::Integer, subspaceOffsets::AbstractVector{<:Number}, numGhostBcs::Integer, ghostBcNodes::AbstractVector{<:Number}, numGlobalBcs::Integer, globalBcNodes::AbstractVector{<:Number})
-    error("SNESPatchSetDiscretisationInfo: no generated method for these argument types")
+    throw(MethodError(SNESPatchSetDiscretisationInfo, (petsclib, snes, nsubspaces, dms, bs, nodesPerCell, cellNodeMap, subspaceOffsets, numGhostBcs, ghostBcNodes, numGlobalBcs, globalBcNodes)))
 end
 
 @for_petsc function SNESPatchSetDiscretisationInfo(petsclib::$UnionPetscLib, snes::AbstractSNES, nsubspaces::$PetscInt, dms::Vector{<:AbstractPetscDM}, bs::Vector{$PetscInt}, nodesPerCell::Vector{$PetscInt}, cellNodeMap::$PetscInt, subspaceOffsets::Vector{$PetscInt}, numGhostBcs::$PetscInt, ghostBcNodes::Vector{$PetscInt}, numGlobalBcs::$PetscInt, globalBcNodes::Vector{$PetscInt} )
@@ -7867,7 +7867,7 @@ See also: `SNES`, `SNESSetPicard()`, `SNESPicardComputeMFFunction()`, `SNESPicar
 $(_doc_external("SNES/SNESPicardComputeFunction"))
 """
 function SNESPicardComputeFunction(petsclib::PetscLibType, snes::AbstractSNES, x::AbstractPetscVec, f::AbstractPetscVec, ctx::Ptr{Cvoid})
-    error("SNESPicardComputeFunction: no generated method for these argument types")
+    throw(MethodError(SNESPicardComputeFunction, (petsclib, snes, x, f, ctx)))
 end
 
 @for_petsc function SNESPicardComputeFunction(petsclib::$UnionPetscLib, snes::AbstractSNES, x::AbstractPetscVec, f::AbstractPetscVec, ctx::Ptr{Cvoid} )
@@ -7904,7 +7904,7 @@ See also: `SNES`, `SNESSetPicard()`, `SNESPicardComputeFunction()`, `SNESPicardC
 $(_doc_external("SNES/SNESPicardComputeJacobian"))
 """
 function SNESPicardComputeJacobian(petsclib::PetscLibType, snes::AbstractSNES, x1::AbstractPetscVec, J::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid})
-    error("SNESPicardComputeJacobian: no generated method for these argument types")
+    throw(MethodError(SNESPicardComputeJacobian, (petsclib, snes, x1, J, B, ctx)))
 end
 
 @for_petsc function SNESPicardComputeJacobian(petsclib::$UnionPetscLib, snes::AbstractSNES, x1::AbstractPetscVec, J::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid} )
@@ -7942,7 +7942,7 @@ See also: `SNES`, `SNESSetPicard()`, `SNESPicardComputeFunction()`, `SNESPicardC
 $(_doc_external("SNES/SNESPicardComputeMFFunction"))
 """
 function SNESPicardComputeMFFunction(petsclib::PetscLibType, snes::AbstractSNES, x::AbstractPetscVec, f::AbstractPetscVec, ctx::Ptr{Cvoid})
-    error("SNESPicardComputeMFFunction: no generated method for these argument types")
+    throw(MethodError(SNESPicardComputeMFFunction, (petsclib, snes, x, f, ctx)))
 end
 
 @for_petsc function SNESPicardComputeMFFunction(petsclib::$UnionPetscLib, snes::AbstractSNES, x::AbstractPetscVec, f::AbstractPetscVec, ctx::Ptr{Cvoid} )
@@ -7977,7 +7977,7 @@ See also: `SNESComputeJacobianDefaultColor()`, `MatEliminateZeros()`, `MatFDColo
 $(_doc_external("SNES/SNESPruneJacobianColor"))
 """
 function SNESPruneJacobianColor(petsclib::PetscLibType, snes::AbstractSNES, J::AbstractPetscMat, B::AbstractPetscMat)
-    error("SNESPruneJacobianColor: no generated method for these argument types")
+    throw(MethodError(SNESPruneJacobianColor, (petsclib, snes, J, B)))
 end
 
 @for_petsc function SNESPruneJacobianColor(petsclib::$UnionPetscLib, snes::AbstractSNES, J::AbstractPetscMat, B::AbstractPetscMat )
@@ -8013,7 +8013,7 @@ See also: `SNES`, `SNESCreate()`, `SNESSetType()`, `SNESPYTHON`, `PetscPythonIni
 $(_doc_external("SNES/SNESPythonGetType"))
 """
 function SNESPythonGetType(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESPythonGetType: no generated method for these argument types")
+    throw(MethodError(SNESPythonGetType, (petsclib, snes)))
 end
 
 @for_petsc function SNESPythonGetType(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -8052,7 +8052,7 @@ See also: `SNES`, `SNESCreate()`, `SNESSetType()`, `SNESPYTHON`, `PetscPythonIni
 $(_doc_external("SNES/SNESPythonSetType"))
 """
 function SNESPythonSetType(petsclib::PetscLibType, snes::AbstractSNES, pyname::String)
-    error("SNESPythonSetType: no generated method for these argument types")
+    throw(MethodError(SNESPythonSetType, (petsclib, snes, pyname)))
 end
 
 @for_petsc function SNESPythonSetType(petsclib::$UnionPetscLib, snes::AbstractSNES, pyname::String )
@@ -8091,7 +8091,7 @@ See also: `SNES`, `SNESQN`, `SNESQNRestartType`, `SNES_QN_RESTART_NONE`, `SNES_Q
 $(_doc_external("SNES/SNESQNSetRestartType"))
 """
 function SNESQNSetRestartType(petsclib::PetscLibType, snes::AbstractSNES, rtype::SNESQNRestartType)
-    error("SNESQNSetRestartType: no generated method for these argument types")
+    throw(MethodError(SNESQNSetRestartType, (petsclib, snes, rtype)))
 end
 
 @for_petsc function SNESQNSetRestartType(petsclib::$UnionPetscLib, snes::AbstractSNES, rtype::SNESQNRestartType )
@@ -8128,7 +8128,7 @@ See also: `SNES`, `SNESQN`, `SNESLineSearch`, `SNESQNScaleType`, `SNESSetJacobia
 $(_doc_external("SNES/SNESQNSetScaleType"))
 """
 function SNESQNSetScaleType(petsclib::PetscLibType, snes::AbstractSNES, stype::SNESQNScaleType)
-    error("SNESQNSetScaleType: no generated method for these argument types")
+    throw(MethodError(SNESQNSetScaleType, (petsclib, snes, stype)))
 end
 
 @for_petsc function SNESQNSetScaleType(petsclib::$UnionPetscLib, snes::AbstractSNES, stype::SNESQNScaleType )
@@ -8165,7 +8165,7 @@ See also: `SNESQN`, `SNES_QN_LBFGS`, `SNES_QN_BROYDEN`, `SNES_QN_BADBROYDEN`, `S
 $(_doc_external("SNES/SNESQNSetType"))
 """
 function SNESQNSetType(petsclib::PetscLibType, snes::AbstractSNES, qtype::SNESQNType)
-    error("SNESQNSetType: no generated method for these argument types")
+    throw(MethodError(SNESQNSetType, (petsclib, snes, qtype)))
 end
 
 @for_petsc function SNESQNSetType(petsclib::$UnionPetscLib, snes::AbstractSNES, qtype::SNESQNType )
@@ -8199,7 +8199,7 @@ See also: `SNESRegisterAll()`, `SNESRegisterDestroy()`
 $(_doc_external("SNES/SNESRegister"))
 """
 function SNESRegister(petsclib::PetscLibType, sname::String, fnc::external)
-    error("SNESRegister: no generated method for these argument types")
+    throw(MethodError(SNESRegister, (petsclib, sname, fnc)))
 end
 
 @for_petsc function SNESRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
@@ -8232,7 +8232,7 @@ See also: `SNES`, `SNESDestroy()`, `SNESCreate()`, `SNESSetUp()`, `SNESSolve()`
 $(_doc_external("SNES/SNESReset"))
 """
 function SNESReset(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESReset: no generated method for these argument types")
+    throw(MethodError(SNESReset, (petsclib, snes)))
 end
 
 @for_petsc function SNESReset(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -8265,7 +8265,7 @@ See also: `SNESGetNumberFunctionEvals()`, `SNESGetLinearSolveIterations()`, `SNE
 $(_doc_external("SNES/SNESResetCounters"))
 """
 function SNESResetCounters(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESResetCounters: no generated method for these argument types")
+    throw(MethodError(SNESResetCounters, (petsclib, snes)))
 end
 
 @for_petsc function SNESResetCounters(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -8298,7 +8298,7 @@ See also: `SNES`, `SNESSetFromOptions()`, `SNESSetOptionsPrefix()`
 $(_doc_external("SNES/SNESResetFromOptions"))
 """
 function SNESResetFromOptions(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESResetFromOptions: no generated method for these argument types")
+    throw(MethodError(SNESResetFromOptions, (petsclib, snes)))
 end
 
 @for_petsc function SNESResetFromOptions(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -8332,7 +8332,7 @@ See also: `SNES`, `SNESFAS`, `SNESSolve()`, `SNESGetAlwaysComputesFinalResidual(
 $(_doc_external("SNES/SNESSetAlwaysComputesFinalResidual"))
 """
 function SNESSetAlwaysComputesFinalResidual(petsclib::PetscLibType, snes::AbstractSNES, flg::PetscBool)
-    error("SNESSetAlwaysComputesFinalResidual: no generated method for these argument types")
+    throw(MethodError(SNESSetAlwaysComputesFinalResidual, (petsclib, snes, flg)))
 end
 
 @for_petsc function SNESSetAlwaysComputesFinalResidual(petsclib::$UnionPetscLib, snes::AbstractSNES, flg::PetscBool )
@@ -8366,7 +8366,7 @@ See also: `SNES`, `SNESSetComputeApplicationContext()`, `SNESGetApplicationConte
 $(_doc_external("SNES/SNESSetApplicationContext"))
 """
 function SNESSetApplicationContext(petsclib::PetscLibType, snes::AbstractSNES, ctx::Ptr{Cvoid})
-    error("SNESSetApplicationContext: no generated method for these argument types")
+    throw(MethodError(SNESSetApplicationContext, (petsclib, snes, ctx)))
 end
 
 @for_petsc function SNESSetApplicationContext(petsclib::$UnionPetscLib, snes::AbstractSNES, ctx::Ptr{Cvoid} )
@@ -8401,7 +8401,7 @@ See also: `SNES`, `SNESConvergedReason`, `SNESCreate()`, `SNESSetFunction()`, `S
 $(_doc_external("SNES/SNESSetCheckJacobianDomainError"))
 """
 function SNESSetCheckJacobianDomainError(petsclib::PetscLibType, snes::AbstractSNES, flg::PetscBool)
-    error("SNESSetCheckJacobianDomainError: no generated method for these argument types")
+    throw(MethodError(SNESSetCheckJacobianDomainError, (petsclib, snes, flg)))
 end
 
 @for_petsc function SNESSetCheckJacobianDomainError(petsclib::$UnionPetscLib, snes::AbstractSNES, flg::PetscBool )
@@ -8441,7 +8441,7 @@ See also: `SNESGetApplicationContext()`, `SNESSetApplicationContext()`, `PetscCt
 $(_doc_external("SNES/SNESSetComputeApplicationContext"))
 """
 function SNESSetComputeApplicationContext(petsclib::PetscLibType, snes::AbstractSNES, compute::external, destroy::Ptr{Cvoid})
-    error("SNESSetComputeApplicationContext: no generated method for these argument types")
+    throw(MethodError(SNESSetComputeApplicationContext, (petsclib, snes, compute, destroy)))
 end
 
 @for_petsc function SNESSetComputeApplicationContext(petsclib::$UnionPetscLib, snes::AbstractSNES, compute::external, destroy::Ptr{Cvoid} )
@@ -8477,7 +8477,7 @@ See also: `SNES`, `SNESSolve()`, `SNESSetFunction()`, `SNESGetFunction()`, `SNES
 $(_doc_external("SNES/SNESSetComputeInitialGuess"))
 """
 function SNESSetComputeInitialGuess(petsclib::PetscLibType, snes::AbstractSNES, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
-    error("SNESSetComputeInitialGuess: no generated method for these argument types")
+    throw(MethodError(SNESSetComputeInitialGuess, (petsclib, snes, func, ctx)))
 end
 
 @for_petsc function SNESSetComputeInitialGuess(petsclib::$UnionPetscLib, snes::AbstractSNES, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
@@ -8512,7 +8512,7 @@ See also: `SNESGetConvergedReason()`, `SNESSetConvergenceTest()`, `SNESConverged
 $(_doc_external("SNES/SNESSetConvergedReason"))
 """
 function SNESSetConvergedReason(petsclib::PetscLibType, snes::AbstractSNES, reason::SNESConvergedReason)
-    error("SNESSetConvergedReason: no generated method for these argument types")
+    throw(MethodError(SNESSetConvergedReason, (petsclib, snes, reason)))
 end
 
 @for_petsc function SNESSetConvergedReason(petsclib::$UnionPetscLib, snes::AbstractSNES, reason::SNESConvergedReason )
@@ -8550,7 +8550,7 @@ See also: `SNES`, `SNESSolve()`, `SNESGetConvergenceHistory()`
 $(_doc_external("SNES/SNESSetConvergenceHistory"))
 """
 function SNESSetConvergenceHistory(petsclib::PetscLibType, snes::AbstractSNES, a::AbstractVector{<:Number}, its::AbstractVector{<:Number}, na::Integer, reset::PetscBool)
-    error("SNESSetConvergenceHistory: no generated method for these argument types")
+    throw(MethodError(SNESSetConvergenceHistory, (petsclib, snes, a, its, na, reset)))
 end
 
 @for_petsc function SNESSetConvergenceHistory(petsclib::$UnionPetscLib, snes::AbstractSNES, a::Vector{$PetscReal}, its::Vector{$PetscInt}, na::$PetscInt, reset::PetscBool )
@@ -8596,7 +8596,7 @@ See also: `SNES`, `SNESConvergedDefault()`, `SNESConvergedSkip()`
 $(_doc_external("SNES/SNESSetConvergenceTest"))
 """
 function SNESSetConvergenceTest(petsclib::PetscLibType, snes::AbstractSNES, func::external, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid})
-    error("SNESSetConvergenceTest: no generated method for these argument types")
+    throw(MethodError(SNESSetConvergenceTest, (petsclib, snes, func, ctx, destroy)))
 end
 
 @for_petsc function SNESSetConvergenceTest(petsclib::$UnionPetscLib, snes::AbstractSNES, func::external, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid} )
@@ -8631,7 +8631,7 @@ See also: `SNESGetNumberFunctionEvals()`, `SNESGetLinearSolveIterations()`, `SNE
 $(_doc_external("SNES/SNESSetCountersReset"))
 """
 function SNESSetCountersReset(petsclib::PetscLibType, snes::AbstractSNES, reset::PetscBool)
-    error("SNESSetCountersReset: no generated method for these argument types")
+    throw(MethodError(SNESSetCountersReset, (petsclib, snes, reset)))
 end
 
 @for_petsc function SNESSetCountersReset(petsclib::$UnionPetscLib, snes::AbstractSNES, reset::PetscBool )
@@ -8665,7 +8665,7 @@ See also: `DM`, `SNES`, `SNESGetDM()`, `KSPSetDM()`, `KSPGetDM()`
 $(_doc_external("SNES/SNESSetDM"))
 """
 function SNESSetDM(petsclib::PetscLibType, snes::AbstractSNES, dm::AbstractPetscDM)
-    error("SNESSetDM: no generated method for these argument types")
+    throw(MethodError(SNESSetDM, (petsclib, snes, dm)))
 end
 
 @for_petsc function SNESSetDM(petsclib::$UnionPetscLib, snes::AbstractSNES, dm::AbstractPetscDM )
@@ -8703,7 +8703,7 @@ See also: `SNES`, `SNESSolve()`, `SNESSetTolerances()`, `SNESGetDivergenceTolera
 $(_doc_external("SNES/SNESSetDivergenceTolerance"))
 """
 function SNESSetDivergenceTolerance(petsclib::PetscLibType, snes::AbstractSNES, divtol::Real)
-    error("SNESSetDivergenceTolerance: no generated method for these argument types")
+    throw(MethodError(SNESSetDivergenceTolerance, (petsclib, snes, divtol)))
 end
 
 @for_petsc function SNESSetDivergenceTolerance(petsclib::$UnionPetscLib, snes::AbstractSNES, divtol::$PetscReal )
@@ -8740,7 +8740,7 @@ See also: `SNES`, `SNESGetErrorIfNotConverged()`, `KSPGetErrorIfNotConverged()`,
 $(_doc_external("SNES/SNESSetErrorIfNotConverged"))
 """
 function SNESSetErrorIfNotConverged(petsclib::PetscLibType, snes::AbstractSNES, flg::PetscBool)
-    error("SNESSetErrorIfNotConverged: no generated method for these argument types")
+    throw(MethodError(SNESSetErrorIfNotConverged, (petsclib, snes, flg)))
 end
 
 @for_petsc function SNESSetErrorIfNotConverged(petsclib::$UnionPetscLib, snes::AbstractSNES, flg::PetscBool )
@@ -8777,7 +8777,7 @@ See also: `SNES`, `TS`, `SNESSetDivergenceTolerance()`
 $(_doc_external("SNES/SNESSetForceIteration"))
 """
 function SNESSetForceIteration(petsclib::PetscLibType, snes::AbstractSNES, force::PetscBool)
-    error("SNESSetForceIteration: no generated method for these argument types")
+    throw(MethodError(SNESSetForceIteration, (petsclib, snes, force)))
 end
 
 @for_petsc function SNESSetForceIteration(petsclib::$UnionPetscLib, snes::AbstractSNES, force::PetscBool )
@@ -8855,7 +8855,7 @@ See also: `SNESType`, `SNESSetOptionsPrefix()`, `SNESResetFromOptions()`, `SNES`
 $(_doc_external("SNES/SNESSetFromOptions"))
 """
 function SNESSetFromOptions(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESSetFromOptions: no generated method for these argument types")
+    throw(MethodError(SNESSetFromOptions, (petsclib, snes)))
 end
 
 @for_petsc function SNESSetFromOptions(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -8894,7 +8894,7 @@ See also: `SNES`, `SNESGetFunction()`, `SNESComputeFunction()`, `SNESSetJacobian
 $(_doc_external("SNES/SNESSetFunction"))
 """
 function SNESSetFunction(petsclib::PetscLibType, snes::AbstractSNES, r::AbstractPetscVec, f::Ptr{Cvoid}, ctx::Ptr{Cvoid})
-    error("SNESSetFunction: no generated method for these argument types")
+    throw(MethodError(SNESSetFunction, (petsclib, snes, r, f, ctx)))
 end
 
 @for_petsc function SNESSetFunction(petsclib::$UnionPetscLib, snes::AbstractSNES, r::AbstractPetscVec, f::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
@@ -8930,7 +8930,7 @@ See also: `SNESCreate()`, `SNESSetFunction()`, `SNESFunctionFn`, `SNESSetJacobia
 $(_doc_external("SNES/SNESSetFunctionDomainError"))
 """
 function SNESSetFunctionDomainError(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESSetFunctionDomainError: no generated method for these argument types")
+    throw(MethodError(SNESSetFunctionDomainError, (petsclib, snes)))
 end
 
 @for_petsc function SNESSetFunctionDomainError(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -8964,7 +8964,7 @@ See also: `SNES`, `SNESGetNormSchedule()`, `SNESComputeFunction()`, `VecNorm()`,
 $(_doc_external("SNES/SNESSetFunctionNorm"))
 """
 function SNESSetFunctionNorm(petsclib::PetscLibType, snes::AbstractSNES, norm::Real)
-    error("SNESSetFunctionNorm: no generated method for these argument types")
+    throw(MethodError(SNESSetFunctionNorm, (petsclib, snes, norm)))
 end
 
 @for_petsc function SNESSetFunctionNorm(petsclib::$UnionPetscLib, snes::AbstractSNES, norm::$PetscReal )
@@ -9004,7 +9004,7 @@ See also: `SNES`, `SNESFunctionType`, `SNESGetNormSchedule()`, `SNESComputeFunct
 $(_doc_external("SNES/SNESSetFunctionType"))
 """
 function SNESSetFunctionType(petsclib::PetscLibType, snes::AbstractSNES, type::SNESFunctionType)
-    error("SNESSetFunctionType: no generated method for these argument types")
+    throw(MethodError(SNESSetFunctionType, (petsclib, snes, type)))
 end
 
 @for_petsc function SNESSetFunctionType(petsclib::$UnionPetscLib, snes::AbstractSNES, type::SNESFunctionType )
@@ -9042,7 +9042,7 @@ See also: `SNES`, `SNESGetLagPreconditioner()`, `SNESSetLagJacobian()`, `SNESGet
 $(_doc_external("SNES/SNESSetGridSequence"))
 """
 function SNESSetGridSequence(petsclib::PetscLibType, snes::AbstractSNES, steps::Integer)
-    error("SNESSetGridSequence: no generated method for these argument types")
+    throw(MethodError(SNESSetGridSequence, (petsclib, snes, steps)))
 end
 
 @for_petsc function SNESSetGridSequence(petsclib::$UnionPetscLib, snes::AbstractSNES, steps::$PetscInt )
@@ -9076,7 +9076,7 @@ See also: `SNES`, `SNESFAS`, `SNESSetFunction()`, `SNESComputeFunction()`, `SNES
 $(_doc_external("SNES/SNESSetInitialFunction"))
 """
 function SNESSetInitialFunction(petsclib::PetscLibType, snes::AbstractSNES, f::AbstractPetscVec)
-    error("SNESSetInitialFunction: no generated method for these argument types")
+    throw(MethodError(SNESSetInitialFunction, (petsclib, snes, f)))
 end
 
 @for_petsc function SNESSetInitialFunction(petsclib::$UnionPetscLib, snes::AbstractSNES, f::AbstractPetscVec )
@@ -9110,7 +9110,7 @@ See also: `SNESGetLinearSolveIterations()`
 $(_doc_external("SNES/SNESSetIterationNumber"))
 """
 function SNESSetIterationNumber(petsclib::PetscLibType, snes::AbstractSNES, iter::Integer)
-    error("SNESSetIterationNumber: no generated method for these argument types")
+    throw(MethodError(SNESSetIterationNumber, (petsclib, snes, iter)))
 end
 
 @for_petsc function SNESSetIterationNumber(petsclib::$UnionPetscLib, snes::AbstractSNES, iter::$PetscInt )
@@ -9150,7 +9150,7 @@ See also: `SNES`, `KSPSetOperators()`, `SNESSetFunction()`, `MatMFFDComputeJacob
 $(_doc_external("SNES/SNESSetJacobian"))
 """
 function SNESSetJacobian(petsclib::PetscLibType, snes::AbstractSNES, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, J::Ptr{Cvoid}, ctx::Ptr{Cvoid})
-    error("SNESSetJacobian: no generated method for these argument types")
+    throw(MethodError(SNESSetJacobian, (petsclib, snes, Amat, Pmat, J, ctx)))
 end
 
 @for_petsc function SNESSetJacobian(petsclib::$UnionPetscLib, snes::AbstractSNES, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, J::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
@@ -9184,7 +9184,7 @@ See also: `SNESCreate()`, `SNESSetFunction()`, `SNESFunctionFn`, `SNESSetFunctio
 $(_doc_external("SNES/SNESSetJacobianDomainError"))
 """
 function SNESSetJacobianDomainError(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESSetJacobianDomainError: no generated method for these argument types")
+    throw(MethodError(SNESSetJacobianDomainError, (petsclib, snes)))
 end
 
 @for_petsc function SNESSetJacobianDomainError(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -9218,7 +9218,7 @@ See also: `SNES`, `KSP`, `KSPGetPC()`, `SNESCreate()`, `KSPCreate()`
 $(_doc_external("SNES/SNESSetKSP"))
 """
 function SNESSetKSP(petsclib::PetscLibType, snes::AbstractSNES, ksp::AbstractKSP)
-    error("SNESSetKSP: no generated method for these argument types")
+    throw(MethodError(SNESSetKSP, (petsclib, snes, ksp)))
 end
 
 @for_petsc function SNESSetKSP(petsclib::$UnionPetscLib, snes::AbstractSNES, ksp::AbstractKSP )
@@ -9260,7 +9260,7 @@ See also: `SNES`, `SNESGetLagPreconditioner()`, `SNESSetLagPreconditioner()`, `S
 $(_doc_external("SNES/SNESSetLagJacobian"))
 """
 function SNESSetLagJacobian(petsclib::PetscLibType, snes::AbstractSNES, lag::Integer)
-    error("SNESSetLagJacobian: no generated method for these argument types")
+    throw(MethodError(SNESSetLagJacobian, (petsclib, snes, lag)))
 end
 
 @for_petsc function SNESSetLagJacobian(petsclib::$UnionPetscLib, snes::AbstractSNES, lag::$PetscInt )
@@ -9300,7 +9300,7 @@ See also: `SNES`, `SNESSetLagPreconditionerPersists()`, `SNESSetLagJacobian()`, 
 $(_doc_external("SNES/SNESSetLagJacobianPersists"))
 """
 function SNESSetLagJacobianPersists(petsclib::PetscLibType, snes::AbstractSNES, flg::PetscBool)
-    error("SNESSetLagJacobianPersists: no generated method for these argument types")
+    throw(MethodError(SNESSetLagJacobianPersists, (petsclib, snes, flg)))
 end
 
 @for_petsc function SNESSetLagJacobianPersists(petsclib::$UnionPetscLib, snes::AbstractSNES, flg::PetscBool )
@@ -9342,7 +9342,7 @@ See also: `SNESGetLagPreconditioner()`, `SNESSetLagJacobian()`, `SNESGetLagJacob
 $(_doc_external("SNES/SNESSetLagPreconditioner"))
 """
 function SNESSetLagPreconditioner(petsclib::PetscLibType, snes::AbstractSNES, lag::Integer)
-    error("SNESSetLagPreconditioner: no generated method for these argument types")
+    throw(MethodError(SNESSetLagPreconditioner, (petsclib, snes, lag)))
 end
 
 @for_petsc function SNESSetLagPreconditioner(petsclib::$UnionPetscLib, snes::AbstractSNES, lag::$PetscInt )
@@ -9382,7 +9382,7 @@ See also: `SNES`, `SNESSetLagJacobianPersists()`, `SNESSetLagJacobian()`, `SNESG
 $(_doc_external("SNES/SNESSetLagPreconditionerPersists"))
 """
 function SNESSetLagPreconditionerPersists(petsclib::PetscLibType, snes::AbstractSNES, flg::PetscBool)
-    error("SNESSetLagPreconditionerPersists: no generated method for these argument types")
+    throw(MethodError(SNESSetLagPreconditionerPersists, (petsclib, snes, flg)))
 end
 
 @for_petsc function SNESSetLagPreconditionerPersists(petsclib::$UnionPetscLib, snes::AbstractSNES, flg::PetscBool )
@@ -9416,7 +9416,7 @@ See also: `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`
 $(_doc_external("SNES/SNESSetLineSearch"))
 """
 function SNESSetLineSearch(petsclib::PetscLibType, snes::AbstractSNES, linesearch::SNESLineSearch)
-    error("SNESSetLineSearch: no generated method for these argument types")
+    throw(MethodError(SNESSetLineSearch, (petsclib, snes, linesearch)))
 end
 
 @for_petsc function SNESSetLineSearch(petsclib::$UnionPetscLib, snes::AbstractSNES, linesearch::SNESLineSearch )
@@ -9454,7 +9454,7 @@ See also: `SNESSetErrorIfNotConverged()`, `SNESGetLinearSolveFailures()`, `SNESG
 $(_doc_external("SNES/SNESSetMaxLinearSolveFailures"))
 """
 function SNESSetMaxLinearSolveFailures(petsclib::PetscLibType, snes::AbstractSNES, maxFails::Integer)
-    error("SNESSetMaxLinearSolveFailures: no generated method for these argument types")
+    throw(MethodError(SNESSetMaxLinearSolveFailures, (petsclib, snes, maxFails)))
 end
 
 @for_petsc function SNESSetMaxLinearSolveFailures(petsclib::$UnionPetscLib, snes::AbstractSNES, maxFails::$PetscInt )
@@ -9493,7 +9493,7 @@ See also: `SNESSetErrorIfNotConverged()`, `SNESGetMaxLinearSolveFailures()`, `SN
 $(_doc_external("SNES/SNESSetMaxNonlinearStepFailures"))
 """
 function SNESSetMaxNonlinearStepFailures(petsclib::PetscLibType, snes::AbstractSNES, maxFails::Integer)
-    error("SNESSetMaxNonlinearStepFailures: no generated method for these argument types")
+    throw(MethodError(SNESSetMaxNonlinearStepFailures, (petsclib, snes, maxFails)))
 end
 
 @for_petsc function SNESSetMaxNonlinearStepFailures(petsclib::$UnionPetscLib, snes::AbstractSNES, maxFails::$PetscInt )
@@ -9527,7 +9527,7 @@ See also: `SNESNGS`, `SNESGetNGS()`, `SNESNCG`, `SNESGetFunction()`, `SNESComput
 $(_doc_external("SNES/SNESSetNGS"))
 """
 function SNESSetNGS(petsclib::PetscLibType, snes::AbstractSNES, f::Ptr{Cvoid}, ctx::Ptr{Cvoid})
-    error("SNESSetNGS: no generated method for these argument types")
+    throw(MethodError(SNESSetNGS, (petsclib, snes, f, ctx)))
 end
 
 @for_petsc function SNESSetNGS(petsclib::$UnionPetscLib, snes::AbstractSNES, f::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
@@ -9564,7 +9564,7 @@ See also: `SNES`, `SNESNGS`, `SNESFAS`, `SNESGetNPC()`, `SNESHasNPC()`
 $(_doc_external("SNES/SNESSetNPC"))
 """
 function SNESSetNPC(petsclib::PetscLibType, snes::AbstractSNES, npc::AbstractSNES)
-    error("SNESSetNPC: no generated method for these argument types")
+    throw(MethodError(SNESSetNPC, (petsclib, snes, npc)))
 end
 
 @for_petsc function SNESSetNPC(petsclib::$UnionPetscLib, snes::AbstractSNES, npc::AbstractSNES )
@@ -9607,7 +9607,7 @@ See also: `SNES`, `SNESGetNPC()`, `SNESNRICHARDSON`, `SNESNCG`, `SNESType`, `SNE
 $(_doc_external("SNES/SNESSetNPCSide"))
 """
 function SNESSetNPCSide(petsclib::PetscLibType, snes::AbstractSNES, side::PCSide)
-    error("SNESSetNPCSide: no generated method for these argument types")
+    throw(MethodError(SNESSetNPCSide, (petsclib, snes, side)))
 end
 
 @for_petsc function SNESSetNPCSide(petsclib::$UnionPetscLib, snes::AbstractSNES, side::PCSide )
@@ -9645,7 +9645,7 @@ See also: `SNESNormSchedule`, `SNESGetNormSchedule()`, `SNESComputeFunction()`, 
 $(_doc_external("SNES/SNESSetNormSchedule"))
 """
 function SNESSetNormSchedule(petsclib::PetscLibType, snes::AbstractSNES, normschedule::SNESNormSchedule)
-    error("SNESSetNormSchedule: no generated method for these argument types")
+    throw(MethodError(SNESSetNormSchedule, (petsclib, snes, normschedule)))
 end
 
 @for_petsc function SNESSetNormSchedule(petsclib::$UnionPetscLib, snes::AbstractSNES, normschedule::SNESNormSchedule )
@@ -9681,7 +9681,7 @@ See also: `SNES`, `SNESLineSearch()`, `SNESGetObjective()`, `SNESComputeObjectiv
 $(_doc_external("SNES/SNESSetObjective"))
 """
 function SNESSetObjective(petsclib::PetscLibType, snes::AbstractSNES, obj::Ptr{Cvoid}, ctx::Ptr{Cvoid})
-    error("SNESSetObjective: no generated method for these argument types")
+    throw(MethodError(SNESSetObjective, (petsclib, snes, obj, ctx)))
 end
 
 @for_petsc function SNESSetObjective(petsclib::$UnionPetscLib, snes::AbstractSNES, obj::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
@@ -9717,7 +9717,7 @@ See also: `SNESCreate()`, `SNESSetFunction()`, `SNESFunctionFn`, `SNESSetJacobia
 $(_doc_external("SNES/SNESSetObjectiveDomainError"))
 """
 function SNESSetObjectiveDomainError(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESSetObjectiveDomainError: no generated method for these argument types")
+    throw(MethodError(SNESSetObjectiveDomainError, (petsclib, snes)))
 end
 
 @for_petsc function SNESSetObjectiveDomainError(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -9752,7 +9752,7 @@ See also: `SNES`, `SNESSetFromOptions()`, `SNESAppendOptionsPrefix()`
 $(_doc_external("SNES/SNESSetOptionsPrefix"))
 """
 function SNESSetOptionsPrefix(petsclib::PetscLibType, snes::AbstractSNES, prefix::String)
-    error("SNESSetOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(SNESSetOptionsPrefix, (petsclib, snes, prefix)))
 end
 
 @for_petsc function SNESSetOptionsPrefix(petsclib::$UnionPetscLib, snes::AbstractSNES, prefix::String )
@@ -9792,7 +9792,7 @@ See also: `SNES`, `SNESGetFunction()`, `SNESSetFunction()`, `SNESComputeFunction
 $(_doc_external("SNES/SNESSetPicard"))
 """
 function SNESSetPicard(petsclib::PetscLibType, snes::AbstractSNES, r::AbstractPetscVec, bp::Ptr{Cvoid}, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, J::Ptr{Cvoid}, ctx::Ptr{Cvoid})
-    error("SNESSetPicard: no generated method for these argument types")
+    throw(MethodError(SNESSetPicard, (petsclib, snes, r, bp, Amat, Pmat, J, ctx)))
 end
 
 @for_petsc function SNESSetPicard(petsclib::$UnionPetscLib, snes::AbstractSNES, r::AbstractPetscVec, bp::Ptr{Cvoid}, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, J::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
@@ -9826,7 +9826,7 @@ See also: `SNES`, `SNESSolve()`, `SNESGetSolution()`, `Vec`
 $(_doc_external("SNES/SNESSetSolution"))
 """
 function SNESSetSolution(petsclib::PetscLibType, snes::AbstractSNES, u::AbstractPetscVec)
-    error("SNESSetSolution: no generated method for these argument types")
+    throw(MethodError(SNESSetSolution, (petsclib, snes, u)))
 end
 
 @for_petsc function SNESSetSolution(petsclib::$UnionPetscLib, snes::AbstractSNES, u::AbstractPetscVec )
@@ -9871,7 +9871,7 @@ See also: `SNESSolve()`, `SNES`, `SNESSetDivergenceTolerance()`, `SNESSetForceIt
 $(_doc_external("SNES/SNESSetTolerances"))
 """
 function SNESSetTolerances(petsclib::PetscLibType, snes::AbstractSNES, abstol::Real, rtol::Real, stol::Real, maxit::Integer, maxf::Integer)
-    error("SNESSetTolerances: no generated method for these argument types")
+    throw(MethodError(SNESSetTolerances, (petsclib, snes, abstol, rtol, stol, maxit, maxf)))
 end
 
 @for_petsc function SNESSetTolerances(petsclib::$UnionPetscLib, snes::AbstractSNES, abstol::$PetscReal, rtol::$PetscReal, stol::$PetscReal, maxit::$PetscInt, maxf::$PetscInt )
@@ -9908,7 +9908,7 @@ See also: `SNES`, `SNESSolve()`, `SNESType`, `SNESCreate()`, `SNESDestroy()`, `S
 $(_doc_external("SNES/SNESSetType"))
 """
 function SNESSetType(petsclib::PetscLibType, snes::AbstractSNES, type::String)
-    error("SNESSetType: no generated method for these argument types")
+    throw(MethodError(SNESSetType, (petsclib, snes, type)))
 end
 
 @for_petsc function SNESSetType(petsclib::$UnionPetscLib, snes::AbstractSNES, type::String )
@@ -9942,7 +9942,7 @@ See also: `SNES`, `SNESCreate()`, `SNESSolve()`, `SNESDestroy()`, `SNESSetFromOp
 $(_doc_external("SNES/SNESSetUp"))
 """
 function SNESSetUp(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESSetUp: no generated method for these argument types")
+    throw(MethodError(SNESSetUp, (petsclib, snes)))
 end
 
 @for_petsc function SNESSetUp(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -9975,7 +9975,7 @@ See also: `SNES`, `SNESSetUp()`
 $(_doc_external("SNES/SNESSetUpMatrices"))
 """
 function SNESSetUpMatrices(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESSetUpMatrices: no generated method for these argument types")
+    throw(MethodError(SNESSetUpMatrices, (petsclib, snes)))
 end
 
 @for_petsc function SNESSetUpMatrices(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -10013,7 +10013,7 @@ See also: `SNES`, `SNESSolve()`, `SNESSetJacobian()`, `SNESLineSearchSetPreCheck
 $(_doc_external("SNES/SNESSetUpdate"))
 """
 function SNESSetUpdate(petsclib::PetscLibType, snes::AbstractSNES, func::Ptr{Cvoid})
-    error("SNESSetUpdate: no generated method for these argument types")
+    throw(MethodError(SNESSetUpdate, (petsclib, snes, func)))
 end
 
 @for_petsc function SNESSetUpdate(petsclib::$UnionPetscLib, snes::AbstractSNES, func::Ptr{Cvoid} )
@@ -10055,7 +10055,7 @@ See also: `SNES`, `SNESGetUseMatrixFree()`, `MatCreateSNESMF()`, `SNESComputeJac
 $(_doc_external("SNES/SNESSetUseMatrixFree"))
 """
 function SNESSetUseMatrixFree(petsclib::PetscLibType, snes::AbstractSNES, mf_operator::PetscBool, mf::PetscBool)
-    error("SNESSetUseMatrixFree: no generated method for these argument types")
+    throw(MethodError(SNESSetUseMatrixFree, (petsclib, snes, mf_operator, mf)))
 end
 
 @for_petsc function SNESSetUseMatrixFree(petsclib::$UnionPetscLib, snes::AbstractSNES, mf_operator::PetscBool, mf::PetscBool )
@@ -10087,7 +10087,7 @@ See also: `SNES`
 $(_doc_external("SNES/SNESSetWorkVecs"))
 """
 function SNESSetWorkVecs(petsclib::PetscLibType, snes::AbstractSNES, nw::Integer)
-    error("SNESSetWorkVecs: no generated method for these argument types")
+    throw(MethodError(SNESSetWorkVecs, (petsclib, snes, nw)))
 end
 
 @for_petsc function SNESSetWorkVecs(petsclib::$UnionPetscLib, snes::AbstractSNES, nw::$PetscInt )
@@ -10123,7 +10123,7 @@ See also: `SNES`, `SNESSHELL`, `SNESCreateShell()`, `SNESShellSetContext()`
 $(_doc_external("SNES/SNESShellGetContext"))
 """
 function SNESShellGetContext(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESShellGetContext: no generated method for these argument types")
+    throw(MethodError(SNESShellGetContext, (petsclib, snes)))
 end
 
 @for_petsc function SNESShellGetContext(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -10159,7 +10159,7 @@ See also: `SNES`, `SNESSHELL`, `SNESCreateShell()`, `SNESShellGetContext()`
 $(_doc_external("SNES/SNESShellSetContext"))
 """
 function SNESShellSetContext(petsclib::PetscLibType, snes::AbstractSNES, ctx::Ptr{Cvoid})
-    error("SNESShellSetContext: no generated method for these argument types")
+    throw(MethodError(SNESShellSetContext, (petsclib, snes, ctx)))
 end
 
 @for_petsc function SNESShellSetContext(petsclib::$UnionPetscLib, snes::AbstractSNES, ctx::Ptr{Cvoid} )
@@ -10197,7 +10197,7 @@ See also: `SNES`, `SNESSHELL`, `SNESShellSetContext()`, `SNESShellGetContext()`
 $(_doc_external("SNES/SNESShellSetSolve"))
 """
 function SNESShellSetSolve(petsclib::PetscLibType, snes::AbstractSNES, solve::external)
-    error("SNESShellSetSolve: no generated method for these argument types")
+    throw(MethodError(SNESShellSetSolve, (petsclib, snes, solve)))
 end
 
 @for_petsc function SNESShellSetSolve(petsclib::$UnionPetscLib, snes::AbstractSNES, solve::external )
@@ -10234,7 +10234,7 @@ See also: `SNES`, `SNESCreate()`, `SNESDestroy()`, `SNESSetFunction()`, `SNESSet
 $(_doc_external("SNES/SNESSolve"))
 """
 function SNESSolve(petsclib::PetscLibType, snes::AbstractSNES, b::Union{Ptr, AbstractPetscVec}, x::AbstractPetscVec)
-    error("SNESSolve: no generated method for these argument types")
+    throw(MethodError(SNESSolve, (petsclib, snes, b, x)))
 end
 
 @for_petsc function SNESSolve(petsclib::$UnionPetscLib, snes::AbstractSNES, b::Union{Ptr, AbstractPetscVec}, x::AbstractPetscVec )
@@ -10272,7 +10272,7 @@ See also: `SNESSetFunction()`, `MatFDColoringSetFunction()`
 $(_doc_external("TS/SNESTSFormFunction"))
 """
 function SNESTSFormFunction(petsclib::PetscLibType, snes::AbstractSNES, U::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid})
-    error("SNESTSFormFunction: no generated method for these argument types")
+    throw(MethodError(SNESTSFormFunction, (petsclib, snes, U, F, ctx)))
 end
 
 @for_petsc function SNESTSFormFunction(petsclib::$UnionPetscLib, snes::AbstractSNES, U::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid} )
@@ -10311,7 +10311,7 @@ See also: `SNESSetJacobian()`
 $(_doc_external("TS/SNESTSFormJacobian"))
 """
 function SNESTSFormJacobian(petsclib::PetscLibType, snes::AbstractSNES, U::AbstractPetscVec, A::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid})
-    error("SNESTSFormJacobian: no generated method for these argument types")
+    throw(MethodError(SNESTSFormJacobian, (petsclib, snes, U, A, B, ctx)))
 end
 
 @for_petsc function SNESTSFormJacobian(petsclib::$UnionPetscLib, snes::AbstractSNES, U::AbstractPetscVec, A::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid} )
@@ -10348,7 +10348,7 @@ See also: `SNESTestJacobian()`, `SNESSetFunction()`, `SNESComputeFunction()`
 $(_doc_external("SNES/SNESTestFunction"))
 """
 function SNESTestFunction(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESTestFunction: no generated method for these argument types")
+    throw(MethodError(SNESTestFunction, (petsclib, snes)))
 end
 
 @for_petsc function SNESTestFunction(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -10389,7 +10389,7 @@ See also: `SNESTestFunction()`, `SNESSetJacobian()`, `SNESComputeJacobian()`
 $(_doc_external("SNES/SNESTestJacobian"))
 """
 function SNESTestJacobian(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESTestJacobian: no generated method for these argument types")
+    throw(MethodError(SNESTestJacobian, (petsclib, snes)))
 end
 
 @for_petsc function SNESTestJacobian(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -10426,7 +10426,7 @@ See also: `SNES`, `SNESSolve()`, `SNESComputeFunction()`
 $(_doc_external("SNES/SNESTestLocalMin"))
 """
 function SNESTestLocalMin(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESTestLocalMin: no generated method for these argument types")
+    throw(MethodError(SNESTestLocalMin, (petsclib, snes)))
 end
 
 @for_petsc function SNESTestLocalMin(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -10463,7 +10463,7 @@ See also: `SNES`, `SNESVINEWTONSSLS`, `SNESVIComputeMeritFunction()`
 $(_doc_external("SNES/SNESVIComputeFunction"))
 """
 function SNESVIComputeFunction(petsclib::PetscLibType, snes::AbstractSNES, X::AbstractPetscVec, phi::AbstractPetscVec, functx::Ptr{Cvoid})
-    error("SNESVIComputeFunction: no generated method for these argument types")
+    throw(MethodError(SNESVIComputeFunction, (petsclib, snes, X, phi, functx)))
 end
 
 @for_petsc function SNESVIComputeFunction(petsclib::$UnionPetscLib, snes::AbstractSNES, X::AbstractPetscVec, phi::AbstractPetscVec, functx::Ptr{Cvoid} )
@@ -10499,7 +10499,7 @@ See also: `SNES`, `SNESVINEWTONRSLS`, `SNESVINEWTONSSLS`, `SNESLineSearchSetVIFu
 $(_doc_external("SNES/SNESVIComputeInactiveSetFnorm"))
 """
 function SNESVIComputeInactiveSetFnorm(petsclib::PetscLibType, snes::AbstractSNES, F::AbstractPetscVec, X::AbstractPetscVec)
-    error("SNESVIComputeInactiveSetFnorm: no generated method for these argument types")
+    throw(MethodError(SNESVIComputeInactiveSetFnorm, (petsclib, snes, F, X)))
 end
 
 @for_petsc function SNESVIComputeInactiveSetFnorm(petsclib::$UnionPetscLib, snes::AbstractSNES, F::AbstractPetscVec, X::AbstractPetscVec )
@@ -10539,7 +10539,7 @@ See also: `SNES`, `SNESVINEWTONRSLS`, `SNESVINEWTONSSLS`
 $(_doc_external("SNES/SNESVIComputeInactiveSetFtY"))
 """
 function SNESVIComputeInactiveSetFtY(petsclib::PetscLibType, snes::AbstractSNES, F::AbstractPetscVec, X::AbstractPetscVec, Y::AbstractPetscVec)
-    error("SNESVIComputeInactiveSetFtY: no generated method for these argument types")
+    throw(MethodError(SNESVIComputeInactiveSetFtY, (petsclib, snes, F, X, Y)))
 end
 
 @for_petsc function SNESVIComputeInactiveSetFtY(petsclib::$UnionPetscLib, snes::AbstractSNES, F::AbstractPetscVec, X::AbstractPetscVec, Y::AbstractPetscVec )
@@ -10576,7 +10576,7 @@ See also: `SNES`, `SNESVINEWTONSSLS`, `SNESVIComputeFunction()`
 $(_doc_external("SNES/SNESVIComputeMeritFunction"))
 """
 function SNESVIComputeMeritFunction(petsclib::PetscLibType, phi::AbstractPetscVec)
-    error("SNESVIComputeMeritFunction: no generated method for these argument types")
+    throw(MethodError(SNESVIComputeMeritFunction, (petsclib, phi)))
 end
 
 @for_petsc function SNESVIComputeMeritFunction(petsclib::$UnionPetscLib, phi::AbstractPetscVec )
@@ -10616,7 +10616,7 @@ See also: `SNES`, `SNESVINEWTONRSLS`, `SNESVINEWTONSSLS`
 $(_doc_external("SNES/SNESVIGetActiveSetIS"))
 """
 function SNESVIGetActiveSetIS(petsclib::PetscLibType, snes::AbstractSNES, X::AbstractPetscVec, F::AbstractPetscVec)
-    error("SNESVIGetActiveSetIS: no generated method for these argument types")
+    throw(MethodError(SNESVIGetActiveSetIS, (petsclib, snes, X, F)))
 end
 
 @for_petsc function SNESVIGetActiveSetIS(petsclib::$UnionPetscLib, snes::AbstractSNES, X::AbstractPetscVec, F::AbstractPetscVec )
@@ -10653,7 +10653,7 @@ See also: `SNES`, `SNESVINEWTONRSLS`
 $(_doc_external("SNES/SNESVIGetInactiveSet"))
 """
 function SNESVIGetInactiveSet(petsclib::PetscLibType, snes::AbstractSNES)
-    error("SNESVIGetInactiveSet: no generated method for these argument types")
+    throw(MethodError(SNESVIGetInactiveSet, (petsclib, snes)))
 end
 
 @for_petsc function SNESVIGetInactiveSet(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -10689,7 +10689,7 @@ See also: `SNES`, `SNESVISetVariableBounds()`, `SNESVISetComputeVariableBounds()
 $(_doc_external("SNES/SNESVIGetVariableBounds"))
 """
 function SNESVIGetVariableBounds(petsclib::PetscLibType, snes::AbstractSNES, xl::AbstractPetscVec, xu::AbstractPetscVec)
-    error("SNESVIGetVariableBounds: no generated method for these argument types")
+    throw(MethodError(SNESVIGetVariableBounds, (petsclib, snes, xl, xu)))
 end
 
 @for_petsc function SNESVIGetVariableBounds(petsclib::$UnionPetscLib, snes::AbstractSNES, xl::AbstractPetscVec, xu::AbstractPetscVec )
@@ -10732,7 +10732,7 @@ See also: `SNES`, `SNESVISetVariableBounds()`, `DMSetVariableBounds()`, `SNESSet
 $(_doc_external("SNES/SNESVISetComputeVariableBounds"))
 """
 function SNESVISetComputeVariableBounds(petsclib::PetscLibType, snes::AbstractSNES, compute::external)
-    error("SNESVISetComputeVariableBounds: no generated method for these argument types")
+    throw(MethodError(SNESVISetComputeVariableBounds, (petsclib, snes, compute)))
 end
 
 @for_petsc function SNESVISetComputeVariableBounds(petsclib::$UnionPetscLib, snes::AbstractSNES, compute::external )
@@ -10773,7 +10773,7 @@ See also: `SNES`, `SNESVINEWTONRSLS`, `SNESVIGetInactiveSet()`, `DMSetVI()`
 $(_doc_external("SNES/SNESVISetRedundancyCheck"))
 """
 function SNESVISetRedundancyCheck(petsclib::PetscLibType, snes::AbstractSNES, func::external, ctx::Ptr{Cvoid})
-    error("SNESVISetRedundancyCheck: no generated method for these argument types")
+    throw(MethodError(SNESVISetRedundancyCheck, (petsclib, snes, func, ctx)))
 end
 
 @for_petsc function SNESVISetRedundancyCheck(petsclib::$UnionPetscLib, snes::AbstractSNES, func::external, ctx::Ptr{Cvoid} )
@@ -10807,7 +10807,7 @@ See also: `SNES`, `SNESVIGetVariableBounds()`, `SNESVISetComputeVariableBounds()
 $(_doc_external("SNES/SNESVISetVariableBounds"))
 """
 function SNESVISetVariableBounds(petsclib::PetscLibType, snes::AbstractSNES, xl::AbstractPetscVec, xu::AbstractPetscVec)
-    error("SNESVISetVariableBounds: no generated method for these argument types")
+    throw(MethodError(SNESVISetVariableBounds, (petsclib, snes, xl, xu)))
 end
 
 @for_petsc function SNESVISetVariableBounds(petsclib::$UnionPetscLib, snes::AbstractSNES, xl::AbstractPetscVec, xu::AbstractPetscVec )
@@ -10844,7 +10844,7 @@ See also: `SNES`, `SNESLoad()`, `SNESCreate()`, `PetscViewerASCIIOpen()`
 $(_doc_external("SNES/SNESView"))
 """
 function SNESView(petsclib::PetscLibType, snes::AbstractSNES, viewer::PetscViewer)
-    error("SNESView: no generated method for these argument types")
+    throw(MethodError(SNESView, (petsclib, snes, viewer)))
 end
 
 @for_petsc function SNESView(petsclib::$UnionPetscLib, snes::AbstractSNES, viewer::PetscViewer )
@@ -10882,7 +10882,7 @@ See also: `SNES`, `SNESView`, `PetscObjectViewFromOptions()`, `SNESCreate()`
 $(_doc_external("SNES/SNESViewFromOptions"))
 """
 function SNESViewFromOptions(petsclib::PetscLibType, A::AbstractSNES, obj, name::String)
-    error("SNESViewFromOptions: no generated method for these argument types")
+    throw(MethodError(SNESViewFromOptions, (petsclib, A, obj, name)))
 end
 
 @for_petsc function SNESViewFromOptions(petsclib::$UnionPetscLib, A::AbstractSNES, obj, name::String )

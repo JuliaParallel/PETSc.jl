@@ -16,7 +16,7 @@ See also: `PetscDA`, `PetscDASetFromOptions()`, `PetscDASetOptionsPrefix()`, `Pe
 $(_doc_external("PetscDA/PetscDAAppendOptionsPrefix"))
 """
 function PetscDAAppendOptionsPrefix(petsclib::PetscLibType, das::PetscDA, p::String)
-    error("PetscDAAppendOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(PetscDAAppendOptionsPrefix, (petsclib, das, p)))
 end
 
 @for_petsc function PetscDAAppendOptionsPrefix(petsclib::$UnionPetscLib, das::PetscDA, p::String )
@@ -52,7 +52,7 @@ See also: `PetscDADestroy()`, `PetscDASetType()`, `PetscDASetUp()`
 $(_doc_external("PetscDA/PetscDACreate"))
 """
 function PetscDACreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("PetscDACreate: no generated method for these argument types")
+    throw(MethodError(PetscDACreate, (petsclib, comm)))
 end
 
 @for_petsc function PetscDACreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -87,7 +87,7 @@ See also: `PetscDACreate()`
 $(_doc_external("PetscDA/PetscDADestroy"))
 """
 function PetscDADestroy(petsclib::PetscLibType, da::Union{PetscDA, Ref{PetscDA}})
-    error("PetscDADestroy: no generated method for these argument types")
+    throw(MethodError(PetscDADestroy, (petsclib, da)))
 end
 
 @for_petsc function PetscDADestroy(petsclib::$UnionPetscLib, da::Union{PetscDA, Ref{PetscDA}} )
@@ -121,7 +121,7 @@ See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleForecast()`,
 $(_doc_external("PetscDA/PetscDAEnsembleAnalysis"))
 """
 function PetscDAEnsembleAnalysis(petsclib::PetscLibType, da::PetscDA, observation::AbstractPetscVec, H::AbstractPetscMat)
-    error("PetscDAEnsembleAnalysis: no generated method for these argument types")
+    throw(MethodError(PetscDAEnsembleAnalysis, (petsclib, da, observation, H)))
 end
 
 @for_petsc function PetscDAEnsembleAnalysis(petsclib::$UnionPetscLib, da::PetscDA, observation::AbstractPetscVec, H::AbstractPetscMat )
@@ -156,7 +156,7 @@ See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleTFactor()`, 
 $(_doc_external("PetscDA/PetscDAEnsembleApplySqrtTInverse"))
 """
 function PetscDAEnsembleApplySqrtTInverse(petsclib::PetscLibType, da::PetscDA, U::AbstractPetscMat, Y::AbstractPetscMat)
-    error("PetscDAEnsembleApplySqrtTInverse: no generated method for these argument types")
+    throw(MethodError(PetscDAEnsembleApplySqrtTInverse, (petsclib, da, U, Y)))
 end
 
 @for_petsc function PetscDAEnsembleApplySqrtTInverse(petsclib::$UnionPetscLib, da::PetscDA, U::AbstractPetscMat, Y::AbstractPetscMat )
@@ -191,7 +191,7 @@ See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleTFactor()`, 
 $(_doc_external("PetscDA/PetscDAEnsembleApplyTInverse"))
 """
 function PetscDAEnsembleApplyTInverse(petsclib::PetscLibType, da::PetscDA, sdel::AbstractPetscVec, w::AbstractPetscVec)
-    error("PetscDAEnsembleApplyTInverse: no generated method for these argument types")
+    throw(MethodError(PetscDAEnsembleApplyTInverse, (petsclib, da, sdel, w)))
 end
 
 @for_petsc function PetscDAEnsembleApplyTInverse(petsclib::$UnionPetscLib, da::PetscDA, sdel::AbstractPetscVec, w::AbstractPetscVec )
@@ -226,7 +226,7 @@ See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleComputeMean(
 $(_doc_external("PetscDA/PetscDAEnsembleComputeAnomalies"))
 """
 function PetscDAEnsembleComputeAnomalies(petsclib::PetscLibType, da::PetscDA, mean_in::AbstractPetscVec)
-    error("PetscDAEnsembleComputeAnomalies: no generated method for these argument types")
+    throw(MethodError(PetscDAEnsembleComputeAnomalies, (petsclib, da, mean_in)))
 end
 
 @for_petsc function PetscDAEnsembleComputeAnomalies(petsclib::$UnionPetscLib, da::PetscDA, mean_in::AbstractPetscVec )
@@ -264,7 +264,7 @@ See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleComputeAnoma
 $(_doc_external("PetscDA/PetscDAEnsembleComputeMean"))
 """
 function PetscDAEnsembleComputeMean(petsclib::PetscLibType, da::PetscDA, mean::AbstractPetscVec)
-    error("PetscDAEnsembleComputeMean: no generated method for these argument types")
+    throw(MethodError(PetscDAEnsembleComputeMean, (petsclib, da, mean)))
 end
 
 @for_petsc function PetscDAEnsembleComputeMean(petsclib::$UnionPetscLib, da::PetscDA, mean::AbstractPetscVec )
@@ -304,7 +304,7 @@ See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDASetSizes()`, `PetscD
 $(_doc_external("PetscDA/PetscDAEnsembleComputeNormalizedInnovationMatrix"))
 """
 function PetscDAEnsembleComputeNormalizedInnovationMatrix(petsclib::PetscLibType, Z::AbstractPetscMat, y_mean::AbstractPetscVec, r_inv_sqrt::AbstractPetscVec, m::Integer, scale::Number, S::AbstractPetscMat)
-    error("PetscDAEnsembleComputeNormalizedInnovationMatrix: no generated method for these argument types")
+    throw(MethodError(PetscDAEnsembleComputeNormalizedInnovationMatrix, (petsclib, Z, y_mean, r_inv_sqrt, m, scale, S)))
 end
 
 @for_petsc function PetscDAEnsembleComputeNormalizedInnovationMatrix(petsclib::$UnionPetscLib, Z::AbstractPetscMat, y_mean::AbstractPetscVec, r_inv_sqrt::AbstractPetscVec, m::$PetscInt, scale::$PetscScalar, S::AbstractPetscMat )
@@ -339,7 +339,7 @@ See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleAnalysis()`
 $(_doc_external("PetscDA/PetscDAEnsembleForecast"))
 """
 function PetscDAEnsembleForecast(petsclib::PetscLibType, da::PetscDA, model::external, ctx::Ptr{Cvoid})
-    error("PetscDAEnsembleForecast: no generated method for these argument types")
+    throw(MethodError(PetscDAEnsembleForecast, (petsclib, da, model, ctx)))
 end
 
 @for_petsc function PetscDAEnsembleForecast(petsclib::$UnionPetscLib, da::PetscDA, model::external, ctx::Ptr{Cvoid} )
@@ -375,7 +375,7 @@ See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleSetInflation
 $(_doc_external("PetscDA/PetscDAEnsembleGetInflation"))
 """
 function PetscDAEnsembleGetInflation(petsclib::PetscLibType, da::PetscDA)
-    error("PetscDAEnsembleGetInflation: no generated method for these argument types")
+    throw(MethodError(PetscDAEnsembleGetInflation, (petsclib, da)))
 end
 
 @for_petsc function PetscDAEnsembleGetInflation(petsclib::$UnionPetscLib, da::PetscDA )
@@ -414,7 +414,7 @@ See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleRestoreMembe
 $(_doc_external("PetscDA/PetscDAEnsembleGetMember"))
 """
 function PetscDAEnsembleGetMember(petsclib::PetscLibType, da::PetscDA, member_idx::Integer)
-    error("PetscDAEnsembleGetMember: no generated method for these argument types")
+    throw(MethodError(PetscDAEnsembleGetMember, (petsclib, da, member_idx)))
 end
 
 @for_petsc function PetscDAEnsembleGetMember(petsclib::$UnionPetscLib, da::PetscDA, member_idx::$PetscInt )
@@ -452,7 +452,7 @@ See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDASetSizes()`, `PetscD
 $(_doc_external("PetscDA/PetscDAEnsembleGetSize"))
 """
 function PetscDAEnsembleGetSize(petsclib::PetscLibType, da::PetscDA)
-    error("PetscDAEnsembleGetSize: no generated method for these argument types")
+    throw(MethodError(PetscDAEnsembleGetSize, (petsclib, da)))
 end
 
 @for_petsc function PetscDAEnsembleGetSize(petsclib::$UnionPetscLib, da::PetscDA )
@@ -490,7 +490,7 @@ See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleSetSqrtType(
 $(_doc_external("PetscDA/PetscDAEnsembleGetSqrtType"))
 """
 function PetscDAEnsembleGetSqrtType(petsclib::PetscLibType, da::PetscDA)
-    error("PetscDAEnsembleGetSqrtType: no generated method for these argument types")
+    throw(MethodError(PetscDAEnsembleGetSqrtType, (petsclib, da)))
 end
 
 @for_petsc function PetscDAEnsembleGetSqrtType(petsclib::$UnionPetscLib, da::PetscDA )
@@ -526,7 +526,7 @@ See also: `PETSCDAETKF`, `PETSCDALETKF`, `PetscDA`
 $(_doc_external("PetscDA/PetscDAEnsembleInitialize"))
 """
 function PetscDAEnsembleInitialize(petsclib::PetscLibType, da::PetscDA, x0::AbstractPetscVec, obs_error_std::Real, rng::PetscRandom)
-    error("PetscDAEnsembleInitialize: no generated method for these argument types")
+    throw(MethodError(PetscDAEnsembleInitialize, (petsclib, da, x0, obs_error_std, rng)))
 end
 
 @for_petsc function PetscDAEnsembleInitialize(petsclib::$UnionPetscLib, da::PetscDA, x0::AbstractPetscVec, obs_error_std::$PetscReal, rng::PetscRandom )
@@ -561,7 +561,7 @@ See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleGetMember()`
 $(_doc_external("PetscDA/PetscDAEnsembleRestoreMember"))
 """
 function PetscDAEnsembleRestoreMember(petsclib::PetscLibType, da::PetscDA, member_idx::Integer, member::AbstractPetscVec)
-    error("PetscDAEnsembleRestoreMember: no generated method for these argument types")
+    throw(MethodError(PetscDAEnsembleRestoreMember, (petsclib, da, member_idx, member)))
 end
 
 @for_petsc function PetscDAEnsembleRestoreMember(petsclib::$UnionPetscLib, da::PetscDA, member_idx::$PetscInt, member::AbstractPetscVec )
@@ -597,7 +597,7 @@ See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleGetInflation
 $(_doc_external("PetscDA/PetscDAEnsembleSetInflation"))
 """
 function PetscDAEnsembleSetInflation(petsclib::PetscLibType, da::PetscDA, inflation::Real)
-    error("PetscDAEnsembleSetInflation: no generated method for these argument types")
+    throw(MethodError(PetscDAEnsembleSetInflation, (petsclib, da, inflation)))
 end
 
 @for_petsc function PetscDAEnsembleSetInflation(petsclib::$UnionPetscLib, da::PetscDA, inflation::$PetscReal )
@@ -632,7 +632,7 @@ See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleGetMember()`
 $(_doc_external("PetscDA/PetscDAEnsembleSetMember"))
 """
 function PetscDAEnsembleSetMember(petsclib::PetscLibType, da::PetscDA, member_idx::Integer, member::AbstractPetscVec)
-    error("PetscDAEnsembleSetMember: no generated method for these argument types")
+    throw(MethodError(PetscDAEnsembleSetMember, (petsclib, da, member_idx, member)))
 end
 
 @for_petsc function PetscDAEnsembleSetMember(petsclib::$UnionPetscLib, da::PetscDA, member_idx::$PetscInt, member::AbstractPetscVec )
@@ -669,7 +669,7 @@ See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAGetSizes()`, `PetscD
 $(_doc_external("PetscDA/PetscDAEnsembleSetSize"))
 """
 function PetscDAEnsembleSetSize(petsclib::PetscLibType, da::PetscDA, ensemble_size::Integer)
-    error("PetscDAEnsembleSetSize: no generated method for these argument types")
+    throw(MethodError(PetscDAEnsembleSetSize, (petsclib, da, ensemble_size)))
 end
 
 @for_petsc function PetscDAEnsembleSetSize(petsclib::$UnionPetscLib, da::PetscDA, ensemble_size::$PetscInt )
@@ -706,7 +706,7 @@ See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDASqrtType`, `PetscDAE
 $(_doc_external("PetscDA/PetscDAEnsembleSetSqrtType"))
 """
 function PetscDAEnsembleSetSqrtType(petsclib::PetscLibType, da::PetscDA, type::PetscDASqrtType)
-    error("PetscDAEnsembleSetSqrtType: no generated method for these argument types")
+    throw(MethodError(PetscDAEnsembleSetSqrtType, (petsclib, da, type)))
 end
 
 @for_petsc function PetscDAEnsembleSetSqrtType(petsclib::$UnionPetscLib, da::PetscDA, type::PetscDASqrtType )
@@ -738,7 +738,7 @@ See also: `PetscDA`, `PETSCDAETKF`, `PETSCDALETKF`, `PetscDAEnsembleApplyTInvers
 $(_doc_external("PetscDA/PetscDAEnsembleTFactor"))
 """
 function PetscDAEnsembleTFactor(petsclib::PetscLibType, da::PetscDA, S::AbstractPetscMat)
-    error("PetscDAEnsembleTFactor: no generated method for these argument types")
+    throw(MethodError(PetscDAEnsembleTFactor, (petsclib, da, S)))
 end
 
 @for_petsc function PetscDAEnsembleTFactor(petsclib::$UnionPetscLib, da::PetscDA, S::AbstractPetscMat )
@@ -769,7 +769,7 @@ See also: `PetscDAInitializePackage()`, `PetscInitialize()`
 $(_doc_external("PetscDA/PetscDAFinalizePackage"))
 """
 function PetscDAFinalizePackage(petsclib::PetscLibType)
-    error("PetscDAFinalizePackage: no generated method for these argument types")
+    throw(MethodError(PetscDAFinalizePackage, (petsclib, )))
 end
 
 @for_petsc function PetscDAFinalizePackage(petsclib::$UnionPetscLib)
@@ -804,7 +804,7 @@ See also: `PetscDA`, `PetscDASetNDOF()`
 $(_doc_external("PetscDA/PetscDAGetNDOF"))
 """
 function PetscDAGetNDOF(petsclib::PetscLibType, da::PetscDA)
-    error("PetscDAGetNDOF: no generated method for these argument types")
+    throw(MethodError(PetscDAGetNDOF, (petsclib, da)))
 end
 
 @for_petsc function PetscDAGetNDOF(petsclib::$UnionPetscLib, da::PetscDA )
@@ -842,7 +842,7 @@ See also: `PetscDASetObsErrorVariance()`
 $(_doc_external("PetscDA/PetscDAGetObsErrorVariance"))
 """
 function PetscDAGetObsErrorVariance(petsclib::PetscLibType, da::PetscDA)
-    error("PetscDAGetObsErrorVariance: no generated method for these argument types")
+    throw(MethodError(PetscDAGetObsErrorVariance, (petsclib, da)))
 end
 
 @for_petsc function PetscDAGetObsErrorVariance(petsclib::$UnionPetscLib, da::PetscDA )
@@ -881,7 +881,7 @@ See also: `PetscDA`, `PetscDASetFromOptions()`, `PetscDASetOptionsPrefix()`, `Pe
 $(_doc_external("PetscDA/PetscDAGetOptionsPrefix"))
 """
 function PetscDAGetOptionsPrefix(petsclib::PetscLibType, das::PetscDA)
-    error("PetscDAGetOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(PetscDAGetOptionsPrefix, (petsclib, das)))
 end
 
 @for_petsc function PetscDAGetOptionsPrefix(petsclib::$UnionPetscLib, das::PetscDA )
@@ -920,7 +920,7 @@ See also: `PetscDASetSizes()`
 $(_doc_external("PetscDA/PetscDAGetSizes"))
 """
 function PetscDAGetSizes(petsclib::PetscLibType, da::PetscDA)
-    error("PetscDAGetSizes: no generated method for these argument types")
+    throw(MethodError(PetscDAGetSizes, (petsclib, da)))
 end
 
 @for_petsc function PetscDAGetSizes(petsclib::$UnionPetscLib, da::PetscDA )
@@ -960,7 +960,7 @@ See also: `PetscDASetType()`
 $(_doc_external("PetscDA/PetscDAGetType"))
 """
 function PetscDAGetType(petsclib::PetscLibType, da::PetscDA)
-    error("PetscDAGetType: no generated method for these argument types")
+    throw(MethodError(PetscDAGetType, (petsclib, da)))
 end
 
 @for_petsc function PetscDAGetType(petsclib::$UnionPetscLib, da::PetscDA )
@@ -994,7 +994,7 @@ See also: `PetscDAFinalizePackage()`, `PetscInitialize()`
 $(_doc_external("PetscDA/PetscDAInitializePackage"))
 """
 function PetscDAInitializePackage(petsclib::PetscLibType)
-    error("PetscDAInitializePackage: no generated method for these argument types")
+    throw(MethodError(PetscDAInitializePackage, (petsclib, )))
 end
 
 @for_petsc function PetscDAInitializePackage(petsclib::$UnionPetscLib)
@@ -1016,7 +1016,7 @@ end
 $(_doc_external("PC/PetscDALETKFGetLocalizationMatrix"))
 """
 function PetscDALETKFGetLocalizationMatrix(petsclib::PetscLibType, n_obs_vertex::Integer, n_dof::Integer, Vecxyz::Vector{<:AbstractPetscVec}, bd::AbstractVector{<:Number}, H::AbstractPetscMat, Q::AbstractPetscMat)
-    error("PetscDALETKFGetLocalizationMatrix: no generated method for these argument types")
+    throw(MethodError(PetscDALETKFGetLocalizationMatrix, (petsclib, n_obs_vertex, n_dof, Vecxyz, bd, H, Q)))
 end
 
 @for_petsc function PetscDALETKFGetLocalizationMatrix(petsclib::$UnionPetscLib, n_obs_vertex::$PetscInt, n_dof::$PetscInt, Vecxyz::Vector{<:AbstractPetscVec}, bd::Vector{$PetscReal}, H::AbstractPetscMat, Q::AbstractPetscMat )
@@ -1054,7 +1054,7 @@ See also: `PETSCDALETKF`, `PetscDA`, `PetscDALETKFSetObsPerVertex()`
 $(_doc_external("PetscDA/PetscDALETKFGetObsPerVertex"))
 """
 function PetscDALETKFGetObsPerVertex(petsclib::PetscLibType, da::PetscDA)
-    error("PetscDALETKFGetObsPerVertex: no generated method for these argument types")
+    throw(MethodError(PetscDALETKFGetObsPerVertex, (petsclib, da)))
 end
 
 @for_petsc function PetscDALETKFGetObsPerVertex(petsclib::$UnionPetscLib, da::PetscDA )
@@ -1091,7 +1091,7 @@ See also: `PETSCDALETKF`, `PetscDA`
 $(_doc_external("PetscDA/PetscDALETKFSetLocalization"))
 """
 function PetscDALETKFSetLocalization(petsclib::PetscLibType, da::PetscDA, Q::AbstractPetscMat, H::AbstractPetscMat)
-    error("PetscDALETKFSetLocalization: no generated method for these argument types")
+    throw(MethodError(PetscDALETKFSetLocalization, (petsclib, da, Q, H)))
 end
 
 @for_petsc function PetscDALETKFSetLocalization(petsclib::$UnionPetscLib, da::PetscDA, Q::AbstractPetscMat, H::AbstractPetscMat )
@@ -1125,7 +1125,7 @@ See also: `PETSCDALETKF`, `PetscDA`, `PetscDALETKFSetLocalization()`
 $(_doc_external("PetscDA/PetscDALETKFSetObsPerVertex"))
 """
 function PetscDALETKFSetObsPerVertex(petsclib::PetscLibType, da::PetscDA, n_obs_vertex::Integer)
-    error("PetscDALETKFSetObsPerVertex: no generated method for these argument types")
+    throw(MethodError(PetscDALETKFSetObsPerVertex, (petsclib, da, n_obs_vertex)))
 end
 
 @for_petsc function PetscDALETKFSetObsPerVertex(petsclib::$UnionPetscLib, da::PetscDA, n_obs_vertex::$PetscInt )
@@ -1160,7 +1160,7 @@ See also: `PetscDARegisterAll()`, `PetscDASetType()`
 $(_doc_external("PetscDA/PetscDARegister"))
 """
 function PetscDARegister(petsclib::PetscLibType, sname::String, fnc::external)
-    error("PetscDARegister: no generated method for these argument types")
+    throw(MethodError(PetscDARegister, (petsclib, sname, fnc)))
 end
 
 @for_petsc function PetscDARegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
@@ -1190,7 +1190,7 @@ See also: `PetscDARegister()`
 $(_doc_external("PetscDA/PetscDARegisterAll"))
 """
 function PetscDARegisterAll(petsclib::PetscLibType)
-    error("PetscDARegisterAll: no generated method for these argument types")
+    throw(MethodError(PetscDARegisterAll, (petsclib, )))
 end
 
 @for_petsc function PetscDARegisterAll(petsclib::$UnionPetscLib)
@@ -1222,7 +1222,7 @@ See also: `PetscDASetType()`, `PetscObjectOptionsBegin()`
 $(_doc_external("PetscDA/PetscDASetFromOptions"))
 """
 function PetscDASetFromOptions(petsclib::PetscLibType, da::PetscDA)
-    error("PetscDASetFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscDASetFromOptions, (petsclib, da)))
 end
 
 @for_petsc function PetscDASetFromOptions(petsclib::$UnionPetscLib, da::PetscDA )
@@ -1257,7 +1257,7 @@ See also: `PetscDASetSizes()`, `PetscDASetUp()`
 $(_doc_external("PetscDA/PetscDASetLocalSizes"))
 """
 function PetscDASetLocalSizes(petsclib::PetscLibType, da::PetscDA, local_state_size::Integer, local_obs_size::Integer)
-    error("PetscDASetLocalSizes: no generated method for these argument types")
+    throw(MethodError(PetscDASetLocalSizes, (petsclib, da, local_state_size, local_obs_size)))
 end
 
 @for_petsc function PetscDASetLocalSizes(petsclib::$UnionPetscLib, da::PetscDA, local_state_size::$PetscInt, local_obs_size::$PetscInt )
@@ -1291,7 +1291,7 @@ See also: `PetscDA`, `PetscDAGetNDOF()`, `PetscDASetUp()`, `PetscDASetSizes()`
 $(_doc_external("PetscDA/PetscDASetNDOF"))
 """
 function PetscDASetNDOF(petsclib::PetscLibType, da::PetscDA, ndof::Integer)
-    error("PetscDASetNDOF: no generated method for these argument types")
+    throw(MethodError(PetscDASetNDOF, (petsclib, da, ndof)))
 end
 
 @for_petsc function PetscDASetNDOF(petsclib::$UnionPetscLib, da::PetscDA, ndof::$PetscInt )
@@ -1323,7 +1323,7 @@ See also: `PetscDAGetObsErrorVariance()`
 $(_doc_external("PetscDA/PetscDASetObsErrorVariance"))
 """
 function PetscDASetObsErrorVariance(petsclib::PetscLibType, da::PetscDA, obs_error_var::AbstractPetscVec)
-    error("PetscDASetObsErrorVariance: no generated method for these argument types")
+    throw(MethodError(PetscDASetObsErrorVariance, (petsclib, da, obs_error_var)))
 end
 
 @for_petsc function PetscDASetObsErrorVariance(petsclib::$UnionPetscLib, da::PetscDA, obs_error_var::AbstractPetscVec )
@@ -1358,7 +1358,7 @@ See also: `PetscDA`, `PetscDASetFromOptions()`, `PetscDAAppendOptionsPrefix()`, 
 $(_doc_external("PetscDA/PetscDASetOptionsPrefix"))
 """
 function PetscDASetOptionsPrefix(petsclib::PetscLibType, das::PetscDA, p::String)
-    error("PetscDASetOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(PetscDASetOptionsPrefix, (petsclib, das, p)))
 end
 
 @for_petsc function PetscDASetOptionsPrefix(petsclib::$UnionPetscLib, das::PetscDA, p::String )
@@ -1393,7 +1393,7 @@ See also: `PetscDAGetSizes()`, `PetscDASetUp()`, `PetscDAEnsembleSetSize()`
 $(_doc_external("PetscDA/PetscDASetSizes"))
 """
 function PetscDASetSizes(petsclib::PetscLibType, da::PetscDA, state_size::Integer, obs_size::Integer)
-    error("PetscDASetSizes: no generated method for these argument types")
+    throw(MethodError(PetscDASetSizes, (petsclib, da, state_size, obs_size)))
 end
 
 @for_petsc function PetscDASetSizes(petsclib::$UnionPetscLib, da::PetscDA, state_size::$PetscInt, obs_size::$PetscInt )
@@ -1427,7 +1427,7 @@ See also: `PetscDAGetType()`, `PetscDARegister()`
 $(_doc_external("PetscDA/PetscDASetType"))
 """
 function PetscDASetType(petsclib::PetscLibType, da::PetscDA, type::String)
-    error("PetscDASetType: no generated method for these argument types")
+    throw(MethodError(PetscDASetType, (petsclib, da, type)))
 end
 
 @for_petsc function PetscDASetType(petsclib::$UnionPetscLib, da::PetscDA, type::String )
@@ -1460,7 +1460,7 @@ See also: `PetscDASetSizes()`, `PetscDASetType()`
 $(_doc_external("PetscDA/PetscDASetUp"))
 """
 function PetscDASetUp(petsclib::PetscLibType, da::PetscDA)
-    error("PetscDASetUp: no generated method for these argument types")
+    throw(MethodError(PetscDASetUp, (petsclib, da)))
 end
 
 @for_petsc function PetscDASetUp(petsclib::$UnionPetscLib, da::PetscDA )
@@ -1494,7 +1494,7 @@ See also: `PetscDAViewFromOptions()`
 $(_doc_external("PetscDA/PetscDAView"))
 """
 function PetscDAView(petsclib::PetscLibType, da::PetscDA, viewer::PetscViewer)
-    error("PetscDAView: no generated method for these argument types")
+    throw(MethodError(PetscDAView, (petsclib, da, viewer)))
 end
 
 @for_petsc function PetscDAView(petsclib::$UnionPetscLib, da::PetscDA, viewer::PetscViewer )
@@ -1532,7 +1532,7 @@ See also: `PetscDAView()`, `PetscObjectViewFromOptions()`
 $(_doc_external("PetscDA/PetscDAViewFromOptions"))
 """
 function PetscDAViewFromOptions(petsclib::PetscLibType, da::PetscDA, obj, name::String)
-    error("PetscDAViewFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscDAViewFromOptions, (petsclib, da, obj, name)))
 end
 
 @for_petsc function PetscDAViewFromOptions(petsclib::$UnionPetscLib, da::PetscDA, obj, name::String )
@@ -1569,7 +1569,7 @@ See also: `PetscDataType`, `PetscDataTypeToMPIDataType()`, `PetscDataTypeGetSize
 $(_doc_external("Sys/PetscDataTypeFromString"))
 """
 function PetscDataTypeFromString(petsclib::PetscLibType, name::String)
-    error("PetscDataTypeFromString: no generated method for these argument types")
+    throw(MethodError(PetscDataTypeFromString, (petsclib, name)))
 end
 
 @for_petsc function PetscDataTypeFromString(petsclib::$UnionPetscLib, name::String )
@@ -1609,7 +1609,7 @@ See also: `PetscDataType`, `PetscDataTypeToMPIDataType()`
 $(_doc_external("Sys/PetscDataTypeGetSize"))
 """
 function PetscDataTypeGetSize(petsclib::PetscLibType, ptype::PetscDataType)
-    error("PetscDataTypeGetSize: no generated method for these argument types")
+    throw(MethodError(PetscDataTypeGetSize, (petsclib, ptype)))
 end
 
 @for_petsc function PetscDataTypeGetSize(petsclib::$UnionPetscLib, ptype::PetscDataType )
@@ -1647,7 +1647,7 @@ See also: `PetscDataType`, `PetscHDF5DataTypeToPetscDataType()`
 $(_doc_external("Viewer/PetscDataTypeToHDF5DataType"))
 """
 function PetscDataTypeToHDF5DataType(petsclib::PetscLibType, ptype::PetscDataType)
-    error("PetscDataTypeToHDF5DataType: no generated method for these argument types")
+    throw(MethodError(PetscDataTypeToHDF5DataType, (petsclib, ptype)))
 end
 
 @for_petsc function PetscDataTypeToHDF5DataType(petsclib::$UnionPetscLib, ptype::PetscDataType )

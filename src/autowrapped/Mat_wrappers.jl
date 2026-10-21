@@ -21,7 +21,7 @@ See also: `Mat`, `MatANorm()`, `VecDot()`, `VecNorm()`, `MatMult()`, `MatMultAdd
 $(_doc_external("Mat/MatADot"))
 """
 function MatADot(petsclib::PetscLibType, mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec)
-    error("MatADot: no generated method for these argument types")
+    throw(MethodError(MatADot, (petsclib, mat, x, y)))
 end
 
 @for_petsc function MatADot(petsclib::$UnionPetscLib, mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec )
@@ -59,7 +59,7 @@ See also: `Mat`, `MatMPIAIJGetLocalMat()`
 $(_doc_external("Mat/MatAIJGetLocalMat"))
 """
 function MatAIJGetLocalMat(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatAIJGetLocalMat: no generated method for these argument types")
+    throw(MethodError(MatAIJGetLocalMat, (petsclib, A)))
 end
 
 @for_petsc function MatAIJGetLocalMat(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -99,7 +99,7 @@ See also: `Mat`, `MatADot()`, `VecDot()`, `VecNorm()`, `MatMult()`, `MatMultAdd(
 $(_doc_external("Mat/MatANorm"))
 """
 function MatANorm(petsclib::PetscLibType, mat::AbstractPetscMat, x::AbstractPetscVec)
-    error("MatANorm: no generated method for these argument types")
+    throw(MethodError(MatANorm, (petsclib, mat, x)))
 end
 
 @for_petsc function MatANorm(petsclib::$UnionPetscLib, mat::AbstractPetscMat, x::AbstractPetscVec )
@@ -137,7 +137,7 @@ See also: `Mat`, `MatAYPX()`
 $(_doc_external("Mat/MatAXPY"))
 """
 function MatAXPY(petsclib::PetscLibType, Y::AbstractPetscMat, a::Number, X::AbstractPetscMat, str::MatStructure)
-    error("MatAXPY: no generated method for these argument types")
+    throw(MethodError(MatAXPY, (petsclib, Y, a, X, str)))
 end
 
 @for_petsc function MatAXPY(petsclib::$UnionPetscLib, Y::AbstractPetscMat, a::$PetscScalar, X::AbstractPetscMat, str::MatStructure )
@@ -173,7 +173,7 @@ See also: `Mat`, `MatAXPY()`
 $(_doc_external("Mat/MatAYPX"))
 """
 function MatAYPX(petsclib::PetscLibType, Y::AbstractPetscMat, a::Number, X::AbstractPetscMat, str::MatStructure)
-    error("MatAYPX: no generated method for these argument types")
+    throw(MethodError(MatAYPX, (petsclib, Y, a, X, str)))
 end
 
 @for_petsc function MatAYPX(petsclib::$UnionPetscLib, Y::AbstractPetscMat, a::$PetscScalar, X::AbstractPetscMat, str::MatStructure )
@@ -208,7 +208,7 @@ See also: `Mat`, `MatGetOptionsPrefix()`, `MatAppendOptionsPrefixFactor()`, `Mat
 $(_doc_external("Mat/MatAppendOptionsPrefix"))
 """
 function MatAppendOptionsPrefix(petsclib::PetscLibType, A::AbstractPetscMat, prefix::String)
-    error("MatAppendOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(MatAppendOptionsPrefix, (petsclib, A, prefix)))
 end
 
 @for_petsc function MatAppendOptionsPrefix(petsclib::$UnionPetscLib, A::AbstractPetscMat, prefix::String )
@@ -245,7 +245,7 @@ See also: `Mat`, Matrix Factorization, `MatGetFactor()`, `PetscOptionsCreate()`,
 $(_doc_external("Mat/MatAppendOptionsPrefixFactor"))
 """
 function MatAppendOptionsPrefixFactor(petsclib::PetscLibType, A::AbstractPetscMat, prefix::String)
-    error("MatAppendOptionsPrefixFactor: no generated method for these argument types")
+    throw(MethodError(MatAppendOptionsPrefixFactor, (petsclib, A, prefix)))
 end
 
 @for_petsc function MatAppendOptionsPrefixFactor(petsclib::$UnionPetscLib, A::AbstractPetscMat, prefix::String )
@@ -282,7 +282,7 @@ See also: `Mat`, `MatAssemblyEnd()`, `MatSetValues()`, `MatAssemblyBegin()`
 $(_doc_external("Mat/MatAssembled"))
 """
 function MatAssembled(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatAssembled: no generated method for these argument types")
+    throw(MethodError(MatAssembled, (petsclib, mat)))
 end
 
 @for_petsc function MatAssembled(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -319,7 +319,7 @@ See also: `Mat`, `MatAssemblyEnd()`, `MatSetValues()`, `MatAssembled()`
 $(_doc_external("Mat/MatAssemblyBegin"))
 """
 function MatAssemblyBegin(petsclib::PetscLibType, mat::AbstractPetscMat, type::MatAssemblyType)
-    error("MatAssemblyBegin: no generated method for these argument types")
+    throw(MethodError(MatAssemblyBegin, (petsclib, mat, type)))
 end
 
 @for_petsc function MatAssemblyBegin(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::MatAssemblyType )
@@ -358,7 +358,7 @@ See also: `Mat`, `MatAssemblyBegin()`, `MatSetValues()`, `PetscDrawOpenX()`, `Pe
 $(_doc_external("Mat/MatAssemblyEnd"))
 """
 function MatAssemblyEnd(petsclib::PetscLibType, mat::AbstractPetscMat, type::MatAssemblyType)
-    error("MatAssemblyEnd: no generated method for these argument types")
+    throw(MethodError(MatAssemblyEnd, (petsclib, mat, type)))
 end
 
 @for_petsc function MatAssemblyEnd(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::MatAssemblyType )
@@ -396,7 +396,7 @@ See also: `Mat`, `MatForwardSolve()`, `MatGetFactor()`, `MatSolve()`
 $(_doc_external("Mat/MatBackwardSolve"))
 """
 function MatBackwardSolve(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec)
-    error("MatBackwardSolve: no generated method for these argument types")
+    throw(MethodError(MatBackwardSolve, (petsclib, mat, b, x)))
 end
 
 @for_petsc function MatBackwardSolve(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec )
@@ -430,7 +430,7 @@ See also: `Mat`, `MatBoundToCPU()`
 $(_doc_external("Mat/MatBindToCPU"))
 """
 function MatBindToCPU(petsclib::PetscLibType, A::AbstractPetscMat, flg::PetscBool)
-    error("MatBindToCPU: no generated method for these argument types")
+    throw(MethodError(MatBindToCPU, (petsclib, A, flg)))
 end
 
 @for_petsc function MatBindToCPU(petsclib::$UnionPetscLib, A::AbstractPetscMat, flg::PetscBool )
@@ -470,7 +470,7 @@ See also: `Mat`, `MatCreate()`, `MatCreateBlockMat()`, `MatSetValues()`
 $(_doc_external("Mat/MatBlockMatSetPreallocation"))
 """
 function MatBlockMatSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat, bs::Integer, nz::Integer, nnz::AbstractVector{<:Number})
-    error("MatBlockMatSetPreallocation: no generated method for these argument types")
+    throw(MethodError(MatBlockMatSetPreallocation, (petsclib, B, bs, nz, nnz)))
 end
 
 @for_petsc function MatBlockMatSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, bs::$PetscInt, nz::$PetscInt, nnz::Vector{$PetscInt} )
@@ -504,7 +504,7 @@ See also: `Mat`, `MatBindToCPU()`
 $(_doc_external("Mat/MatBoundToCPU"))
 """
 function MatBoundToCPU(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatBoundToCPU: no generated method for these argument types")
+    throw(MethodError(MatBoundToCPU, (petsclib, A)))
 end
 
 @for_petsc function MatBoundToCPU(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -529,7 +529,7 @@ end
 $(_doc_external("Mat/MatCUSPARSESetFormat"))
 """
 function MatCUSPARSESetFormat(petsclib::PetscLibType, A::AbstractPetscMat, op::MatCUSPARSEFormatOperation, format::MatCUSPARSEStorageFormat)
-    error("MatCUSPARSESetFormat: no generated method for these argument types")
+    throw(MethodError(MatCUSPARSESetFormat, (petsclib, A, op, format)))
 end
 
 @for_petsc function MatCUSPARSESetFormat(petsclib::$UnionPetscLib, A::AbstractPetscMat, op::MatCUSPARSEFormatOperation, format::MatCUSPARSEStorageFormat )
@@ -552,7 +552,7 @@ end
 $(_doc_external("Mat/MatCUSPARSESetUseCPUSolve"))
 """
 function MatCUSPARSESetUseCPUSolve(petsclib::PetscLibType, A::AbstractPetscMat, use_cpu::PetscBool)
-    error("MatCUSPARSESetUseCPUSolve: no generated method for these argument types")
+    throw(MethodError(MatCUSPARSESetUseCPUSolve, (petsclib, A, use_cpu)))
 end
 
 @for_petsc function MatCUSPARSESetUseCPUSolve(petsclib::$UnionPetscLib, A::AbstractPetscMat, use_cpu::PetscBool )
@@ -589,7 +589,7 @@ See also: `Mat`, Matrix Factorization, `MatGetFactor()`, `MatFactorInfo`, `MatLU
 $(_doc_external("Mat/MatCholeskyFactor"))
 """
 function MatCholeskyFactor(petsclib::PetscLibType, mat::AbstractPetscMat, perm::AbstractIS, info::Vector{MatFactorInfo})
-    error("MatCholeskyFactor: no generated method for these argument types")
+    throw(MethodError(MatCholeskyFactor, (petsclib, mat, perm, info)))
 end
 
 @for_petsc function MatCholeskyFactor(petsclib::$UnionPetscLib, mat::AbstractPetscMat, perm::AbstractIS, info::Vector{MatFactorInfo} )
@@ -626,7 +626,7 @@ See also: `Mat`, Matrix Factorization, `MatFactorInfo`, `MatGetFactor()`, `MatCh
 $(_doc_external("Mat/MatCholeskyFactorNumeric"))
 """
 function MatCholeskyFactorNumeric(petsclib::PetscLibType, fact::AbstractPetscMat, mat::AbstractPetscMat, info::Vector{MatFactorInfo})
-    error("MatCholeskyFactorNumeric: no generated method for these argument types")
+    throw(MethodError(MatCholeskyFactorNumeric, (petsclib, fact, mat, info)))
 end
 
 @for_petsc function MatCholeskyFactorNumeric(petsclib::$UnionPetscLib, fact::AbstractPetscMat, mat::AbstractPetscMat, info::Vector{MatFactorInfo} )
@@ -669,7 +669,7 @@ See also: `Mat`, Matrix Factorization, `MatFactorInfo`, `MatGetFactor()`, `MatLU
 $(_doc_external("Mat/MatCholeskyFactorSymbolic"))
 """
 function MatCholeskyFactorSymbolic(petsclib::PetscLibType, fact::AbstractPetscMat, mat::AbstractPetscMat, perm::AbstractIS, info::Vector{MatFactorInfo})
-    error("MatCholeskyFactorSymbolic: no generated method for these argument types")
+    throw(MethodError(MatCholeskyFactorSymbolic, (petsclib, fact, mat, perm, info)))
 end
 
 @for_petsc function MatCholeskyFactorSymbolic(petsclib::$UnionPetscLib, fact::AbstractPetscMat, mat::AbstractPetscMat, perm::AbstractIS, info::Vector{MatFactorInfo} )
@@ -703,7 +703,7 @@ See also: `Mat`, `MatCreateComposite()`, `MatCompositeGetMat()`, `MATCOMPOSITE`
 $(_doc_external("Mat/MatCompositeAddMat"))
 """
 function MatCompositeAddMat(petsclib::PetscLibType, mat::AbstractPetscMat, smat::AbstractPetscMat)
-    error("MatCompositeAddMat: no generated method for these argument types")
+    throw(MethodError(MatCompositeAddMat, (petsclib, mat, smat)))
 end
 
 @for_petsc function MatCompositeAddMat(petsclib::$UnionPetscLib, mat::AbstractPetscMat, smat::AbstractPetscMat )
@@ -740,7 +740,7 @@ See also: `Mat`, `MatCreateComposite()`, `MatCompositeGetNumberMat()`, `MatCompo
 $(_doc_external("Mat/MatCompositeGetMat"))
 """
 function MatCompositeGetMat(petsclib::PetscLibType, mat::AbstractPetscMat, i::Integer)
-    error("MatCompositeGetMat: no generated method for these argument types")
+    throw(MethodError(MatCompositeGetMat, (petsclib, mat, i)))
 end
 
 @for_petsc function MatCompositeGetMat(petsclib::$UnionPetscLib, mat::AbstractPetscMat, i::$PetscInt )
@@ -778,7 +778,7 @@ See also: `Mat`, `MatCreateComposite()`, `MatCompositeSetMatStructure()`, `MATCO
 $(_doc_external("Mat/MatCompositeGetMatStructure"))
 """
 function MatCompositeGetMatStructure(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatCompositeGetMatStructure: no generated method for these argument types")
+    throw(MethodError(MatCompositeGetMatStructure, (petsclib, mat)))
 end
 
 @for_petsc function MatCompositeGetMatStructure(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -816,7 +816,7 @@ See also: `Mat`, `MatCreateComposite()`, `MatCompositeGetMat()`, `MATCOMPOSITE`
 $(_doc_external("Mat/MatCompositeGetNumberMat"))
 """
 function MatCompositeGetNumberMat(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatCompositeGetNumberMat: no generated method for these argument types")
+    throw(MethodError(MatCompositeGetNumberMat, (petsclib, mat)))
 end
 
 @for_petsc function MatCompositeGetNumberMat(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -854,7 +854,7 @@ See also: `Mat`, `MatCreateComposite()`, `MatCompositeSetType()`, `MATCOMPOSITE`
 $(_doc_external("Mat/MatCompositeGetType"))
 """
 function MatCompositeGetType(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatCompositeGetType: no generated method for these argument types")
+    throw(MethodError(MatCompositeGetType, (petsclib, mat)))
 end
 
 @for_petsc function MatCompositeGetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -894,7 +894,7 @@ See also: `Mat`, `MatDestroy()`, `MatMult()`, `MatCompositeAddMat()`, `MatCreate
 $(_doc_external("Mat/MatCompositeMerge"))
 """
 function MatCompositeMerge(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatCompositeMerge: no generated method for these argument types")
+    throw(MethodError(MatCompositeMerge, (petsclib, mat)))
 end
 
 @for_petsc function MatCompositeMerge(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -928,7 +928,7 @@ See also: `Mat`, `MatAXPY()`, `MatCreateComposite()`, `MatCompositeMerge()`, `Ma
 $(_doc_external("Mat/MatCompositeSetMatStructure"))
 """
 function MatCompositeSetMatStructure(petsclib::PetscLibType, mat::AbstractPetscMat, str::MatStructure)
-    error("MatCompositeSetMatStructure: no generated method for these argument types")
+    throw(MethodError(MatCompositeSetMatStructure, (petsclib, mat, str)))
 end
 
 @for_petsc function MatCompositeSetMatStructure(petsclib::$UnionPetscLib, mat::AbstractPetscMat, str::MatStructure )
@@ -963,7 +963,7 @@ See also: `Mat`, `MatCreateComposite()`, `MatCompositeMerge()`, `MATCOMPOSITE`
 $(_doc_external("Mat/MatCompositeSetMergeType"))
 """
 function MatCompositeSetMergeType(petsclib::PetscLibType, mat::AbstractPetscMat, type::MatCompositeMergeType)
-    error("MatCompositeSetMergeType: no generated method for these argument types")
+    throw(MethodError(MatCompositeSetMergeType, (petsclib, mat, type)))
 end
 
 @for_petsc function MatCompositeSetMergeType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::MatCompositeMergeType )
@@ -997,7 +997,7 @@ See also: `Mat`, `MatScale()`, `MatDiagonalScale()`, `MATCOMPOSITE`
 $(_doc_external("Mat/MatCompositeSetScalings"))
 """
 function MatCompositeSetScalings(petsclib::PetscLibType, mat::AbstractPetscMat, scalings::AbstractVector{<:Number})
-    error("MatCompositeSetScalings: no generated method for these argument types")
+    throw(MethodError(MatCompositeSetScalings, (petsclib, mat, scalings)))
 end
 
 @for_petsc function MatCompositeSetScalings(petsclib::$UnionPetscLib, mat::AbstractPetscMat, scalings::Vector{$PetscScalar} )
@@ -1032,7 +1032,7 @@ See also: `Mat`, `MatDestroy()`, `MatMult()`, `MatCompositeAddMat()`, `MatCreate
 $(_doc_external("Mat/MatCompositeSetType"))
 """
 function MatCompositeSetType(petsclib::PetscLibType, mat::AbstractPetscMat, type::MatCompositeType)
-    error("MatCompositeSetType: no generated method for these argument types")
+    throw(MethodError(MatCompositeSetType, (petsclib, mat, type)))
 end
 
 @for_petsc function MatCompositeSetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::MatCompositeType )
@@ -1069,7 +1069,7 @@ See also: `DMPlexCreate()`, `DMPlexSetConeSize()`, `DMPlexSetChart()`
 $(_doc_external("Mat/MatComputeBandwidth"))
 """
 function MatComputeBandwidth(petsclib::PetscLibType, A::AbstractPetscMat, fraction::Real)
-    error("MatComputeBandwidth: no generated method for these argument types")
+    throw(MethodError(MatComputeBandwidth, (petsclib, A, fraction)))
 end
 
 @for_petsc function MatComputeBandwidth(petsclib::$UnionPetscLib, A::AbstractPetscMat, fraction::$PetscReal )
@@ -1108,7 +1108,7 @@ See also: `Mat`, `MatConvert()`, `MatMult()`, `MatComputeOperatorTranspose()`
 $(_doc_external("Mat/MatComputeOperator"))
 """
 function MatComputeOperator(petsclib::PetscLibType, inmat::AbstractPetscMat, mattype::String)
-    error("MatComputeOperator: no generated method for these argument types")
+    throw(MethodError(MatComputeOperator, (petsclib, inmat, mattype)))
 end
 
 @for_petsc function MatComputeOperator(petsclib::$UnionPetscLib, inmat::AbstractPetscMat, mattype::String )
@@ -1148,7 +1148,7 @@ See also: `Mat`, `MatConvert()`, `MatMult()`, `MatComputeOperator()`
 $(_doc_external("Mat/MatComputeOperatorTranspose"))
 """
 function MatComputeOperatorTranspose(petsclib::PetscLibType, inmat::AbstractPetscMat, mattype::String)
-    error("MatComputeOperatorTranspose: no generated method for these argument types")
+    throw(MethodError(MatComputeOperatorTranspose, (petsclib, inmat, mattype)))
 end
 
 @for_petsc function MatComputeOperatorTranspose(petsclib::$UnionPetscLib, inmat::AbstractPetscMat, mattype::String )
@@ -1184,7 +1184,7 @@ See also: `Mat`, `MatInvertVariableBlockEnvelope()`, `MatSetVariableBlockSizes()
 $(_doc_external("Mat/MatComputeVariableBlockEnvelope"))
 """
 function MatComputeVariableBlockEnvelope(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatComputeVariableBlockEnvelope: no generated method for these argument types")
+    throw(MethodError(MatComputeVariableBlockEnvelope, (petsclib, mat)))
 end
 
 @for_petsc function MatComputeVariableBlockEnvelope(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -1217,7 +1217,7 @@ See also: `Mat`, `MatRealPart()`, `MatImaginaryPart()`, `VecConjugate()`, `MatTr
 $(_doc_external("Mat/MatConjugate"))
 """
 function MatConjugate(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatConjugate: no generated method for these argument types")
+    throw(MethodError(MatConjugate, (petsclib, mat)))
 end
 
 @for_petsc function MatConjugate(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -1253,7 +1253,7 @@ See also: `Mat`, `MatDestroy()`, `MATCONSTANTDIAGONAL`
 $(_doc_external("Mat/MatConstantDiagonalGetConstant"))
 """
 function MatConstantDiagonalGetConstant(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatConstantDiagonalGetConstant: no generated method for these argument types")
+    throw(MethodError(MatConstantDiagonalGetConstant, (petsclib, mat)))
 end
 
 @for_petsc function MatConstantDiagonalGetConstant(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -1297,7 +1297,7 @@ See also: `Mat`, `MatCopy()`, `MatDuplicate()`, `MAT_INITIAL_MATRIX`, `MAT_REUSE
 $(_doc_external("Mat/MatConvert"))
 """
 function MatConvert(petsclib::PetscLibType, mat::AbstractPetscMat, newtype::String, reuse::MatReuse)
-    error("MatConvert: no generated method for these argument types")
+    throw(MethodError(MatConvert, (petsclib, mat, newtype, reuse)))
 end
 
 @for_petsc function MatConvert(petsclib::$UnionPetscLib, mat::AbstractPetscMat, newtype::String, reuse::MatReuse )
@@ -1336,7 +1336,7 @@ See also: `Mat`, `MatConvert()`, `MatDuplicate()`
 $(_doc_external("Mat/MatCopy"))
 """
 function MatCopy(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, str::MatStructure)
-    error("MatCopy: no generated method for these argument types")
+    throw(MethodError(MatCopy, (petsclib, A, B, str)))
 end
 
 @for_petsc function MatCopy(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, str::MatStructure )
@@ -1378,7 +1378,7 @@ See also: `Mat`, `MAT_USE_HASH_TABLE`
 $(_doc_external("Mat/MatCopyHashToXAIJ"))
 """
 function MatCopyHashToXAIJ(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat)
-    error("MatCopyHashToXAIJ: no generated method for these argument types")
+    throw(MethodError(MatCopyHashToXAIJ, (petsclib, A, B)))
 end
 
 @for_petsc function MatCopyHashToXAIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat )
@@ -1431,7 +1431,7 @@ See also: `Mat`, `MatCreateSeqAIJ()`, `MatCreateAIJ()`,
 $(_doc_external("Mat/MatCreate"))
 """
 function MatCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("MatCreate: no generated method for these argument types")
+    throw(MethodError(MatCreate, (petsclib, comm)))
 end
 
 @for_petsc function MatCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -1502,7 +1502,7 @@ See also: `Mat`, Sparse Matrix Creation, `MatCreate()`, `MatCreateSeqAIJ()`, `Ma
 $(_doc_external("Mat/MatCreateAIJ"))
 """
 function MatCreateAIJ(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::Union{Ptr, AbstractVector{<:Number}}, o_nz::Integer, o_nnz::Union{Ptr, AbstractVector{<:Number}})
-    error("MatCreateAIJ: no generated method for these argument types")
+    throw(MethodError(MatCreateAIJ, (petsclib, comm, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz)))
 end
 
 @for_petsc function MatCreateAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Union{Ptr, Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr, Vector{$PetscInt}} )
@@ -1527,7 +1527,7 @@ end
 $(_doc_external("Mat/MatCreateAIJCUSPARSE"))
 """
 function MatCreateAIJCUSPARSE(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::AbstractVector{<:Number}, o_nz::Integer, o_nnz::AbstractVector{<:Number})
-    error("MatCreateAIJCUSPARSE: no generated method for these argument types")
+    throw(MethodError(MatCreateAIJCUSPARSE, (petsclib, comm, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz)))
 end
 
 @for_petsc function MatCreateAIJCUSPARSE(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
@@ -1552,7 +1552,7 @@ end
 $(_doc_external("Mat/MatCreateAIJHIPSPARSE"))
 """
 function MatCreateAIJHIPSPARSE(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::AbstractVector{<:Number}, o_nz::Integer, o_nnz::AbstractVector{<:Number})
-    error("MatCreateAIJHIPSPARSE: no generated method for these argument types")
+    throw(MethodError(MatCreateAIJHIPSPARSE, (petsclib, comm, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz)))
 end
 
 @for_petsc function MatCreateAIJHIPSPARSE(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
@@ -1577,7 +1577,7 @@ end
 $(_doc_external("Mat/MatCreateAIJKokkos"))
 """
 function MatCreateAIJKokkos(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::AbstractVector{<:Number}, o_nz::Integer, o_nnz::AbstractVector{<:Number})
-    error("MatCreateAIJKokkos: no generated method for these argument types")
+    throw(MethodError(MatCreateAIJKokkos, (petsclib, comm, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz)))
 end
 
 @for_petsc function MatCreateAIJKokkos(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
@@ -1602,7 +1602,7 @@ end
 $(_doc_external("Mat/MatCreateAIJViennaCL"))
 """
 function MatCreateAIJViennaCL(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::AbstractVector{<:Number}, o_nz::Integer, o_nnz::AbstractVector{<:Number})
-    error("MatCreateAIJViennaCL: no generated method for these argument types")
+    throw(MethodError(MatCreateAIJViennaCL, (petsclib, comm, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz)))
 end
 
 @for_petsc function MatCreateAIJViennaCL(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
@@ -1667,7 +1667,7 @@ See also: `Mat`, `MatCreate()`, `MatCreateSeqBAIJ()`, `MatSetValues()`, `MatMPIB
 $(_doc_external("Mat/MatCreateBAIJ"))
 """
 function MatCreateBAIJ(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::Union{Ptr, AbstractVector{<:Number}}, o_nz::Integer, o_nnz::Union{Ptr, AbstractVector{<:Number}})
-    error("MatCreateBAIJ: no generated method for these argument types")
+    throw(MethodError(MatCreateBAIJ, (petsclib, comm, bs, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz)))
 end
 
 @for_petsc function MatCreateBAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Union{Ptr, Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr, Vector{$PetscInt}} )
@@ -1730,7 +1730,7 @@ See also: `Mat`, `MATBAIJMKL`, `MATBAIJ`, `MatCreate()`, `MatCreateSeqBAIJMKL()`
 $(_doc_external("Mat/MatCreateBAIJMKL"))
 """
 function MatCreateBAIJMKL(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::Union{Ptr, AbstractVector{<:Number}}, o_nz::Integer, o_nnz::Union{Ptr, AbstractVector{<:Number}})
-    error("MatCreateBAIJMKL: no generated method for these argument types")
+    throw(MethodError(MatCreateBAIJMKL, (petsclib, comm, bs, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz)))
 end
 
 @for_petsc function MatCreateBAIJMKL(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Union{Ptr, Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr, Vector{$PetscInt}} )
@@ -1773,7 +1773,7 @@ See also: `Mat`, `MATBLOCKMAT`, `MatCreateNest()`
 $(_doc_external("Mat/MatCreateBlockMat"))
 """
 function MatCreateBlockMat(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, bs::Integer, nz::Integer)
-    error("MatCreateBlockMat: no generated method for these argument types")
+    throw(MethodError(MatCreateBlockMat, (petsclib, comm, m, n, bs, nz)))
 end
 
 @for_petsc function MatCreateBlockMat(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, bs::$PetscInt, nz::$PetscInt )
@@ -1815,7 +1815,7 @@ See also: `Mat`, `MatCreateLRC()`, `MatCreateComposite()`
 $(_doc_external("Mat/MatCreateCentering"))
 """
 function MatCreateCentering(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
-    error("MatCreateCentering: no generated method for these argument types")
+    throw(MethodError(MatCreateCentering, (petsclib, comm, n, M_N)))
 end
 
 @for_petsc function MatCreateCentering(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
@@ -1861,7 +1861,7 @@ See also: `Mat`, `MatDestroy()`, `MatMult()`, `MatCompositeAddMat()`, `MatCompos
 $(_doc_external("Mat/MatCreateComposite"))
 """
 function MatCreateComposite(petsclib::PetscLibType, comm::MPI_Comm, nmat::Integer, mats::AbstractPetscMat)
-    error("MatCreateComposite: no generated method for these argument types")
+    throw(MethodError(MatCreateComposite, (petsclib, comm, nmat, mats)))
 end
 
 @for_petsc function MatCreateComposite(petsclib::$UnionPetscLib, comm::MPI_Comm, nmat::$PetscInt, mats::AbstractPetscMat )
@@ -1910,7 +1910,7 @@ See also: `Mat`, `MatDestroy()`, `MATCONSTANTDIAGONAL`, `MatScale()`, `MatShift(
 $(_doc_external("Mat/MatCreateConstantDiagonal"))
 """
 function MatCreateConstantDiagonal(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, diag::Number)
-    error("MatCreateConstantDiagonal: no generated method for these argument types")
+    throw(MethodError(MatCreateConstantDiagonal, (petsclib, comm, m, n, M_M, M_N, diag)))
 end
 
 @for_petsc function MatCreateConstantDiagonal(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, diag::$PetscScalar )
@@ -1954,7 +1954,7 @@ See also: `Mat`, `MATDENSE`, `MatCreate()`, `MatCreateSeqDense()`, `MatSetValues
 $(_doc_external("Mat/MatCreateDense"))
 """
 function MatCreateDense(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, data::Union{Ptr, AbstractVector{<:Number}})
-    error("MatCreateDense: no generated method for these argument types")
+    throw(MethodError(MatCreateDense, (petsclib, comm, m, n, M_M, M_N, data)))
 end
 
 @for_petsc function MatCreateDense(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, data::Union{Ptr, Vector{$PetscScalar}} )
@@ -1979,7 +1979,7 @@ end
 $(_doc_external("Mat/MatCreateDenseCUDA"))
 """
 function MatCreateDenseCUDA(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer)
-    error("MatCreateDenseCUDA: no generated method for these argument types")
+    throw(MethodError(MatCreateDenseCUDA, (petsclib, comm, m, n, M_M, M_N)))
 end
 
 @for_petsc function MatCreateDenseCUDA(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt )
@@ -2026,7 +2026,7 @@ See also: `Mat`, `MatCreateDense()`, `MatCreateDenseCUDA()`, `MatCreateDenseHIP(
 $(_doc_external("Mat/MatCreateDenseFromVecType"))
 """
 function MatCreateDenseFromVecType(petsclib::PetscLibType, comm::MPI_Comm, vtype::String, m::Integer, n::Integer, M_M::Integer, M_N::Integer, lda::Integer)
-    error("MatCreateDenseFromVecType: no generated method for these argument types")
+    throw(MethodError(MatCreateDenseFromVecType, (petsclib, comm, vtype, m, n, M_M, M_N, lda)))
 end
 
 @for_petsc function MatCreateDenseFromVecType(petsclib::$UnionPetscLib, comm::MPI_Comm, vtype::String, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, lda::$PetscInt )
@@ -2053,7 +2053,7 @@ end
 $(_doc_external("Mat/MatCreateDenseHIP"))
 """
 function MatCreateDenseHIP(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer)
-    error("MatCreateDenseHIP: no generated method for these argument types")
+    throw(MethodError(MatCreateDenseHIP, (petsclib, comm, m, n, M_M, M_N)))
 end
 
 @for_petsc function MatCreateDenseHIP(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt )
@@ -2100,7 +2100,7 @@ See also: `Mat`, `MatCreateDense()`, `MatCreateDenseCUDA()`, `MatCreateDenseHIP(
 $(_doc_external("Mat/MatCreateDenseWithMemType"))
 """
 function MatCreateDenseWithMemType(petsclib::PetscLibType, comm::MPI_Comm, mtype::PetscMemType, m::Integer, n::Integer, M_M::Integer, M_N::Integer, lda::Integer)
-    error("MatCreateDenseWithMemType: no generated method for these argument types")
+    throw(MethodError(MatCreateDenseWithMemType, (petsclib, comm, mtype, m, n, M_M, M_N, lda)))
 end
 
 @for_petsc function MatCreateDenseWithMemType(petsclib::$UnionPetscLib, comm::MPI_Comm, mtype::PetscMemType, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, lda::$PetscInt )
@@ -2142,7 +2142,7 @@ See also: `Mat`, `MatDestroy()`, `MATDIAGONAL`, `MatScale()`, `MatShift()`, `Mat
 $(_doc_external("Mat/MatCreateDiagonal"))
 """
 function MatCreateDiagonal(petsclib::PetscLibType, diag::AbstractPetscVec)
-    error("MatCreateDiagonal: no generated method for these argument types")
+    throw(MethodError(MatCreateDiagonal, (petsclib, diag)))
 end
 
 @for_petsc function MatCreateDiagonal(petsclib::$UnionPetscLib, diag::AbstractPetscVec )
@@ -2186,7 +2186,7 @@ See also: `Mat`, `MATFFTW`, `MATSEQCUFFT`, `MatCreateVecsFFTW()`
 $(_doc_external("Mat/MatCreateFFT"))
 """
 function MatCreateFFT(petsclib::PetscLibType, comm::MPI_Comm, ndim::Integer, dim::AbstractVector{<:Number}, mattype::String)
-    error("MatCreateFFT: no generated method for these argument types")
+    throw(MethodError(MatCreateFFT, (petsclib, comm, ndim, dim, mattype)))
 end
 
 @for_petsc function MatCreateFFT(petsclib::$UnionPetscLib, comm::MPI_Comm, ndim::$PetscInt, dim::Vector{$PetscInt}, mattype::String )
@@ -2237,7 +2237,7 @@ See also: `Mat`, `MatCreateSeqAIJ()`, `MatCreateAIJ()`,
 $(_doc_external("Mat/MatCreateFromOptions"))
 """
 function MatCreateFromOptions(petsclib::PetscLibType, comm::MPI_Comm, prefix::String, bs::Integer, m::Integer, n::Integer, M_M::Integer, M_N::Integer)
-    error("MatCreateFromOptions: no generated method for these argument types")
+    throw(MethodError(MatCreateFromOptions, (petsclib, comm, prefix, bs, m, n, M_M, M_N)))
 end
 
 @for_petsc function MatCreateFromOptions(petsclib::$UnionPetscLib, comm::MPI_Comm, prefix::String, bs::$PetscInt, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt )
@@ -2281,7 +2281,7 @@ See also: `Mat`, `MatCreate()`, `PCGAMG`
 $(_doc_external("Mat/MatCreateGraph"))
 """
 function MatCreateGraph(petsclib::PetscLibType, A::AbstractPetscMat, sym::PetscBool, scale::PetscBool, filter::Real, num_idx::Integer, index::AbstractVector{<:Number})
-    error("MatCreateGraph: no generated method for these argument types")
+    throw(MethodError(MatCreateGraph, (petsclib, A, sym, scale, filter, num_idx, index)))
 end
 
 @for_petsc function MatCreateGraph(petsclib::$UnionPetscLib, A::AbstractPetscMat, sym::PetscBool, scale::PetscBool, filter::$PetscReal, num_idx::$PetscInt, index::Vector{$PetscInt} )
@@ -2306,7 +2306,7 @@ end
 $(_doc_external("Mat/MatCreateH2OpusFromKernel"))
 """
 function MatCreateH2OpusFromKernel(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, spacedim::Integer, coords::AbstractVector{<:Number}, cdist::PetscBool, kernel::Ptr{Cvoid}, kernelctx::Ptr{Cvoid}, eta::Real, leafsize::Integer, basisord::Integer)
-    error("MatCreateH2OpusFromKernel: no generated method for these argument types")
+    throw(MethodError(MatCreateH2OpusFromKernel, (petsclib, comm, m, n, M_M, M_N, spacedim, coords, cdist, kernel, kernelctx, eta, leafsize, basisord)))
 end
 
 @for_petsc function MatCreateH2OpusFromKernel(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, spacedim::$PetscInt, coords::Vector{$PetscReal}, cdist::PetscBool, kernel::Ptr{Cvoid}, kernelctx::Ptr{Cvoid}, eta::$PetscReal, leafsize::$PetscInt, basisord::$PetscInt )
@@ -2331,7 +2331,7 @@ end
 $(_doc_external("Mat/MatCreateH2OpusFromMat"))
 """
 function MatCreateH2OpusFromMat(petsclib::PetscLibType, B::AbstractPetscMat, spacedim::Integer, coords::AbstractVector{<:Number}, cdist::PetscBool, eta::Real, leafsize::Integer, maxrank::Integer, bs::Integer, rtol::Real)
-    error("MatCreateH2OpusFromMat: no generated method for these argument types")
+    throw(MethodError(MatCreateH2OpusFromMat, (petsclib, B, spacedim, coords, cdist, eta, leafsize, maxrank, bs, rtol)))
 end
 
 @for_petsc function MatCreateH2OpusFromMat(petsclib::$UnionPetscLib, B::AbstractPetscMat, spacedim::$PetscInt, coords::Vector{$PetscReal}, cdist::PetscBool, eta::$PetscReal, leafsize::$PetscInt, maxrank::$PetscInt, bs::$PetscInt, rtol::$PetscReal )
@@ -2370,7 +2370,7 @@ See also: `Mat`, `MatCreateNormal()`, `MatMult()`, `MatMultHermitianTranspose()`
 $(_doc_external("Mat/MatCreateHermitianTranspose"))
 """
 function MatCreateHermitianTranspose(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatCreateHermitianTranspose: no generated method for these argument types")
+    throw(MethodError(MatCreateHermitianTranspose, (petsclib, A)))
 end
 
 @for_petsc function MatCreateHermitianTranspose(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -2395,7 +2395,7 @@ end
 $(_doc_external("Mat/MatCreateHtoolFromKernel"))
 """
 function MatCreateHtoolFromKernel(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, spacedim::Integer, coords_target::AbstractVector{<:Number}, coords_source::AbstractVector{<:Number}, kernel::Ptr{Cvoid}, kernelctx::Ptr{Cvoid})
-    error("MatCreateHtoolFromKernel: no generated method for these argument types")
+    throw(MethodError(MatCreateHtoolFromKernel, (petsclib, comm, m, n, M_M, M_N, spacedim, coords_target, coords_source, kernel, kernelctx)))
 end
 
 @for_petsc function MatCreateHtoolFromKernel(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, spacedim::$PetscInt, coords_target::Vector{$PetscReal}, coords_source::Vector{$PetscReal}, kernel::Ptr{Cvoid}, kernelctx::Ptr{Cvoid} )
@@ -2440,7 +2440,7 @@ See also: `Mat`, `MATIS`, `MatSetLocalToGlobalMapping()`
 $(_doc_external("Mat/MatCreateIS"))
 """
 function MatCreateIS(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, m::Integer, n::Integer, M_M::Integer, M_N::Integer, rmap::ISLocalToGlobalMapping, cmap::ISLocalToGlobalMapping)
-    error("MatCreateIS: no generated method for these argument types")
+    throw(MethodError(MatCreateIS, (petsclib, comm, bs, m, n, M_M, M_N, rmap, cmap)))
 end
 
 @for_petsc function MatCreateIS(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, rmap::ISLocalToGlobalMapping, cmap::ISLocalToGlobalMapping )
@@ -2482,7 +2482,7 @@ See also: `Mat`, `MatKAIJSetAIJ()`, `MatKAIJSetS()`, `MatKAIJSetT()`, `MatKAIJGe
 $(_doc_external("Mat/MatCreateKAIJ"))
 """
 function MatCreateKAIJ(petsclib::PetscLibType, A::AbstractPetscMat, p::Integer, q::Integer, S::Union{Ptr, AbstractVector{<:Number}}, T::Union{Ptr, AbstractVector{<:Number}})
-    error("MatCreateKAIJ: no generated method for these argument types")
+    throw(MethodError(MatCreateKAIJ, (petsclib, A, p, q, S, T)))
 end
 
 @for_petsc function MatCreateKAIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat, p::$PetscInt, q::$PetscInt, S::Union{Ptr, Vector{$PetscScalar}}, T::Union{Ptr, Vector{$PetscScalar}} )
@@ -2539,7 +2539,7 @@ See also: `MatCreate()`, `MATLMVM`, `MATLMVMBFGS`, `MatCreateLMVMDFP()`, `MatCre
 $(_doc_external("KSP/MatCreateLMVMBFGS"))
 """
 function MatCreateLMVMBFGS(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
-    error("MatCreateLMVMBFGS: no generated method for these argument types")
+    throw(MethodError(MatCreateLMVMBFGS, (petsclib, comm, n, M_N)))
 end
 
 @for_petsc function MatCreateLMVMBFGS(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
@@ -2593,7 +2593,7 @@ See also: `MatCreate()`, `MATLMVM`, `MATLMVMBADBRDN`, `MatCreateLMVMDFP()`, `Mat
 $(_doc_external("KSP/MatCreateLMVMBadBroyden"))
 """
 function MatCreateLMVMBadBroyden(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
-    error("MatCreateLMVMBadBroyden: no generated method for these argument types")
+    throw(MethodError(MatCreateLMVMBadBroyden, (petsclib, comm, n, M_N)))
 end
 
 @for_petsc function MatCreateLMVMBadBroyden(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
@@ -2647,7 +2647,7 @@ See also: `MatCreate()`, `MATLMVM`, `MATLMVMBRDN`, `MatCreateLMVMDFP()`, `MatCre
 $(_doc_external("KSP/MatCreateLMVMBroyden"))
 """
 function MatCreateLMVMBroyden(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
-    error("MatCreateLMVMBroyden: no generated method for these argument types")
+    throw(MethodError(MatCreateLMVMBroyden, (petsclib, comm, n, M_N)))
 end
 
 @for_petsc function MatCreateLMVMBroyden(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
@@ -2688,7 +2688,7 @@ See also: `MatCreate()`, `MATLMVM`, `MATLMVMDBFGS`, `MatCreateLMVMBFGS()`
 $(_doc_external("KSP/MatCreateLMVMDBFGS"))
 """
 function MatCreateLMVMDBFGS(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
-    error("MatCreateLMVMDBFGS: no generated method for these argument types")
+    throw(MethodError(MatCreateLMVMDBFGS, (petsclib, comm, n, M_N)))
 end
 
 @for_petsc function MatCreateLMVMDBFGS(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
@@ -2729,7 +2729,7 @@ See also: `MatCreate()`, `MATLMVM`, `MATLMVMDDFP`, `MatCreateLMVMDFP()`
 $(_doc_external("KSP/MatCreateLMVMDDFP"))
 """
 function MatCreateLMVMDDFP(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
-    error("MatCreateLMVMDDFP: no generated method for these argument types")
+    throw(MethodError(MatCreateLMVMDDFP, (petsclib, comm, n, M_N)))
 end
 
 @for_petsc function MatCreateLMVMDDFP(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
@@ -2785,7 +2785,7 @@ See also: `MatCreate()`, `MATLMVM`, `MATLMVMDFP`, `MatCreateLMVMBFGS()`, `MatCre
 $(_doc_external("KSP/MatCreateLMVMDFP"))
 """
 function MatCreateLMVMDFP(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
-    error("MatCreateLMVMDFP: no generated method for these argument types")
+    throw(MethodError(MatCreateLMVMDFP, (petsclib, comm, n, M_N)))
 end
 
 @for_petsc function MatCreateLMVMDFP(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
@@ -2826,7 +2826,7 @@ See also: `MatCreate()`, `MATLMVM`, `MATLMVMDBFGS`, `MATLMVMDDFP`, `MatCreateLMV
 $(_doc_external("KSP/MatCreateLMVMDQN"))
 """
 function MatCreateLMVMDQN(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
-    error("MatCreateLMVMDQN: no generated method for these argument types")
+    throw(MethodError(MatCreateLMVMDQN, (petsclib, comm, n, M_N)))
 end
 
 @for_petsc function MatCreateLMVMDQN(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
@@ -2877,7 +2877,7 @@ See also: `MatCreate()`, `MATLMVM`, `MATLMVMDIAGBRDN`, `MatCreateLMVMDFP()`, `Ma
 $(_doc_external("KSP/MatCreateLMVMDiagBroyden"))
 """
 function MatCreateLMVMDiagBroyden(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
-    error("MatCreateLMVMDiagBroyden: no generated method for these argument types")
+    throw(MethodError(MatCreateLMVMDiagBroyden, (petsclib, comm, n, M_N)))
 end
 
 @for_petsc function MatCreateLMVMDiagBroyden(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
@@ -2932,7 +2932,7 @@ See also: `MatCreate()`, `MATLMVM`, `MATLMVMSR1`, `MatCreateLMVMBFGS()`, `MatCre
 $(_doc_external("KSP/MatCreateLMVMSR1"))
 """
 function MatCreateLMVMSR1(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
-    error("MatCreateLMVMSR1: no generated method for these argument types")
+    throw(MethodError(MatCreateLMVMSR1, (petsclib, comm, n, M_N)))
 end
 
 @for_petsc function MatCreateLMVMSR1(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
@@ -2988,7 +2988,7 @@ See also: LMVM Matrices, `MatCreate()`, `MATLMVM`, `MATLMVMSYMBROYDEN`, `MatCrea
 $(_doc_external("KSP/MatCreateLMVMSymBadBroyden"))
 """
 function MatCreateLMVMSymBadBroyden(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
-    error("MatCreateLMVMSymBadBroyden: no generated method for these argument types")
+    throw(MethodError(MatCreateLMVMSymBadBroyden, (petsclib, comm, n, M_N)))
 end
 
 @for_petsc function MatCreateLMVMSymBadBroyden(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
@@ -3044,7 +3044,7 @@ See also: `MatCreate()`, `MATLMVM`, `MATLMVMSYMBROYDEN`, `MatCreateLMVMDFP()`, `
 $(_doc_external("KSP/MatCreateLMVMSymBroyden"))
 """
 function MatCreateLMVMSymBroyden(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, M_N::Integer)
-    error("MatCreateLMVMSymBroyden: no generated method for these argument types")
+    throw(MethodError(MatCreateLMVMSymBroyden, (petsclib, comm, n, M_N)))
 end
 
 @for_petsc function MatCreateLMVMSymBroyden(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, M_N::$PetscInt )
@@ -3085,7 +3085,7 @@ See also: `Mat`, `MATLRC`, `MatLRCGetMats()`
 $(_doc_external("Mat/MatCreateLRC"))
 """
 function MatCreateLRC(petsclib::PetscLibType, A::AbstractPetscMat, U::AbstractPetscMat, c::Union{Ptr, AbstractPetscVec}, V::AbstractPetscMat)
-    error("MatCreateLRC: no generated method for these argument types")
+    throw(MethodError(MatCreateLRC, (petsclib, A, U, c, V)))
 end
 
 @for_petsc function MatCreateLRC(petsclib::$UnionPetscLib, A::AbstractPetscMat, U::AbstractPetscMat, c::Union{Ptr, AbstractPetscVec}, V::AbstractPetscMat )
@@ -3123,7 +3123,7 @@ See also: `MatFilter()`, `MatGetGraph()`
 $(_doc_external("MatGraphOperations/MatCreateLaplacian"))
 """
 function MatCreateLaplacian(petsclib::PetscLibType, A::AbstractPetscMat, tol::Real, weighted::PetscBool)
-    error("MatCreateLaplacian: no generated method for these argument types")
+    throw(MethodError(MatCreateLaplacian, (petsclib, A, tol, weighted)))
 end
 
 @for_petsc function MatCreateLaplacian(petsclib::$UnionPetscLib, A::AbstractPetscMat, tol::$PetscReal, weighted::PetscBool )
@@ -3163,7 +3163,7 @@ See also: `Mat`, `MATSUBMATRIX`, `MatCreateSubMatrixVirtual()`, `MatSetValuesLoc
 $(_doc_external("Mat/MatCreateLocalRef"))
 """
 function MatCreateLocalRef(petsclib::PetscLibType, A::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS)
-    error("MatCreateLocalRef: no generated method for these argument types")
+    throw(MethodError(MatCreateLocalRef, (petsclib, A, isrow, iscol)))
 end
 
 @for_petsc function MatCreateLocalRef(petsclib::$UnionPetscLib, A::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS )
@@ -3205,7 +3205,7 @@ See also: `Mat`, `MATAIJ`, `MATMAIJ`, `MatMAIJGetAIJ()`, `MatMAIJRedimension()`
 $(_doc_external("Mat/MatCreateMAIJ"))
 """
 function MatCreateMAIJ(petsclib::PetscLibType, A::AbstractPetscMat, dof::Integer)
-    error("MatCreateMAIJ: no generated method for these argument types")
+    throw(MethodError(MatCreateMAIJ, (petsclib, A, dof)))
 end
 
 @for_petsc function MatCreateMAIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat, dof::$PetscInt )
@@ -3266,7 +3266,7 @@ See also: `Mat`, `MATMFFD`, `MatDestroy()`, `MatMFFDSetFunctionError()`, `MatMFF
 $(_doc_external("Mat/MatCreateMFFD"))
 """
 function MatCreateMFFD(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer)
-    error("MatCreateMFFD: no generated method for these argument types")
+    throw(MethodError(MatCreateMFFD, (petsclib, comm, m, n, M_M, M_N)))
 end
 
 @for_petsc function MatCreateMFFD(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt )
@@ -3310,7 +3310,7 @@ See also: `Mat`, Sparse Matrix Creation, `MATAIJ`, `MATAIJSELL`, `MATAIJPERM`, `
 $(_doc_external("Mat/MatCreateMPIAIJCRL"))
 """
 function MatCreateMPIAIJCRL(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, nz::Integer, nnz::AbstractVector{<:Number}, onz::Integer, onnz::AbstractVector{<:Number})
-    error("MatCreateMPIAIJCRL: no generated method for these argument types")
+    throw(MethodError(MatCreateMPIAIJCRL, (petsclib, comm, m, n, nz, nnz, onz, onnz)))
 end
 
 @for_petsc function MatCreateMPIAIJCRL(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, nz::$PetscInt, nnz::Vector{$PetscInt}, onz::$PetscInt, onnz::Vector{$PetscInt} )
@@ -3378,7 +3378,7 @@ See also: `Mat`, Sparse Matrix Creation, `MATMPIAIJMKL`, `MatCreate()`, `MatCrea
 $(_doc_external("Mat/MatCreateMPIAIJMKL"))
 """
 function MatCreateMPIAIJMKL(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::AbstractVector{<:Number}, o_nz::Integer, o_nnz::AbstractVector{<:Number})
-    error("MatCreateMPIAIJMKL: no generated method for these argument types")
+    throw(MethodError(MatCreateMPIAIJMKL, (petsclib, comm, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz)))
 end
 
 @for_petsc function MatCreateMPIAIJMKL(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
@@ -3446,7 +3446,7 @@ See also: `Mat`, Sparse Matrix Creation, `MATMPIAIJPERM`, `MatCreate()`, `MatCre
 $(_doc_external("Mat/MatCreateMPIAIJPERM"))
 """
 function MatCreateMPIAIJPERM(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::Union{Ptr, AbstractVector{<:Number}}, o_nz::Integer, o_nnz::Union{Ptr, AbstractVector{<:Number}})
-    error("MatCreateMPIAIJPERM: no generated method for these argument types")
+    throw(MethodError(MatCreateMPIAIJPERM, (petsclib, comm, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz)))
 end
 
 @for_petsc function MatCreateMPIAIJPERM(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Union{Ptr, Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr, Vector{$PetscInt}} )
@@ -3513,7 +3513,7 @@ See also: `Mat`, Sparse Matrix Creation, `MATSEQAIJSELL`, `MATMPIAIJSELL`, `MATA
 $(_doc_external("Mat/MatCreateMPIAIJSELL"))
 """
 function MatCreateMPIAIJSELL(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::AbstractVector{<:Number}, o_nz::Integer, o_nnz::AbstractVector{<:Number})
-    error("MatCreateMPIAIJSELL: no generated method for these argument types")
+    throw(MethodError(MatCreateMPIAIJSELL, (petsclib, comm, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz)))
 end
 
 @for_petsc function MatCreateMPIAIJSELL(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
@@ -3556,7 +3556,7 @@ See also: `Mat`, `MatCreateAIJ()`
 $(_doc_external("Mat/MatCreateMPIAIJSumSeqAIJ"))
 """
 function MatCreateMPIAIJSumSeqAIJ(petsclib::PetscLibType, comm::MPI_Comm, seqmat::AbstractPetscMat, m::Integer, n::Integer, scall::MatReuse)
-    error("MatCreateMPIAIJSumSeqAIJ: no generated method for these argument types")
+    throw(MethodError(MatCreateMPIAIJSumSeqAIJ, (petsclib, comm, seqmat, m, n, scall)))
 end
 
 @for_petsc function MatCreateMPIAIJSumSeqAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, seqmat::AbstractPetscMat, m::$PetscInt, n::$PetscInt, scall::MatReuse )
@@ -3593,7 +3593,7 @@ See also: `Mat`, `MATMPIAIJ`, `MATSEQAIJ`, `MatCreateMPIAIJSumSeqAIJSymbolic()`,
 $(_doc_external("Mat/MatCreateMPIAIJSumSeqAIJNumeric"))
 """
 function MatCreateMPIAIJSumSeqAIJNumeric(petsclib::PetscLibType, seqmat::AbstractPetscMat, mpimat::AbstractPetscMat)
-    error("MatCreateMPIAIJSumSeqAIJNumeric: no generated method for these argument types")
+    throw(MethodError(MatCreateMPIAIJSumSeqAIJNumeric, (petsclib, seqmat, mpimat)))
 end
 
 @for_petsc function MatCreateMPIAIJSumSeqAIJNumeric(petsclib::$UnionPetscLib, seqmat::AbstractPetscMat, mpimat::AbstractPetscMat )
@@ -3633,7 +3633,7 @@ See also: `Mat`, `MATMPIAIJ`, `MATSEQAIJ`, `MatCreateMPIAIJSumSeqAIJNumeric()`, 
 $(_doc_external("Mat/MatCreateMPIAIJSumSeqAIJSymbolic"))
 """
 function MatCreateMPIAIJSumSeqAIJSymbolic(petsclib::PetscLibType, comm::MPI_Comm, seqmat::AbstractPetscMat, m::Integer, n::Integer)
-    error("MatCreateMPIAIJSumSeqAIJSymbolic: no generated method for these argument types")
+    throw(MethodError(MatCreateMPIAIJSumSeqAIJSymbolic, (petsclib, comm, seqmat, m, n)))
 end
 
 @for_petsc function MatCreateMPIAIJSumSeqAIJSymbolic(petsclib::$UnionPetscLib, comm::MPI_Comm, seqmat::AbstractPetscMat, m::$PetscInt, n::$PetscInt )
@@ -3682,7 +3682,7 @@ See also: `Mat`, `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetValues()`, `MatMPIAI
 $(_doc_external("Mat/MatCreateMPIAIJWithArrays"))
 """
 function MatCreateMPIAIJWithArrays(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, i::AbstractVector{<:Number}, j::AbstractVector{<:Number}, a::AbstractVector{<:Number})
-    error("MatCreateMPIAIJWithArrays: no generated method for these argument types")
+    throw(MethodError(MatCreateMPIAIJWithArrays, (petsclib, comm, m, n, M_M, M_N, i, j, a)))
 end
 
 @for_petsc function MatCreateMPIAIJWithArrays(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, a::Vector{$PetscScalar} )
@@ -3726,7 +3726,7 @@ See also: `Mat`, `MATMPIAIJ`, `MATSEQAIJ`, `MatCreateMPIAIJWithSplitArrays()`
 $(_doc_external("Mat/MatCreateMPIAIJWithSeqAIJ"))
 """
 function MatCreateMPIAIJWithSeqAIJ(petsclib::PetscLibType, comm::MPI_Comm, M::Integer, N::Integer, A::AbstractPetscMat, B::AbstractPetscMat)
-    error("MatCreateMPIAIJWithSeqAIJ: no generated method for these argument types")
+    throw(MethodError(MatCreateMPIAIJWithSeqAIJ, (petsclib, comm, M, N, A, B)))
 end
 
 @for_petsc function MatCreateMPIAIJWithSeqAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, M::$PetscInt, N::$PetscInt, A::AbstractPetscMat, B::AbstractPetscMat )
@@ -3780,7 +3780,7 @@ See also: `Mat`, `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetValues()`, `MatMPIAI
 $(_doc_external("Mat/MatCreateMPIAIJWithSplitArrays"))
 """
 function MatCreateMPIAIJWithSplitArrays(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, i::AbstractVector{<:Number}, j::AbstractVector{<:Number}, a::AbstractVector{<:Number}, oi::AbstractVector{<:Number}, oj::AbstractVector{<:Number}, oa::AbstractVector{<:Number})
-    error("MatCreateMPIAIJWithSplitArrays: no generated method for these argument types")
+    throw(MethodError(MatCreateMPIAIJWithSplitArrays, (petsclib, comm, m, n, M_M, M_N, i, j, a, oi, oj, oa)))
 end
 
 @for_petsc function MatCreateMPIAIJWithSplitArrays(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, a::Vector{$PetscScalar}, oi::Vector{$PetscInt}, oj::Vector{$PetscInt}, oa::Vector{$PetscScalar} )
@@ -3825,7 +3825,7 @@ See also: `Mat`, `MatCreate()`, `MatConvert()`, `MatGetOrdering()`, `MATMPIADJ`,
 $(_doc_external("Mat/MatCreateMPIAdj"))
 """
 function MatCreateMPIAdj(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, N::Integer, i::AbstractVector{<:Number}, j::AbstractVector{<:Number}, values::Union{Ptr, AbstractVector{<:Number}})
-    error("MatCreateMPIAdj: no generated method for these argument types")
+    throw(MethodError(MatCreateMPIAdj, (petsclib, comm, m, N, i, j, values)))
 end
 
 @for_petsc function MatCreateMPIAdj(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, N::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, values::Union{Ptr, Vector{$PetscInt}} )
@@ -3874,7 +3874,7 @@ See also: `Mat`, `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetValues()`, `MatMPIAI
 $(_doc_external("Mat/MatCreateMPIBAIJWithArrays"))
 """
 function MatCreateMPIBAIJWithArrays(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, m::Integer, n::Integer, M_M::Integer, M_N::Integer, i::AbstractVector{<:Number}, j::AbstractVector{<:Number}, a::AbstractVector{<:Number})
-    error("MatCreateMPIBAIJWithArrays: no generated method for these argument types")
+    throw(MethodError(MatCreateMPIBAIJWithArrays, (petsclib, comm, bs, m, n, M_M, M_N, i, j, a)))
 end
 
 @for_petsc function MatCreateMPIBAIJWithArrays(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, a::Vector{$PetscScalar} )
@@ -3916,7 +3916,7 @@ See also: `Mat`
 $(_doc_external("Mat/MatCreateMPIMatConcatenateSeqMat"))
 """
 function MatCreateMPIMatConcatenateSeqMat(petsclib::PetscLibType, comm::MPI_Comm, seqmat::AbstractPetscMat, n::Integer, reuse::MatReuse)
-    error("MatCreateMPIMatConcatenateSeqMat: no generated method for these argument types")
+    throw(MethodError(MatCreateMPIMatConcatenateSeqMat, (petsclib, comm, seqmat, n, reuse)))
 end
 
 @for_petsc function MatCreateMPIMatConcatenateSeqMat(petsclib::$UnionPetscLib, comm::MPI_Comm, seqmat::AbstractPetscMat, n::$PetscInt, reuse::MatReuse )
@@ -3965,7 +3965,7 @@ See also: `Mat`, `MATMPISBAIJ`, `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetValue
 $(_doc_external("Mat/MatCreateMPISBAIJWithArrays"))
 """
 function MatCreateMPISBAIJWithArrays(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, m::Integer, n::Integer, M_M::Integer, M_N::Integer, i::AbstractVector{<:Number}, j::AbstractVector{<:Number}, a::AbstractVector{<:Number})
-    error("MatCreateMPISBAIJWithArrays: no generated method for these argument types")
+    throw(MethodError(MatCreateMPISBAIJWithArrays, (petsclib, comm, bs, m, n, M_M, M_N, i, j, a)))
 end
 
 @for_petsc function MatCreateMPISBAIJWithArrays(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, a::Vector{$PetscScalar} )
@@ -4010,7 +4010,7 @@ See also: `Mat`, `MATNEST`, `MatCreate()`, `VecCreateNest()`, `DMCreateMatrix()`
 $(_doc_external("Mat/MatCreateNest"))
 """
 function MatCreateNest(petsclib::PetscLibType, comm::MPI_Comm, nr::Integer, is_row::Vector{<:AbstractIS}, nc::Integer, is_col::Vector{<:AbstractIS}, a::Vector{<:AbstractPetscMat})
-    error("MatCreateNest: no generated method for these argument types")
+    throw(MethodError(MatCreateNest, (petsclib, comm, nr, is_row, nc, is_col, a)))
 end
 
 @for_petsc function MatCreateNest(petsclib::$UnionPetscLib, comm::MPI_Comm, nr::$PetscInt, is_row::Vector{<:AbstractIS}, nc::$PetscInt, is_col::Vector{<:AbstractIS}, a::Vector{<:AbstractPetscMat} )
@@ -4048,7 +4048,7 @@ See also: `Mat`, `MATNORMAL`, `MatMult()`, `MatNormalGetMat()`, `MATNORMALHERMIT
 $(_doc_external("Mat/MatCreateNormal"))
 """
 function MatCreateNormal(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatCreateNormal: no generated method for these argument types")
+    throw(MethodError(MatCreateNormal, (petsclib, A)))
 end
 
 @for_petsc function MatCreateNormal(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -4086,7 +4086,7 @@ See also: `Mat`, `MATNORMAL`, `MATNORMALHERMITIAN`, `MatNormalHermitianGetMat()`
 $(_doc_external("Mat/MatCreateNormalHermitian"))
 """
 function MatCreateNormalHermitian(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatCreateNormalHermitian: no generated method for these argument types")
+    throw(MethodError(MatCreateNormalHermitian, (petsclib, A)))
 end
 
 @for_petsc function MatCreateNormalHermitian(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -4127,7 +4127,7 @@ See also: `Mat`, `MatDestroy()`, `PetscSubcommCreate()`, `PetscSubcomm`
 $(_doc_external("Mat/MatCreateRedundantMatrix"))
 """
 function MatCreateRedundantMatrix(petsclib::PetscLibType, mat::AbstractPetscMat, nsubcomm::Integer, subcomm::MPI_Comm, reuse::MatReuse)
-    error("MatCreateRedundantMatrix: no generated method for these argument types")
+    throw(MethodError(MatCreateRedundantMatrix, (petsclib, mat, nsubcomm, subcomm, reuse)))
 end
 
 @for_petsc function MatCreateRedundantMatrix(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nsubcomm::$PetscInt, subcomm::MPI_Comm, reuse::MatReuse )
@@ -4198,7 +4198,7 @@ See also: `Mat`, `MATSBAIJ`, `MatCreate()`, `MatCreateSeqSBAIJ()`, `MatSetValues
 $(_doc_external("Mat/MatCreateSBAIJ"))
 """
 function MatCreateSBAIJ(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::Union{Ptr, AbstractVector{<:Number}}, o_nz::Integer, o_nnz::Union{Ptr, AbstractVector{<:Number}})
-    error("MatCreateSBAIJ: no generated method for these argument types")
+    throw(MethodError(MatCreateSBAIJ, (petsclib, comm, bs, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz)))
 end
 
 @for_petsc function MatCreateSBAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Union{Ptr, Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr, Vector{$PetscInt}} )
@@ -4329,7 +4329,7 @@ See also: `Mat`, `MATSELL`, `MatCreate()`, `MatCreateSeqSELL()`, `MatSetValues()
 $(_doc_external("Mat/MatCreateSELL"))
 """
 function MatCreateSELL(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_rlenmax::Integer, d_rlen::Union{Ptr, AbstractVector{<:Number}}, o_rlenmax::Integer, o_rlen::Union{Ptr, AbstractVector{<:Number}})
-    error("MatCreateSELL: no generated method for these argument types")
+    throw(MethodError(MatCreateSELL, (petsclib, comm, m, n, M_M, M_N, d_rlenmax, d_rlen, o_rlenmax, o_rlen)))
 end
 
 @for_petsc function MatCreateSELL(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_rlenmax::$PetscInt, d_rlen::Union{Ptr, Vector{$PetscInt}}, o_rlenmax::$PetscInt, o_rlen::Union{Ptr, Vector{$PetscInt}} )
@@ -4354,7 +4354,7 @@ end
 $(_doc_external("Mat/MatCreateSELLCUDA"))
 """
 function MatCreateSELLCUDA(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::AbstractVector{<:Number}, o_nz::Integer, o_nnz::AbstractVector{<:Number})
-    error("MatCreateSELLCUDA: no generated method for these argument types")
+    throw(MethodError(MatCreateSELLCUDA, (petsclib, comm, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz)))
 end
 
 @for_petsc function MatCreateSELLCUDA(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
@@ -4379,7 +4379,7 @@ end
 $(_doc_external("Mat/MatCreateSELLHIP"))
 """
 function MatCreateSELLHIP(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, d_nz::Integer, d_nnz::AbstractVector{<:Number}, o_nz::Integer, o_nnz::AbstractVector{<:Number})
-    error("MatCreateSELLHIP: no generated method for these argument types")
+    throw(MethodError(MatCreateSELLHIP, (petsclib, comm, m, n, M_M, M_N, d_nz, d_nnz, o_nz, o_nnz)))
 end
 
 @for_petsc function MatCreateSELLHIP(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
@@ -4422,7 +4422,7 @@ See also: `SNES`, `MATMFFD`, `MatDestroy()`, `MatMFFDSetFunction()`, `MatMFFDSet
 $(_doc_external("SNES/MatCreateSNESMF"))
 """
 function MatCreateSNESMF(petsclib::PetscLibType, snes::AbstractSNES)
-    error("MatCreateSNESMF: no generated method for these argument types")
+    throw(MethodError(MatCreateSNESMF, (petsclib, snes)))
 end
 
 @for_petsc function MatCreateSNESMF(petsclib::$UnionPetscLib, snes::AbstractSNES )
@@ -4468,7 +4468,7 @@ See also: `SNESCreateMF()`, `MatCreateMFFD()`, `MatDestroy()`, `MatMFFDSetFuncti
 $(_doc_external("SNES/MatCreateSNESMFMore"))
 """
 function MatCreateSNESMFMore(petsclib::PetscLibType, snes::AbstractSNES, x::AbstractPetscVec)
-    error("MatCreateSNESMFMore: no generated method for these argument types")
+    throw(MethodError(MatCreateSNESMFMore, (petsclib, snes, x)))
 end
 
 @for_petsc function MatCreateSNESMFMore(petsclib::$UnionPetscLib, snes::AbstractSNES, x::AbstractPetscVec )
@@ -4516,7 +4516,7 @@ See also: `Mat`, `MATSCALAPACK`, `MATDENSE`, `MATELEMENTAL`, `MatCreate()`, `Mat
 $(_doc_external("Mat/MatCreateScaLAPACK"))
 """
 function MatCreateScaLAPACK(petsclib::PetscLibType, comm::MPI_Comm, mb::Integer, nb::Integer, M::Integer, N::Integer, rsrc::Integer, csrc::Integer)
-    error("MatCreateScaLAPACK: no generated method for these argument types")
+    throw(MethodError(MatCreateScaLAPACK, (petsclib, comm, mb, nb, M, N, rsrc, csrc)))
 end
 
 @for_petsc function MatCreateScaLAPACK(petsclib::$UnionPetscLib, comm::MPI_Comm, mb::$PetscInt, nb::$PetscInt, M::$PetscInt, N::$PetscInt, rsrc::$PetscInt, csrc::$PetscInt )
@@ -4555,7 +4555,7 @@ See also: `Mat`, `MatScatterSetVecScatter()`, `MatScatterGetVecScatter()`, `MATS
 $(_doc_external("Mat/MatCreateScatter"))
 """
 function MatCreateScatter(petsclib::PetscLibType, comm::MPI_Comm, scatter::VecScatter)
-    error("MatCreateScatter: no generated method for these argument types")
+    throw(MethodError(MatCreateScatter, (petsclib, comm, scatter)))
 end
 
 @for_petsc function MatCreateScatter(petsclib::$UnionPetscLib, comm::MPI_Comm, scatter::VecScatter )
@@ -4598,7 +4598,7 @@ See also: `MatCreateNormal()`, `MatMult()`, `MatCreate()`, `MatSchurComplementGe
 $(_doc_external("KSP/MatCreateSchurComplement"))
 """
 function MatCreateSchurComplement(petsclib::PetscLibType, A00::AbstractPetscMat, Ap00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat)
-    error("MatCreateSchurComplement: no generated method for these argument types")
+    throw(MethodError(MatCreateSchurComplement, (petsclib, A00, Ap00, A01, A10, A11)))
 end
 
 @for_petsc function MatCreateSchurComplement(petsclib::$UnionPetscLib, A00::AbstractPetscMat, Ap00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat )
@@ -4642,7 +4642,7 @@ See also: `MatCreateSchurComplement()`, `MatGetSchurComplement()`, `MatSchurComp
 $(_doc_external("KSP/MatCreateSchurComplementPmat"))
 """
 function MatCreateSchurComplementPmat(petsclib::PetscLibType, A00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat, ainvtype::MatSchurComplementAinvType, preuse::MatReuse)
-    error("MatCreateSchurComplementPmat: no generated method for these argument types")
+    throw(MethodError(MatCreateSchurComplementPmat, (petsclib, A00, A01, A10, A11, ainvtype, preuse)))
 end
 
 @for_petsc function MatCreateSchurComplementPmat(petsclib::$UnionPetscLib, A00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat, ainvtype::MatSchurComplementAinvType, preuse::MatReuse )
@@ -4692,7 +4692,7 @@ See also: `Mat`, Sparse Matrix Creation, `MatCreate()`, `MatCreateAIJ()`, `MatSe
 $(_doc_external("Mat/MatCreateSeqAIJ"))
 """
 function MatCreateSeqAIJ(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, nz::Integer, nnz::Union{Ptr, AbstractVector{<:Number}})
-    error("MatCreateSeqAIJ: no generated method for these argument types")
+    throw(MethodError(MatCreateSeqAIJ, (petsclib, comm, m, n, nz, nnz)))
 end
 
 @for_petsc function MatCreateSeqAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, nz::$PetscInt, nnz::Union{Ptr, Vector{$PetscInt}} )
@@ -4735,7 +4735,7 @@ See also: `Mat`, `MatCreate()`, `MatCreateMPIAIJPERM()`, `MatSetValues()`
 $(_doc_external("Mat/MatCreateSeqAIJCRL"))
 """
 function MatCreateSeqAIJCRL(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, nz::Integer, nnz::Union{Ptr, AbstractVector{<:Number}})
-    error("MatCreateSeqAIJCRL: no generated method for these argument types")
+    throw(MethodError(MatCreateSeqAIJCRL, (petsclib, comm, m, n, nz, nnz)))
 end
 
 @for_petsc function MatCreateSeqAIJCRL(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, nz::$PetscInt, nnz::Union{Ptr, Vector{$PetscInt}} )
@@ -4760,7 +4760,7 @@ end
 $(_doc_external("Mat/MatCreateSeqAIJCUSPARSE"))
 """
 function MatCreateSeqAIJCUSPARSE(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, nz::Integer, nnz::AbstractVector{<:Number})
-    error("MatCreateSeqAIJCUSPARSE: no generated method for these argument types")
+    throw(MethodError(MatCreateSeqAIJCUSPARSE, (petsclib, comm, m, n, nz, nnz)))
 end
 
 @for_petsc function MatCreateSeqAIJCUSPARSE(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, nz::$PetscInt, nnz::Vector{$PetscInt} )
@@ -4818,7 +4818,7 @@ See also: `Mat`, `MatCreate()`, `MatCreateAIJ()`, `MatCreateSeqAIJ()`, `MatCreat
 $(_doc_external("Mat/MatCreateSeqAIJFromTriple"))
 """
 function MatCreateSeqAIJFromTriple(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, i::AbstractVector{<:Number}, j::AbstractVector{<:Number}, a::AbstractVector{<:Number}, nz::PetscCount, idx::PetscBool)
-    error("MatCreateSeqAIJFromTriple: no generated method for these argument types")
+    throw(MethodError(MatCreateSeqAIJFromTriple, (petsclib, comm, m, n, i, j, a, nz, idx)))
 end
 
 @for_petsc function MatCreateSeqAIJFromTriple(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, a::Vector{$PetscScalar}, nz::PetscCount, idx::PetscBool )
@@ -4843,7 +4843,7 @@ end
 $(_doc_external("Mat/MatCreateSeqAIJHIPSPARSE"))
 """
 function MatCreateSeqAIJHIPSPARSE(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, nz::Integer, nnz::AbstractVector{<:Number})
-    error("MatCreateSeqAIJHIPSPARSE: no generated method for these argument types")
+    throw(MethodError(MatCreateSeqAIJHIPSPARSE, (petsclib, comm, m, n, nz, nnz)))
 end
 
 @for_petsc function MatCreateSeqAIJHIPSPARSE(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, nz::$PetscInt, nnz::Vector{$PetscInt} )
@@ -4868,7 +4868,7 @@ end
 $(_doc_external("Mat/MatCreateSeqAIJKokkos"))
 """
 function MatCreateSeqAIJKokkos(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, nz::Integer, nnz::Union{Ptr, AbstractVector{<:Number}})
-    error("MatCreateSeqAIJKokkos: no generated method for these argument types")
+    throw(MethodError(MatCreateSeqAIJKokkos, (petsclib, comm, m, n, nz, nnz)))
 end
 
 @for_petsc function MatCreateSeqAIJKokkos(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, nz::$PetscInt, nnz::Union{Ptr, Vector{$PetscInt}} )
@@ -4916,7 +4916,7 @@ See also: `Mat`, `MatCreate()`, `MatCreateMPIAIJMKL()`, `MatSetValues()`
 $(_doc_external("Mat/MatCreateSeqAIJMKL"))
 """
 function MatCreateSeqAIJMKL(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, nz::Integer, nnz::AbstractVector{<:Number})
-    error("MatCreateSeqAIJMKL: no generated method for these argument types")
+    throw(MethodError(MatCreateSeqAIJMKL, (petsclib, comm, m, n, nz, nnz)))
 end
 
 @for_petsc function MatCreateSeqAIJMKL(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, nz::$PetscInt, nnz::Vector{$PetscInt} )
@@ -4958,7 +4958,7 @@ See also: `Mat`, `MatCreate()`, `MatCreateMPIAIJPERM()`, `MatSetValues()`
 $(_doc_external("Mat/MatCreateSeqAIJPERM"))
 """
 function MatCreateSeqAIJPERM(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, nz::Integer, nnz::AbstractVector{<:Number})
-    error("MatCreateSeqAIJPERM: no generated method for these argument types")
+    throw(MethodError(MatCreateSeqAIJPERM, (petsclib, comm, m, n, nz, nnz)))
 end
 
 @for_petsc function MatCreateSeqAIJPERM(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, nz::$PetscInt, nnz::Vector{$PetscInt} )
@@ -5005,7 +5005,7 @@ See also: `Mat`, `MatCreate()`, `MatCreateMPIAIJSELL()`, `MatSetValues()`
 $(_doc_external("Mat/MatCreateSeqAIJSELL"))
 """
 function MatCreateSeqAIJSELL(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, nz::Integer, nnz::Union{Ptr, AbstractVector{<:Number}})
-    error("MatCreateSeqAIJSELL: no generated method for these argument types")
+    throw(MethodError(MatCreateSeqAIJSELL, (petsclib, comm, m, n, nz, nnz)))
 end
 
 @for_petsc function MatCreateSeqAIJSELL(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, nz::$PetscInt, nnz::Union{Ptr, Vector{$PetscInt}} )
@@ -5030,7 +5030,7 @@ end
 $(_doc_external("Mat/MatCreateSeqAIJViennaCL"))
 """
 function MatCreateSeqAIJViennaCL(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, nz::Integer, nnz::Union{Ptr, AbstractVector{<:Number}})
-    error("MatCreateSeqAIJViennaCL: no generated method for these argument types")
+    throw(MethodError(MatCreateSeqAIJViennaCL, (petsclib, comm, m, n, nz, nnz)))
 end
 
 @for_petsc function MatCreateSeqAIJViennaCL(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, nz::$PetscInt, nnz::Union{Ptr, Vector{$PetscInt}} )
@@ -5074,7 +5074,7 @@ See also: `Mat`, `MatCreate()`, `MatCreateAIJ()`, `MatCreateSeqAIJ()`, `MatCreat
 $(_doc_external("Mat/MatCreateSeqAIJWithArrays"))
 """
 function MatCreateSeqAIJWithArrays(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, i::AbstractVector{<:Number}, j::AbstractVector{<:Number}, a::AbstractVector{<:Number})
-    error("MatCreateSeqAIJWithArrays: no generated method for these argument types")
+    throw(MethodError(MatCreateSeqAIJWithArrays, (petsclib, comm, m, n, i, j, a)))
 end
 
 @for_petsc function MatCreateSeqAIJWithArrays(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, a::Vector{$PetscScalar} )
@@ -5126,7 +5126,7 @@ See also: `Mat`, Sparse Matrices, `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetVal
 $(_doc_external("Mat/MatCreateSeqBAIJ"))
 """
 function MatCreateSeqBAIJ(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, m::Integer, n::Integer, nz::Integer, nnz::Union{Ptr, AbstractVector{<:Number}})
-    error("MatCreateSeqBAIJ: no generated method for these argument types")
+    throw(MethodError(MatCreateSeqBAIJ, (petsclib, comm, bs, m, n, nz, nnz)))
 end
 
 @for_petsc function MatCreateSeqBAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, nz::$PetscInt, nnz::Union{Ptr, Vector{$PetscInt}} )
@@ -5179,7 +5179,7 @@ See also: Sparse Matrices, `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetValues()`,
 $(_doc_external("Mat/MatCreateSeqBAIJMKL"))
 """
 function MatCreateSeqBAIJMKL(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, m::Integer, n::Integer, nz::Integer, nnz::Union{Ptr, AbstractVector{<:Number}})
-    error("MatCreateSeqBAIJMKL: no generated method for these argument types")
+    throw(MethodError(MatCreateSeqBAIJMKL, (petsclib, comm, bs, m, n, nz, nnz)))
 end
 
 @for_petsc function MatCreateSeqBAIJMKL(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, nz::$PetscInt, nnz::Union{Ptr, Vector{$PetscInt}} )
@@ -5223,7 +5223,7 @@ See also: `Mat`, `MatCreate()`, `MatCreateBAIJ()`, `MatCreateSeqBAIJ()`
 $(_doc_external("Mat/MatCreateSeqBAIJWithArrays"))
 """
 function MatCreateSeqBAIJWithArrays(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, m::Integer, n::Integer, i::AbstractVector{<:Number}, j::AbstractVector{<:Number}, a::AbstractVector{<:Number})
-    error("MatCreateSeqBAIJWithArrays: no generated method for these argument types")
+    throw(MethodError(MatCreateSeqBAIJWithArrays, (petsclib, comm, bs, m, n, i, j, a)))
 end
 
 @for_petsc function MatCreateSeqBAIJWithArrays(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, a::Vector{$PetscScalar} )
@@ -5248,7 +5248,7 @@ end
 $(_doc_external("Mat/MatCreateSeqCUFFT"))
 """
 function MatCreateSeqCUFFT(petsclib::PetscLibType, comm::MPI_Comm, ndim::Integer, dim::AbstractVector{<:Number})
-    error("MatCreateSeqCUFFT: no generated method for these argument types")
+    throw(MethodError(MatCreateSeqCUFFT, (petsclib, comm, ndim, dim)))
 end
 
 @for_petsc function MatCreateSeqCUFFT(petsclib::$UnionPetscLib, comm::MPI_Comm, ndim::$PetscInt, dim::Vector{$PetscInt} )
@@ -5291,7 +5291,7 @@ See also: `Mat`, `MATSEQDENSE`, `MatCreate()`, `MatCreateDense()`, `MatSetValues
 $(_doc_external("Mat/MatCreateSeqDense"))
 """
 function MatCreateSeqDense(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, data::Union{Ptr, AbstractVector{<:Number}})
-    error("MatCreateSeqDense: no generated method for these argument types")
+    throw(MethodError(MatCreateSeqDense, (petsclib, comm, m, n, data)))
 end
 
 @for_petsc function MatCreateSeqDense(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, data::Union{Ptr, Vector{$PetscScalar}} )
@@ -5316,7 +5316,7 @@ end
 $(_doc_external("Mat/MatCreateSeqDenseCUDA"))
 """
 function MatCreateSeqDenseCUDA(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer)
-    error("MatCreateSeqDenseCUDA: no generated method for these argument types")
+    throw(MethodError(MatCreateSeqDenseCUDA, (petsclib, comm, m, n)))
 end
 
 @for_petsc function MatCreateSeqDenseCUDA(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt )
@@ -5343,7 +5343,7 @@ end
 $(_doc_external("Mat/MatCreateSeqDenseHIP"))
 """
 function MatCreateSeqDenseHIP(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer)
-    error("MatCreateSeqDenseHIP: no generated method for these argument types")
+    throw(MethodError(MatCreateSeqDenseHIP, (petsclib, comm, m, n)))
 end
 
 @for_petsc function MatCreateSeqDenseHIP(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt )
@@ -5397,7 +5397,7 @@ See also: `Mat`, Sparse Matrices, `MATSEQSBAIJ`, `MatCreate()`, `MatCreateSeqAIJ
 $(_doc_external("Mat/MatCreateSeqSBAIJ"))
 """
 function MatCreateSeqSBAIJ(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, m::Integer, n::Integer, nz::Integer, nnz::Union{Ptr, AbstractVector{<:Number}})
-    error("MatCreateSeqSBAIJ: no generated method for these argument types")
+    throw(MethodError(MatCreateSeqSBAIJ, (petsclib, comm, bs, m, n, nz, nnz)))
 end
 
 @for_petsc function MatCreateSeqSBAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, nz::$PetscInt, nnz::Union{Ptr, Vector{$PetscInt}} )
@@ -5442,7 +5442,7 @@ See also: `Mat`, `MATSEQSBAIJ`, `MatCreate()`, `MatCreateSBAIJ()`, `MatCreateSeq
 $(_doc_external("Mat/MatCreateSeqSBAIJWithArrays"))
 """
 function MatCreateSeqSBAIJWithArrays(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, m::Integer, n::Integer, i::AbstractVector{<:Number}, j::AbstractVector{<:Number}, a::AbstractVector{<:Number})
-    error("MatCreateSeqSBAIJWithArrays: no generated method for these argument types")
+    throw(MethodError(MatCreateSeqSBAIJWithArrays, (petsclib, comm, bs, m, n, i, j, a)))
 end
 
 @for_petsc function MatCreateSeqSBAIJWithArrays(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, a::Vector{$PetscScalar} )
@@ -5484,7 +5484,7 @@ See also: `Mat`, `MATSEQSELL`, `MatCreate()`, `MatCreateSELL()`, `MatSetValues()
 $(_doc_external("Mat/MatCreateSeqSELL"))
 """
 function MatCreateSeqSELL(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, rlenmax::Integer, rlen::Union{Ptr, AbstractVector{<:Number}})
-    error("MatCreateSeqSELL: no generated method for these argument types")
+    throw(MethodError(MatCreateSeqSELL, (petsclib, comm, m, n, rlenmax, rlen)))
 end
 
 @for_petsc function MatCreateSeqSELL(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, rlenmax::$PetscInt, rlen::Union{Ptr, Vector{$PetscInt}} )
@@ -5528,7 +5528,7 @@ See also: `Mat`, `MATSHELL`, `MatShellSetOperation()`, `MatHasOperation()`, `Mat
 $(_doc_external("Mat/MatCreateShell"))
 """
 function MatCreateShell(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, ctx::Ptr{Cvoid})
-    error("MatCreateShell: no generated method for these argument types")
+    throw(MethodError(MatCreateShell, (petsclib, comm, m, n, M_M, M_N, ctx)))
 end
 
 @for_petsc function MatCreateShell(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, ctx::Ptr{Cvoid} )
@@ -5664,7 +5664,7 @@ See also: `Mat`, `MatCreateSubMatrices()`, `MatCreateSubMatricesMPI()`, `MatCrea
 $(_doc_external("Mat/MatCreateSubMatrix"))
 """
 function MatCreateSubMatrix(petsclib::PetscLibType, mat::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS, cll::MatReuse)
-    error("MatCreateSubMatrix: no generated method for these argument types")
+    throw(MethodError(MatCreateSubMatrix, (petsclib, mat, isrow, iscol, cll)))
 end
 
 @for_petsc function MatCreateSubMatrix(petsclib::$UnionPetscLib, mat::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS, cll::MatReuse )
@@ -5705,7 +5705,7 @@ See also: `MatCreate()`
 $(_doc_external("Tao/MatCreateSubMatrixFree"))
 """
 function MatCreateSubMatrixFree(petsclib::PetscLibType, mat::AbstractPetscMat, Rows::AbstractIS, Cols::AbstractIS)
-    error("MatCreateSubMatrixFree: no generated method for these argument types")
+    throw(MethodError(MatCreateSubMatrixFree, (petsclib, mat, Rows, Cols)))
 end
 
 @for_petsc function MatCreateSubMatrixFree(petsclib::$UnionPetscLib, mat::AbstractPetscMat, Rows::AbstractIS, Cols::AbstractIS )
@@ -5745,7 +5745,7 @@ See also: `Mat`, `MATSUBMATRIX`, `MATLOCALREF`, `MatCreateLocalRef()`, `MatCreat
 $(_doc_external("Mat/MatCreateSubMatrixVirtual"))
 """
 function MatCreateSubMatrixVirtual(petsclib::PetscLibType, A::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS)
-    error("MatCreateSubMatrixVirtual: no generated method for these argument types")
+    throw(MethodError(MatCreateSubMatrixVirtual, (petsclib, A, isrow, iscol)))
 end
 
 @for_petsc function MatCreateSubMatrixVirtual(petsclib::$UnionPetscLib, A::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS )
@@ -5784,7 +5784,7 @@ See also: `Mat`, `MATTRANSPOSEVIRTUAL`, `MatCreateNormal()`, `MatMult()`, `MatMu
 $(_doc_external("Mat/MatCreateTranspose"))
 """
 function MatCreateTranspose(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatCreateTranspose: no generated method for these argument types")
+    throw(MethodError(MatCreateTranspose, (petsclib, A)))
 end
 
 @for_petsc function MatCreateTranspose(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -5827,7 +5827,7 @@ See also: `Mat`, `Vec`, `VecCreate()`, `VecDestroy()`, `DMCreateGlobalVector()`,
 $(_doc_external("Mat/MatCreateVecs"))
 """
 function MatCreateVecs(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatCreateVecs: no generated method for these argument types")
+    throw(MethodError(MatCreateVecs, (petsclib, mat)))
 end
 
 @for_petsc function MatCreateVecs(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -5873,7 +5873,7 @@ See also: `Mat`, `MATFFTW`, `MatCreateFFT()`, `MatCreateVecs()`
 $(_doc_external("Mat/MatCreateVecsFFTW"))
 """
 function MatCreateVecsFFTW(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatCreateVecsFFTW: no generated method for these argument types")
+    throw(MethodError(MatCreateVecsFFTW, (petsclib, A)))
 end
 
 @for_petsc function MatCreateVecsFFTW(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -5923,7 +5923,7 @@ See also: `Mat`, `VecFischer()`, `VecSFischer()`, `MatDSFischer()`
 $(_doc_external("Tao/MatDFischer"))
 """
 function MatDFischer(petsclib::PetscLibType, jac::AbstractPetscMat, X::AbstractPetscVec, Con::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, T1::AbstractPetscVec, T2::AbstractPetscVec, Da::AbstractPetscVec, Db::AbstractPetscVec)
-    error("MatDFischer: no generated method for these argument types")
+    throw(MethodError(MatDFischer, (petsclib, jac, X, Con, XL, XU, T1, T2, Da, Db)))
 end
 
 @for_petsc function MatDFischer(petsclib::$UnionPetscLib, jac::AbstractPetscMat, X::AbstractPetscVec, Con::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, T1::AbstractPetscVec, T2::AbstractPetscVec, Da::AbstractPetscVec, Db::AbstractPetscVec )
@@ -5969,7 +5969,7 @@ See also: `Mat`, `VecFischer()`, `VecSFischer()`, `MatDFischer()`
 $(_doc_external("Tao/MatDSFischer"))
 """
 function MatDSFischer(petsclib::PetscLibType, jac::AbstractPetscMat, X::AbstractPetscVec, Con::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, mu::Real, T1::AbstractPetscVec, T2::AbstractPetscVec, Da::AbstractPetscVec, Db::AbstractPetscVec, Dm::AbstractPetscVec)
-    error("MatDSFischer: no generated method for these argument types")
+    throw(MethodError(MatDSFischer, (petsclib, jac, X, Con, XL, XU, mu, T1, T2, Da, Db, Dm)))
 end
 
 @for_petsc function MatDSFischer(petsclib::$UnionPetscLib, jac::AbstractPetscMat, X::AbstractPetscVec, Con::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, mu::$PetscReal, T1::AbstractPetscVec, T2::AbstractPetscVec, Da::AbstractPetscVec, Db::AbstractPetscVec, Dm::AbstractPetscVec )
@@ -5992,7 +5992,7 @@ end
 $(_doc_external("Mat/MatDenseCUDAGetArray"))
 """
 function MatDenseCUDAGetArray(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
-    error("MatDenseCUDAGetArray: no generated method for these argument types")
+    throw(MethodError(MatDenseCUDAGetArray, (petsclib, A, M_a)))
 end
 
 @for_petsc function MatDenseCUDAGetArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
@@ -6015,7 +6015,7 @@ end
 $(_doc_external("Mat/MatDenseCUDAGetArrayRead"))
 """
 function MatDenseCUDAGetArrayRead(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
-    error("MatDenseCUDAGetArrayRead: no generated method for these argument types")
+    throw(MethodError(MatDenseCUDAGetArrayRead, (petsclib, A, M_a)))
 end
 
 @for_petsc function MatDenseCUDAGetArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
@@ -6038,7 +6038,7 @@ end
 $(_doc_external("Mat/MatDenseCUDAGetArrayWrite"))
 """
 function MatDenseCUDAGetArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
-    error("MatDenseCUDAGetArrayWrite: no generated method for these argument types")
+    throw(MethodError(MatDenseCUDAGetArrayWrite, (petsclib, A, M_a)))
 end
 
 @for_petsc function MatDenseCUDAGetArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
@@ -6061,7 +6061,7 @@ end
 $(_doc_external("Mat/MatDenseCUDAPlaceArray"))
 """
 function MatDenseCUDAPlaceArray(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatDenseCUDAPlaceArray: no generated method for these argument types")
+    throw(MethodError(MatDenseCUDAPlaceArray, (petsclib, mat)))
 end
 
 @for_petsc function MatDenseCUDAPlaceArray(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -6086,7 +6086,7 @@ end
 $(_doc_external("Mat/MatDenseCUDAReplaceArray"))
 """
 function MatDenseCUDAReplaceArray(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatDenseCUDAReplaceArray: no generated method for these argument types")
+    throw(MethodError(MatDenseCUDAReplaceArray, (petsclib, mat)))
 end
 
 @for_petsc function MatDenseCUDAReplaceArray(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -6111,7 +6111,7 @@ end
 $(_doc_external("Mat/MatDenseCUDAResetArray"))
 """
 function MatDenseCUDAResetArray(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatDenseCUDAResetArray: no generated method for these argument types")
+    throw(MethodError(MatDenseCUDAResetArray, (petsclib, mat)))
 end
 
 @for_petsc function MatDenseCUDAResetArray(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -6134,7 +6134,7 @@ end
 $(_doc_external("Mat/MatDenseCUDARestoreArray"))
 """
 function MatDenseCUDARestoreArray(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
-    error("MatDenseCUDARestoreArray: no generated method for these argument types")
+    throw(MethodError(MatDenseCUDARestoreArray, (petsclib, A, M_a)))
 end
 
 @for_petsc function MatDenseCUDARestoreArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
@@ -6157,7 +6157,7 @@ end
 $(_doc_external("Mat/MatDenseCUDARestoreArrayRead"))
 """
 function MatDenseCUDARestoreArrayRead(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
-    error("MatDenseCUDARestoreArrayRead: no generated method for these argument types")
+    throw(MethodError(MatDenseCUDARestoreArrayRead, (petsclib, A, M_a)))
 end
 
 @for_petsc function MatDenseCUDARestoreArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
@@ -6180,7 +6180,7 @@ end
 $(_doc_external("Mat/MatDenseCUDARestoreArrayWrite"))
 """
 function MatDenseCUDARestoreArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
-    error("MatDenseCUDARestoreArrayWrite: no generated method for these argument types")
+    throw(MethodError(MatDenseCUDARestoreArrayWrite, (petsclib, A, M_a)))
 end
 
 @for_petsc function MatDenseCUDARestoreArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
@@ -6203,7 +6203,7 @@ end
 $(_doc_external("Mat/MatDenseCUDASetPreallocation"))
 """
 function MatDenseCUDASetPreallocation(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatDenseCUDASetPreallocation: no generated method for these argument types")
+    throw(MethodError(MatDenseCUDASetPreallocation, (petsclib, A)))
 end
 
 @for_petsc function MatDenseCUDASetPreallocation(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -6241,7 +6241,7 @@ See also: `Mat`, `MATDENSE`, `MatDenseRestoreArray()`, `MatDenseGetArrayRead()`,
 $(_doc_external("Mat/MatDenseGetArray"))
 """
 function MatDenseGetArray(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatDenseGetArray: no generated method for these argument types")
+    throw(MethodError(MatDenseGetArray, (petsclib, A)))
 end
 
 @for_petsc function MatDenseGetArray(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -6282,7 +6282,7 @@ See also: `Mat`, `MATDENSE`, `MatDenseRestoreArrayAndMemType()`, `MatDenseGetArr
 $(_doc_external("Mat/MatDenseGetArrayAndMemType"))
 """
 function MatDenseGetArrayAndMemType(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatDenseGetArrayAndMemType: no generated method for these argument types")
+    throw(MethodError(MatDenseGetArrayAndMemType, (petsclib, A)))
 end
 
 @for_petsc function MatDenseGetArrayAndMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -6323,7 +6323,7 @@ See also: `Mat`, `MATDENSE`, `MatDenseRestoreArrayRead()`, `MatDenseGetArray()`,
 $(_doc_external("Mat/MatDenseGetArrayRead"))
 """
 function MatDenseGetArrayRead(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatDenseGetArrayRead: no generated method for these argument types")
+    throw(MethodError(MatDenseGetArrayRead, (petsclib, A)))
 end
 
 @for_petsc function MatDenseGetArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -6364,7 +6364,7 @@ See also: `Mat`, `MATDENSE`, `MatDenseRestoreArrayReadAndMemType()`, `MatDenseGe
 $(_doc_external("Mat/MatDenseGetArrayReadAndMemType"))
 """
 function MatDenseGetArrayReadAndMemType(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatDenseGetArrayReadAndMemType: no generated method for these argument types")
+    throw(MethodError(MatDenseGetArrayReadAndMemType, (petsclib, A)))
 end
 
 @for_petsc function MatDenseGetArrayReadAndMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -6405,7 +6405,7 @@ See also: `Mat`, `MATDENSE`, `MatDenseRestoreArrayWrite()`, `MatDenseGetArray()`
 $(_doc_external("Mat/MatDenseGetArrayWrite"))
 """
 function MatDenseGetArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatDenseGetArrayWrite: no generated method for these argument types")
+    throw(MethodError(MatDenseGetArrayWrite, (petsclib, A)))
 end
 
 @for_petsc function MatDenseGetArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -6446,7 +6446,7 @@ See also: `Mat`, `MATDENSE`, `MatDenseRestoreArrayWriteAndMemType()`, `MatDenseG
 $(_doc_external("Mat/MatDenseGetArrayWriteAndMemType"))
 """
 function MatDenseGetArrayWriteAndMemType(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatDenseGetArrayWriteAndMemType: no generated method for these argument types")
+    throw(MethodError(MatDenseGetArrayWriteAndMemType, (petsclib, A)))
 end
 
 @for_petsc function MatDenseGetArrayWriteAndMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -6488,7 +6488,7 @@ See also: `Mat`, `MATDENSE`, `MatDenseRestoreColumn()`, `MatDenseGetColumnVec()`
 $(_doc_external("Mat/MatDenseGetColumn"))
 """
 function MatDenseGetColumn(petsclib::PetscLibType, A::AbstractPetscMat, col::Integer)
-    error("MatDenseGetColumn: no generated method for these argument types")
+    throw(MethodError(MatDenseGetColumn, (petsclib, A, col)))
 end
 
 @for_petsc function MatDenseGetColumn(petsclib::$UnionPetscLib, A::AbstractPetscMat, col::$PetscInt )
@@ -6527,7 +6527,7 @@ See also: `Mat`, `MATDENSE`, `MATDENSECUDA`, `MATDENSEHIP`, `MatDenseGetColumnVe
 $(_doc_external("Mat/MatDenseGetColumnVec"))
 """
 function MatDenseGetColumnVec(petsclib::PetscLibType, A::AbstractPetscMat, col::Integer)
-    error("MatDenseGetColumnVec: no generated method for these argument types")
+    throw(MethodError(MatDenseGetColumnVec, (petsclib, A, col)))
 end
 
 @for_petsc function MatDenseGetColumnVec(petsclib::$UnionPetscLib, A::AbstractPetscMat, col::$PetscInt )
@@ -6566,7 +6566,7 @@ See also: `Mat`, `MATDENSE`, `MATDENSECUDA`, `MATDENSEHIP`, `MatDenseGetColumnVe
 $(_doc_external("Mat/MatDenseGetColumnVecRead"))
 """
 function MatDenseGetColumnVecRead(petsclib::PetscLibType, A::AbstractPetscMat, col::Integer)
-    error("MatDenseGetColumnVecRead: no generated method for these argument types")
+    throw(MethodError(MatDenseGetColumnVecRead, (petsclib, A, col)))
 end
 
 @for_petsc function MatDenseGetColumnVecRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, col::$PetscInt )
@@ -6605,7 +6605,7 @@ See also: `Mat`, `MATDENSE`, `MATDENSECUDA`, `MATDENSEHIP`, `MatDenseGetColumnVe
 $(_doc_external("Mat/MatDenseGetColumnVecWrite"))
 """
 function MatDenseGetColumnVecWrite(petsclib::PetscLibType, A::AbstractPetscMat, col::Integer)
-    error("MatDenseGetColumnVecWrite: no generated method for these argument types")
+    throw(MethodError(MatDenseGetColumnVecWrite, (petsclib, A, col)))
 end
 
 @for_petsc function MatDenseGetColumnVecWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat, col::$PetscInt )
@@ -6643,7 +6643,7 @@ See also: `Mat`, `MATDENSE`, `MATDENSECUDA`, `MatDenseGetArray()`, `MatDenseRest
 $(_doc_external("Mat/MatDenseGetLDA"))
 """
 function MatDenseGetLDA(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatDenseGetLDA: no generated method for these argument types")
+    throw(MethodError(MatDenseGetLDA, (petsclib, A)))
 end
 
 @for_petsc function MatDenseGetLDA(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -6680,7 +6680,7 @@ See also: `Mat`, `MATDENSE`, `MATMPIDENSE`, `MATSEQDENSE`
 $(_doc_external("Mat/MatDenseGetLocalMatrix"))
 """
 function MatDenseGetLocalMatrix(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatDenseGetLocalMatrix: no generated method for these argument types")
+    throw(MethodError(MatDenseGetLocalMatrix, (petsclib, A)))
 end
 
 @for_petsc function MatDenseGetLocalMatrix(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -6722,7 +6722,7 @@ See also: `Mat`, `MATDENSE`, `MATDENSECUDA`, `MATDENSEHIP`, `MatDenseGetColumnVe
 $(_doc_external("Mat/MatDenseGetSubMatrix"))
 """
 function MatDenseGetSubMatrix(petsclib::PetscLibType, A::AbstractPetscMat, rbegin::Integer, rend::Integer, cbegin::Integer, cend::Integer)
-    error("MatDenseGetSubMatrix: no generated method for these argument types")
+    throw(MethodError(MatDenseGetSubMatrix, (petsclib, A, rbegin, rend, cbegin, cend)))
 end
 
 @for_petsc function MatDenseGetSubMatrix(petsclib::$UnionPetscLib, A::AbstractPetscMat, rbegin::$PetscInt, rend::$PetscInt, cbegin::$PetscInt, cend::$PetscInt )
@@ -6747,7 +6747,7 @@ end
 $(_doc_external("Mat/MatDenseHIPGetArray"))
 """
 function MatDenseHIPGetArray(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
-    error("MatDenseHIPGetArray: no generated method for these argument types")
+    throw(MethodError(MatDenseHIPGetArray, (petsclib, A, M_a)))
 end
 
 @for_petsc function MatDenseHIPGetArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
@@ -6770,7 +6770,7 @@ end
 $(_doc_external("Mat/MatDenseHIPGetArrayRead"))
 """
 function MatDenseHIPGetArrayRead(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
-    error("MatDenseHIPGetArrayRead: no generated method for these argument types")
+    throw(MethodError(MatDenseHIPGetArrayRead, (petsclib, A, M_a)))
 end
 
 @for_petsc function MatDenseHIPGetArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
@@ -6793,7 +6793,7 @@ end
 $(_doc_external("Mat/MatDenseHIPGetArrayWrite"))
 """
 function MatDenseHIPGetArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
-    error("MatDenseHIPGetArrayWrite: no generated method for these argument types")
+    throw(MethodError(MatDenseHIPGetArrayWrite, (petsclib, A, M_a)))
 end
 
 @for_petsc function MatDenseHIPGetArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
@@ -6816,7 +6816,7 @@ end
 $(_doc_external("Mat/MatDenseHIPPlaceArray"))
 """
 function MatDenseHIPPlaceArray(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatDenseHIPPlaceArray: no generated method for these argument types")
+    throw(MethodError(MatDenseHIPPlaceArray, (petsclib, mat)))
 end
 
 @for_petsc function MatDenseHIPPlaceArray(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -6841,7 +6841,7 @@ end
 $(_doc_external("Mat/MatDenseHIPReplaceArray"))
 """
 function MatDenseHIPReplaceArray(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatDenseHIPReplaceArray: no generated method for these argument types")
+    throw(MethodError(MatDenseHIPReplaceArray, (petsclib, mat)))
 end
 
 @for_petsc function MatDenseHIPReplaceArray(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -6866,7 +6866,7 @@ end
 $(_doc_external("Mat/MatDenseHIPResetArray"))
 """
 function MatDenseHIPResetArray(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatDenseHIPResetArray: no generated method for these argument types")
+    throw(MethodError(MatDenseHIPResetArray, (petsclib, mat)))
 end
 
 @for_petsc function MatDenseHIPResetArray(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -6889,7 +6889,7 @@ end
 $(_doc_external("Mat/MatDenseHIPRestoreArray"))
 """
 function MatDenseHIPRestoreArray(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
-    error("MatDenseHIPRestoreArray: no generated method for these argument types")
+    throw(MethodError(MatDenseHIPRestoreArray, (petsclib, A, M_a)))
 end
 
 @for_petsc function MatDenseHIPRestoreArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
@@ -6912,7 +6912,7 @@ end
 $(_doc_external("Mat/MatDenseHIPRestoreArrayRead"))
 """
 function MatDenseHIPRestoreArrayRead(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
-    error("MatDenseHIPRestoreArrayRead: no generated method for these argument types")
+    throw(MethodError(MatDenseHIPRestoreArrayRead, (petsclib, A, M_a)))
 end
 
 @for_petsc function MatDenseHIPRestoreArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
@@ -6935,7 +6935,7 @@ end
 $(_doc_external("Mat/MatDenseHIPRestoreArrayWrite"))
 """
 function MatDenseHIPRestoreArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
-    error("MatDenseHIPRestoreArrayWrite: no generated method for these argument types")
+    throw(MethodError(MatDenseHIPRestoreArrayWrite, (petsclib, A, M_a)))
 end
 
 @for_petsc function MatDenseHIPRestoreArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
@@ -6958,7 +6958,7 @@ end
 $(_doc_external("Mat/MatDenseHIPSetPreallocation"))
 """
 function MatDenseHIPSetPreallocation(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatDenseHIPSetPreallocation: no generated method for these argument types")
+    throw(MethodError(MatDenseHIPSetPreallocation, (petsclib, A)))
 end
 
 @for_petsc function MatDenseHIPSetPreallocation(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -6997,7 +6997,7 @@ See also: `Mat`, `MATDENSE`, `MatDenseGetArray()`, `MatDenseResetArray()`, `VecP
 $(_doc_external("Mat/MatDensePlaceArray"))
 """
 function MatDensePlaceArray(petsclib::PetscLibType, mat::AbstractPetscMat, array::AbstractVector{<:Number})
-    error("MatDensePlaceArray: no generated method for these argument types")
+    throw(MethodError(MatDensePlaceArray, (petsclib, mat, array)))
 end
 
 @for_petsc function MatDensePlaceArray(petsclib::$UnionPetscLib, mat::AbstractPetscMat, array::Vector{$PetscScalar} )
@@ -7033,7 +7033,7 @@ See also: `Mat`, `MatDensePlaceArray()`, `MatDenseGetArray()`, `VecReplaceArray(
 $(_doc_external("Mat/MatDenseReplaceArray"))
 """
 function MatDenseReplaceArray(petsclib::PetscLibType, mat::AbstractPetscMat, array::AbstractVector{<:Number})
-    error("MatDenseReplaceArray: no generated method for these argument types")
+    throw(MethodError(MatDenseReplaceArray, (petsclib, mat, array)))
 end
 
 @for_petsc function MatDenseReplaceArray(petsclib::$UnionPetscLib, mat::AbstractPetscMat, array::Vector{$PetscScalar} )
@@ -7069,7 +7069,7 @@ See also: `MatDenseReplaceArray()`, `MatDenseCUDAReplaceArray()`, `MatDenseHIPRe
 $(_doc_external("Mat/MatDenseReplaceArrayWithMemType"))
 """
 function MatDenseReplaceArrayWithMemType(petsclib::PetscLibType, mat::AbstractPetscMat, mtype::PetscMemType, array::AbstractVector{<:Number})
-    error("MatDenseReplaceArrayWithMemType: no generated method for these argument types")
+    throw(MethodError(MatDenseReplaceArrayWithMemType, (petsclib, mat, mtype, array)))
 end
 
 @for_petsc function MatDenseReplaceArrayWithMemType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, mtype::PetscMemType, array::Vector{$PetscScalar} )
@@ -7102,7 +7102,7 @@ See also: `Mat`, `MATDENSE`, `MatDenseGetArray()`, `MatDensePlaceArray()`, `VecP
 $(_doc_external("Mat/MatDenseResetArray"))
 """
 function MatDenseResetArray(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatDenseResetArray: no generated method for these argument types")
+    throw(MethodError(MatDenseResetArray, (petsclib, mat)))
 end
 
 @for_petsc function MatDenseResetArray(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -7136,7 +7136,7 @@ See also: `Mat`, `MATDENSE`, `MatDenseGetArray()`, `MatDenseGetArrayRead()`, `Ma
 $(_doc_external("Mat/MatDenseRestoreArray"))
 """
 function MatDenseRestoreArray(petsclib::PetscLibType, A::AbstractPetscMat, array::Union{Ptr, AbstractArray{<:Number}})
-    error("MatDenseRestoreArray: no generated method for these argument types")
+    throw(MethodError(MatDenseRestoreArray, (petsclib, A, array)))
 end
 
 @for_petsc function MatDenseRestoreArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::Union{Ptr, AbstractArray{$PetscScalar}} )
@@ -7171,7 +7171,7 @@ See also: `Mat`, `MATDENSE`, `MatDenseGetArrayAndMemType()`, `MatDenseGetArray()
 $(_doc_external("Mat/MatDenseRestoreArrayAndMemType"))
 """
 function MatDenseRestoreArrayAndMemType(petsclib::PetscLibType, A::AbstractPetscMat, array::Union{Ptr, AbstractArray{<:Number}})
-    error("MatDenseRestoreArrayAndMemType: no generated method for these argument types")
+    throw(MethodError(MatDenseRestoreArrayAndMemType, (petsclib, A, array)))
 end
 
 @for_petsc function MatDenseRestoreArrayAndMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::Union{Ptr, AbstractArray{$PetscScalar}} )
@@ -7206,7 +7206,7 @@ See also: `Mat`, `MATDENSE`, `MatDenseGetArrayRead()`, `MatDenseGetArray()`, `Ma
 $(_doc_external("Mat/MatDenseRestoreArrayRead"))
 """
 function MatDenseRestoreArrayRead(petsclib::PetscLibType, A::AbstractPetscMat, array::Union{Ptr, AbstractArray{<:Number}})
-    error("MatDenseRestoreArrayRead: no generated method for these argument types")
+    throw(MethodError(MatDenseRestoreArrayRead, (petsclib, A, array)))
 end
 
 @for_petsc function MatDenseRestoreArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::Union{Ptr, AbstractArray{$PetscScalar}} )
@@ -7241,7 +7241,7 @@ See also: `Mat`, `MATDENSE`, `MatDenseGetArrayReadAndMemType()`, `MatDenseGetArr
 $(_doc_external("Mat/MatDenseRestoreArrayReadAndMemType"))
 """
 function MatDenseRestoreArrayReadAndMemType(petsclib::PetscLibType, A::AbstractPetscMat, array::Union{Ptr, AbstractArray{<:Number}})
-    error("MatDenseRestoreArrayReadAndMemType: no generated method for these argument types")
+    throw(MethodError(MatDenseRestoreArrayReadAndMemType, (petsclib, A, array)))
 end
 
 @for_petsc function MatDenseRestoreArrayReadAndMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::Union{Ptr, AbstractArray{$PetscScalar}} )
@@ -7276,7 +7276,7 @@ See also: `Mat`, `MATDENSE`, `MatDenseGetArrayWrite()`, `MatDenseGetArray()`, `M
 $(_doc_external("Mat/MatDenseRestoreArrayWrite"))
 """
 function MatDenseRestoreArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat, array::Union{Ptr, AbstractArray{<:Number}})
-    error("MatDenseRestoreArrayWrite: no generated method for these argument types")
+    throw(MethodError(MatDenseRestoreArrayWrite, (petsclib, A, array)))
 end
 
 @for_petsc function MatDenseRestoreArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::Union{Ptr, AbstractArray{$PetscScalar}} )
@@ -7311,7 +7311,7 @@ See also: `Mat`, `MATDENSE`, `MatDenseGetArrayWriteAndMemType()`, `MatDenseGetAr
 $(_doc_external("Mat/MatDenseRestoreArrayWriteAndMemType"))
 """
 function MatDenseRestoreArrayWriteAndMemType(petsclib::PetscLibType, A::AbstractPetscMat, array::Union{Ptr, AbstractArray{<:Number}})
-    error("MatDenseRestoreArrayWriteAndMemType: no generated method for these argument types")
+    throw(MethodError(MatDenseRestoreArrayWriteAndMemType, (petsclib, A, array)))
 end
 
 @for_petsc function MatDenseRestoreArrayWriteAndMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::Union{Ptr, AbstractArray{$PetscScalar}} )
@@ -7346,7 +7346,7 @@ See also: `Mat`, `MATDENSE`, `MatDenseGetColumn()`
 $(_doc_external("Mat/MatDenseRestoreColumn"))
 """
 function MatDenseRestoreColumn(petsclib::PetscLibType, A::AbstractPetscMat, vals::Union{Ptr, AbstractArray{<:Number}})
-    error("MatDenseRestoreColumn: no generated method for these argument types")
+    throw(MethodError(MatDenseRestoreColumn, (petsclib, A, vals)))
 end
 
 @for_petsc function MatDenseRestoreColumn(petsclib::$UnionPetscLib, A::AbstractPetscMat, vals::Union{Ptr, AbstractArray{$PetscScalar}} )
@@ -7382,7 +7382,7 @@ See also: `Mat`, `MATDENSE`, `MATDENSECUDA`, `MATDENSEHIP`, `MatDenseGetColumnVe
 $(_doc_external("Mat/MatDenseRestoreColumnVec"))
 """
 function MatDenseRestoreColumnVec(petsclib::PetscLibType, A::AbstractPetscMat, col::Integer, v::AbstractPetscVec)
-    error("MatDenseRestoreColumnVec: no generated method for these argument types")
+    throw(MethodError(MatDenseRestoreColumnVec, (petsclib, A, col, v)))
 end
 
 @for_petsc function MatDenseRestoreColumnVec(petsclib::$UnionPetscLib, A::AbstractPetscMat, col::$PetscInt, v::AbstractPetscVec )
@@ -7419,7 +7419,7 @@ See also: `Mat`, `MATDENSE`, `MATDENSECUDA`, `MATDENSEHIP`, `MatDenseGetColumnVe
 $(_doc_external("Mat/MatDenseRestoreColumnVecRead"))
 """
 function MatDenseRestoreColumnVecRead(petsclib::PetscLibType, A::AbstractPetscMat, col::Integer, v::AbstractPetscVec)
-    error("MatDenseRestoreColumnVecRead: no generated method for these argument types")
+    throw(MethodError(MatDenseRestoreColumnVecRead, (petsclib, A, col, v)))
 end
 
 @for_petsc function MatDenseRestoreColumnVecRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, col::$PetscInt, v::AbstractPetscVec )
@@ -7456,7 +7456,7 @@ See also: `Mat`, `MATDENSE`, `MATDENSECUDA`, `MATDENSEHIP`, `MatDenseGetColumnVe
 $(_doc_external("Mat/MatDenseRestoreColumnVecWrite"))
 """
 function MatDenseRestoreColumnVecWrite(petsclib::PetscLibType, A::AbstractPetscMat, col::Integer, v::AbstractPetscVec)
-    error("MatDenseRestoreColumnVecWrite: no generated method for these argument types")
+    throw(MethodError(MatDenseRestoreColumnVecWrite, (petsclib, A, col, v)))
 end
 
 @for_petsc function MatDenseRestoreColumnVecWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat, col::$PetscInt, v::AbstractPetscVec )
@@ -7492,7 +7492,7 @@ See also: `Mat`, `MATDENSE`, `MATDENSECUDA`, `MATDENSEHIP`, `MatDenseGetColumnVe
 $(_doc_external("Mat/MatDenseRestoreSubMatrix"))
 """
 function MatDenseRestoreSubMatrix(petsclib::PetscLibType, A::AbstractPetscMat, v::AbstractPetscMat)
-    error("MatDenseRestoreSubMatrix: no generated method for these argument types")
+    throw(MethodError(MatDenseRestoreSubMatrix, (petsclib, A, v)))
 end
 
 @for_petsc function MatDenseRestoreSubMatrix(petsclib::$UnionPetscLib, A::AbstractPetscMat, v::AbstractPetscMat )
@@ -7528,7 +7528,7 @@ See also: `Mat`, `MATDENSE`, `MATDENSECUDA`, `MatDenseGetArray()`, `MatDenseRest
 $(_doc_external("Mat/MatDenseSetLDA"))
 """
 function MatDenseSetLDA(petsclib::PetscLibType, A::AbstractPetscMat, lda::Integer)
-    error("MatDenseSetLDA: no generated method for these argument types")
+    throw(MethodError(MatDenseSetLDA, (petsclib, A, lda)))
 end
 
 @for_petsc function MatDenseSetLDA(petsclib::$UnionPetscLib, A::AbstractPetscMat, lda::$PetscInt )
@@ -7561,7 +7561,7 @@ See also: `Mat`, `MatCreate()`
 $(_doc_external("Mat/MatDestroy"))
 """
 function MatDestroy(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatDestroy: no generated method for these argument types")
+    throw(MethodError(MatDestroy, (petsclib, A)))
 end
 
 @for_petsc function MatDestroy(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -7638,7 +7638,7 @@ See also: `Mat`, `MatGetSeqNonzeroStructure()`
 $(_doc_external("Mat/MatDestroySeqNonzeroStructure"))
 """
 function MatDestroySeqNonzeroStructure(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatDestroySeqNonzeroStructure: no generated method for these argument types")
+    throw(MethodError(MatDestroySeqNonzeroStructure, (petsclib, mat)))
 end
 
 @for_petsc function MatDestroySeqNonzeroStructure(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -7716,7 +7716,7 @@ See also: `MATDIAGONAL`, `MatCreateDiagonal()`, `MatDiagonalRestoreDiagonal()`, 
 $(_doc_external("Mat/MatDiagonalGetDiagonal"))
 """
 function MatDiagonalGetDiagonal(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatDiagonalGetDiagonal: no generated method for these argument types")
+    throw(MethodError(MatDiagonalGetDiagonal, (petsclib, A)))
 end
 
 @for_petsc function MatDiagonalGetDiagonal(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -7752,7 +7752,7 @@ See also: `MATDIAGONAL`, `MatCreateDiagonal()`, `MatDiagonalRestoreInverseDiagon
 $(_doc_external("Mat/MatDiagonalGetInverseDiagonal"))
 """
 function MatDiagonalGetInverseDiagonal(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatDiagonalGetInverseDiagonal: no generated method for these argument types")
+    throw(MethodError(MatDiagonalGetInverseDiagonal, (petsclib, A)))
 end
 
 @for_petsc function MatDiagonalGetInverseDiagonal(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -7786,7 +7786,7 @@ See also: `MATDIAGONAL`, `MatCreateDiagonal()`, `MatDiagonalGetDiagonal()`
 $(_doc_external("Mat/MatDiagonalRestoreDiagonal"))
 """
 function MatDiagonalRestoreDiagonal(petsclib::PetscLibType, A::AbstractPetscMat, diag::AbstractPetscVec)
-    error("MatDiagonalRestoreDiagonal: no generated method for these argument types")
+    throw(MethodError(MatDiagonalRestoreDiagonal, (petsclib, A, diag)))
 end
 
 @for_petsc function MatDiagonalRestoreDiagonal(petsclib::$UnionPetscLib, A::AbstractPetscMat, diag::AbstractPetscVec )
@@ -7820,7 +7820,7 @@ See also: `MATDIAGONAL`, `MatCreateDiagonal()`, `MatDiagonalGetInverseDiagonal()
 $(_doc_external("Mat/MatDiagonalRestoreInverseDiagonal"))
 """
 function MatDiagonalRestoreInverseDiagonal(petsclib::PetscLibType, A::AbstractPetscMat, inv_diag::AbstractPetscVec)
-    error("MatDiagonalRestoreInverseDiagonal: no generated method for these argument types")
+    throw(MethodError(MatDiagonalRestoreInverseDiagonal, (petsclib, A, inv_diag)))
 end
 
 @for_petsc function MatDiagonalRestoreInverseDiagonal(petsclib::$UnionPetscLib, A::AbstractPetscMat, inv_diag::AbstractPetscVec )
@@ -7859,7 +7859,7 @@ See also: `Mat`, `MatScale()`, `MatShift()`, `MatDiagonalSet()`
 $(_doc_external("Mat/MatDiagonalScale"))
 """
 function MatDiagonalScale(petsclib::PetscLibType, mat::AbstractPetscMat, l::Union{Ptr, AbstractPetscVec}, r::Union{Ptr, AbstractPetscVec})
-    error("MatDiagonalScale: no generated method for these argument types")
+    throw(MethodError(MatDiagonalScale, (petsclib, mat, l, r)))
 end
 
 @for_petsc function MatDiagonalScale(petsclib::$UnionPetscLib, mat::AbstractPetscMat, l::Union{Ptr, AbstractPetscVec}, r::Union{Ptr, AbstractPetscVec} )
@@ -7894,7 +7894,7 @@ See also: `Mat`, `MatDiagonalScale()`
 $(_doc_external("Mat/MatDiagonalScaleLocal"))
 """
 function MatDiagonalScaleLocal(petsclib::PetscLibType, mat::AbstractPetscMat, diag::AbstractPetscVec)
-    error("MatDiagonalScaleLocal: no generated method for these argument types")
+    throw(MethodError(MatDiagonalScaleLocal, (petsclib, mat, diag)))
 end
 
 @for_petsc function MatDiagonalScaleLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, diag::AbstractPetscVec )
@@ -7931,7 +7931,7 @@ See also: `Mat`, `MatShift()`, `MatScale()`, `MatDiagonalScale()`
 $(_doc_external("Mat/MatDiagonalSet"))
 """
 function MatDiagonalSet(petsclib::PetscLibType, Y::AbstractPetscMat, D::AbstractPetscVec, is::InsertMode)
-    error("MatDiagonalSet: no generated method for these argument types")
+    throw(MethodError(MatDiagonalSet, (petsclib, Y, D, is)))
 end
 
 @for_petsc function MatDiagonalSet(petsclib::$UnionPetscLib, Y::AbstractPetscMat, D::AbstractPetscVec, is::InsertMode )
@@ -7967,7 +7967,7 @@ See also: `Mat`, `MatDestroy()`, `MatCreateDiagonal()`, `MATDIAGONAL`, `MatScale
 $(_doc_external("Mat/MatDiagonalSetDiagonal"))
 """
 function MatDiagonalSetDiagonal(petsclib::PetscLibType, J::AbstractPetscMat, diag::AbstractPetscVec)
-    error("MatDiagonalSetDiagonal: no generated method for these argument types")
+    throw(MethodError(MatDiagonalSetDiagonal, (petsclib, J, diag)))
 end
 
 @for_petsc function MatDiagonalSetDiagonal(petsclib::$UnionPetscLib, J::AbstractPetscMat, diag::AbstractPetscVec )
@@ -8005,7 +8005,7 @@ See also: `Mat`, `MatCopy()`, `MatConvert()`, `MatDuplicateOption`
 $(_doc_external("Mat/MatDuplicate"))
 """
 function MatDuplicate(petsclib::PetscLibType, mat::AbstractPetscMat, op::MatDuplicateOption)
-    error("MatDuplicate: no generated method for these argument types")
+    throw(MethodError(MatDuplicate, (petsclib, mat, op)))
 end
 
 @for_petsc function MatDuplicate(petsclib::$UnionPetscLib, mat::AbstractPetscMat, op::MatDuplicateOption )
@@ -8042,7 +8042,7 @@ See also: `Mat`, `MatCreate()`, `MatCreateGraph()`, `MatFilter()`
 $(_doc_external("Mat/MatEliminateZeros"))
 """
 function MatEliminateZeros(petsclib::PetscLibType, A::AbstractPetscMat, keep::PetscBool)
-    error("MatEliminateZeros: no generated method for these argument types")
+    throw(MethodError(MatEliminateZeros, (petsclib, A, keep)))
 end
 
 @for_petsc function MatEliminateZeros(petsclib::$UnionPetscLib, A::AbstractPetscMat, keep::PetscBool )
@@ -8079,7 +8079,7 @@ See also: `Mat`, `MatMultEqual()`
 $(_doc_external("Mat/MatEqual"))
 """
 function MatEqual(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat)
-    error("MatEqual: no generated method for these argument types")
+    throw(MethodError(MatEqual, (petsclib, A, B)))
 end
 
 @for_petsc function MatEqual(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat )
@@ -8115,7 +8115,7 @@ See also: `Mat`, `MatZeroEntries()`, `MatFactor()`, `MatGetFactor()`, `MatLUFact
 $(_doc_external("Mat/MatFactorClearError"))
 """
 function MatFactorClearError(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatFactorClearError: no generated method for these argument types")
+    throw(MethodError(MatFactorClearError, (petsclib, mat)))
 end
 
 @for_petsc function MatFactorClearError(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -8150,7 +8150,7 @@ See also: `Mat`, `MatGetFactor()`, `MatFactorSetSchurIS()`, `MatFactorGetSchurCo
 $(_doc_external("Mat/MatFactorCreateSchurComplement"))
 """
 function MatFactorCreateSchurComplement(petsclib::PetscLibType, F::AbstractPetscMat)
-    error("MatFactorCreateSchurComplement: no generated method for these argument types")
+    throw(MethodError(MatFactorCreateSchurComplement, (petsclib, F)))
 end
 
 @for_petsc function MatFactorCreateSchurComplement(petsclib::$UnionPetscLib, F::AbstractPetscMat )
@@ -8187,7 +8187,7 @@ See also: `Mat`, `MatGetFactor()`, `MatFactorSetSchurIS()`, `MatFactorInvertSchu
 $(_doc_external("Mat/MatFactorFactorizeSchurComplement"))
 """
 function MatFactorFactorizeSchurComplement(petsclib::PetscLibType, F::AbstractPetscMat)
-    error("MatFactorFactorizeSchurComplement: no generated method for these argument types")
+    throw(MethodError(MatFactorFactorizeSchurComplement, (petsclib, F)))
 end
 
 @for_petsc function MatFactorFactorizeSchurComplement(petsclib::$UnionPetscLib, F::AbstractPetscMat )
@@ -8223,7 +8223,7 @@ See also: `Mat`, Matrix Factorization, `MatCopy()`, `MatDuplicate()`, `MatGetFac
 $(_doc_external("Mat/MatFactorGetCanUseOrdering"))
 """
 function MatFactorGetCanUseOrdering(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatFactorGetCanUseOrdering: no generated method for these argument types")
+    throw(MethodError(MatFactorGetCanUseOrdering, (petsclib, mat)))
 end
 
 @for_petsc function MatFactorGetCanUseOrdering(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -8262,7 +8262,7 @@ See also: `Mat`, `MatZeroEntries()`, `MatFactor()`, `MatGetFactor()`, `MatLUFact
 $(_doc_external("Mat/MatFactorGetError"))
 """
 function MatFactorGetError(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatFactorGetError: no generated method for these argument types")
+    throw(MethodError(MatFactorGetError, (petsclib, mat)))
 end
 
 @for_petsc function MatFactorGetError(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -8304,7 +8304,7 @@ See also: `Mat`, `MatZeroEntries()`, `MatFactor()`, `MatGetFactor()`,
 $(_doc_external("Mat/MatFactorGetErrorZeroPivot"))
 """
 function MatFactorGetErrorZeroPivot(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatFactorGetErrorZeroPivot: no generated method for these argument types")
+    throw(MethodError(MatFactorGetErrorZeroPivot, (petsclib, mat)))
 end
 
 @for_petsc function MatFactorGetErrorZeroPivot(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -8345,7 +8345,7 @@ See also: `Mat`, Matrix Factorization, `MatFactorType`, `MatOrderingType`, `MatC
 $(_doc_external("Mat/MatFactorGetPreferredOrdering"))
 """
 function MatFactorGetPreferredOrdering(petsclib::PetscLibType, mat::AbstractPetscMat, ftype::MatFactorType)
-    error("MatFactorGetPreferredOrdering: no generated method for these argument types")
+    throw(MethodError(MatFactorGetPreferredOrdering, (petsclib, mat, ftype)))
 end
 
 @for_petsc function MatFactorGetPreferredOrdering(petsclib::$UnionPetscLib, mat::AbstractPetscMat, ftype::MatFactorType )
@@ -8382,7 +8382,7 @@ See also: `Mat`, `MatGetFactor()`, `MatFactorSetSchurIS()`, `MatFactorRestoreSch
 $(_doc_external("Mat/MatFactorGetSchurComplement"))
 """
 function MatFactorGetSchurComplement(petsclib::PetscLibType, F::AbstractPetscMat, S::Union{Ptr, AbstractPetscMat})
-    error("MatFactorGetSchurComplement: no generated method for these argument types")
+    throw(MethodError(MatFactorGetSchurComplement, (petsclib, F, S)))
 end
 
 @for_petsc function MatFactorGetSchurComplement(petsclib::$UnionPetscLib, F::AbstractPetscMat, S::Union{Ptr, AbstractPetscMat} )
@@ -8422,7 +8422,7 @@ See also: `Mat`, Matrix Factorization, `MatGetFactor()`, `MatSolverType`, `MatCo
 $(_doc_external("Mat/MatFactorGetSolverType"))
 """
 function MatFactorGetSolverType(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatFactorGetSolverType: no generated method for these argument types")
+    throw(MethodError(MatFactorGetSolverType, (petsclib, mat)))
 end
 
 @for_petsc function MatFactorGetSolverType(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -8458,7 +8458,7 @@ See also: `Mat`, `MatGetFactor()`, `MatFactorInfo`
 $(_doc_external("Mat/MatFactorInfoInitialize"))
 """
 function MatFactorInfoInitialize(petsclib::PetscLibType, info::Vector{MatFactorInfo})
-    error("MatFactorInfoInitialize: no generated method for these argument types")
+    throw(MethodError(MatFactorInfoInitialize, (petsclib, info)))
 end
 
 @for_petsc function MatFactorInfoInitialize(petsclib::$UnionPetscLib, info::Vector{MatFactorInfo} )
@@ -8491,7 +8491,7 @@ See also: `Mat`, `MatGetFactor()`, `MatFactorSetSchurIS()`, `MatFactorGetSchurCo
 $(_doc_external("Mat/MatFactorInvertSchurComplement"))
 """
 function MatFactorInvertSchurComplement(petsclib::PetscLibType, F::AbstractPetscMat)
-    error("MatFactorInvertSchurComplement: no generated method for these argument types")
+    throw(MethodError(MatFactorInvertSchurComplement, (petsclib, F)))
 end
 
 @for_petsc function MatFactorInvertSchurComplement(petsclib::$UnionPetscLib, F::AbstractPetscMat )
@@ -8526,7 +8526,7 @@ See also: `Mat`, `MatGetFactor()`, `MatFactorSetSchurIS()`, `MatFactorCreateSchu
 $(_doc_external("Mat/MatFactorRestoreSchurComplement"))
 """
 function MatFactorRestoreSchurComplement(petsclib::PetscLibType, F::AbstractPetscMat, S::AbstractPetscMat, status::MatFactorSchurStatus)
-    error("MatFactorRestoreSchurComplement: no generated method for these argument types")
+    throw(MethodError(MatFactorRestoreSchurComplement, (petsclib, F, S, status)))
 end
 
 @for_petsc function MatFactorRestoreSchurComplement(petsclib::$UnionPetscLib, F::AbstractPetscMat, S::AbstractPetscMat, status::MatFactorSchurStatus )
@@ -8563,7 +8563,7 @@ See also: `Mat`, `MatGetFactor()`, `MatFactorGetSchurComplement()`, `MatFactorRe
 $(_doc_external("Mat/MatFactorSetSchurIS"))
 """
 function MatFactorSetSchurIS(petsclib::PetscLibType, mat::AbstractPetscMat, is::AbstractIS)
-    error("MatFactorSetSchurIS: no generated method for these argument types")
+    throw(MethodError(MatFactorSetSchurIS, (petsclib, mat, is)))
 end
 
 @for_petsc function MatFactorSetSchurIS(petsclib::$UnionPetscLib, mat::AbstractPetscMat, is::AbstractIS )
@@ -8598,7 +8598,7 @@ See also: `Mat`, `MatGetFactor()`, `MatFactorSetSchurIS()`, `MatFactorSolveSchur
 $(_doc_external("Mat/MatFactorSolveSchurComplement"))
 """
 function MatFactorSolveSchurComplement(petsclib::PetscLibType, F::AbstractPetscMat, rhs::AbstractPetscVec, sol::AbstractPetscVec)
-    error("MatFactorSolveSchurComplement: no generated method for these argument types")
+    throw(MethodError(MatFactorSolveSchurComplement, (petsclib, F, rhs, sol)))
 end
 
 @for_petsc function MatFactorSolveSchurComplement(petsclib::$UnionPetscLib, F::AbstractPetscMat, rhs::AbstractPetscVec, sol::AbstractPetscVec )
@@ -8633,7 +8633,7 @@ See also: `Mat`, `MatGetFactor()`, `MatFactorSetSchurIS()`, `MatFactorSolveSchur
 $(_doc_external("Mat/MatFactorSolveSchurComplementTranspose"))
 """
 function MatFactorSolveSchurComplementTranspose(petsclib::PetscLibType, F::AbstractPetscMat, rhs::AbstractPetscVec, sol::AbstractPetscVec)
-    error("MatFactorSolveSchurComplementTranspose: no generated method for these argument types")
+    throw(MethodError(MatFactorSolveSchurComplementTranspose, (petsclib, F, rhs, sol)))
 end
 
 @for_petsc function MatFactorSolveSchurComplementTranspose(petsclib::$UnionPetscLib, F::AbstractPetscMat, rhs::AbstractPetscVec, sol::AbstractPetscVec )
@@ -8667,7 +8667,7 @@ See also: `Mat`, `MatCreate()`, `MatZeroEntries()`, `MatEliminateZeros()`, `VecF
 $(_doc_external("Mat/MatFilter"))
 """
 function MatFilter(petsclib::PetscLibType, A::AbstractPetscMat, tol::Real, compress::PetscBool, keep::PetscBool)
-    error("MatFilter: no generated method for these argument types")
+    throw(MethodError(MatFilter, (petsclib, A, tol, compress, keep)))
 end
 
 @for_petsc function MatFilter(petsclib::$UnionPetscLib, A::AbstractPetscMat, tol::$PetscReal, compress::PetscBool, keep::PetscBool )
@@ -8696,7 +8696,7 @@ See also: `Mat`, `PetscFinalize()`, `MatInitializePackage()`
 $(_doc_external("Mat/MatFinalizePackage"))
 """
 function MatFinalizePackage(petsclib::PetscLibType)
-    error("MatFinalizePackage: no generated method for these argument types")
+    throw(MethodError(MatFinalizePackage, (petsclib, )))
 end
 
 @for_petsc function MatFinalizePackage(petsclib::$UnionPetscLib)
@@ -8729,7 +8729,7 @@ See also: `Mat`, `MatFindZeroRows()`
 $(_doc_external("Mat/MatFindNonzeroRows"))
 """
 function MatFindNonzeroRows(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatFindNonzeroRows: no generated method for these argument types")
+    throw(MethodError(MatFindNonzeroRows, (petsclib, mat)))
 end
 
 @for_petsc function MatFindNonzeroRows(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -8767,7 +8767,7 @@ See also: `Mat`, `MatMultTranspose()`, `MatMultAdd()`, `MatMultTransposeAdd()`
 $(_doc_external("Mat/MatFindOffBlockDiagonalEntries"))
 """
 function MatFindOffBlockDiagonalEntries(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatFindOffBlockDiagonalEntries: no generated method for these argument types")
+    throw(MethodError(MatFindOffBlockDiagonalEntries, (petsclib, mat)))
 end
 
 @for_petsc function MatFindOffBlockDiagonalEntries(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -8805,7 +8805,7 @@ See also: `Mat`, `MatMultTranspose()`, `MatMultAdd()`, `MatMultTransposeAdd()`
 $(_doc_external("Mat/MatFindZeroDiagonals"))
 """
 function MatFindZeroDiagonals(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatFindZeroDiagonals: no generated method for these argument types")
+    throw(MethodError(MatFindZeroDiagonals, (petsclib, mat)))
 end
 
 @for_petsc function MatFindZeroDiagonals(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -8841,7 +8841,7 @@ See also: `Mat`, `MatFindNonzeroRows()`
 $(_doc_external("Mat/MatFindZeroRows"))
 """
 function MatFindZeroRows(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatFindZeroRows: no generated method for these argument types")
+    throw(MethodError(MatFindZeroRows, (petsclib, mat)))
 end
 
 @for_petsc function MatFindZeroRows(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -8881,7 +8881,7 @@ See also: `Mat`, `MatBackwardSolve()`, `MatGetFactor()`, `MatSolve()`
 $(_doc_external("Mat/MatForwardSolve"))
 """
 function MatForwardSolve(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec)
-    error("MatForwardSolve: no generated method for these argument types")
+    throw(MethodError(MatForwardSolve, (petsclib, mat, b, x)))
 end
 
 @for_petsc function MatForwardSolve(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec )
@@ -8929,7 +8929,7 @@ See also: `Mat`, `MatPtAP()`, `MatMatMatMult()`
 $(_doc_external("Mat/MatGalerkin"))
 """
 function MatGalerkin(petsclib::PetscLibType, restrct::AbstractPetscMat, dA::AbstractPetscMat, interpolate::AbstractPetscMat, reuse::MatReuse, fill::Real)
-    error("MatGalerkin: no generated method for these argument types")
+    throw(MethodError(MatGalerkin, (petsclib, restrct, dA, interpolate, reuse, fill)))
 end
 
 @for_petsc function MatGalerkin(petsclib::$UnionPetscLib, restrct::AbstractPetscMat, dA::AbstractPetscMat, interpolate::AbstractPetscMat, reuse::MatReuse, fill::$PetscReal )
@@ -8965,7 +8965,7 @@ See also: `Mat`, `MatSetBindingPropagates()`
 $(_doc_external("Mat/MatGetBindingPropagates"))
 """
 function MatGetBindingPropagates(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatGetBindingPropagates: no generated method for these argument types")
+    throw(MethodError(MatGetBindingPropagates, (petsclib, A)))
 end
 
 @for_petsc function MatGetBindingPropagates(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -9003,7 +9003,7 @@ See also: `Mat`, `MATBAIJ`, `MATSBAIJ`, `MatCreateSeqBAIJ()`, `MatCreateBAIJ()`,
 $(_doc_external("Mat/MatGetBlockSize"))
 """
 function MatGetBlockSize(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatGetBlockSize: no generated method for these argument types")
+    throw(MethodError(MatGetBlockSize, (petsclib, mat)))
 end
 
 @for_petsc function MatGetBlockSize(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -9042,7 +9042,7 @@ See also: `Mat`, `MATBAIJ`, `MATSBAIJ`, `MatCreateSeqBAIJ()`, `MatCreateBAIJ()`,
 $(_doc_external("Mat/MatGetBlockSizes"))
 """
 function MatGetBlockSizes(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatGetBlockSizes: no generated method for these argument types")
+    throw(MethodError(MatGetBlockSizes, (petsclib, mat)))
 end
 
 @for_petsc function MatGetBlockSizes(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -9086,7 +9086,7 @@ See also: `Mat`, `MATMPIAIJ`, `IS`, `MatReuse`
 $(_doc_external("Mat/MatGetBrowsOfAcols"))
 """
 function MatGetBrowsOfAcols(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, scall::MatReuse)
-    error("MatGetBrowsOfAcols: no generated method for these argument types")
+    throw(MethodError(MatGetBrowsOfAcols, (petsclib, A, B, scall)))
 end
 
 @for_petsc function MatGetBrowsOfAcols(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, scall::MatReuse )
@@ -9187,7 +9187,7 @@ See also: `Mat`, `VecSum()`, `MatGetColumnSums()`, `MatGetColumnNorms()`, `MatGe
 $(_doc_external("Mat/MatGetColumnMeans"))
 """
 function MatGetColumnMeans(petsclib::PetscLibType, A::AbstractPetscMat, means::AbstractVector{<:Number})
-    error("MatGetColumnMeans: no generated method for these argument types")
+    throw(MethodError(MatGetColumnMeans, (petsclib, A, means)))
 end
 
 @for_petsc function MatGetColumnMeans(petsclib::$UnionPetscLib, A::AbstractPetscMat, means::Vector{$PetscScalar} )
@@ -9221,7 +9221,7 @@ See also: `Mat`, `MatGetColumnMeansRealPart()`, `VecSum()`, `MatGetColumnSums()`
 $(_doc_external("Mat/MatGetColumnMeansImaginaryPart"))
 """
 function MatGetColumnMeansImaginaryPart(petsclib::PetscLibType, A::AbstractPetscMat, means::AbstractVector{<:Number})
-    error("MatGetColumnMeansImaginaryPart: no generated method for these argument types")
+    throw(MethodError(MatGetColumnMeansImaginaryPart, (petsclib, A, means)))
 end
 
 @for_petsc function MatGetColumnMeansImaginaryPart(petsclib::$UnionPetscLib, A::AbstractPetscMat, means::Vector{$PetscReal} )
@@ -9255,7 +9255,7 @@ See also: `Mat`, `MatGetColumnMeansImaginaryPart()`, `VecSum()`, `MatGetColumnSu
 $(_doc_external("Mat/MatGetColumnMeansRealPart"))
 """
 function MatGetColumnMeansRealPart(petsclib::PetscLibType, A::AbstractPetscMat, means::AbstractVector{<:Number})
-    error("MatGetColumnMeansRealPart: no generated method for these argument types")
+    throw(MethodError(MatGetColumnMeansRealPart, (petsclib, A, means)))
 end
 
 @for_petsc function MatGetColumnMeansRealPart(petsclib::$UnionPetscLib, A::AbstractPetscMat, means::Vector{$PetscReal} )
@@ -9290,7 +9290,7 @@ See also: `Mat`, `NormType`, `MatNorm()`
 $(_doc_external("Mat/MatGetColumnNorms"))
 """
 function MatGetColumnNorms(petsclib::PetscLibType, A::AbstractPetscMat, type::NormType, norms::AbstractVector{<:Number})
-    error("MatGetColumnNorms: no generated method for these argument types")
+    throw(MethodError(MatGetColumnNorms, (petsclib, A, type, norms)))
 end
 
 @for_petsc function MatGetColumnNorms(petsclib::$UnionPetscLib, A::AbstractPetscMat, type::NormType, norms::Vector{$PetscReal} )
@@ -9326,7 +9326,7 @@ See also: `Mat`, `ReductionType`, `NormType`, `MatGetColumnNorms()`, `MatGetColu
 $(_doc_external("Mat/MatGetColumnReductions"))
 """
 function MatGetColumnReductions(petsclib::PetscLibType, A::AbstractPetscMat, type::Integer, reductions::AbstractVector{<:Number})
-    error("MatGetColumnReductions: no generated method for these argument types")
+    throw(MethodError(MatGetColumnReductions, (petsclib, A, type, reductions)))
 end
 
 @for_petsc function MatGetColumnReductions(petsclib::$UnionPetscLib, A::AbstractPetscMat, type::$PetscInt, reductions::Vector{$PetscReal} )
@@ -9360,7 +9360,7 @@ See also: `Mat`, `VecSum()`, `MatGetColumnMeans()`, `MatGetColumnNorms()`, `MatG
 $(_doc_external("Mat/MatGetColumnSums"))
 """
 function MatGetColumnSums(petsclib::PetscLibType, A::AbstractPetscMat, sums::AbstractVector{<:Number})
-    error("MatGetColumnSums: no generated method for these argument types")
+    throw(MethodError(MatGetColumnSums, (petsclib, A, sums)))
 end
 
 @for_petsc function MatGetColumnSums(petsclib::$UnionPetscLib, A::AbstractPetscMat, sums::Vector{$PetscScalar} )
@@ -9394,7 +9394,7 @@ See also: `Mat`, `MatGetColumnSumsRealPart()`, `VecSum()`, `MatGetColumnMeans()`
 $(_doc_external("Mat/MatGetColumnSumsImaginaryPart"))
 """
 function MatGetColumnSumsImaginaryPart(petsclib::PetscLibType, A::AbstractPetscMat, sums::AbstractVector{<:Number})
-    error("MatGetColumnSumsImaginaryPart: no generated method for these argument types")
+    throw(MethodError(MatGetColumnSumsImaginaryPart, (petsclib, A, sums)))
 end
 
 @for_petsc function MatGetColumnSumsImaginaryPart(petsclib::$UnionPetscLib, A::AbstractPetscMat, sums::Vector{$PetscReal} )
@@ -9428,7 +9428,7 @@ See also: `Mat`, `MatGetColumnSumsImaginaryPart()`, `VecSum()`, `MatGetColumnMea
 $(_doc_external("Mat/MatGetColumnSumsRealPart"))
 """
 function MatGetColumnSumsRealPart(petsclib::PetscLibType, A::AbstractPetscMat, sums::AbstractVector{<:Number})
-    error("MatGetColumnSumsRealPart: no generated method for these argument types")
+    throw(MethodError(MatGetColumnSumsRealPart, (petsclib, A, sums)))
 end
 
 @for_petsc function MatGetColumnSumsRealPart(petsclib::$UnionPetscLib, A::AbstractPetscMat, sums::Vector{$PetscReal} )
@@ -9463,7 +9463,7 @@ See also: `Mat`, `MatGetRow()`, `MatGetDiagonal()`, `MatMult()`
 $(_doc_external("Mat/MatGetColumnVector"))
 """
 function MatGetColumnVector(petsclib::PetscLibType, A::AbstractPetscMat, yy::AbstractPetscVec, col::Integer)
-    error("MatGetColumnVector: no generated method for these argument types")
+    throw(MethodError(MatGetColumnVector, (petsclib, A, yy, col)))
 end
 
 @for_petsc function MatGetColumnVector(petsclib::$UnionPetscLib, A::AbstractPetscMat, yy::AbstractPetscVec, col::$PetscInt )
@@ -9499,7 +9499,7 @@ See also: `Mat`, `MatBoundToCPU()`, `PetscMemType`
 $(_doc_external("Mat/MatGetCurrentMemType"))
 """
 function MatGetCurrentMemType(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatGetCurrentMemType: no generated method for these argument types")
+    throw(MethodError(MatGetCurrentMemType, (petsclib, A)))
 end
 
 @for_petsc function MatGetCurrentMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -9537,7 +9537,7 @@ See also: `DM`, `MatSetDM()`, `DMCreateMatrix()`, `DMSetMatType()`
 $(_doc_external("DM/MatGetDM"))
 """
 function MatGetDM(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatGetDM: no generated method for these argument types")
+    throw(MethodError(MatGetDM, (petsclib, A)))
 end
 
 @for_petsc function MatGetDM(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -9575,7 +9575,7 @@ See also: `Mat`, `Vec`, `MatGetRow()`, `MatCreateSubMatrices()`, `MatCreateSubMa
 $(_doc_external("Mat/MatGetDiagonal"))
 """
 function MatGetDiagonal(petsclib::PetscLibType, mat::AbstractPetscMat, v::AbstractPetscVec)
-    error("MatGetDiagonal: no generated method for these argument types")
+    throw(MethodError(MatGetDiagonal, (petsclib, mat, v)))
 end
 
 @for_petsc function MatGetDiagonal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v::AbstractPetscVec )
@@ -9611,7 +9611,7 @@ See also: `Mat`, `MatCreateAIJ()`, `MATAIJ`, `MATBAIJ`, `MATSBAIJ`
 $(_doc_external("Mat/MatGetDiagonalBlock"))
 """
 function MatGetDiagonalBlock(petsclib::PetscLibType, A::AbstractPetscMat, M_a::AbstractPetscMat)
-    error("MatGetDiagonalBlock: no generated method for these argument types")
+    throw(MethodError(MatGetDiagonalBlock, (petsclib, A, M_a)))
 end
 
 @for_petsc function MatGetDiagonalBlock(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::AbstractPetscMat )
@@ -9662,7 +9662,7 @@ See also: `Mat`, Matrix Factorization, `KSP`, `MatSolverType`, `MatFactorType`, 
 $(_doc_external("Mat/MatGetFactor"))
 """
 function MatGetFactor(petsclib::PetscLibType, mat::AbstractPetscMat, type::String, ftype::MatFactorType)
-    error("MatGetFactor: no generated method for these argument types")
+    throw(MethodError(MatGetFactor, (petsclib, mat, type, ftype)))
 end
 
 @for_petsc function MatGetFactor(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::String, ftype::MatFactorType )
@@ -9703,7 +9703,7 @@ See also: `Mat`, Matrix Factorization, `MatSolverType`, `MatFactorType`, `MatGet
 $(_doc_external("Mat/MatGetFactorAvailable"))
 """
 function MatGetFactorAvailable(petsclib::PetscLibType, mat::AbstractPetscMat, type::String, ftype::MatFactorType)
-    error("MatGetFactorAvailable: no generated method for these argument types")
+    throw(MethodError(MatGetFactorAvailable, (petsclib, mat, type, ftype)))
 end
 
 @for_petsc function MatGetFactorAvailable(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::String, ftype::MatFactorType )
@@ -9742,7 +9742,7 @@ See also: `Mat`, Matrix Factorization, `MatFactorType`, `MatGetFactor()`, `MatSe
 $(_doc_external("Mat/MatGetFactorType"))
 """
 function MatGetFactorType(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatGetFactorType: no generated method for these argument types")
+    throw(MethodError(MatGetFactorType, (petsclib, mat)))
 end
 
 @for_petsc function MatGetFactorType(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -9781,7 +9781,7 @@ See also: `Mat`, `VecCreateGhost()`, `VecCreateGhostBlock()`
 $(_doc_external("Mat/MatGetGhosts"))
 """
 function MatGetGhosts(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatGetGhosts: no generated method for these argument types")
+    throw(MethodError(MatGetGhosts, (petsclib, mat)))
 end
 
 @for_petsc function MatGetGhosts(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -9824,7 +9824,7 @@ See also: `Mat`, `MatGetFactor()`, `MatCholeskyFactor()`
 $(_doc_external("Mat/MatGetInertia"))
 """
 function MatGetInertia(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatGetInertia: no generated method for these argument types")
+    throw(MethodError(MatGetInertia, (petsclib, mat)))
 end
 
 @for_petsc function MatGetInertia(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -9871,7 +9871,7 @@ See also: `Mat`, `MatInfo`, `MatStashGetInfo()`
 $(_doc_external("Mat/MatGetInfo"))
 """
 function MatGetInfo(petsclib::PetscLibType, mat::AbstractPetscMat, flag::MatInfoType)
-    error("MatGetInfo: no generated method for these argument types")
+    throw(MethodError(MatGetInfo, (petsclib, mat, flag)))
 end
 
 @for_petsc function MatGetInfo(petsclib::$UnionPetscLib, mat::AbstractPetscMat, flag::MatInfoType )
@@ -9910,7 +9910,7 @@ See also: `Mat`, Matrix Layouts, `PetscLayout`, `MatCreateVecs()`, `MatGetLocalT
 $(_doc_external("Mat/MatGetLayouts"))
 """
 function MatGetLayouts(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatGetLayouts: no generated method for these argument types")
+    throw(MethodError(MatGetLayouts, (petsclib, A)))
 end
 
 @for_petsc function MatGetLayouts(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -9952,7 +9952,7 @@ See also: `Mat`, `MatSetSizes()`, `MatGetSize()`
 $(_doc_external("Mat/MatGetLocalSize"))
 """
 function MatGetLocalSize(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatGetLocalSize: no generated method for these argument types")
+    throw(MethodError(MatGetLocalSize, (petsclib, mat)))
 end
 
 @for_petsc function MatGetLocalSize(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -9994,7 +9994,7 @@ See also: `Mat`, `MatRestoreLocalSubMatrix()`, `MatCreateLocalRef()`, `MatSetLoc
 $(_doc_external("Mat/MatGetLocalSubMatrix"))
 """
 function MatGetLocalSubMatrix(petsclib::PetscLibType, mat::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS)
-    error("MatGetLocalSubMatrix: no generated method for these argument types")
+    throw(MethodError(MatGetLocalSubMatrix, (petsclib, mat, isrow, iscol)))
 end
 
 @for_petsc function MatGetLocalSubMatrix(petsclib::$UnionPetscLib, mat::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS )
@@ -10033,7 +10033,7 @@ See also: `Mat`, `MatSetLocalToGlobalMapping()`, `MatSetValuesLocal()`
 $(_doc_external("Mat/MatGetLocalToGlobalMapping"))
 """
 function MatGetLocalToGlobalMapping(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatGetLocalToGlobalMapping: no generated method for these argument types")
+    throw(MethodError(MatGetLocalToGlobalMapping, (petsclib, A)))
 end
 
 @for_petsc function MatGetLocalToGlobalMapping(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -10076,7 +10076,7 @@ See also: `Mat`, `MatCreateRedundantMatrix()`, `MatCreateSubMatrices()`, `PCBJAC
 $(_doc_external("Mat/MatGetMultiProcBlock"))
 """
 function MatGetMultiProcBlock(petsclib::PetscLibType, mat::AbstractPetscMat, subComm::MPI_Comm, scall::MatReuse)
-    error("MatGetMultiProcBlock: no generated method for these argument types")
+    throw(MethodError(MatGetMultiProcBlock, (petsclib, mat, subComm, scall)))
 end
 
 @for_petsc function MatGetMultiProcBlock(petsclib::$UnionPetscLib, mat::AbstractPetscMat, subComm::MPI_Comm, scall::MatReuse )
@@ -10114,7 +10114,7 @@ See also: `Mat`, `MatNullSpace`, `MatSetNearNullSpace()`, `MatGetNullSpace()`, `
 $(_doc_external("Mat/MatGetNearNullSpace"))
 """
 function MatGetNearNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatGetNearNullSpace: no generated method for these argument types")
+    throw(MethodError(MatGetNearNullSpace, (petsclib, mat)))
 end
 
 @for_petsc function MatGetNearNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -10153,7 +10153,7 @@ See also: `Mat`, `PetscObjectStateGet()`, `PetscObjectGetId()`
 $(_doc_external("Mat/MatGetNonzeroState"))
 """
 function MatGetNonzeroState(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatGetNonzeroState: no generated method for these argument types")
+    throw(MethodError(MatGetNonzeroState, (petsclib, mat)))
 end
 
 @for_petsc function MatGetNonzeroState(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -10189,7 +10189,7 @@ See also: `Mat`, `MatCreate()`, `MatNullSpaceCreate()`, `MatSetNearNullSpace()`,
 $(_doc_external("Mat/MatGetNullSpace"))
 """
 function MatGetNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::MatNullSpace)
-    error("MatGetNullSpace: no generated method for these argument types")
+    throw(MethodError(MatGetNullSpace, (petsclib, mat, nullsp)))
 end
 
 @for_petsc function MatGetNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::MatNullSpace )
@@ -10227,7 +10227,7 @@ See also: `Mat`, `MatCreate()`, `MatNullSpaceCreate()`, `MatSetNearNullSpace()`,
 $(_doc_external("Mat/MatGetNullSpaces"))
 """
 function MatGetNullSpaces(petsclib::PetscLibType, n::Integer, mat::Vector{<:AbstractPetscMat})
-    error("MatGetNullSpaces: no generated method for these argument types")
+    throw(MethodError(MatGetNullSpaces, (petsclib, n, mat)))
 end
 
 @for_petsc function MatGetNullSpaces(petsclib::$UnionPetscLib, n::$PetscInt, mat::Vector{<:AbstractPetscMat} )
@@ -10266,7 +10266,7 @@ See also: `Mat`, `MatSetOperation()`, `MatCreateShell()`, `MatShellGetContext()`
 $(_doc_external("Mat/MatGetOperation"))
 """
 function MatGetOperation(petsclib::PetscLibType, mat::AbstractPetscMat, op::MatOperation)
-    error("MatGetOperation: no generated method for these argument types")
+    throw(MethodError(MatGetOperation, (petsclib, mat, op)))
 end
 
 @for_petsc function MatGetOperation(petsclib::$UnionPetscLib, mat::AbstractPetscMat, op::MatOperation )
@@ -10306,7 +10306,7 @@ See also: `Mat`, `MatOption`, `MatSetOption()`, `MatIsSymmetric()`, `MatIsHermit
 $(_doc_external("Mat/MatGetOption"))
 """
 function MatGetOption(petsclib::PetscLibType, mat::AbstractPetscMat, op::MatOption)
-    error("MatGetOption: no generated method for these argument types")
+    throw(MethodError(MatGetOption, (petsclib, mat, op)))
 end
 
 @for_petsc function MatGetOption(petsclib::$UnionPetscLib, mat::AbstractPetscMat, op::MatOption )
@@ -10345,7 +10345,7 @@ See also: `Mat`, `MatAppendOptionsPrefix()`, `MatSetOptionsPrefix()`, `MatAppend
 $(_doc_external("Mat/MatGetOptionsPrefix"))
 """
 function MatGetOptionsPrefix(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatGetOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(MatGetOptionsPrefix, (petsclib, A)))
 end
 
 @for_petsc function MatGetOptionsPrefix(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -10399,7 +10399,7 @@ See also: `MatOrderingRegister()`, `PCFactorSetMatOrderingType()`, `MatColoring`
 $(_doc_external("MatGraphOperations/MatGetOrdering"))
 """
 function MatGetOrdering(petsclib::PetscLibType, mat::AbstractPetscMat, type::String)
-    error("MatGetOrdering: no generated method for these argument types")
+    throw(MethodError(MatGetOrdering, (petsclib, mat, type)))
 end
 
 @for_petsc function MatGetOrdering(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::String )
@@ -10436,7 +10436,7 @@ See also: `Mat`, `MatOrderingType`, `MatOrderingRegister()`, `MatGetOrdering()`
 $(_doc_external("MatGraphOperations/MatGetOrderingList"))
 """
 function MatGetOrderingList(petsclib::PetscLibType)
-    error("MatGetOrderingList: no generated method for these argument types")
+    throw(MethodError(MatGetOrderingList, (petsclib, )))
 end
 
 @for_petsc function MatGetOrderingList(petsclib::$UnionPetscLib)
@@ -10475,7 +10475,7 @@ See also: `IS`, `Mat`, `MatGetOwnershipRanges()`, `MatSetValues()`, `MATELEMENTA
 $(_doc_external("Mat/MatGetOwnershipIS"))
 """
 function MatGetOwnershipIS(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatGetOwnershipIS: no generated method for these argument types")
+    throw(MethodError(MatGetOwnershipIS, (petsclib, A)))
 end
 
 @for_petsc function MatGetOwnershipIS(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -10518,7 +10518,7 @@ See also: `Mat`, `MatGetOwnershipRanges()`, `MatGetOwnershipRangeColumn()`, `Mat
 $(_doc_external("Mat/MatGetOwnershipRange"))
 """
 function MatGetOwnershipRange(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatGetOwnershipRange: no generated method for these argument types")
+    throw(MethodError(MatGetOwnershipRange, (petsclib, mat)))
 end
 
 @for_petsc function MatGetOwnershipRange(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -10561,7 +10561,7 @@ See also: `Mat`, `MatGetOwnershipRange()`, `MatGetOwnershipRanges()`, `MatGetOwn
 $(_doc_external("Mat/MatGetOwnershipRangeColumn"))
 """
 function MatGetOwnershipRangeColumn(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatGetOwnershipRangeColumn: no generated method for these argument types")
+    throw(MethodError(MatGetOwnershipRangeColumn, (petsclib, mat)))
 end
 
 @for_petsc function MatGetOwnershipRangeColumn(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -10605,7 +10605,7 @@ See also: `Mat`, `MatGetOwnershipRange()`, `MatGetOwnershipRangeColumn()`, `MatG
 $(_doc_external("Mat/MatGetOwnershipRanges"))
 """
 function MatGetOwnershipRanges(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatGetOwnershipRanges: no generated method for these argument types")
+    throw(MethodError(MatGetOwnershipRanges, (petsclib, mat)))
 end
 
 @for_petsc function MatGetOwnershipRanges(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -10647,7 +10647,7 @@ See also: `Mat`, `MatGetOwnershipRange()`, `MatGetOwnershipRangeColumn()`, `MatG
 $(_doc_external("Mat/MatGetOwnershipRangesColumn"))
 """
 function MatGetOwnershipRangesColumn(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatGetOwnershipRangesColumn: no generated method for these argument types")
+    throw(MethodError(MatGetOwnershipRangesColumn, (petsclib, mat)))
 end
 
 @for_petsc function MatGetOwnershipRangesColumn(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -10691,7 +10691,7 @@ See also: `Mat`, `MatRestoreRow()`, `MatSetValues()`, `MatGetValues()`, `MatCrea
 $(_doc_external("Mat/MatGetRow"))
 """
 function MatGetRow(petsclib::PetscLibType, mat::AbstractPetscMat, row::Integer)
-    error("MatGetRow: no generated method for these argument types")
+    throw(MethodError(MatGetRow, (petsclib, mat, row)))
 end
 
 @for_petsc function MatGetRow(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::$PetscInt )
@@ -10798,7 +10798,7 @@ See also: `Mat`, `MatGetDiagonal()`, `MatCreateSubMatrices()`, `MatCreateSubMatr
 $(_doc_external("Mat/MatGetRowMax"))
 """
 function MatGetRowMax(petsclib::PetscLibType, mat::AbstractPetscMat, v::AbstractPetscVec, idx::AbstractVector{<:Number})
-    error("MatGetRowMax: no generated method for these argument types")
+    throw(MethodError(MatGetRowMax, (petsclib, mat, v, idx)))
 end
 
 @for_petsc function MatGetRowMax(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v::AbstractPetscVec, idx::Vector{$PetscInt} )
@@ -10836,7 +10836,7 @@ See also: `Mat`, `MatGetDiagonal()`, `MatCreateSubMatrices()`, `MatCreateSubMatr
 $(_doc_external("Mat/MatGetRowMaxAbs"))
 """
 function MatGetRowMaxAbs(petsclib::PetscLibType, mat::AbstractPetscMat, v::AbstractPetscVec, idx::AbstractVector{<:Number})
-    error("MatGetRowMaxAbs: no generated method for these argument types")
+    throw(MethodError(MatGetRowMaxAbs, (petsclib, mat, v, idx)))
 end
 
 @for_petsc function MatGetRowMaxAbs(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v::AbstractPetscVec, idx::Vector{$PetscInt} )
@@ -10875,7 +10875,7 @@ See also: `Mat`, `MatGetDiagonal()`, `MatCreateSubMatrices()`, `MatCreateSubMatr
 $(_doc_external("Mat/MatGetRowMin"))
 """
 function MatGetRowMin(petsclib::PetscLibType, mat::AbstractPetscMat, v::AbstractPetscVec, idx::AbstractVector{<:Number})
-    error("MatGetRowMin: no generated method for these argument types")
+    throw(MethodError(MatGetRowMin, (petsclib, mat, v, idx)))
 end
 
 @for_petsc function MatGetRowMin(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v::AbstractPetscVec, idx::Vector{$PetscInt} )
@@ -10913,7 +10913,7 @@ See also: `Mat`, `MatGetDiagonal()`, `MatCreateSubMatrices()`, `MatCreateSubMatr
 $(_doc_external("Mat/MatGetRowMinAbs"))
 """
 function MatGetRowMinAbs(petsclib::PetscLibType, mat::AbstractPetscMat, v::AbstractPetscVec, idx::AbstractVector{<:Number})
-    error("MatGetRowMinAbs: no generated method for these argument types")
+    throw(MethodError(MatGetRowMinAbs, (petsclib, mat, v, idx)))
 end
 
 @for_petsc function MatGetRowMinAbs(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v::AbstractPetscVec, idx::Vector{$PetscInt} )
@@ -10949,7 +10949,7 @@ See also: `Mat`, `MatGetDiagonal()`, `MatCreateSubMatrices()`, `MatCreateSubMatr
 $(_doc_external("Mat/MatGetRowSum"))
 """
 function MatGetRowSum(petsclib::PetscLibType, mat::AbstractPetscMat, v::AbstractPetscVec)
-    error("MatGetRowSum: no generated method for these argument types")
+    throw(MethodError(MatGetRowSum, (petsclib, mat, v)))
 end
 
 @for_petsc function MatGetRowSum(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v::AbstractPetscVec )
@@ -10987,7 +10987,7 @@ See also: `Mat`, `MatGetDiagonal()`, `MatCreateSubMatrices()`, `MatCreateSubMatr
 $(_doc_external("Mat/MatGetRowSumAbs"))
 """
 function MatGetRowSumAbs(petsclib::PetscLibType, mat::AbstractPetscMat, v::AbstractPetscVec)
-    error("MatGetRowSumAbs: no generated method for these argument types")
+    throw(MethodError(MatGetRowSumAbs, (petsclib, mat, v)))
 end
 
 @for_petsc function MatGetRowSumAbs(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v::AbstractPetscVec )
@@ -11021,7 +11021,7 @@ See also: `Mat`, `MATSBAIJ`, `MatRestoreRowUpperTriangular()`
 $(_doc_external("Mat/MatGetRowUpperTriangular"))
 """
 function MatGetRowUpperTriangular(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatGetRowUpperTriangular: no generated method for these argument types")
+    throw(MethodError(MatGetRowUpperTriangular, (petsclib, mat)))
 end
 
 @for_petsc function MatGetRowUpperTriangular(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -11066,7 +11066,7 @@ See also: `MatCreateSubMatrix()`, `PCFIELDSPLIT`, `MatCreateSchurComplement()`, 
 $(_doc_external("KSP/MatGetSchurComplement"))
 """
 function MatGetSchurComplement(petsclib::PetscLibType, A::AbstractPetscMat, isrow0::AbstractIS, iscol0::AbstractIS, isrow1::AbstractIS, iscol1::AbstractIS, mreuse::MatReuse, ainvtype::MatSchurComplementAinvType, preuse::MatReuse)
-    error("MatGetSchurComplement: no generated method for these argument types")
+    throw(MethodError(MatGetSchurComplement, (petsclib, A, isrow0, iscol0, isrow1, iscol1, mreuse, ainvtype, preuse)))
 end
 
 @for_petsc function MatGetSchurComplement(petsclib::$UnionPetscLib, A::AbstractPetscMat, isrow0::AbstractIS, iscol0::AbstractIS, isrow1::AbstractIS, iscol1::AbstractIS, mreuse::MatReuse, ainvtype::MatSchurComplementAinvType, preuse::MatReuse )
@@ -11106,7 +11106,7 @@ See also: `Mat`, `MatDestroySeqNonzeroStructure()`, `MatCreateSubMatrices()`, `M
 $(_doc_external("Mat/MatGetSeqNonzeroStructure"))
 """
 function MatGetSeqNonzeroStructure(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatGetSeqNonzeroStructure: no generated method for these argument types")
+    throw(MethodError(MatGetSeqNonzeroStructure, (petsclib, mat)))
 end
 
 @for_petsc function MatGetSeqNonzeroStructure(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -11145,7 +11145,7 @@ See also: `Mat`, `MatSetSizes()`, `MatGetLocalSize()`
 $(_doc_external("Mat/MatGetSize"))
 """
 function MatGetSize(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatGetSize: no generated method for these argument types")
+    throw(MethodError(MatGetSize, (petsclib, mat)))
 end
 
 @for_petsc function MatGetSize(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -11185,7 +11185,7 @@ See also: `Mat`, `MatCreate()`, `PetscObjectStateGet()`, `MatGetNonzeroState()`
 $(_doc_external("Mat/MatGetState"))
 """
 function MatGetState(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatGetState: no generated method for these argument types")
+    throw(MethodError(MatGetState, (petsclib, A)))
 end
 
 @for_petsc function MatGetState(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -11223,7 +11223,7 @@ See also: `Mat`
 $(_doc_external("Mat/MatGetTrace"))
 """
 function MatGetTrace(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatGetTrace: no generated method for these argument types")
+    throw(MethodError(MatGetTrace, (petsclib, mat)))
 end
 
 @for_petsc function MatGetTrace(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -11259,7 +11259,7 @@ See also: `Mat`, `MatNullSpace`, `MatCreate()`, `MatNullSpaceCreate()`, `MatSetN
 $(_doc_external("Mat/MatGetTransposeNullSpace"))
 """
 function MatGetTransposeNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::MatNullSpace)
-    error("MatGetTransposeNullSpace: no generated method for these argument types")
+    throw(MethodError(MatGetTransposeNullSpace, (petsclib, mat, nullsp)))
 end
 
 @for_petsc function MatGetTransposeNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::MatNullSpace )
@@ -11338,7 +11338,7 @@ See also: `Mat`, `MatGetRow()`, `MatCreateSubMatrices()`, `MatSetValues()`, `Mat
 $(_doc_external("Mat/MatGetValues"))
 """
 function MatGetValues(petsclib::PetscLibType, mat::AbstractPetscMat, m::Integer, idxm::AbstractVector{<:Number}, n::Integer, idxn::AbstractVector{<:Number}, v::AbstractVector{<:Number})
-    error("MatGetValues: no generated method for these argument types")
+    throw(MethodError(MatGetValues, (petsclib, mat, m, idxm, n, idxn, v)))
 end
 
 @for_petsc function MatGetValues(petsclib::$UnionPetscLib, mat::AbstractPetscMat, m::$PetscInt, idxm::Vector{$PetscInt}, n::$PetscInt, idxn::Vector{$PetscInt}, v::Vector{$PetscScalar} )
@@ -11381,7 +11381,7 @@ See also: `Mat`, `MatAssemblyBegin()`, `MatAssemblyEnd()`, `MatSetValues()`, `Ma
 $(_doc_external("Mat/MatGetValuesLocal"))
 """
 function MatGetValuesLocal(petsclib::PetscLibType, mat::AbstractPetscMat, nrow::Integer, irow::AbstractVector{<:Number}, ncol::Integer, icol::AbstractVector{<:Number}, y::AbstractVector{<:Number})
-    error("MatGetValuesLocal: no generated method for these argument types")
+    throw(MethodError(MatGetValuesLocal, (petsclib, mat, nrow, irow, ncol, icol, y)))
 end
 
 @for_petsc function MatGetValuesLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nrow::$PetscInt, irow::Vector{$PetscInt}, ncol::$PetscInt, icol::Vector{$PetscInt}, y::Vector{$PetscScalar} )
@@ -11418,7 +11418,7 @@ See also: `Mat`, `MatCreateSeqBAIJ()`, `MatCreateBAIJ()`, `MatGetBlockSize()`, `
 $(_doc_external("Mat/MatGetVariableBlockSizes"))
 """
 function MatGetVariableBlockSizes(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatGetVariableBlockSizes: no generated method for these argument types")
+    throw(MethodError(MatGetVariableBlockSizes, (petsclib, mat)))
 end
 
 @for_petsc function MatGetVariableBlockSizes(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -11458,7 +11458,7 @@ See also: `Mat`, `MatType`, `MatSetVecType()`, `VecType`
 $(_doc_external("Mat/MatGetVecType"))
 """
 function MatGetVecType(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatGetVecType: no generated method for these argument types")
+    throw(MethodError(MatGetVecType, (petsclib, mat)))
 end
 
 @for_petsc function MatGetVecType(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -11483,7 +11483,7 @@ end
 $(_doc_external("Mat/MatH2OpusCompress"))
 """
 function MatH2OpusCompress(petsclib::PetscLibType, A::AbstractPetscMat, tol::Real)
-    error("MatH2OpusCompress: no generated method for these argument types")
+    throw(MethodError(MatH2OpusCompress, (petsclib, A, tol)))
 end
 
 @for_petsc function MatH2OpusCompress(petsclib::$UnionPetscLib, A::AbstractPetscMat, tol::$PetscReal )
@@ -11506,7 +11506,7 @@ end
 $(_doc_external("Mat/MatH2OpusGetIndexMap"))
 """
 function MatH2OpusGetIndexMap(petsclib::PetscLibType, A::AbstractPetscMat, indexmap::AbstractIS)
-    error("MatH2OpusGetIndexMap: no generated method for these argument types")
+    throw(MethodError(MatH2OpusGetIndexMap, (petsclib, A, indexmap)))
 end
 
 @for_petsc function MatH2OpusGetIndexMap(petsclib::$UnionPetscLib, A::AbstractPetscMat, indexmap::AbstractIS )
@@ -11531,7 +11531,7 @@ end
 $(_doc_external("Mat/MatH2OpusGetNativeMult"))
 """
 function MatH2OpusGetNativeMult(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatH2OpusGetNativeMult: no generated method for these argument types")
+    throw(MethodError(MatH2OpusGetNativeMult, (petsclib, A)))
 end
 
 @for_petsc function MatH2OpusGetNativeMult(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -11556,7 +11556,7 @@ end
 $(_doc_external("Mat/MatH2OpusLowRankUpdate"))
 """
 function MatH2OpusLowRankUpdate(petsclib::PetscLibType, A::AbstractPetscMat, U::AbstractPetscMat, V::AbstractPetscMat, s::Number)
-    error("MatH2OpusLowRankUpdate: no generated method for these argument types")
+    throw(MethodError(MatH2OpusLowRankUpdate, (petsclib, A, U, V, s)))
 end
 
 @for_petsc function MatH2OpusLowRankUpdate(petsclib::$UnionPetscLib, A::AbstractPetscMat, U::AbstractPetscMat, V::AbstractPetscMat, s::$PetscScalar )
@@ -11579,7 +11579,7 @@ end
 $(_doc_external("Mat/MatH2OpusMapVec"))
 """
 function MatH2OpusMapVec(petsclib::PetscLibType, A::AbstractPetscMat, nativetopetsc::PetscBool, in::AbstractPetscVec, out::AbstractPetscVec)
-    error("MatH2OpusMapVec: no generated method for these argument types")
+    throw(MethodError(MatH2OpusMapVec, (petsclib, A, nativetopetsc, in, out)))
 end
 
 @for_petsc function MatH2OpusMapVec(petsclib::$UnionPetscLib, A::AbstractPetscMat, nativetopetsc::PetscBool, in::AbstractPetscVec, out::AbstractPetscVec )
@@ -11604,7 +11604,7 @@ end
 $(_doc_external("Mat/MatH2OpusOrthogonalize"))
 """
 function MatH2OpusOrthogonalize(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatH2OpusOrthogonalize: no generated method for these argument types")
+    throw(MethodError(MatH2OpusOrthogonalize, (petsclib, A)))
 end
 
 @for_petsc function MatH2OpusOrthogonalize(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -11627,7 +11627,7 @@ end
 $(_doc_external("Mat/MatH2OpusSetNativeMult"))
 """
 function MatH2OpusSetNativeMult(petsclib::PetscLibType, A::AbstractPetscMat, nm::PetscBool)
-    error("MatH2OpusSetNativeMult: no generated method for these argument types")
+    throw(MethodError(MatH2OpusSetNativeMult, (petsclib, A, nm)))
 end
 
 @for_petsc function MatH2OpusSetNativeMult(petsclib::$UnionPetscLib, A::AbstractPetscMat, nm::PetscBool )
@@ -11650,7 +11650,7 @@ end
 $(_doc_external("Mat/MatH2OpusSetSamplingMat"))
 """
 function MatH2OpusSetSamplingMat(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, bs::Integer, tol::Real)
-    error("MatH2OpusSetSamplingMat: no generated method for these argument types")
+    throw(MethodError(MatH2OpusSetSamplingMat, (petsclib, A, B, bs, tol)))
 end
 
 @for_petsc function MatH2OpusSetSamplingMat(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, bs::$PetscInt, tol::$PetscReal )
@@ -11673,7 +11673,7 @@ end
 $(_doc_external("Mat/MatHIPSPARSESetFormat"))
 """
 function MatHIPSPARSESetFormat(petsclib::PetscLibType, A::AbstractPetscMat, op::MatHIPSPARSEFormatOperation, format::MatHIPSPARSEStorageFormat)
-    error("MatHIPSPARSESetFormat: no generated method for these argument types")
+    throw(MethodError(MatHIPSPARSESetFormat, (petsclib, A, op, format)))
 end
 
 @for_petsc function MatHIPSPARSESetFormat(petsclib::$UnionPetscLib, A::AbstractPetscMat, op::MatHIPSPARSEFormatOperation, format::MatHIPSPARSEStorageFormat )
@@ -11696,7 +11696,7 @@ end
 $(_doc_external("Mat/MatHIPSPARSESetUseCPUSolve"))
 """
 function MatHIPSPARSESetUseCPUSolve(petsclib::PetscLibType, A::AbstractPetscMat, use_cpu::PetscBool)
-    error("MatHIPSPARSESetUseCPUSolve: no generated method for these argument types")
+    throw(MethodError(MatHIPSPARSESetUseCPUSolve, (petsclib, A, use_cpu)))
 end
 
 @for_petsc function MatHIPSPARSESetUseCPUSolve(petsclib::$UnionPetscLib, A::AbstractPetscMat, use_cpu::PetscBool )
@@ -11732,7 +11732,7 @@ See also: `Mat`, `MATHYPRE`, `PetscCopyMode`
 $(_doc_external("Mat/MatHYPREGetParCSR"))
 """
 function MatHYPREGetParCSR(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatHYPREGetParCSR: no generated method for these argument types")
+    throw(MethodError(MatHYPREGetParCSR, (petsclib, A)))
 end
 
 @for_petsc function MatHYPREGetParCSR(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -11782,7 +11782,7 @@ See also: `Mat`, `MatCreate()`, `MatMPIAIJSetPreallocation()`, `MATHYPRE`, `MATA
 $(_doc_external("Mat/MatHYPRESetPreallocation"))
 """
 function MatHYPRESetPreallocation(petsclib::PetscLibType, A::AbstractPetscMat, dnz::Integer, dnnz::AbstractVector{<:Number}, onz::Integer, onnz::AbstractVector{<:Number})
-    error("MatHYPRESetPreallocation: no generated method for these argument types")
+    throw(MethodError(MatHYPRESetPreallocation, (petsclib, A, dnz, dnnz, onz, onnz)))
 end
 
 @for_petsc function MatHYPRESetPreallocation(petsclib::$UnionPetscLib, A::AbstractPetscMat, dnz::$PetscInt, dnnz::Vector{$PetscInt}, onz::$PetscInt, onnz::Vector{$PetscInt} )
@@ -11818,7 +11818,7 @@ See also: `Mat`, `MatCreate()`, `MatSetSizes()`, `PetscLayout`
 $(_doc_external("Mat/MatHasCongruentLayouts"))
 """
 function MatHasCongruentLayouts(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatHasCongruentLayouts: no generated method for these argument types")
+    throw(MethodError(MatHasCongruentLayouts, (petsclib, mat)))
 end
 
 @for_petsc function MatHasCongruentLayouts(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -11857,7 +11857,7 @@ See also: `Mat`, `MatCreateShell()`, `MatGetOperation()`, `MatSetOperation()`
 $(_doc_external("Mat/MatHasOperation"))
 """
 function MatHasOperation(petsclib::PetscLibType, mat::AbstractPetscMat, op::MatOperation)
-    error("MatHasOperation: no generated method for these argument types")
+    throw(MethodError(MatHasOperation, (petsclib, mat, op)))
 end
 
 @for_petsc function MatHasOperation(petsclib::$UnionPetscLib, mat::AbstractPetscMat, op::MatOperation )
@@ -11893,7 +11893,7 @@ See also: `Mat`, `MatHeaderReplace()`
 $(_doc_external("Mat/MatHeaderMerge"))
 """
 function MatHeaderMerge(petsclib::PetscLibType, A::AbstractPetscMat, C::AbstractPetscMat)
-    error("MatHeaderMerge: no generated method for these argument types")
+    throw(MethodError(MatHeaderMerge, (petsclib, A, C)))
 end
 
 @for_petsc function MatHeaderMerge(petsclib::$UnionPetscLib, A::AbstractPetscMat, C::AbstractPetscMat )
@@ -11927,7 +11927,7 @@ See also: `Mat`, `MatHeaderMerge()`
 $(_doc_external("Mat/MatHeaderReplace"))
 """
 function MatHeaderReplace(petsclib::PetscLibType, A::AbstractPetscMat, C::AbstractPetscMat)
-    error("MatHeaderReplace: no generated method for these argument types")
+    throw(MethodError(MatHeaderReplace, (petsclib, A, C)))
 end
 
 @for_petsc function MatHeaderReplace(petsclib::$UnionPetscLib, A::AbstractPetscMat, C::AbstractPetscMat )
@@ -11966,7 +11966,7 @@ See also: `Mat`, `MatTranspose()`, `MatMultTranspose()`, `MatMultTransposeAdd()`
 $(_doc_external("Mat/MatHermitianTranspose"))
 """
 function MatHermitianTranspose(petsclib::PetscLibType, mat::AbstractPetscMat, reuse::MatReuse)
-    error("MatHermitianTranspose: no generated method for these argument types")
+    throw(MethodError(MatHermitianTranspose, (petsclib, mat, reuse)))
 end
 
 @for_petsc function MatHermitianTranspose(petsclib::$UnionPetscLib, mat::AbstractPetscMat, reuse::MatReuse )
@@ -12004,7 +12004,7 @@ See also: `Mat`, `MATHERMITIANTRANSPOSEVIRTUAL`, `MatCreateHermitianTranspose()`
 $(_doc_external("Mat/MatHermitianTransposeGetMat"))
 """
 function MatHermitianTransposeGetMat(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatHermitianTransposeGetMat: no generated method for these argument types")
+    throw(MethodError(MatHermitianTransposeGetMat, (petsclib, A)))
 end
 
 @for_petsc function MatHermitianTransposeGetMat(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -12029,7 +12029,7 @@ end
 $(_doc_external("Mat/MatHtoolGetPermutationSource"))
 """
 function MatHtoolGetPermutationSource(petsclib::PetscLibType, A::AbstractPetscMat, is::AbstractIS)
-    error("MatHtoolGetPermutationSource: no generated method for these argument types")
+    throw(MethodError(MatHtoolGetPermutationSource, (petsclib, A, is)))
 end
 
 @for_petsc function MatHtoolGetPermutationSource(petsclib::$UnionPetscLib, A::AbstractPetscMat, is::AbstractIS )
@@ -12054,7 +12054,7 @@ end
 $(_doc_external("Mat/MatHtoolGetPermutationTarget"))
 """
 function MatHtoolGetPermutationTarget(petsclib::PetscLibType, A::AbstractPetscMat, is::AbstractIS)
-    error("MatHtoolGetPermutationTarget: no generated method for these argument types")
+    throw(MethodError(MatHtoolGetPermutationTarget, (petsclib, A, is)))
 end
 
 @for_petsc function MatHtoolGetPermutationTarget(petsclib::$UnionPetscLib, A::AbstractPetscMat, is::AbstractIS )
@@ -12079,7 +12079,7 @@ end
 $(_doc_external("Mat/MatHtoolSetKernel"))
 """
 function MatHtoolSetKernel(petsclib::PetscLibType, A::AbstractPetscMat, kernel::Ptr{Cvoid}, kernelctx::Ptr{Cvoid})
-    error("MatHtoolSetKernel: no generated method for these argument types")
+    throw(MethodError(MatHtoolSetKernel, (petsclib, A, kernel, kernelctx)))
 end
 
 @for_petsc function MatHtoolSetKernel(petsclib::$UnionPetscLib, A::AbstractPetscMat, kernel::Ptr{Cvoid}, kernelctx::Ptr{Cvoid} )
@@ -12102,7 +12102,7 @@ end
 $(_doc_external("Mat/MatHtoolUsePermutation"))
 """
 function MatHtoolUsePermutation(petsclib::PetscLibType, A::AbstractPetscMat, use::PetscBool)
-    error("MatHtoolUsePermutation: no generated method for these argument types")
+    throw(MethodError(MatHtoolUsePermutation, (petsclib, A, use)))
 end
 
 @for_petsc function MatHtoolUsePermutation(petsclib::$UnionPetscLib, A::AbstractPetscMat, use::PetscBool )
@@ -12125,7 +12125,7 @@ end
 $(_doc_external("Mat/MatHtoolUseRecompression"))
 """
 function MatHtoolUseRecompression(petsclib::PetscLibType, A::AbstractPetscMat, use::PetscBool)
-    error("MatHtoolUseRecompression: no generated method for these argument types")
+    throw(MethodError(MatHtoolUseRecompression, (petsclib, A, use)))
 end
 
 @for_petsc function MatHtoolUseRecompression(petsclib::$UnionPetscLib, A::AbstractPetscMat, use::PetscBool )
@@ -12160,7 +12160,7 @@ See also: `Mat`, `MatFactorInfo`, `MatGetFactor()`, `MatICCFactorSymbolic()`, `M
 $(_doc_external("Mat/MatICCFactor"))
 """
 function MatICCFactor(petsclib::PetscLibType, mat::AbstractPetscMat, row::AbstractIS, info::Vector{MatFactorInfo})
-    error("MatICCFactor: no generated method for these argument types")
+    throw(MethodError(MatICCFactor, (petsclib, mat, row, info)))
 end
 
 @for_petsc function MatICCFactor(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::AbstractIS, info::Vector{MatFactorInfo} )
@@ -12202,7 +12202,7 @@ See also: `Mat`, `MatGetFactor()`, `MatCholeskyFactorNumeric()`, `MatCholeskyFac
 $(_doc_external("Mat/MatICCFactorSymbolic"))
 """
 function MatICCFactorSymbolic(petsclib::PetscLibType, fact::AbstractPetscMat, mat::AbstractPetscMat, perm::AbstractIS, info::Vector{MatFactorInfo})
-    error("MatICCFactorSymbolic: no generated method for these argument types")
+    throw(MethodError(MatICCFactorSymbolic, (petsclib, fact, mat, perm, info)))
 end
 
 @for_petsc function MatICCFactorSymbolic(petsclib::$UnionPetscLib, fact::AbstractPetscMat, mat::AbstractPetscMat, perm::AbstractIS, info::Vector{MatFactorInfo} )
@@ -12244,7 +12244,7 @@ See also: `Mat`, Matrix Factorization, `MatILUFactorSymbolic()`, `MatLUFactorNum
 $(_doc_external("Mat/MatILUFactor"))
 """
 function MatILUFactor(petsclib::PetscLibType, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, info::Vector{MatFactorInfo})
-    error("MatILUFactor: no generated method for these argument types")
+    throw(MethodError(MatILUFactor, (petsclib, mat, row, col, info)))
 end
 
 @for_petsc function MatILUFactor(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, info::Vector{MatFactorInfo} )
@@ -12290,7 +12290,7 @@ See also: `Mat`, Matrix Factorization, `MatGetFactor()`, `MatLUFactorSymbolic()`
 $(_doc_external("Mat/MatILUFactorSymbolic"))
 """
 function MatILUFactorSymbolic(petsclib::PetscLibType, fact::AbstractPetscMat, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, info::Vector{MatFactorInfo})
-    error("MatILUFactorSymbolic: no generated method for these argument types")
+    throw(MethodError(MatILUFactorSymbolic, (petsclib, fact, mat, row, col, info)))
 end
 
 @for_petsc function MatILUFactorSymbolic(petsclib::$UnionPetscLib, fact::AbstractPetscMat, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, info::Vector{MatFactorInfo} )
@@ -12324,7 +12324,7 @@ See also: `Mat`, `MATIS`, `MatCreate()`, `MatCreateIS()`, `MatISSetPreallocation
 $(_doc_external("Mat/MatISFixLocalEmpty"))
 """
 function MatISFixLocalEmpty(petsclib::PetscLibType, A::AbstractPetscMat, fix::PetscBool)
-    error("MatISFixLocalEmpty: no generated method for these argument types")
+    throw(MethodError(MatISFixLocalEmpty, (petsclib, A, fix)))
 end
 
 @for_petsc function MatISFixLocalEmpty(petsclib::$UnionPetscLib, A::AbstractPetscMat, fix::PetscBool )
@@ -12360,7 +12360,7 @@ See also: `Mat`, `MatCreate()`, `MatCreateIS()`, `MatSetLocalToGlobalMapping()`,
 $(_doc_external("Mat/MatISGetAllowRepeated"))
 """
 function MatISGetAllowRepeated(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatISGetAllowRepeated: no generated method for these argument types")
+    throw(MethodError(MatISGetAllowRepeated, (petsclib, A)))
 end
 
 @for_petsc function MatISGetAllowRepeated(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -12398,7 +12398,7 @@ See also: `Mat`, `MATIS`, `MatISRestoreLocalMat()`
 $(_doc_external("Mat/MatISGetLocalMat"))
 """
 function MatISGetLocalMat(petsclib::PetscLibType, mat::AbstractPetscMat, loc::AbstractPetscMat)
-    error("MatISGetLocalMat: no generated method for these argument types")
+    throw(MethodError(MatISGetLocalMat, (petsclib, mat, loc)))
 end
 
 @for_petsc function MatISGetLocalMat(petsclib::$UnionPetscLib, mat::AbstractPetscMat, loc::AbstractPetscMat )
@@ -12437,7 +12437,7 @@ See also: `Mat`, `MATIS`, `MatSetLocalToGlobalMapping()`
 $(_doc_external("Mat/MatISGetLocalToGlobalMapping"))
 """
 function MatISGetLocalToGlobalMapping(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatISGetLocalToGlobalMapping: no generated method for these argument types")
+    throw(MethodError(MatISGetLocalToGlobalMapping, (petsclib, A)))
 end
 
 @for_petsc function MatISGetLocalToGlobalMapping(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -12475,7 +12475,7 @@ See also: `Mat`, `MATIS`, `MatISGetLocalMat()`
 $(_doc_external("Mat/MatISRestoreLocalMat"))
 """
 function MatISRestoreLocalMat(petsclib::PetscLibType, mat::AbstractPetscMat, loc::AbstractPetscMat)
-    error("MatISRestoreLocalMat: no generated method for these argument types")
+    throw(MethodError(MatISRestoreLocalMat, (petsclib, mat, loc)))
 end
 
 @for_petsc function MatISRestoreLocalMat(petsclib::$UnionPetscLib, mat::AbstractPetscMat, loc::AbstractPetscMat )
@@ -12511,7 +12511,7 @@ See also: `Mat`, `MatCreate()`, `MatCreateIS()`, `MatSetLocalToGlobalMapping()`,
 $(_doc_external("Mat/MatISSetAllowRepeated"))
 """
 function MatISSetAllowRepeated(petsclib::PetscLibType, A::AbstractPetscMat, flg::PetscBool)
-    error("MatISSetAllowRepeated: no generated method for these argument types")
+    throw(MethodError(MatISSetAllowRepeated, (petsclib, A, flg)))
 end
 
 @for_petsc function MatISSetAllowRepeated(petsclib::$UnionPetscLib, A::AbstractPetscMat, flg::PetscBool )
@@ -12545,7 +12545,7 @@ See also: `Mat`, `MATIS`, `MatISSetLocalMatType`, `MatISGetLocalMat()`
 $(_doc_external("Mat/MatISSetLocalMat"))
 """
 function MatISSetLocalMat(petsclib::PetscLibType, mat::AbstractPetscMat, loc::AbstractPetscMat)
-    error("MatISSetLocalMat: no generated method for these argument types")
+    throw(MethodError(MatISSetLocalMat, (petsclib, mat, loc)))
 end
 
 @for_petsc function MatISSetLocalMat(petsclib::$UnionPetscLib, mat::AbstractPetscMat, loc::AbstractPetscMat )
@@ -12579,7 +12579,7 @@ See also: `Mat`, `MATIS`, `MatSetType()`, `MatType`
 $(_doc_external("Mat/MatISSetLocalMatType"))
 """
 function MatISSetLocalMatType(petsclib::PetscLibType, mat::AbstractPetscMat, mtype::String)
-    error("MatISSetLocalMatType: no generated method for these argument types")
+    throw(MethodError(MatISSetLocalMatType, (petsclib, mat, mtype)))
 end
 
 @for_petsc function MatISSetLocalMatType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, mtype::String )
@@ -12629,7 +12629,7 @@ See also: `Mat`, `MatCreate()`, `MatCreateIS()`, `MatMPIAIJSetPreallocation()`, 
 $(_doc_external("Mat/MatISSetPreallocation"))
 """
 function MatISSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat, d_nz::Integer, d_nnz::Union{Ptr, AbstractVector{<:Number}}, o_nz::Integer, o_nnz::Union{Ptr, AbstractVector{<:Number}})
-    error("MatISSetPreallocation: no generated method for these argument types")
+    throw(MethodError(MatISSetPreallocation, (petsclib, B, d_nz, d_nnz, o_nz, o_nnz)))
 end
 
 @for_petsc function MatISSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, d_nz::$PetscInt, d_nnz::Union{Ptr, Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr, Vector{$PetscInt}} )
@@ -12663,7 +12663,7 @@ See also: `Mat`, `MatCreate()`, `MatCreateIS()`, `MatISSetPreallocation()`, `Mat
 $(_doc_external("Mat/MatISStoreL2L"))
 """
 function MatISStoreL2L(petsclib::PetscLibType, A::AbstractPetscMat, store::PetscBool)
-    error("MatISStoreL2L: no generated method for these argument types")
+    throw(MethodError(MatISStoreL2L, (petsclib, A, store)))
 end
 
 @for_petsc function MatISStoreL2L(petsclib::$UnionPetscLib, A::AbstractPetscMat, store::PetscBool )
@@ -12696,7 +12696,7 @@ See also: `Mat`, `MatRealPart()`
 $(_doc_external("Mat/MatImaginaryPart"))
 """
 function MatImaginaryPart(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatImaginaryPart: no generated method for these argument types")
+    throw(MethodError(MatImaginaryPart, (petsclib, mat)))
 end
 
 @for_petsc function MatImaginaryPart(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -12737,7 +12737,7 @@ See also: `Mat`, `PCASM`, `MatSetBlockSize()`, `MatIncreaseOverlapSplit()`, `Mat
 $(_doc_external("Mat/MatIncreaseOverlap"))
 """
 function MatIncreaseOverlap(petsclib::PetscLibType, mat::AbstractPetscMat, n::Integer, is::Vector{<:AbstractIS}, ov::Integer)
-    error("MatIncreaseOverlap: no generated method for these argument types")
+    throw(MethodError(MatIncreaseOverlap, (petsclib, mat, n, is, ov)))
 end
 
 @for_petsc function MatIncreaseOverlap(petsclib::$UnionPetscLib, mat::AbstractPetscMat, n::$PetscInt, is::Vector{<:AbstractIS}, ov::$PetscInt )
@@ -12778,7 +12778,7 @@ See also: `Mat`, `MatCreateSubMatrices()`, `MatIncreaseOverlap()`
 $(_doc_external("Mat/MatIncreaseOverlapSplit"))
 """
 function MatIncreaseOverlapSplit(petsclib::PetscLibType, mat::AbstractPetscMat, n::Integer, is::Vector{<:AbstractIS}, ov::Integer)
-    error("MatIncreaseOverlapSplit: no generated method for these argument types")
+    throw(MethodError(MatIncreaseOverlapSplit, (petsclib, mat, n, is, ov)))
 end
 
 @for_petsc function MatIncreaseOverlapSplit(petsclib::$UnionPetscLib, mat::AbstractPetscMat, n::$PetscInt, is::Vector{<:AbstractIS}, ov::$PetscInt )
@@ -12808,7 +12808,7 @@ See also: `Mat`, `PetscInitialize()`, `MatFinalizePackage()`
 $(_doc_external("Mat/MatInitializePackage"))
 """
 function MatInitializePackage(petsclib::PetscLibType)
-    error("MatInitializePackage: no generated method for these argument types")
+    throw(MethodError(MatInitializePackage, (petsclib, )))
 end
 
 @for_petsc function MatInitializePackage(petsclib::$UnionPetscLib)
@@ -12845,7 +12845,7 @@ See also: `Mat`, `MATSEQAIJ`, `MatInodeGetInodeSizes()`, `MatGetOrdering()`
 $(_doc_external("Mat/MatInodeAdjustForInodes"))
 """
 function MatInodeAdjustForInodes(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatInodeAdjustForInodes: no generated method for these argument types")
+    throw(MethodError(MatInodeAdjustForInodes, (petsclib, A)))
 end
 
 @for_petsc function MatInodeAdjustForInodes(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -12887,7 +12887,7 @@ See also: `Mat`, `MatGetInfo()`
 $(_doc_external("Mat/MatInodeGetInodeSizes"))
 """
 function MatInodeGetInodeSizes(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatInodeGetInodeSizes: no generated method for these argument types")
+    throw(MethodError(MatInodeGetInodeSizes, (petsclib, A)))
 end
 
 @for_petsc function MatInodeGetInodeSizes(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -12931,7 +12931,7 @@ See also: `Mat`, `MatMultAdd()`, `MatMultTransposeAdd()`, `MatRestrict()`, `PCMG
 $(_doc_external("Mat/MatInterpolate"))
 """
 function MatInterpolate(petsclib::PetscLibType, A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec)
-    error("MatInterpolate: no generated method for these argument types")
+    throw(MethodError(MatInterpolate, (petsclib, A, x, y)))
 end
 
 @for_petsc function MatInterpolate(petsclib::$UnionPetscLib, A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec )
@@ -12970,7 +12970,7 @@ See also: `Mat`, `MatMultAdd()`, `MatMultTransposeAdd()`, `MatRestrict()`, `PCMG
 $(_doc_external("Mat/MatInterpolateAdd"))
 """
 function MatInterpolateAdd(petsclib::PetscLibType, A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec, w::AbstractPetscVec)
-    error("MatInterpolateAdd: no generated method for these argument types")
+    throw(MethodError(MatInterpolateAdd, (petsclib, A, x, y, w)))
 end
 
 @for_petsc function MatInterpolateAdd(petsclib::$UnionPetscLib, A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec, w::AbstractPetscVec )
@@ -13006,7 +13006,7 @@ See also: `Mat`, `MatInvertVariableBlockEnvelope()`, `MatInvertBlockDiagonalMat(
 $(_doc_external("Mat/MatInvertBlockDiagonal"))
 """
 function MatInvertBlockDiagonal(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatInvertBlockDiagonal: no generated method for these argument types")
+    throw(MethodError(MatInvertBlockDiagonal, (petsclib, mat)))
 end
 
 @for_petsc function MatInvertBlockDiagonal(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -13042,7 +13042,7 @@ See also: `Mat`, `MatInvertBlockDiagonal()`
 $(_doc_external("Mat/MatInvertBlockDiagonalMat"))
 """
 function MatInvertBlockDiagonalMat(petsclib::PetscLibType, A::AbstractPetscMat, C::AbstractPetscMat)
-    error("MatInvertBlockDiagonalMat: no generated method for these argument types")
+    throw(MethodError(MatInvertBlockDiagonalMat, (petsclib, A, C)))
 end
 
 @for_petsc function MatInvertBlockDiagonalMat(petsclib::$UnionPetscLib, A::AbstractPetscMat, C::AbstractPetscMat )
@@ -13080,7 +13080,7 @@ See also: `Mat`, `MatInvertBlockDiagonal()`, `MatSetVariableBlockSizes()`, `MatI
 $(_doc_external("Mat/MatInvertVariableBlockDiagonal"))
 """
 function MatInvertVariableBlockDiagonal(petsclib::PetscLibType, mat::AbstractPetscMat, nblocks::Integer, bsizes::AbstractVector{<:Number}, values::AbstractVector{<:Number})
-    error("MatInvertVariableBlockDiagonal: no generated method for these argument types")
+    throw(MethodError(MatInvertVariableBlockDiagonal, (petsclib, mat, nblocks, bsizes, values)))
 end
 
 @for_petsc function MatInvertVariableBlockDiagonal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nblocks::$PetscInt, bsizes::Vector{$PetscInt}, values::Vector{$PetscScalar} )
@@ -13117,7 +13117,7 @@ See also: `Mat`, `MatInvertBlockDiagonal()`, `MatComputeBlockDiagonal()`
 $(_doc_external("Mat/MatInvertVariableBlockEnvelope"))
 """
 function MatInvertVariableBlockEnvelope(petsclib::PetscLibType, A::AbstractPetscMat, reuse::MatReuse)
-    error("MatInvertVariableBlockEnvelope: no generated method for these argument types")
+    throw(MethodError(MatInvertVariableBlockEnvelope, (petsclib, A, reuse)))
 end
 
 @for_petsc function MatInvertVariableBlockEnvelope(petsclib::$UnionPetscLib, A::AbstractPetscMat, reuse::MatReuse )
@@ -13157,7 +13157,7 @@ See also: `Mat`, `MatTranspose()`, `MatIsTranspose()`, `MatIsHermitianKnown()`, 
 $(_doc_external("Mat/MatIsHermitian"))
 """
 function MatIsHermitian(petsclib::PetscLibType, A::AbstractPetscMat, tol::Real)
-    error("MatIsHermitian: no generated method for these argument types")
+    throw(MethodError(MatIsHermitian, (petsclib, A, tol)))
 end
 
 @for_petsc function MatIsHermitian(petsclib::$UnionPetscLib, A::AbstractPetscMat, tol::$PetscReal )
@@ -13196,7 +13196,7 @@ See also: `Mat`, `MAT_SYMMETRY_ETERNAL`, `MAT_HERMITIAN`, `MatTranspose()`, `Mat
 $(_doc_external("Mat/MatIsHermitianKnown"))
 """
 function MatIsHermitianKnown(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatIsHermitianKnown: no generated method for these argument types")
+    throw(MethodError(MatIsHermitianKnown, (petsclib, A)))
 end
 
 @for_petsc function MatIsHermitianKnown(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -13238,7 +13238,7 @@ See also: `Mat`, `MatTranspose()`, `MatIsSymmetric()`, `MatIsHermitian()`, `MatI
 $(_doc_external("Mat/MatIsHermitianTranspose"))
 """
 function MatIsHermitianTranspose(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, tol::Real)
-    error("MatIsHermitianTranspose: no generated method for these argument types")
+    throw(MethodError(MatIsHermitianTranspose, (petsclib, A, B, tol)))
 end
 
 @for_petsc function MatIsHermitianTranspose(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, tol::$PetscReal )
@@ -13277,7 +13277,7 @@ See also: `Mat`, `MatMatMultEqual()`, `MatMultEqual()`, `MatMultAddEqual()`, `Ma
 $(_doc_external("Mat/MatIsLinear"))
 """
 function MatIsLinear(petsclib::PetscLibType, A::AbstractPetscMat, n::Integer)
-    error("MatIsLinear: no generated method for these argument types")
+    throw(MethodError(MatIsLinear, (petsclib, A, n)))
 end
 
 @for_petsc function MatIsLinear(petsclib::$UnionPetscLib, A::AbstractPetscMat, n::$PetscInt )
@@ -13316,7 +13316,7 @@ See also: `Mat`, `MAT_SPD_ETERNAL`, `MAT_SPD`, `MatTranspose()`, `MatIsTranspose
 $(_doc_external("Mat/MatIsSPDKnown"))
 """
 function MatIsSPDKnown(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatIsSPDKnown: no generated method for these argument types")
+    throw(MethodError(MatIsSPDKnown, (petsclib, A)))
 end
 
 @for_petsc function MatIsSPDKnown(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -13354,7 +13354,7 @@ See also: `Mat`, `MATSHELL`, `MATMFFD`, `MatCreateShell()`, `MATTRANSPOSEVIRTUAL
 $(_doc_external("Mat/MatIsShell"))
 """
 function MatIsShell(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatIsShell: no generated method for these argument types")
+    throw(MethodError(MatIsShell, (petsclib, mat)))
 end
 
 @for_petsc function MatIsShell(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -13392,7 +13392,7 @@ See also: `Mat`, `MAT_STRUCTURALLY_SYMMETRIC`, `MAT_STRUCTURAL_SYMMETRY_ETERNAL`
 $(_doc_external("Mat/MatIsStructurallySymmetric"))
 """
 function MatIsStructurallySymmetric(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatIsStructurallySymmetric: no generated method for these argument types")
+    throw(MethodError(MatIsStructurallySymmetric, (petsclib, A)))
 end
 
 @for_petsc function MatIsStructurallySymmetric(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -13431,7 +13431,7 @@ See also: `Mat`, `MAT_STRUCTURALLY_SYMMETRIC`, `MatTranspose()`, `MatIsTranspose
 $(_doc_external("Mat/MatIsStructurallySymmetricKnown"))
 """
 function MatIsStructurallySymmetricKnown(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatIsStructurallySymmetricKnown: no generated method for these argument types")
+    throw(MethodError(MatIsStructurallySymmetricKnown, (petsclib, A)))
 end
 
 @for_petsc function MatIsStructurallySymmetricKnown(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -13473,7 +13473,7 @@ See also: `Mat`, `MatTranspose()`, `MatIsTranspose()`, `MatIsHermitian()`, `MatI
 $(_doc_external("Mat/MatIsSymmetric"))
 """
 function MatIsSymmetric(petsclib::PetscLibType, A::AbstractPetscMat, tol::Real)
-    error("MatIsSymmetric: no generated method for these argument types")
+    throw(MethodError(MatIsSymmetric, (petsclib, A, tol)))
 end
 
 @for_petsc function MatIsSymmetric(petsclib::$UnionPetscLib, A::AbstractPetscMat, tol::$PetscReal )
@@ -13512,7 +13512,7 @@ See also: `Mat`, `MAT_SYMMETRY_ETERNAL`, `MatTranspose()`, `MatIsTranspose()`, `
 $(_doc_external("Mat/MatIsSymmetricKnown"))
 """
 function MatIsSymmetricKnown(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatIsSymmetricKnown: no generated method for these argument types")
+    throw(MethodError(MatIsSymmetricKnown, (petsclib, A)))
 end
 
 @for_petsc function MatIsSymmetricKnown(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -13555,7 +13555,7 @@ See also: `Mat`, `MatTranspose()`, `MatIsSymmetric()`, `MatIsHermitian()`
 $(_doc_external("Mat/MatIsTranspose"))
 """
 function MatIsTranspose(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, tol::Real)
-    error("MatIsTranspose: no generated method for these argument types")
+    throw(MethodError(MatIsTranspose, (petsclib, A, B, tol)))
 end
 
 @for_petsc function MatIsTranspose(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, tol::$PetscReal )
@@ -13593,7 +13593,7 @@ See also: `Mat`, `MatCreateKAIJ()`, `MATKAIJ`, `MATAIJ`
 $(_doc_external("Mat/MatKAIJGetAIJ"))
 """
 function MatKAIJGetAIJ(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatKAIJGetAIJ: no generated method for these argument types")
+    throw(MethodError(MatKAIJGetAIJ, (petsclib, A)))
 end
 
 @for_petsc function MatKAIJGetAIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -13633,7 +13633,7 @@ See also: `Mat`, `MATKAIJ`, `MatCreateKAIJ()`, `MatGetBlockSizes()`
 $(_doc_external("Mat/MatKAIJGetS"))
 """
 function MatKAIJGetS(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatKAIJGetS: no generated method for these argument types")
+    throw(MethodError(MatKAIJGetS, (petsclib, A)))
 end
 
 @for_petsc function MatKAIJGetS(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -13677,7 +13677,7 @@ See also: `Mat`, `MATKAIJ`, `MatCreateKAIJ()`, `MatGetBlockSizes()`
 $(_doc_external("Mat/MatKAIJGetSRead"))
 """
 function MatKAIJGetSRead(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatKAIJGetSRead: no generated method for these argument types")
+    throw(MethodError(MatKAIJGetSRead, (petsclib, A)))
 end
 
 @for_petsc function MatKAIJGetSRead(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -13719,7 +13719,7 @@ See also: `Mat`, `MATKAIJ`, `MatKAIJGetS()`, `MatKAIJGetT()`
 $(_doc_external("Mat/MatKAIJGetScaledIdentity"))
 """
 function MatKAIJGetScaledIdentity(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatKAIJGetScaledIdentity: no generated method for these argument types")
+    throw(MethodError(MatKAIJGetScaledIdentity, (petsclib, A)))
 end
 
 @for_petsc function MatKAIJGetScaledIdentity(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -13759,7 +13759,7 @@ See also: `Mat`, `MATKAIJ`, `MatCreateKAIJ()`, `MatGetBlockSizes()`
 $(_doc_external("Mat/MatKAIJGetT"))
 """
 function MatKAIJGetT(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatKAIJGetT: no generated method for these argument types")
+    throw(MethodError(MatKAIJGetT, (petsclib, A)))
 end
 
 @for_petsc function MatKAIJGetT(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -13803,7 +13803,7 @@ See also: `Mat`, `MATKAIJ`, `MatCreateKAIJ()`, `MatGetBlockSizes()`
 $(_doc_external("Mat/MatKAIJGetTRead"))
 """
 function MatKAIJGetTRead(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatKAIJGetTRead: no generated method for these argument types")
+    throw(MethodError(MatKAIJGetTRead, (petsclib, A)))
 end
 
 @for_petsc function MatKAIJGetTRead(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -13843,7 +13843,7 @@ See also: `Mat`, `MATKAIJ`, `MatKAIJGetS()`, `MatKAIJGetSRead()`, `MatKAIJRestor
 $(_doc_external("Mat/MatKAIJRestoreS"))
 """
 function MatKAIJRestoreS(petsclib::PetscLibType, A::AbstractPetscMat, S::Union{Ptr, AbstractArray{<:Number}})
-    error("MatKAIJRestoreS: no generated method for these argument types")
+    throw(MethodError(MatKAIJRestoreS, (petsclib, A, S)))
 end
 
 @for_petsc function MatKAIJRestoreS(petsclib::$UnionPetscLib, A::AbstractPetscMat, S::Union{Ptr, AbstractArray{$PetscScalar}} )
@@ -13878,7 +13878,7 @@ See also: `Mat`, `MATKAIJ`, `MatKAIJGetS()`, `MatKAIJGetSRead()`
 $(_doc_external("Mat/MatKAIJRestoreSRead"))
 """
 function MatKAIJRestoreSRead(petsclib::PetscLibType, A::AbstractPetscMat, S::Union{Ptr, AbstractArray{<:Number}})
-    error("MatKAIJRestoreSRead: no generated method for these argument types")
+    throw(MethodError(MatKAIJRestoreSRead, (petsclib, A, S)))
 end
 
 @for_petsc function MatKAIJRestoreSRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, S::Union{Ptr, AbstractArray{$PetscScalar}} )
@@ -13913,7 +13913,7 @@ See also: `Mat`, `MATKAIJ`, `MatKAIJGetT()`, `MatKAIJGetTRead()`, `MatKAIJRestor
 $(_doc_external("Mat/MatKAIJRestoreT"))
 """
 function MatKAIJRestoreT(petsclib::PetscLibType, A::AbstractPetscMat, T::Union{Ptr, AbstractArray{<:Number}})
-    error("MatKAIJRestoreT: no generated method for these argument types")
+    throw(MethodError(MatKAIJRestoreT, (petsclib, A, T)))
 end
 
 @for_petsc function MatKAIJRestoreT(petsclib::$UnionPetscLib, A::AbstractPetscMat, T::Union{Ptr, AbstractArray{$PetscScalar}} )
@@ -13948,7 +13948,7 @@ See also: `Mat`, `MATKAIJ`, `MatKAIJGetT()`, `MatKAIJGetTRead()`
 $(_doc_external("Mat/MatKAIJRestoreTRead"))
 """
 function MatKAIJRestoreTRead(petsclib::PetscLibType, A::AbstractPetscMat, T::Union{Ptr, AbstractArray{<:Number}})
-    error("MatKAIJRestoreTRead: no generated method for these argument types")
+    throw(MethodError(MatKAIJRestoreTRead, (petsclib, A, T)))
 end
 
 @for_petsc function MatKAIJRestoreTRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, T::Union{Ptr, AbstractArray{$PetscScalar}} )
@@ -13983,7 +13983,7 @@ See also: `Mat`, `MATKAIJ`, `MatKAIJGetAIJ()`, `MatKAIJSetS()`, `MatKAIJSetT()`
 $(_doc_external("Mat/MatKAIJSetAIJ"))
 """
 function MatKAIJSetAIJ(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat)
-    error("MatKAIJSetAIJ: no generated method for these argument types")
+    throw(MethodError(MatKAIJSetAIJ, (petsclib, A, B)))
 end
 
 @for_petsc function MatKAIJSetAIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat )
@@ -14019,7 +14019,7 @@ See also: `Mat`, `MATKAIJ`, `MatKAIJGetS()`, `MatKAIJSetT()`, `MatKAIJSetAIJ()`
 $(_doc_external("Mat/MatKAIJSetS"))
 """
 function MatKAIJSetS(petsclib::PetscLibType, A::AbstractPetscMat, p::Integer, q::Integer, S::AbstractVector{<:Number})
-    error("MatKAIJSetS: no generated method for these argument types")
+    throw(MethodError(MatKAIJSetS, (petsclib, A, p, q, S)))
 end
 
 @for_petsc function MatKAIJSetS(petsclib::$UnionPetscLib, A::AbstractPetscMat, p::$PetscInt, q::$PetscInt, S::Vector{$PetscScalar} )
@@ -14055,7 +14055,7 @@ See also: `Mat`, `MATKAIJ`, `MatKAIJGetT()`, `MatKAIJSetS()`, `MatKAIJSetAIJ()`
 $(_doc_external("Mat/MatKAIJSetT"))
 """
 function MatKAIJSetT(petsclib::PetscLibType, A::AbstractPetscMat, p::Integer, q::Integer, T::AbstractVector{<:Number})
-    error("MatKAIJSetT: no generated method for these argument types")
+    throw(MethodError(MatKAIJSetT, (petsclib, A, p, q, T)))
 end
 
 @for_petsc function MatKAIJSetT(petsclib::$UnionPetscLib, A::AbstractPetscMat, p::$PetscInt, q::$PetscInt, T::Vector{$PetscScalar} )
@@ -14090,7 +14090,7 @@ See also: LMVM Matrices, `MATLMVM`, `MatLMVMReset()`, `MatLMVMUpdate()`
 $(_doc_external("KSP/MatLMVMAllocate"))
 """
 function MatLMVMAllocate(petsclib::PetscLibType, B::AbstractPetscMat, X::AbstractPetscVec, F::AbstractPetscVec)
-    error("MatLMVMAllocate: no generated method for these argument types")
+    throw(MethodError(MatLMVMAllocate, (petsclib, B, X, F)))
 end
 
 @for_petsc function MatLMVMAllocate(petsclib::$UnionPetscLib, B::AbstractPetscMat, X::AbstractPetscVec, F::AbstractPetscVec )
@@ -14127,7 +14127,7 @@ See also: LMVM Matrices, `MATLMVM`, `MatLMVMSetJ0()`, `MatLMVMSetJ0Scale()`, `Ma
 $(_doc_external("KSP/MatLMVMApplyJ0Fwd"))
 """
 function MatLMVMApplyJ0Fwd(petsclib::PetscLibType, B::AbstractPetscMat, X::AbstractPetscVec, Y::AbstractPetscVec)
-    error("MatLMVMApplyJ0Fwd: no generated method for these argument types")
+    throw(MethodError(MatLMVMApplyJ0Fwd, (petsclib, B, X, Y)))
 end
 
 @for_petsc function MatLMVMApplyJ0Fwd(petsclib::$UnionPetscLib, B::AbstractPetscMat, X::AbstractPetscVec, Y::AbstractPetscVec )
@@ -14164,7 +14164,7 @@ See also: LMVM Matrices, `MATLMVM`, `MatLMVMSetJ0()`, `MatLMVMSetJ0Scale()`, `Ma
 $(_doc_external("KSP/MatLMVMApplyJ0Inv"))
 """
 function MatLMVMApplyJ0Inv(petsclib::PetscLibType, B::AbstractPetscMat, X::AbstractPetscVec, Y::AbstractPetscVec)
-    error("MatLMVMApplyJ0Inv: no generated method for these argument types")
+    throw(MethodError(MatLMVMApplyJ0Inv, (petsclib, B, X, Y)))
 end
 
 @for_petsc function MatLMVMApplyJ0Inv(petsclib::$UnionPetscLib, B::AbstractPetscMat, X::AbstractPetscVec, Y::AbstractPetscVec )
@@ -14196,7 +14196,7 @@ See also: LMVM Matrices, `MATLMVM`, `MatLMVMSetJ0()`
 $(_doc_external("KSP/MatLMVMClearJ0"))
 """
 function MatLMVMClearJ0(petsclib::PetscLibType, B::AbstractPetscMat)
-    error("MatLMVMClearJ0: no generated method for these argument types")
+    throw(MethodError(MatLMVMClearJ0, (petsclib, B)))
 end
 
 @for_petsc function MatLMVMClearJ0(petsclib::$UnionPetscLib, B::AbstractPetscMat )
@@ -14237,7 +14237,7 @@ See also: `MATLMVMDQN`, `MATLMVMDBFGS`, `MATLMVMDDFP`, `MatLMVMDenseType`
 $(_doc_external("KSP/MatLMVMDenseSetType"))
 """
 function MatLMVMDenseSetType(petsclib::PetscLibType, B::AbstractPetscMat, type::MatLMVMDenseType)
-    error("MatLMVMDenseSetType: no generated method for these argument types")
+    throw(MethodError(MatLMVMDenseSetType, (petsclib, B, type)))
 end
 
 @for_petsc function MatLMVMDenseSetType(petsclib::$UnionPetscLib, B::AbstractPetscMat, type::MatLMVMDenseType )
@@ -14273,7 +14273,7 @@ See also: LMVM Matrices, `MATLMVM`, `MatLMVMSetHistorySize()`, `MatLMVMGetUpdate
 $(_doc_external("KSP/MatLMVMGetHistorySize"))
 """
 function MatLMVMGetHistorySize(petsclib::PetscLibType, B::AbstractPetscMat)
-    error("MatLMVMGetHistorySize: no generated method for these argument types")
+    throw(MethodError(MatLMVMGetHistorySize, (petsclib, B)))
 end
 
 @for_petsc function MatLMVMGetHistorySize(petsclib::$UnionPetscLib, B::AbstractPetscMat )
@@ -14309,7 +14309,7 @@ See also: LMVM Matrices, `MATLMVM`, `MatLMVMSetJ0()`
 $(_doc_external("KSP/MatLMVMGetJ0"))
 """
 function MatLMVMGetJ0(petsclib::PetscLibType, B::AbstractPetscMat)
-    error("MatLMVMGetJ0: no generated method for these argument types")
+    throw(MethodError(MatLMVMGetJ0, (petsclib, B)))
 end
 
 @for_petsc function MatLMVMGetJ0(petsclib::$UnionPetscLib, B::AbstractPetscMat )
@@ -14346,7 +14346,7 @@ See also: LMVM Matrices, `MATLMVM`, `MatLMVMSetJ0KSP()`
 $(_doc_external("KSP/MatLMVMGetJ0KSP"))
 """
 function MatLMVMGetJ0KSP(petsclib::PetscLibType, B::AbstractPetscMat)
-    error("MatLMVMGetJ0KSP: no generated method for these argument types")
+    throw(MethodError(MatLMVMGetJ0KSP, (petsclib, B)))
 end
 
 @for_petsc function MatLMVMGetJ0KSP(petsclib::$UnionPetscLib, B::AbstractPetscMat )
@@ -14383,7 +14383,7 @@ See also: LMVM Matrices, `MATLMVM`, `MatLMVMSetJ0PC()`
 $(_doc_external("KSP/MatLMVMGetJ0PC"))
 """
 function MatLMVMGetJ0PC(petsclib::PetscLibType, B::AbstractPetscMat)
-    error("MatLMVMGetJ0PC: no generated method for these argument types")
+    throw(MethodError(MatLMVMGetJ0PC, (petsclib, B)))
 end
 
 @for_petsc function MatLMVMGetJ0PC(petsclib::$UnionPetscLib, B::AbstractPetscMat )
@@ -14422,7 +14422,7 @@ See also: `MatLMVM`, `MatLMVMUpdate()`
 $(_doc_external("KSP/MatLMVMGetLastUpdate"))
 """
 function MatLMVMGetLastUpdate(petsclib::PetscLibType, B::AbstractPetscMat)
-    error("MatLMVMGetLastUpdate: no generated method for these argument types")
+    throw(MethodError(MatLMVMGetLastUpdate, (petsclib, B)))
 end
 
 @for_petsc function MatLMVMGetLastUpdate(petsclib::$UnionPetscLib, B::AbstractPetscMat )
@@ -14462,7 +14462,7 @@ See also: `MatLMVM`, `MatLMVMMultAlgorithm`, `MatLMVMSetMultAlgorithm()`
 $(_doc_external("KSP/MatLMVMGetMultAlgorithm"))
 """
 function MatLMVMGetMultAlgorithm(petsclib::PetscLibType, B::AbstractPetscMat)
-    error("MatLMVMGetMultAlgorithm: no generated method for these argument types")
+    throw(MethodError(MatLMVMGetMultAlgorithm, (petsclib, B)))
 end
 
 @for_petsc function MatLMVMGetMultAlgorithm(petsclib::$UnionPetscLib, B::AbstractPetscMat )
@@ -14499,7 +14499,7 @@ See also: LMVM Matrices, `MATLMVM`, `MatLMVMReset()`
 $(_doc_external("KSP/MatLMVMGetRejectCount"))
 """
 function MatLMVMGetRejectCount(petsclib::PetscLibType, B::AbstractPetscMat)
-    error("MatLMVMGetRejectCount: no generated method for these argument types")
+    throw(MethodError(MatLMVMGetRejectCount, (petsclib, B)))
 end
 
 @for_petsc function MatLMVMGetRejectCount(petsclib::$UnionPetscLib, B::AbstractPetscMat )
@@ -14535,7 +14535,7 @@ See also: LMVM Matrices, `MATLMVM`, `MatLMVMGetRejectCount()`, `MatLMVMReset()`
 $(_doc_external("KSP/MatLMVMGetUpdateCount"))
 """
 function MatLMVMGetUpdateCount(petsclib::PetscLibType, B::AbstractPetscMat)
-    error("MatLMVMGetUpdateCount: no generated method for these argument types")
+    throw(MethodError(MatLMVMGetUpdateCount, (petsclib, B)))
 end
 
 @for_petsc function MatLMVMGetUpdateCount(petsclib::$UnionPetscLib, B::AbstractPetscMat )
@@ -14572,7 +14572,7 @@ See also: LMVM Matrices, `MATLMVM`, `MatLMVMAllocate()`, `MatLMVMReset()`
 $(_doc_external("KSP/MatLMVMIsAllocated"))
 """
 function MatLMVMIsAllocated(petsclib::PetscLibType, B::AbstractPetscMat)
-    error("MatLMVMIsAllocated: no generated method for these argument types")
+    throw(MethodError(MatLMVMIsAllocated, (petsclib, B)))
 end
 
 @for_petsc function MatLMVMIsAllocated(petsclib::$UnionPetscLib, B::AbstractPetscMat )
@@ -14607,7 +14607,7 @@ See also: LMVM Matrices, `MATLMVM`, `MatLMVMAllocate()`, `MatLMVMUpdate()`
 $(_doc_external("KSP/MatLMVMReset"))
 """
 function MatLMVMReset(petsclib::PetscLibType, B::AbstractPetscMat, destructive::PetscBool)
-    error("MatLMVMReset: no generated method for these argument types")
+    throw(MethodError(MatLMVMReset, (petsclib, B, destructive)))
 end
 
 @for_petsc function MatLMVMReset(petsclib::$UnionPetscLib, B::AbstractPetscMat, destructive::PetscBool )
@@ -14638,7 +14638,7 @@ See also: LMVM Matrices, `MATLMVM`, `MatLMVMAllocate()`, `MatLMVMUpdate()`
 $(_doc_external("KSP/MatLMVMResetShift"))
 """
 function MatLMVMResetShift(petsclib::PetscLibType, B::AbstractPetscMat)
-    error("MatLMVMResetShift: no generated method for these argument types")
+    throw(MethodError(MatLMVMResetShift, (petsclib, B)))
 end
 
 @for_petsc function MatLMVMResetShift(petsclib::$UnionPetscLib, B::AbstractPetscMat )
@@ -14674,7 +14674,7 @@ See also: LMVM Matrices, `MATLMVM`, `MatLMVMGetUpdateCount()`
 $(_doc_external("KSP/MatLMVMSetHistorySize"))
 """
 function MatLMVMSetHistorySize(petsclib::PetscLibType, B::AbstractPetscMat, hist_size::Integer)
-    error("MatLMVMSetHistorySize: no generated method for these argument types")
+    throw(MethodError(MatLMVMSetHistorySize, (petsclib, B, hist_size)))
 end
 
 @for_petsc function MatLMVMSetHistorySize(petsclib::$UnionPetscLib, B::AbstractPetscMat, hist_size::$PetscInt )
@@ -14707,7 +14707,7 @@ See also: LMVM Matrices, `MATLMVM`, `MatLMVMSetJ0PC()`, `MatLMVMSetJ0KSP()`
 $(_doc_external("KSP/MatLMVMSetJ0"))
 """
 function MatLMVMSetJ0(petsclib::PetscLibType, B::AbstractPetscMat, J0::AbstractPetscMat)
-    error("MatLMVMSetJ0: no generated method for these argument types")
+    throw(MethodError(MatLMVMSetJ0, (petsclib, B, J0)))
 end
 
 @for_petsc function MatLMVMSetJ0(petsclib::$UnionPetscLib, B::AbstractPetscMat, J0::AbstractPetscMat )
@@ -14740,7 +14740,7 @@ See also: LMVM Matrices, `MATLMVM`, `MatLMVMSetScale()`, `MatLMVMSetJ0()`
 $(_doc_external("KSP/MatLMVMSetJ0Diag"))
 """
 function MatLMVMSetJ0Diag(petsclib::PetscLibType, B::AbstractPetscMat, V::AbstractPetscVec)
-    error("MatLMVMSetJ0Diag: no generated method for these argument types")
+    throw(MethodError(MatLMVMSetJ0Diag, (petsclib, B, V)))
 end
 
 @for_petsc function MatLMVMSetJ0Diag(petsclib::$UnionPetscLib, B::AbstractPetscMat, V::AbstractPetscVec )
@@ -14773,7 +14773,7 @@ See also: LMVM Matrices, `MATLMVM`, `MatLMVMGetJ0KSP()`
 $(_doc_external("KSP/MatLMVMSetJ0KSP"))
 """
 function MatLMVMSetJ0KSP(petsclib::PetscLibType, B::AbstractPetscMat, J0ksp::AbstractKSP)
-    error("MatLMVMSetJ0KSP: no generated method for these argument types")
+    throw(MethodError(MatLMVMSetJ0KSP, (petsclib, B, J0ksp)))
 end
 
 @for_petsc function MatLMVMSetJ0KSP(petsclib::$UnionPetscLib, B::AbstractPetscMat, J0ksp::AbstractKSP )
@@ -14805,7 +14805,7 @@ See also: LMVM Matrices, `MATLMVM`, `MatLMVMGetJ0PC()`
 $(_doc_external("KSP/MatLMVMSetJ0PC"))
 """
 function MatLMVMSetJ0PC(petsclib::PetscLibType, B::AbstractPetscMat, J0pc::AbstractPC)
-    error("MatLMVMSetJ0PC: no generated method for these argument types")
+    throw(MethodError(MatLMVMSetJ0PC, (petsclib, B, J0pc)))
 end
 
 @for_petsc function MatLMVMSetJ0PC(petsclib::$UnionPetscLib, B::AbstractPetscMat, J0pc::AbstractPC )
@@ -14838,7 +14838,7 @@ See also: LMVM Matrices, `MATLMVM`, `MatLMVMSetDiagScale()`, `MatLMVMSetJ0()`
 $(_doc_external("KSP/MatLMVMSetJ0Scale"))
 """
 function MatLMVMSetJ0Scale(petsclib::PetscLibType, B::AbstractPetscMat, scale::Real)
-    error("MatLMVMSetJ0Scale: no generated method for these argument types")
+    throw(MethodError(MatLMVMSetJ0Scale, (petsclib, B, scale)))
 end
 
 @for_petsc function MatLMVMSetJ0Scale(petsclib::$UnionPetscLib, B::AbstractPetscMat, scale::$PetscReal )
@@ -14872,7 +14872,7 @@ See also: `MatLMVM`, `MatLMVMMultAlgorithm`, `MatLMVMGetMultAlgorithm()`
 $(_doc_external("KSP/MatLMVMSetMultAlgorithm"))
 """
 function MatLMVMSetMultAlgorithm(petsclib::PetscLibType, B::AbstractPetscMat, alg::MatLMVMMultAlgorithm)
-    error("MatLMVMSetMultAlgorithm: no generated method for these argument types")
+    throw(MethodError(MatLMVMSetMultAlgorithm, (petsclib, B, alg)))
 end
 
 @for_petsc function MatLMVMSetMultAlgorithm(petsclib::$UnionPetscLib, B::AbstractPetscMat, alg::MatLMVMMultAlgorithm )
@@ -14916,7 +14916,7 @@ This is the case if `B` is a `MATLMVMSYMBROYDEN`, where `psi`'s dual value
 $(_doc_external("KSP/MatLMVMSymBadBroydenGetPsi"))
 """
 function MatLMVMSymBadBroydenGetPsi(petsclib::PetscLibType, B::AbstractPetscMat)
-    error("MatLMVMSymBadBroydenGetPsi: no generated method for these argument types")
+    throw(MethodError(MatLMVMSymBadBroydenGetPsi, (petsclib, B)))
 end
 
 @for_petsc function MatLMVMSymBadBroydenGetPsi(petsclib::$UnionPetscLib, B::AbstractPetscMat )
@@ -14959,7 +14959,7 @@ This is the case if `B` is a `MATLMVMSYMBROYDEN`, where `psi`'s dual value
 $(_doc_external("KSP/MatLMVMSymBadBroydenSetPsi"))
 """
 function MatLMVMSymBadBroydenSetPsi(petsclib::PetscLibType, B::AbstractPetscMat, psi::Real)
-    error("MatLMVMSymBadBroydenSetPsi: no generated method for these argument types")
+    throw(MethodError(MatLMVMSymBadBroydenSetPsi, (petsclib, B, psi)))
 end
 
 @for_petsc function MatLMVMSymBadBroydenSetPsi(petsclib::$UnionPetscLib, B::AbstractPetscMat, psi::$PetscReal )
@@ -15003,7 +15003,7 @@ This is the case if `B` is a `MATLMVMSYMBADBROYDEN`, where `phi`'s dual value
 $(_doc_external("KSP/MatLMVMSymBroydenGetPhi"))
 """
 function MatLMVMSymBroydenGetPhi(petsclib::PetscLibType, B::AbstractPetscMat)
-    error("MatLMVMSymBroydenGetPhi: no generated method for these argument types")
+    throw(MethodError(MatLMVMSymBroydenGetPhi, (petsclib, B)))
 end
 
 @for_petsc function MatLMVMSymBroydenGetPhi(petsclib::$UnionPetscLib, B::AbstractPetscMat )
@@ -15038,7 +15038,7 @@ See also: `MATLMVMSYMBROYDEN`
 $(_doc_external("KSP/MatLMVMSymBroydenSetDelta"))
 """
 function MatLMVMSymBroydenSetDelta(petsclib::PetscLibType, B::AbstractPetscMat, delta::Number)
-    error("MatLMVMSymBroydenSetDelta: no generated method for these argument types")
+    throw(MethodError(MatLMVMSymBroydenSetDelta, (petsclib, B, delta)))
 end
 
 @for_petsc function MatLMVMSymBroydenSetDelta(petsclib::$UnionPetscLib, B::AbstractPetscMat, delta::$PetscScalar )
@@ -15078,7 +15078,7 @@ This is the case if `B` is a `MATLMVMSYMBADBROYDEN`, where `phi`'s dual value
 $(_doc_external("KSP/MatLMVMSymBroydenSetPhi"))
 """
 function MatLMVMSymBroydenSetPhi(petsclib::PetscLibType, B::AbstractPetscMat, phi::Real)
-    error("MatLMVMSymBroydenSetPhi: no generated method for these argument types")
+    throw(MethodError(MatLMVMSymBroydenSetPhi, (petsclib, B, phi)))
 end
 
 @for_petsc function MatLMVMSymBroydenSetPhi(petsclib::$UnionPetscLib, B::AbstractPetscMat, phi::$PetscReal )
@@ -15120,7 +15120,7 @@ See also: `MATLMVMSYMBROYDEN`, `MatCreateLMVMSymBroyden()`, `MatLMVMSymBroydenSc
 $(_doc_external("KSP/MatLMVMSymBroydenSetScaleType"))
 """
 function MatLMVMSymBroydenSetScaleType(petsclib::PetscLibType, B::AbstractPetscMat, stype::MatLMVMSymBroydenScaleType)
-    error("MatLMVMSymBroydenSetScaleType: no generated method for these argument types")
+    throw(MethodError(MatLMVMSymBroydenSetScaleType, (petsclib, B, stype)))
 end
 
 @for_petsc function MatLMVMSymBroydenSetScaleType(petsclib::$UnionPetscLib, B::AbstractPetscMat, stype::MatLMVMSymBroydenScaleType )
@@ -15153,7 +15153,7 @@ See also: LMVM Matrices, `MATLMVM`, `MatLMVMReset()`, `MatLMVMAllocate()`
 $(_doc_external("KSP/MatLMVMUpdate"))
 """
 function MatLMVMUpdate(petsclib::PetscLibType, B::AbstractPetscMat, X::AbstractPetscVec, F::AbstractPetscVec)
-    error("MatLMVMUpdate: no generated method for these argument types")
+    throw(MethodError(MatLMVMUpdate, (petsclib, B, X, F)))
 end
 
 @for_petsc function MatLMVMUpdate(petsclib::$UnionPetscLib, B::AbstractPetscMat, X::AbstractPetscVec, F::AbstractPetscVec )
@@ -15192,7 +15192,7 @@ See also: `MatLRCSetMats()`, `Mat`, `MATLRC`, `MatCreateLRC()`
 $(_doc_external("Mat/MatLRCGetMats"))
 """
 function MatLRCGetMats(petsclib::PetscLibType, N::AbstractPetscMat)
-    error("MatLRCGetMats: no generated method for these argument types")
+    throw(MethodError(MatLRCGetMats, (petsclib, N)))
 end
 
 @for_petsc function MatLRCGetMats(petsclib::$UnionPetscLib, N::AbstractPetscMat )
@@ -15237,7 +15237,7 @@ See also: `MatLRCGetMats()`, `Mat`, `MATLRC`, `MatCreateLRC()`
 $(_doc_external("Mat/MatLRCSetMats"))
 """
 function MatLRCSetMats(petsclib::PetscLibType, N::AbstractPetscMat, A::AbstractPetscMat, U::AbstractPetscMat, c::AbstractPetscVec, V::AbstractPetscMat)
-    error("MatLRCSetMats: no generated method for these argument types")
+    throw(MethodError(MatLRCSetMats, (petsclib, N, A, U, c, V)))
 end
 
 @for_petsc function MatLRCSetMats(petsclib::$UnionPetscLib, N::AbstractPetscMat, A::AbstractPetscMat, U::AbstractPetscMat, c::AbstractPetscVec, V::AbstractPetscMat )
@@ -15279,7 +15279,7 @@ See also: Matrix Factorization, `Mat`, `MatFactorType`, `MatLUFactorSymbolic()`,
 $(_doc_external("Mat/MatLUFactor"))
 """
 function MatLUFactor(petsclib::PetscLibType, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, info::Vector{MatFactorInfo})
-    error("MatLUFactor: no generated method for these argument types")
+    throw(MethodError(MatLUFactor, (petsclib, mat, row, col, info)))
 end
 
 @for_petsc function MatLUFactor(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, info::Vector{MatFactorInfo} )
@@ -15315,7 +15315,7 @@ See also: `Mat`, Matrix Factorization, `MatGetFactor()`, `MatFactorInfo`, `MatLU
 $(_doc_external("Mat/MatLUFactorNumeric"))
 """
 function MatLUFactorNumeric(petsclib::PetscLibType, fact::AbstractPetscMat, mat::AbstractPetscMat, info::Vector{MatFactorInfo})
-    error("MatLUFactorNumeric: no generated method for these argument types")
+    throw(MethodError(MatLUFactorNumeric, (petsclib, fact, mat, info)))
 end
 
 @for_petsc function MatLUFactorNumeric(petsclib::$UnionPetscLib, fact::AbstractPetscMat, mat::AbstractPetscMat, info::Vector{MatFactorInfo} )
@@ -15357,7 +15357,7 @@ See also: `Mat`, Matrix Factorization, `MatGetFactor()`, `MatLUFactor()`, `MatLU
 $(_doc_external("Mat/MatLUFactorSymbolic"))
 """
 function MatLUFactorSymbolic(petsclib::PetscLibType, fact::AbstractPetscMat, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, info::Vector{MatFactorInfo})
-    error("MatLUFactorSymbolic: no generated method for these argument types")
+    throw(MethodError(MatLUFactorSymbolic, (petsclib, fact, mat, row, col, info)))
 end
 
 @for_petsc function MatLUFactorSymbolic(petsclib::$UnionPetscLib, fact::AbstractPetscMat, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, info::Vector{MatFactorInfo} )
@@ -15398,7 +15398,7 @@ See also: `Mat`, `PetscViewerBinaryOpen()`, `PetscViewerSetType()`, `MatView()`,
 $(_doc_external("Mat/MatLoad"))
 """
 function MatLoad(petsclib::PetscLibType, mat::AbstractPetscMat, viewer::PetscViewer)
-    error("MatLoad: no generated method for these argument types")
+    throw(MethodError(MatLoad, (petsclib, mat, viewer)))
 end
 
 @for_petsc function MatLoad(petsclib::$UnionPetscLib, mat::AbstractPetscMat, viewer::PetscViewer )
@@ -15434,7 +15434,7 @@ See also: `Mat`, `MATMAIJ`, `MATAIJ`, `MatCreateMAIJ()`
 $(_doc_external("Mat/MatMAIJGetAIJ"))
 """
 function MatMAIJGetAIJ(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatMAIJGetAIJ: no generated method for these argument types")
+    throw(MethodError(MatMAIJGetAIJ, (petsclib, A)))
 end
 
 @for_petsc function MatMAIJGetAIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -15473,7 +15473,7 @@ See also: `Mat`, `MATMAIJ`, `MatCreateMAIJ()`
 $(_doc_external("Mat/MatMAIJRedimension"))
 """
 function MatMAIJRedimension(petsclib::PetscLibType, A::AbstractPetscMat, dof::Integer)
-    error("MatMAIJRedimension: no generated method for these argument types")
+    throw(MethodError(MatMAIJRedimension, (petsclib, A, dof)))
 end
 
 @for_petsc function MatMAIJRedimension(petsclib::$UnionPetscLib, A::AbstractPetscMat, dof::$PetscInt )
@@ -15512,7 +15512,7 @@ See also: `Mat`, `MATMPIAIJ`, `MatGetOwnershipRange()`, `MatMPIAIJGetLocalMatCon
 $(_doc_external("Mat/MatMPIAIJGetLocalMat"))
 """
 function MatMPIAIJGetLocalMat(petsclib::PetscLibType, A::AbstractPetscMat, scall::MatReuse)
-    error("MatMPIAIJGetLocalMat: no generated method for these argument types")
+    throw(MethodError(MatMPIAIJGetLocalMat, (petsclib, A, scall)))
 end
 
 @for_petsc function MatMPIAIJGetLocalMat(petsclib::$UnionPetscLib, A::AbstractPetscMat, scall::MatReuse )
@@ -15553,7 +15553,7 @@ See also: `Mat`, `MATMPIAIJ`, `MatGetOwnershipRange()`, `MatMPIAIJGetLocalMat()`
 $(_doc_external("Mat/MatMPIAIJGetLocalMatCondensed"))
 """
 function MatMPIAIJGetLocalMatCondensed(petsclib::PetscLibType, A::AbstractPetscMat, scall::MatReuse, row::AbstractIS, col::AbstractIS)
-    error("MatMPIAIJGetLocalMatCondensed: no generated method for these argument types")
+    throw(MethodError(MatMPIAIJGetLocalMatCondensed, (petsclib, A, scall, row, col)))
 end
 
 @for_petsc function MatMPIAIJGetLocalMatCondensed(petsclib::$UnionPetscLib, A::AbstractPetscMat, scall::MatReuse, row::AbstractIS, col::AbstractIS )
@@ -15598,7 +15598,7 @@ See also: `Mat`, `MATMPIAIJ`, `MatGetOwnershipRange()`, `MatMPIAIJGetLocalMat()`
 $(_doc_external("Mat/MatMPIAIJGetLocalMatMerge"))
 """
 function MatMPIAIJGetLocalMatMerge(petsclib::PetscLibType, A::AbstractPetscMat, scall::MatReuse)
-    error("MatMPIAIJGetLocalMatMerge: no generated method for these argument types")
+    throw(MethodError(MatMPIAIJGetLocalMatMerge, (petsclib, A, scall)))
 end
 
 @for_petsc function MatMPIAIJGetLocalMatMerge(petsclib::$UnionPetscLib, A::AbstractPetscMat, scall::MatReuse )
@@ -15638,7 +15638,7 @@ See also: `Mat`, `MATMPIAIJ`
 $(_doc_external("Mat/MatMPIAIJGetNumberNonzeros"))
 """
 function MatMPIAIJGetNumberNonzeros(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatMPIAIJGetNumberNonzeros: no generated method for these argument types")
+    throw(MethodError(MatMPIAIJGetNumberNonzeros, (petsclib, A)))
 end
 
 @for_petsc function MatMPIAIJGetNumberNonzeros(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -15736,7 +15736,7 @@ See also: `Mat`, Sparse Matrices, `MATMPIAIJ`, `MATAIJ`, `MatCreate()`, `MatCrea
 $(_doc_external("Mat/MatMPIAIJSetPreallocation"))
 """
 function MatMPIAIJSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat, d_nz::Integer, d_nnz::Union{Ptr, AbstractVector{<:Number}}, o_nz::Integer, o_nnz::Union{Ptr, AbstractVector{<:Number}})
-    error("MatMPIAIJSetPreallocation: no generated method for these argument types")
+    throw(MethodError(MatMPIAIJSetPreallocation, (petsclib, B, d_nz, d_nnz, o_nz, o_nnz)))
 end
 
 @for_petsc function MatMPIAIJSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, d_nz::$PetscInt, d_nnz::Union{Ptr, Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr, Vector{$PetscInt}} )
@@ -15774,7 +15774,7 @@ See also: `Mat`, `MATMPIAIJ`, `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetValues(
 $(_doc_external("Mat/MatMPIAIJSetPreallocationCSR"))
 """
 function MatMPIAIJSetPreallocationCSR(petsclib::PetscLibType, B::AbstractPetscMat, i::AbstractVector{<:Number}, j::AbstractVector{<:Number}, v::AbstractVector{<:Number})
-    error("MatMPIAIJSetPreallocationCSR: no generated method for these argument types")
+    throw(MethodError(MatMPIAIJSetPreallocationCSR, (petsclib, B, i, j, v)))
 end
 
 @for_petsc function MatMPIAIJSetPreallocationCSR(petsclib::$UnionPetscLib, B::AbstractPetscMat, i::Vector{$PetscInt}, j::Vector{$PetscInt}, v::Vector{$PetscScalar} )
@@ -15808,7 +15808,7 @@ See also: `Mat`, `MATMPIAIJ`
 $(_doc_external("Mat/MatMPIAIJSetUseScalableIncreaseOverlap"))
 """
 function MatMPIAIJSetUseScalableIncreaseOverlap(petsclib::PetscLibType, A::AbstractPetscMat, sc::PetscBool)
-    error("MatMPIAIJSetUseScalableIncreaseOverlap: no generated method for these argument types")
+    throw(MethodError(MatMPIAIJSetUseScalableIncreaseOverlap, (petsclib, A, sc)))
 end
 
 @for_petsc function MatMPIAIJSetUseScalableIncreaseOverlap(petsclib::$UnionPetscLib, A::AbstractPetscMat, sc::PetscBool )
@@ -15844,7 +15844,7 @@ See also: `Mat`, `MATMPIADJ`, `MatCreateMPIAdj()`
 $(_doc_external("Mat/MatMPIAdjCreateNonemptySubcommMat"))
 """
 function MatMPIAdjCreateNonemptySubcommMat(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatMPIAdjCreateNonemptySubcommMat: no generated method for these argument types")
+    throw(MethodError(MatMPIAdjCreateNonemptySubcommMat, (petsclib, A)))
 end
 
 @for_petsc function MatMPIAdjCreateNonemptySubcommMat(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -15883,7 +15883,7 @@ See also: `Mat`, `MatCreate()`, `MatCreateMPIAdj()`, `MatSetValues()`, `MATMPIAD
 $(_doc_external("Mat/MatMPIAdjSetPreallocation"))
 """
 function MatMPIAdjSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat)
-    error("MatMPIAdjSetPreallocation: no generated method for these argument types")
+    throw(MethodError(MatMPIAdjSetPreallocation, (petsclib, B)))
 end
 
 @for_petsc function MatMPIAdjSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat )
@@ -15925,7 +15925,7 @@ See also: `Mat`, `MATMPIADJ`, `MatCreate()`, `MatCreateMPIAdj()`, `MatSetValues(
 $(_doc_external("Mat/MatMPIAdjToSeq"))
 """
 function MatMPIAdjToSeq(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatMPIAdjToSeq: no generated method for these argument types")
+    throw(MethodError(MatMPIAdjToSeq, (petsclib, A)))
 end
 
 @for_petsc function MatMPIAdjToSeq(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -15963,7 +15963,7 @@ See also: `Mat`, `MATMPIADJ`, `MatCreate()`, `MatCreateMPIAdj()`, `MatSetValues(
 $(_doc_external("Mat/MatMPIAdjToSeqRankZero"))
 """
 function MatMPIAdjToSeqRankZero(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatMPIAdjToSeqRankZero: no generated method for these argument types")
+    throw(MethodError(MatMPIAdjToSeqRankZero, (petsclib, A)))
 end
 
 @for_petsc function MatMPIAdjToSeqRankZero(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -16004,7 +16004,7 @@ See also: `Mat`, `MATMPIBAIJ`, `MATSEQBAIJ`, `MatMPIAIJGetSeqAIJ()`
 $(_doc_external("Mat/MatMPIBAIJGetSeqBAIJ"))
 """
 function MatMPIBAIJGetSeqBAIJ(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatMPIBAIJGetSeqBAIJ: no generated method for these argument types")
+    throw(MethodError(MatMPIBAIJGetSeqBAIJ, (petsclib, A)))
 end
 
 @for_petsc function MatMPIBAIJGetSeqBAIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -16045,7 +16045,7 @@ See also: `Mat`, `MATMPIBAIJ`, `MatSetOption()`
 $(_doc_external("Mat/MatMPIBAIJSetHashTableFactor"))
 """
 function MatMPIBAIJSetHashTableFactor(petsclib::PetscLibType, mat::AbstractPetscMat, fact::Real)
-    error("MatMPIBAIJSetHashTableFactor: no generated method for these argument types")
+    throw(MethodError(MatMPIBAIJSetHashTableFactor, (petsclib, mat, fact)))
 end
 
 @for_petsc function MatMPIBAIJSetHashTableFactor(petsclib::$UnionPetscLib, mat::AbstractPetscMat, fact::$PetscReal )
@@ -16098,7 +16098,7 @@ See also: `Mat`, `MATMPIBAIJ`, `MatCreate()`, `MatCreateSeqBAIJ()`, `MatSetValue
 $(_doc_external("Mat/MatMPIBAIJSetPreallocation"))
 """
 function MatMPIBAIJSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat, bs::Integer, d_nz::Integer, d_nnz::Union{Ptr, AbstractVector{<:Number}}, o_nz::Integer, o_nnz::Union{Ptr, AbstractVector{<:Number}})
-    error("MatMPIBAIJSetPreallocation: no generated method for these argument types")
+    throw(MethodError(MatMPIBAIJSetPreallocation, (petsclib, B, bs, d_nz, d_nnz, o_nz, o_nnz)))
 end
 
 @for_petsc function MatMPIBAIJSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, bs::$PetscInt, d_nz::$PetscInt, d_nnz::Union{Ptr, Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr, Vector{$PetscInt}} )
@@ -16135,7 +16135,7 @@ See also: `Mat`, `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetValues()`, `MatMPIBA
 $(_doc_external("Mat/MatMPIBAIJSetPreallocationCSR"))
 """
 function MatMPIBAIJSetPreallocationCSR(petsclib::PetscLibType, B::AbstractPetscMat, bs::Integer, i::AbstractVector{<:Number}, j::AbstractVector{<:Number}, v::Union{Ptr, AbstractVector{<:Number}})
-    error("MatMPIBAIJSetPreallocationCSR: no generated method for these argument types")
+    throw(MethodError(MatMPIBAIJSetPreallocationCSR, (petsclib, B, bs, i, j, v)))
 end
 
 @for_petsc function MatMPIBAIJSetPreallocationCSR(petsclib::$UnionPetscLib, B::AbstractPetscMat, bs::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, v::Union{Ptr, Vector{$PetscScalar}} )
@@ -16170,7 +16170,7 @@ See also: `Mat`, `MATMPIDENSE`, `MatCreate()`, `MatCreateSeqDense()`, `MatSetVal
 $(_doc_external("Mat/MatMPIDenseSetPreallocation"))
 """
 function MatMPIDenseSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat)
-    error("MatMPIDenseSetPreallocation: no generated method for these argument types")
+    throw(MethodError(MatMPIDenseSetPreallocation, (petsclib, B)))
 end
 
 @for_petsc function MatMPIDenseSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat )
@@ -16226,7 +16226,7 @@ See also: `Mat`, `MATMPISBAIJ`, `MATSBAIJ`, `MatCreate()`, `MatCreateSeqSBAIJ()`
 $(_doc_external("Mat/MatMPISBAIJSetPreallocation"))
 """
 function MatMPISBAIJSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat, bs::Integer, d_nz::Integer, d_nnz::AbstractVector{<:Number}, o_nz::Integer, o_nnz::AbstractVector{<:Number})
-    error("MatMPISBAIJSetPreallocation: no generated method for these argument types")
+    throw(MethodError(MatMPISBAIJSetPreallocation, (petsclib, B, bs, d_nz, d_nnz, o_nz, o_nnz)))
 end
 
 @for_petsc function MatMPISBAIJSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, bs::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
@@ -16264,7 +16264,7 @@ See also: `Mat`, `MATMPISBAIJ`, `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetValue
 $(_doc_external("Mat/MatMPISBAIJSetPreallocationCSR"))
 """
 function MatMPISBAIJSetPreallocationCSR(petsclib::PetscLibType, B::AbstractPetscMat, bs::Integer, i::AbstractVector{<:Number}, j::AbstractVector{<:Number}, v::AbstractVector{<:Number})
-    error("MatMPISBAIJSetPreallocationCSR: no generated method for these argument types")
+    throw(MethodError(MatMPISBAIJSetPreallocationCSR, (petsclib, B, bs, i, j, v)))
 end
 
 @for_petsc function MatMPISBAIJSetPreallocationCSR(petsclib::$UnionPetscLib, B::AbstractPetscMat, bs::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, v::Vector{$PetscScalar} )
@@ -16304,7 +16304,7 @@ See also: `Mat`, `MATSEQSELL`, `MATMPISELL`, `MatGetOwnershipRange()`, `MatMPISE
 $(_doc_external("Mat/MatMPISELLGetLocalMatCondensed"))
 """
 function MatMPISELLGetLocalMatCondensed(petsclib::PetscLibType, A::AbstractPetscMat, scall::MatReuse, row::Union{Ptr, AbstractIS}, col::Union{Ptr, AbstractIS})
-    error("MatMPISELLGetLocalMatCondensed: no generated method for these argument types")
+    throw(MethodError(MatMPISELLGetLocalMatCondensed, (petsclib, A, scall, row, col)))
 end
 
 @for_petsc function MatMPISELLGetLocalMatCondensed(petsclib::$UnionPetscLib, A::AbstractPetscMat, scall::MatReuse, row::Union{Ptr, AbstractIS}, col::Union{Ptr, AbstractIS} )
@@ -16348,7 +16348,7 @@ See also: `Mat`, `MATSEQSELL`, `MATMPISELL`
 $(_doc_external("Mat/MatMPISELLGetSeqSELL"))
 """
 function MatMPISELLGetSeqSELL(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatMPISELLGetSeqSELL: no generated method for these argument types")
+    throw(MethodError(MatMPISELLGetSeqSELL, (petsclib, A)))
 end
 
 @for_petsc function MatMPISELLGetSeqSELL(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -16473,7 +16473,7 @@ See also: `Mat`, `MatCreate()`, `MatCreateSeqSELL()`, `MatSetValues()`, `MatCrea
 $(_doc_external("Mat/MatMPISELLSetPreallocation"))
 """
 function MatMPISELLSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat, d_nz::Integer, d_nnz::AbstractVector{<:Number}, o_nz::Integer, o_nnz::AbstractVector{<:Number})
-    error("MatMPISELLSetPreallocation: no generated method for these argument types")
+    throw(MethodError(MatMPISELLSetPreallocation, (petsclib, B, d_nz, d_nnz, o_nz, o_nnz)))
 end
 
 @for_petsc function MatMPISELLSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
@@ -16510,7 +16510,7 @@ See also: `Mat`, `MatInterpolate()`, `MatRestrict()`, `MatMatRestrict()`, `PCMG`
 $(_doc_external("Mat/MatMatInterpolate"))
 """
 function MatMatInterpolate(petsclib::PetscLibType, A::AbstractPetscMat, x::AbstractPetscMat)
-    error("MatMatInterpolate: no generated method for these argument types")
+    throw(MethodError(MatMatInterpolate, (petsclib, A, x)))
 end
 
 @for_petsc function MatMatInterpolate(petsclib::$UnionPetscLib, A::AbstractPetscMat, x::AbstractPetscMat )
@@ -16550,7 +16550,7 @@ See also: `Mat`, `MatInterpolateAdd()`, `MatMatInterpolate()`, `MatMatRestrict()
 $(_doc_external("Mat/MatMatInterpolateAdd"))
 """
 function MatMatInterpolateAdd(petsclib::PetscLibType, A::AbstractPetscMat, x::AbstractPetscMat, w::AbstractPetscMat)
-    error("MatMatInterpolateAdd: no generated method for these argument types")
+    throw(MethodError(MatMatInterpolateAdd, (petsclib, A, x, w)))
 end
 
 @for_petsc function MatMatInterpolateAdd(petsclib::$UnionPetscLib, A::AbstractPetscMat, x::AbstractPetscMat, w::AbstractPetscMat )
@@ -16593,7 +16593,7 @@ See also: `Mat`, `MatProductCreate()`, `MATPRODUCT_ABC`, `MatMatMult`, `MatPtAP(
 $(_doc_external("Mat/MatMatMatMult"))
 """
 function MatMatMatMult(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, scall::MatReuse, fill::Real)
-    error("MatMatMatMult: no generated method for these argument types")
+    throw(MethodError(MatMatMatMult, (petsclib, A, B, C, scall, fill)))
 end
 
 @for_petsc function MatMatMatMult(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, scall::MatReuse, fill::$PetscReal )
@@ -16633,7 +16633,7 @@ See also: `Mat`, `MatProductType`, `MATPRODUCT_AB`, `MatTransposeMatMult()`, `Ma
 $(_doc_external("Mat/MatMatMult"))
 """
 function MatMatMult(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, scall::MatReuse, fill::Real)
-    error("MatMatMult: no generated method for these argument types")
+    throw(MethodError(MatMatMult, (petsclib, A, B, scall, fill)))
 end
 
 @for_petsc function MatMatMult(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, scall::MatReuse, fill::$PetscReal )
@@ -16674,7 +16674,7 @@ See also: `Mat`, `MatMultEqual()`, `MatMultAddEqual()`, `MatMultTransposeEqual()
 $(_doc_external("Mat/MatMatMultEqual"))
 """
 function MatMatMultEqual(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, n::Integer)
-    error("MatMatMultEqual: no generated method for these argument types")
+    throw(MethodError(MatMatMultEqual, (petsclib, A, B, C, n)))
 end
 
 @for_petsc function MatMatMultEqual(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, n::$PetscInt )
@@ -16713,7 +16713,7 @@ See also: `Mat`, `MatRestrict()`, `MatInterpolate()`, `MatMatInterpolate()`, `PC
 $(_doc_external("Mat/MatMatRestrict"))
 """
 function MatMatRestrict(petsclib::PetscLibType, A::AbstractPetscMat, x::AbstractPetscMat)
-    error("MatMatRestrict: no generated method for these argument types")
+    throw(MethodError(MatMatRestrict, (petsclib, A, x)))
 end
 
 @for_petsc function MatMatRestrict(petsclib::$UnionPetscLib, A::AbstractPetscMat, x::AbstractPetscMat )
@@ -16752,7 +16752,7 @@ See also: `Mat`, Matrix Factorization, `MatGetFactor()`, `MatSolve()`, `MatMatSo
 $(_doc_external("Mat/MatMatSolve"))
 """
 function MatMatSolve(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, X::AbstractPetscMat)
-    error("MatMatSolve: no generated method for these argument types")
+    throw(MethodError(MatMatSolve, (petsclib, A, B, X)))
 end
 
 @for_petsc function MatMatSolve(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, X::AbstractPetscMat )
@@ -16789,7 +16789,7 @@ See also: `Mat`, Matrix Factorization, `MatGetFactor()`, `MatSolveTranspose()`, 
 $(_doc_external("Mat/MatMatSolveTranspose"))
 """
 function MatMatSolveTranspose(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, X::AbstractPetscMat)
-    error("MatMatSolveTranspose: no generated method for these argument types")
+    throw(MethodError(MatMatSolveTranspose, (petsclib, A, B, X)))
 end
 
 @for_petsc function MatMatSolveTranspose(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, X::AbstractPetscMat )
@@ -16833,7 +16833,7 @@ See also: `Mat`, `MatProductCreate()`, `MATPRODUCT_ABt`, `MatMatMult()`, `MatTra
 $(_doc_external("Mat/MatMatTransposeMult"))
 """
 function MatMatTransposeMult(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, scall::MatReuse, fill::Real)
-    error("MatMatTransposeMult: no generated method for these argument types")
+    throw(MethodError(MatMatTransposeMult, (petsclib, A, B, scall, fill)))
 end
 
 @for_petsc function MatMatTransposeMult(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, scall::MatReuse, fill::$PetscReal )
@@ -16874,7 +16874,7 @@ See also: `Mat`, `MatMatMultEqual()`, `MatMultEqual()`, `MatMultAddEqual()`, `Ma
 $(_doc_external("Mat/MatMatTransposeMultEqual"))
 """
 function MatMatTransposeMultEqual(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, n::Integer)
-    error("MatMatTransposeMultEqual: no generated method for these argument types")
+    throw(MethodError(MatMatTransposeMultEqual, (petsclib, A, B, C, n)))
 end
 
 @for_petsc function MatMatTransposeMultEqual(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, n::$PetscInt )
@@ -16913,7 +16913,7 @@ See also: `Mat`, Matrix Factorization, `MatMatSolve()`, `MatMatSolveTranspose()`
 $(_doc_external("Mat/MatMatTransposeSolve"))
 """
 function MatMatTransposeSolve(petsclib::PetscLibType, A::AbstractPetscMat, Bt::AbstractPetscMat, X::AbstractPetscMat)
-    error("MatMatTransposeSolve: no generated method for these argument types")
+    throw(MethodError(MatMatTransposeSolve, (petsclib, A, Bt, X)))
 end
 
 @for_petsc function MatMatTransposeSolve(petsclib::$UnionPetscLib, A::AbstractPetscMat, Bt::AbstractPetscMat, X::AbstractPetscMat )
@@ -16951,7 +16951,7 @@ See also: `MatCreateMPIAdj()`, `MatPartitioningCreate()`
 $(_doc_external("MatGraphOperations/MatMeshToCellGraph"))
 """
 function MatMeshToCellGraph(petsclib::PetscLibType, mesh::AbstractPetscMat, ncommonnodes::Integer)
-    error("MatMeshToCellGraph: no generated method for these argument types")
+    throw(MethodError(MatMeshToCellGraph, (petsclib, mesh, ncommonnodes)))
 end
 
 @for_petsc function MatMeshToCellGraph(petsclib::$UnionPetscLib, mesh::AbstractPetscMat, ncommonnodes::$PetscInt )
@@ -16990,7 +16990,7 @@ See also: `Mat`, `MatMultTranspose()`, `MatMultAdd()`, `MatMultTransposeAdd()`
 $(_doc_external("Mat/MatMult"))
 """
 function MatMult(petsclib::PetscLibType, mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec)
-    error("MatMult: no generated method for these argument types")
+    throw(MethodError(MatMult, (petsclib, mat, x, y)))
 end
 
 @for_petsc function MatMult(petsclib::$UnionPetscLib, mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec )
@@ -17028,7 +17028,7 @@ See also: `Mat`, `MatMultTranspose()`, `MatMult()`, `MatMultTransposeAdd()`
 $(_doc_external("Mat/MatMultAdd"))
 """
 function MatMultAdd(petsclib::PetscLibType, mat::AbstractPetscMat, v1::AbstractPetscVec, v2::AbstractPetscVec, v3::AbstractPetscVec)
-    error("MatMultAdd: no generated method for these argument types")
+    throw(MethodError(MatMultAdd, (petsclib, mat, v1, v2, v3)))
 end
 
 @for_petsc function MatMultAdd(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v1::AbstractPetscVec, v2::AbstractPetscVec, v3::AbstractPetscVec )
@@ -17066,7 +17066,7 @@ See also: `Mat`, `MatMultEqual()`, `MatMultTransposeEqual()`, `MatMultTransposeA
 $(_doc_external("Mat/MatMultAddEqual"))
 """
 function MatMultAddEqual(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, n::Integer)
-    error("MatMultAddEqual: no generated method for these argument types")
+    throw(MethodError(MatMultAddEqual, (petsclib, A, B, n)))
 end
 
 @for_petsc function MatMultAddEqual(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, n::$PetscInt )
@@ -17105,7 +17105,7 @@ See also: `Mat`, `MatMult()`, `MatMultTranspose()`, `MatMultAdd()`, `MatMultTran
 $(_doc_external("Mat/MatMultDiagonalBlock"))
 """
 function MatMultDiagonalBlock(petsclib::PetscLibType, mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec)
-    error("MatMultDiagonalBlock: no generated method for these argument types")
+    throw(MethodError(MatMultDiagonalBlock, (petsclib, mat, x, y)))
 end
 
 @for_petsc function MatMultDiagonalBlock(petsclib::$UnionPetscLib, mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec )
@@ -17143,7 +17143,7 @@ See also: `Mat`, `MatMultAddEqual()`, `MatMultTransposeEqual()`, `MatMultTranspo
 $(_doc_external("Mat/MatMultEqual"))
 """
 function MatMultEqual(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, n::Integer)
-    error("MatMultEqual: no generated method for these argument types")
+    throw(MethodError(MatMultEqual, (petsclib, A, B, n)))
 end
 
 @for_petsc function MatMultEqual(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, n::$PetscInt )
@@ -17182,7 +17182,7 @@ See also: `Mat`, `MatMult()`, `MatMultAdd()`, `MatMultHermitianTransposeAdd()`, 
 $(_doc_external("Mat/MatMultHermitianTranspose"))
 """
 function MatMultHermitianTranspose(petsclib::PetscLibType, mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec)
-    error("MatMultHermitianTranspose: no generated method for these argument types")
+    throw(MethodError(MatMultHermitianTranspose, (petsclib, mat, x, y)))
 end
 
 @for_petsc function MatMultHermitianTranspose(petsclib::$UnionPetscLib, mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec )
@@ -17220,7 +17220,7 @@ See also: `Mat`, `MatMultHermitianTranspose()`, `MatMultTranspose()`, `MatMultAd
 $(_doc_external("Mat/MatMultHermitianTransposeAdd"))
 """
 function MatMultHermitianTransposeAdd(petsclib::PetscLibType, mat::AbstractPetscMat, v1::AbstractPetscVec, v2::AbstractPetscVec, v3::AbstractPetscVec)
-    error("MatMultHermitianTransposeAdd: no generated method for these argument types")
+    throw(MethodError(MatMultHermitianTransposeAdd, (petsclib, mat, v1, v2, v3)))
 end
 
 @for_petsc function MatMultHermitianTransposeAdd(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v1::AbstractPetscVec, v2::AbstractPetscVec, v3::AbstractPetscVec )
@@ -17258,7 +17258,7 @@ See also: `Mat`, `MatMatMultEqual()`, `MatMultEqual()`, `MatMultAddEqual()`, `Ma
 $(_doc_external("Mat/MatMultHermitianTransposeAddEqual"))
 """
 function MatMultHermitianTransposeAddEqual(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, n::Integer)
-    error("MatMultHermitianTransposeAddEqual: no generated method for these argument types")
+    throw(MethodError(MatMultHermitianTransposeAddEqual, (petsclib, A, B, n)))
 end
 
 @for_petsc function MatMultHermitianTransposeAddEqual(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, n::$PetscInt )
@@ -17298,7 +17298,7 @@ See also: `Mat`, `MatMatMultEqual()`, `MatMultEqual()`, `MatMultAddEqual()`, `Ma
 $(_doc_external("Mat/MatMultHermitianTransposeEqual"))
 """
 function MatMultHermitianTransposeEqual(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, n::Integer)
-    error("MatMultHermitianTransposeEqual: no generated method for these argument types")
+    throw(MethodError(MatMultHermitianTransposeEqual, (petsclib, A, B, n)))
 end
 
 @for_petsc function MatMultHermitianTransposeEqual(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, n::$PetscInt )
@@ -17337,7 +17337,7 @@ See also: `Mat`, `MatMult()`, `MatMultAdd()`, `MatMultTransposeAdd()`, `MatMultH
 $(_doc_external("Mat/MatMultTranspose"))
 """
 function MatMultTranspose(petsclib::PetscLibType, mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec)
-    error("MatMultTranspose: no generated method for these argument types")
+    throw(MethodError(MatMultTranspose, (petsclib, mat, x, y)))
 end
 
 @for_petsc function MatMultTranspose(petsclib::$UnionPetscLib, mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec )
@@ -17375,7 +17375,7 @@ See also: `Mat`, `MatMultTranspose()`, `MatMultAdd()`, `MatMult()`
 $(_doc_external("Mat/MatMultTransposeAdd"))
 """
 function MatMultTransposeAdd(petsclib::PetscLibType, mat::AbstractPetscMat, v1::AbstractPetscVec, v2::AbstractPetscVec, v3::AbstractPetscVec)
-    error("MatMultTransposeAdd: no generated method for these argument types")
+    throw(MethodError(MatMultTransposeAdd, (petsclib, mat, v1, v2, v3)))
 end
 
 @for_petsc function MatMultTransposeAdd(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v1::AbstractPetscVec, v2::AbstractPetscVec, v3::AbstractPetscVec )
@@ -17413,7 +17413,7 @@ See also: `Mat`, `MatMultEqual()`, `MatMultAddEqual()`, `MatMultTransposeEqual()
 $(_doc_external("Mat/MatMultTransposeAddEqual"))
 """
 function MatMultTransposeAddEqual(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, n::Integer)
-    error("MatMultTransposeAddEqual: no generated method for these argument types")
+    throw(MethodError(MatMultTransposeAddEqual, (petsclib, A, B, n)))
 end
 
 @for_petsc function MatMultTransposeAddEqual(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, n::$PetscInt )
@@ -17453,7 +17453,7 @@ See also: `Mat`, `MatMultEqual()`, `MatMultAddEqual()`, `MatMultTransposeAddEqua
 $(_doc_external("Mat/MatMultTransposeEqual"))
 """
 function MatMultTransposeEqual(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, n::Integer)
-    error("MatMultTransposeEqual: no generated method for these argument types")
+    throw(MethodError(MatMultTransposeEqual, (petsclib, A, B, n)))
 end
 
 @for_petsc function MatMultTransposeEqual(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, n::$PetscInt )
@@ -17492,7 +17492,7 @@ See also: `Mat`, `MatGetFactor()`, `MatMumpsSetIcntl()`, `MatMumpsGetIcntl()`, `
 $(_doc_external("Mat/MatMumpsGetCntl"))
 """
 function MatMumpsGetCntl(petsclib::PetscLibType, F::AbstractPetscMat, icntl::Integer)
-    error("MatMumpsGetCntl: no generated method for these argument types")
+    throw(MethodError(MatMumpsGetCntl, (petsclib, F, icntl)))
 end
 
 @for_petsc function MatMumpsGetCntl(petsclib::$UnionPetscLib, F::AbstractPetscMat, icntl::$PetscInt )
@@ -17531,7 +17531,7 @@ See also: `Mat`, `MatGetFactor()`, `MatMumpsSetIcntl()`, `MatMumpsSetCntl()`, `M
 $(_doc_external("Mat/MatMumpsGetIcntl"))
 """
 function MatMumpsGetIcntl(petsclib::PetscLibType, F::AbstractPetscMat, icntl::Integer)
-    error("MatMumpsGetIcntl: no generated method for these argument types")
+    throw(MethodError(MatMumpsGetIcntl, (petsclib, F, icntl)))
 end
 
 @for_petsc function MatMumpsGetIcntl(petsclib::$UnionPetscLib, F::AbstractPetscMat, icntl::$PetscInt )
@@ -17570,7 +17570,7 @@ See also: `Mat`, `MatGetFactor()`, `MatMumpsSetIcntl()`, `MatMumpsGetIcntl()`, `
 $(_doc_external("Mat/MatMumpsGetInfo"))
 """
 function MatMumpsGetInfo(petsclib::PetscLibType, F::AbstractPetscMat, icntl::Integer)
-    error("MatMumpsGetInfo: no generated method for these argument types")
+    throw(MethodError(MatMumpsGetInfo, (petsclib, F, icntl)))
 end
 
 @for_petsc function MatMumpsGetInfo(petsclib::$UnionPetscLib, F::AbstractPetscMat, icntl::$PetscInt )
@@ -17609,7 +17609,7 @@ See also: `Mat`, `MatGetFactor()`, `MatMumpsSetIcntl()`, `MatMumpsGetIcntl()`, `
 $(_doc_external("Mat/MatMumpsGetInfog"))
 """
 function MatMumpsGetInfog(petsclib::PetscLibType, F::AbstractPetscMat, icntl::Integer)
-    error("MatMumpsGetInfog: no generated method for these argument types")
+    throw(MethodError(MatMumpsGetInfog, (petsclib, F, icntl)))
 end
 
 @for_petsc function MatMumpsGetInfog(petsclib::$UnionPetscLib, F::AbstractPetscMat, icntl::$PetscInt )
@@ -17647,7 +17647,7 @@ See also: `Mat`, `MatGetFactor()`, `MatCreateTranspose()`
 $(_doc_external("Mat/MatMumpsGetInverse"))
 """
 function MatMumpsGetInverse(petsclib::PetscLibType, F::AbstractPetscMat, spRHS::AbstractPetscMat)
-    error("MatMumpsGetInverse: no generated method for these argument types")
+    throw(MethodError(MatMumpsGetInverse, (petsclib, F, spRHS)))
 end
 
 @for_petsc function MatMumpsGetInverse(petsclib::$UnionPetscLib, F::AbstractPetscMat, spRHS::AbstractPetscMat )
@@ -17683,7 +17683,7 @@ See also: `Mat`, `MatGetFactor()`, `MatCreateTranspose()`, `MatMumpsGetInverse()
 $(_doc_external("Mat/MatMumpsGetInverseTranspose"))
 """
 function MatMumpsGetInverseTranspose(petsclib::PetscLibType, F::AbstractPetscMat, spRHST::AbstractPetscMat)
-    error("MatMumpsGetInverseTranspose: no generated method for these argument types")
+    throw(MethodError(MatMumpsGetInverseTranspose, (petsclib, F, spRHST)))
 end
 
 @for_petsc function MatMumpsGetInverseTranspose(petsclib::$UnionPetscLib, F::AbstractPetscMat, spRHST::AbstractPetscMat )
@@ -17721,7 +17721,7 @@ See also: `Mat`, `MatGetFactor()`, `MatMumpsSetIcntl()`, `MatMumpsGetIcntl()`, `
 $(_doc_external("Mat/MatMumpsGetNullPivots"))
 """
 function MatMumpsGetNullPivots(petsclib::PetscLibType, F::AbstractPetscMat)
-    error("MatMumpsGetNullPivots: no generated method for these argument types")
+    throw(MethodError(MatMumpsGetNullPivots, (petsclib, F)))
 end
 
 @for_petsc function MatMumpsGetNullPivots(petsclib::$UnionPetscLib, F::AbstractPetscMat )
@@ -17761,7 +17761,7 @@ See also: `Mat`, `MatGetFactor()`, `MatMumpsSetOocTmpDir`, `MatMumpsSetIcntl()`,
 $(_doc_external("Mat/MatMumpsGetOocTmpDir"))
 """
 function MatMumpsGetOocTmpDir(petsclib::PetscLibType, F::AbstractPetscMat)
-    error("MatMumpsGetOocTmpDir: no generated method for these argument types")
+    throw(MethodError(MatMumpsGetOocTmpDir, (petsclib, F)))
 end
 
 @for_petsc function MatMumpsGetOocTmpDir(petsclib::$UnionPetscLib, F::AbstractPetscMat )
@@ -17800,7 +17800,7 @@ See also: `Mat`, `MatGetFactor()`, `MatMumpsSetIcntl()`, `MatMumpsGetIcntl()`, `
 $(_doc_external("Mat/MatMumpsGetRinfo"))
 """
 function MatMumpsGetRinfo(petsclib::PetscLibType, F::AbstractPetscMat, icntl::Integer)
-    error("MatMumpsGetRinfo: no generated method for these argument types")
+    throw(MethodError(MatMumpsGetRinfo, (petsclib, F, icntl)))
 end
 
 @for_petsc function MatMumpsGetRinfo(petsclib::$UnionPetscLib, F::AbstractPetscMat, icntl::$PetscInt )
@@ -17839,7 +17839,7 @@ See also: `Mat`, `MatGetFactor()`, `MatMumpsSetIcntl()`, `MatMumpsGetIcntl()`, `
 $(_doc_external("Mat/MatMumpsGetRinfog"))
 """
 function MatMumpsGetRinfog(petsclib::PetscLibType, F::AbstractPetscMat, icntl::Integer)
-    error("MatMumpsGetRinfog: no generated method for these argument types")
+    throw(MethodError(MatMumpsGetRinfog, (petsclib, F, icntl)))
 end
 
 @for_petsc function MatMumpsGetRinfog(petsclib::$UnionPetscLib, F::AbstractPetscMat, icntl::$PetscInt )
@@ -17877,7 +17877,7 @@ See also: `MATSOLVERMUMPS`, `Mat`, `MatGetFactor()`, `MatMumpsSetIcntl()`, `MatS
 $(_doc_external("Mat/MatMumpsSetBlk"))
 """
 function MatMumpsSetBlk(petsclib::PetscLibType, F::AbstractPetscMat, nblk::Integer, blkvar::AbstractVector{<:Number}, blkptr::AbstractVector{<:Number})
-    error("MatMumpsSetBlk: no generated method for these argument types")
+    throw(MethodError(MatMumpsSetBlk, (petsclib, F, nblk, blkvar, blkptr)))
 end
 
 @for_petsc function MatMumpsSetBlk(petsclib::$UnionPetscLib, F::AbstractPetscMat, nblk::$PetscInt, blkvar::Vector{$PetscInt}, blkptr::Vector{$PetscInt} )
@@ -17915,7 +17915,7 @@ See also: `Mat`, `MatGetFactor()`, `MatMumpsSetIcntl()`, `MatMumpsGetIcntl()`, `
 $(_doc_external("Mat/MatMumpsSetCntl"))
 """
 function MatMumpsSetCntl(petsclib::PetscLibType, F::AbstractPetscMat, icntl::Integer, val::Real)
-    error("MatMumpsSetCntl: no generated method for these argument types")
+    throw(MethodError(MatMumpsSetCntl, (petsclib, F, icntl, val)))
 end
 
 @for_petsc function MatMumpsSetCntl(petsclib::$UnionPetscLib, F::AbstractPetscMat, icntl::$PetscInt, val::$PetscReal )
@@ -17953,7 +17953,7 @@ See also: `Mat`, `MatGetFactor()`, `MatMumpsGetIcntl()`, `MatMumpsSetCntl()`, `M
 $(_doc_external("Mat/MatMumpsSetIcntl"))
 """
 function MatMumpsSetIcntl(petsclib::PetscLibType, F::AbstractPetscMat, icntl::Integer, ival::Integer)
-    error("MatMumpsSetIcntl: no generated method for these argument types")
+    throw(MethodError(MatMumpsSetIcntl, (petsclib, F, icntl, ival)))
 end
 
 @for_petsc function MatMumpsSetIcntl(petsclib::$UnionPetscLib, F::AbstractPetscMat, icntl::$PetscInt, ival::$PetscInt )
@@ -17987,7 +17987,7 @@ See also: `Mat`, `MatGetFactor()`, `MatMumpsGetOocTmpDir`, `MatMumpsSetIcntl()`,
 $(_doc_external("Mat/MatMumpsSetOocTmpDir"))
 """
 function MatMumpsSetOocTmpDir(petsclib::PetscLibType, F::AbstractPetscMat, tmpdir::String)
-    error("MatMumpsSetOocTmpDir: no generated method for these argument types")
+    throw(MethodError(MatMumpsSetOocTmpDir, (petsclib, F, tmpdir)))
 end
 
 @for_petsc function MatMumpsSetOocTmpDir(petsclib::$UnionPetscLib, F::AbstractPetscMat, tmpdir::String )
@@ -18025,7 +18025,7 @@ See also: `Mat`, `MATNEST`, `MatNestGetSubMat()`, `MatNestGetSubMats()`, `MatNes
 $(_doc_external("Mat/MatNestGetISs"))
 """
 function MatNestGetISs(petsclib::PetscLibType, A::AbstractPetscMat, rows::Vector{<:AbstractIS}, cols::Vector{<:AbstractIS})
-    error("MatNestGetISs: no generated method for these argument types")
+    throw(MethodError(MatNestGetISs, (petsclib, A, rows, cols)))
 end
 
 @for_petsc function MatNestGetISs(petsclib::$UnionPetscLib, A::AbstractPetscMat, rows::Vector{<:AbstractIS}, cols::Vector{<:AbstractIS} )
@@ -18063,7 +18063,7 @@ See also: `Mat`, `MATNEST`, `MatNestGetSubMat()`, `MatNestGetSubMats()`, `MatNes
 $(_doc_external("Mat/MatNestGetLocalISs"))
 """
 function MatNestGetLocalISs(petsclib::PetscLibType, A::AbstractPetscMat, rows::Vector{<:AbstractIS}, cols::Vector{<:AbstractIS})
-    error("MatNestGetLocalISs: no generated method for these argument types")
+    throw(MethodError(MatNestGetLocalISs, (petsclib, A, rows, cols)))
 end
 
 @for_petsc function MatNestGetLocalISs(petsclib::$UnionPetscLib, A::AbstractPetscMat, rows::Vector{<:AbstractIS}, cols::Vector{<:AbstractIS} )
@@ -18101,7 +18101,7 @@ See also: `Mat`, `MATNEST`, `MatNestGetSubMat()`, `MatNestGetSubMats()`, `MatCre
 $(_doc_external("Mat/MatNestGetSize"))
 """
 function MatNestGetSize(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatNestGetSize: no generated method for these argument types")
+    throw(MethodError(MatNestGetSize, (petsclib, A)))
 end
 
 @for_petsc function MatNestGetSize(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -18144,7 +18144,7 @@ See also: `Mat`, `MATNEST`, `MatNestGetSize()`, `MatNestGetSubMats()`, `MatCreat
 $(_doc_external("Mat/MatNestGetSubMat"))
 """
 function MatNestGetSubMat(petsclib::PetscLibType, A::AbstractPetscMat, idxm::Integer, jdxm::Integer)
-    error("MatNestGetSubMat: no generated method for these argument types")
+    throw(MethodError(MatNestGetSubMat, (petsclib, A, idxm, jdxm)))
 end
 
 @for_petsc function MatNestGetSubMat(petsclib::$UnionPetscLib, A::AbstractPetscMat, idxm::$PetscInt, jdxm::$PetscInt )
@@ -18185,7 +18185,7 @@ See also: `Mat`, `MATNEST`, `MatNestGetSize()`, `MatNestGetSubMat()`, `MatNestGe
 $(_doc_external("Mat/MatNestGetSubMats"))
 """
 function MatNestGetSubMats(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatNestGetSubMats: no generated method for these argument types")
+    throw(MethodError(MatNestGetSubMats, (petsclib, A)))
 end
 
 @for_petsc function MatNestGetSubMats(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -18228,7 +18228,7 @@ See also: `Mat`, `MATNEST`, `MatNestSetSubMats()`, `MatNestGetSubMats()`, `MatNe
 $(_doc_external("Mat/MatNestSetSubMat"))
 """
 function MatNestSetSubMat(petsclib::PetscLibType, A::AbstractPetscMat, idxm::Integer, jdxm::Integer, sub::AbstractPetscMat)
-    error("MatNestSetSubMat: no generated method for these argument types")
+    throw(MethodError(MatNestSetSubMat, (petsclib, A, idxm, jdxm, sub)))
 end
 
 @for_petsc function MatNestSetSubMat(petsclib::$UnionPetscLib, A::AbstractPetscMat, idxm::$PetscInt, jdxm::$PetscInt, sub::AbstractPetscMat )
@@ -18266,7 +18266,7 @@ See also: `Mat`, `MATNEST`, `MatCreateNest()`, `MatNestSetSubMat()`, `MatNestGet
 $(_doc_external("Mat/MatNestSetSubMats"))
 """
 function MatNestSetSubMats(petsclib::PetscLibType, A::AbstractPetscMat, nr::Integer, is_row::Vector{<:AbstractIS}, nc::Integer, is_col::Vector{<:AbstractIS}, M_a::Vector{<:AbstractPetscMat})
-    error("MatNestSetSubMats: no generated method for these argument types")
+    throw(MethodError(MatNestSetSubMats, (petsclib, A, nr, is_row, nc, is_col, M_a)))
 end
 
 @for_petsc function MatNestSetSubMats(petsclib::$UnionPetscLib, A::AbstractPetscMat, nr::$PetscInt, is_row::Vector{<:AbstractIS}, nc::$PetscInt, is_col::Vector{<:AbstractIS}, M_a::Vector{<:AbstractPetscMat} )
@@ -18300,7 +18300,7 @@ See also: `Mat`, `MATNEST`, `MatCreateVecs()`, `MatCreateNest()`, `VecType`
 $(_doc_external("Mat/MatNestSetVecType"))
 """
 function MatNestSetVecType(petsclib::PetscLibType, A::AbstractPetscMat, vtype::String)
-    error("MatNestSetVecType: no generated method for these argument types")
+    throw(MethodError(MatNestSetVecType, (petsclib, A, vtype)))
 end
 
 @for_petsc function MatNestSetVecType(petsclib::$UnionPetscLib, A::AbstractPetscMat, vtype::String )
@@ -18337,7 +18337,7 @@ See also: `Mat`
 $(_doc_external("Mat/MatNorm"))
 """
 function MatNorm(petsclib::PetscLibType, mat::AbstractPetscMat, type::NormType)
-    error("MatNorm: no generated method for these argument types")
+    throw(MethodError(MatNorm, (petsclib, mat, type)))
 end
 
 @for_petsc function MatNorm(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::NormType )
@@ -18375,7 +18375,7 @@ See also: `Mat`, `MATNORMAL`, `MATNORMALHERMITIAN`, `MatCreateNormal()`
 $(_doc_external("Mat/MatNormalGetMat"))
 """
 function MatNormalGetMat(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatNormalGetMat: no generated method for these argument types")
+    throw(MethodError(MatNormalGetMat, (petsclib, A)))
 end
 
 @for_petsc function MatNormalGetMat(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -18413,7 +18413,7 @@ See also: `Mat`, `MATNORMALHERMITIAN`, `MatCreateNormalHermitian()`
 $(_doc_external("Mat/MatNormalHermitianGetMat"))
 """
 function MatNormalHermitianGetMat(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatNormalHermitianGetMat: no generated method for these argument types")
+    throw(MethodError(MatNormalHermitianGetMat, (petsclib, A)))
 end
 
 @for_petsc function MatNormalHermitianGetMat(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -18449,7 +18449,7 @@ See also: `Mat`, `MatOrderingType`, `MatOrderingRegisterAll()`, `MatGetOrdering(
 $(_doc_external("MatGraphOperations/MatOrderingRegister"))
 """
 function MatOrderingRegister(petsclib::PetscLibType, sname::String, fnc::external)
-    error("MatOrderingRegister: no generated method for these argument types")
+    throw(MethodError(MatOrderingRegister, (petsclib, sname, fnc)))
 end
 
 @for_petsc function MatOrderingRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
@@ -18488,7 +18488,7 @@ See also: `Mat`, `MatGetOrdering()`, `ISAllGather()`, `MatCreateSubMatrix()`
 $(_doc_external("Mat/MatPermute"))
 """
 function MatPermute(petsclib::PetscLibType, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS)
-    error("MatPermute: no generated method for these argument types")
+    throw(MethodError(MatPermute, (petsclib, mat, row, col)))
 end
 
 @for_petsc function MatPermute(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS )
@@ -18521,7 +18521,7 @@ See also: `MATPREALLOCATOR`, `MatXAIJSetPreallocation()`
 $(_doc_external("Mat/MatPreallocatorPreallocate"))
 """
 function MatPreallocatorPreallocate(petsclib::PetscLibType, mat::AbstractPetscMat, fill::PetscBool, A::AbstractPetscMat)
-    error("MatPreallocatorPreallocate: no generated method for these argument types")
+    throw(MethodError(MatPreallocatorPreallocate, (petsclib, mat, fill, A)))
 end
 
 @for_petsc function MatPreallocatorPreallocate(petsclib::$UnionPetscLib, mat::AbstractPetscMat, fill::PetscBool, A::AbstractPetscMat )
@@ -18557,7 +18557,7 @@ See also: `MatProduct`, `Mat`, `MatProductCreate()`
 $(_doc_external("Mat/MatProductClear"))
 """
 function MatProductClear(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatProductClear: no generated method for these argument types")
+    throw(MethodError(MatProductClear, (petsclib, mat)))
 end
 
 @for_petsc function MatProductClear(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -18609,7 +18609,7 @@ See also: `MatProduct`, `Mat`, `MatProductCreateWithMat()`, `MatProductSetType()
 $(_doc_external("Mat/MatProductCreate"))
 """
 function MatProductCreate(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, C::Union{Ptr, AbstractPetscMat})
-    error("MatProductCreate: no generated method for these argument types")
+    throw(MethodError(MatProductCreate, (petsclib, A, B, C)))
 end
 
 @for_petsc function MatProductCreate(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, C::Union{Ptr, AbstractPetscMat} )
@@ -18648,7 +18648,7 @@ See also: `MatProduct`, `Mat`, `MatProductType`, `MatProductSetType()`, `MatProd
 $(_doc_external("Mat/MatProductCreateWithMat"))
 """
 function MatProductCreateWithMat(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, C::Union{Ptr, AbstractPetscMat}, D::AbstractPetscMat)
-    error("MatProductCreateWithMat: no generated method for these argument types")
+    throw(MethodError(MatProductCreateWithMat, (petsclib, A, B, C, D)))
 end
 
 @for_petsc function MatProductCreateWithMat(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, C::Union{Ptr, AbstractPetscMat}, D::AbstractPetscMat )
@@ -18684,7 +18684,7 @@ See also: `MatProduct`, `Mat`, `MatProductSetAlgorithm()`
 $(_doc_external("Mat/MatProductGetAlgorithm"))
 """
 function MatProductGetAlgorithm(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatProductGetAlgorithm: no generated method for these argument types")
+    throw(MethodError(MatProductGetAlgorithm, (petsclib, mat)))
 end
 
 @for_petsc function MatProductGetAlgorithm(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -18724,7 +18724,7 @@ See also: `MatProduct`, `Mat`, `MatProductCreateWithMat()`, `MatProductSetType()
 $(_doc_external("Mat/MatProductGetMats"))
 """
 function MatProductGetMats(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatProductGetMats: no generated method for these argument types")
+    throw(MethodError(MatProductGetMats, (petsclib, mat)))
 end
 
 @for_petsc function MatProductGetMats(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -18766,7 +18766,7 @@ See also: `MatProduct`, `Mat`, `MatProductCreateWithMat()`, `MatProductSetType()
 $(_doc_external("Mat/MatProductGetType"))
 """
 function MatProductGetType(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatProductGetType: no generated method for these argument types")
+    throw(MethodError(MatProductGetType, (petsclib, mat)))
 end
 
 @for_petsc function MatProductGetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -18801,7 +18801,7 @@ See also: `MatProduct`, `Mat`, `MatProductSetAlgorithm()`, `MatProductSetType()`
 $(_doc_external("Mat/MatProductNumeric"))
 """
 function MatProductNumeric(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatProductNumeric: no generated method for these argument types")
+    throw(MethodError(MatProductNumeric, (petsclib, mat)))
 end
 
 @for_petsc function MatProductNumeric(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -18837,7 +18837,7 @@ See also: `MatProduct`, `Mat`, `MatProductCreate()`, `MatProductSetFromOptions()
 $(_doc_external("Mat/MatProductReplaceMats"))
 """
 function MatProductReplaceMats(petsclib::PetscLibType, A::Union{Ptr, AbstractPetscMat}, B::Union{Ptr, AbstractPetscMat}, C::Union{Ptr, AbstractPetscMat}, D::Union{Ptr, AbstractPetscMat})
-    error("MatProductReplaceMats: no generated method for these argument types")
+    throw(MethodError(MatProductReplaceMats, (petsclib, A, B, C, D)))
 end
 
 @for_petsc function MatProductReplaceMats(petsclib::$UnionPetscLib, A::Union{Ptr, AbstractPetscMat}, B::Union{Ptr, AbstractPetscMat}, C::Union{Ptr, AbstractPetscMat}, D::Union{Ptr, AbstractPetscMat} )
@@ -18874,7 +18874,7 @@ See also: `MatProduct`, `Mat`, `MatProductClear()`, `MatProductSetType()`, `MatP
 $(_doc_external("Mat/MatProductSetAlgorithm"))
 """
 function MatProductSetAlgorithm(petsclib::PetscLibType, mat::AbstractPetscMat, alg::String)
-    error("MatProductSetAlgorithm: no generated method for these argument types")
+    throw(MethodError(MatProductSetAlgorithm, (petsclib, mat, alg)))
 end
 
 @for_petsc function MatProductSetAlgorithm(petsclib::$UnionPetscLib, mat::AbstractPetscMat, alg::String )
@@ -18909,7 +18909,7 @@ See also: `MatProduct`, `PETSC_DETERMINE`, `Mat`, `MatProductSetFromOptions()`, 
 $(_doc_external("Mat/MatProductSetFill"))
 """
 function MatProductSetFill(petsclib::PetscLibType, mat::AbstractPetscMat, fill::Real)
-    error("MatProductSetFill: no generated method for these argument types")
+    throw(MethodError(MatProductSetFill, (petsclib, mat, fill)))
 end
 
 @for_petsc function MatProductSetFill(petsclib::$UnionPetscLib, mat::AbstractPetscMat, fill::$PetscReal )
@@ -18949,7 +18949,7 @@ See also: `MatProduct`, `Mat`, `MatSetFromOptions()`, `MatProductCreate()`, `Mat
 $(_doc_external("Mat/MatProductSetFromOptions"))
 """
 function MatProductSetFromOptions(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatProductSetFromOptions: no generated method for these argument types")
+    throw(MethodError(MatProductSetFromOptions, (petsclib, mat)))
 end
 
 @for_petsc function MatProductSetFromOptions(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -18985,7 +18985,7 @@ See also: `MatProduct`, `Mat`, `MatProductCreate()`, `MatProductType`,
 $(_doc_external("Mat/MatProductSetType"))
 """
 function MatProductSetType(petsclib::PetscLibType, mat::AbstractPetscMat, productype::MatProductType)
-    error("MatProductSetType: no generated method for these argument types")
+    throw(MethodError(MatProductSetType, (petsclib, mat, productype)))
 end
 
 @for_petsc function MatProductSetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, productype::MatProductType )
@@ -19019,7 +19019,7 @@ See also: `MatProduct`, `Mat`, `MatProductCreate()`, `MatProductCreateWithMat()`
 $(_doc_external("Mat/MatProductSymbolic"))
 """
 function MatProductSymbolic(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatProductSymbolic: no generated method for these argument types")
+    throw(MethodError(MatProductSymbolic, (petsclib, mat)))
 end
 
 @for_petsc function MatProductSymbolic(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -19053,7 +19053,7 @@ See also: `MatProductType`, `Mat`, `MatProductSetFromOptions()`, `MatView()`, `M
 $(_doc_external("Mat/MatProductView"))
 """
 function MatProductView(petsclib::PetscLibType, mat::AbstractPetscMat, viewer::PetscViewer)
-    error("MatProductView: no generated method for these argument types")
+    throw(MethodError(MatProductView, (petsclib, mat, viewer)))
 end
 
 @for_petsc function MatProductView(petsclib::$UnionPetscLib, mat::AbstractPetscMat, viewer::PetscViewer )
@@ -19087,7 +19087,7 @@ See also: `Mat`, `MatSetOption()`, `MatIsSymmetricKnown()`, `MatIsSPDKnown()`, `
 $(_doc_external("Mat/MatPropagateSymmetryOptions"))
 """
 function MatPropagateSymmetryOptions(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat)
-    error("MatPropagateSymmetryOptions: no generated method for these argument types")
+    throw(MethodError(MatPropagateSymmetryOptions, (petsclib, A, B)))
 end
 
 @for_petsc function MatPropagateSymmetryOptions(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat )
@@ -19127,7 +19127,7 @@ See also: `Mat`, `MatProductCreate()`, `MatMatMult()`, `MatRARt()`
 $(_doc_external("Mat/MatPtAP"))
 """
 function MatPtAP(petsclib::PetscLibType, A::AbstractPetscMat, P::AbstractPetscMat, scall::MatReuse, fill::Real)
-    error("MatPtAP: no generated method for these argument types")
+    throw(MethodError(MatPtAP, (petsclib, A, P, scall, fill)))
 end
 
 @for_petsc function MatPtAP(petsclib::$UnionPetscLib, A::AbstractPetscMat, P::AbstractPetscMat, scall::MatReuse, fill::$PetscReal )
@@ -19168,7 +19168,7 @@ See also: `Mat`, `MatMatMultEqual()`, `MatMultEqual()`, `MatMultAddEqual()`, `Ma
 $(_doc_external("Mat/MatPtAPMultEqual"))
 """
 function MatPtAPMultEqual(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, n::Integer)
-    error("MatPtAPMultEqual: no generated method for these argument types")
+    throw(MethodError(MatPtAPMultEqual, (petsclib, A, B, C, n)))
 end
 
 @for_petsc function MatPtAPMultEqual(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, n::$PetscInt )
@@ -19211,7 +19211,7 @@ See also: `Mat`, `MatType`, `MATPYTHON`, `MatPythonSetType()`, `PetscPythonIniti
 $(_doc_external("Mat/MatPythonCreate"))
 """
 function MatPythonCreate(petsclib::PetscLibType, comm::MPI_Comm, m::Integer, n::Integer, M_M::Integer, M_N::Integer, pyname::String)
-    error("MatPythonCreate: no generated method for these argument types")
+    throw(MethodError(MatPythonCreate, (petsclib, comm, m, n, M_M, M_N, pyname)))
 end
 
 @for_petsc function MatPythonCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, pyname::String )
@@ -19249,7 +19249,7 @@ See also: `Mat`, `MatType`, `MatCreate()`, `MatSetType()`, `MATPYTHON`, `PetscPy
 $(_doc_external("Mat/MatPythonGetType"))
 """
 function MatPythonGetType(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatPythonGetType: no generated method for these argument types")
+    throw(MethodError(MatPythonGetType, (petsclib, mat)))
 end
 
 @for_petsc function MatPythonGetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -19288,7 +19288,7 @@ See also: `Mat`, `MatType`, `MatCreate()`, `MatSetType()`, `MATPYTHON`, `PetscPy
 $(_doc_external("Mat/MatPythonSetType"))
 """
 function MatPythonSetType(petsclib::PetscLibType, mat::AbstractPetscMat, pyname::String)
-    error("MatPythonSetType: no generated method for these argument types")
+    throw(MethodError(MatPythonSetType, (petsclib, mat, pyname)))
 end
 
 @for_petsc function MatPythonSetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, pyname::String )
@@ -19329,7 +19329,7 @@ See also: `Mat`, Matrix Factorization, `MatFactorInfo`, `MatGetFactor()`, `MatQR
 $(_doc_external("Mat/MatQRFactor"))
 """
 function MatQRFactor(petsclib::PetscLibType, mat::AbstractPetscMat, col::AbstractIS, info::Vector{MatFactorInfo})
-    error("MatQRFactor: no generated method for these argument types")
+    throw(MethodError(MatQRFactor, (petsclib, mat, col, info)))
 end
 
 @for_petsc function MatQRFactor(petsclib::$UnionPetscLib, mat::AbstractPetscMat, col::AbstractIS, info::Vector{MatFactorInfo} )
@@ -19365,7 +19365,7 @@ See also: `Mat`, Matrix Factorization, `MatFactorInfo`, `MatGetFactor()`, `MatQR
 $(_doc_external("Mat/MatQRFactorNumeric"))
 """
 function MatQRFactorNumeric(petsclib::PetscLibType, fact::AbstractPetscMat, mat::AbstractPetscMat, info::Vector{MatFactorInfo})
-    error("MatQRFactorNumeric: no generated method for these argument types")
+    throw(MethodError(MatQRFactorNumeric, (petsclib, fact, mat, info)))
 end
 
 @for_petsc function MatQRFactorNumeric(petsclib::$UnionPetscLib, fact::AbstractPetscMat, mat::AbstractPetscMat, info::Vector{MatFactorInfo} )
@@ -19407,7 +19407,7 @@ See also: `Mat`, Matrix Factorization, `MatGetFactor()`, `MatFactorInfo`, `MatQR
 $(_doc_external("Mat/MatQRFactorSymbolic"))
 """
 function MatQRFactorSymbolic(petsclib::PetscLibType, fact::AbstractPetscMat, mat::AbstractPetscMat, col::AbstractIS, info::Vector{MatFactorInfo})
-    error("MatQRFactorSymbolic: no generated method for these argument types")
+    throw(MethodError(MatQRFactorSymbolic, (petsclib, fact, mat, col, info)))
 end
 
 @for_petsc function MatQRFactorSymbolic(petsclib::$UnionPetscLib, fact::AbstractPetscMat, mat::AbstractPetscMat, col::AbstractIS, info::Vector{MatFactorInfo} )
@@ -19447,7 +19447,7 @@ See also: `Mat`, `MatProductCreate()`, `MatMatMult()`, `MatPtAP()`
 $(_doc_external("Mat/MatRARt"))
 """
 function MatRARt(petsclib::PetscLibType, A::AbstractPetscMat, R::AbstractPetscMat, scall::MatReuse, fill::Real)
-    error("MatRARt: no generated method for these argument types")
+    throw(MethodError(MatRARt, (petsclib, A, R, scall, fill)))
 end
 
 @for_petsc function MatRARt(petsclib::$UnionPetscLib, A::AbstractPetscMat, R::AbstractPetscMat, scall::MatReuse, fill::$PetscReal )
@@ -19488,7 +19488,7 @@ See also: `Mat`, `MatMatMultEqual()`, `MatMultEqual()`, `MatMultAddEqual()`, `Ma
 $(_doc_external("Mat/MatRARtMultEqual"))
 """
 function MatRARtMultEqual(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, n::Integer)
-    error("MatRARtMultEqual: no generated method for these argument types")
+    throw(MethodError(MatRARtMultEqual, (petsclib, A, B, C, n)))
 end
 
 @for_petsc function MatRARtMultEqual(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, n::$PetscInt )
@@ -19523,7 +19523,7 @@ See also: `Mat`, `MatImaginaryPart()`
 $(_doc_external("Mat/MatRealPart"))
 """
 function MatRealPart(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatRealPart: no generated method for these argument types")
+    throw(MethodError(MatRealPart, (petsclib, mat)))
 end
 
 @for_petsc function MatRealPart(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -19557,7 +19557,7 @@ See also: `Mat`, `MatType`, `MatSetType()`, `MatRegisterAll()`
 $(_doc_external("Mat/MatRegister"))
 """
 function MatRegister(petsclib::PetscLibType, sname::String, fnc::external)
-    error("MatRegister: no generated method for these argument types")
+    throw(MethodError(MatRegister, (petsclib, sname, fnc)))
 end
 
 @for_petsc function MatRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
@@ -19590,7 +19590,7 @@ See also: `Mat`, `MatType`, `PetscObjectBaseTypeCompare()`
 $(_doc_external("Mat/MatRegisterRootName"))
 """
 function MatRegisterRootName(petsclib::PetscLibType, rname::String, sname::String, mname::String)
-    error("MatRegisterRootName: no generated method for these argument types")
+    throw(MethodError(MatRegisterRootName, (petsclib, rname, sname, mname)))
 end
 
 @for_petsc function MatRegisterRootName(petsclib::$UnionPetscLib, rname::String, sname::String, mname::String )
@@ -19631,7 +19631,7 @@ See also: `Mat`, `MatGetFactor()`, `MatGetOrdering()`
 $(_doc_external("Mat/MatReorderForNonzeroDiagonal"))
 """
 function MatReorderForNonzeroDiagonal(petsclib::PetscLibType, mat::AbstractPetscMat, abstol::Real, ris::AbstractIS, cis::AbstractIS)
-    error("MatReorderForNonzeroDiagonal: no generated method for these argument types")
+    throw(MethodError(MatReorderForNonzeroDiagonal, (petsclib, mat, abstol, ris, cis)))
 end
 
 @for_petsc function MatReorderForNonzeroDiagonal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, abstol::$PetscReal, ris::AbstractIS, cis::AbstractIS )
@@ -19665,7 +19665,7 @@ See also: `Mat`, `MATSEQSBAIJ`, `MatGetOrdering()`, `MatPermute()`
 $(_doc_external("Mat/MatReorderingSeqSBAIJ"))
 """
 function MatReorderingSeqSBAIJ(petsclib::PetscLibType, A::AbstractPetscMat, perm::AbstractIS)
-    error("MatReorderingSeqSBAIJ: no generated method for these argument types")
+    throw(MethodError(MatReorderingSeqSBAIJ, (petsclib, A, perm)))
 end
 
 @for_petsc function MatReorderingSeqSBAIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat, perm::AbstractIS )
@@ -19698,7 +19698,7 @@ See also: `Mat`, `MatResetPreallocation()`
 $(_doc_external("Mat/MatResetHash"))
 """
 function MatResetHash(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatResetHash: no generated method for these argument types")
+    throw(MethodError(MatResetHash, (petsclib, A)))
 end
 
 @for_petsc function MatResetHash(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -19731,7 +19731,7 @@ See also: `Mat`, `MatSeqAIJSetPreallocation()`, `MatMPIAIJSetPreallocation()`, `
 $(_doc_external("Mat/MatResetPreallocation"))
 """
 function MatResetPreallocation(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatResetPreallocation: no generated method for these argument types")
+    throw(MethodError(MatResetPreallocation, (petsclib, A)))
 end
 
 @for_petsc function MatResetPreallocation(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -19769,7 +19769,7 @@ See also: `Mat`, `MatMult()`, `MatMultAdd()`, `PCMGSetResidual()`
 $(_doc_external("Mat/MatResidual"))
 """
 function MatResidual(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec, r::AbstractPetscVec)
-    error("MatResidual: no generated method for these argument types")
+    throw(MethodError(MatResidual, (petsclib, mat, b, x, r)))
 end
 
 @for_petsc function MatResidual(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec, r::AbstractPetscVec )
@@ -19852,7 +19852,7 @@ See also: `Mat`, `MatGetLocalSubMatrix()`
 $(_doc_external("Mat/MatRestoreLocalSubMatrix"))
 """
 function MatRestoreLocalSubMatrix(petsclib::PetscLibType, mat::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS, submat::AbstractPetscMat)
-    error("MatRestoreLocalSubMatrix: no generated method for these argument types")
+    throw(MethodError(MatRestoreLocalSubMatrix, (petsclib, mat, isrow, iscol, submat)))
 end
 
 @for_petsc function MatRestoreLocalSubMatrix(petsclib::$UnionPetscLib, mat::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS, submat::AbstractPetscMat )
@@ -19890,7 +19890,7 @@ See also: `Mat`, `MatCreate()`, `MatNullSpaceCreate()`, `MatSetNearNullSpace()`,
 $(_doc_external("Mat/MatRestoreNullSpaces"))
 """
 function MatRestoreNullSpaces(petsclib::PetscLibType, n::Integer, mat::Vector{<:AbstractPetscMat}, nullsp::Union{Ptr, AbstractArray{MatNullSpace}})
-    error("MatRestoreNullSpaces: no generated method for these argument types")
+    throw(MethodError(MatRestoreNullSpaces, (petsclib, n, mat, nullsp)))
 end
 
 @for_petsc function MatRestoreNullSpaces(petsclib::$UnionPetscLib, n::$PetscInt, mat::Vector{<:AbstractPetscMat}, nullsp::Union{Ptr, AbstractArray{MatNullSpace}} )
@@ -19928,7 +19928,7 @@ See also: `Mat`, `MatGetRow()`
 $(_doc_external("Mat/MatRestoreRow"))
 """
 function MatRestoreRow(petsclib::PetscLibType, mat::AbstractPetscMat, row::Integer, ncols::Integer, cols::Union{Ptr, AbstractArray{<:Number}}, vals::Union{Ptr, AbstractArray{<:Number}})
-    error("MatRestoreRow: no generated method for these argument types")
+    throw(MethodError(MatRestoreRow, (petsclib, mat, row, ncols, cols, vals)))
 end
 
 @for_petsc function MatRestoreRow(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::$PetscInt, ncols::$PetscInt, cols::Union{Ptr, AbstractArray{$PetscInt}}, vals::Union{Ptr, AbstractArray{$PetscScalar}} )
@@ -20011,7 +20011,7 @@ See also: `Mat`, `MATSBAIJ`, `MatGetRowUpperTriangular()`
 $(_doc_external("Mat/MatRestoreRowUpperTriangular"))
 """
 function MatRestoreRowUpperTriangular(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatRestoreRowUpperTriangular: no generated method for these argument types")
+    throw(MethodError(MatRestoreRowUpperTriangular, (petsclib, mat)))
 end
 
 @for_petsc function MatRestoreRowUpperTriangular(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -20048,7 +20048,7 @@ See also: `Mat`, `MatMultAdd()`, `MatMultTransposeAdd()`, `MatInterpolate()`, `P
 $(_doc_external("Mat/MatRestrict"))
 """
 function MatRestrict(petsclib::PetscLibType, A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec)
-    error("MatRestrict: no generated method for these argument types")
+    throw(MethodError(MatRestrict, (petsclib, A, x, y)))
 end
 
 @for_petsc function MatRestrict(petsclib::$UnionPetscLib, A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec )
@@ -20081,7 +20081,7 @@ See also: `Mat`, `MatStoreValues()`
 $(_doc_external("Mat/MatRetrieveValues"))
 """
 function MatRetrieveValues(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatRetrieveValues: no generated method for these argument types")
+    throw(MethodError(MatRetrieveValues, (petsclib, mat)))
 end
 
 @for_petsc function MatRetrieveValues(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -20119,7 +20119,7 @@ See also: `Mat`, `SNES`, `MatSNESMFSetReuseBase()`, `MatCreateSNESMF()`
 $(_doc_external("SNES/MatSNESMFGetReuseBase"))
 """
 function MatSNESMFGetReuseBase(petsclib::PetscLibType, J::AbstractPetscMat)
-    error("MatSNESMFGetReuseBase: no generated method for these argument types")
+    throw(MethodError(MatSNESMFGetReuseBase, (petsclib, J)))
 end
 
 @for_petsc function MatSNESMFGetReuseBase(petsclib::$UnionPetscLib, J::AbstractPetscMat )
@@ -20157,7 +20157,7 @@ See also: `Mat`, `SNES`, `MatCreateSNESMF()`
 $(_doc_external("SNES/MatSNESMFGetSNES"))
 """
 function MatSNESMFGetSNES(petsclib::PetscLibType, J::AbstractPetscMat)
-    error("MatSNESMFGetSNES: no generated method for these argument types")
+    throw(MethodError(MatSNESMFGetSNES, (petsclib, J)))
 end
 
 @for_petsc function MatSNESMFGetSNES(petsclib::$UnionPetscLib, J::AbstractPetscMat )
@@ -20201,7 +20201,7 @@ See also: `SNES`, `MatCreateSNESMF()`, `MatCreateSNESMFMore()`
 $(_doc_external("SNES/MatSNESMFMoreSetParameters"))
 """
 function MatSNESMFMoreSetParameters(petsclib::PetscLibType, mat::AbstractPetscMat, error::Real, umin::Real, h::Real)
-    error("MatSNESMFMoreSetParameters: no generated method for these argument types")
+    throw(MethodError(MatSNESMFMoreSetParameters, (petsclib, mat, error, umin, h)))
 end
 
 @for_petsc function MatSNESMFMoreSetParameters(petsclib::$UnionPetscLib, mat::AbstractPetscMat, error::$PetscReal, umin::$PetscReal, h::$PetscReal )
@@ -20237,7 +20237,7 @@ See also: `SNES`, `MATMFFD`, `MatMFFDSetFunction()`, `SNESSetFunction()`, `MatCr
 $(_doc_external("SNES/MatSNESMFSetReuseBase"))
 """
 function MatSNESMFSetReuseBase(petsclib::PetscLibType, J::AbstractPetscMat, use::PetscBool)
-    error("MatSNESMFSetReuseBase: no generated method for these argument types")
+    throw(MethodError(MatSNESMFSetReuseBase, (petsclib, J, use)))
 end
 
 @for_petsc function MatSNESMFSetReuseBase(petsclib::$UnionPetscLib, J::AbstractPetscMat, use::PetscBool )
@@ -20290,7 +20290,7 @@ See also: `Mat`, `MatMult()`, `KSP`, `PC`, `MatGetFactor()`
 $(_doc_external("Mat/MatSOR"))
 """
 function MatSOR(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscVec, omega::Real, flag::MatSORType, shift::Real, its::Integer, lits::Integer, x::AbstractPetscVec)
-    error("MatSOR: no generated method for these argument types")
+    throw(MethodError(MatSOR, (petsclib, mat, b, omega, flag, shift, its, lits, x)))
 end
 
 @for_petsc function MatSOR(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, omega::$PetscReal, flag::MatSORType, shift::$PetscReal, its::$PetscInt, lits::$PetscInt, x::AbstractPetscVec )
@@ -20327,7 +20327,7 @@ See also: `MATSOLVERSTRUMPACK`, `MatSTRUMPACKSetReordering()`, `Mat`, `MatGetFac
 $(_doc_external("Mat/MatSTRUMPACKGetColPerm"))
 """
 function MatSTRUMPACKGetColPerm(petsclib::PetscLibType, F::AbstractPetscMat)
-    error("MatSTRUMPACKGetColPerm: no generated method for these argument types")
+    throw(MethodError(MatSTRUMPACKGetColPerm, (petsclib, F)))
 end
 
 @for_petsc function MatSTRUMPACKGetColPerm(petsclib::$UnionPetscLib, F::AbstractPetscMat )
@@ -20365,7 +20365,7 @@ See also: `MATSOLVERSTRUMPACK`, `Mat`, `MatGetFactor()`, `MatSTRUMPACKSetCompAbs
 $(_doc_external("Mat/MatSTRUMPACKGetCompAbsTol"))
 """
 function MatSTRUMPACKGetCompAbsTol(petsclib::PetscLibType, F::AbstractPetscMat)
-    error("MatSTRUMPACKGetCompAbsTol: no generated method for these argument types")
+    throw(MethodError(MatSTRUMPACKGetCompAbsTol, (petsclib, F)))
 end
 
 @for_petsc function MatSTRUMPACKGetCompAbsTol(petsclib::$UnionPetscLib, F::AbstractPetscMat )
@@ -20404,7 +20404,7 @@ See also: `MATSOLVERSTRUMPACK`, `MatGetFactor()`, `MatSTRUMPACKSetCompButterflyL
 $(_doc_external("Mat/MatSTRUMPACKGetCompButterflyLevels"))
 """
 function MatSTRUMPACKGetCompButterflyLevels(petsclib::PetscLibType, F::AbstractPetscMat)
-    error("MatSTRUMPACKGetCompButterflyLevels: no generated method for these argument types")
+    throw(MethodError(MatSTRUMPACKGetCompButterflyLevels, (petsclib, F)))
 end
 
 @for_petsc function MatSTRUMPACKGetCompButterflyLevels(petsclib::$UnionPetscLib, F::AbstractPetscMat )
@@ -20442,7 +20442,7 @@ See also: `MATSOLVERSTRUMPACK`, `Mat`, `MatGetFactor()`, `MatSTRUMPACKSetCompLea
 $(_doc_external("Mat/MatSTRUMPACKGetCompLeafSize"))
 """
 function MatSTRUMPACKGetCompLeafSize(petsclib::PetscLibType, F::AbstractPetscMat)
-    error("MatSTRUMPACKGetCompLeafSize: no generated method for these argument types")
+    throw(MethodError(MatSTRUMPACKGetCompLeafSize, (petsclib, F)))
 end
 
 @for_petsc function MatSTRUMPACKGetCompLeafSize(petsclib::$UnionPetscLib, F::AbstractPetscMat )
@@ -20480,7 +20480,7 @@ See also: `MATSOLVERSTRUMPACK`, `MatGetFactor()`, `MatSTRUMPACKSetCompLossyPreci
 $(_doc_external("Mat/MatSTRUMPACKGetCompLossyPrecision"))
 """
 function MatSTRUMPACKGetCompLossyPrecision(petsclib::PetscLibType, F::AbstractPetscMat)
-    error("MatSTRUMPACKGetCompLossyPrecision: no generated method for these argument types")
+    throw(MethodError(MatSTRUMPACKGetCompLossyPrecision, (petsclib, F)))
 end
 
 @for_petsc function MatSTRUMPACKGetCompLossyPrecision(petsclib::$UnionPetscLib, F::AbstractPetscMat )
@@ -20518,7 +20518,7 @@ See also: `MATSOLVERSTRUMPACK`, `MatGetFactor()`, `MatSTRUMPACKSetCompMinSepSize
 $(_doc_external("Mat/MatSTRUMPACKGetCompMinSepSize"))
 """
 function MatSTRUMPACKGetCompMinSepSize(petsclib::PetscLibType, F::AbstractPetscMat)
-    error("MatSTRUMPACKGetCompMinSepSize: no generated method for these argument types")
+    throw(MethodError(MatSTRUMPACKGetCompMinSepSize, (petsclib, F)))
 end
 
 @for_petsc function MatSTRUMPACKGetCompMinSepSize(petsclib::$UnionPetscLib, F::AbstractPetscMat )
@@ -20556,7 +20556,7 @@ See also: `MATSOLVERSTRUMPACK`, `Mat`, `MatGetFactor()`, `MatSTRUMPACKSetCompRel
 $(_doc_external("Mat/MatSTRUMPACKGetCompRelTol"))
 """
 function MatSTRUMPACKGetCompRelTol(petsclib::PetscLibType, F::AbstractPetscMat)
-    error("MatSTRUMPACKGetCompRelTol: no generated method for these argument types")
+    throw(MethodError(MatSTRUMPACKGetCompRelTol, (petsclib, F)))
 end
 
 @for_petsc function MatSTRUMPACKGetCompRelTol(petsclib::$UnionPetscLib, F::AbstractPetscMat )
@@ -20592,7 +20592,7 @@ See also: `MATSOLVERSTRUMPACK`, `MatGetFactor()`, `MatSTRUMPACKCompressionType`,
 $(_doc_external("Mat/MatSTRUMPACKGetCompression"))
 """
 function MatSTRUMPACKGetCompression(petsclib::PetscLibType, F::AbstractPetscMat)
-    error("MatSTRUMPACKGetCompression: no generated method for these argument types")
+    throw(MethodError(MatSTRUMPACKGetCompression, (petsclib, F)))
 end
 
 @for_petsc function MatSTRUMPACKGetCompression(petsclib::$UnionPetscLib, F::AbstractPetscMat )
@@ -20631,7 +20631,7 @@ See also: `MATSOLVERSTRUMPACK`, `MatGetFactor()`, `MatSTRUMPACKSetGPU()`
 $(_doc_external("Mat/MatSTRUMPACKGetGPU"))
 """
 function MatSTRUMPACKGetGPU(petsclib::PetscLibType, F::AbstractPetscMat)
-    error("MatSTRUMPACKGetGPU: no generated method for these argument types")
+    throw(MethodError(MatSTRUMPACKGetGPU, (petsclib, F)))
 end
 
 @for_petsc function MatSTRUMPACKGetGPU(petsclib::$UnionPetscLib, F::AbstractPetscMat )
@@ -20669,7 +20669,7 @@ See also: `MATSOLVERSTRUMPACK`, `Mat`, `MatSTRUMPACKReordering`, `MatGetFactor()
 $(_doc_external("Mat/MatSTRUMPACKGetReordering"))
 """
 function MatSTRUMPACKGetReordering(petsclib::PetscLibType, F::AbstractPetscMat)
-    error("MatSTRUMPACKGetReordering: no generated method for these argument types")
+    throw(MethodError(MatSTRUMPACKGetReordering, (petsclib, F)))
 end
 
 @for_petsc function MatSTRUMPACKGetReordering(petsclib::$UnionPetscLib, F::AbstractPetscMat )
@@ -20709,7 +20709,7 @@ See also: `MATSOLVERSTRUMPACK`, `MatSTRUMPACKSetReordering()`, `Mat`, `MatGetFac
 $(_doc_external("Mat/MatSTRUMPACKSetColPerm"))
 """
 function MatSTRUMPACKSetColPerm(petsclib::PetscLibType, F::AbstractPetscMat, cperm::PetscBool)
-    error("MatSTRUMPACKSetColPerm: no generated method for these argument types")
+    throw(MethodError(MatSTRUMPACKSetColPerm, (petsclib, F, cperm)))
 end
 
 @for_petsc function MatSTRUMPACKSetColPerm(petsclib::$UnionPetscLib, F::AbstractPetscMat, cperm::PetscBool )
@@ -20746,7 +20746,7 @@ See also: `MATSOLVERSTRUMPACK`, `Mat`, `MatGetFactor()`, `MatSTRUMPACKGetCompAbs
 $(_doc_external("Mat/MatSTRUMPACKSetCompAbsTol"))
 """
 function MatSTRUMPACKSetCompAbsTol(petsclib::PetscLibType, F::AbstractPetscMat, atol::Real)
-    error("MatSTRUMPACKSetCompAbsTol: no generated method for these argument types")
+    throw(MethodError(MatSTRUMPACKSetCompAbsTol, (petsclib, F, atol)))
 end
 
 @for_petsc function MatSTRUMPACKSetCompAbsTol(petsclib::$UnionPetscLib, F::AbstractPetscMat, atol::$PetscReal )
@@ -20785,7 +20785,7 @@ See also: `MATSOLVERSTRUMPACK`, `MatGetFactor()`, `MatSTRUMPACKGetCompButterflyL
 $(_doc_external("Mat/MatSTRUMPACKSetCompButterflyLevels"))
 """
 function MatSTRUMPACKSetCompButterflyLevels(petsclib::PetscLibType, F::AbstractPetscMat, bfly_lvls::Integer)
-    error("MatSTRUMPACKSetCompButterflyLevels: no generated method for these argument types")
+    throw(MethodError(MatSTRUMPACKSetCompButterflyLevels, (petsclib, F, bfly_lvls)))
 end
 
 @for_petsc function MatSTRUMPACKSetCompButterflyLevels(petsclib::$UnionPetscLib, F::AbstractPetscMat, bfly_lvls::$PetscInt )
@@ -20822,7 +20822,7 @@ See also: `MATSOLVERSTRUMPACK`, `Mat`, `MatGetFactor()`, `MatSTRUMPACKGetCompLea
 $(_doc_external("Mat/MatSTRUMPACKSetCompLeafSize"))
 """
 function MatSTRUMPACKSetCompLeafSize(petsclib::PetscLibType, F::AbstractPetscMat, leaf_size::Integer)
-    error("MatSTRUMPACKSetCompLeafSize: no generated method for these argument types")
+    throw(MethodError(MatSTRUMPACKSetCompLeafSize, (petsclib, F, leaf_size)))
 end
 
 @for_petsc function MatSTRUMPACKSetCompLeafSize(petsclib::$UnionPetscLib, F::AbstractPetscMat, leaf_size::$PetscInt )
@@ -20859,7 +20859,7 @@ See also: `MATSOLVERSTRUMPACK`, `MatGetFactor()`, `MatSTRUMPACKGetCompLossyPreci
 $(_doc_external("Mat/MatSTRUMPACKSetCompLossyPrecision"))
 """
 function MatSTRUMPACKSetCompLossyPrecision(petsclib::PetscLibType, F::AbstractPetscMat, lossy_prec::Integer)
-    error("MatSTRUMPACKSetCompLossyPrecision: no generated method for these argument types")
+    throw(MethodError(MatSTRUMPACKSetCompLossyPrecision, (petsclib, F, lossy_prec)))
 end
 
 @for_petsc function MatSTRUMPACKSetCompLossyPrecision(petsclib::$UnionPetscLib, F::AbstractPetscMat, lossy_prec::$PetscInt )
@@ -20896,7 +20896,7 @@ See also: `MATSOLVERSTRUMPACK`, `MatGetFactor()`, `MatSTRUMPACKGetCompMinSepSize
 $(_doc_external("Mat/MatSTRUMPACKSetCompMinSepSize"))
 """
 function MatSTRUMPACKSetCompMinSepSize(petsclib::PetscLibType, F::AbstractPetscMat, min_sep_size::Integer)
-    error("MatSTRUMPACKSetCompMinSepSize: no generated method for these argument types")
+    throw(MethodError(MatSTRUMPACKSetCompMinSepSize, (petsclib, F, min_sep_size)))
 end
 
 @for_petsc function MatSTRUMPACKSetCompMinSepSize(petsclib::$UnionPetscLib, F::AbstractPetscMat, min_sep_size::$PetscInt )
@@ -20933,7 +20933,7 @@ See also: `MATSOLVERSTRUMPACK`, `Mat`, `MatGetFactor()`, `MatSTRUMPACKGetCompRel
 $(_doc_external("Mat/MatSTRUMPACKSetCompRelTol"))
 """
 function MatSTRUMPACKSetCompRelTol(petsclib::PetscLibType, F::AbstractPetscMat, rtol::Real)
-    error("MatSTRUMPACKSetCompRelTol: no generated method for these argument types")
+    throw(MethodError(MatSTRUMPACKSetCompRelTol, (petsclib, F, rtol)))
 end
 
 @for_petsc function MatSTRUMPACKSetCompRelTol(petsclib::$UnionPetscLib, F::AbstractPetscMat, rtol::$PetscReal )
@@ -20968,7 +20968,7 @@ See also: `MATSOLVERSTRUMPACK`, `MatGetFactor()`, `MatSTRUMPACKCompressionType`,
 $(_doc_external("Mat/MatSTRUMPACKSetCompression"))
 """
 function MatSTRUMPACKSetCompression(petsclib::PetscLibType, F::AbstractPetscMat, comp::MatSTRUMPACKCompressionType)
-    error("MatSTRUMPACKSetCompression: no generated method for these argument types")
+    throw(MethodError(MatSTRUMPACKSetCompression, (petsclib, F, comp)))
 end
 
 @for_petsc function MatSTRUMPACKSetCompression(petsclib::$UnionPetscLib, F::AbstractPetscMat, comp::MatSTRUMPACKCompressionType )
@@ -21006,7 +21006,7 @@ See also: `MATSOLVERSTRUMPACK`, `MatGetFactor()`, `MatSTRUMPACKGetGPU()`
 $(_doc_external("Mat/MatSTRUMPACKSetGPU"))
 """
 function MatSTRUMPACKSetGPU(petsclib::PetscLibType, F::AbstractPetscMat, gpu::PetscBool)
-    error("MatSTRUMPACKSetGPU: no generated method for these argument types")
+    throw(MethodError(MatSTRUMPACKSetGPU, (petsclib, F, gpu)))
 end
 
 @for_petsc function MatSTRUMPACKSetGPU(petsclib::$UnionPetscLib, F::AbstractPetscMat, gpu::PetscBool )
@@ -21044,7 +21044,7 @@ See also: `MATSOLVERSTRUMPACK`, `MatGetFactor()`
 $(_doc_external("Mat/MatSTRUMPACKSetGeometricComponents"))
 """
 function MatSTRUMPACKSetGeometricComponents(petsclib::PetscLibType, F::AbstractPetscMat, nc::Integer)
-    error("MatSTRUMPACKSetGeometricComponents: no generated method for these argument types")
+    throw(MethodError(MatSTRUMPACKSetGeometricComponents, (petsclib, F, nc)))
 end
 
 @for_petsc function MatSTRUMPACKSetGeometricComponents(petsclib::$UnionPetscLib, F::AbstractPetscMat, nc::$PetscInt )
@@ -21080,7 +21080,7 @@ See also: `MATSOLVERSTRUMPACK`, `MatGetFactor()`
 $(_doc_external("Mat/MatSTRUMPACKSetGeometricNxyz"))
 """
 function MatSTRUMPACKSetGeometricNxyz(petsclib::PetscLibType, F::AbstractPetscMat, nx::Integer, ny::Integer, nz::Integer)
-    error("MatSTRUMPACKSetGeometricNxyz: no generated method for these argument types")
+    throw(MethodError(MatSTRUMPACKSetGeometricNxyz, (petsclib, F, nx, ny, nz)))
 end
 
 @for_petsc function MatSTRUMPACKSetGeometricNxyz(petsclib::$UnionPetscLib, F::AbstractPetscMat, nx::$PetscInt, ny::$PetscInt, nz::$PetscInt )
@@ -21117,7 +21117,7 @@ See also: `MATSOLVERSTRUMPACK`, `MatGetFactor()`
 $(_doc_external("Mat/MatSTRUMPACKSetGeometricWidth"))
 """
 function MatSTRUMPACKSetGeometricWidth(petsclib::PetscLibType, F::AbstractPetscMat, w::Integer)
-    error("MatSTRUMPACKSetGeometricWidth: no generated method for these argument types")
+    throw(MethodError(MatSTRUMPACKSetGeometricWidth, (petsclib, F, w)))
 end
 
 @for_petsc function MatSTRUMPACKSetGeometricWidth(petsclib::$UnionPetscLib, F::AbstractPetscMat, w::$PetscInt )
@@ -21154,7 +21154,7 @@ See also: `MATSOLVERSTRUMPACK`, `Mat`, `MatSTRUMPACKReordering`, `MatGetFactor()
 $(_doc_external("Mat/MatSTRUMPACKSetReordering"))
 """
 function MatSTRUMPACKSetReordering(petsclib::PetscLibType, F::AbstractPetscMat, reordering::MatSTRUMPACKReordering)
-    error("MatSTRUMPACKSetReordering: no generated method for these argument types")
+    throw(MethodError(MatSTRUMPACKSetReordering, (petsclib, F, reordering)))
 end
 
 @for_petsc function MatSTRUMPACKSetReordering(petsclib::$UnionPetscLib, F::AbstractPetscMat, reordering::MatSTRUMPACKReordering )
@@ -21192,7 +21192,7 @@ See also: `Mat`, `MATSCALAPACK`, `MatCreateScaLAPACK()`, `MatScaLAPACKSetBlockSi
 $(_doc_external("Mat/MatScaLAPACKGetBlockSizes"))
 """
 function MatScaLAPACKGetBlockSizes(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatScaLAPACKGetBlockSizes: no generated method for these argument types")
+    throw(MethodError(MatScaLAPACKGetBlockSizes, (petsclib, A)))
 end
 
 @for_petsc function MatScaLAPACKGetBlockSizes(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -21232,7 +21232,7 @@ See also: `Mat`, `MATSCALAPACK`, `MatCreateScaLAPACK()`, `MatScaLAPACKGetBlockSi
 $(_doc_external("Mat/MatScaLAPACKSetBlockSizes"))
 """
 function MatScaLAPACKSetBlockSizes(petsclib::PetscLibType, A::AbstractPetscMat, mb::Integer, nb::Integer)
-    error("MatScaLAPACKSetBlockSizes: no generated method for these argument types")
+    throw(MethodError(MatScaLAPACKSetBlockSizes, (petsclib, A, mb, nb)))
 end
 
 @for_petsc function MatScaLAPACKSetBlockSizes(petsclib::$UnionPetscLib, A::AbstractPetscMat, mb::$PetscInt, nb::$PetscInt )
@@ -21266,7 +21266,7 @@ See also: `Mat`, `MatDiagonalScale()`
 $(_doc_external("Mat/MatScale"))
 """
 function MatScale(petsclib::PetscLibType, mat::AbstractPetscMat, a::Number)
-    error("MatScale: no generated method for these argument types")
+    throw(MethodError(MatScale, (petsclib, mat, a)))
 end
 
 @for_petsc function MatScale(petsclib::$UnionPetscLib, mat::AbstractPetscMat, a::$PetscScalar )
@@ -21302,7 +21302,7 @@ See also: `Mat`, `MATSCATTER`, `MatCreateScatter()`, `MatScatterSetVecScatter()`
 $(_doc_external("Mat/MatScatterGetVecScatter"))
 """
 function MatScatterGetVecScatter(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatScatterGetVecScatter: no generated method for these argument types")
+    throw(MethodError(MatScatterGetVecScatter, (petsclib, mat)))
 end
 
 @for_petsc function MatScatterGetVecScatter(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -21338,7 +21338,7 @@ See also: `Mat`, `MATSCATTER`, `MatCreateScatter()`
 $(_doc_external("Mat/MatScatterSetVecScatter"))
 """
 function MatScatterSetVecScatter(petsclib::PetscLibType, mat::AbstractPetscMat, scatter::VecScatter)
-    error("MatScatterSetVecScatter: no generated method for these argument types")
+    throw(MethodError(MatScatterSetVecScatter, (petsclib, mat, scatter)))
 end
 
 @for_petsc function MatScatterSetVecScatter(petsclib::$UnionPetscLib, mat::AbstractPetscMat, scatter::VecScatter )
@@ -21374,7 +21374,7 @@ See also: `MatCreateSchurComplement()`, `MatSchurComplementUpdateSubMatrices()`,
 $(_doc_external("KSP/MatSchurComplementComputeExplicitOperator"))
 """
 function MatSchurComplementComputeExplicitOperator(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatSchurComplementComputeExplicitOperator: no generated method for these argument types")
+    throw(MethodError(MatSchurComplementComputeExplicitOperator, (petsclib, A)))
 end
 
 @for_petsc function MatSchurComplementComputeExplicitOperator(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -21413,7 +21413,7 @@ See also: `MatSchurComplementAinvType`, `MatCreateSchurComplement()`, `MatGetSch
 $(_doc_external("KSP/MatSchurComplementGetAinvType"))
 """
 function MatSchurComplementGetAinvType(petsclib::PetscLibType, S::AbstractPetscMat)
-    error("MatSchurComplementGetAinvType: no generated method for these argument types")
+    throw(MethodError(MatSchurComplementGetAinvType, (petsclib, S)))
 end
 
 @for_petsc function MatSchurComplementGetAinvType(petsclib::$UnionPetscLib, S::AbstractPetscMat )
@@ -21451,7 +21451,7 @@ See also: `Mat`, `MatSchurComplementSetKSP()`, `MatCreateSchurComplement()`, `Ma
 $(_doc_external("KSP/MatSchurComplementGetKSP"))
 """
 function MatSchurComplementGetKSP(petsclib::PetscLibType, S::AbstractPetscMat)
-    error("MatSchurComplementGetKSP: no generated method for these argument types")
+    throw(MethodError(MatSchurComplementGetKSP, (petsclib, S)))
 end
 
 @for_petsc function MatSchurComplementGetKSP(petsclib::$UnionPetscLib, S::AbstractPetscMat )
@@ -21490,7 +21490,7 @@ See also: `MatCreateSubMatrix()`, `PCFIELDSPLIT`, `MatGetSchurComplement()`, `Ma
 $(_doc_external("KSP/MatSchurComplementGetPmat"))
 """
 function MatSchurComplementGetPmat(petsclib::PetscLibType, S::AbstractPetscMat, preuse::MatReuse)
-    error("MatSchurComplementGetPmat: no generated method for these argument types")
+    throw(MethodError(MatSchurComplementGetPmat, (petsclib, S, preuse)))
 end
 
 @for_petsc function MatSchurComplementGetPmat(petsclib::$UnionPetscLib, S::AbstractPetscMat, preuse::MatReuse )
@@ -21532,7 +21532,7 @@ See also: `MatCreateNormal()`, `MatMult()`, `MatCreate()`, `MatSchurComplementGe
 $(_doc_external("KSP/MatSchurComplementGetSubMatrices"))
 """
 function MatSchurComplementGetSubMatrices(petsclib::PetscLibType, S::AbstractPetscMat)
-    error("MatSchurComplementGetSubMatrices: no generated method for these argument types")
+    throw(MethodError(MatSchurComplementGetSubMatrices, (petsclib, S)))
 end
 
 @for_petsc function MatSchurComplementGetSubMatrices(petsclib::$UnionPetscLib, S::AbstractPetscMat )
@@ -21580,7 +21580,7 @@ See also: `MatSchurComplementAinvType`, `MatCreateSchurComplement()`, `MatGetSch
 $(_doc_external("KSP/MatSchurComplementSetAinvType"))
 """
 function MatSchurComplementSetAinvType(petsclib::PetscLibType, S::AbstractPetscMat, ainvtype::MatSchurComplementAinvType)
-    error("MatSchurComplementSetAinvType: no generated method for these argument types")
+    throw(MethodError(MatSchurComplementSetAinvType, (petsclib, S, ainvtype)))
 end
 
 @for_petsc function MatSchurComplementSetAinvType(petsclib::$UnionPetscLib, S::AbstractPetscMat, ainvtype::MatSchurComplementAinvType )
@@ -21614,7 +21614,7 @@ See also: `Mat`, `MatSchurComplementGetKSP()`, `MatCreateSchurComplement()`, `Ma
 $(_doc_external("KSP/MatSchurComplementSetKSP"))
 """
 function MatSchurComplementSetKSP(petsclib::PetscLibType, S::AbstractPetscMat, ksp::AbstractKSP)
-    error("MatSchurComplementSetKSP: no generated method for these argument types")
+    throw(MethodError(MatSchurComplementSetKSP, (petsclib, S, ksp)))
 end
 
 @for_petsc function MatSchurComplementSetKSP(petsclib::$UnionPetscLib, S::AbstractPetscMat, ksp::AbstractKSP )
@@ -21652,7 +21652,7 @@ See also: `Mat`, `MatCreateNormal()`, `MatMult()`, `MatCreate()`, `MatSchurCompl
 $(_doc_external("KSP/MatSchurComplementSetSubMatrices"))
 """
 function MatSchurComplementSetSubMatrices(petsclib::PetscLibType, S::AbstractPetscMat, A00::AbstractPetscMat, Ap00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat)
-    error("MatSchurComplementSetSubMatrices: no generated method for these argument types")
+    throw(MethodError(MatSchurComplementSetSubMatrices, (petsclib, S, A00, Ap00, A01, A10, A11)))
 end
 
 @for_petsc function MatSchurComplementSetSubMatrices(petsclib::$UnionPetscLib, S::AbstractPetscMat, A00::AbstractPetscMat, Ap00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat )
@@ -21690,7 +21690,7 @@ See also: `Mat`, `MatCreateNormal()`, `MatMult()`, `MatCreate()`, `MatSchurCompl
 $(_doc_external("KSP/MatSchurComplementUpdateSubMatrices"))
 """
 function MatSchurComplementUpdateSubMatrices(petsclib::PetscLibType, S::AbstractPetscMat, A00::AbstractPetscMat, Ap00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat)
-    error("MatSchurComplementUpdateSubMatrices: no generated method for these argument types")
+    throw(MethodError(MatSchurComplementUpdateSubMatrices, (petsclib, S, A00, Ap00, A01, A10, A11)))
 end
 
 @for_petsc function MatSchurComplementUpdateSubMatrices(petsclib::$UnionPetscLib, S::AbstractPetscMat, A00::AbstractPetscMat, Ap00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat )
@@ -21725,7 +21725,7 @@ See also: `Mat`, `MatSetVariableBlockSizes()`, `MatComputeVariableBlockEnvelope(
 $(_doc_external("Mat/MatSelectVariableBlockSizes"))
 """
 function MatSelectVariableBlockSizes(petsclib::PetscLibType, subA::AbstractPetscMat, A::AbstractPetscMat, isrow::AbstractIS)
-    error("MatSelectVariableBlockSizes: no generated method for these argument types")
+    throw(MethodError(MatSelectVariableBlockSizes, (petsclib, subA, A, isrow)))
 end
 
 @for_petsc function MatSelectVariableBlockSizes(petsclib::$UnionPetscLib, subA::AbstractPetscMat, A::AbstractPetscMat, isrow::AbstractIS )
@@ -21748,7 +21748,7 @@ end
 $(_doc_external("Mat/MatSeqAIJCUSPARSEGetArray"))
 """
 function MatSeqAIJCUSPARSEGetArray(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
-    error("MatSeqAIJCUSPARSEGetArray: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJCUSPARSEGetArray, (petsclib, A, M_a)))
 end
 
 @for_petsc function MatSeqAIJCUSPARSEGetArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
@@ -21771,7 +21771,7 @@ end
 $(_doc_external("Mat/MatSeqAIJCUSPARSEGetArrayRead"))
 """
 function MatSeqAIJCUSPARSEGetArrayRead(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
-    error("MatSeqAIJCUSPARSEGetArrayRead: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJCUSPARSEGetArrayRead, (petsclib, A, M_a)))
 end
 
 @for_petsc function MatSeqAIJCUSPARSEGetArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
@@ -21794,7 +21794,7 @@ end
 $(_doc_external("Mat/MatSeqAIJCUSPARSEGetArrayWrite"))
 """
 function MatSeqAIJCUSPARSEGetArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
-    error("MatSeqAIJCUSPARSEGetArrayWrite: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJCUSPARSEGetArrayWrite, (petsclib, A, M_a)))
 end
 
 @for_petsc function MatSeqAIJCUSPARSEGetArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
@@ -21817,7 +21817,7 @@ end
 $(_doc_external("Mat/MatSeqAIJCUSPARSEGetIJ"))
 """
 function MatSeqAIJCUSPARSEGetIJ(petsclib::PetscLibType, A::AbstractPetscMat, compressed::PetscBool, i::Cint, j::Cint)
-    error("MatSeqAIJCUSPARSEGetIJ: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJCUSPARSEGetIJ, (petsclib, A, compressed, i, j)))
 end
 
 @for_petsc function MatSeqAIJCUSPARSEGetIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat, compressed::PetscBool, i::Cint, j::Cint )
@@ -21840,7 +21840,7 @@ end
 $(_doc_external("Mat/MatSeqAIJCUSPARSERestoreArray"))
 """
 function MatSeqAIJCUSPARSERestoreArray(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
-    error("MatSeqAIJCUSPARSERestoreArray: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJCUSPARSERestoreArray, (petsclib, A, M_a)))
 end
 
 @for_petsc function MatSeqAIJCUSPARSERestoreArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
@@ -21863,7 +21863,7 @@ end
 $(_doc_external("Mat/MatSeqAIJCUSPARSERestoreArrayRead"))
 """
 function MatSeqAIJCUSPARSERestoreArrayRead(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
-    error("MatSeqAIJCUSPARSERestoreArrayRead: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJCUSPARSERestoreArrayRead, (petsclib, A, M_a)))
 end
 
 @for_petsc function MatSeqAIJCUSPARSERestoreArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
@@ -21886,7 +21886,7 @@ end
 $(_doc_external("Mat/MatSeqAIJCUSPARSERestoreArrayWrite"))
 """
 function MatSeqAIJCUSPARSERestoreArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Number)
-    error("MatSeqAIJCUSPARSERestoreArrayWrite: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJCUSPARSERestoreArrayWrite, (petsclib, A, M_a)))
 end
 
 @for_petsc function MatSeqAIJCUSPARSERestoreArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::$PetscScalar )
@@ -21909,7 +21909,7 @@ end
 $(_doc_external("Mat/MatSeqAIJCUSPARSERestoreIJ"))
 """
 function MatSeqAIJCUSPARSERestoreIJ(petsclib::PetscLibType, A::AbstractPetscMat, compressed::PetscBool, i::Cint, j::Cint)
-    error("MatSeqAIJCUSPARSERestoreIJ: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJCUSPARSERestoreIJ, (petsclib, A, compressed, i, j)))
 end
 
 @for_petsc function MatSeqAIJCUSPARSERestoreIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat, compressed::PetscBool, i::Cint, j::Cint )
@@ -21992,7 +21992,7 @@ See also: `Mat`, `MatSeqAIJGetArray()`, `MatSeqAIJRestoreArrayRead()`
 $(_doc_external("Mat/MatSeqAIJGetArrayRead"))
 """
 function MatSeqAIJGetArrayRead(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatSeqAIJGetArrayRead: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJGetArrayRead, (petsclib, A)))
 end
 
 @for_petsc function MatSeqAIJGetArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -22030,7 +22030,7 @@ See also: `Mat`, `MatSeqAIJGetArray()`, `MatSeqAIJRestoreArrayWrite()`
 $(_doc_external("Mat/MatSeqAIJGetArrayWrite"))
 """
 function MatSeqAIJGetArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatSeqAIJGetArrayWrite: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJGetArrayWrite, (petsclib, A)))
 end
 
 @for_petsc function MatSeqAIJGetArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -22071,7 +22071,7 @@ See also: `Mat`, `MatSeqAIJGetArray()`, `MatSeqAIJGetArrayRead()`
 $(_doc_external("Mat/MatSeqAIJGetCSRAndMemType"))
 """
 function MatSeqAIJGetCSRAndMemType(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatSeqAIJGetCSRAndMemType: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJGetCSRAndMemType, (petsclib, mat)))
 end
 
 @for_petsc function MatSeqAIJGetCSRAndMemType(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -22120,7 +22120,7 @@ See also: `Mat`, `MatSeqAIJRestoreArray()`
 $(_doc_external("Mat/MatSeqAIJGetMaxRowNonzeros"))
 """
 function MatSeqAIJGetMaxRowNonzeros(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatSeqAIJGetMaxRowNonzeros: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJGetMaxRowNonzeros, (petsclib, A)))
 end
 
 @for_petsc function MatSeqAIJGetMaxRowNonzeros(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -22145,7 +22145,7 @@ end
 $(_doc_external("Mat/MatSeqAIJHIPSPARSEGetArray"))
 """
 function MatSeqAIJHIPSPARSEGetArray(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatSeqAIJHIPSPARSEGetArray: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJHIPSPARSEGetArray, (petsclib, A)))
 end
 
 @for_petsc function MatSeqAIJHIPSPARSEGetArray(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -22170,7 +22170,7 @@ end
 $(_doc_external("Mat/MatSeqAIJHIPSPARSEGetArrayRead"))
 """
 function MatSeqAIJHIPSPARSEGetArrayRead(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatSeqAIJHIPSPARSEGetArrayRead: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJHIPSPARSEGetArrayRead, (petsclib, A)))
 end
 
 @for_petsc function MatSeqAIJHIPSPARSEGetArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -22195,7 +22195,7 @@ end
 $(_doc_external("Mat/MatSeqAIJHIPSPARSEGetArrayWrite"))
 """
 function MatSeqAIJHIPSPARSEGetArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatSeqAIJHIPSPARSEGetArrayWrite: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJHIPSPARSEGetArrayWrite, (petsclib, A)))
 end
 
 @for_petsc function MatSeqAIJHIPSPARSEGetArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -22220,7 +22220,7 @@ end
 $(_doc_external("Mat/MatSeqAIJHIPSPARSEGetIJ"))
 """
 function MatSeqAIJHIPSPARSEGetIJ(petsclib::PetscLibType, A::AbstractPetscMat, compressed::PetscBool, i::Union{Ptr, AbstractArray{Cint}}, j::Union{Ptr, AbstractArray{Cint}})
-    error("MatSeqAIJHIPSPARSEGetIJ: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJHIPSPARSEGetIJ, (petsclib, A, compressed, i, j)))
 end
 
 @for_petsc function MatSeqAIJHIPSPARSEGetIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat, compressed::PetscBool, i::Union{Ptr, AbstractArray{Cint}}, j::Union{Ptr, AbstractArray{Cint}} )
@@ -22245,7 +22245,7 @@ end
 $(_doc_external("Mat/MatSeqAIJHIPSPARSERestoreArray"))
 """
 function MatSeqAIJHIPSPARSERestoreArray(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Union{Ptr, AbstractArray{<:Number}})
-    error("MatSeqAIJHIPSPARSERestoreArray: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJHIPSPARSERestoreArray, (petsclib, A, M_a)))
 end
 
 @for_petsc function MatSeqAIJHIPSPARSERestoreArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::Union{Ptr, AbstractArray{$PetscScalar}} )
@@ -22269,7 +22269,7 @@ end
 $(_doc_external("Mat/MatSeqAIJHIPSPARSERestoreArrayRead"))
 """
 function MatSeqAIJHIPSPARSERestoreArrayRead(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Union{Ptr, AbstractArray{<:Number}})
-    error("MatSeqAIJHIPSPARSERestoreArrayRead: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJHIPSPARSERestoreArrayRead, (petsclib, A, M_a)))
 end
 
 @for_petsc function MatSeqAIJHIPSPARSERestoreArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::Union{Ptr, AbstractArray{$PetscScalar}} )
@@ -22293,7 +22293,7 @@ end
 $(_doc_external("Mat/MatSeqAIJHIPSPARSERestoreArrayWrite"))
 """
 function MatSeqAIJHIPSPARSERestoreArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat, M_a::Union{Ptr, AbstractArray{<:Number}})
-    error("MatSeqAIJHIPSPARSERestoreArrayWrite: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJHIPSPARSERestoreArrayWrite, (petsclib, A, M_a)))
 end
 
 @for_petsc function MatSeqAIJHIPSPARSERestoreArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::Union{Ptr, AbstractArray{$PetscScalar}} )
@@ -22317,7 +22317,7 @@ end
 $(_doc_external("Mat/MatSeqAIJHIPSPARSERestoreIJ"))
 """
 function MatSeqAIJHIPSPARSERestoreIJ(petsclib::PetscLibType, A::AbstractPetscMat, compressed::PetscBool, i::Union{Ptr, AbstractArray{Cint}}, j::Union{Ptr, AbstractArray{Cint}})
-    error("MatSeqAIJHIPSPARSERestoreIJ: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJHIPSPARSERestoreIJ, (petsclib, A, compressed, i, j)))
 end
 
 @for_petsc function MatSeqAIJHIPSPARSERestoreIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat, compressed::PetscBool, i::Union{Ptr, AbstractArray{Cint}}, j::Union{Ptr, AbstractArray{Cint}} )
@@ -22355,7 +22355,7 @@ See also: `Mat`, `MatCreateSeqAIJ()`, `MATSEQAIJ`, `MATKAIJ`, `MatReuse`
 $(_doc_external("Mat/MatSeqAIJKron"))
 """
 function MatSeqAIJKron(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, reuse::MatReuse)
-    error("MatSeqAIJKron: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJKron, (petsclib, A, B, reuse)))
 end
 
 @for_petsc function MatSeqAIJKron(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, reuse::MatReuse )
@@ -22391,7 +22391,7 @@ See also: `Mat`, `MatSeqAIJRegisterAll()`
 $(_doc_external("Mat/MatSeqAIJRegister"))
 """
 function MatSeqAIJRegister(petsclib::PetscLibType, sname::String, fnc::external)
-    error("MatSeqAIJRegister: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJRegister, (petsclib, sname, fnc)))
 end
 
 @for_petsc function MatSeqAIJRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
@@ -22425,7 +22425,7 @@ See also: `Mat`, `MatSeqAIJGetArray()`
 $(_doc_external("Mat/MatSeqAIJRestoreArray"))
 """
 function MatSeqAIJRestoreArray(petsclib::PetscLibType, A::AbstractPetscMat, array::Union{Ptr, AbstractArray{<:Number}})
-    error("MatSeqAIJRestoreArray: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJRestoreArray, (petsclib, A, array)))
 end
 
 @for_petsc function MatSeqAIJRestoreArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::Union{Ptr, AbstractArray{$PetscScalar}} )
@@ -22462,7 +22462,7 @@ See also: `Mat`, `MatSeqAIJGetArray()`, `MatSeqAIJGetArrayRead()`
 $(_doc_external("Mat/MatSeqAIJRestoreArrayRead"))
 """
 function MatSeqAIJRestoreArrayRead(petsclib::PetscLibType, A::AbstractPetscMat, array::Union{Ptr, AbstractArray{<:Number}})
-    error("MatSeqAIJRestoreArrayRead: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJRestoreArrayRead, (petsclib, A, array)))
 end
 
 @for_petsc function MatSeqAIJRestoreArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::Union{Ptr, AbstractArray{$PetscScalar}} )
@@ -22499,7 +22499,7 @@ See also: `Mat`, `MatSeqAIJGetArray()`, `MatSeqAIJGetArrayWrite()`
 $(_doc_external("Mat/MatSeqAIJRestoreArrayWrite"))
 """
 function MatSeqAIJRestoreArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat, array::Union{Ptr, AbstractArray{<:Number}})
-    error("MatSeqAIJRestoreArrayWrite: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJRestoreArrayWrite, (petsclib, A, array)))
 end
 
 @for_petsc function MatSeqAIJRestoreArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::Union{Ptr, AbstractArray{$PetscScalar}} )
@@ -22533,7 +22533,7 @@ See also: `Mat`, `MATSEQAIJ`
 $(_doc_external("Mat/MatSeqAIJSetColumnIndices"))
 """
 function MatSeqAIJSetColumnIndices(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatSeqAIJSetColumnIndices: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJSetColumnIndices, (petsclib, mat)))
 end
 
 @for_petsc function MatSeqAIJSetColumnIndices(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -22579,7 +22579,7 @@ See also: `Mat`, `MatCreate()`, `MatCreateAIJ()`, `MatSetValues()`, `MatSeqAIJSe
 $(_doc_external("Mat/MatSeqAIJSetPreallocation"))
 """
 function MatSeqAIJSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat, nz::Integer, nnz::Union{Ptr, AbstractVector{<:Number}})
-    error("MatSeqAIJSetPreallocation: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJSetPreallocation, (petsclib, B, nz, nnz)))
 end
 
 @for_petsc function MatSeqAIJSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, nz::$PetscInt, nnz::Union{Ptr, Vector{$PetscInt}} )
@@ -22613,7 +22613,7 @@ See also: `Mat`, `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetValues()`, `MatSeqAI
 $(_doc_external("Mat/MatSeqAIJSetPreallocationCSR"))
 """
 function MatSeqAIJSetPreallocationCSR(petsclib::PetscLibType, B::AbstractPetscMat, i::AbstractVector{<:Number}, j::AbstractVector{<:Number}, v::AbstractVector{<:Number})
-    error("MatSeqAIJSetPreallocationCSR: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJSetPreallocationCSR, (petsclib, B, i, j, v)))
 end
 
 @for_petsc function MatSeqAIJSetPreallocationCSR(petsclib::$UnionPetscLib, B::AbstractPetscMat, i::Vector{$PetscInt}, j::Vector{$PetscInt}, v::Vector{$PetscScalar} )
@@ -22645,7 +22645,7 @@ See also: `Mat`, `MatSetOption()`, `MAT_SORTED_FULL`, `MatSetValues()`, `MatSeqA
 $(_doc_external("Mat/MatSeqAIJSetTotalPreallocation"))
 """
 function MatSeqAIJSetTotalPreallocation(petsclib::PetscLibType, A::AbstractPetscMat, nztotal::Integer)
-    error("MatSeqAIJSetTotalPreallocation: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJSetTotalPreallocation, (petsclib, A, nztotal)))
 end
 
 @for_petsc function MatSeqAIJSetTotalPreallocation(petsclib::$UnionPetscLib, A::AbstractPetscMat, nztotal::$PetscInt )
@@ -22682,7 +22682,7 @@ See also: `Mat`, `PCSetType()`, `VecSetType()`, `MatCreate()`, `MatType`
 $(_doc_external("Mat/MatSeqAIJSetType"))
 """
 function MatSeqAIJSetType(petsclib::PetscLibType, mat::AbstractPetscMat, matype::String)
-    error("MatSeqAIJSetType: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJSetType, (petsclib, mat, matype)))
 end
 
 @for_petsc function MatSeqAIJSetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, matype::String )
@@ -22722,7 +22722,7 @@ See also: `Mat`, `MATSEQAIJ`, `MatSetValuesLocal()`, `MatSetValues()`
 $(_doc_external("Mat/MatSeqAIJSetValuesLocalFast"))
 """
 function MatSeqAIJSetValuesLocalFast(petsclib::PetscLibType, A::AbstractPetscMat, m::Integer, im::AbstractVector{<:Number}, n::Integer, in::AbstractVector{<:Number}, v::AbstractVector{<:Number}, is::InsertMode)
-    error("MatSeqAIJSetValuesLocalFast: no generated method for these argument types")
+    throw(MethodError(MatSeqAIJSetValuesLocalFast, (petsclib, A, m, im, n, in, v, is)))
 end
 
 @for_petsc function MatSeqAIJSetValuesLocalFast(petsclib::$UnionPetscLib, A::AbstractPetscMat, m::$PetscInt, im::Vector{$PetscInt}, n::$PetscInt, in::Vector{$PetscInt}, v::Vector{$PetscScalar}, is::InsertMode )
@@ -22758,7 +22758,7 @@ See also: `Mat`, `MATSEQBAIJ`, `MatSeqBAIJRestoreArray()`, `MatSeqAIJGetArray()`
 $(_doc_external("Mat/MatSeqBAIJGetArray"))
 """
 function MatSeqBAIJGetArray(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatSeqBAIJGetArray: no generated method for these argument types")
+    throw(MethodError(MatSeqBAIJGetArray, (petsclib, A)))
 end
 
 @for_petsc function MatSeqBAIJGetArray(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -22794,7 +22794,7 @@ See also: `Mat`, `MatSeqBAIJGetArray()`, `MatSeqAIJGetArray()`, `MatSeqAIJRestor
 $(_doc_external("Mat/MatSeqBAIJRestoreArray"))
 """
 function MatSeqBAIJRestoreArray(petsclib::PetscLibType, A::AbstractPetscMat, array::Union{Ptr, AbstractArray{<:Number}})
-    error("MatSeqBAIJRestoreArray: no generated method for these argument types")
+    throw(MethodError(MatSeqBAIJRestoreArray, (petsclib, A, array)))
 end
 
 @for_petsc function MatSeqBAIJRestoreArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::Union{Ptr, AbstractArray{$PetscScalar}} )
@@ -22827,7 +22827,7 @@ See also: `Mat`, `MATSEQBAIJ`, `MatSetValues()`
 $(_doc_external("Mat/MatSeqBAIJSetColumnIndices"))
 """
 function MatSeqBAIJSetColumnIndices(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatSeqBAIJSetColumnIndices: no generated method for these argument types")
+    throw(MethodError(MatSeqBAIJSetColumnIndices, (petsclib, mat)))
 end
 
 @for_petsc function MatSeqBAIJSetColumnIndices(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -22874,7 +22874,7 @@ See also: `Mat`, Sparse Matrices, `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetVal
 $(_doc_external("Mat/MatSeqBAIJSetPreallocation"))
 """
 function MatSeqBAIJSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat, bs::Integer, nz::Integer, nnz::Union{Ptr, AbstractVector{<:Number}})
-    error("MatSeqBAIJSetPreallocation: no generated method for these argument types")
+    throw(MethodError(MatSeqBAIJSetPreallocation, (petsclib, B, bs, nz, nnz)))
 end
 
 @for_petsc function MatSeqBAIJSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, bs::$PetscInt, nz::$PetscInt, nnz::Union{Ptr, Vector{$PetscInt}} )
@@ -22911,7 +22911,7 @@ See also: `Mat`, `MatCreate()`, `MatCreateSeqBAIJ()`, `MatSetValues()`, `MatSeqB
 $(_doc_external("Mat/MatSeqBAIJSetPreallocationCSR"))
 """
 function MatSeqBAIJSetPreallocationCSR(petsclib::PetscLibType, B::AbstractPetscMat, bs::Integer, i::AbstractVector{<:Number}, j::AbstractVector{<:Number}, v::Union{Ptr, AbstractVector{<:Number}})
-    error("MatSeqBAIJSetPreallocationCSR: no generated method for these argument types")
+    throw(MethodError(MatSeqBAIJSetPreallocationCSR, (petsclib, B, bs, i, j, v)))
 end
 
 @for_petsc function MatSeqBAIJSetPreallocationCSR(petsclib::$UnionPetscLib, B::AbstractPetscMat, bs::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, v::Union{Ptr, Vector{$PetscScalar}} )
@@ -22944,7 +22944,7 @@ See also: `Mat`, `MATSEQDENSE`, `MatInvertBlockDiagonal()`, `MatLUFactor()`, `Ma
 $(_doc_external("Mat/MatSeqDenseInvert"))
 """
 function MatSeqDenseInvert(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatSeqDenseInvert: no generated method for these argument types")
+    throw(MethodError(MatSeqDenseInvert, (petsclib, A)))
 end
 
 @for_petsc function MatSeqDenseInvert(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -22978,7 +22978,7 @@ See also: `Mat`, `MATSEQDENSE`, `MatCreate()`, `MatCreateDense()`, `MatSetValues
 $(_doc_external("Mat/MatSeqDenseSetPreallocation"))
 """
 function MatSeqDenseSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat, data::AbstractVector{<:Number})
-    error("MatSeqDenseSetPreallocation: no generated method for these argument types")
+    throw(MethodError(MatSeqDenseSetPreallocation, (petsclib, B, data)))
 end
 
 @for_petsc function MatSeqDenseSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, data::Vector{$PetscScalar} )
@@ -23014,7 +23014,7 @@ See also: `Mat`, `MATSEQSBAIJ`, `MatSeqSBAIJRestoreArray()`, `MatSeqAIJGetArray(
 $(_doc_external("Mat/MatSeqSBAIJGetArray"))
 """
 function MatSeqSBAIJGetArray(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatSeqSBAIJGetArray: no generated method for these argument types")
+    throw(MethodError(MatSeqSBAIJGetArray, (petsclib, A)))
 end
 
 @for_petsc function MatSeqSBAIJGetArray(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -23050,7 +23050,7 @@ See also: `Mat`, `MATSEQSBAIJ`, `MatSeqSBAIJGetArray()`, `MatSeqAIJGetArray()`, 
 $(_doc_external("Mat/MatSeqSBAIJRestoreArray"))
 """
 function MatSeqSBAIJRestoreArray(petsclib::PetscLibType, A::AbstractPetscMat, array::Union{Ptr, AbstractArray{<:Number}})
-    error("MatSeqSBAIJRestoreArray: no generated method for these argument types")
+    throw(MethodError(MatSeqSBAIJRestoreArray, (petsclib, A, array)))
 end
 
 @for_petsc function MatSeqSBAIJRestoreArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::Union{Ptr, AbstractArray{$PetscScalar}} )
@@ -23084,7 +23084,7 @@ See also: `Mat`, `MATSEQSBAIJ`, `MatCreateSeqSBAIJ`
 $(_doc_external("Mat/MatSeqSBAIJSetColumnIndices"))
 """
 function MatSeqSBAIJSetColumnIndices(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatSeqSBAIJSetColumnIndices: no generated method for these argument types")
+    throw(MethodError(MatSeqSBAIJSetColumnIndices, (petsclib, mat)))
 end
 
 @for_petsc function MatSeqSBAIJSetColumnIndices(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -23131,7 +23131,7 @@ See also: `Mat`, Sparse Matrices, `MATSEQSBAIJ`, `MatCreate()`, `MatCreateSeqAIJ
 $(_doc_external("Mat/MatSeqSBAIJSetPreallocation"))
 """
 function MatSeqSBAIJSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat, bs::Integer, nz::Integer, nnz::AbstractVector{<:Number})
-    error("MatSeqSBAIJSetPreallocation: no generated method for these argument types")
+    throw(MethodError(MatSeqSBAIJSetPreallocation, (petsclib, B, bs, nz, nnz)))
 end
 
 @for_petsc function MatSeqSBAIJSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, bs::$PetscInt, nz::$PetscInt, nnz::Vector{$PetscInt} )
@@ -23166,7 +23166,7 @@ See also: `Mat`, `MATSEQSBAIJ`, `MatCreate()`, `MatCreateSeqSBAIJ()`, `MatSetVal
 $(_doc_external("Mat/MatSeqSBAIJSetPreallocationCSR"))
 """
 function MatSeqSBAIJSetPreallocationCSR(petsclib::PetscLibType, B::AbstractPetscMat, bs::Integer, i::AbstractVector{<:Number}, j::AbstractVector{<:Number}, v::AbstractVector{<:Number})
-    error("MatSeqSBAIJSetPreallocationCSR: no generated method for these argument types")
+    throw(MethodError(MatSeqSBAIJSetPreallocationCSR, (petsclib, B, bs, i, j, v)))
 end
 
 @for_petsc function MatSeqSBAIJSetPreallocationCSR(petsclib::$UnionPetscLib, B::AbstractPetscMat, bs::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, v::Vector{$PetscScalar} )
@@ -23202,7 +23202,7 @@ See also: `MATSEQSELL`, `MatSeqSELLGetMaxSliceWidth()`
 $(_doc_external("Mat/MatSeqSELLGetAvgSliceWidth"))
 """
 function MatSeqSELLGetAvgSliceWidth(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatSeqSELLGetAvgSliceWidth: no generated method for these argument types")
+    throw(MethodError(MatSeqSELLGetAvgSliceWidth, (petsclib, A)))
 end
 
 @for_petsc function MatSeqSELLGetAvgSliceWidth(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -23240,7 +23240,7 @@ See also: `MATSEQSELL`, `MatSeqSELLGetAvgSliceWidth()`
 $(_doc_external("Mat/MatSeqSELLGetFillRatio"))
 """
 function MatSeqSELLGetFillRatio(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatSeqSELLGetFillRatio: no generated method for these argument types")
+    throw(MethodError(MatSeqSELLGetFillRatio, (petsclib, A)))
 end
 
 @for_petsc function MatSeqSELLGetFillRatio(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -23278,7 +23278,7 @@ See also: `MATSEQSELL`, `MatSeqSELLGetAvgSliceWidth()`
 $(_doc_external("Mat/MatSeqSELLGetMaxSliceWidth"))
 """
 function MatSeqSELLGetMaxSliceWidth(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatSeqSELLGetMaxSliceWidth: no generated method for these argument types")
+    throw(MethodError(MatSeqSELLGetMaxSliceWidth, (petsclib, A)))
 end
 
 @for_petsc function MatSeqSELLGetMaxSliceWidth(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -23316,7 +23316,7 @@ See also: `MATSEQSELL`, `MatSeqSELLSetSliceHeight()`
 $(_doc_external("Mat/MatSeqSELLGetVarSliceSize"))
 """
 function MatSeqSELLGetVarSliceSize(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatSeqSELLGetVarSliceSize: no generated method for these argument types")
+    throw(MethodError(MatSeqSELLGetVarSliceSize, (petsclib, A)))
 end
 
 @for_petsc function MatSeqSELLGetVarSliceSize(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -23355,7 +23355,7 @@ See also: `Mat`, `MATSEQSELL`, `MATSELL`, `MatCreate()`, `MatCreateSELL()`, `Mat
 $(_doc_external("Mat/MatSeqSELLSetPreallocation"))
 """
 function MatSeqSELLSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat, rlenmax::Integer, rlen::AbstractVector{<:Number})
-    error("MatSeqSELLSetPreallocation: no generated method for these argument types")
+    throw(MethodError(MatSeqSELLSetPreallocation, (petsclib, B, rlenmax, rlen)))
 end
 
 @for_petsc function MatSeqSELLSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, rlenmax::$PetscInt, rlen::Vector{$PetscInt} )
@@ -23387,7 +23387,7 @@ See also: `MATSEQSELL`, `MatSeqSELLGetVarSliceSize()`
 $(_doc_external("Mat/MatSeqSELLSetSliceHeight"))
 """
 function MatSeqSELLSetSliceHeight(petsclib::PetscLibType, A::AbstractPetscMat, sliceheight::Integer)
-    error("MatSeqSELLSetSliceHeight: no generated method for these argument types")
+    throw(MethodError(MatSeqSELLSetSliceHeight, (petsclib, A, sliceheight)))
 end
 
 @for_petsc function MatSeqSELLSetSliceHeight(petsclib::$UnionPetscLib, A::AbstractPetscMat, sliceheight::$PetscInt )
@@ -23419,7 +23419,7 @@ See also: `Mat`, `VecSetBindingPropagates()`, `MatGetBindingPropagates()`
 $(_doc_external("Mat/MatSetBindingPropagates"))
 """
 function MatSetBindingPropagates(petsclib::PetscLibType, A::AbstractPetscMat, flg::PetscBool)
-    error("MatSetBindingPropagates: no generated method for these argument types")
+    throw(MethodError(MatSetBindingPropagates, (petsclib, A, flg)))
 end
 
 @for_petsc function MatSetBindingPropagates(petsclib::$UnionPetscLib, A::AbstractPetscMat, flg::PetscBool )
@@ -23453,7 +23453,7 @@ See also: `Mat`, `MATBAIJ`, `MATSBAIJ`, `MATAIJ`, `MatCreateSeqBAIJ()`, `MatCrea
 $(_doc_external("Mat/MatSetBlockSize"))
 """
 function MatSetBlockSize(petsclib::PetscLibType, mat::AbstractPetscMat, bs::Integer)
-    error("MatSetBlockSize: no generated method for these argument types")
+    throw(MethodError(MatSetBlockSize, (petsclib, mat, bs)))
 end
 
 @for_petsc function MatSetBlockSize(petsclib::$UnionPetscLib, mat::AbstractPetscMat, bs::$PetscInt )
@@ -23488,7 +23488,7 @@ See also: `Mat`, `MatCreateSeqBAIJ()`, `MatCreateBAIJ()`, `MatGetBlockSize()`, `
 $(_doc_external("Mat/MatSetBlockSizes"))
 """
 function MatSetBlockSizes(petsclib::PetscLibType, mat::AbstractPetscMat, rbs::Integer, cbs::Integer)
-    error("MatSetBlockSizes: no generated method for these argument types")
+    throw(MethodError(MatSetBlockSizes, (petsclib, mat, rbs, cbs)))
 end
 
 @for_petsc function MatSetBlockSizes(petsclib::$UnionPetscLib, mat::AbstractPetscMat, rbs::$PetscInt, cbs::$PetscInt )
@@ -23523,7 +23523,7 @@ See also: `Mat`, `MatCreateSeqBAIJ()`, `MatCreateBAIJ()`, `MatGetBlockSize()`, `
 $(_doc_external("Mat/MatSetBlockSizesFromMats"))
 """
 function MatSetBlockSizesFromMats(petsclib::PetscLibType, mat::AbstractPetscMat, fromRow::AbstractPetscMat, fromCol::AbstractPetscMat)
-    error("MatSetBlockSizesFromMats: no generated method for these argument types")
+    throw(MethodError(MatSetBlockSizesFromMats, (petsclib, mat, fromRow, fromCol)))
 end
 
 @for_petsc function MatSetBlockSizesFromMats(petsclib::$UnionPetscLib, mat::AbstractPetscMat, fromRow::AbstractPetscMat, fromCol::AbstractPetscMat )
@@ -23557,7 +23557,7 @@ See also: `DM`, `MatGetDM()`, `DMCreateMatrix()`, `DMSetMatType()`
 $(_doc_external("DM/MatSetDM"))
 """
 function MatSetDM(petsclib::PetscLibType, A::AbstractPetscMat, dm::AbstractPetscDM)
-    error("MatSetDM: no generated method for these argument types")
+    throw(MethodError(MatSetDM, (petsclib, A, dm)))
 end
 
 @for_petsc function MatSetDM(petsclib::$UnionPetscLib, A::AbstractPetscMat, dm::AbstractPetscDM )
@@ -23591,7 +23591,7 @@ See also: `Mat`, `PCSetErrorIfFailure()`, `KSPConvergedReason`, `SNESConvergedRe
 $(_doc_external("Mat/MatSetErrorIfFailure"))
 """
 function MatSetErrorIfFailure(petsclib::PetscLibType, mat::AbstractPetscMat, flg::PetscBool)
-    error("MatSetErrorIfFailure: no generated method for these argument types")
+    throw(MethodError(MatSetErrorIfFailure, (petsclib, mat, flg)))
 end
 
 @for_petsc function MatSetErrorIfFailure(petsclib::$UnionPetscLib, mat::AbstractPetscMat, flg::PetscBool )
@@ -23626,7 +23626,7 @@ See also: `Mat`, Matrix Factorization, `MatFactorType`, `MatGetFactor()`, `MatGe
 $(_doc_external("Mat/MatSetFactorType"))
 """
 function MatSetFactorType(petsclib::PetscLibType, mat::AbstractPetscMat, t::MatFactorType)
-    error("MatSetFactorType: no generated method for these argument types")
+    throw(MethodError(MatSetFactorType, (petsclib, mat, t)))
 end
 
 @for_petsc function MatSetFactorType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, t::MatFactorType )
@@ -23676,7 +23676,7 @@ See also: `Mat`, `MatCreateSeqAIJ()`, `MatCreateAIJ()`,
 $(_doc_external("Mat/MatSetFromOptions"))
 """
 function MatSetFromOptions(petsclib::PetscLibType, B::AbstractPetscMat)
-    error("MatSetFromOptions: no generated method for these argument types")
+    throw(MethodError(MatSetFromOptions, (petsclib, B)))
 end
 
 @for_petsc function MatSetFromOptions(petsclib::$UnionPetscLib, B::AbstractPetscMat )
@@ -23710,7 +23710,7 @@ See also: `Mat`, `MatCreate()`
 $(_doc_external("Mat/MatSetHPL"))
 """
 function MatSetHPL(petsclib::PetscLibType, A::AbstractPetscMat, iseed::Cint)
-    error("MatSetHPL: no generated method for these argument types")
+    throw(MethodError(MatSetHPL, (petsclib, A, iseed)))
 end
 
 @for_petsc function MatSetHPL(petsclib::$UnionPetscLib, A::AbstractPetscMat, iseed::Cint )
@@ -23743,7 +23743,7 @@ See also: `Mat`, `MatZeroEntries()`, `MatSetValues()`
 $(_doc_external("Mat/MatSetInf"))
 """
 function MatSetInf(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatSetInf: no generated method for these argument types")
+    throw(MethodError(MatSetInf, (petsclib, A)))
 end
 
 @for_petsc function MatSetInf(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -23778,7 +23778,7 @@ See also: `Mat`, `PetscLayout`, `MatCreateVecs()`, `MatGetLocalToGlobalMapping()
 $(_doc_external("Mat/MatSetLayouts"))
 """
 function MatSetLayouts(petsclib::PetscLibType, A::AbstractPetscMat, rmap::PetscLayout, cmap::PetscLayout)
-    error("MatSetLayouts: no generated method for these argument types")
+    throw(MethodError(MatSetLayouts, (petsclib, A, rmap, cmap)))
 end
 
 @for_petsc function MatSetLayouts(petsclib::$UnionPetscLib, A::AbstractPetscMat, rmap::PetscLayout, cmap::PetscLayout )
@@ -23815,7 +23815,7 @@ See also: `Mat`, `DM`, `DMCreateMatrix()`, `MatGetLocalToGlobalMapping()`, `MatA
 $(_doc_external("Mat/MatSetLocalToGlobalMapping"))
 """
 function MatSetLocalToGlobalMapping(petsclib::PetscLibType, x::AbstractPetscMat, rmapping::ISLocalToGlobalMapping, cmapping::ISLocalToGlobalMapping)
-    error("MatSetLocalToGlobalMapping: no generated method for these argument types")
+    throw(MethodError(MatSetLocalToGlobalMapping, (petsclib, x, rmapping, cmapping)))
 end
 
 @for_petsc function MatSetLocalToGlobalMapping(petsclib::$UnionPetscLib, x::AbstractPetscMat, rmapping::ISLocalToGlobalMapping, cmapping::ISLocalToGlobalMapping )
@@ -23850,7 +23850,7 @@ See also: `Mat`, `MatNullSpace`, `MatCreate()`, `MatNullSpaceCreate()`, `MatSetN
 $(_doc_external("Mat/MatSetNearNullSpace"))
 """
 function MatSetNearNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::MatNullSpace)
-    error("MatSetNearNullSpace: no generated method for these argument types")
+    throw(MethodError(MatSetNearNullSpace, (petsclib, mat, nullsp)))
 end
 
 @for_petsc function MatSetNearNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::MatNullSpace )
@@ -23885,7 +23885,7 @@ See also: `Mat`, `MatCreate()`, `MatNullSpaceCreate()`, `MatSetNearNullSpace()`,
 $(_doc_external("Mat/MatSetNullSpace"))
 """
 function MatSetNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::MatNullSpace)
-    error("MatSetNullSpace: no generated method for these argument types")
+    throw(MethodError(MatSetNullSpace, (petsclib, mat, nullsp)))
 end
 
 @for_petsc function MatSetNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::MatNullSpace )
@@ -23920,7 +23920,7 @@ See also: `Mat`, `MatGetOperation()`, `MatCreateShell()`, `MatShellSetContext()`
 $(_doc_external("Mat/MatSetOperation"))
 """
 function MatSetOperation(petsclib::PetscLibType, mat::AbstractPetscMat, op::MatOperation, f::Ptr{Cvoid})
-    error("MatSetOperation: no generated method for these argument types")
+    throw(MethodError(MatSetOperation, (petsclib, mat, op, f)))
 end
 
 @for_petsc function MatSetOperation(petsclib::$UnionPetscLib, mat::AbstractPetscMat, op::MatOperation, f::Ptr{Cvoid} )
@@ -23993,7 +23993,7 @@ See also: `MatOption`, `Mat`, `MatGetOption()`
 $(_doc_external("Mat/MatSetOption"))
 """
 function MatSetOption(petsclib::PetscLibType, mat::AbstractPetscMat, op::MatOption, flg::PetscBool)
-    error("MatSetOption: no generated method for these argument types")
+    throw(MethodError(MatSetOption, (petsclib, mat, op, flg)))
 end
 
 @for_petsc function MatSetOption(petsclib::$UnionPetscLib, mat::AbstractPetscMat, op::MatOption, flg::PetscBool )
@@ -24028,7 +24028,7 @@ See also: `Mat`, `MatSetFromOptions()`, `MatSetOptionsPrefixFactor()`
 $(_doc_external("Mat/MatSetOptionsPrefix"))
 """
 function MatSetOptionsPrefix(petsclib::PetscLibType, A::AbstractPetscMat, prefix::String)
-    error("MatSetOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(MatSetOptionsPrefix, (petsclib, A, prefix)))
 end
 
 @for_petsc function MatSetOptionsPrefix(petsclib::$UnionPetscLib, A::AbstractPetscMat, prefix::String )
@@ -24063,7 +24063,7 @@ See also: `Mat`, Matrix Factorization, `MatGetFactor()`, `MatSetFromOptions()`, 
 $(_doc_external("Mat/MatSetOptionsPrefixFactor"))
 """
 function MatSetOptionsPrefixFactor(petsclib::PetscLibType, A::AbstractPetscMat, prefix::String)
-    error("MatSetOptionsPrefixFactor: no generated method for these argument types")
+    throw(MethodError(MatSetOptionsPrefixFactor, (petsclib, A, prefix)))
 end
 
 @for_petsc function MatSetOptionsPrefixFactor(petsclib::$UnionPetscLib, A::AbstractPetscMat, prefix::String )
@@ -24101,7 +24101,7 @@ See also: `Mat`, `MatSetValuesCOO()`, `MatSeqAIJSetPreallocation()`, `MatMPIAIJS
 $(_doc_external("Mat/MatSetPreallocationCOO"))
 """
 function MatSetPreallocationCOO(petsclib::PetscLibType, A::AbstractPetscMat, ncoo::PetscCount, coo_i::AbstractVector{<:Number}, coo_j::AbstractVector{<:Number})
-    error("MatSetPreallocationCOO: no generated method for these argument types")
+    throw(MethodError(MatSetPreallocationCOO, (petsclib, A, ncoo, coo_i, coo_j)))
 end
 
 @for_petsc function MatSetPreallocationCOO(petsclib::$UnionPetscLib, A::AbstractPetscMat, ncoo::PetscCount, coo_i::Vector{$PetscInt}, coo_j::Vector{$PetscInt} )
@@ -24139,7 +24139,7 @@ See also: `Mat`, `MatSetValuesCOO()`, `MatSeqAIJSetPreallocation()`, `MatMPIAIJS
 $(_doc_external("Mat/MatSetPreallocationCOOLocal"))
 """
 function MatSetPreallocationCOOLocal(petsclib::PetscLibType, A::AbstractPetscMat, ncoo::PetscCount, coo_i::AbstractVector{<:Number}, coo_j::AbstractVector{<:Number})
-    error("MatSetPreallocationCOOLocal: no generated method for these argument types")
+    throw(MethodError(MatSetPreallocationCOOLocal, (petsclib, A, ncoo, coo_i, coo_j)))
 end
 
 @for_petsc function MatSetPreallocationCOOLocal(petsclib::$UnionPetscLib, A::AbstractPetscMat, ncoo::PetscCount, coo_i::Vector{$PetscInt}, coo_j::Vector{$PetscInt} )
@@ -24181,7 +24181,7 @@ See also: `Mat`, `PetscRandom`, `PetscRandomCreate()`, `MatZeroEntries()`, `MatS
 $(_doc_external("Mat/MatSetRandom"))
 """
 function MatSetRandom(petsclib::PetscLibType, x::AbstractPetscMat, rctx::Union{Ptr, PetscRandom})
-    error("MatSetRandom: no generated method for these argument types")
+    throw(MethodError(MatSetRandom, (petsclib, x, rctx)))
 end
 
 @for_petsc function MatSetRandom(petsclib::$UnionPetscLib, x::AbstractPetscMat, rctx::Union{Ptr, PetscRandom} )
@@ -24219,7 +24219,7 @@ See also: `Mat`, `MatGetSize()`, `PetscSplitOwnership()`, `MatGetOwnershipRange(
 $(_doc_external("Mat/MatSetSizes"))
 """
 function MatSetSizes(petsclib::PetscLibType, A::AbstractPetscMat, m::Integer, n::Integer, M_M::Integer, M_N::Integer)
-    error("MatSetSizes: no generated method for these argument types")
+    throw(MethodError(MatSetSizes, (petsclib, A, m, n, M_M, M_N)))
 end
 
 @for_petsc function MatSetSizes(petsclib::$UnionPetscLib, A::AbstractPetscMat, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt )
@@ -24258,7 +24258,7 @@ See also: `Mat`, `MatStencil`, `MatSetOption()`, `MatAssemblyBegin()`, `MatAssem
 $(_doc_external("Mat/MatSetStencil"))
 """
 function MatSetStencil(petsclib::PetscLibType, mat::AbstractPetscMat, dim::Integer, dims::AbstractVector{<:Number}, starts::AbstractVector{<:Number}, dof::Integer)
-    error("MatSetStencil: no generated method for these argument types")
+    throw(MethodError(MatSetStencil, (petsclib, mat, dim, dims, starts, dof)))
 end
 
 @for_petsc function MatSetStencil(petsclib::$UnionPetscLib, mat::AbstractPetscMat, dim::$PetscInt, dims::Vector{$PetscInt}, starts::Vector{$PetscInt}, dof::$PetscInt )
@@ -24292,7 +24292,7 @@ See also: `Mat`, `MatNullSpace`, `MatCreate()`, `MatNullSpaceCreate()`, `MatSetN
 $(_doc_external("Mat/MatSetTransposeNullSpace"))
 """
 function MatSetTransposeNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::MatNullSpace)
-    error("MatSetTransposeNullSpace: no generated method for these argument types")
+    throw(MethodError(MatSetTransposeNullSpace, (petsclib, mat, nullsp)))
 end
 
 @for_petsc function MatSetTransposeNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::MatNullSpace )
@@ -24329,7 +24329,7 @@ See also: `Mat`, `PCSetType()`, `VecSetType()`, `MatCreate()`, `MatType`
 $(_doc_external("Mat/MatSetType"))
 """
 function MatSetType(petsclib::PetscLibType, mat::AbstractPetscMat, matype::String)
-    error("MatSetType: no generated method for these argument types")
+    throw(MethodError(MatSetType, (petsclib, mat, matype)))
 end
 
 @for_petsc function MatSetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, matype::String )
@@ -24362,7 +24362,7 @@ See also: `Mat`, `PCFactorSetUseInPlace()`, `PCFactorGetUseInPlace()`
 $(_doc_external("Mat/MatSetUnfactored"))
 """
 function MatSetUnfactored(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatSetUnfactored: no generated method for these argument types")
+    throw(MethodError(MatSetUnfactored, (petsclib, mat)))
 end
 
 @for_petsc function MatSetUnfactored(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -24395,7 +24395,7 @@ See also: `Mat`, `MatMult()`, `MatCreate()`, `MatDestroy()`, `MatXAIJSetPrealloc
 $(_doc_external("Mat/MatSetUp"))
 """
 function MatSetUp(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatSetUp: no generated method for these argument types")
+    throw(MethodError(MatSetUp, (petsclib, A)))
 end
 
 @for_petsc function MatSetUp(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -24438,7 +24438,7 @@ See also: `Mat`, `MatSetOption()`, `MatAssemblyBegin()`, `MatAssemblyEnd()`, `Ma
 $(_doc_external("Mat/MatSetValues"))
 """
 function MatSetValues(petsclib::PetscLibType, mat::AbstractPetscMat, m::Integer, idxm::AbstractVector{<:Number}, n::Integer, idxn::AbstractVector{<:Number}, v::AbstractVector{<:Number}, addv::InsertMode)
-    error("MatSetValues: no generated method for these argument types")
+    throw(MethodError(MatSetValues, (petsclib, mat, m, idxm, n, idxn, v, addv)))
 end
 
 @for_petsc function MatSetValues(petsclib::$UnionPetscLib, mat::AbstractPetscMat, m::$PetscInt, idxm::Vector{$PetscInt}, n::$PetscInt, idxn::Vector{$PetscInt}, v::Vector{$PetscScalar}, addv::InsertMode )
@@ -24477,7 +24477,7 @@ See also: `Mat`, `MatSetOption()`, `MatAssemblyBegin()`, `MatAssemblyEnd()`, `Ma
 $(_doc_external("Mat/MatSetValuesBatch"))
 """
 function MatSetValuesBatch(petsclib::PetscLibType, mat::AbstractPetscMat, nb::Integer, bs::Integer, rows::AbstractVector{<:Number}, v::AbstractVector{<:Number})
-    error("MatSetValuesBatch: no generated method for these argument types")
+    throw(MethodError(MatSetValuesBatch, (petsclib, mat, nb, bs, rows, v)))
 end
 
 @for_petsc function MatSetValuesBatch(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nb::$PetscInt, bs::$PetscInt, rows::Vector{$PetscInt}, v::Vector{$PetscScalar} )
@@ -24517,7 +24517,7 @@ See also: `Mat`, `MatSetBlockSize()`, `MatSetOption()`, `MatAssemblyBegin()`, `M
 $(_doc_external("Mat/MatSetValuesBlocked"))
 """
 function MatSetValuesBlocked(petsclib::PetscLibType, mat::AbstractPetscMat, m::Integer, idxm::AbstractVector{<:Number}, n::Integer, idxn::AbstractVector{<:Number}, v::AbstractVector{<:Number}, addv::InsertMode)
-    error("MatSetValuesBlocked: no generated method for these argument types")
+    throw(MethodError(MatSetValuesBlocked, (petsclib, mat, m, idxm, n, idxn, v, addv)))
 end
 
 @for_petsc function MatSetValuesBlocked(petsclib::$UnionPetscLib, mat::AbstractPetscMat, m::$PetscInt, idxm::Vector{$PetscInt}, n::$PetscInt, idxn::Vector{$PetscInt}, v::Vector{$PetscScalar}, addv::InsertMode )
@@ -24559,7 +24559,7 @@ See also: `Mat`, `MatSetBlockSize()`, `MatSetLocalToGlobalMapping()`, `MatAssemb
 $(_doc_external("Mat/MatSetValuesBlockedLocal"))
 """
 function MatSetValuesBlockedLocal(petsclib::PetscLibType, mat::AbstractPetscMat, nrow::Integer, irow::AbstractVector{<:Number}, ncol::Integer, icol::AbstractVector{<:Number}, v::AbstractVector{<:Number}, addv::InsertMode)
-    error("MatSetValuesBlockedLocal: no generated method for these argument types")
+    throw(MethodError(MatSetValuesBlockedLocal, (petsclib, mat, nrow, irow, ncol, icol, v, addv)))
 end
 
 @for_petsc function MatSetValuesBlockedLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nrow::$PetscInt, irow::Vector{$PetscInt}, ncol::$PetscInt, icol::Vector{$PetscInt}, v::Vector{$PetscScalar}, addv::InsertMode )
@@ -24602,7 +24602,7 @@ See also: `Mat`, `DMDA`, `MatSetOption()`, `MatAssemblyBegin()`, `MatAssemblyEnd
 $(_doc_external("Mat/MatSetValuesBlockedStencil"))
 """
 function MatSetValuesBlockedStencil(petsclib::PetscLibType, mat::AbstractPetscMat, m::Integer, idxm::Vector{MatStencil}, n::Integer, idxn::Vector{MatStencil}, v::AbstractVector{<:Number}, addv::InsertMode)
-    error("MatSetValuesBlockedStencil: no generated method for these argument types")
+    throw(MethodError(MatSetValuesBlockedStencil, (petsclib, mat, m, idxm, n, idxn, v, addv)))
 end
 
 @for_petsc function MatSetValuesBlockedStencil(petsclib::$UnionPetscLib, mat::AbstractPetscMat, m::$PetscInt, idxm::Vector{MatStencil}, n::$PetscInt, idxn::Vector{MatStencil}, v::Vector{$PetscScalar}, addv::InsertMode )
@@ -24637,7 +24637,7 @@ See also: `Mat`, `MatSetPreallocationCOO()`, `MatSetPreallocationCOOLocal()`, `I
 $(_doc_external("Mat/MatSetValuesCOO"))
 """
 function MatSetValuesCOO(petsclib::PetscLibType, A::AbstractPetscMat, coo_v::AbstractVector{<:Number}, imode::InsertMode)
-    error("MatSetValuesCOO: no generated method for these argument types")
+    throw(MethodError(MatSetValuesCOO, (petsclib, A, coo_v, imode)))
 end
 
 @for_petsc function MatSetValuesCOO(petsclib::$UnionPetscLib, A::AbstractPetscMat, coo_v::Vector{$PetscScalar}, imode::InsertMode )
@@ -24678,7 +24678,7 @@ See also: `Mat`, `MatSetOption()`, `MatSetValues()`, `MatAssemblyBegin()`, `MatA
 $(_doc_external("Mat/MatSetValuesIS"))
 """
 function MatSetValuesIS(petsclib::PetscLibType, mat::AbstractPetscMat, ism::AbstractIS, isn::AbstractIS, v::AbstractVector{<:Number}, addv::InsertMode)
-    error("MatSetValuesIS: no generated method for these argument types")
+    throw(MethodError(MatSetValuesIS, (petsclib, mat, ism, isn, v, addv)))
 end
 
 @for_petsc function MatSetValuesIS(petsclib::$UnionPetscLib, mat::AbstractPetscMat, ism::AbstractIS, isn::AbstractIS, v::Vector{$PetscScalar}, addv::InsertMode )
@@ -24720,7 +24720,7 @@ See also: `Mat`, `MatAssemblyBegin()`, `MatAssemblyEnd()`, `MatSetValues()`, `Ma
 $(_doc_external("Mat/MatSetValuesLocal"))
 """
 function MatSetValuesLocal(petsclib::PetscLibType, mat::AbstractPetscMat, nrow::Integer, irow::AbstractVector{<:Number}, ncol::Integer, icol::AbstractVector{<:Number}, v::AbstractVector{<:Number}, addv::InsertMode)
-    error("MatSetValuesLocal: no generated method for these argument types")
+    throw(MethodError(MatSetValuesLocal, (petsclib, mat, nrow, irow, ncol, icol, v, addv)))
 end
 
 @for_petsc function MatSetValuesLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nrow::$PetscInt, irow::Vector{$PetscInt}, ncol::$PetscInt, icol::Vector{$PetscInt}, v::Vector{$PetscScalar}, addv::InsertMode )
@@ -24756,7 +24756,7 @@ See also: `Mat`, `MatSetValues()`, `MatSetOption()`, `MatAssemblyBegin()`, `MatA
 $(_doc_external("Mat/MatSetValuesRow"))
 """
 function MatSetValuesRow(petsclib::PetscLibType, mat::AbstractPetscMat, row::Integer, v::AbstractVector{<:Number})
-    error("MatSetValuesRow: no generated method for these argument types")
+    throw(MethodError(MatSetValuesRow, (petsclib, mat, row, v)))
 end
 
 @for_petsc function MatSetValuesRow(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::$PetscInt, v::Vector{$PetscScalar} )
@@ -24792,7 +24792,7 @@ See also: `Mat`, `MatSetOption()`, `MatAssemblyBegin()`, `MatAssemblyEnd()`, `Ma
 $(_doc_external("Mat/MatSetValuesRowLocal"))
 """
 function MatSetValuesRowLocal(petsclib::PetscLibType, mat::AbstractPetscMat, row::Integer, v::AbstractVector{<:Number})
-    error("MatSetValuesRowLocal: no generated method for these argument types")
+    throw(MethodError(MatSetValuesRowLocal, (petsclib, mat, row, v)))
 end
 
 @for_petsc function MatSetValuesRowLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::$PetscInt, v::Vector{$PetscScalar} )
@@ -24834,7 +24834,7 @@ See also: `Mat`, `DMDA`, `MatSetOption()`, `MatAssemblyBegin()`, `MatAssemblyEnd
 $(_doc_external("Mat/MatSetValuesStencil"))
 """
 function MatSetValuesStencil(petsclib::PetscLibType, mat::AbstractPetscMat, m::Integer, idxm::Vector{MatStencil}, n::Integer, idxn::Vector{MatStencil}, v::AbstractVector{<:Number}, addv::InsertMode)
-    error("MatSetValuesStencil: no generated method for these argument types")
+    throw(MethodError(MatSetValuesStencil, (petsclib, mat, m, idxm, n, idxn, v, addv)))
 end
 
 @for_petsc function MatSetValuesStencil(petsclib::$UnionPetscLib, mat::AbstractPetscMat, m::$PetscInt, idxm::Vector{MatStencil}, n::$PetscInt, idxn::Vector{MatStencil}, v::Vector{$PetscScalar}, addv::InsertMode )
@@ -24870,7 +24870,7 @@ See also: `Mat`, `MatCreateSeqBAIJ()`, `MatCreateBAIJ()`, `MatGetBlockSize()`, `
 $(_doc_external("Mat/MatSetVariableBlockSizes"))
 """
 function MatSetVariableBlockSizes(petsclib::PetscLibType, mat::AbstractPetscMat, nblocks::Integer, bsizes::AbstractVector{<:Number})
-    error("MatSetVariableBlockSizes: no generated method for these argument types")
+    throw(MethodError(MatSetVariableBlockSizes, (petsclib, mat, nblocks, bsizes)))
 end
 
 @for_petsc function MatSetVariableBlockSizes(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nblocks::$PetscInt, bsizes::Vector{$PetscInt} )
@@ -24907,7 +24907,7 @@ See also: `Mat`, `VecType`, `VecSetType()`, `MatGetVecType()`, `MatCreateVecs()`
 $(_doc_external("Mat/MatSetVecType"))
 """
 function MatSetVecType(petsclib::PetscLibType, mat::AbstractPetscMat, vtype::String)
-    error("MatSetVecType: no generated method for these argument types")
+    throw(MethodError(MatSetVecType, (petsclib, mat, vtype)))
 end
 
 @for_petsc function MatSetVecType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, vtype::String )
@@ -24943,7 +24943,7 @@ See also: `Mat`, `MATSHELL`, `MatCreateShell()`, `MatShellSetOperation()`, `MatS
 $(_doc_external("Mat/MatShellGetContext"))
 """
 function MatShellGetContext(petsclib::PetscLibType, mat::Union{Ptr, AbstractPetscMat})
-    error("MatShellGetContext: no generated method for these argument types")
+    throw(MethodError(MatShellGetContext, (petsclib, mat)))
 end
 
 @for_petsc function MatShellGetContext(petsclib::$UnionPetscLib, mat::Union{Ptr, AbstractPetscMat} )
@@ -24982,7 +24982,7 @@ See also: `Mat`, `MATSHELL`, `MatCreateShell()`, `MatShellGetContext()`, `MatShe
 $(_doc_external("Mat/MatShellGetOperation"))
 """
 function MatShellGetOperation(petsclib::PetscLibType, mat::AbstractPetscMat, op::MatOperation)
-    error("MatShellGetOperation: no generated method for these argument types")
+    throw(MethodError(MatShellGetOperation, (petsclib, mat, op)))
 end
 
 @for_petsc function MatShellGetOperation(petsclib::$UnionPetscLib, mat::AbstractPetscMat, op::MatOperation )
@@ -25018,7 +25018,7 @@ See also: `Mat`, `MATSHELL`, `MatCreateShell()`, `MatShellGetContext()`, `MatShe
 $(_doc_external("Mat/MatShellSetContext"))
 """
 function MatShellSetContext(petsclib::PetscLibType, mat::AbstractPetscMat, ctx::Ptr{Cvoid})
-    error("MatShellSetContext: no generated method for these argument types")
+    throw(MethodError(MatShellSetContext, (petsclib, mat, ctx)))
 end
 
 @for_petsc function MatShellSetContext(petsclib::$UnionPetscLib, mat::AbstractPetscMat, ctx::Ptr{Cvoid} )
@@ -25053,7 +25053,7 @@ See also: `Mat`, `MATSHELL`, `MatCreateShell()`, `MatShellSetContext()`,
 $(_doc_external("Mat/MatShellSetContextDestroy"))
 """
 function MatShellSetContextDestroy(petsclib::PetscLibType, mat::AbstractPetscMat, f::Ptr{Cvoid})
-    error("MatShellSetContextDestroy: no generated method for these argument types")
+    throw(MethodError(MatShellSetContextDestroy, (petsclib, mat, f)))
 end
 
 @for_petsc function MatShellSetContextDestroy(petsclib::$UnionPetscLib, mat::AbstractPetscMat, f::Ptr{Cvoid} )
@@ -25087,7 +25087,7 @@ See also: `Mat`, `MATSHELL`, `MatCreateShell()`, `MatShellGetContext()`, `MatShe
 $(_doc_external("Mat/MatShellSetManageScalingShifts"))
 """
 function MatShellSetManageScalingShifts(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatShellSetManageScalingShifts: no generated method for these argument types")
+    throw(MethodError(MatShellSetManageScalingShifts, (petsclib, A)))
 end
 
 @for_petsc function MatShellSetManageScalingShifts(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -25126,7 +25126,7 @@ See also: `Mat`, `MATSHELL`, `MatCreateShell()`, `MatShellGetContext()`, `MatShe
 $(_doc_external("Mat/MatShellSetMatProductOperation"))
 """
 function MatShellSetMatProductOperation(petsclib::PetscLibType, A::AbstractPetscMat, ptype::MatProductType, symbolic::Union{Ptr, external}, numeric::Union{Ptr, external}, destroy::Ptr{Cvoid}, Btype::String, Ctype::Union{Ptr, String})
-    error("MatShellSetMatProductOperation: no generated method for these argument types")
+    throw(MethodError(MatShellSetMatProductOperation, (petsclib, A, ptype, symbolic, numeric, destroy, Btype, Ctype)))
 end
 
 @for_petsc function MatShellSetMatProductOperation(petsclib::$UnionPetscLib, A::AbstractPetscMat, ptype::MatProductType, symbolic::Union{Ptr, external}, numeric::Union{Ptr, external}, destroy::Ptr{Cvoid}, Btype::String, Ctype::Union{Ptr, String} )
@@ -25194,7 +25194,7 @@ See also: `Mat`, `MATSHELL`, `MatCreateVecs()`
 $(_doc_external("Mat/MatShellSetVecType"))
 """
 function MatShellSetVecType(petsclib::PetscLibType, mat::AbstractPetscMat, vtype::String)
-    error("MatShellSetVecType: no generated method for these argument types")
+    throw(MethodError(MatShellSetVecType, (petsclib, mat, vtype)))
 end
 
 @for_petsc function MatShellSetVecType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, vtype::String )
@@ -25236,7 +25236,7 @@ See also: `Mat`, `MATSHELL`, `MatCreateShell()`, `MatShellGetContext()`, `MatShe
 $(_doc_external("Mat/MatShellTestMult"))
 """
 function MatShellTestMult(petsclib::PetscLibType, mat::AbstractPetscMat, f::external, base::AbstractPetscVec, ctx::Ptr{Cvoid})
-    error("MatShellTestMult: no generated method for these argument types")
+    throw(MethodError(MatShellTestMult, (petsclib, mat, f, base, ctx)))
 end
 
 @for_petsc function MatShellTestMult(petsclib::$UnionPetscLib, mat::AbstractPetscMat, f::external, base::AbstractPetscVec, ctx::Ptr{Cvoid} )
@@ -25280,7 +25280,7 @@ See also: `Mat`, `MATSHELL`, `MatCreateShell()`, `MatShellGetContext()`, `MatShe
 $(_doc_external("Mat/MatShellTestMultTranspose"))
 """
 function MatShellTestMultTranspose(petsclib::PetscLibType, mat::AbstractPetscMat, f::external, base::AbstractPetscVec, ctx::Ptr{Cvoid})
-    error("MatShellTestMultTranspose: no generated method for these argument types")
+    throw(MethodError(MatShellTestMultTranspose, (petsclib, mat, f, base, ctx)))
 end
 
 @for_petsc function MatShellTestMultTranspose(petsclib::$UnionPetscLib, mat::AbstractPetscMat, f::external, base::AbstractPetscVec, ctx::Ptr{Cvoid} )
@@ -25316,7 +25316,7 @@ See also: `Mat`, `MatDiagonalSet()`, `MatScale()`, `MatDiagonalScale()`
 $(_doc_external("Mat/MatShift"))
 """
 function MatShift(petsclib::PetscLibType, Y::AbstractPetscMat, a::Number)
-    error("MatShift: no generated method for these argument types")
+    throw(MethodError(MatShift, (petsclib, Y, a)))
 end
 
 @for_petsc function MatShift(petsclib::$UnionPetscLib, Y::AbstractPetscMat, a::$PetscScalar )
@@ -25353,7 +25353,7 @@ See also: `Mat`, Matrix Factorization, `MatGetFactor()`, `MatLUFactor()`, `MatSo
 $(_doc_external("Mat/MatSolve"))
 """
 function MatSolve(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec)
-    error("MatSolve: no generated method for these argument types")
+    throw(MethodError(MatSolve, (petsclib, mat, b, x)))
 end
 
 @for_petsc function MatSolve(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec )
@@ -25391,7 +25391,7 @@ See also: `Mat`, Matrix Factorization, `MatSolve()`, `MatGetFactor()`, `MatSolve
 $(_doc_external("Mat/MatSolveAdd"))
 """
 function MatSolveAdd(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscVec, y::AbstractPetscVec, x::AbstractPetscVec)
-    error("MatSolveAdd: no generated method for these argument types")
+    throw(MethodError(MatSolveAdd, (petsclib, mat, b, y, x)))
 end
 
 @for_petsc function MatSolveAdd(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, y::AbstractPetscVec, x::AbstractPetscVec )
@@ -25428,7 +25428,7 @@ See also: `Mat`, `MatGetFactor()`, `KSP`, `MatSolve()`, `MatSolveAdd()`, `MatSol
 $(_doc_external("Mat/MatSolveTranspose"))
 """
 function MatSolveTranspose(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec)
-    error("MatSolveTranspose: no generated method for these argument types")
+    throw(MethodError(MatSolveTranspose, (petsclib, mat, b, x)))
 end
 
 @for_petsc function MatSolveTranspose(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec )
@@ -25467,7 +25467,7 @@ See also: `Mat`, `MatGetFactor()`, `MatSolve()`, `MatSolveAdd()`, `MatSolveTrans
 $(_doc_external("Mat/MatSolveTransposeAdd"))
 """
 function MatSolveTransposeAdd(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscVec, y::AbstractPetscVec, x::AbstractPetscVec)
-    error("MatSolveTransposeAdd: no generated method for these argument types")
+    throw(MethodError(MatSolveTransposeAdd, (petsclib, mat, b, y, x)))
 end
 
 @for_petsc function MatSolveTransposeAdd(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, y::AbstractPetscVec, x::AbstractPetscVec )
@@ -25511,7 +25511,7 @@ See also: `Mat`, `MatFactorType`, `MatType`, `MatCopy()`, `MatDuplicate()`, `Mat
 $(_doc_external("Mat/MatSolverTypeGet"))
 """
 function MatSolverTypeGet(petsclib::PetscLibType, type::String, mtype::String, ftype::MatFactorType, noname::Ptr{Cvoid})
-    error("MatSolverTypeGet: no generated method for these argument types")
+    throw(MethodError(MatSolverTypeGet, (petsclib, type, mtype, ftype, noname)))
 end
 
 @for_petsc function MatSolverTypeGet(petsclib::$UnionPetscLib, type::String, mtype::String, ftype::MatFactorType, noname::Ptr{Cvoid} )
@@ -25552,7 +25552,7 @@ See also: `Mat`, Matrix Factorization, `MatFactorGetSolverType()`, `MatCopy()`, 
 $(_doc_external("Mat/MatSolverTypeRegister"))
 """
 function MatSolverTypeRegister(petsclib::PetscLibType, package::String, mtype::String, ftype::MatFactorType, createfactor::external)
-    error("MatSolverTypeRegister: no generated method for these argument types")
+    throw(MethodError(MatSolverTypeRegister, (petsclib, package, mtype, ftype, createfactor)))
 end
 
 @for_petsc function MatSolverTypeRegister(petsclib::$UnionPetscLib, package::String, mtype::String, ftype::MatFactorType, createfactor::external )
@@ -25589,7 +25589,7 @@ See also: `Mat`, `Vecs`, `MatSolveAdd()`, `MatSolveTranspose()`, `MatSolveTransp
 $(_doc_external("Mat/MatSolves"))
 """
 function MatSolves(petsclib::PetscLibType, mat::AbstractPetscMat, b::Vecs, x::Vecs)
-    error("MatSolves: no generated method for these argument types")
+    throw(MethodError(MatSolves, (petsclib, mat, b, x)))
 end
 
 @for_petsc function MatSolves(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::Vecs, x::Vecs )
@@ -25629,7 +25629,7 @@ See also: `MatAssemblyBegin()`, `MatAssemblyEnd()`, `Mat`, `MatStashSetInitialSi
 $(_doc_external("Mat/MatStashGetInfo"))
 """
 function MatStashGetInfo(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatStashGetInfo: no generated method for these argument types")
+    throw(MethodError(MatStashGetInfo, (petsclib, mat)))
 end
 
 @for_petsc function MatStashGetInfo(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -25678,7 +25678,7 @@ See also: `MatAssemblyBegin()`, `MatAssemblyEnd()`, `Mat`, `MatStashGetInfo()`
 $(_doc_external("Mat/MatStashSetInitialSize"))
 """
 function MatStashSetInitialSize(petsclib::PetscLibType, mat::AbstractPetscMat, size::Integer, bsize::Integer)
-    error("MatStashSetInitialSize: no generated method for these argument types")
+    throw(MethodError(MatStashSetInitialSize, (petsclib, mat, size, bsize)))
 end
 
 @for_petsc function MatStashSetInitialSize(petsclib::$UnionPetscLib, mat::AbstractPetscMat, size::$PetscInt, bsize::$PetscInt )
@@ -25712,7 +25712,7 @@ See also: `Mat`, `MatRetrieveValues()`
 $(_doc_external("Mat/MatStoreValues"))
 """
 function MatStoreValues(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatStoreValues: no generated method for these argument types")
+    throw(MethodError(MatStoreValues, (petsclib, mat)))
 end
 
 @for_petsc function MatStoreValues(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -25748,7 +25748,7 @@ See also: `Mat`, `MATSUBMATRIX`, `MatCreateSubMatrixVirtual()`
 $(_doc_external("Mat/MatSubMatrixVirtualUpdate"))
 """
 function MatSubMatrixVirtualUpdate(petsclib::PetscLibType, N::AbstractPetscMat, A::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS)
-    error("MatSubMatrixVirtualUpdate: no generated method for these argument types")
+    throw(MethodError(MatSubMatrixVirtualUpdate, (petsclib, N, A, isrow, iscol)))
 end
 
 @for_petsc function MatSubMatrixVirtualUpdate(petsclib::$UnionPetscLib, N::AbstractPetscMat, A::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS )
@@ -25786,7 +25786,7 @@ See also: `Mat`, `IS`
 $(_doc_external("Mat/MatSubdomainsCreateCoalesce"))
 """
 function MatSubdomainsCreateCoalesce(petsclib::PetscLibType, A::AbstractPetscMat, N::Integer)
-    error("MatSubdomainsCreateCoalesce: no generated method for these argument types")
+    throw(MethodError(MatSubdomainsCreateCoalesce, (petsclib, A, N)))
 end
 
 @for_petsc function MatSubdomainsCreateCoalesce(petsclib::$UnionPetscLib, A::AbstractPetscMat, N::$PetscInt )
@@ -25827,7 +25827,7 @@ See also: `Mat`, `MATSOLVERSUPERLU_DIST`, `MatGetFactor()`, `MatLUFactorSymbolic
 $(_doc_external("Mat/MatSuperluDistGetDiagU"))
 """
 function MatSuperluDistGetDiagU(petsclib::PetscLibType, F::AbstractPetscMat)
-    error("MatSuperluDistGetDiagU: no generated method for these argument types")
+    throw(MethodError(MatSuperluDistGetDiagU, (petsclib, F)))
 end
 
 @for_petsc function MatSuperluDistGetDiagU(petsclib::$UnionPetscLib, F::AbstractPetscMat )
@@ -25866,7 +25866,7 @@ See also: `Mat`, `MatGetFactor()`, `MATSOLVERSUPERLU`
 $(_doc_external("Mat/MatSuperluSetILUDropTol"))
 """
 function MatSuperluSetILUDropTol(petsclib::PetscLibType, F::AbstractPetscMat, dtol::Real)
-    error("MatSuperluSetILUDropTol: no generated method for these argument types")
+    throw(MethodError(MatSuperluSetILUDropTol, (petsclib, F, dtol)))
 end
 
 @for_petsc function MatSuperluSetILUDropTol(petsclib::$UnionPetscLib, F::AbstractPetscMat, dtol::$PetscReal )
@@ -25906,7 +25906,7 @@ See also: `Mat`, `MatTransposeColoringCreate()`, `MatTransposeColoringDestroy()`
 $(_doc_external("Mat/MatTransColoringApplyDenToSp"))
 """
 function MatTransColoringApplyDenToSp(petsclib::PetscLibType, matcoloring::MatTransposeColoring, Cden::AbstractPetscMat, Csp::AbstractPetscMat)
-    error("MatTransColoringApplyDenToSp: no generated method for these argument types")
+    throw(MethodError(MatTransColoringApplyDenToSp, (petsclib, matcoloring, Cden, Csp)))
 end
 
 @for_petsc function MatTransColoringApplyDenToSp(petsclib::$UnionPetscLib, matcoloring::MatTransposeColoring, Cden::AbstractPetscMat, Csp::AbstractPetscMat )
@@ -25945,7 +25945,7 @@ See also: `Mat`, `MatTransposeColoringCreate()`, `MatTransposeColoringDestroy()`
 $(_doc_external("Mat/MatTransColoringApplySpToDen"))
 """
 function MatTransColoringApplySpToDen(petsclib::PetscLibType, coloring::MatTransposeColoring, B::AbstractPetscMat, Btdense::AbstractPetscMat)
-    error("MatTransColoringApplySpToDen: no generated method for these argument types")
+    throw(MethodError(MatTransColoringApplySpToDen, (petsclib, coloring, B, Btdense)))
 end
 
 @for_petsc function MatTransColoringApplySpToDen(petsclib::$UnionPetscLib, coloring::MatTransposeColoring, B::AbstractPetscMat, Btdense::AbstractPetscMat )
@@ -25983,7 +25983,7 @@ See also: `Mat`, `MatTransposeSetPrecursor()`, `MatMultTranspose()`, `MatMultTra
 $(_doc_external("Mat/MatTranspose"))
 """
 function MatTranspose(petsclib::PetscLibType, mat::AbstractPetscMat, reuse::MatReuse)
-    error("MatTranspose: no generated method for these argument types")
+    throw(MethodError(MatTranspose, (petsclib, mat, reuse)))
 end
 
 @for_petsc function MatTranspose(petsclib::$UnionPetscLib, mat::AbstractPetscMat, reuse::MatReuse )
@@ -26021,7 +26021,7 @@ See also: `Mat`, `MATTRANSPOSEVIRTUAL`, `MatCreateTranspose()`
 $(_doc_external("Mat/MatTransposeGetMat"))
 """
 function MatTransposeGetMat(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatTransposeGetMat: no generated method for these argument types")
+    throw(MethodError(MatTransposeGetMat, (petsclib, A)))
 end
 
 @for_petsc function MatTransposeGetMat(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -26062,7 +26062,7 @@ See also: `Mat`, `MatProductCreate()`, `MATPRODUCT_AtB`, `MatMatMult()`, `MatMat
 $(_doc_external("Mat/MatTransposeMatMult"))
 """
 function MatTransposeMatMult(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, scall::MatReuse, fill::Real)
-    error("MatTransposeMatMult: no generated method for these argument types")
+    throw(MethodError(MatTransposeMatMult, (petsclib, A, B, scall, fill)))
 end
 
 @for_petsc function MatTransposeMatMult(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, scall::MatReuse, fill::$PetscReal )
@@ -26103,7 +26103,7 @@ See also: `Mat`, `MatMatMultEqual()`, `MatMultEqual()`, `MatMultAddEqual()`, `Ma
 $(_doc_external("Mat/MatTransposeMatMultEqual"))
 """
 function MatTransposeMatMultEqual(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, n::Integer)
-    error("MatTransposeMatMultEqual: no generated method for these argument types")
+    throw(MethodError(MatTransposeMatMultEqual, (petsclib, A, B, C, n)))
 end
 
 @for_petsc function MatTransposeMatMultEqual(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, n::$PetscInt )
@@ -26142,7 +26142,7 @@ See also: `Mat`, `MatTransposeSymbolic()`, `MatTranspose()`, `MatMultTranspose()
 $(_doc_external("Mat/MatTransposeSetPrecursor"))
 """
 function MatTransposeSetPrecursor(petsclib::PetscLibType, mat::AbstractPetscMat, B::AbstractPetscMat)
-    error("MatTransposeSetPrecursor: no generated method for these argument types")
+    throw(MethodError(MatTransposeSetPrecursor, (petsclib, mat, B)))
 end
 
 @for_petsc function MatTransposeSetPrecursor(petsclib::$UnionPetscLib, mat::AbstractPetscMat, B::AbstractPetscMat )
@@ -26179,7 +26179,7 @@ See also: `Mat`, `MatTransposeSetPrecursor()`, `MatTranspose()`, `MatMultTranspo
 $(_doc_external("Mat/MatTransposeSymbolic"))
 """
 function MatTransposeSymbolic(petsclib::PetscLibType, A::AbstractPetscMat)
-    error("MatTransposeSymbolic: no generated method for these argument types")
+    throw(MethodError(MatTransposeSymbolic, (petsclib, A)))
 end
 
 @for_petsc function MatTransposeSymbolic(petsclib::$UnionPetscLib, A::AbstractPetscMat )
@@ -26216,7 +26216,7 @@ See also: `Mat`, `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetValues()`, `MatMPIAI
 $(_doc_external("Mat/MatUpdateMPIAIJWithArray"))
 """
 function MatUpdateMPIAIJWithArray(petsclib::PetscLibType, mat::AbstractPetscMat, v::AbstractVector{<:Number})
-    error("MatUpdateMPIAIJWithArray: no generated method for these argument types")
+    throw(MethodError(MatUpdateMPIAIJWithArray, (petsclib, mat, v)))
 end
 
 @for_petsc function MatUpdateMPIAIJWithArray(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v::Vector{$PetscScalar} )
@@ -26263,7 +26263,7 @@ See also: `Mat`, `MATMPIAIJ`, `MatCreate()`, `MatCreateSeqAIJ()`, `MatSetValues(
 $(_doc_external("Mat/MatUpdateMPIAIJWithArrays"))
 """
 function MatUpdateMPIAIJWithArrays(petsclib::PetscLibType, mat::AbstractPetscMat, m::Integer, n::Integer, M_M::Integer, M_N::Integer, Ii::AbstractVector{<:Number}, J::AbstractVector{<:Number}, v::AbstractVector{<:Number})
-    error("MatUpdateMPIAIJWithArrays: no generated method for these argument types")
+    throw(MethodError(MatUpdateMPIAIJWithArrays, (petsclib, mat, m, n, M_M, M_N, Ii, J, v)))
 end
 
 @for_petsc function MatUpdateMPIAIJWithArrays(petsclib::$UnionPetscLib, mat::AbstractPetscMat, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, Ii::Vector{$PetscInt}, J::Vector{$PetscInt}, v::Vector{$PetscScalar} )
@@ -26312,7 +26312,7 @@ See also: `Mat`, `PetscViewerPushFormat()`, `PetscViewerASCIIOpen()`, `PetscView
 $(_doc_external("Mat/MatView"))
 """
 function MatView(petsclib::PetscLibType, mat::AbstractPetscMat, viewer::PetscViewer)
-    error("MatView: no generated method for these argument types")
+    throw(MethodError(MatView, (petsclib, mat, viewer)))
 end
 
 @for_petsc function MatView(petsclib::$UnionPetscLib, mat::AbstractPetscMat, viewer::PetscViewer )
@@ -26350,7 +26350,7 @@ See also: `Mat`, `MatView()`, `PetscObjectViewFromOptions()`, `MatCreate()`
 $(_doc_external("Mat/MatViewFromOptions"))
 """
 function MatViewFromOptions(petsclib::PetscLibType, A::AbstractPetscMat, obj, name::String)
-    error("MatViewFromOptions: no generated method for these argument types")
+    throw(MethodError(MatViewFromOptions, (petsclib, A, obj, name)))
 end
 
 @for_petsc function MatViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPetscMat, obj, name::String )
@@ -26390,7 +26390,7 @@ See also: `Mat`, `MatSeqAIJSetPreallocation()`, `MatMPIAIJSetPreallocation()`, `
 $(_doc_external("Mat/MatXAIJSetPreallocation"))
 """
 function MatXAIJSetPreallocation(petsclib::PetscLibType, A::AbstractPetscMat, bs::Integer, dnnz::Union{Ptr, AbstractVector{<:Number}}, onnz::Union{Ptr, AbstractVector{<:Number}}, dnnzu::Union{Ptr, AbstractVector{<:Number}}, onnzu::Union{Ptr, AbstractVector{<:Number}})
-    error("MatXAIJSetPreallocation: no generated method for these argument types")
+    throw(MethodError(MatXAIJSetPreallocation, (petsclib, A, bs, dnnz, onnz, dnnzu, onnzu)))
 end
 
 @for_petsc function MatXAIJSetPreallocation(petsclib::$UnionPetscLib, A::AbstractPetscMat, bs::$PetscInt, dnnz::Union{Ptr, Vector{$PetscInt}}, onnz::Union{Ptr, Vector{$PetscInt}}, dnnzu::Union{Ptr, Vector{$PetscInt}}, onnzu::Union{Ptr, Vector{$PetscInt}} )
@@ -26424,7 +26424,7 @@ See also: `Mat`, `MatZeroRows()`, `MatZeroRowsColumns()`
 $(_doc_external("Mat/MatZeroEntries"))
 """
 function MatZeroEntries(petsclib::PetscLibType, mat::AbstractPetscMat)
-    error("MatZeroEntries: no generated method for these argument types")
+    throw(MethodError(MatZeroEntries, (petsclib, mat)))
 end
 
 @for_petsc function MatZeroEntries(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
@@ -26464,7 +26464,7 @@ See also: `Mat`, `MatZeroRowsIS()`, `MatZeroRowsColumns()`, `MatZeroRowsLocalIS(
 $(_doc_external("Mat/MatZeroRows"))
 """
 function MatZeroRows(petsclib::PetscLibType, mat::AbstractPetscMat, numRows::Integer, rows::AbstractVector{<:Number}, diag::Number, x::AbstractPetscVec, b::AbstractPetscVec)
-    error("MatZeroRows: no generated method for these argument types")
+    throw(MethodError(MatZeroRows, (petsclib, mat, numRows, rows, diag, x, b)))
 end
 
 @for_petsc function MatZeroRows(petsclib::$UnionPetscLib, mat::AbstractPetscMat, numRows::$PetscInt, rows::Vector{$PetscInt}, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
@@ -26504,7 +26504,7 @@ See also: `Mat`, `MatZeroRowsIS()`, `MatZeroRows()`, `MatZeroRowsLocalIS()`, `Ma
 $(_doc_external("Mat/MatZeroRowsColumns"))
 """
 function MatZeroRowsColumns(petsclib::PetscLibType, mat::AbstractPetscMat, numRows::Integer, rows::AbstractVector{<:Number}, diag::Number, x::AbstractPetscVec, b::AbstractPetscVec)
-    error("MatZeroRowsColumns: no generated method for these argument types")
+    throw(MethodError(MatZeroRowsColumns, (petsclib, mat, numRows, rows, diag, x, b)))
 end
 
 @for_petsc function MatZeroRowsColumns(petsclib::$UnionPetscLib, mat::AbstractPetscMat, numRows::$PetscInt, rows::Vector{$PetscInt}, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
@@ -26543,7 +26543,7 @@ See also: `Mat`, `MatZeroRowsIS()`, `MatZeroRowsColumns()`, `MatZeroRowsLocalIS(
 $(_doc_external("Mat/MatZeroRowsColumnsIS"))
 """
 function MatZeroRowsColumnsIS(petsclib::PetscLibType, mat::AbstractPetscMat, is::AbstractIS, diag::Number, x::AbstractPetscVec, b::AbstractPetscVec)
-    error("MatZeroRowsColumnsIS: no generated method for these argument types")
+    throw(MethodError(MatZeroRowsColumnsIS, (petsclib, mat, is, diag, x, b)))
 end
 
 @for_petsc function MatZeroRowsColumnsIS(petsclib::$UnionPetscLib, mat::AbstractPetscMat, is::AbstractIS, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
@@ -26583,7 +26583,7 @@ See also: `Mat`, `MatZeroRowsIS()`, `MatZeroRowsColumns()`, `MatZeroRowsLocalIS(
 $(_doc_external("Mat/MatZeroRowsColumnsLocal"))
 """
 function MatZeroRowsColumnsLocal(petsclib::PetscLibType, mat::AbstractPetscMat, numRows::Integer, rows::AbstractVector{<:Number}, diag::Number, x::AbstractPetscVec, b::AbstractPetscVec)
-    error("MatZeroRowsColumnsLocal: no generated method for these argument types")
+    throw(MethodError(MatZeroRowsColumnsLocal, (petsclib, mat, numRows, rows, diag, x, b)))
 end
 
 @for_petsc function MatZeroRowsColumnsLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, numRows::$PetscInt, rows::Vector{$PetscInt}, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
@@ -26622,7 +26622,7 @@ See also: `Mat`, `MatZeroRowsIS()`, `MatZeroRowsColumns()`, `MatZeroRowsLocalIS(
 $(_doc_external("Mat/MatZeroRowsColumnsLocalIS"))
 """
 function MatZeroRowsColumnsLocalIS(petsclib::PetscLibType, mat::AbstractPetscMat, is::AbstractIS, diag::Number, x::AbstractPetscVec, b::AbstractPetscVec)
-    error("MatZeroRowsColumnsLocalIS: no generated method for these argument types")
+    throw(MethodError(MatZeroRowsColumnsLocalIS, (petsclib, mat, is, diag, x, b)))
 end
 
 @for_petsc function MatZeroRowsColumnsLocalIS(petsclib::$UnionPetscLib, mat::AbstractPetscMat, is::AbstractIS, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
@@ -26662,7 +26662,7 @@ See also: `Mat`, `MatZeroRowsIS()`, `MatZeroRowsColumns()`, `MatZeroRowsLocalIS(
 $(_doc_external("Mat/MatZeroRowsColumnsStencil"))
 """
 function MatZeroRowsColumnsStencil(petsclib::PetscLibType, mat::AbstractPetscMat, numRows::Integer, rows::Vector{MatStencil}, diag::Number, x::AbstractPetscVec, b::AbstractPetscVec)
-    error("MatZeroRowsColumnsStencil: no generated method for these argument types")
+    throw(MethodError(MatZeroRowsColumnsStencil, (petsclib, mat, numRows, rows, diag, x, b)))
 end
 
 @for_petsc function MatZeroRowsColumnsStencil(petsclib::$UnionPetscLib, mat::AbstractPetscMat, numRows::$PetscInt, rows::Vector{MatStencil}, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
@@ -26701,7 +26701,7 @@ See also: `Mat`, `MatZeroRows()`, `MatZeroRowsColumns()`, `MatZeroRowsLocalIS()`
 $(_doc_external("Mat/MatZeroRowsIS"))
 """
 function MatZeroRowsIS(petsclib::PetscLibType, mat::AbstractPetscMat, is::Union{Ptr, AbstractIS}, diag::Number, x::AbstractPetscVec, b::AbstractPetscVec)
-    error("MatZeroRowsIS: no generated method for these argument types")
+    throw(MethodError(MatZeroRowsIS, (petsclib, mat, is, diag, x, b)))
 end
 
 @for_petsc function MatZeroRowsIS(petsclib::$UnionPetscLib, mat::AbstractPetscMat, is::Union{Ptr, AbstractIS}, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
@@ -26741,7 +26741,7 @@ See also: `Mat`, `MatZeroRowsIS()`, `MatZeroRowsColumns()`, `MatZeroRowsLocalIS(
 $(_doc_external("Mat/MatZeroRowsLocal"))
 """
 function MatZeroRowsLocal(petsclib::PetscLibType, mat::AbstractPetscMat, numRows::Integer, rows::AbstractVector{<:Number}, diag::Number, x::AbstractPetscVec, b::AbstractPetscVec)
-    error("MatZeroRowsLocal: no generated method for these argument types")
+    throw(MethodError(MatZeroRowsLocal, (petsclib, mat, numRows, rows, diag, x, b)))
 end
 
 @for_petsc function MatZeroRowsLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, numRows::$PetscInt, rows::Vector{$PetscInt}, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
@@ -26780,7 +26780,7 @@ See also: `Mat`, `MatZeroRowsIS()`, `MatZeroRowsColumns()`, `MatZeroRows()`, `Ma
 $(_doc_external("Mat/MatZeroRowsLocalIS"))
 """
 function MatZeroRowsLocalIS(petsclib::PetscLibType, mat::AbstractPetscMat, is::AbstractIS, diag::Number, x::AbstractPetscVec, b::AbstractPetscVec)
-    error("MatZeroRowsLocalIS: no generated method for these argument types")
+    throw(MethodError(MatZeroRowsLocalIS, (petsclib, mat, is, diag, x, b)))
 end
 
 @for_petsc function MatZeroRowsLocalIS(petsclib::$UnionPetscLib, mat::AbstractPetscMat, is::AbstractIS, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
@@ -26820,7 +26820,7 @@ See also: `Mat`, `MatStencil`, `MatZeroRowsIS()`, `MatZeroRowsColumns()`, `MatZe
 $(_doc_external("Mat/MatZeroRowsStencil"))
 """
 function MatZeroRowsStencil(petsclib::PetscLibType, mat::AbstractPetscMat, numRows::Integer, rows::Vector{MatStencil}, diag::Number, x::AbstractPetscVec, b::AbstractPetscVec)
-    error("MatZeroRowsStencil: no generated method for these argument types")
+    throw(MethodError(MatZeroRowsStencil, (petsclib, mat, numRows, rows, diag, x, b)))
 end
 
 @for_petsc function MatZeroRowsStencil(petsclib::$UnionPetscLib, mat::AbstractPetscMat, numRows::$PetscInt, rows::Vector{MatStencil}, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )

@@ -188,8 +188,8 @@ function (w::SNESSetFunctionFn{PetscLib})(
     # Wrap the actual C SNES for the current MG level so that dm() inside
     # the callback returns the correct DM (matches the pattern in KSPComputeRHSFn).
     actual_snes = SNES{PetscLib}(actual_snes_ptr, getlib(PetscLib).age; own = false)
-    x  = PetscVec{PetscLib}(r_x; own = false)
-    fx = PetscVec{PetscLib}(r_fx; own = false)
+    x  = PetscVec{PetscLib}(r_x, getlib(PetscLib).age; own = false)
+    fx = PetscVec{PetscLib}(r_fx, getlib(PetscLib).age; own = false)
 
     return run_callback("residual f!") do
         if Base.applicable(snes.f!, fx, actual_snes, x, snes.user_ctx)
@@ -265,9 +265,9 @@ function (w::SNESSetJacobianFn{PetscLib})(
 ) where {PetscLib}
     snes = unsafe_pointer_to_objref(snes_ptr)::SNESState
     actual_snes = SNES{PetscLib}(actual_snes_ptr, getlib(PetscLib).age; own = false)
-    x = PetscVec{PetscLib}(r_x; own = false)
-    A = PetscMat{PetscLib}(r_A; own = false)
-    P = PetscMat{PetscLib}(r_P; own = false)
+    x = PetscVec{PetscLib}(r_x, getlib(PetscLib).age; own = false)
+    A = PetscMat{PetscLib}(r_A, getlib(PetscLib).age; own = false)
+    P = PetscMat{PetscLib}(r_P, getlib(PetscLib).age; own = false)
 
     same_mat = (P.ptr == A.ptr)
 
@@ -465,16 +465,8 @@ Does nothing on a borrowed handle, such as the one [`snes(ts)`](@ref) hands back
 $(doc_external("SNES/SNESDestroy"))
 """
 function destroy!(snes::AbstractSNES{PetscLib}) where {PetscLib}
-    owns(snes) || return nothing
-    if !isnothing(snes.opts)
-        destroy!(snes.opts)
-        snes.opts = nothing
-    end
-    if isdestroyable(snes, PetscLib)
-        LibPETSc.SNESDestroy(PetscLib, snes)
-    end
-    snes.ptr = C_NULL
-    return nothing
+    owns(snes) && destroy_options!(snes)
+    return destroy_handle!(LibPETSc.SNESDestroy, snes, PetscLib)
 end
 
 

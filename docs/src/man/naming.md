@@ -1010,21 +1010,17 @@ The exceptions keep their underscore, because there it separates an inner worker
 | v0.4 | v0.5 |
 |---|---|
 | `set_petsclib` | `PetscLibType` constructor |
-| `library_info` | returns a `NamedTuple`, printed via `show` |
+| `library_info` | returns a `NamedTuple` |
 | `audit_petsc_file` | `audit_file` |
 | `set_library!`, `unset_library!` | unchanged ([§7](#7.-Mutation) global-state clause) |
 | `audit_walk`, `audit_targets`, `audit_report`, `audit_creator`, `audit_destroyer`, `audit_callee`, `audit_argnames`, `audit_isbroadcast`, `audit_hasparseerror` | unchanged (internal) |
 
 `library_info` printed a report and returned `nothing`, so its name promised data it never handed back.
-It now returns the values and gets a `show` method, which keeps the REPL output and makes the data reachable from tests:
+It now returns the values, so code and tests can read them:
 
 ```julia
 info = library_info()
 info.scalar          # Float64
-
-julia> library_info()
-Source  : LocalPreferences.toml
-Path    : /usr/lib/libpetsc.so
 ```
 
 ### Two consequences worth knowing

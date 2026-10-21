@@ -20,7 +20,7 @@ See also: `PetscSegBufferGet()`, `PetscSegBufferExtractAlloc()`, `PetscSegBuffer
 $(_doc_external("Sys/PetscSegBufferCreate"))
 """
 function PetscSegBufferCreate(petsclib::PetscLibType, unitbytes::Csize_t, expected::PetscCount)
-    error("PetscSegBufferCreate: no generated method for these argument types")
+    throw(MethodError(PetscSegBufferCreate, (petsclib, unitbytes, expected)))
 end
 
 @for_petsc function PetscSegBufferCreate(petsclib::$UnionPetscLib, unitbytes::Csize_t, expected::PetscCount )
@@ -55,7 +55,7 @@ See also: `PetscSegBuffer`, `PetscSegBufferCreate()`
 $(_doc_external("Sys/PetscSegBufferDestroy"))
 """
 function PetscSegBufferDestroy(petsclib::PetscLibType, seg::Union{PetscSegBuffer, Ref{PetscSegBuffer}})
-    error("PetscSegBufferDestroy: no generated method for these argument types")
+    throw(MethodError(PetscSegBufferDestroy, (petsclib, seg)))
 end
 
 @for_petsc function PetscSegBufferDestroy(petsclib::$UnionPetscLib, seg::Union{PetscSegBuffer, Ref{PetscSegBuffer}} )
@@ -93,7 +93,7 @@ See also: `PetscSegBufferCreate()`, `PetscSegBufferGet()`, `PetscSegBufferDestro
 $(_doc_external("Sys/PetscSegBufferExtractAlloc"))
 """
 function PetscSegBufferExtractAlloc(petsclib::PetscLibType, seg::PetscSegBuffer)
-    error("PetscSegBufferExtractAlloc: no generated method for these argument types")
+    throw(MethodError(PetscSegBufferExtractAlloc, (petsclib, seg)))
 end
 
 @for_petsc function PetscSegBufferExtractAlloc(petsclib::$UnionPetscLib, seg::PetscSegBuffer )
@@ -131,7 +131,7 @@ See also: `PetscSegBuffer`, `PetscSegBufferExtractAlloc()`, `PetscSegBufferExtra
 $(_doc_external("Sys/PetscSegBufferExtractInPlace"))
 """
 function PetscSegBufferExtractInPlace(petsclib::PetscLibType, seg::PetscSegBuffer)
-    error("PetscSegBufferExtractInPlace: no generated method for these argument types")
+    throw(MethodError(PetscSegBufferExtractInPlace, (petsclib, seg)))
 end
 
 @for_petsc function PetscSegBufferExtractInPlace(petsclib::$UnionPetscLib, seg::PetscSegBuffer )
@@ -168,7 +168,7 @@ See also: `PetscSegBufferCreate()`, `PetscSegBufferGet()`, `PetscSegBufferDestro
 $(_doc_external("Sys/PetscSegBufferExtractTo"))
 """
 function PetscSegBufferExtractTo(petsclib::PetscLibType, seg::PetscSegBuffer, contig::Ptr{Cvoid})
-    error("PetscSegBufferExtractTo: no generated method for these argument types")
+    throw(MethodError(PetscSegBufferExtractTo, (petsclib, seg, contig)))
 end
 
 @for_petsc function PetscSegBufferExtractTo(petsclib::$UnionPetscLib, seg::PetscSegBuffer, contig::Ptr{Cvoid} )
@@ -206,7 +206,7 @@ See also: `PetscSegBufferCreate()`, `PetscSegBufferExtractAlloc()`, `PetscSegBuf
 $(_doc_external("Sys/PetscSegBufferGet"))
 """
 function PetscSegBufferGet(petsclib::PetscLibType, seg::PetscSegBuffer, count::PetscCount)
-    error("PetscSegBufferGet: no generated method for these argument types")
+    throw(MethodError(PetscSegBufferGet, (petsclib, seg, count)))
 end
 
 @for_petsc function PetscSegBufferGet(petsclib::$UnionPetscLib, seg::PetscSegBuffer, count::PetscCount )
@@ -244,7 +244,7 @@ See also: `PetscSegBuffer`, `PetscSegBufferExtractAlloc()`, `PetscSegBufferExtra
 $(_doc_external("Sys/PetscSegBufferGetSize"))
 """
 function PetscSegBufferGetSize(petsclib::PetscLibType, seg::PetscSegBuffer)
-    error("PetscSegBufferGetSize: no generated method for these argument types")
+    throw(MethodError(PetscSegBufferGetSize, (petsclib, seg)))
 end
 
 @for_petsc function PetscSegBufferGetSize(petsclib::$UnionPetscLib, seg::PetscSegBuffer )
@@ -280,7 +280,7 @@ See also: `PetscSegBuffer`, `PetscSegBufferCreate()`, `PetscSegBufferGet()`
 $(_doc_external("Sys/PetscSegBufferUnuse"))
 """
 function PetscSegBufferUnuse(petsclib::PetscLibType, seg::PetscSegBuffer, unused::PetscCount)
-    error("PetscSegBufferUnuse: no generated method for these argument types")
+    throw(MethodError(PetscSegBufferUnuse, (petsclib, seg, unused)))
 end
 
 @for_petsc function PetscSegBufferUnuse(petsclib::$UnionPetscLib, seg::PetscSegBuffer, unused::PetscCount )

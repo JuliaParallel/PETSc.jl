@@ -130,7 +130,10 @@ using .PETScTestUtils: without_petsc_traceback
         )
 
         r3 = LibPETSc.VecCreateSeqWithArray(petsclib,comm, PetscInt(1), PetscInt(2), zeros(PetscScalar, 2))
+        # The handles a callback receives carry the library's current age
+        callback_ages = Int[]
         PETSc.set_function!(snes3, r3) do fx, snes, x
+            push!(callback_ages, fx.age, snes.age, x.age)
             fx[1] = x[1]^2 + x[1] * x[2] - 3
             fx[2] = x[1] * x[2] + x[2]^2 - 6
             return PetscInt(0)
@@ -157,6 +160,7 @@ using .PETScTestUtils: without_petsc_traceback
         
         
         @test x3[:] ≈ [1, 2] rtol = 1e-4
+        @test !isempty(callback_ages) && all(==(petsclib.age), callback_ages)
         # ----------------------------------------------------------------
 
         # set_convergence_test! — custom Julia-closure convergence test

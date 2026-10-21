@@ -20,7 +20,7 @@ See also: `PetscLogHandler`, `PetscLogHandlerSetType()`, `PetscLogHandlerStart()
 $(_doc_external("Log/PetscLogHandlerCreate"))
 """
 function PetscLogHandlerCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("PetscLogHandlerCreate: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerCreate, (petsclib, comm)))
 end
 
 @for_petsc function PetscLogHandlerCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -89,7 +89,7 @@ should be used in almost all cases.
 $(_doc_external("Log/PetscLogHandlerCreateLegacy"))
 """
 function PetscLogHandlerCreateLegacy(petsclib::PetscLibType, comm::MPI_Comm, PetscLogPLB::external, PetscLogPLE::external, PetscLogPHC::external, PetscLogPHD::external)
-    error("PetscLogHandlerCreateLegacy: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerCreateLegacy, (petsclib, comm, PetscLogPLB, PetscLogPLE, PetscLogPHC, PetscLogPHD)))
 end
 
 @for_petsc function PetscLogHandlerCreateLegacy(petsclib::$UnionPetscLib, comm::MPI_Comm, PetscLogPLB::external, PetscLogPLE::external, PetscLogPHC::external, PetscLogPHD::external )
@@ -128,7 +128,7 @@ See also: `PetscLogHandler`, `PetscLogHandlerTraceBegin()`
 $(_doc_external("Log/PetscLogHandlerCreateTrace"))
 """
 function PetscLogHandlerCreateTrace(petsclib::PetscLibType, comm::MPI_Comm)
-    error("PetscLogHandlerCreateTrace: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerCreateTrace, (petsclib, comm)))
 end
 
 @for_petsc function PetscLogHandlerCreateTrace(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -165,7 +165,7 @@ See also: `PetscLogHandler`, `PetscLogHandlerCreate()`
 $(_doc_external("Log/PetscLogHandlerDestroy"))
 """
 function PetscLogHandlerDestroy(petsclib::PetscLibType, handler::Union{PetscLogHandler, Ref{PetscLogHandler}})
-    error("PetscLogHandlerDestroy: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerDestroy, (petsclib, handler)))
 end
 
 @for_petsc function PetscLogHandlerDestroy(petsclib::$UnionPetscLib, handler::Union{PetscLogHandler, Ref{PetscLogHandler}} )
@@ -204,7 +204,7 @@ logging state (`PetscLogGetState()`).
 $(_doc_external("Log/PetscLogHandlerDump"))
 """
 function PetscLogHandlerDump(petsclib::PetscLibType, handler::PetscLogHandler, sname::String)
-    error("PetscLogHandlerDump: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerDump, (petsclib, handler, sname)))
 end
 
 @for_petsc function PetscLogHandlerDump(petsclib::$UnionPetscLib, handler::PetscLogHandler, sname::String )
@@ -242,7 +242,7 @@ See also: `PetscLogHandler`, `PetscLogEventBegin()`, `PetscLogEventEnd()`, `Pets
 $(_doc_external("Log/PetscLogHandlerEventBegin"))
 """
 function PetscLogHandlerEventBegin(petsclib::PetscLibType, h::PetscLogHandler, e::PetscLogEvent, o1, o2, o3, o4)
-    error("PetscLogHandlerEventBegin: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerEventBegin, (petsclib, h, e, o1, o2, o3, o4)))
 end
 
 @for_petsc function PetscLogHandlerEventBegin(petsclib::$UnionPetscLib, h::PetscLogHandler, e::PetscLogEvent, o1, o2, o3, o4 )
@@ -277,7 +277,7 @@ See also: `PetscLogHandlerEventDeactivatePush()`
 $(_doc_external("Log/PetscLogHandlerEventDeactivatePop"))
 """
 function PetscLogHandlerEventDeactivatePop(petsclib::PetscLibType, handler::PetscLogHandler, stage::PetscLogStage, event::PetscLogEvent)
-    error("PetscLogHandlerEventDeactivatePop: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerEventDeactivatePop, (petsclib, handler, stage, event)))
 end
 
 @for_petsc function PetscLogHandlerEventDeactivatePop(petsclib::$UnionPetscLib, handler::PetscLogHandler, stage::PetscLogStage, event::PetscLogEvent )
@@ -312,7 +312,7 @@ See also: `PetscLogHandlerEventDeactivatePop()`
 $(_doc_external("Log/PetscLogHandlerEventDeactivatePush"))
 """
 function PetscLogHandlerEventDeactivatePush(petsclib::PetscLibType, handler::PetscLogHandler, stage::PetscLogStage, event::PetscLogEvent)
-    error("PetscLogHandlerEventDeactivatePush: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerEventDeactivatePush, (petsclib, handler, stage, event)))
 end
 
 @for_petsc function PetscLogHandlerEventDeactivatePush(petsclib::$UnionPetscLib, handler::PetscLogHandler, stage::PetscLogStage, event::PetscLogEvent )
@@ -350,7 +350,7 @@ See also: `PetscLogHandler`, `PetscLogEventBegin()`, `PetscLogEventEnd()`, `Pets
 $(_doc_external("Log/PetscLogHandlerEventEnd"))
 """
 function PetscLogHandlerEventEnd(petsclib::PetscLibType, h::PetscLogHandler, e::PetscLogEvent, o1, o2, o3, o4)
-    error("PetscLogHandlerEventEnd: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerEventEnd, (petsclib, h, e, o1, o2, o3, o4)))
 end
 
 @for_petsc function PetscLogHandlerEventEnd(petsclib::$UnionPetscLib, h::PetscLogHandler, e::PetscLogEvent, o1, o2, o3, o4 )
@@ -385,7 +385,7 @@ See also: `PetscLogHandler`, `PetscLogEventBegin()`, `PetscLogEventEnd()`, `Pets
 $(_doc_external("Log/PetscLogHandlerEventSync"))
 """
 function PetscLogHandlerEventSync(petsclib::PetscLibType, h::PetscLogHandler, e::PetscLogEvent, comm::MPI_Comm)
-    error("PetscLogHandlerEventSync: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerEventSync, (petsclib, h, e, comm)))
 end
 
 @for_petsc function PetscLogHandlerEventSync(petsclib::$UnionPetscLib, h::PetscLogHandler, e::PetscLogEvent, comm::MPI_Comm )
@@ -418,7 +418,7 @@ See also: `PetscLogHandlerEventsResume()`
 $(_doc_external("Log/PetscLogHandlerEventsPause"))
 """
 function PetscLogHandlerEventsPause(petsclib::PetscLibType, handler::PetscLogHandler)
-    error("PetscLogHandlerEventsPause: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerEventsPause, (petsclib, handler)))
 end
 
 @for_petsc function PetscLogHandlerEventsPause(petsclib::$UnionPetscLib, handler::PetscLogHandler )
@@ -451,7 +451,7 @@ See also: `PetscLogHandlerEventsPause()`
 $(_doc_external("Log/PetscLogHandlerEventsResume"))
 """
 function PetscLogHandlerEventsResume(petsclib::PetscLibType, handler::PetscLogHandler)
-    error("PetscLogHandlerEventsResume: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerEventsResume, (petsclib, handler)))
 end
 
 @for_petsc function PetscLogHandlerEventsResume(petsclib::$UnionPetscLib, handler::PetscLogHandler )
@@ -491,7 +491,7 @@ See also: `PetscLogEventGetPerfInfo()`, `PETSCLOGHANDLERDEFAULT`
 $(_doc_external("Log/PetscLogHandlerGetEventPerfInfo"))
 """
 function PetscLogHandlerGetEventPerfInfo(petsclib::PetscLibType, handler::PetscLogHandler, stage::PetscLogStage, event::PetscLogEvent)
-    error("PetscLogHandlerGetEventPerfInfo: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerGetEventPerfInfo, (petsclib, handler, stage, event)))
 end
 
 @for_petsc function PetscLogHandlerGetEventPerfInfo(petsclib::$UnionPetscLib, handler::PetscLogHandler, stage::PetscLogStage, event::PetscLogEvent )
@@ -533,7 +533,7 @@ The default log handler `PETSCLOGHANDLERDEFAULT` implements this function, but o
 $(_doc_external("Log/PetscLogHandlerGetNumObjects"))
 """
 function PetscLogHandlerGetNumObjects(petsclib::PetscLibType, handler::PetscLogHandler)
-    error("PetscLogHandlerGetNumObjects: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerGetNumObjects, (petsclib, handler)))
 end
 
 @for_petsc function PetscLogHandlerGetNumObjects(petsclib::$UnionPetscLib, handler::PetscLogHandler )
@@ -573,7 +573,7 @@ See also: `PetscLogEventGetPerfInfo()`, `PETSCLOGHANDLERDEFAULT`
 $(_doc_external("Log/PetscLogHandlerGetStagePerfInfo"))
 """
 function PetscLogHandlerGetStagePerfInfo(petsclib::PetscLibType, handler::PetscLogHandler, stage::PetscLogStage)
-    error("PetscLogHandlerGetStagePerfInfo: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerGetStagePerfInfo, (petsclib, handler, stage)))
 end
 
 @for_petsc function PetscLogHandlerGetStagePerfInfo(petsclib::$UnionPetscLib, handler::PetscLogHandler, stage::PetscLogStage )
@@ -611,7 +611,7 @@ See also: `PetscLogHandler`, `PetscLogState`, `PetscLogEventBegin()`, `PetscLogH
 $(_doc_external("Log/PetscLogHandlerGetState"))
 """
 function PetscLogHandlerGetState(petsclib::PetscLibType, h::PetscLogHandler)
-    error("PetscLogHandlerGetState: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerGetState, (petsclib, h)))
 end
 
 @for_petsc function PetscLogHandlerGetState(petsclib::$UnionPetscLib, h::PetscLogHandler )
@@ -649,7 +649,7 @@ See also: `PetscLogHandler`, `PetscLogHandlerCreate()`, `PetscLogHandlerRegister
 $(_doc_external("Log/PetscLogHandlerGetType"))
 """
 function PetscLogHandlerGetType(petsclib::PetscLibType, handler::PetscLogHandler)
-    error("PetscLogHandlerGetType: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerGetType, (petsclib, handler)))
 end
 
 @for_petsc function PetscLogHandlerGetType(petsclib::$UnionPetscLib, handler::PetscLogHandler )
@@ -685,7 +685,7 @@ See also: `PetscLogHandler`, `PetscLogObjectCreate()`, `PetscLogObjectDestroy()`
 $(_doc_external("Log/PetscLogHandlerObjectCreate"))
 """
 function PetscLogHandlerObjectCreate(petsclib::PetscLibType, h::PetscLogHandler, obj)
-    error("PetscLogHandlerObjectCreate: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerObjectCreate, (petsclib, h, obj)))
 end
 
 @for_petsc function PetscLogHandlerObjectCreate(petsclib::$UnionPetscLib, h::PetscLogHandler, obj )
@@ -719,7 +719,7 @@ See also: `PetscLogHandler`, `PetscLogObjectCreate()`, `PetscLogObjectDestroy()`
 $(_doc_external("Log/PetscLogHandlerObjectDestroy"))
 """
 function PetscLogHandlerObjectDestroy(petsclib::PetscLibType, h::PetscLogHandler, obj)
-    error("PetscLogHandlerObjectDestroy: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerObjectDestroy, (petsclib, h, obj)))
 end
 
 @for_petsc function PetscLogHandlerObjectDestroy(petsclib::$UnionPetscLib, h::PetscLogHandler, obj )
@@ -751,7 +751,7 @@ See also: `PetscLogHandler`, `PetscLogHandlerCreate()`, `PetscLogHandlerSetType(
 $(_doc_external("Log/PetscLogHandlerRegister"))
 """
 function PetscLogHandlerRegister(petsclib::PetscLibType, sname::String, fnc::external)
-    error("PetscLogHandlerRegister: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerRegister, (petsclib, sname, fnc)))
 end
 
 @for_petsc function PetscLogHandlerRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
@@ -785,7 +785,7 @@ See also: `PetscLogSetLogActions()`, `PetscLogStagePush()`, `PetscLogStagePop()`
 $(_doc_external("Log/PetscLogHandlerSetLogActions"))
 """
 function PetscLogHandlerSetLogActions(petsclib::PetscLibType, handler::PetscLogHandler, flag::PetscBool)
-    error("PetscLogHandlerSetLogActions: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerSetLogActions, (petsclib, handler, flag)))
 end
 
 @for_petsc function PetscLogHandlerSetLogActions(petsclib::$UnionPetscLib, handler::PetscLogHandler, flag::PetscBool )
@@ -819,7 +819,7 @@ See also: `PetscLogSetLogObjects()`, `PetscLogStagePush()`, `PetscLogStagePop()`
 $(_doc_external("Log/PetscLogHandlerSetLogObjects"))
 """
 function PetscLogHandlerSetLogObjects(petsclib::PetscLibType, handler::PetscLogHandler, flag::PetscBool)
-    error("PetscLogHandlerSetLogObjects: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerSetLogObjects, (petsclib, handler, flag)))
 end
 
 @for_petsc function PetscLogHandlerSetLogObjects(petsclib::$UnionPetscLib, handler::PetscLogHandler, flag::PetscBool )
@@ -853,7 +853,7 @@ See also: `PetscLogHandler`, `PetscLogState`, `PetscLogEventBegin()`, `PetscLogH
 $(_doc_external("Log/PetscLogHandlerSetState"))
 """
 function PetscLogHandlerSetState(petsclib::PetscLibType, h::PetscLogHandler, state::PetscLogState)
-    error("PetscLogHandlerSetState: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerSetState, (petsclib, h, state)))
 end
 
 @for_petsc function PetscLogHandlerSetState(petsclib::$UnionPetscLib, h::PetscLogHandler, state::PetscLogState )
@@ -885,7 +885,7 @@ See also: `PetscLogHandler`, `PetscLogHandlerCreate()`, `PetscLogHandlerRegister
 $(_doc_external("Log/PetscLogHandlerSetType"))
 """
 function PetscLogHandlerSetType(petsclib::PetscLibType, handler::PetscLogHandler, name::String)
-    error("PetscLogHandlerSetType: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerSetType, (petsclib, handler, name)))
 end
 
 @for_petsc function PetscLogHandlerSetType(petsclib::$UnionPetscLib, handler::PetscLogHandler, name::String )
@@ -922,7 +922,7 @@ See also: `PetscLogHandlerStageSetVisible()`
 $(_doc_external("Log/PetscLogHandlerStageGetVisible"))
 """
 function PetscLogHandlerStageGetVisible(petsclib::PetscLibType, handler::PetscLogHandler, stage::PetscLogStage)
-    error("PetscLogHandlerStageGetVisible: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerStageGetVisible, (petsclib, handler, stage)))
 end
 
 @for_petsc function PetscLogHandlerStageGetVisible(petsclib::$UnionPetscLib, handler::PetscLogHandler, stage::PetscLogStage )
@@ -958,7 +958,7 @@ See also: `PetscLogHandler`, `PetscLogStagePush()`, `PetscLogStagePop()`, `Petsc
 $(_doc_external("Log/PetscLogHandlerStagePop"))
 """
 function PetscLogHandlerStagePop(petsclib::PetscLibType, h::PetscLogHandler, stage::PetscLogStage)
-    error("PetscLogHandlerStagePop: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerStagePop, (petsclib, h, stage)))
 end
 
 @for_petsc function PetscLogHandlerStagePop(petsclib::$UnionPetscLib, h::PetscLogHandler, stage::PetscLogStage )
@@ -992,7 +992,7 @@ See also: `PetscLogHandler`, `PetscLogStagePush()`, `PetscLogStagePop()`, `Petsc
 $(_doc_external("Log/PetscLogHandlerStagePush"))
 """
 function PetscLogHandlerStagePush(petsclib::PetscLibType, h::PetscLogHandler, stage::PetscLogStage)
-    error("PetscLogHandlerStagePush: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerStagePush, (petsclib, h, stage)))
 end
 
 @for_petsc function PetscLogHandlerStagePush(petsclib::$UnionPetscLib, h::PetscLogHandler, stage::PetscLogStage )
@@ -1027,7 +1027,7 @@ See also: `PetscLogHandlerStageGetVisible()`
 $(_doc_external("Log/PetscLogHandlerStageSetVisible"))
 """
 function PetscLogHandlerStageSetVisible(petsclib::PetscLibType, handler::PetscLogHandler, stage::PetscLogStage, isVisible::PetscBool)
-    error("PetscLogHandlerStageSetVisible: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerStageSetVisible, (petsclib, handler, stage, isVisible)))
 end
 
 @for_petsc function PetscLogHandlerStageSetVisible(petsclib::$UnionPetscLib, handler::PetscLogHandler, stage::PetscLogStage, isVisible::PetscBool )
@@ -1060,7 +1060,7 @@ See also: `PetscLogHandler`, `PetscLogState`, `PetscLogHandlerStop()`, `PetscIni
 $(_doc_external("Log/PetscLogHandlerStart"))
 """
 function PetscLogHandlerStart(petsclib::PetscLibType, h::PetscLogHandler)
-    error("PetscLogHandlerStart: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerStart, (petsclib, h)))
 end
 
 @for_petsc function PetscLogHandlerStart(petsclib::$UnionPetscLib, h::PetscLogHandler )
@@ -1093,7 +1093,7 @@ See also: `PetscLogHandler`, `PetscLogState`, `PetscLogHandlerStart()`
 $(_doc_external("Log/PetscLogHandlerStop"))
 """
 function PetscLogHandlerStop(petsclib::PetscLibType, h::PetscLogHandler)
-    error("PetscLogHandlerStop: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerStop, (petsclib, h)))
 end
 
 @for_petsc function PetscLogHandlerStop(petsclib::$UnionPetscLib, h::PetscLogHandler )
@@ -1127,7 +1127,7 @@ See also: `PetscLogHandler`, `PetscLogView()`
 $(_doc_external("Log/PetscLogHandlerView"))
 """
 function PetscLogHandlerView(petsclib::PetscLibType, h::PetscLogHandler, viewer::PetscViewer)
-    error("PetscLogHandlerView: no generated method for these argument types")
+    throw(MethodError(PetscLogHandlerView, (petsclib, h, viewer)))
 end
 
 @for_petsc function PetscLogHandlerView(petsclib::$UnionPetscLib, h::PetscLogHandler, viewer::PetscViewer )
@@ -1164,7 +1164,7 @@ See also: `PetscLogState`, `PetscLogStateClassRegister()`, `PetscLogStateGetClas
 $(_doc_external("Log/PetscLogStateClassGetInfo"))
 """
 function PetscLogStateClassGetInfo(petsclib::PetscLibType, state::PetscLogState, clss::PetscLogClass)
-    error("PetscLogStateClassGetInfo: no generated method for these argument types")
+    throw(MethodError(PetscLogStateClassGetInfo, (petsclib, state, clss)))
 end
 
 @for_petsc function PetscLogStateClassGetInfo(petsclib::$UnionPetscLib, state::PetscLogState, clss::PetscLogClass )
@@ -1204,7 +1204,7 @@ See also: `PetscLogStateClassGetInfo()`, `PetscLogStateGetClassFromName()`, `Pet
 $(_doc_external("Log/PetscLogStateClassRegister"))
 """
 function PetscLogStateClassRegister(petsclib::PetscLibType, state::PetscLogState, name::String, id::PetscClassId)
-    error("PetscLogStateClassRegister: no generated method for these argument types")
+    throw(MethodError(PetscLogStateClassRegister, (petsclib, state, name, id)))
 end
 
 @for_petsc function PetscLogStateClassRegister(petsclib::$UnionPetscLib, state::PetscLogState, name::String, id::PetscClassId )
@@ -1245,7 +1245,7 @@ See also: `PetscLogState`, `PetscLogEventGetActive()`, `PetscLogStateEventSetAct
 $(_doc_external("Log/PetscLogStateClassSetActive"))
 """
 function PetscLogStateClassSetActive(petsclib::PetscLibType, state::PetscLogState, stage::PetscLogStage, classid::PetscClassId, isActive::PetscBool)
-    error("PetscLogStateClassSetActive: no generated method for these argument types")
+    throw(MethodError(PetscLogStateClassSetActive, (petsclib, state, stage, classid, isActive)))
 end
 
 @for_petsc function PetscLogStateClassSetActive(petsclib::$UnionPetscLib, state::PetscLogState, stage::PetscLogStage, classid::PetscClassId, isActive::PetscBool )
@@ -1282,7 +1282,7 @@ See also: `PetscLogState`, `PetscLogEventGetActive()`, `PetscLogStateClassSetAct
 $(_doc_external("Log/PetscLogStateClassSetActiveAll"))
 """
 function PetscLogStateClassSetActiveAll(petsclib::PetscLibType, state::PetscLogState, classid::PetscClassId, isActive::PetscBool)
-    error("PetscLogStateClassSetActiveAll: no generated method for these argument types")
+    throw(MethodError(PetscLogStateClassSetActiveAll, (petsclib, state, classid, isActive)))
 end
 
 @for_petsc function PetscLogStateClassSetActiveAll(petsclib::$UnionPetscLib, state::PetscLogState, classid::PetscClassId, isActive::PetscBool )
@@ -1315,7 +1315,7 @@ See also: `PetscLogState`, `PetscLogStateDestroy()`
 $(_doc_external("Log/PetscLogStateCreate"))
 """
 function PetscLogStateCreate(petsclib::PetscLibType)
-    error("PetscLogStateCreate: no generated method for these argument types")
+    throw(MethodError(PetscLogStateCreate, (petsclib, )))
 end
 
 @for_petsc function PetscLogStateCreate(petsclib::$UnionPetscLib)
@@ -1350,7 +1350,7 @@ See also: `PetscLogState`, `PetscLogStateCreate()`
 $(_doc_external("Log/PetscLogStateDestroy"))
 """
 function PetscLogStateDestroy(petsclib::PetscLibType, state::Union{PetscLogState, Ref{PetscLogState}})
-    error("PetscLogStateDestroy: no generated method for these argument types")
+    throw(MethodError(PetscLogStateDestroy, (petsclib, state)))
 end
 
 @for_petsc function PetscLogStateDestroy(petsclib::$UnionPetscLib, state::Union{PetscLogState, Ref{PetscLogState}} )
@@ -1389,7 +1389,7 @@ See also: `PetscLogState`, `PetscLogEventGetActive()`, `PetscLogStateGetCurrentS
 $(_doc_external("Log/PetscLogStateEventGetActive"))
 """
 function PetscLogStateEventGetActive(petsclib::PetscLibType, state::PetscLogState, stage::PetscLogStage, event::PetscLogEvent)
-    error("PetscLogStateEventGetActive: no generated method for these argument types")
+    throw(MethodError(PetscLogStateEventGetActive, (petsclib, state, stage, event)))
 end
 
 @for_petsc function PetscLogStateEventGetActive(petsclib::$UnionPetscLib, state::PetscLogState, stage::PetscLogStage, event::PetscLogEvent )
@@ -1428,7 +1428,7 @@ See also: `PetscLogState`, `PetscLogStateEventRegister()`, `PetscLogStateGetEven
 $(_doc_external("Log/PetscLogStateEventGetInfo"))
 """
 function PetscLogStateEventGetInfo(petsclib::PetscLibType, state::PetscLogState, event::PetscLogEvent)
-    error("PetscLogStateEventGetInfo: no generated method for these argument types")
+    throw(MethodError(PetscLogStateEventGetInfo, (petsclib, state, event)))
 end
 
 @for_petsc function PetscLogStateEventGetInfo(petsclib::$UnionPetscLib, state::PetscLogState, event::PetscLogEvent )
@@ -1468,7 +1468,7 @@ See also: `PetscLogState`, `PetscLogStageRegister()`
 $(_doc_external("Log/PetscLogStateEventRegister"))
 """
 function PetscLogStateEventRegister(petsclib::PetscLibType, state::PetscLogState, sname::String, id::PetscClassId)
-    error("PetscLogStateEventRegister: no generated method for these argument types")
+    throw(MethodError(PetscLogStateEventRegister, (petsclib, state, sname, id)))
 end
 
 @for_petsc function PetscLogStateEventRegister(petsclib::$UnionPetscLib, state::PetscLogState, sname::String, id::PetscClassId )
@@ -1506,7 +1506,7 @@ See also: `PetscLogState`, `PetscLogEventGetActive()`, `PetscLogStateGetCurrentS
 $(_doc_external("Log/PetscLogStateEventSetActive"))
 """
 function PetscLogStateEventSetActive(petsclib::PetscLibType, state::PetscLogState, stage::PetscLogStage, event::PetscLogEvent, isActive::PetscBool)
-    error("PetscLogStateEventSetActive: no generated method for these argument types")
+    throw(MethodError(PetscLogStateEventSetActive, (petsclib, state, stage, event, isActive)))
 end
 
 @for_petsc function PetscLogStateEventSetActive(petsclib::$UnionPetscLib, state::PetscLogState, stage::PetscLogStage, event::PetscLogEvent, isActive::PetscBool )
@@ -1541,7 +1541,7 @@ See also: `PetscLogState`, `PetscLogEventGetActive()`
 $(_doc_external("Log/PetscLogStateEventSetActiveAll"))
 """
 function PetscLogStateEventSetActiveAll(petsclib::PetscLibType, state::PetscLogState, event::PetscLogEvent, isActive::PetscBool)
-    error("PetscLogStateEventSetActiveAll: no generated method for these argument types")
+    throw(MethodError(PetscLogStateEventSetActiveAll, (petsclib, state, event, isActive)))
 end
 
 @for_petsc function PetscLogStateEventSetActiveAll(petsclib::$UnionPetscLib, state::PetscLogState, event::PetscLogEvent, isActive::PetscBool )
@@ -1576,7 +1576,7 @@ See also: `PetscLogState`, `PetscLogEventRegister()`
 $(_doc_external("Log/PetscLogStateEventSetCollective"))
 """
 function PetscLogStateEventSetCollective(petsclib::PetscLibType, state::PetscLogState, event::PetscLogEvent, collective::PetscBool)
-    error("PetscLogStateEventSetCollective: no generated method for these argument types")
+    throw(MethodError(PetscLogStateEventSetCollective, (petsclib, state, event, collective)))
 end
 
 @for_petsc function PetscLogStateEventSetCollective(petsclib::$UnionPetscLib, state::PetscLogState, event::PetscLogEvent, collective::PetscBool )
@@ -1613,7 +1613,7 @@ See also: `PetscLogState`, `PetscLogStateClassRegister()`, `PetscLogStateClassGe
 $(_doc_external("Log/PetscLogStateGetClassFromClassId"))
 """
 function PetscLogStateGetClassFromClassId(petsclib::PetscLibType, state::PetscLogState, classid::PetscClassId)
-    error("PetscLogStateGetClassFromClassId: no generated method for these argument types")
+    throw(MethodError(PetscLogStateGetClassFromClassId, (petsclib, state, classid)))
 end
 
 @for_petsc function PetscLogStateGetClassFromClassId(petsclib::$UnionPetscLib, state::PetscLogState, classid::PetscClassId )
@@ -1652,7 +1652,7 @@ See also: `PetscLogState`, `PetscLogStateClassRegister()`, `PetscLogStateClassGe
 $(_doc_external("Log/PetscLogStateGetClassFromName"))
 """
 function PetscLogStateGetClassFromName(petsclib::PetscLibType, state::PetscLogState, name::String)
-    error("PetscLogStateGetClassFromName: no generated method for these argument types")
+    throw(MethodError(PetscLogStateGetClassFromName, (petsclib, state, name)))
 end
 
 @for_petsc function PetscLogStateGetClassFromName(petsclib::$UnionPetscLib, state::PetscLogState, name::String )
@@ -1690,7 +1690,7 @@ See also: `PetscLogState`, `PetscLogStateStageRegister()`, `PetscLogStateStagePu
 $(_doc_external("Log/PetscLogStateGetCurrentStage"))
 """
 function PetscLogStateGetCurrentStage(petsclib::PetscLibType, state::PetscLogState)
-    error("PetscLogStateGetCurrentStage: no generated method for these argument types")
+    throw(MethodError(PetscLogStateGetCurrentStage, (petsclib, state)))
 end
 
 @for_petsc function PetscLogStateGetCurrentStage(petsclib::$UnionPetscLib, state::PetscLogState )
@@ -1729,7 +1729,7 @@ See also: `PetscLogState`, `PetscLogStateEventRegister()`, `PetscLogStateEventGe
 $(_doc_external("Log/PetscLogStateGetEventFromName"))
 """
 function PetscLogStateGetEventFromName(petsclib::PetscLibType, state::PetscLogState, name::String)
-    error("PetscLogStateGetEventFromName: no generated method for these argument types")
+    throw(MethodError(PetscLogStateGetEventFromName, (petsclib, state, name)))
 end
 
 @for_petsc function PetscLogStateGetEventFromName(petsclib::$UnionPetscLib, state::PetscLogState, name::String )
@@ -1767,7 +1767,7 @@ See also: `PetscLogState`, `PetscLogStateClassRegister()`
 $(_doc_external("Log/PetscLogStateGetNumClasses"))
 """
 function PetscLogStateGetNumClasses(petsclib::PetscLibType, state::PetscLogState)
-    error("PetscLogStateGetNumClasses: no generated method for these argument types")
+    throw(MethodError(PetscLogStateGetNumClasses, (petsclib, state)))
 end
 
 @for_petsc function PetscLogStateGetNumClasses(petsclib::$UnionPetscLib, state::PetscLogState )
@@ -1805,7 +1805,7 @@ See also: `PetscLogState`, `PetscLogStateEventRegister()`
 $(_doc_external("Log/PetscLogStateGetNumEvents"))
 """
 function PetscLogStateGetNumEvents(petsclib::PetscLibType, state::PetscLogState)
-    error("PetscLogStateGetNumEvents: no generated method for these argument types")
+    throw(MethodError(PetscLogStateGetNumEvents, (petsclib, state)))
 end
 
 @for_petsc function PetscLogStateGetNumEvents(petsclib::$UnionPetscLib, state::PetscLogState )
@@ -1843,7 +1843,7 @@ See also: `PetscLogState`, `PetscLogStateStageRegister()`
 $(_doc_external("Log/PetscLogStateGetNumStages"))
 """
 function PetscLogStateGetNumStages(petsclib::PetscLibType, state::PetscLogState)
-    error("PetscLogStateGetNumStages: no generated method for these argument types")
+    throw(MethodError(PetscLogStateGetNumStages, (petsclib, state)))
 end
 
 @for_petsc function PetscLogStateGetNumStages(petsclib::$UnionPetscLib, state::PetscLogState )
@@ -1882,7 +1882,7 @@ See also: `PetscLogState`, `PetscLogStateStageRegister()`, `PetscLogStateStageGe
 $(_doc_external("Log/PetscLogStateGetStageFromName"))
 """
 function PetscLogStateGetStageFromName(petsclib::PetscLibType, state::PetscLogState, name::String)
-    error("PetscLogStateGetStageFromName: no generated method for these argument types")
+    throw(MethodError(PetscLogStateGetStageFromName, (petsclib, state, name)))
 end
 
 @for_petsc function PetscLogStateGetStageFromName(petsclib::$UnionPetscLib, state::PetscLogState, name::String )
@@ -1921,7 +1921,7 @@ See also: `PetscLogState`, `PetscLogStageSetActive()`, `PetscLogHandler`, `Petsc
 $(_doc_external("Log/PetscLogStateStageGetActive"))
 """
 function PetscLogStateStageGetActive(petsclib::PetscLibType, state::PetscLogState, stage::PetscLogStage)
-    error("PetscLogStateStageGetActive: no generated method for these argument types")
+    throw(MethodError(PetscLogStateStageGetActive, (petsclib, state, stage)))
 end
 
 @for_petsc function PetscLogStateStageGetActive(petsclib::$UnionPetscLib, state::PetscLogState, stage::PetscLogStage )
@@ -1960,7 +1960,7 @@ See also: `PetscLogState`, `PetscLogStateStageRegister()`, `PetscLogStateGetStag
 $(_doc_external("Log/PetscLogStateStageGetInfo"))
 """
 function PetscLogStateStageGetInfo(petsclib::PetscLibType, state::PetscLogState, stage::PetscLogStage)
-    error("PetscLogStateStageGetInfo: no generated method for these argument types")
+    throw(MethodError(PetscLogStateStageGetInfo, (petsclib, state, stage)))
 end
 
 @for_petsc function PetscLogStateStageGetInfo(petsclib::$UnionPetscLib, state::PetscLogState, stage::PetscLogStage )
@@ -1995,7 +1995,7 @@ See also: `PetscLogState`, `PetscLogStateStageRegister()`, `PetscLogStateStagePu
 $(_doc_external("Log/PetscLogStateStagePop"))
 """
 function PetscLogStateStagePop(petsclib::PetscLibType, state::PetscLogState)
-    error("PetscLogStateStagePop: no generated method for these argument types")
+    throw(MethodError(PetscLogStateStagePop, (petsclib, state)))
 end
 
 @for_petsc function PetscLogStateStagePop(petsclib::$UnionPetscLib, state::PetscLogState )
@@ -2029,7 +2029,7 @@ See also: `PetscLogState`, `PetscLogStateStageRegister()`, `PetscLogStateStagePo
 $(_doc_external("Log/PetscLogStateStagePush"))
 """
 function PetscLogStateStagePush(petsclib::PetscLibType, state::PetscLogState, stage::PetscLogStage)
-    error("PetscLogStateStagePush: no generated method for these argument types")
+    throw(MethodError(PetscLogStateStagePush, (petsclib, state, stage)))
 end
 
 @for_petsc function PetscLogStateStagePush(petsclib::$UnionPetscLib, state::PetscLogState, stage::PetscLogStage )
@@ -2066,7 +2066,7 @@ See also: `PetscLogState`, `PetscLogStateStagePush()`, `PetscLogStateStagePop()`
 $(_doc_external("Log/PetscLogStateStageRegister"))
 """
 function PetscLogStateStageRegister(petsclib::PetscLibType, state::PetscLogState, sname::String)
-    error("PetscLogStateStageRegister: no generated method for these argument types")
+    throw(MethodError(PetscLogStateStageRegister, (petsclib, state, sname)))
 end
 
 @for_petsc function PetscLogStateStageRegister(petsclib::$UnionPetscLib, state::PetscLogState, sname::String )
@@ -2103,7 +2103,7 @@ See also: `PetscLogState`, `PetscLogStateEventSetActive()`
 $(_doc_external("Log/PetscLogStateStageSetActive"))
 """
 function PetscLogStateStageSetActive(petsclib::PetscLibType, state::PetscLogState, stage::PetscLogStage, isActive::PetscBool)
-    error("PetscLogStateStageSetActive: no generated method for these argument types")
+    throw(MethodError(PetscLogStateStageSetActive, (petsclib, state, stage, isActive)))
 end
 
 @for_petsc function PetscLogStateStageSetActive(petsclib::$UnionPetscLib, state::PetscLogState, stage::PetscLogStage, isActive::PetscBool )

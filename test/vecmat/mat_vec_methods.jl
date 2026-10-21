@@ -111,6 +111,28 @@ MPI.Initialized() || MPI.Init()
         foreach(PETSc.destroy!, (y, x, A))
     end
 
+    @testset "products and solves take any vector handle" begin
+        A = nonsymmetric()
+        x = PETSc.PetscVec(petsclib, PetscScalar[1, 1])
+        y = PETSc.PetscVec(petsclib, PetscScalar[0, 0])
+        # borrowed VecPtr handles onto the same vectors
+        xp = PETSc.VecPtr(petsclib, x.ptr, false)
+        yp = PETSc.VecPtr(petsclib, y.ptr, false)
+        @test mul!(yp, A, xp) === yp
+        @test y[:] == PetscScalar[3, 7]
+        @test mul!(yp, A', xp) === yp
+        @test y[:] == PetscScalar[4, 6]
+        @test (A * xp)[:] == PetscScalar[3, 7]
+        ksp = PETSc.KSP(A; ksp_type = "preonly", pc_type = "lu")
+        b = PETSc.PetscVec(petsclib, PetscScalar[3, 7])
+        bp = PETSc.VecPtr(petsclib, b.ptr, false)
+        @test (ksp \ bp)[:] ≈ PetscScalar[1, 1]
+        fill!(y, 0)
+        @test PETSc.solve!(yp, ksp, bp) === yp
+        @test y[:] ≈ PetscScalar[1, 1]
+        foreach(PETSc.destroy!, (ksp, b, y, x, A))
+    end
+
     @testset "issymmetric, ishermitian" begin
         L, A = laplacian(), nonsymmetric()
         @test issymmetric(L) && ishermitian(L)

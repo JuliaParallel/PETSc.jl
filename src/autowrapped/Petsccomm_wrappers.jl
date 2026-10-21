@@ -18,7 +18,7 @@ See also: `PetscShmCommGlobalToLocal()`, `PetscShmCommLocalToGlobal()`, `PetscSh
 $(_doc_external("Sys/PetscShmCommGet"))
 """
 function PetscShmCommGet(petsclib::PetscLibType, globcomm::MPI_Comm)
-    error("PetscShmCommGet: no generated method for these argument types")
+    throw(MethodError(PetscShmCommGet, (petsclib, globcomm)))
 end
 
 @for_petsc function PetscShmCommGet(petsclib::$UnionPetscLib, globcomm::MPI_Comm )
@@ -54,7 +54,7 @@ See also: `PetscShmCommGlobalToLocal()`, `PetscShmCommGet()`, `PetscShmCommLocal
 $(_doc_external("Sys/PetscShmCommGetMpiShmComm"))
 """
 function PetscShmCommGetMpiShmComm(petsclib::PetscLibType, pshmcomm::PetscShmComm)
-    error("PetscShmCommGetMpiShmComm: no generated method for these argument types")
+    throw(MethodError(PetscShmCommGetMpiShmComm, (petsclib, pshmcomm)))
 end
 
 @for_petsc function PetscShmCommGetMpiShmComm(petsclib::$UnionPetscLib, pshmcomm::PetscShmComm )
@@ -91,7 +91,7 @@ See also: `PetscShmCommGet()`, `PetscShmCommLocalToGlobal()`, `PetscShmCommGetMp
 $(_doc_external("Sys/PetscShmCommGlobalToLocal"))
 """
 function PetscShmCommGlobalToLocal(petsclib::PetscLibType, pshmcomm::PetscShmComm, grank::PetscMPIInt)
-    error("PetscShmCommGlobalToLocal: no generated method for these argument types")
+    throw(MethodError(PetscShmCommGlobalToLocal, (petsclib, pshmcomm, grank)))
 end
 
 @for_petsc function PetscShmCommGlobalToLocal(petsclib::$UnionPetscLib, pshmcomm::PetscShmComm, grank::PetscMPIInt )
@@ -128,7 +128,7 @@ See also: `PetscShmCommGlobalToLocal()`, `PetscShmCommGet()`, `PetscShmCommGetMp
 $(_doc_external("Sys/PetscShmCommLocalToGlobal"))
 """
 function PetscShmCommLocalToGlobal(petsclib::PetscLibType, pshmcomm::PetscShmComm, lrank::PetscMPIInt)
-    error("PetscShmCommLocalToGlobal: no generated method for these argument types")
+    throw(MethodError(PetscShmCommLocalToGlobal, (petsclib, pshmcomm, lrank)))
 end
 
 @for_petsc function PetscShmCommLocalToGlobal(petsclib::$UnionPetscLib, pshmcomm::PetscShmComm, lrank::PetscMPIInt )
@@ -167,7 +167,7 @@ See also: `PetscSubcomm`, `PetscSubcommDestroy()`, `PetscSubcommSetTypeGeneral()
 $(_doc_external("Sys/PetscSubcommCreate"))
 """
 function PetscSubcommCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("PetscSubcommCreate: no generated method for these argument types")
+    throw(MethodError(PetscSubcommCreate, (petsclib, comm)))
 end
 
 @for_petsc function PetscSubcommCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -202,7 +202,7 @@ See also: `PetscSubcommCreate()`, `PetscSubcommSetType()`
 $(_doc_external("Sys/PetscSubcommDestroy"))
 """
 function PetscSubcommDestroy(petsclib::PetscLibType, psubcomm::Union{PetscSubcomm, Ref{PetscSubcomm}})
-    error("PetscSubcommDestroy: no generated method for these argument types")
+    throw(MethodError(PetscSubcommDestroy, (petsclib, psubcomm)))
 end
 
 @for_petsc function PetscSubcommDestroy(petsclib::$UnionPetscLib, psubcomm::Union{PetscSubcomm, Ref{PetscSubcomm}} )
@@ -240,7 +240,7 @@ See also: `PetscSubcommDestroy()`, `PetscSubcommSetTypeGeneral()`, `PetscSubcomm
 $(_doc_external("Sys/PetscSubcommGetChild"))
 """
 function PetscSubcommGetChild(petsclib::PetscLibType, scomm::PetscSubcomm)
-    error("PetscSubcommGetChild: no generated method for these argument types")
+    throw(MethodError(PetscSubcommGetChild, (petsclib, scomm)))
 end
 
 @for_petsc function PetscSubcommGetChild(petsclib::$UnionPetscLib, scomm::PetscSubcomm )
@@ -280,7 +280,7 @@ See also: `PetscSubcommDestroy()`, `PetscSubcommSetTypeGeneral()`, `PetscSubcomm
 $(_doc_external("Sys/PetscSubcommGetContiguousParent"))
 """
 function PetscSubcommGetContiguousParent(petsclib::PetscLibType, scomm::PetscSubcomm)
-    error("PetscSubcommGetContiguousParent: no generated method for these argument types")
+    throw(MethodError(PetscSubcommGetContiguousParent, (petsclib, scomm)))
 end
 
 @for_petsc function PetscSubcommGetContiguousParent(petsclib::$UnionPetscLib, scomm::PetscSubcomm )
@@ -319,7 +319,7 @@ See also: `PetscSubcommDestroy()`, `PetscSubcommSetTypeGeneral()`, `PetscSubcomm
 $(_doc_external("Sys/PetscSubcommGetParent"))
 """
 function PetscSubcommGetParent(petsclib::PetscLibType, scomm::PetscSubcomm)
-    error("PetscSubcommGetParent: no generated method for these argument types")
+    throw(MethodError(PetscSubcommGetParent, (petsclib, scomm)))
 end
 
 @for_petsc function PetscSubcommGetParent(petsclib::$UnionPetscLib, scomm::PetscSubcomm )
@@ -354,7 +354,7 @@ See also: `PetscSubcomm`, `PetscSubcommCreate()`
 $(_doc_external("Sys/PetscSubcommSetFromOptions"))
 """
 function PetscSubcommSetFromOptions(petsclib::PetscLibType, psubcomm::PetscSubcomm)
-    error("PetscSubcommSetFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscSubcommSetFromOptions, (petsclib, psubcomm)))
 end
 
 @for_petsc function PetscSubcommSetFromOptions(petsclib::$UnionPetscLib, psubcomm::PetscSubcomm )
@@ -388,7 +388,7 @@ See also: `PetscSubcomm`, `PetscSubcommCreate()`, `PetscSubcommDestroy()`, `Pets
 $(_doc_external("Sys/PetscSubcommSetNumber"))
 """
 function PetscSubcommSetNumber(petsclib::PetscLibType, psubcomm::PetscSubcomm, nsubcomm::Integer)
-    error("PetscSubcommSetNumber: no generated method for these argument types")
+    throw(MethodError(PetscSubcommSetNumber, (petsclib, psubcomm, nsubcomm)))
 end
 
 @for_petsc function PetscSubcommSetNumber(petsclib::$UnionPetscLib, psubcomm::PetscSubcomm, nsubcomm::$PetscInt )
@@ -422,7 +422,7 @@ See also: `PetscSubcomm`, `PetscSubcommCreate()`
 $(_doc_external("Sys/PetscSubcommSetOptionsPrefix"))
 """
 function PetscSubcommSetOptionsPrefix(petsclib::PetscLibType, psubcomm::PetscSubcomm, pre::String)
-    error("PetscSubcommSetOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(PetscSubcommSetOptionsPrefix, (petsclib, psubcomm, pre)))
 end
 
 @for_petsc function PetscSubcommSetOptionsPrefix(petsclib::$UnionPetscLib, psubcomm::PetscSubcomm, pre::String )
@@ -457,7 +457,7 @@ See also: `PetscSubcommType`, `PETSC_SUBCOMM_CONTIGUOUS`, `PETSC_SUBCOMM_INTERLA
 $(_doc_external("Sys/PetscSubcommSetType"))
 """
 function PetscSubcommSetType(petsclib::PetscLibType, psubcomm::PetscSubcomm, subcommtype::PetscSubcommType)
-    error("PetscSubcommSetType: no generated method for these argument types")
+    throw(MethodError(PetscSubcommSetType, (petsclib, psubcomm, subcommtype)))
 end
 
 @for_petsc function PetscSubcommSetType(petsclib::$UnionPetscLib, psubcomm::PetscSubcomm, subcommtype::PetscSubcommType )
@@ -492,7 +492,7 @@ See also: `PetscSubcommType`, `PETSC_SUBCOMM_CONTIGUOUS`, `PETSC_SUBCOMM_INTERLA
 $(_doc_external("Sys/PetscSubcommSetTypeGeneral"))
 """
 function PetscSubcommSetTypeGeneral(petsclib::PetscLibType, psubcomm::PetscSubcomm, color::PetscMPIInt, subrank::PetscMPIInt)
-    error("PetscSubcommSetTypeGeneral: no generated method for these argument types")
+    throw(MethodError(PetscSubcommSetTypeGeneral, (petsclib, psubcomm, color, subrank)))
 end
 
 @for_petsc function PetscSubcommSetTypeGeneral(petsclib::$UnionPetscLib, psubcomm::PetscSubcomm, color::PetscMPIInt, subrank::PetscMPIInt )
@@ -526,7 +526,7 @@ See also: `PetscSubcomm`, `PetscSubcommCreate()`, `PetscViewer`
 $(_doc_external("Sys/PetscSubcommView"))
 """
 function PetscSubcommView(petsclib::PetscLibType, psubcomm::PetscSubcomm, viewer::PetscViewer)
-    error("PetscSubcommView: no generated method for these argument types")
+    throw(MethodError(PetscSubcommView, (petsclib, psubcomm, viewer)))
 end
 
 @for_petsc function PetscSubcommView(petsclib::$UnionPetscLib, psubcomm::PetscSubcomm, viewer::PetscViewer )

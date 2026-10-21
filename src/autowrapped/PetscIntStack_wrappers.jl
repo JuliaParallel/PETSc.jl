@@ -15,7 +15,7 @@ See also: `PetscIntStackDestroy()`, `PetscIntStackEmpty()`, `PetscIntStackPush()
 $(_doc_external("Log/PetscIntStackCreate"))
 """
 function PetscIntStackCreate(petsclib::PetscLibType)
-    error("PetscIntStackCreate: no generated method for these argument types")
+    throw(MethodError(PetscIntStackCreate, (petsclib, )))
 end
 
 @for_petsc function PetscIntStackCreate(petsclib::$UnionPetscLib)
@@ -50,7 +50,7 @@ See also: `PetscIntStackCreate()`, `PetscIntStackEmpty()`, `PetscIntStackPush()`
 $(_doc_external("Log/PetscIntStackDestroy"))
 """
 function PetscIntStackDestroy(petsclib::PetscLibType, stack::PetscIntStack)
-    error("PetscIntStackDestroy: no generated method for these argument types")
+    throw(MethodError(PetscIntStackDestroy, (petsclib, stack)))
 end
 
 @for_petsc function PetscIntStackDestroy(petsclib::$UnionPetscLib, stack::$PetscIntStack )
@@ -86,7 +86,7 @@ See also: `PetscIntStackCreate()`, `PetscIntStackDestroy()`, `PetscIntStackPush(
 $(_doc_external("Log/PetscIntStackEmpty"))
 """
 function PetscIntStackEmpty(petsclib::PetscLibType, stack::PetscIntStack)
-    error("PetscIntStackEmpty: no generated method for these argument types")
+    throw(MethodError(PetscIntStackEmpty, (petsclib, stack)))
 end
 
 @for_petsc function PetscIntStackEmpty(petsclib::$UnionPetscLib, stack::$PetscIntStack )
@@ -124,7 +124,7 @@ See also: `PetscIntStackCreate()`, `PetscIntStackDestroy()`, `PetscIntStackEmpty
 $(_doc_external("Log/PetscIntStackPop"))
 """
 function PetscIntStackPop(petsclib::PetscLibType, stack::PetscIntStack)
-    error("PetscIntStackPop: no generated method for these argument types")
+    throw(MethodError(PetscIntStackPop, (petsclib, stack)))
 end
 
 @for_petsc function PetscIntStackPop(petsclib::$UnionPetscLib, stack::$PetscIntStack )
@@ -160,7 +160,7 @@ See also: `PetscIntStackCreate()`, `PetscIntStackDestroy()`, `PetscIntStackEmpty
 $(_doc_external("Log/PetscIntStackPush"))
 """
 function PetscIntStackPush(petsclib::PetscLibType, stack::PetscIntStack, item::Cint)
-    error("PetscIntStackPush: no generated method for these argument types")
+    throw(MethodError(PetscIntStackPush, (petsclib, stack, item)))
 end
 
 @for_petsc function PetscIntStackPush(petsclib::$UnionPetscLib, stack::$PetscIntStack, item::Cint )
@@ -196,7 +196,7 @@ See also: `PetscIntStackCreate()`, `PetscIntStackDestroy()`, `PetscIntStackEmpty
 $(_doc_external("Log/PetscIntStackTop"))
 """
 function PetscIntStackTop(petsclib::PetscLibType, stack::PetscIntStack)
-    error("PetscIntStackTop: no generated method for these argument types")
+    throw(MethodError(PetscIntStackTop, (petsclib, stack)))
 end
 
 @for_petsc function PetscIntStackTop(petsclib::$UnionPetscLib, stack::$PetscIntStack )

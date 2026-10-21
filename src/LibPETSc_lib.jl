@@ -38,27 +38,31 @@ function Base.getproperty(petsclib::UnionPetscLibType, name::Symbol)
 end
 
 """
-    scalartype(petsclib::PetscLibType)
+    scalartype(petsclib)
+    scalartype(typeof(petsclib))
 
-return the scalar type for the associated `petsclib`
+The scalar type (`PetscScalar`) of the library `petsclib`, e.g. `Float64`.
 """
 scalartype(::PetscLibType{ST}) where {ST} = ST
 scalartype(::Type{PetscLib}) where {PetscLib <: PetscLibType{ST}} where {ST} =
     ST
 
 """
-    realtype(petsclib::PetscLibType)
+    realtype(petsclib)
+    realtype(typeof(petsclib))
 
-return the real type for the associated `petsclib`
+The real type (`PetscReal`) of the library `petsclib`: `real` of its scalar type,
+so `Float64` for both a `Float64` and a `ComplexF64` build.
 """
 realtype(::PetscLibType{ST}) where {ST} = real(ST)
 realtype(::Type{PetscLib}) where {PetscLib <: PetscLibType{ST}} where {ST} =
     real(ST)
 
 """
-    inttype(petsclib::PetscLibType)
+    inttype(petsclib)
+    inttype(typeof(petsclib))
 
-return the int type for the associated `petsclib`
+The integer type (`PetscInt`) of the library `petsclib`, e.g. `Int64`.
 """
 inttype(::PetscLibType{ST, IT}) where {ST, IT} = IT
 inttype(

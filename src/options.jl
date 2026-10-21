@@ -99,14 +99,8 @@ Does nothing when the library has been finalized or re-initialized, or when
 `opts` was already destroyed: see [`isdestroyable`](@ref).
 Does nothing on a borrowed handle either: see [`owns`](@ref).
 """
-function destroy!(opts::AbstractPetscOptions{PetscLib}) where {PetscLib}
-    owns(opts) || return nothing
-    if isdestroyable(opts, PetscLib)
-        LibPETSc.PetscOptionsDestroy(PetscLib, opts)
-    end
-    opts.ptr = C_NULL
-    return nothing
-end
+destroy!(opts::AbstractPetscOptions{PetscLib}) where {PetscLib} =
+    destroy_handle!(LibPETSc.PetscOptionsDestroy, opts, PetscLib)
 
 function Base.setindex!(
     opts::AbstractPetscOptions{PetscLib},
@@ -206,6 +200,14 @@ options from `opts`, and pop it again even if `f` throws. Returns the result of
 # External Links
 $(doc_external("Sys/PetscOptionsPush"))
 """
+# The constructor options of a KSP, SNES or TS go with the solver
+function destroy_options!(solver)
+    isnothing(solver.opts) && return nothing
+    destroy!(solver.opts)
+    solver.opts = nothing
+    return nothing
+end
+
 function with_options(f, opts::AbstractPetscOptions{PetscLib}) where {PetscLib}
     stack = options_stack(PetscLib)
     !isempty(stack) && last(stack) == opts.ptr && return f()

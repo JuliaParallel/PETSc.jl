@@ -28,7 +28,7 @@ See also: `KSPSetFromOptions()`, `PCSetFromOptions()`, `SNESSetFromOptions()`, `
 $(_doc_external("Sys/PetscObjectAddOptionsHandler"))
 """
 function PetscObjectAddOptionsHandler(petsclib::PetscLibType, obj, handle::external, destroy::external, ctx::Ptr{Cvoid})
-    error("PetscObjectAddOptionsHandler: no generated method for these argument types")
+    throw(MethodError(PetscObjectAddOptionsHandler, (petsclib, obj, handle, destroy, ctx)))
 end
 
 @for_petsc function PetscObjectAddOptionsHandler(petsclib::$UnionPetscLib, obj, handle::external, destroy::external, ctx::Ptr{Cvoid} )
@@ -61,7 +61,7 @@ See also: `PetscOptionsCreate()`, `PetscOptionsDestroy()`, `PetscObjectSetOption
 $(_doc_external("Sys/PetscObjectAppendOptionsPrefix"))
 """
 function PetscObjectAppendOptionsPrefix(petsclib::PetscLibType, obj, prefix::String)
-    error("PetscObjectAppendOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(PetscObjectAppendOptionsPrefix, (petsclib, obj, prefix)))
 end
 
 @for_petsc function PetscObjectAppendOptionsPrefix(petsclib::$UnionPetscLib, obj, prefix::String )
@@ -98,7 +98,7 @@ See also: `PetscObject`, `PetscObjectTypeCompare()`, `PetscObjectTypeCompareAny(
 $(_doc_external("Sys/PetscObjectBaseTypeCompare"))
 """
 function PetscObjectBaseTypeCompare(petsclib::PetscLibType, obj, type_name::String)
-    error("PetscObjectBaseTypeCompare: no generated method for these argument types")
+    throw(MethodError(PetscObjectBaseTypeCompare, (petsclib, obj, type_name)))
 end
 
 @for_petsc function PetscObjectBaseTypeCompare(petsclib::$UnionPetscLib, obj, type_name::String )
@@ -134,7 +134,7 @@ See also: `PetscObject`, `PetscObjectGetType()`, `PetscObjectSetName()`
 $(_doc_external("Sys/PetscObjectChangeTypeName"))
 """
 function PetscObjectChangeTypeName(petsclib::PetscLibType, obj, type_name::String)
-    error("PetscObjectChangeTypeName: no generated method for these argument types")
+    throw(MethodError(PetscObjectChangeTypeName, (petsclib, obj, type_name)))
 end
 
 @for_petsc function PetscObjectChangeTypeName(petsclib::$UnionPetscLib, obj, type_name::String )
@@ -171,7 +171,7 @@ See also: `PetscObjectStateGet()`, `PetscObjectGetId()`
 $(_doc_external("Sys/PetscObjectCompareId"))
 """
 function PetscObjectCompareId(petsclib::PetscLibType, obj, id::PetscObjectId)
-    error("PetscObjectCompareId: no generated method for these argument types")
+    throw(MethodError(PetscObjectCompareId, (petsclib, obj, id)))
 end
 
 @for_petsc function PetscObjectCompareId(petsclib::$UnionPetscLib, obj, id::PetscObjectId )
@@ -211,7 +211,7 @@ See also: `PetscObjectQuery()`, `PetscContainerCreate()`, `PetscObjectComposeFun
 $(_doc_external("Sys/PetscObjectCompose"))
 """
 function PetscObjectCompose(petsclib::PetscLibType, obj, name::String, ptr)
-    error("PetscObjectCompose: no generated method for these argument types")
+    throw(MethodError(PetscObjectCompose, (petsclib, obj, name, ptr)))
 end
 
 @for_petsc function PetscObjectCompose(petsclib::$UnionPetscLib, obj, name::String, ptr )
@@ -248,7 +248,7 @@ See also: `PetscContainerCreate()`, `PetscContainerDestroy()`, `PetscContainerSe
 $(_doc_external("Sys/PetscObjectContainerCompose"))
 """
 function PetscObjectContainerCompose(petsclib::PetscLibType, obj, name::String, pointer::Ptr{Cvoid}, destroy::Ptr{Cvoid})
-    error("PetscObjectContainerCompose: no generated method for these argument types")
+    throw(MethodError(PetscObjectContainerCompose, (petsclib, obj, name, pointer, destroy)))
 end
 
 @for_petsc function PetscObjectContainerCompose(petsclib::$UnionPetscLib, obj, name::String, pointer::Ptr{Cvoid}, destroy::Ptr{Cvoid} )
@@ -286,7 +286,7 @@ See also: `PetscContainerCreate()`, `PetscContainerDestroy()`, `PetscContainerSe
 $(_doc_external("Sys/PetscObjectContainerQuery"))
 """
 function PetscObjectContainerQuery(petsclib::PetscLibType, obj, name::String)
-    error("PetscObjectContainerQuery: no generated method for these argument types")
+    throw(MethodError(PetscObjectContainerQuery, (petsclib, obj, name)))
 end
 
 @for_petsc function PetscObjectContainerQuery(petsclib::$UnionPetscLib, obj, name::String )
@@ -324,7 +324,7 @@ See also: `PetscObjectCompose()`, `PetscObjectReference()`, `PetscObjectDestroy(
 $(_doc_external("Sys/PetscObjectDereference"))
 """
 function PetscObjectDereference(petsclib::PetscLibType, obj)
-    error("PetscObjectDereference: no generated method for these argument types")
+    throw(MethodError(PetscObjectDereference, (petsclib, obj)))
 end
 
 @for_petsc function PetscObjectDereference(petsclib::$UnionPetscLib, obj )
@@ -358,7 +358,7 @@ See also: `PetscObject`
 $(_doc_external("Sys/PetscObjectDestroy"))
 """
 function PetscObjectDestroy(petsclib::PetscLibType, obj::Union{PetscObject, Ref{PetscObject}})
-    error("PetscObjectDestroy: no generated method for these argument types")
+    throw(MethodError(PetscObjectDestroy, (petsclib, obj)))
 end
 
 @for_petsc function PetscObjectDestroy(petsclib::$UnionPetscLib, obj::Union{PetscObject, Ref{PetscObject}} )
@@ -393,7 +393,7 @@ See also: `KSPSetFromOptions()`, `PCSetFromOptions()`, `SNESSetFromOptions()`, `
 $(_doc_external("Sys/PetscObjectDestroyOptionsHandlers"))
 """
 function PetscObjectDestroyOptionsHandlers(petsclib::PetscLibType, obj)
-    error("PetscObjectDestroyOptionsHandlers: no generated method for these argument types")
+    throw(MethodError(PetscObjectDestroyOptionsHandlers, (petsclib, obj)))
 end
 
 @for_petsc function PetscObjectDestroyOptionsHandlers(petsclib::$UnionPetscLib, obj )
@@ -430,7 +430,7 @@ See also: `PetscObject`, `PetscClassId`, `PetscObjectGetClassName()`, `PetscObje
 $(_doc_external("Sys/PetscObjectGetClassId"))
 """
 function PetscObjectGetClassId(petsclib::PetscLibType, obj)
-    error("PetscObjectGetClassId: no generated method for these argument types")
+    throw(MethodError(PetscObjectGetClassId, (petsclib, obj)))
 end
 
 @for_petsc function PetscObjectGetClassId(petsclib::$UnionPetscLib, obj )
@@ -469,7 +469,7 @@ See also: `PetscObject`, `PetscClassId`, `PetscObjectGetType()`, `PetscObjectGet
 $(_doc_external("Sys/PetscObjectGetClassName"))
 """
 function PetscObjectGetClassName(petsclib::PetscLibType, obj)
-    error("PetscObjectGetClassName: no generated method for these argument types")
+    throw(MethodError(PetscObjectGetClassName, (petsclib, obj)))
 end
 
 @for_petsc function PetscObjectGetClassName(petsclib::$UnionPetscLib, obj )
@@ -508,7 +508,7 @@ See also: `PetscObject`, `PetscObjectComm()`
 $(_doc_external("Sys/PetscObjectGetComm"))
 """
 function PetscObjectGetComm(petsclib::PetscLibType, obj)
-    error("PetscObjectGetComm: no generated method for these argument types")
+    throw(MethodError(PetscObjectGetComm, (petsclib, obj)))
 end
 
 @for_petsc function PetscObjectGetComm(petsclib::$UnionPetscLib, obj )
@@ -546,7 +546,7 @@ See also: `PetscObjectStateGet()`, `PetscObjectCompareId()`
 $(_doc_external("Sys/PetscObjectGetId"))
 """
 function PetscObjectGetId(petsclib::PetscLibType, obj)
-    error("PetscObjectGetId: no generated method for these argument types")
+    throw(MethodError(PetscObjectGetId, (petsclib, obj)))
 end
 
 @for_petsc function PetscObjectGetId(petsclib::$UnionPetscLib, obj )
@@ -583,7 +583,7 @@ See also: `PetscObjectSetName()`, `PetscObjectName()`, `PetscObject`, `PetscObje
 $(_doc_external("Sys/PetscObjectGetName"))
 """
 function PetscObjectGetName(petsclib::PetscLibType, obj)
-    error("PetscObjectGetName: no generated method for these argument types")
+    throw(MethodError(PetscObjectGetName, (petsclib, obj)))
 end
 
 @for_petsc function PetscObjectGetName(petsclib::$UnionPetscLib, obj )
@@ -625,7 +625,7 @@ See also: `PetscCommGetNewTag()`
 $(_doc_external("Sys/PetscObjectGetNewTag"))
 """
 function PetscObjectGetNewTag(petsclib::PetscLibType, obj)
-    error("PetscObjectGetNewTag: no generated method for these argument types")
+    throw(MethodError(PetscObjectGetNewTag, (petsclib, obj)))
 end
 
 @for_petsc function PetscObjectGetNewTag(petsclib::$UnionPetscLib, obj )
@@ -664,7 +664,7 @@ See also: `PetscOptionsCreate()`, `PetscOptionsDestroy()`, `PetscObjectSetOption
 $(_doc_external("Sys/PetscObjectGetOptions"))
 """
 function PetscObjectGetOptions(petsclib::PetscLibType, obj)
-    error("PetscObjectGetOptions: no generated method for these argument types")
+    throw(MethodError(PetscObjectGetOptions, (petsclib, obj)))
 end
 
 @for_petsc function PetscObjectGetOptions(petsclib::$UnionPetscLib, obj )
@@ -701,7 +701,7 @@ See also: `PetscOptionsCreate()`, `PetscOptionsDestroy()`, `PetscObjectSetOption
 $(_doc_external("Sys/PetscObjectGetOptionsPrefix"))
 """
 function PetscObjectGetOptionsPrefix(petsclib::PetscLibType, obj)
-    error("PetscObjectGetOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(PetscObjectGetOptionsPrefix, (petsclib, obj)))
 end
 
 @for_petsc function PetscObjectGetOptionsPrefix(petsclib::$UnionPetscLib, obj )
@@ -740,7 +740,7 @@ See also: `PetscObjectCompose()`, `PetscObjectDereference()`, `PetscObjectRefere
 $(_doc_external("Sys/PetscObjectGetReference"))
 """
 function PetscObjectGetReference(petsclib::PetscLibType, obj)
-    error("PetscObjectGetReference: no generated method for these argument types")
+    throw(MethodError(PetscObjectGetReference, (petsclib, obj)))
 end
 
 @for_petsc function PetscObjectGetReference(petsclib::$UnionPetscLib, obj )
@@ -779,7 +779,7 @@ See also: `PetscObjectIncrementTabLevel()`, `PetscObjectSetTabLevel()`, `PETSCVI
 $(_doc_external("Sys/PetscObjectGetTabLevel"))
 """
 function PetscObjectGetTabLevel(petsclib::PetscLibType, obj)
-    error("PetscObjectGetTabLevel: no generated method for these argument types")
+    throw(MethodError(PetscObjectGetTabLevel, (petsclib, obj)))
 end
 
 @for_petsc function PetscObjectGetTabLevel(petsclib::$UnionPetscLib, obj )
@@ -818,7 +818,7 @@ See also: `PetscObject`, `PetscClassId`, `PetscObjectGetClassName()`, `PetscObje
 $(_doc_external("Sys/PetscObjectGetType"))
 """
 function PetscObjectGetType(petsclib::PetscLibType, obj)
-    error("PetscObjectGetType: no generated method for these argument types")
+    throw(MethodError(PetscObjectGetType, (petsclib, obj)))
 end
 
 @for_petsc function PetscObjectGetType(petsclib::$UnionPetscLib, obj )
@@ -857,7 +857,7 @@ See also: `PetscObject`, `PetscObjectComposeFunction()`, `PetscObjectQueryFuncti
 $(_doc_external("Sys/PetscObjectHasFunction"))
 """
 function PetscObjectHasFunction(petsclib::PetscLibType, obj, name::String)
-    error("PetscObjectHasFunction: no generated method for these argument types")
+    throw(MethodError(PetscObjectHasFunction, (petsclib, obj, name)))
 end
 
 @for_petsc function PetscObjectHasFunction(petsclib::$UnionPetscLib, obj, name::String )
@@ -895,7 +895,7 @@ See also: `PETSCVIEWERASCII`, `PetscObjectSetTabLevel()`, `PetscObjectGetTabLeve
 $(_doc_external("Sys/PetscObjectIncrementTabLevel"))
 """
 function PetscObjectIncrementTabLevel(petsclib::PetscLibType, obj, oldobj, tab::Integer)
-    error("PetscObjectIncrementTabLevel: no generated method for these argument types")
+    throw(MethodError(PetscObjectIncrementTabLevel, (petsclib, obj, oldobj, tab)))
 end
 
 @for_petsc function PetscObjectIncrementTabLevel(petsclib::$UnionPetscLib, obj, oldobj, tab::$PetscInt )
@@ -927,7 +927,7 @@ See also: `PetscOptionsInsert()`, `PetscObjectSetPrintedOptions()`, `PetscObject
 $(_doc_external("Sys/PetscObjectInheritPrintedOptions"))
 """
 function PetscObjectInheritPrintedOptions(petsclib::PetscLibType, pobj, obj)
-    error("PetscObjectInheritPrintedOptions: no generated method for these argument types")
+    throw(MethodError(PetscObjectInheritPrintedOptions, (petsclib, pobj, obj)))
 end
 
 @for_petsc function PetscObjectInheritPrintedOptions(petsclib::$UnionPetscLib, pobj, obj )
@@ -960,7 +960,7 @@ See also: `PetscObjectGetName()`, `PetscObjectSetName()`
 $(_doc_external("Sys/PetscObjectName"))
 """
 function PetscObjectName(petsclib::PetscLibType, obj)
-    error("PetscObjectName: no generated method for these argument types")
+    throw(MethodError(PetscObjectName, (petsclib, obj)))
 end
 
 @for_petsc function PetscObjectName(petsclib::$UnionPetscLib, obj )
@@ -997,7 +997,7 @@ See also: `PetscObjectTypeCompare()`, `VecGetType()`, `KSPGetType()`, `PCGetType
 $(_doc_external("Sys/PetscObjectObjectTypeCompare"))
 """
 function PetscObjectObjectTypeCompare(petsclib::PetscLibType, obj1, obj2)
-    error("PetscObjectObjectTypeCompare: no generated method for these argument types")
+    throw(MethodError(PetscObjectObjectTypeCompare, (petsclib, obj1, obj2)))
 end
 
 @for_petsc function PetscObjectObjectTypeCompare(petsclib::$UnionPetscLib, obj1, obj2 )
@@ -1032,7 +1032,7 @@ See also: `PetscOptionsCreate()`, `PetscOptionsDestroy()`, `PetscObjectSetOption
 $(_doc_external("Sys/PetscObjectPrependOptionsPrefix"))
 """
 function PetscObjectPrependOptionsPrefix(petsclib::PetscLibType, obj, prefix::String)
-    error("PetscObjectPrependOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(PetscObjectPrependOptionsPrefix, (petsclib, obj, prefix)))
 end
 
 @for_petsc function PetscObjectPrependOptionsPrefix(petsclib::$UnionPetscLib, obj, prefix::String )
@@ -1064,7 +1064,7 @@ See also: `PetscObjectSetName()`, `PetscObjectName()`
 $(_doc_external("Sys/PetscObjectPrintClassNamePrefixType"))
 """
 function PetscObjectPrintClassNamePrefixType(petsclib::PetscLibType, obj, viewer::PetscViewer)
-    error("PetscObjectPrintClassNamePrefixType: no generated method for these argument types")
+    throw(MethodError(PetscObjectPrintClassNamePrefixType, (petsclib, obj, viewer)))
 end
 
 @for_petsc function PetscObjectPrintClassNamePrefixType(petsclib::$UnionPetscLib, obj, viewer::PetscViewer )
@@ -1099,7 +1099,7 @@ See also: `KSPSetFromOptions()`, `PCSetFromOptions()`, `SNESSetFromOptions()`, `
 $(_doc_external("Sys/PetscObjectProcessOptionsHandlers"))
 """
 function PetscObjectProcessOptionsHandlers(petsclib::PetscLibType, obj, PetscOptionsObject::PetscOptionItems)
-    error("PetscObjectProcessOptionsHandlers: no generated method for these argument types")
+    throw(MethodError(PetscObjectProcessOptionsHandlers, (petsclib, obj, PetscOptionsObject)))
 end
 
 @for_petsc function PetscObjectProcessOptionsHandlers(petsclib::$UnionPetscLib, obj, PetscOptionsObject::PetscOptionItems )
@@ -1137,7 +1137,7 @@ See also: `PetscObjectCompose()`, `PetscObjectComposeFunction()`, `PetscObjectQu
 $(_doc_external("Sys/PetscObjectQuery"))
 """
 function PetscObjectQuery(petsclib::PetscLibType, obj, name::String, ptr::PetscObject)
-    error("PetscObjectQuery: no generated method for these argument types")
+    throw(MethodError(PetscObjectQuery, (petsclib, obj, name, ptr)))
 end
 
 @for_petsc function PetscObjectQuery(petsclib::$UnionPetscLib, obj, name::String, ptr::PetscObject )
@@ -1172,7 +1172,7 @@ See also: `PetscObjectCompose()`, `PetscObjectDereference()`, `PetscObject`
 $(_doc_external("Sys/PetscObjectReference"))
 """
 function PetscObjectReference(petsclib::PetscLibType, obj)
-    error("PetscObjectReference: no generated method for these argument types")
+    throw(MethodError(PetscObjectReference, (petsclib, obj)))
 end
 
 @for_petsc function PetscObjectReference(petsclib::$UnionPetscLib, obj )
@@ -1207,7 +1207,7 @@ See also: `PetscObjectRegisterDestroyAll()`
 $(_doc_external("Sys/PetscObjectRegisterDestroy"))
 """
 function PetscObjectRegisterDestroy(petsclib::PetscLibType, obj)
-    error("PetscObjectRegisterDestroy: no generated method for these argument types")
+    throw(MethodError(PetscObjectRegisterDestroy, (petsclib, obj)))
 end
 
 @for_petsc function PetscObjectRegisterDestroy(petsclib::$UnionPetscLib, obj )
@@ -1238,7 +1238,7 @@ See also: `PetscObjectRegisterDestroy()`
 $(_doc_external("Sys/PetscObjectRegisterDestroyAll"))
 """
 function PetscObjectRegisterDestroyAll(petsclib::PetscLibType)
-    error("PetscObjectRegisterDestroyAll: no generated method for these argument types")
+    throw(MethodError(PetscObjectRegisterDestroyAll, (petsclib, )))
 end
 
 @for_petsc function PetscObjectRegisterDestroyAll(petsclib::$UnionPetscLib)
@@ -1271,7 +1271,7 @@ See also: `PetscObject`, `PetscObjectCompose()`, `PetscObjectQuery()`, `PetscObj
 $(_doc_external("Sys/PetscObjectRemoveReference"))
 """
 function PetscObjectRemoveReference(petsclib::PetscLibType, obj, name::String)
-    error("PetscObjectRemoveReference: no generated method for these argument types")
+    throw(MethodError(PetscObjectRemoveReference, (petsclib, obj, name)))
 end
 
 @for_petsc function PetscObjectRemoveReference(petsclib::$UnionPetscLib, obj, name::String )
@@ -1304,7 +1304,7 @@ See also: `PetscObjectSetOptionsPrefix()`, `PetscObjectGetOptionsPrefix()`, `Pet
 $(_doc_external("Sys/PetscObjectSetFromOptions"))
 """
 function PetscObjectSetFromOptions(petsclib::PetscLibType, obj)
-    error("PetscObjectSetFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscObjectSetFromOptions, (petsclib, obj)))
 end
 
 @for_petsc function PetscObjectSetFromOptions(petsclib::$UnionPetscLib, obj )
@@ -1339,7 +1339,7 @@ See also: `PetscObjectGetName()`, `PetscObjectName()`
 $(_doc_external("Sys/PetscObjectSetName"))
 """
 function PetscObjectSetName(petsclib::PetscLibType, obj, name::String)
-    error("PetscObjectSetName: no generated method for these argument types")
+    throw(MethodError(PetscObjectSetName, (petsclib, obj, name)))
 end
 
 @for_petsc function PetscObjectSetName(petsclib::$UnionPetscLib, obj, name::String )
@@ -1374,7 +1374,7 @@ See also: `PetscOptionsCreate()`, `PetscOptionsDestroy()`, `PetscObjectSetOption
 $(_doc_external("Sys/PetscObjectSetOptions"))
 """
 function PetscObjectSetOptions(petsclib::PetscLibType, obj, options::AbstractPetscOptions)
-    error("PetscObjectSetOptions: no generated method for these argument types")
+    throw(MethodError(PetscObjectSetOptions, (petsclib, obj, options)))
 end
 
 @for_petsc function PetscObjectSetOptions(petsclib::$UnionPetscLib, obj, options::AbstractPetscOptions )
@@ -1410,7 +1410,7 @@ See also: `PetscOptionsCreate()`, `PetscOptionsDestroy()`, `PetscObjectAppendOpt
 $(_doc_external("Sys/PetscObjectSetOptionsPrefix"))
 """
 function PetscObjectSetOptionsPrefix(petsclib::PetscLibType, obj, prefix::String)
-    error("PetscObjectSetOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(PetscObjectSetOptionsPrefix, (petsclib, obj, prefix)))
 end
 
 @for_petsc function PetscObjectSetOptionsPrefix(petsclib::$UnionPetscLib, obj, prefix::String )
@@ -1441,7 +1441,7 @@ See also: `PetscOptionsInsert()`, `PetscObject`
 $(_doc_external("Sys/PetscObjectSetPrintedOptions"))
 """
 function PetscObjectSetPrintedOptions(petsclib::PetscLibType, obj)
-    error("PetscObjectSetPrintedOptions: no generated method for these argument types")
+    throw(MethodError(PetscObjectSetPrintedOptions, (petsclib, obj)))
 end
 
 @for_petsc function PetscObjectSetPrintedOptions(petsclib::$UnionPetscLib, obj )
@@ -1476,7 +1476,7 @@ See also: `PetscObjectIncrementTabLevel()`, `PetscObjectGetTabLevel()`
 $(_doc_external("Sys/PetscObjectSetTabLevel"))
 """
 function PetscObjectSetTabLevel(petsclib::PetscLibType, obj, tab::Integer)
-    error("PetscObjectSetTabLevel: no generated method for these argument types")
+    throw(MethodError(PetscObjectSetTabLevel, (petsclib, obj, tab)))
 end
 
 @for_petsc function PetscObjectSetTabLevel(petsclib::$UnionPetscLib, obj, tab::$PetscInt )
@@ -1509,7 +1509,7 @@ See also: `PetscObjectDestroy()`, `PetscObject`
 $(_doc_external("Sys/PetscObjectSetUp"))
 """
 function PetscObjectSetUp(petsclib::PetscLibType, obj)
-    error("PetscObjectSetUp: no generated method for these argument types")
+    throw(MethodError(PetscObjectSetUp, (petsclib, obj)))
 end
 
 @for_petsc function PetscObjectSetUp(petsclib::$UnionPetscLib, obj )
@@ -1547,7 +1547,7 @@ See also: `PetscObject`, `VecGetType()`, `KSPGetType()`, `PCGetType()`, `SNESGet
 $(_doc_external("Sys/PetscObjectTypeCompare"))
 """
 function PetscObjectTypeCompare(petsclib::PetscLibType, obj, type_name::String)
-    error("PetscObjectTypeCompare: no generated method for these argument types")
+    throw(MethodError(PetscObjectTypeCompare, (petsclib, obj, type_name)))
 end
 
 @for_petsc function PetscObjectTypeCompare(petsclib::$UnionPetscLib, obj, type_name::String )
@@ -1584,7 +1584,7 @@ See also: `PetscObject`, `PetscObjectViewFromOptions()`, `PetscViewer`
 $(_doc_external("Sys/PetscObjectView"))
 """
 function PetscObjectView(petsclib::PetscLibType, obj, viewer::PetscViewer)
-    error("PetscObjectView: no generated method for these argument types")
+    throw(MethodError(PetscObjectView, (petsclib, obj, viewer)))
 end
 
 @for_petsc function PetscObjectView(petsclib::$UnionPetscLib, obj, viewer::PetscViewer )
@@ -1622,7 +1622,7 @@ See also: `PetscObject`, `PetscObjectView()`, `PetscOptionsCreateViewer()`
 $(_doc_external("Sys/PetscObjectViewFromOptions"))
 """
 function PetscObjectViewFromOptions(petsclib::PetscLibType, obj, bobj, name::String)
-    error("PetscObjectViewFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscObjectViewFromOptions, (petsclib, obj, bobj, name)))
 end
 
 @for_petsc function PetscObjectViewFromOptions(petsclib::$UnionPetscLib, obj, bobj, name::String )
@@ -1656,7 +1656,7 @@ See also: `PetscViewer`, `PetscObject`, `PetscObjectSetName()`
 $(_doc_external("Viewer/PetscObjectViewSAWs"))
 """
 function PetscObjectViewSAWs(petsclib::PetscLibType, obj, viewer::PetscViewer)
-    error("PetscObjectViewSAWs: no generated method for these argument types")
+    throw(MethodError(PetscObjectViewSAWs, (petsclib, obj, viewer)))
 end
 
 @for_petsc function PetscObjectViewSAWs(petsclib::$UnionPetscLib, obj, viewer::PetscViewer )
@@ -1691,7 +1691,7 @@ See also: `PetscObject`
 $(_doc_external("Sys/PetscObjectsDump"))
 """
 function PetscObjectsDump(petsclib::PetscLibType, fd::Libc.FILE, all::PetscBool)
-    error("PetscObjectsDump: no generated method for these argument types")
+    throw(MethodError(PetscObjectsDump, (petsclib, fd, all)))
 end
 
 @for_petsc function PetscObjectsDump(petsclib::$UnionPetscLib, fd::Libc.FILE, all::PetscBool )
@@ -1728,7 +1728,7 @@ See also: `PetscObject`
 $(_doc_external("Sys/PetscObjectsGetObject"))
 """
 function PetscObjectsGetObject(petsclib::PetscLibType, name::String)
-    error("PetscObjectsGetObject: no generated method for these argument types")
+    throw(MethodError(PetscObjectsGetObject, (petsclib, name)))
 end
 
 @for_petsc function PetscObjectsGetObject(petsclib::$UnionPetscLib, name::String )
@@ -1773,7 +1773,7 @@ See also: `PetscCommDuplicate()`, `PetscObjectDestroy()`
 $(_doc_external("Sys/PetscObjectsListGetGlobalNumbering"))
 """
 function PetscObjectsListGetGlobalNumbering(petsclib::PetscLibType, comm::MPI_Comm, len::Integer, objlist::Vector{PetscObject})
-    error("PetscObjectsListGetGlobalNumbering: no generated method for these argument types")
+    throw(MethodError(PetscObjectsListGetGlobalNumbering, (petsclib, comm, len, objlist)))
 end
 
 @for_petsc function PetscObjectsListGetGlobalNumbering(petsclib::$UnionPetscLib, comm::MPI_Comm, len::$PetscInt, objlist::Vector{PetscObject} )
@@ -1810,7 +1810,7 @@ See also: `PetscObject`
 $(_doc_external("Sys/PetscObjectsView"))
 """
 function PetscObjectsView(petsclib::PetscLibType, viewer::PetscViewer)
-    error("PetscObjectsView: no generated method for these argument types")
+    throw(MethodError(PetscObjectsView, (petsclib, viewer)))
 end
 
 @for_petsc function PetscObjectsView(petsclib::$UnionPetscLib, viewer::PetscViewer )

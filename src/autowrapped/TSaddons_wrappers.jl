@@ -21,7 +21,7 @@ See also: `TSAdapt`, `TSAdaptCandidatesClear()`, `TSAdaptChoose()`
 $(_doc_external("TS/TSAdaptCandidateAdd"))
 """
 function TSAdaptCandidateAdd(petsclib::PetscLibType, adapt::TSAdapt, name::String, order::Integer, stageorder::Integer, ccfl::Real, cost::Real, inuse::PetscBool)
-    error("TSAdaptCandidateAdd: no generated method for these argument types")
+    throw(MethodError(TSAdaptCandidateAdd, (petsclib, adapt, name, order, stageorder, ccfl, cost, inuse)))
 end
 
 @for_petsc function TSAdaptCandidateAdd(petsclib::$UnionPetscLib, adapt::TSAdapt, name::String, order::$PetscInt, stageorder::$PetscInt, ccfl::$PetscReal, cost::$PetscReal, inuse::PetscBool )
@@ -54,7 +54,7 @@ See also: `TSAdapt`, `TSAdaptCreate()`, `TSAdaptCandidateAdd()`, `TSAdaptChoose(
 $(_doc_external("TS/TSAdaptCandidatesClear"))
 """
 function TSAdaptCandidatesClear(petsclib::PetscLibType, adapt::TSAdapt)
-    error("TSAdaptCandidatesClear: no generated method for these argument types")
+    throw(MethodError(TSAdaptCandidatesClear, (petsclib, adapt)))
 end
 
 @for_petsc function TSAdaptCandidatesClear(petsclib::$UnionPetscLib, adapt::TSAdapt )
@@ -94,7 +94,7 @@ See also: `TSAdapt`, `TSAdaptCandidatesClear()`, `TSAdaptCandidateAdd()`, `TSAda
 $(_doc_external("TS/TSAdaptCandidatesGet"))
 """
 function TSAdaptCandidatesGet(petsclib::PetscLibType, adapt::TSAdapt)
-    error("TSAdaptCandidatesGet: no generated method for these argument types")
+    throw(MethodError(TSAdaptCandidatesGet, (petsclib, adapt)))
 end
 
 @for_petsc function TSAdaptCandidatesGet(petsclib::$UnionPetscLib, adapt::TSAdapt )
@@ -143,7 +143,7 @@ See also: `TSAdapt`
 $(_doc_external("TS/TSAdaptCheckStage"))
 """
 function TSAdaptCheckStage(petsclib::PetscLibType, adapt::TSAdapt, ts::AbstractTS, t::Real, Y::AbstractPetscVec)
-    error("TSAdaptCheckStage: no generated method for these argument types")
+    throw(MethodError(TSAdaptCheckStage, (petsclib, adapt, ts, t, Y)))
 end
 
 @for_petsc function TSAdaptCheckStage(petsclib::$UnionPetscLib, adapt::TSAdapt, ts::AbstractTS, t::$PetscReal, Y::AbstractPetscVec )
@@ -185,7 +185,7 @@ See also: `TSAdapt`, `TSAdaptCandidatesClear()`, `TSAdaptCandidateAdd()`
 $(_doc_external("TS/TSAdaptChoose"))
 """
 function TSAdaptChoose(petsclib::PetscLibType, adapt::TSAdapt, ts::AbstractTS, h::Real)
-    error("TSAdaptChoose: no generated method for these argument types")
+    throw(MethodError(TSAdaptChoose, (petsclib, adapt, ts, h)))
 end
 
 @for_petsc function TSAdaptChoose(petsclib::$UnionPetscLib, adapt::TSAdapt, ts::AbstractTS, h::$PetscReal )
@@ -227,7 +227,7 @@ See also: `TSAdapt`, `TSGetAdapt()`, `TSAdaptSetType()`, `TSAdaptDestroy()`
 $(_doc_external("TS/TSAdaptCreate"))
 """
 function TSAdaptCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("TSAdaptCreate: no generated method for these argument types")
+    throw(MethodError(TSAdaptCreate, (petsclib, comm)))
 end
 
 @for_petsc function TSAdaptCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -274,7 +274,7 @@ See also: `TSADAPTDSP`, `TS`, `TSAdapt`, `TSGetAdapt()`, `TSAdaptDSPSetPID()`
 $(_doc_external("TS/TSAdaptDSPSetFilter"))
 """
 function TSAdaptDSPSetFilter(petsclib::PetscLibType, adapt::TSAdapt, name::String)
-    error("TSAdaptDSPSetFilter: no generated method for these argument types")
+    throw(MethodError(TSAdaptDSPSetFilter, (petsclib, adapt, name)))
 end
 
 @for_petsc function TSAdaptDSPSetFilter(petsclib::$UnionPetscLib, adapt::TSAdapt, name::String )
@@ -311,7 +311,7 @@ See also: `TS`, `TSAdapt`, `TSGetAdapt()`, `TSAdaptDSPSetFilter()`
 $(_doc_external("TS/TSAdaptDSPSetPID"))
 """
 function TSAdaptDSPSetPID(petsclib::PetscLibType, adapt::TSAdapt, kkI::Real, kkP::Real, kkD::Real)
-    error("TSAdaptDSPSetPID: no generated method for these argument types")
+    throw(MethodError(TSAdaptDSPSetPID, (petsclib, adapt, kkI, kkP, kkD)))
 end
 
 @for_petsc function TSAdaptDSPSetPID(petsclib::$UnionPetscLib, adapt::TSAdapt, kkI::$PetscReal, kkP::$PetscReal, kkD::$PetscReal )
@@ -344,7 +344,7 @@ See also: `TSAdapt`, `TSAdaptCreate()`, `TSGetAdapt()`
 $(_doc_external("TS/TSAdaptDestroy"))
 """
 function TSAdaptDestroy(petsclib::PetscLibType, adapt::Union{TSAdapt, Ref{TSAdapt}})
-    error("TSAdaptDestroy: no generated method for these argument types")
+    throw(MethodError(TSAdaptDestroy, (petsclib, adapt)))
 end
 
 @for_petsc function TSAdaptDestroy(petsclib::$UnionPetscLib, adapt::Union{TSAdapt, Ref{TSAdapt}} )
@@ -374,7 +374,7 @@ See also: `PetscFinalize()`
 $(_doc_external("TS/TSAdaptFinalizePackage"))
 """
 function TSAdaptFinalizePackage(petsclib::PetscLibType)
-    error("TSAdaptFinalizePackage: no generated method for these argument types")
+    throw(MethodError(TSAdaptFinalizePackage, (petsclib, )))
 end
 
 @for_petsc function TSAdaptFinalizePackage(petsclib::$UnionPetscLib)
@@ -410,7 +410,7 @@ See also: `TSAdapt`, `TSAdaptChoose()`, `TSAdaptSetClip()`, `TSAdaptSetScaleSolv
 $(_doc_external("TS/TSAdaptGetClip"))
 """
 function TSAdaptGetClip(petsclib::PetscLibType, adapt::TSAdapt)
-    error("TSAdaptGetClip: no generated method for these argument types")
+    throw(MethodError(TSAdaptGetClip, (petsclib, adapt)))
 end
 
 @for_petsc function TSAdaptGetClip(petsclib::$UnionPetscLib, adapt::TSAdapt )
@@ -451,7 +451,7 @@ See also: `TSAdapt`, `TSAdaptSetMaxIgnore()`, `TSAdaptChoose()`
 $(_doc_external("TS/TSAdaptGetMaxIgnore"))
 """
 function TSAdaptGetMaxIgnore(petsclib::PetscLibType, adapt::TSAdapt)
-    error("TSAdaptGetMaxIgnore: no generated method for these argument types")
+    throw(MethodError(TSAdaptGetMaxIgnore, (petsclib, adapt)))
 end
 
 @for_petsc function TSAdaptGetMaxIgnore(petsclib::$UnionPetscLib, adapt::TSAdapt )
@@ -490,7 +490,7 @@ See also: `TSAdapt`, `TSAdaptSetSafety()`, `TSAdaptChoose()`
 $(_doc_external("TS/TSAdaptGetSafety"))
 """
 function TSAdaptGetSafety(petsclib::PetscLibType, adapt::TSAdapt)
-    error("TSAdaptGetSafety: no generated method for these argument types")
+    throw(MethodError(TSAdaptGetSafety, (petsclib, adapt)))
 end
 
 @for_petsc function TSAdaptGetSafety(petsclib::$UnionPetscLib, adapt::TSAdapt )
@@ -530,7 +530,7 @@ See also: `TSAdapt`, `TSAdaptChoose()`, `TSAdaptSetScaleSolveFailed()`, `TSAdapt
 $(_doc_external("TS/TSAdaptGetScaleSolveFailed"))
 """
 function TSAdaptGetScaleSolveFailed(petsclib::PetscLibType, adapt::TSAdapt)
-    error("TSAdaptGetScaleSolveFailed: no generated method for these argument types")
+    throw(MethodError(TSAdaptGetScaleSolveFailed, (petsclib, adapt)))
 end
 
 @for_petsc function TSAdaptGetScaleSolveFailed(petsclib::$UnionPetscLib, adapt::TSAdapt )
@@ -569,7 +569,7 @@ See also: `TSAdapt`, `TSAdaptSetStepLimits()`, `TSAdaptChoose()`
 $(_doc_external("TS/TSAdaptGetStepLimits"))
 """
 function TSAdaptGetStepLimits(petsclib::PetscLibType, adapt::TSAdapt)
-    error("TSAdaptGetStepLimits: no generated method for these argument types")
+    throw(MethodError(TSAdaptGetStepLimits, (petsclib, adapt)))
 end
 
 @for_petsc function TSAdaptGetStepLimits(petsclib::$UnionPetscLib, adapt::TSAdapt )
@@ -609,7 +609,7 @@ See also: `TSAdapt`, `TSAdaptType`, `TSAdaptSetType()`
 $(_doc_external("TS/TSAdaptGetType"))
 """
 function TSAdaptGetType(petsclib::PetscLibType, adapt::TSAdapt)
-    error("TSAdaptGetType: no generated method for these argument types")
+    throw(MethodError(TSAdaptGetType, (petsclib, adapt)))
 end
 
 @for_petsc function TSAdaptGetType(petsclib::$UnionPetscLib, adapt::TSAdapt )
@@ -649,7 +649,7 @@ See also: `TS`, `TSGetAdapt()`, `TSAdaptSetType()`, `TSAdaptHistorySetTrajectory
 $(_doc_external("TS/TSAdaptHistoryGetStep"))
 """
 function TSAdaptHistoryGetStep(petsclib::PetscLibType, adapt::TSAdapt, step::Integer)
-    error("TSAdaptHistoryGetStep: no generated method for these argument types")
+    throw(MethodError(TSAdaptHistoryGetStep, (petsclib, adapt, step)))
 end
 
 @for_petsc function TSAdaptHistoryGetStep(petsclib::$UnionPetscLib, adapt::TSAdapt, step::$PetscInt )
@@ -689,7 +689,7 @@ See also: `TSGetAdapt()`, `TSAdaptSetType()`, `TSAdaptHistorySetTrajectory()`, `
 $(_doc_external("TS/TSAdaptHistorySetHistory"))
 """
 function TSAdaptHistorySetHistory(petsclib::PetscLibType, adapt::TSAdapt, n::Integer, hist::AbstractVector{<:Number}, backward::PetscBool)
-    error("TSAdaptHistorySetHistory: no generated method for these argument types")
+    throw(MethodError(TSAdaptHistorySetHistory, (petsclib, adapt, n, hist, backward)))
 end
 
 @for_petsc function TSAdaptHistorySetHistory(petsclib::$UnionPetscLib, adapt::TSAdapt, n::$PetscInt, hist::Vector{$PetscReal}, backward::PetscBool )
@@ -724,7 +724,7 @@ See also: `TSGetAdapt()`, `TSAdaptSetType()`, `TSAdaptHistorySetHistory()`, `TSA
 $(_doc_external("TS/TSAdaptHistorySetTrajectory"))
 """
 function TSAdaptHistorySetTrajectory(petsclib::PetscLibType, adapt::TSAdapt, tj::TSTrajectory, backward::PetscBool)
-    error("TSAdaptHistorySetTrajectory: no generated method for these argument types")
+    throw(MethodError(TSAdaptHistorySetTrajectory, (petsclib, adapt, tj, backward)))
 end
 
 @for_petsc function TSAdaptHistorySetTrajectory(petsclib::$UnionPetscLib, adapt::TSAdapt, tj::TSTrajectory, backward::PetscBool )
@@ -753,7 +753,7 @@ See also: `PetscInitialize()`
 $(_doc_external("TS/TSAdaptInitializePackage"))
 """
 function TSAdaptInitializePackage(petsclib::PetscLibType)
-    error("TSAdaptInitializePackage: no generated method for these argument types")
+    throw(MethodError(TSAdaptInitializePackage, (petsclib, )))
 end
 
 @for_petsc function TSAdaptInitializePackage(petsclib::$UnionPetscLib)
@@ -788,7 +788,7 @@ See also: `PetscViewerBinaryOpen()`, `TSAdaptView()`, `MatLoad()`, `VecLoad()`, 
 $(_doc_external("TS/TSAdaptLoad"))
 """
 function TSAdaptLoad(petsclib::PetscLibType, adapt::TSAdapt, viewer::PetscViewer)
-    error("TSAdaptLoad: no generated method for these argument types")
+    throw(MethodError(TSAdaptLoad, (petsclib, adapt, viewer)))
 end
 
 @for_petsc function TSAdaptLoad(petsclib::$UnionPetscLib, adapt::TSAdapt, viewer::PetscViewer )
@@ -822,7 +822,7 @@ See also: `TSAdaptRegisterAll()`
 $(_doc_external("TS/TSAdaptRegister"))
 """
 function TSAdaptRegister(petsclib::PetscLibType, sname::String, fnc::external)
-    error("TSAdaptRegister: no generated method for these argument types")
+    throw(MethodError(TSAdaptRegister, (petsclib, sname, fnc)))
 end
 
 @for_petsc function TSAdaptRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
@@ -855,7 +855,7 @@ See also: `TSGetAdapt()`, `TSAdapt`, `TSAdaptCreate()`, `TSAdaptDestroy()`
 $(_doc_external("TS/TSAdaptReset"))
 """
 function TSAdaptReset(petsclib::PetscLibType, adapt::TSAdapt)
-    error("TSAdaptReset: no generated method for these argument types")
+    throw(MethodError(TSAdaptReset, (petsclib, adapt)))
 end
 
 @for_petsc function TSAdaptReset(petsclib::$UnionPetscLib, adapt::TSAdapt )
@@ -893,7 +893,7 @@ See also: `TSAdapt`, `TSGetAdapt()`, `TSAdaptChoose()`
 $(_doc_external("TS/TSAdaptSetAlwaysAccept"))
 """
 function TSAdaptSetAlwaysAccept(petsclib::PetscLibType, adapt::TSAdapt, flag::PetscBool)
-    error("TSAdaptSetAlwaysAccept: no generated method for these argument types")
+    throw(MethodError(TSAdaptSetAlwaysAccept, (petsclib, adapt, flag)))
 end
 
 @for_petsc function TSAdaptSetAlwaysAccept(petsclib::$UnionPetscLib, adapt::TSAdapt, flag::PetscBool )
@@ -934,7 +934,7 @@ See also: `TSAdapt`, `TSGetAdapt()`, `TSAdaptChoose()`
 $(_doc_external("TS/TSAdaptSetCheckStage"))
 """
 function TSAdaptSetCheckStage(petsclib::PetscLibType, adapt::TSAdapt, func::external)
-    error("TSAdaptSetCheckStage: no generated method for these argument types")
+    throw(MethodError(TSAdaptSetCheckStage, (petsclib, adapt, func)))
 end
 
 @for_petsc function TSAdaptSetCheckStage(petsclib::$UnionPetscLib, adapt::TSAdapt, func::external )
@@ -972,7 +972,7 @@ See also: `TSAdapt`, `TSAdaptChoose()`, `TSAdaptGetClip()`, `TSAdaptSetScaleSolv
 $(_doc_external("TS/TSAdaptSetClip"))
 """
 function TSAdaptSetClip(petsclib::PetscLibType, adapt::TSAdapt, low::Real, high::Real)
-    error("TSAdaptSetClip: no generated method for these argument types")
+    throw(MethodError(TSAdaptSetClip, (petsclib, adapt, low, high)))
 end
 
 @for_petsc function TSAdaptSetClip(petsclib::$UnionPetscLib, adapt::TSAdapt, low::$PetscReal, high::$PetscReal )
@@ -1019,7 +1019,7 @@ See also: `TSAdapt`, `TSGetAdapt()`, `TSAdaptSetType()`, `TSAdaptSetAlwaysAccept
 $(_doc_external("TS/TSAdaptSetFromOptions"))
 """
 function TSAdaptSetFromOptions(petsclib::PetscLibType, adapt::TSAdapt, PetscOptionsObject::PetscOptionItems)
-    error("TSAdaptSetFromOptions: no generated method for these argument types")
+    throw(MethodError(TSAdaptSetFromOptions, (petsclib, adapt, PetscOptionsObject)))
 end
 
 @for_petsc function TSAdaptSetFromOptions(petsclib::$UnionPetscLib, adapt::TSAdapt, PetscOptionsObject::PetscOptionItems )
@@ -1057,7 +1057,7 @@ See also: `TSAdapt`, `TSAdaptGetMaxIgnore()`, `TSAdaptChoose()`
 $(_doc_external("TS/TSAdaptSetMaxIgnore"))
 """
 function TSAdaptSetMaxIgnore(petsclib::PetscLibType, adapt::TSAdapt, max_ignore::Real)
-    error("TSAdaptSetMaxIgnore: no generated method for these argument types")
+    throw(MethodError(TSAdaptSetMaxIgnore, (petsclib, adapt, max_ignore)))
 end
 
 @for_petsc function TSAdaptSetMaxIgnore(petsclib::$UnionPetscLib, adapt::TSAdapt, max_ignore::$PetscReal )
@@ -1094,7 +1094,7 @@ See also: `TSAdapt`, `TSGetAdapt()`, `TSAdaptChoose()`
 $(_doc_external("TS/TSAdaptSetMonitor"))
 """
 function TSAdaptSetMonitor(petsclib::PetscLibType, adapt::TSAdapt, flg::PetscBool)
-    error("TSAdaptSetMonitor: no generated method for these argument types")
+    throw(MethodError(TSAdaptSetMonitor, (petsclib, adapt, flg)))
 end
 
 @for_petsc function TSAdaptSetMonitor(petsclib::$UnionPetscLib, adapt::TSAdapt, flg::PetscBool )
@@ -1128,7 +1128,7 @@ See also: `TSAdapt`, `TSGetAdapt()`, `TSSetOptionsPrefix()`
 $(_doc_external("TS/TSAdaptSetOptionsPrefix"))
 """
 function TSAdaptSetOptionsPrefix(petsclib::PetscLibType, adapt::TSAdapt, prefix::String)
-    error("TSAdaptSetOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(TSAdaptSetOptionsPrefix, (petsclib, adapt, prefix)))
 end
 
 @for_petsc function TSAdaptSetOptionsPrefix(petsclib::$UnionPetscLib, adapt::TSAdapt, prefix::String )
@@ -1167,7 +1167,7 @@ See also: `TSAdapt`, `TSAdaptGetSafety()`, `TSAdaptChoose()`
 $(_doc_external("TS/TSAdaptSetSafety"))
 """
 function TSAdaptSetSafety(petsclib::PetscLibType, adapt::TSAdapt, safety::Real, reject_safety::Real)
-    error("TSAdaptSetSafety: no generated method for these argument types")
+    throw(MethodError(TSAdaptSetSafety, (petsclib, adapt, safety, reject_safety)))
 end
 
 @for_petsc function TSAdaptSetSafety(petsclib::$UnionPetscLib, adapt::TSAdapt, safety::$PetscReal, reject_safety::$PetscReal )
@@ -1204,7 +1204,7 @@ See also: `TSAdapt`, `TSAdaptChoose()`, `TSAdaptGetScaleSolveFailed()`, `TSAdapt
 $(_doc_external("TS/TSAdaptSetScaleSolveFailed"))
 """
 function TSAdaptSetScaleSolveFailed(petsclib::PetscLibType, adapt::TSAdapt, scale::Real)
-    error("TSAdaptSetScaleSolveFailed: no generated method for these argument types")
+    throw(MethodError(TSAdaptSetScaleSolveFailed, (petsclib, adapt, scale)))
 end
 
 @for_petsc function TSAdaptSetScaleSolveFailed(petsclib::$UnionPetscLib, adapt::TSAdapt, scale::$PetscReal )
@@ -1243,7 +1243,7 @@ See also: `TSAdapt`, `TSAdaptGetStepLimits()`, `TSAdaptChoose()`
 $(_doc_external("TS/TSAdaptSetStepLimits"))
 """
 function TSAdaptSetStepLimits(petsclib::PetscLibType, adapt::TSAdapt, hmin::Real, hmax::Real)
-    error("TSAdaptSetStepLimits: no generated method for these argument types")
+    throw(MethodError(TSAdaptSetStepLimits, (petsclib, adapt, hmin, hmax)))
 end
 
 @for_petsc function TSAdaptSetStepLimits(petsclib::$UnionPetscLib, adapt::TSAdapt, hmin::$PetscReal, hmax::$PetscReal )
@@ -1281,7 +1281,7 @@ See also: `TSAdapt`
 $(_doc_external("TS/TSAdaptSetTimeStepIncreaseDelay"))
 """
 function TSAdaptSetTimeStepIncreaseDelay(petsclib::PetscLibType, adapt::TSAdapt, cnt::Integer)
-    error("TSAdaptSetTimeStepIncreaseDelay: no generated method for these argument types")
+    throw(MethodError(TSAdaptSetTimeStepIncreaseDelay, (petsclib, adapt, cnt)))
 end
 
 @for_petsc function TSAdaptSetTimeStepIncreaseDelay(petsclib::$UnionPetscLib, adapt::TSAdapt, cnt::$PetscInt )
@@ -1318,7 +1318,7 @@ See also: `TSGetAdapt()`, `TSAdaptDestroy()`, `TSAdaptType`, `TSAdaptGetType()`
 $(_doc_external("TS/TSAdaptSetType"))
 """
 function TSAdaptSetType(petsclib::PetscLibType, adapt::TSAdapt, type::String)
-    error("TSAdaptSetType: no generated method for these argument types")
+    throw(MethodError(TSAdaptSetType, (petsclib, adapt, type)))
 end
 
 @for_petsc function TSAdaptSetType(petsclib::$UnionPetscLib, adapt::TSAdapt, type::String )
@@ -1355,7 +1355,7 @@ See also: `TSAdapt`, `TSView()`, `PetscViewer`, `PetscViewerASCIIOpen()`
 $(_doc_external("TS/TSAdaptView"))
 """
 function TSAdaptView(petsclib::PetscLibType, adapt::TSAdapt, viewer::PetscViewer)
-    error("TSAdaptView: no generated method for these argument types")
+    throw(MethodError(TSAdaptView, (petsclib, adapt, viewer)))
 end
 
 @for_petsc function TSAdaptView(petsclib::$UnionPetscLib, adapt::TSAdapt, viewer::PetscViewer )
@@ -1400,7 +1400,7 @@ See also: `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptCreate()`, `TSGLLEAdaptSetType()`
 $(_doc_external("TS/TSGLLEAdaptChoose"))
 """
 function TSGLLEAdaptChoose(petsclib::PetscLibType, adapt::TSGLLEAdapt, n::Integer, orders::AbstractVector{<:Number}, errors::AbstractVector{<:Number}, cost::AbstractVector{<:Number}, cur::Integer, h::Real, tleft::Real)
-    error("TSGLLEAdaptChoose: no generated method for these argument types")
+    throw(MethodError(TSGLLEAdaptChoose, (petsclib, adapt, n, orders, errors, cost, cur, h, tleft)))
 end
 
 @for_petsc function TSGLLEAdaptChoose(petsclib::$UnionPetscLib, adapt::TSGLLEAdapt, n::$PetscInt, orders::Vector{$PetscInt}, errors::Vector{$PetscReal}, cost::Vector{$PetscReal}, cur::$PetscInt, h::$PetscReal, tleft::$PetscReal )
@@ -1442,7 +1442,7 @@ See also: `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptSetType()`, `TSGLLEAdaptDestroy()
 $(_doc_external("TS/TSGLLEAdaptCreate"))
 """
 function TSGLLEAdaptCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("TSGLLEAdaptCreate: no generated method for these argument types")
+    throw(MethodError(TSGLLEAdaptCreate, (petsclib, comm)))
 end
 
 @for_petsc function TSGLLEAdaptCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -1477,7 +1477,7 @@ See also: `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptCreate()`
 $(_doc_external("TS/TSGLLEAdaptDestroy"))
 """
 function TSGLLEAdaptDestroy(petsclib::PetscLibType, adapt::Union{TSGLLEAdapt, Ref{TSGLLEAdapt}})
-    error("TSGLLEAdaptDestroy: no generated method for these argument types")
+    throw(MethodError(TSGLLEAdaptDestroy, (petsclib, adapt)))
 end
 
 @for_petsc function TSGLLEAdaptDestroy(petsclib::$UnionPetscLib, adapt::Union{TSGLLEAdapt, Ref{TSGLLEAdapt}} )
@@ -1507,7 +1507,7 @@ See also: `PetscFinalize()`, `TSGLLEAdapt`, `TSGLLEAdaptInitializePackage()`
 $(_doc_external("TS/TSGLLEAdaptFinalizePackage"))
 """
 function TSGLLEAdaptFinalizePackage(petsclib::PetscLibType)
-    error("TSGLLEAdaptFinalizePackage: no generated method for these argument types")
+    throw(MethodError(TSGLLEAdaptFinalizePackage, (petsclib, )))
 end
 
 @for_petsc function TSGLLEAdaptFinalizePackage(petsclib::$UnionPetscLib)
@@ -1535,7 +1535,7 @@ See also: `PetscInitialize()`, `TSGLLEAdapt`, `TSGLLEAdaptFinalizePackage()`
 $(_doc_external("TS/TSGLLEAdaptInitializePackage"))
 """
 function TSGLLEAdaptInitializePackage(petsclib::PetscLibType)
-    error("TSGLLEAdaptInitializePackage: no generated method for these argument types")
+    throw(MethodError(TSGLLEAdaptInitializePackage, (petsclib, )))
 end
 
 @for_petsc function TSGLLEAdaptInitializePackage(petsclib::$UnionPetscLib)
@@ -1568,7 +1568,7 @@ See also: `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptRegisterAll()`
 $(_doc_external("TS/TSGLLEAdaptRegister"))
 """
 function TSGLLEAdaptRegister(petsclib::PetscLibType, sname::String, fnc::external)
-    error("TSGLLEAdaptRegister: no generated method for these argument types")
+    throw(MethodError(TSGLLEAdaptRegister, (petsclib, sname, fnc)))
 end
 
 @for_petsc function TSGLLEAdaptRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
@@ -1605,7 +1605,7 @@ See also: `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptSetType()`
 $(_doc_external("TS/TSGLLEAdaptSetFromOptions"))
 """
 function TSGLLEAdaptSetFromOptions(petsclib::PetscLibType, adapt::TSGLLEAdapt, PetscOptionsObject::PetscOptionItems)
-    error("TSGLLEAdaptSetFromOptions: no generated method for these argument types")
+    throw(MethodError(TSGLLEAdaptSetFromOptions, (petsclib, adapt, PetscOptionsObject)))
 end
 
 @for_petsc function TSGLLEAdaptSetFromOptions(petsclib::$UnionPetscLib, adapt::TSGLLEAdapt, PetscOptionsObject::PetscOptionItems )
@@ -1639,7 +1639,7 @@ See also: `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptSetFromOptions()`
 $(_doc_external("TS/TSGLLEAdaptSetOptionsPrefix"))
 """
 function TSGLLEAdaptSetOptionsPrefix(petsclib::PetscLibType, adapt::TSGLLEAdapt, prefix::String)
-    error("TSGLLEAdaptSetOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(TSGLLEAdaptSetOptionsPrefix, (petsclib, adapt, prefix)))
 end
 
 @for_petsc function TSGLLEAdaptSetOptionsPrefix(petsclib::$UnionPetscLib, adapt::TSGLLEAdapt, prefix::String )
@@ -1673,7 +1673,7 @@ See also: `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptCreate()`, `TSGLLEAdaptType`, `TS
 $(_doc_external("TS/TSGLLEAdaptSetType"))
 """
 function TSGLLEAdaptSetType(petsclib::PetscLibType, adapt::TSGLLEAdapt, type::String)
-    error("TSGLLEAdaptSetType: no generated method for these argument types")
+    throw(MethodError(TSGLLEAdaptSetType, (petsclib, adapt, type)))
 end
 
 @for_petsc function TSGLLEAdaptSetType(petsclib::$UnionPetscLib, adapt::TSGLLEAdapt, type::String )
@@ -1707,7 +1707,7 @@ See also: `TSGLLE`, `TSGLLEAdapt`, `TSGLLEAdaptCreate()`, `PetscViewer`
 $(_doc_external("TS/TSGLLEAdaptView"))
 """
 function TSGLLEAdaptView(petsclib::PetscLibType, adapt::TSGLLEAdapt, viewer::PetscViewer)
-    error("TSGLLEAdaptView: no generated method for these argument types")
+    throw(MethodError(TSGLLEAdaptView, (petsclib, adapt, viewer)))
 end
 
 @for_petsc function TSGLLEAdaptView(petsclib::$UnionPetscLib, adapt::TSGLLEAdapt, viewer::PetscViewer )
@@ -1754,7 +1754,7 @@ See also: `TS`, `TSMonitorDrawCtxDestroy()`, `TSMonitorSet()`, `TSMonitorDefault
 $(_doc_external("TS/TSMonitorDrawCtxCreate"))
 """
 function TSMonitorDrawCtxCreate(petsclib::PetscLibType, comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::Integer)
-    error("TSMonitorDrawCtxCreate: no generated method for these argument types")
+    throw(MethodError(TSMonitorDrawCtxCreate, (petsclib, comm, host, label, x, y, m, n, howoften)))
 end
 
 @for_petsc function TSMonitorDrawCtxCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::$PetscInt )
@@ -1789,7 +1789,7 @@ See also: `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorD
 $(_doc_external("TS/TSMonitorDrawCtxDestroy"))
 """
 function TSMonitorDrawCtxDestroy(petsclib::PetscLibType, ictx::Union{TSMonitorDrawCtx, Ref{TSMonitorDrawCtx}})
-    error("TSMonitorDrawCtxDestroy: no generated method for these argument types")
+    throw(MethodError(TSMonitorDrawCtxDestroy, (petsclib, ictx)))
 end
 
 @for_petsc function TSMonitorDrawCtxDestroy(petsclib::$UnionPetscLib, ictx::Union{TSMonitorDrawCtx, Ref{TSMonitorDrawCtx}} )
@@ -1826,7 +1826,7 @@ See also: `TS`, `TSMonitorLGTimeStep()`, `TSMonitorSet()`, `TSMonitorLGSolution(
 $(_doc_external("TS/TSMonitorEnvelopeCtxCreate"))
 """
 function TSMonitorEnvelopeCtxCreate(petsclib::PetscLibType, ts::AbstractTS)
-    error("TSMonitorEnvelopeCtxCreate: no generated method for these argument types")
+    throw(MethodError(TSMonitorEnvelopeCtxCreate, (petsclib, ts)))
 end
 
 @for_petsc function TSMonitorEnvelopeCtxCreate(petsclib::$UnionPetscLib, ts::AbstractTS )
@@ -1861,7 +1861,7 @@ See also: `TS`, `TSMonitorLGCtxCreate()`, `TSMonitorSet()`, `TSMonitorLGTimeStep
 $(_doc_external("TS/TSMonitorEnvelopeCtxDestroy"))
 """
 function TSMonitorEnvelopeCtxDestroy(petsclib::PetscLibType, ctx::Union{TSMonitorEnvelopeCtx, Ref{TSMonitorEnvelopeCtx}})
-    error("TSMonitorEnvelopeCtxDestroy: no generated method for these argument types")
+    throw(MethodError(TSMonitorEnvelopeCtxDestroy, (petsclib, ctx)))
 end
 
 @for_petsc function TSMonitorEnvelopeCtxDestroy(petsclib::$UnionPetscLib, ctx::Union{TSMonitorEnvelopeCtx, Ref{TSMonitorEnvelopeCtx}} )
@@ -1908,7 +1908,7 @@ See also: `TS`, `DMSWARM`, `TSMonitorSet()`, `TSMonitorHGSwarmSolution()`, `TSMo
 $(_doc_external("TS/TSMonitorHGCtxCreate"))
 """
 function TSMonitorHGCtxCreate(petsclib::PetscLibType, comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::Integer, Ns::Integer, Nb::Integer, velocity::PetscBool)
-    error("TSMonitorHGCtxCreate: no generated method for these argument types")
+    throw(MethodError(TSMonitorHGCtxCreate, (petsclib, comm, host, label, x, y, m, n, howoften, Ns, Nb, velocity)))
 end
 
 @for_petsc function TSMonitorHGCtxCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::$PetscInt, Ns::$PetscInt, Nb::$PetscInt, velocity::PetscBool )
@@ -1943,7 +1943,7 @@ See also: `TS`, `TSMonitorSet()`, `TSMonitorHGCtxCreate()`, `TSMonitorHGSwarmSol
 $(_doc_external("TS/TSMonitorHGCtxDestroy"))
 """
 function TSMonitorHGCtxDestroy(petsclib::PetscLibType, ctx::Union{TSMonitorHGCtx, Ref{TSMonitorHGCtx}})
-    error("TSMonitorHGCtxDestroy: no generated method for these argument types")
+    throw(MethodError(TSMonitorHGCtxDestroy, (petsclib, ctx)))
 end
 
 @for_petsc function TSMonitorHGCtxDestroy(petsclib::$UnionPetscLib, ctx::Union{TSMonitorHGCtx, Ref{TSMonitorHGCtx}} )
@@ -2001,7 +2001,7 @@ See also: `TSMonitorLGTimeStep()`, `TSMonitorSet()`, `TSMonitorLGSolution()`, `T
 $(_doc_external("TS/TSMonitorLGCtxCreate"))
 """
 function TSMonitorLGCtxCreate(petsclib::PetscLibType, comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::Integer)
-    error("TSMonitorLGCtxCreate: no generated method for these argument types")
+    throw(MethodError(TSMonitorLGCtxCreate, (petsclib, comm, host, label, x, y, m, n, howoften)))
 end
 
 @for_petsc function TSMonitorLGCtxCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::$PetscInt )
@@ -2036,7 +2036,7 @@ See also: `TS`, `TSMonitorLGCtxCreate()`, `TSMonitorSet()`, `TSMonitorLGTimeStep
 $(_doc_external("TS/TSMonitorLGCtxDestroy"))
 """
 function TSMonitorLGCtxDestroy(petsclib::PetscLibType, ctx::Union{TSMonitorLGCtx, Ref{TSMonitorLGCtx}})
-    error("TSMonitorLGCtxDestroy: no generated method for these argument types")
+    throw(MethodError(TSMonitorLGCtxDestroy, (petsclib, ctx)))
 end
 
 @for_petsc function TSMonitorLGCtxDestroy(petsclib::$UnionPetscLib, ctx::Union{TSMonitorLGCtx, Ref{TSMonitorLGCtx}} )
@@ -2080,7 +2080,7 @@ See also: `TS`, `DMNETWORK`, `TSMonitorSet()`, `TSMonitorLGCtxNetworkSolution()`
 $(_doc_external("TS/TSMonitorLGCtxNetworkCreate"))
 """
 function TSMonitorLGCtxNetworkCreate(petsclib::PetscLibType, ts::AbstractTS, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::Integer)
-    error("TSMonitorLGCtxNetworkCreate: no generated method for these argument types")
+    throw(MethodError(TSMonitorLGCtxNetworkCreate, (petsclib, ts, host, label, x, y, m, n, howoften)))
 end
 
 @for_petsc function TSMonitorLGCtxNetworkCreate(petsclib::$UnionPetscLib, ts::AbstractTS, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::$PetscInt )
@@ -2115,7 +2115,7 @@ See also: `TS`, `TSMonitorLGCtxNetworkSolution()`
 $(_doc_external("TS/TSMonitorLGCtxNetworkDestroy"))
 """
 function TSMonitorLGCtxNetworkDestroy(petsclib::PetscLibType, ctx::Union{TSMonitorLGCtxNetwork, Ref{TSMonitorLGCtxNetwork}})
-    error("TSMonitorLGCtxNetworkDestroy: no generated method for these argument types")
+    throw(MethodError(TSMonitorLGCtxNetworkDestroy, (petsclib, ctx)))
 end
 
 @for_petsc function TSMonitorLGCtxNetworkDestroy(petsclib::$UnionPetscLib, ctx::Union{TSMonitorLGCtxNetwork, Ref{TSMonitorLGCtxNetwork}} )
@@ -2156,7 +2156,7 @@ See also: `TS`, `TSMonitorLGCtxNetworkDestroy()`
 $(_doc_external("TS/TSMonitorLGCtxNetworkSolution"))
 """
 function TSMonitorLGCtxNetworkSolution(petsclib::PetscLibType, ts::AbstractTS, step::Integer, ptime::Real, u::AbstractPetscVec, dctx::Ptr{Cvoid})
-    error("TSMonitorLGCtxNetworkSolution: no generated method for these argument types")
+    throw(MethodError(TSMonitorLGCtxNetworkSolution, (petsclib, ts, step, ptime, u, dctx)))
 end
 
 @for_petsc function TSMonitorLGCtxNetworkSolution(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, u::AbstractPetscVec, dctx::Ptr{Cvoid} )
@@ -2190,7 +2190,7 @@ See also: `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorL
 $(_doc_external("TS/TSMonitorLGCtxSetDisplayVariables"))
 """
 function TSMonitorLGCtxSetDisplayVariables(petsclib::PetscLibType, ctx::TSMonitorLGCtx, displaynames::Cchar)
-    error("TSMonitorLGCtxSetDisplayVariables: no generated method for these argument types")
+    throw(MethodError(TSMonitorLGCtxSetDisplayVariables, (petsclib, ctx, displaynames)))
 end
 
 @for_petsc function TSMonitorLGCtxSetDisplayVariables(petsclib::$UnionPetscLib, ctx::TSMonitorLGCtx, displaynames::Cchar )
@@ -2231,7 +2231,7 @@ See also: `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorL
 $(_doc_external("TS/TSMonitorLGCtxSetTransform"))
 """
 function TSMonitorLGCtxSetTransform(petsclib::PetscLibType, ctx::TSMonitorLGCtx, transform::external, destroy::Ptr{Cvoid}, tctx::Ptr{Cvoid})
-    error("TSMonitorLGCtxSetTransform: no generated method for these argument types")
+    throw(MethodError(TSMonitorLGCtxSetTransform, (petsclib, ctx, transform, destroy, tctx)))
 end
 
 @for_petsc function TSMonitorLGCtxSetTransform(petsclib::$UnionPetscLib, ctx::TSMonitorLGCtx, transform::external, destroy::Ptr{Cvoid}, tctx::Ptr{Cvoid} )
@@ -2265,7 +2265,7 @@ See also: `TS`, `TSMonitorSet()`, `TSMonitorDefault()`, `VecView()`, `TSMonitorL
 $(_doc_external("TS/TSMonitorLGCtxSetVariableNames"))
 """
 function TSMonitorLGCtxSetVariableNames(petsclib::PetscLibType, ctx::TSMonitorLGCtx, names::Cchar)
-    error("TSMonitorLGCtxSetVariableNames: no generated method for these argument types")
+    throw(MethodError(TSMonitorLGCtxSetVariableNames, (petsclib, ctx, names)))
 end
 
 @for_petsc function TSMonitorLGCtxSetVariableNames(petsclib::$UnionPetscLib, ctx::TSMonitorLGCtx, names::Cchar )
@@ -2311,7 +2311,7 @@ See also: `TS`, `DMSWARM`, `TSMonitorSet()`, `TSMonitorSPSwarmSolution()`, `TSMo
 $(_doc_external("TS/TSMonitorSPCtxCreate"))
 """
 function TSMonitorSPCtxCreate(petsclib::PetscLibType, comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::Integer, retain::Integer, phase::PetscBool, multispecies::PetscBool)
-    error("TSMonitorSPCtxCreate: no generated method for these argument types")
+    throw(MethodError(TSMonitorSPCtxCreate, (petsclib, comm, host, label, x, y, m, n, howoften, retain, phase, multispecies)))
 end
 
 @for_petsc function TSMonitorSPCtxCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::$PetscInt, retain::$PetscInt, phase::PetscBool, multispecies::PetscBool )
@@ -2346,7 +2346,7 @@ See also: `TS`, `TSMonitorSet()`, `TSMonitorSPCtxCreate()`, `TSMonitorSPSwarmSol
 $(_doc_external("TS/TSMonitorSPCtxDestroy"))
 """
 function TSMonitorSPCtxDestroy(petsclib::PetscLibType, ctx::Union{TSMonitorSPCtx, Ref{TSMonitorSPCtx}})
-    error("TSMonitorSPCtxDestroy: no generated method for these argument types")
+    throw(MethodError(TSMonitorSPCtxDestroy, (petsclib, ctx)))
 end
 
 @for_petsc function TSMonitorSPCtxDestroy(petsclib::$UnionPetscLib, ctx::Union{TSMonitorSPCtx, Ref{TSMonitorSPCtx}} )
@@ -2393,7 +2393,7 @@ See also: `TSMonitorSPEigTimeStep()`, `TSMonitorSet()`, `TSMonitorLGSolution()`,
 $(_doc_external("TS/TSMonitorSPEigCtxCreate"))
 """
 function TSMonitorSPEigCtxCreate(petsclib::PetscLibType, comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::Integer)
-    error("TSMonitorSPEigCtxCreate: no generated method for these argument types")
+    throw(MethodError(TSMonitorSPEigCtxCreate, (petsclib, comm, host, label, x, y, m, n, howoften)))
 end
 
 @for_petsc function TSMonitorSPEigCtxCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::$PetscInt )
@@ -2428,7 +2428,7 @@ See also: `TSMonitorSPEigCtxCreate()`, `TSMonitorSet()`, `TSMonitorSPEig()`
 $(_doc_external("TS/TSMonitorSPEigCtxDestroy"))
 """
 function TSMonitorSPEigCtxDestroy(petsclib::PetscLibType, ctx::Union{TSMonitorSPEigCtx, Ref{TSMonitorSPEigCtx}})
-    error("TSMonitorSPEigCtxDestroy: no generated method for these argument types")
+    throw(MethodError(TSMonitorSPEigCtxDestroy, (petsclib, ctx)))
 end
 
 @for_petsc function TSMonitorSPEigCtxDestroy(petsclib::$UnionPetscLib, ctx::Union{TSMonitorSPEigCtx, Ref{TSMonitorSPEigCtx}} )
@@ -2465,7 +2465,7 @@ See also: `TS`, `TSTrajectory`, `TSTrajectorySetUp()`, `TSTrajectoryDestroy()`, 
 $(_doc_external("TS/TSTrajectoryCreate"))
 """
 function TSTrajectoryCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("TSTrajectoryCreate: no generated method for these argument types")
+    throw(MethodError(TSTrajectoryCreate, (petsclib, comm)))
 end
 
 @for_petsc function TSTrajectoryCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -2500,7 +2500,7 @@ See also: `TSTrajectory`, `TSTrajectoryCreate()`, `TSTrajectorySetUp()`
 $(_doc_external("TS/TSTrajectoryDestroy"))
 """
 function TSTrajectoryDestroy(petsclib::PetscLibType, tj::Union{TSTrajectory, Ref{TSTrajectory}})
-    error("TSTrajectoryDestroy: no generated method for these argument types")
+    throw(MethodError(TSTrajectoryDestroy, (petsclib, tj)))
 end
 
 @for_petsc function TSTrajectoryDestroy(petsclib::$UnionPetscLib, tj::Union{TSTrajectory, Ref{TSTrajectory}} )
@@ -2539,7 +2539,7 @@ See also: `TS`, `TSSolve()`, `TSTrajectorySetUp()`, `TSTrajectoryDestroy()`, `TS
 $(_doc_external("TS/TSTrajectoryGet"))
 """
 function TSTrajectoryGet(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS, stepnum::Integer)
-    error("TSTrajectoryGet: no generated method for these argument types")
+    throw(MethodError(TSTrajectoryGet, (petsclib, tj, ts, stepnum)))
 end
 
 @for_petsc function TSTrajectoryGet(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::AbstractTS, stepnum::$PetscInt )
@@ -2577,7 +2577,7 @@ See also: `TS`, `TSTrajectorySet()`
 $(_doc_external("TS/TSTrajectoryGetNumSteps"))
 """
 function TSTrajectoryGetNumSteps(petsclib::PetscLibType, tj::TSTrajectory)
-    error("TSTrajectoryGetNumSteps: no generated method for these argument types")
+    throw(MethodError(TSTrajectoryGetNumSteps, (petsclib, tj)))
 end
 
 @for_petsc function TSTrajectoryGetNumSteps(petsclib::$UnionPetscLib, tj::TSTrajectory )
@@ -2615,7 +2615,7 @@ See also: `TSTrajectory`, `TSSetSaveTrajectory()`, `TSTrajectoryCreate()`, `TSTr
 $(_doc_external("TS/TSTrajectoryGetSolutionOnly"))
 """
 function TSTrajectoryGetSolutionOnly(petsclib::PetscLibType, tj::TSTrajectory)
-    error("TSTrajectoryGetSolutionOnly: no generated method for these argument types")
+    throw(MethodError(TSTrajectoryGetSolutionOnly, (petsclib, tj)))
 end
 
 @for_petsc function TSTrajectoryGetSolutionOnly(petsclib::$UnionPetscLib, tj::TSTrajectory )
@@ -2654,7 +2654,7 @@ See also: `TS`, `TSTrajectory`, `TSTrajectoryCreate()`, `TSTrajectorySetFromOpti
 $(_doc_external("TS/TSTrajectoryGetType"))
 """
 function TSTrajectoryGetType(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS)
-    error("TSTrajectoryGetType: no generated method for these argument types")
+    throw(MethodError(TSTrajectoryGetType, (petsclib, tj, ts)))
 end
 
 @for_petsc function TSTrajectoryGetType(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::AbstractTS )
@@ -2695,7 +2695,7 @@ See also: `TSTrajectory`, `TSSetSaveTrajectory()`, `TSTrajectoryCreate()`, `TSTr
 $(_doc_external("TS/TSTrajectoryGetUpdatedHistoryVecs"))
 """
 function TSTrajectoryGetUpdatedHistoryVecs(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS, time::Real)
-    error("TSTrajectoryGetUpdatedHistoryVecs: no generated method for these argument types")
+    throw(MethodError(TSTrajectoryGetUpdatedHistoryVecs, (petsclib, tj, ts, time)))
 end
 
 @for_petsc function TSTrajectoryGetUpdatedHistoryVecs(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::AbstractTS, time::$PetscReal )
@@ -2739,7 +2739,7 @@ See also: `TS`, `TSTrajectory`, `TSTrajectorySetUp()`, `TSTrajectoryDestroy()`, 
 $(_doc_external("TS/TSTrajectoryGetVecs"))
 """
 function TSTrajectoryGetVecs(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS, stepnum::Integer, U::AbstractPetscVec, Udot::AbstractPetscVec)
-    error("TSTrajectoryGetVecs: no generated method for these argument types")
+    throw(MethodError(TSTrajectoryGetVecs, (petsclib, tj, ts, stepnum, U, Udot)))
 end
 
 @for_petsc function TSTrajectoryGetVecs(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::AbstractTS, stepnum::$PetscInt, U::AbstractPetscVec, Udot::AbstractPetscVec )
@@ -2778,7 +2778,7 @@ See also: `TSTrajectory`, `TSTrajectorySetMaxUnitsRAM()`, `TSTrajectoryMemoryTyp
 $(_doc_external("TS/TSTrajectoryMemorySetType"))
 """
 function TSTrajectoryMemorySetType(petsclib::PetscLibType, tj::TSTrajectory, tj_memory_type::TSTrajectoryMemoryType)
-    error("TSTrajectoryMemorySetType: no generated method for these argument types")
+    throw(MethodError(TSTrajectoryMemorySetType, (petsclib, tj, tj_memory_type)))
 end
 
 @for_petsc function TSTrajectoryMemorySetType(petsclib::$UnionPetscLib, tj::TSTrajectory, tj_memory_type::TSTrajectoryMemoryType )
@@ -2812,7 +2812,7 @@ See also: `TSTrajectoryRegisterAll()`
 $(_doc_external("TS/TSTrajectoryRegister"))
 """
 function TSTrajectoryRegister(petsclib::PetscLibType, sname::String, fnc::external)
-    error("TSTrajectoryRegister: no generated method for these argument types")
+    throw(MethodError(TSTrajectoryRegister, (petsclib, sname, fnc)))
 end
 
 @for_petsc function TSTrajectoryRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
@@ -2842,7 +2842,7 @@ See also: `TSTrajectory`, `TSTrajectoryRegister()`
 $(_doc_external("TS/TSTrajectoryRegisterAll"))
 """
 function TSTrajectoryRegisterAll(petsclib::PetscLibType)
-    error("TSTrajectoryRegisterAll: no generated method for these argument types")
+    throw(MethodError(TSTrajectoryRegisterAll, (petsclib, )))
 end
 
 @for_petsc function TSTrajectoryRegisterAll(petsclib::$UnionPetscLib)
@@ -2874,7 +2874,7 @@ See also: `TS`, `TSTrajectory`, `TSTrajectoryCreate()`, `TSTrajectorySetUp()`
 $(_doc_external("TS/TSTrajectoryReset"))
 """
 function TSTrajectoryReset(petsclib::PetscLibType, tj::TSTrajectory)
-    error("TSTrajectoryReset: no generated method for these argument types")
+    throw(MethodError(TSTrajectoryReset, (petsclib, tj)))
 end
 
 @for_petsc function TSTrajectoryReset(petsclib::$UnionPetscLib, tj::TSTrajectory )
@@ -2909,7 +2909,7 @@ See also: `TSTrajectory`, `TSTrajectoryGetUpdatedHistoryVecs()`
 $(_doc_external("TS/TSTrajectoryRestoreUpdatedHistoryVecs"))
 """
 function TSTrajectoryRestoreUpdatedHistoryVecs(petsclib::PetscLibType, tj::TSTrajectory, U::AbstractPetscVec, Udot::AbstractPetscVec)
-    error("TSTrajectoryRestoreUpdatedHistoryVecs: no generated method for these argument types")
+    throw(MethodError(TSTrajectoryRestoreUpdatedHistoryVecs, (petsclib, tj, U, Udot)))
 end
 
 @for_petsc function TSTrajectoryRestoreUpdatedHistoryVecs(petsclib::$UnionPetscLib, tj::TSTrajectory, U::AbstractPetscVec, Udot::AbstractPetscVec )
@@ -2950,7 +2950,7 @@ See also: `TSTrajectorySetUp()`, `TSTrajectoryDestroy()`, `TSTrajectorySetType()
 $(_doc_external("TS/TSTrajectorySet"))
 """
 function TSTrajectorySet(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS, stepnum::Integer, time::Real, X::AbstractPetscVec)
-    error("TSTrajectorySet: no generated method for these argument types")
+    throw(MethodError(TSTrajectorySet, (petsclib, tj, ts, stepnum, time, X)))
 end
 
 @for_petsc function TSTrajectorySet(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::AbstractTS, stepnum::$PetscInt, time::$PetscReal, X::AbstractPetscVec )
@@ -2987,7 +2987,7 @@ See also: `TSTrajectory`, `TSTrajectorySetFiletemplate()`, `TSTrajectorySetUp()`
 $(_doc_external("TS/TSTrajectorySetDirname"))
 """
 function TSTrajectorySetDirname(petsclib::PetscLibType, tj::TSTrajectory, dirname::String)
-    error("TSTrajectorySetDirname: no generated method for these argument types")
+    throw(MethodError(TSTrajectorySetDirname, (petsclib, tj, dirname)))
 end
 
 @for_petsc function TSTrajectorySetDirname(petsclib::$UnionPetscLib, tj::TSTrajectory, dirname::String )
@@ -3024,7 +3024,7 @@ See also: `TSTrajectory`, `TSTrajectorySetDirname()`, `TSTrajectorySetUp()`
 $(_doc_external("TS/TSTrajectorySetFiletemplate"))
 """
 function TSTrajectorySetFiletemplate(petsclib::PetscLibType, tj::TSTrajectory, filetemplate::String)
-    error("TSTrajectorySetFiletemplate: no generated method for these argument types")
+    throw(MethodError(TSTrajectorySetFiletemplate, (petsclib, tj, filetemplate)))
 end
 
 @for_petsc function TSTrajectorySetFiletemplate(petsclib::$UnionPetscLib, tj::TSTrajectory, filetemplate::String )
@@ -3063,7 +3063,7 @@ See also: `TSTrajectory`, `TSSetSaveTrajectory()`, `TSTrajectorySetUp()`
 $(_doc_external("TS/TSTrajectorySetFromOptions"))
 """
 function TSTrajectorySetFromOptions(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS)
-    error("TSTrajectorySetFromOptions: no generated method for these argument types")
+    throw(MethodError(TSTrajectorySetFromOptions, (petsclib, tj, ts)))
 end
 
 @for_petsc function TSTrajectorySetFromOptions(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::AbstractTS )
@@ -3100,7 +3100,7 @@ See also: `TSTrajectoryCreate()`, `TSTrajectoryDestroy()`, `TSTrajectorySetUp()`
 $(_doc_external("TS/TSTrajectorySetKeepFiles"))
 """
 function TSTrajectorySetKeepFiles(petsclib::PetscLibType, tj::TSTrajectory, flg::PetscBool)
-    error("TSTrajectorySetKeepFiles: no generated method for these argument types")
+    throw(MethodError(TSTrajectorySetKeepFiles, (petsclib, tj, flg)))
 end
 
 @for_petsc function TSTrajectorySetKeepFiles(petsclib::$UnionPetscLib, tj::TSTrajectory, flg::PetscBool )
@@ -3136,7 +3136,7 @@ See also: `TSTrajectory`, `TSTrajectorySetMaxUnitsDisk()`, `TSTrajectorySetMaxUn
 $(_doc_external("TS/TSTrajectorySetMaxCpsDisk"))
 """
 function TSTrajectorySetMaxCpsDisk(petsclib::PetscLibType, tj::TSTrajectory, max_cps_disk::Integer)
-    error("TSTrajectorySetMaxCpsDisk: no generated method for these argument types")
+    throw(MethodError(TSTrajectorySetMaxCpsDisk, (petsclib, tj, max_cps_disk)))
 end
 
 @for_petsc function TSTrajectorySetMaxCpsDisk(petsclib::$UnionPetscLib, tj::TSTrajectory, max_cps_disk::$PetscInt )
@@ -3172,7 +3172,7 @@ See also: `TSTrajectory`, `TSTrajectorySetMaxUnitsRAM()`
 $(_doc_external("TS/TSTrajectorySetMaxCpsRAM"))
 """
 function TSTrajectorySetMaxCpsRAM(petsclib::PetscLibType, tj::TSTrajectory, max_cps_ram::Integer)
-    error("TSTrajectorySetMaxCpsRAM: no generated method for these argument types")
+    throw(MethodError(TSTrajectorySetMaxCpsRAM, (petsclib, tj, max_cps_ram)))
 end
 
 @for_petsc function TSTrajectorySetMaxCpsRAM(petsclib::$UnionPetscLib, tj::TSTrajectory, max_cps_ram::$PetscInt )
@@ -3208,7 +3208,7 @@ See also: `TSTrajectory`, `TSTrajectorySetMaxCpsDisk()`
 $(_doc_external("TS/TSTrajectorySetMaxUnitsDisk"))
 """
 function TSTrajectorySetMaxUnitsDisk(petsclib::PetscLibType, tj::TSTrajectory, max_units_disk::Integer)
-    error("TSTrajectorySetMaxUnitsDisk: no generated method for these argument types")
+    throw(MethodError(TSTrajectorySetMaxUnitsDisk, (petsclib, tj, max_units_disk)))
 end
 
 @for_petsc function TSTrajectorySetMaxUnitsDisk(petsclib::$UnionPetscLib, tj::TSTrajectory, max_units_disk::$PetscInt )
@@ -3244,7 +3244,7 @@ See also: `TSTrajectory`, `TSTrajectorySetMaxCpsRAM()`
 $(_doc_external("TS/TSTrajectorySetMaxUnitsRAM"))
 """
 function TSTrajectorySetMaxUnitsRAM(petsclib::PetscLibType, tj::TSTrajectory, max_units_ram::Integer)
-    error("TSTrajectorySetMaxUnitsRAM: no generated method for these argument types")
+    throw(MethodError(TSTrajectorySetMaxUnitsRAM, (petsclib, tj, max_units_ram)))
 end
 
 @for_petsc function TSTrajectorySetMaxUnitsRAM(petsclib::$UnionPetscLib, tj::TSTrajectory, max_units_ram::$PetscInt )
@@ -3281,7 +3281,7 @@ See also: `TSTrajectory`, `TSTrajectoryCreate()`, `TSTrajectoryDestroy()`, `TSTr
 $(_doc_external("TS/TSTrajectorySetMonitor"))
 """
 function TSTrajectorySetMonitor(petsclib::PetscLibType, tj::TSTrajectory, flg::PetscBool)
-    error("TSTrajectorySetMonitor: no generated method for these argument types")
+    throw(MethodError(TSTrajectorySetMonitor, (petsclib, tj, flg)))
 end
 
 @for_petsc function TSTrajectorySetMonitor(petsclib::$UnionPetscLib, tj::TSTrajectory, flg::PetscBool )
@@ -3315,7 +3315,7 @@ See also: `TSTrajectory`, `TSSetSaveTrajectory()`, `TSTrajectoryCreate()`, `TSTr
 $(_doc_external("TS/TSTrajectorySetSolutionOnly"))
 """
 function TSTrajectorySetSolutionOnly(petsclib::PetscLibType, tj::TSTrajectory, solution_only::PetscBool)
-    error("TSTrajectorySetSolutionOnly: no generated method for these argument types")
+    throw(MethodError(TSTrajectorySetSolutionOnly, (petsclib, tj, solution_only)))
 end
 
 @for_petsc function TSTrajectorySetSolutionOnly(petsclib::$UnionPetscLib, tj::TSTrajectory, solution_only::PetscBool )
@@ -3351,7 +3351,7 @@ See also: `TSTrajectorySetVariableNames()`, `TSTrajectory`, `TSMonitorLGSetTrans
 $(_doc_external("TS/TSTrajectorySetTransform"))
 """
 function TSTrajectorySetTransform(petsclib::PetscLibType, tj::TSTrajectory, transform::external, destroy::Ptr{Cvoid}, tctx::Ptr{Cvoid})
-    error("TSTrajectorySetTransform: no generated method for these argument types")
+    throw(MethodError(TSTrajectorySetTransform, (petsclib, tj, transform, destroy, tctx)))
 end
 
 @for_petsc function TSTrajectorySetTransform(petsclib::$UnionPetscLib, tj::TSTrajectory, transform::external, destroy::Ptr{Cvoid}, tctx::Ptr{Cvoid} )
@@ -3389,7 +3389,7 @@ See also: `TSTrajectory`, `TSTrajectoryType`, `TS`, `TSTrajectoryCreate()`, `TST
 $(_doc_external("TS/TSTrajectorySetType"))
 """
 function TSTrajectorySetType(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS, type::String)
-    error("TSTrajectorySetType: no generated method for these argument types")
+    throw(MethodError(TSTrajectorySetType, (petsclib, tj, ts, type)))
 end
 
 @for_petsc function TSTrajectorySetType(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::AbstractTS, type::String )
@@ -3424,7 +3424,7 @@ See also: `TSTrajectory`, `TSSetSaveTrajectory()`, `TSTrajectoryCreate()`, `TSTr
 $(_doc_external("TS/TSTrajectorySetUp"))
 """
 function TSTrajectorySetUp(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS)
-    error("TSTrajectorySetUp: no generated method for these argument types")
+    throw(MethodError(TSTrajectorySetUp, (petsclib, tj, ts)))
 end
 
 @for_petsc function TSTrajectorySetUp(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::AbstractTS )
@@ -3461,7 +3461,7 @@ See also: `TSTrajectory`, `TSTrajectoryCreate()`, `TSTrajectoryDestroy()`, `TSTr
 $(_doc_external("TS/TSTrajectorySetUseHistory"))
 """
 function TSTrajectorySetUseHistory(petsclib::PetscLibType, tj::TSTrajectory, flg::PetscBool)
-    error("TSTrajectorySetUseHistory: no generated method for these argument types")
+    throw(MethodError(TSTrajectorySetUseHistory, (petsclib, tj, flg)))
 end
 
 @for_petsc function TSTrajectorySetUseHistory(petsclib::$UnionPetscLib, tj::TSTrajectory, flg::PetscBool )
@@ -3495,7 +3495,7 @@ See also: `TSTrajectory`, `TSGetTrajectory()`
 $(_doc_external("TS/TSTrajectorySetVariableNames"))
 """
 function TSTrajectorySetVariableNames(petsclib::PetscLibType, ctx::TSTrajectory, names::Cchar)
-    error("TSTrajectorySetVariableNames: no generated method for these argument types")
+    throw(MethodError(TSTrajectorySetVariableNames, (petsclib, ctx, names)))
 end
 
 @for_petsc function TSTrajectorySetVariableNames(petsclib::$UnionPetscLib, ctx::TSTrajectory, names::Cchar )
@@ -3532,7 +3532,7 @@ See also: `TS`, `TSTrajectory`, `PetscViewer`, `PetscViewerASCIIOpen()`
 $(_doc_external("TS/TSTrajectoryView"))
 """
 function TSTrajectoryView(petsclib::PetscLibType, tj::TSTrajectory, viewer::PetscViewer)
-    error("TSTrajectoryView: no generated method for these argument types")
+    throw(MethodError(TSTrajectoryView, (petsclib, tj, viewer)))
 end
 
 @for_petsc function TSTrajectoryView(petsclib::$UnionPetscLib, tj::TSTrajectory, viewer::PetscViewer )
@@ -3570,7 +3570,7 @@ See also: `TSTrajectory`, `TSTrajectoryView`, `PetscObjectViewFromOptions()`, `T
 $(_doc_external("TS/TSTrajectoryViewFromOptions"))
 """
 function TSTrajectoryViewFromOptions(petsclib::PetscLibType, A::TSTrajectory, obj, name::String)
-    error("TSTrajectoryViewFromOptions: no generated method for these argument types")
+    throw(MethodError(TSTrajectoryViewFromOptions, (petsclib, A, obj, name)))
 end
 
 @for_petsc function TSTrajectoryViewFromOptions(petsclib::$UnionPetscLib, A::TSTrajectory, obj, name::String )

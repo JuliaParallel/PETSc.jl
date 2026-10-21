@@ -20,7 +20,7 @@ See also: `IS`, `ISCreateGeneral()`, `ISCreateStride()`, `ISCreateBlock()`
 $(_doc_external("IS/ISAllGather"))
 """
 function ISAllGather(petsclib::PetscLibType, is::AbstractIS)
-    error("ISAllGather: no generated method for these argument types")
+    throw(MethodError(ISAllGather, (petsclib, is)))
 end
 
 @for_petsc function ISAllGather(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -62,7 +62,7 @@ See also: `ISColoringValue`, `ISColoring()`, `ISCreateGeneral()`, `ISCreateStrid
 $(_doc_external("IS/ISAllGatherColors"))
 """
 function ISAllGatherColors(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, lindices::Vector{ISColoringValue})
-    error("ISAllGatherColors: no generated method for these argument types")
+    throw(MethodError(ISAllGatherColors, (petsclib, comm, n, lindices)))
 end
 
 @for_petsc function ISAllGatherColors(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, lindices::Vector{ISColoringValue} )
@@ -102,7 +102,7 @@ See also: `IS`, `ISBLOCK`, `ISGetIndices()`, `ISBlockRestoreIndices()`, `ISBlock
 $(_doc_external("IS/ISBlockGetIndices"))
 """
 function ISBlockGetIndices(petsclib::PetscLibType, is::AbstractIS)
-    error("ISBlockGetIndices: no generated method for these argument types")
+    throw(MethodError(ISBlockGetIndices, (petsclib, is)))
 end
 
 @for_petsc function ISBlockGetIndices(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -141,7 +141,7 @@ See also: `IS`, `ISGetBlockSize()`, `ISBlockGetSize()`, `ISGetSize()`, `ISCreate
 $(_doc_external("IS/ISBlockGetLocalSize"))
 """
 function ISBlockGetLocalSize(petsclib::PetscLibType, is::AbstractIS)
-    error("ISBlockGetLocalSize: no generated method for these argument types")
+    throw(MethodError(ISBlockGetLocalSize, (petsclib, is)))
 end
 
 @for_petsc function ISBlockGetLocalSize(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -179,7 +179,7 @@ See also: `IS`, `ISGetBlockSize()`, `ISBlockGetLocalSize()`, `ISGetSize()`, `ISC
 $(_doc_external("IS/ISBlockGetSize"))
 """
 function ISBlockGetSize(petsclib::PetscLibType, is::AbstractIS)
-    error("ISBlockGetSize: no generated method for these argument types")
+    throw(MethodError(ISBlockGetSize, (petsclib, is)))
 end
 
 @for_petsc function ISBlockGetSize(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -217,7 +217,7 @@ See also: `IS`, `ISBLOCK`, `ISRestoreIndices()`, `ISBlockGetIndices()`
 $(_doc_external("IS/ISBlockRestoreIndices"))
 """
 function ISBlockRestoreIndices(petsclib::PetscLibType, is::AbstractIS, idx::Union{Ptr, AbstractArray{<:Number}})
-    error("ISBlockRestoreIndices: no generated method for these argument types")
+    throw(MethodError(ISBlockRestoreIndices, (petsclib, is, idx)))
 end
 
 @for_petsc function ISBlockRestoreIndices(petsclib::$UnionPetscLib, is::AbstractIS, idx::Union{Ptr, AbstractArray{$PetscInt}} )
@@ -255,7 +255,7 @@ See also: `IS`, `ISCreateStride()`, `ISCreateGeneral()`, `ISAllGather()`, `ISCre
 $(_doc_external("IS/ISBlockSetIndices"))
 """
 function ISBlockSetIndices(petsclib::PetscLibType, is::AbstractIS, bs::Integer, n::Integer, idx::AbstractVector{<:Number}, mode::PetscCopyMode)
-    error("ISBlockSetIndices: no generated method for these argument types")
+    throw(MethodError(ISBlockSetIndices, (petsclib, is, bs, n, idx, mode)))
 end
 
 @for_petsc function ISBlockSetIndices(petsclib::$UnionPetscLib, is::AbstractIS, bs::$PetscInt, n::$PetscInt, idx::Vector{$PetscInt}, mode::PetscCopyMode )
@@ -293,7 +293,7 @@ See also: `IS`, `MatPartitioningCreate()`, `ISPartitioningToNumbering()`, `ISPar
 $(_doc_external("IS/ISBuildTwoSided"))
 """
 function ISBuildTwoSided(petsclib::PetscLibType, ito::AbstractIS, toindx::AbstractIS)
-    error("ISBuildTwoSided: no generated method for these argument types")
+    throw(MethodError(ISBuildTwoSided, (petsclib, ito, toindx)))
 end
 
 @for_petsc function ISBuildTwoSided(petsclib::$UnionPetscLib, ito::AbstractIS, toindx::AbstractIS )
@@ -329,7 +329,7 @@ See also: `IS`, `ISInfo`, `ISInfoType`, `ISSetInfo()`
 $(_doc_external("IS/ISClearInfoCache"))
 """
 function ISClearInfoCache(petsclib::PetscLibType, is::AbstractIS, clear_permanent_local::PetscBool)
-    error("ISClearInfoCache: no generated method for these argument types")
+    throw(MethodError(ISClearInfoCache, (petsclib, is, clear_permanent_local)))
 end
 
 @for_petsc function ISClearInfoCache(petsclib::$UnionPetscLib, is::AbstractIS, clear_permanent_local::PetscBool )
@@ -368,7 +368,7 @@ See also: `IS`, `ISCreateGeneral()`, `ISCreateStride()`, `ISCreateBlock()`, `ISA
 $(_doc_external("IS/ISComplement"))
 """
 function ISComplement(petsclib::PetscLibType, is::AbstractIS, nmin::Integer, nmax::Integer)
-    error("ISComplement: no generated method for these argument types")
+    throw(MethodError(ISComplement, (petsclib, is, nmin, nmax)))
 end
 
 @for_petsc function ISComplement(petsclib::$UnionPetscLib, is::AbstractIS, nmin::$PetscInt, nmax::$PetscInt )
@@ -407,7 +407,7 @@ See also: `IS`, `Vec`, `ISCreateGeneral()`
 $(_doc_external("Vec/ISComplementVec"))
 """
 function ISComplementVec(petsclib::PetscLibType, S::AbstractIS, V::AbstractPetscVec)
-    error("ISComplementVec: no generated method for these argument types")
+    throw(MethodError(ISComplementVec, (petsclib, S, V)))
 end
 
 @for_petsc function ISComplementVec(petsclib::$UnionPetscLib, S::AbstractIS, V::AbstractPetscVec )
@@ -447,7 +447,7 @@ See also: `IS`, `ISGENERAL`, `ISExpandIndicesGeneral()`
 $(_doc_external("IS/ISCompressIndicesGeneral"))
 """
 function ISCompressIndicesGeneral(petsclib::PetscLibType, n::Integer, nkeys::Integer, bs::Integer, imax::Integer, is_in::Vector{<:AbstractIS}, is_out::Vector{<:AbstractIS})
-    error("ISCompressIndicesGeneral: no generated method for these argument types")
+    throw(MethodError(ISCompressIndicesGeneral, (petsclib, n, nkeys, bs, imax, is_in, is_out)))
 end
 
 @for_petsc function ISCompressIndicesGeneral(petsclib::$UnionPetscLib, n::$PetscInt, nkeys::$PetscInt, bs::$PetscInt, imax::$PetscInt, is_in::Vector{<:AbstractIS}, is_out::Vector{<:AbstractIS} )
@@ -485,7 +485,7 @@ See also: `IS`, `ISDifference()`, `ISSum()`, `ISExpand()`, `ISIntersect()`
 $(_doc_external("IS/ISConcatenate"))
 """
 function ISConcatenate(petsclib::PetscLibType, comm::MPI_Comm, len::Integer, islist::Vector{<:AbstractIS})
-    error("ISConcatenate: no generated method for these argument types")
+    throw(MethodError(ISConcatenate, (petsclib, comm, len, islist)))
 end
 
 @for_petsc function ISConcatenate(petsclib::$UnionPetscLib, comm::MPI_Comm, len::$PetscInt, islist::Vector{<:AbstractIS} )
@@ -526,7 +526,7 @@ See also: `IS`, `ISGetLocalSize()`, `VecGetOwnershipRange()`
 $(_doc_external("IS/ISContiguousLocal"))
 """
 function ISContiguousLocal(petsclib::PetscLibType, is::AbstractIS, gstart::Integer, gend::Integer)
-    error("ISContiguousLocal: no generated method for these argument types")
+    throw(MethodError(ISContiguousLocal, (petsclib, is, gstart, gend)))
 end
 
 @for_petsc function ISContiguousLocal(petsclib::$UnionPetscLib, is::AbstractIS, gstart::$PetscInt, gend::$PetscInt )
@@ -566,7 +566,7 @@ See also: `IS`, `ISDuplicate()`, `ISShift()`
 $(_doc_external("IS/ISCopy"))
 """
 function ISCopy(petsclib::PetscLibType, is::AbstractIS, isy::AbstractIS)
-    error("ISCopy: no generated method for these argument types")
+    throw(MethodError(ISCopy, (petsclib, is, isy)))
 end
 
 @for_petsc function ISCopy(petsclib::$UnionPetscLib, is::AbstractIS, isy::AbstractIS )
@@ -602,7 +602,7 @@ See also: `IS`, `ISType()`, `ISSetType()`, `ISCreateGeneral()`, `ISCreateStride(
 $(_doc_external("IS/ISCreate"))
 """
 function ISCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("ISCreate: no generated method for these argument types")
+    throw(MethodError(ISCreate, (petsclib, comm)))
 end
 
 @for_petsc function ISCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -645,7 +645,7 @@ See also: `IS`, `ISCreateStride()`, `ISCreateGeneral()`, `ISAllGather()`, `ISBlo
 $(_doc_external("IS/ISCreateBlock"))
 """
 function ISCreateBlock(petsclib::PetscLibType, comm::MPI_Comm, bs::Integer, n::Integer, idx::AbstractVector{<:Number}, mode::PetscCopyMode)
-    error("ISCreateBlock: no generated method for these argument types")
+    throw(MethodError(ISCreateBlock, (petsclib, comm, bs, n, idx, mode)))
 end
 
 @for_petsc function ISCreateBlock(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, n::$PetscInt, idx::Vector{$PetscInt}, mode::PetscCopyMode )
@@ -687,7 +687,7 @@ See also: `IS`, `ISGENERAL`, `ISCreateStride()`, `ISCreateBlock()`, `ISAllGather
 $(_doc_external("IS/ISCreateGeneral"))
 """
 function ISCreateGeneral(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, idx::AbstractVector{<:Number}, mode::PetscCopyMode)
-    error("ISCreateGeneral: no generated method for these argument types")
+    throw(MethodError(ISCreateGeneral, (petsclib, comm, n, idx, mode)))
 end
 
 @for_petsc function ISCreateGeneral(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, idx::Vector{$PetscInt}, mode::PetscCopyMode )
@@ -728,7 +728,7 @@ See also: `IS`, `ISStrideSetStride()`, `ISCreateGeneral()`, `ISCreateBlock()`, `
 $(_doc_external("IS/ISCreateStride"))
 """
 function ISCreateStride(petsclib::PetscLibType, comm::MPI_Comm, n::Integer, first::Integer, step::Integer)
-    error("ISCreateStride: no generated method for these argument types")
+    throw(MethodError(ISCreateStride, (petsclib, comm, n, first, step)))
 end
 
 @for_petsc function ISCreateStride(petsclib::$UnionPetscLib, comm::MPI_Comm, n::$PetscInt, first::$PetscInt, step::$PetscInt )
@@ -775,7 +775,7 @@ See also: `IS`, `VecGetSubVector()`, `MatCreateSubMatrix()`
 $(_doc_external("IS/ISCreateSubIS"))
 """
 function ISCreateSubIS(petsclib::PetscLibType, is::AbstractIS, comps::AbstractIS)
-    error("ISCreateSubIS: no generated method for these argument types")
+    throw(MethodError(ISCreateSubIS, (petsclib, is, comps)))
 end
 
 @for_petsc function ISCreateSubIS(petsclib::$UnionPetscLib, is::AbstractIS, comps::AbstractIS )
@@ -810,7 +810,7 @@ See also: `IS`, `ISCreateGeneral()`, `ISCreateStride()`, `ISCreateBlock()`
 $(_doc_external("IS/ISDestroy"))
 """
 function ISDestroy(petsclib::PetscLibType, is::AbstractIS)
-    error("ISDestroy: no generated method for these argument types")
+    throw(MethodError(ISDestroy, (petsclib, is)))
 end
 
 @for_petsc function ISDestroy(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -849,7 +849,7 @@ See also: `IS`, `ISDestroy()`, `ISView()`, `ISSum()`, `ISExpand()`
 $(_doc_external("IS/ISDifference"))
 """
 function ISDifference(petsclib::PetscLibType, is1::AbstractIS, is2::AbstractIS)
-    error("ISDifference: no generated method for these argument types")
+    throw(MethodError(ISDifference, (petsclib, is1, is2)))
 end
 
 @for_petsc function ISDifference(petsclib::$UnionPetscLib, is1::AbstractIS, is2::AbstractIS )
@@ -887,7 +887,7 @@ See also: `IS`, `ISCreateGeneral()`, `ISCopy()`
 $(_doc_external("IS/ISDuplicate"))
 """
 function ISDuplicate(petsclib::PetscLibType, is::AbstractIS)
-    error("ISDuplicate: no generated method for these argument types")
+    throw(MethodError(ISDuplicate, (petsclib, is)))
 end
 
 @for_petsc function ISDuplicate(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -929,7 +929,7 @@ See also: `IS`, `ISLocalToGlobalMapping`
 $(_doc_external("IS/ISEmbed"))
 """
 function ISEmbed(petsclib::PetscLibType, a::AbstractIS, b::AbstractIS, drop::PetscBool)
-    error("ISEmbed: no generated method for these argument types")
+    throw(MethodError(ISEmbed, (petsclib, a, b, drop)))
 end
 
 @for_petsc function ISEmbed(petsclib::$UnionPetscLib, a::AbstractIS, b::AbstractIS, drop::PetscBool )
@@ -970,7 +970,7 @@ See also: `IS`, `ISEqualUnsorted()`
 $(_doc_external("IS/ISEqual"))
 """
 function ISEqual(petsclib::PetscLibType, is1::AbstractIS, is2::AbstractIS)
-    error("ISEqual: no generated method for these argument types")
+    throw(MethodError(ISEqual, (petsclib, is1, is2)))
 end
 
 @for_petsc function ISEqual(petsclib::$UnionPetscLib, is1::AbstractIS, is2::AbstractIS )
@@ -1011,7 +1011,7 @@ See also: `IS`, `ISEqual()`
 $(_doc_external("IS/ISEqualUnsorted"))
 """
 function ISEqualUnsorted(petsclib::PetscLibType, is1::AbstractIS, is2::AbstractIS)
-    error("ISEqualUnsorted: no generated method for these argument types")
+    throw(MethodError(ISEqualUnsorted, (petsclib, is1, is2)))
 end
 
 @for_petsc function ISEqualUnsorted(petsclib::$UnionPetscLib, is1::AbstractIS, is2::AbstractIS )
@@ -1051,7 +1051,7 @@ See also: `IS`, `ISDestroy()`, `ISView()`, `ISDifference()`, `ISSum()`, `ISInter
 $(_doc_external("IS/ISExpand"))
 """
 function ISExpand(petsclib::PetscLibType, is1::AbstractIS, is2::AbstractIS)
-    error("ISExpand: no generated method for these argument types")
+    throw(MethodError(ISExpand, (petsclib, is1, is2)))
 end
 
 @for_petsc function ISExpand(petsclib::$UnionPetscLib, is1::AbstractIS, is2::AbstractIS )
@@ -1091,7 +1091,7 @@ See also: `IS`, `ISGENERAL`, `ISCompressIndicesGeneral()`
 $(_doc_external("IS/ISExpandIndicesGeneral"))
 """
 function ISExpandIndicesGeneral(petsclib::PetscLibType, n::Integer, nkeys::Integer, bs::Integer, imax::Integer, is_in::Vector{<:AbstractIS}, is_out::Vector{<:AbstractIS})
-    error("ISExpandIndicesGeneral: no generated method for these argument types")
+    throw(MethodError(ISExpandIndicesGeneral, (petsclib, n, nkeys, bs, imax, is_in, is_out)))
 end
 
 @for_petsc function ISExpandIndicesGeneral(petsclib::$UnionPetscLib, n::$PetscInt, nkeys::$PetscInt, bs::$PetscInt, imax::$PetscInt, is_in::Vector{<:AbstractIS}, is_out::Vector{<:AbstractIS} )
@@ -1120,7 +1120,7 @@ See also: `PetscFinalize()`
 $(_doc_external("Vec/ISFinalizePackage"))
 """
 function ISFinalizePackage(petsclib::PetscLibType)
-    error("ISFinalizePackage: no generated method for these argument types")
+    throw(MethodError(ISFinalizePackage, (petsclib, )))
 end
 
 @for_petsc function ISFinalizePackage(petsclib::$UnionPetscLib)
@@ -1154,7 +1154,7 @@ See also: `IS`, `ISGENERAL`, `ISCreateGeneral()`, `ISGeneralSetIndices()`
 $(_doc_external("IS/ISGeneralFilter"))
 """
 function ISGeneralFilter(petsclib::PetscLibType, is::AbstractIS, start::Integer, end_::Integer)
-    error("ISGeneralFilter: no generated method for these argument types")
+    throw(MethodError(ISGeneralFilter, (petsclib, is, start, end_)))
 end
 
 @for_petsc function ISGeneralFilter(petsclib::$UnionPetscLib, is::AbstractIS, start::$PetscInt, end_::$PetscInt )
@@ -1190,7 +1190,7 @@ See also: `IS`, `ISBLOCK`, `ISCreateGeneral()`, `ISGeneralSetIndicesFromMask()`,
 $(_doc_external("IS/ISGeneralSetIndices"))
 """
 function ISGeneralSetIndices(petsclib::PetscLibType, is::AbstractIS, n::Integer, idx::AbstractVector{<:Number}, mode::PetscCopyMode)
-    error("ISGeneralSetIndices: no generated method for these argument types")
+    throw(MethodError(ISGeneralSetIndices, (petsclib, is, n, idx, mode)))
 end
 
 @for_petsc function ISGeneralSetIndices(petsclib::$UnionPetscLib, is::AbstractIS, n::$PetscInt, idx::Vector{$PetscInt}, mode::PetscCopyMode )
@@ -1226,7 +1226,7 @@ See also: `IS`, `ISCreateGeneral()`, `ISGeneralSetIndices()`, `ISGENERAL`
 $(_doc_external("IS/ISGeneralSetIndicesFromMask"))
 """
 function ISGeneralSetIndicesFromMask(petsclib::PetscLibType, is::AbstractIS, rstart::Integer, rend::Integer, mask::Vector{PetscBool})
-    error("ISGeneralSetIndicesFromMask: no generated method for these argument types")
+    throw(MethodError(ISGeneralSetIndicesFromMask, (petsclib, is, rstart, rend, mask)))
 end
 
 @for_petsc function ISGeneralSetIndicesFromMask(petsclib::$UnionPetscLib, is::AbstractIS, rstart::$PetscInt, rend::$PetscInt, mask::Vector{PetscBool} )
@@ -1262,7 +1262,7 @@ See also: `IS`, `ISBlockGetSize()`, `ISGetSize()`, `ISCreateBlock()`, `ISSetBloc
 $(_doc_external("IS/ISGetBlockSize"))
 """
 function ISGetBlockSize(petsclib::PetscLibType, is::AbstractIS)
-    error("ISGetBlockSize: no generated method for these argument types")
+    throw(MethodError(ISGetBlockSize, (petsclib, is)))
 end
 
 @for_petsc function ISGetBlockSize(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -1300,7 +1300,7 @@ See also: `IS`, `ISSetCompressOutput()`, `ISView()`
 $(_doc_external("IS/ISGetCompressOutput"))
 """
 function ISGetCompressOutput(petsclib::PetscLibType, is::AbstractIS)
-    error("ISGetCompressOutput: no generated method for these argument types")
+    throw(MethodError(ISGetCompressOutput, (petsclib, is)))
 end
 
 @for_petsc function ISGetCompressOutput(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -1340,7 +1340,7 @@ See also: `IS`, `ISRestoreIndices()`
 $(_doc_external("IS/ISGetIndices"))
 """
 function ISGetIndices(petsclib::PetscLibType, is::AbstractIS)
-    error("ISGetIndices: no generated method for these argument types")
+    throw(MethodError(ISGetIndices, (petsclib, is)))
 end
 
 @for_petsc function ISGetIndices(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -1381,7 +1381,7 @@ See also: `IS`, `ISInfo`, `ISInfoType`, `ISSetInfo()`, `ISClearInfoCache()`
 $(_doc_external("IS/ISGetInfo"))
 """
 function ISGetInfo(petsclib::PetscLibType, is::AbstractIS, info::ISInfo, type::ISInfoType, compute::PetscBool)
-    error("ISGetInfo: no generated method for these argument types")
+    throw(MethodError(ISGetInfo, (petsclib, is, info, type, compute)))
 end
 
 @for_petsc function ISGetInfo(petsclib::$UnionPetscLib, is::AbstractIS, info::ISInfo, type::ISInfoType, compute::PetscBool )
@@ -1419,7 +1419,7 @@ See also: `IS`, `PetscLayout`, `ISSetLayout()`, `ISGetSize()`, `ISGetLocalSize()
 $(_doc_external("IS/ISGetLayout"))
 """
 function ISGetLayout(petsclib::PetscLibType, is::AbstractIS)
-    error("ISGetLayout: no generated method for these argument types")
+    throw(MethodError(ISGetLayout, (petsclib, is)))
 end
 
 @for_petsc function ISGetLayout(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -1457,7 +1457,7 @@ See also: `IS`, `ISGetSize()`
 $(_doc_external("IS/ISGetLocalSize"))
 """
 function ISGetLocalSize(petsclib::PetscLibType, is::AbstractIS)
-    error("ISGetLocalSize: no generated method for these argument types")
+    throw(MethodError(ISGetLocalSize, (petsclib, is)))
 end
 
 @for_petsc function ISGetLocalSize(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -1496,7 +1496,7 @@ See also: `IS`, `ISGetIndices()`, `ISRestoreIndices()`
 $(_doc_external("IS/ISGetMinMax"))
 """
 function ISGetMinMax(petsclib::PetscLibType, is::AbstractIS)
-    error("ISGetMinMax: no generated method for these argument types")
+    throw(MethodError(ISGetMinMax, (petsclib, is)))
 end
 
 @for_petsc function ISGetMinMax(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -1538,7 +1538,7 @@ See also: `IS`, `ISGetNonlocalIndices()`, `ISRestoreNonlocalIndices()`, `ISAllGa
 $(_doc_external("IS/ISGetNonlocalIS"))
 """
 function ISGetNonlocalIS(petsclib::PetscLibType, is::AbstractIS)
-    error("ISGetNonlocalIS: no generated method for these argument types")
+    throw(MethodError(ISGetNonlocalIS, (petsclib, is)))
 end
 
 @for_petsc function ISGetNonlocalIS(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -1580,7 +1580,7 @@ See also: `IS`, `ISGetTotalIndices()`, `ISRestoreNonlocalIndices()`, `ISGetSize(
 $(_doc_external("IS/ISGetNonlocalIndices"))
 """
 function ISGetNonlocalIndices(petsclib::PetscLibType, is::AbstractIS)
-    error("ISGetNonlocalIndices: no generated method for these argument types")
+    throw(MethodError(ISGetNonlocalIndices, (petsclib, is)))
 end
 
 @for_petsc function ISGetNonlocalIndices(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -1621,7 +1621,7 @@ See also: `IS`, `ISRestorePointRange()`, `ISGetPointSubrange()`, `ISGetIndices()
 $(_doc_external("IS/ISGetPointRange"))
 """
 function ISGetPointRange(petsclib::PetscLibType, pointIS::AbstractIS)
-    error("ISGetPointRange: no generated method for these argument types")
+    throw(MethodError(ISGetPointRange, (petsclib, pointIS)))
 end
 
 @for_petsc function ISGetPointRange(petsclib::$UnionPetscLib, pointIS::AbstractIS )
@@ -1666,7 +1666,7 @@ See also: `IS`, `ISGetPointRange()`, `ISRestorePointRange()`, `ISGetIndices()`, 
 $(_doc_external("IS/ISGetPointSubrange"))
 """
 function ISGetPointSubrange(petsclib::PetscLibType, subpointIS::AbstractIS, pStart::Integer, pEnd::Integer, points::AbstractVector{<:Number})
-    error("ISGetPointSubrange: no generated method for these argument types")
+    throw(MethodError(ISGetPointSubrange, (petsclib, subpointIS, pStart, pEnd, points)))
 end
 
 @for_petsc function ISGetPointSubrange(petsclib::$UnionPetscLib, subpointIS::AbstractIS, pStart::$PetscInt, pEnd::$PetscInt, points::Vector{$PetscInt} )
@@ -1702,7 +1702,7 @@ See also: `IS`
 $(_doc_external("IS/ISGetSize"))
 """
 function ISGetSize(petsclib::PetscLibType, is::AbstractIS)
-    error("ISGetSize: no generated method for these argument types")
+    throw(MethodError(ISGetSize, (petsclib, is)))
 end
 
 @for_petsc function ISGetSize(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -1741,7 +1741,7 @@ See also: `IS`, `ISRestoreTotalIndices()`, `ISGetNonlocalIndices()`, `ISGetSize(
 $(_doc_external("IS/ISGetTotalIndices"))
 """
 function ISGetTotalIndices(petsclib::PetscLibType, is::AbstractIS)
-    error("ISGetTotalIndices: no generated method for these argument types")
+    throw(MethodError(ISGetTotalIndices, (petsclib, is)))
 end
 
 @for_petsc function ISGetTotalIndices(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -1780,7 +1780,7 @@ See also: `IS`, `ISType`, `ISSetType()`, `ISCreate()`, `PetscObjectTypeCompare()
 $(_doc_external("IS/ISGetType"))
 """
 function ISGetType(petsclib::PetscLibType, is::AbstractIS)
-    error("ISGetType: no generated method for these argument types")
+    throw(MethodError(ISGetType, (petsclib, is)))
 end
 
 @for_petsc function ISGetType(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -1829,7 +1829,7 @@ See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingApply()`, `ISGlobalTo
 $(_doc_external("IS/ISGlobalToLocalMappingApply"))
 """
 function ISGlobalToLocalMappingApply(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, type::ISGlobalToLocalMappingMode, n::Integer, idx::AbstractVector{<:Number}, idxout::AbstractVector{<:Number})
-    error("ISGlobalToLocalMappingApply: no generated method for these argument types")
+    throw(MethodError(ISGlobalToLocalMappingApply, (petsclib, mapping, type, n, idx, idxout)))
 end
 
 @for_petsc function ISGlobalToLocalMappingApply(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, type::ISGlobalToLocalMappingMode, n::$PetscInt, idx::Vector{$PetscInt}, idxout::Vector{$PetscInt} )
@@ -1878,7 +1878,7 @@ See also: `ISLocalToGlobalMapping`, `ISLocalToGlobalMappingApply()`, `ISGlobalTo
 $(_doc_external("IS/ISGlobalToLocalMappingApplyBlock"))
 """
 function ISGlobalToLocalMappingApplyBlock(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, type::ISGlobalToLocalMappingMode, n::Integer, idx::AbstractVector{<:Number}, idxout::AbstractVector{<:Number})
-    error("ISGlobalToLocalMappingApplyBlock: no generated method for these argument types")
+    throw(MethodError(ISGlobalToLocalMappingApplyBlock, (petsclib, mapping, type, n, idx, idxout)))
 end
 
 @for_petsc function ISGlobalToLocalMappingApplyBlock(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, type::ISGlobalToLocalMappingMode, n::$PetscInt, idx::Vector{$PetscInt}, idxout::Vector{$PetscInt} )
@@ -1922,7 +1922,7 @@ See also: `ISGlobalToLocalMapping`, `ISGlobalToLocalMappingApply()`, `ISLocalToG
 $(_doc_external("IS/ISGlobalToLocalMappingApplyIS"))
 """
 function ISGlobalToLocalMappingApplyIS(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, type::ISGlobalToLocalMappingMode, is::AbstractIS)
-    error("ISGlobalToLocalMappingApplyIS: no generated method for these argument types")
+    throw(MethodError(ISGlobalToLocalMappingApplyIS, (petsclib, mapping, type, is)))
 end
 
 @for_petsc function ISGlobalToLocalMappingApplyIS(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, type::ISGlobalToLocalMappingMode, is::AbstractIS )
@@ -1960,7 +1960,7 @@ See also: `IS`, `ISSetIdentity()`, `ISGetInfo()`
 $(_doc_external("IS/ISIdentity"))
 """
 function ISIdentity(petsclib::PetscLibType, is::AbstractIS)
-    error("ISIdentity: no generated method for these argument types")
+    throw(MethodError(ISIdentity, (petsclib, is)))
 end
 
 @for_petsc function ISIdentity(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -1992,7 +1992,7 @@ See also: `PetscInitialize()`
 $(_doc_external("Sys/ISInitializePackage"))
 """
 function ISInitializePackage(petsclib::PetscLibType)
-    error("ISInitializePackage: no generated method for these argument types")
+    throw(MethodError(ISInitializePackage, (petsclib, )))
 end
 
 @for_petsc function ISInitializePackage(petsclib::$UnionPetscLib)
@@ -2028,7 +2028,7 @@ See also: `IS`, `ISDestroy()`, `ISView()`, `ISDifference()`, `ISSum()`, `ISExpan
 $(_doc_external("IS/ISIntersect"))
 """
 function ISIntersect(petsclib::PetscLibType, is1::AbstractIS, is2::AbstractIS)
-    error("ISIntersect: no generated method for these argument types")
+    throw(MethodError(ISIntersect, (petsclib, is1, is2)))
 end
 
 @for_petsc function ISIntersect(petsclib::$UnionPetscLib, is1::AbstractIS, is2::AbstractIS )
@@ -2069,7 +2069,7 @@ See also: `IS`, `ISGetInfo()`, `ISSetPermutation()`, `ISGetPermutation()`
 $(_doc_external("IS/ISInvertPermutation"))
 """
 function ISInvertPermutation(petsclib::PetscLibType, is::AbstractIS, nlocal::Integer)
-    error("ISInvertPermutation: no generated method for these argument types")
+    throw(MethodError(ISInvertPermutation, (petsclib, is, nlocal)))
 end
 
 @for_petsc function ISInvertPermutation(petsclib::$UnionPetscLib, is::AbstractIS, nlocal::$PetscInt )
@@ -2112,7 +2112,7 @@ See also: `IS`, `ISPairToList()`
 $(_doc_external("IS/ISListToPair"))
 """
 function ISListToPair(petsclib::PetscLibType, comm::MPI_Comm, listlen::Integer, islist::Vector{<:AbstractIS})
-    error("ISListToPair: no generated method for these argument types")
+    throw(MethodError(ISListToPair, (petsclib, comm, listlen, islist)))
 end
 
 @for_petsc function ISListToPair(petsclib::$UnionPetscLib, comm::MPI_Comm, listlen::$PetscInt, islist::Vector{<:AbstractIS} )
@@ -2150,7 +2150,7 @@ See also: `IS`, `PetscViewerBinaryOpen()`, `ISView()`, `MatLoad()`, `VecLoad()`
 $(_doc_external("IS/ISLoad"))
 """
 function ISLoad(petsclib::PetscLibType, is::AbstractIS, viewer::PetscViewer)
-    error("ISLoad: no generated method for these argument types")
+    throw(MethodError(ISLoad, (petsclib, is, viewer)))
 end
 
 @for_petsc function ISLoad(petsclib::$UnionPetscLib, is::AbstractIS, viewer::PetscViewer )
@@ -2187,7 +2187,7 @@ See also: `IS`
 $(_doc_external("IS/ISLocate"))
 """
 function ISLocate(petsclib::PetscLibType, is::AbstractIS, key::Integer)
-    error("ISLocate: no generated method for these argument types")
+    throw(MethodError(ISLocate, (petsclib, is, key)))
 end
 
 @for_petsc function ISLocate(petsclib::$UnionPetscLib, is::AbstractIS, key::$PetscInt )
@@ -2227,7 +2227,7 @@ See also: `IS`
 $(_doc_external("IS/ISOnComm"))
 """
 function ISOnComm(petsclib::PetscLibType, is::AbstractIS, comm::MPI_Comm, mode::PetscCopyMode)
-    error("ISOnComm: no generated method for these argument types")
+    throw(MethodError(ISOnComm, (petsclib, is, comm, mode)))
 end
 
 @for_petsc function ISOnComm(petsclib::$UnionPetscLib, is::AbstractIS, comm::MPI_Comm, mode::PetscCopyMode )
@@ -2267,7 +2267,7 @@ See also: `IS`, `ISListToPair()`
 $(_doc_external("IS/ISPairToList"))
 """
 function ISPairToList(petsclib::PetscLibType, xis::AbstractIS, yis::AbstractIS)
-    error("ISPairToList: no generated method for these argument types")
+    throw(MethodError(ISPairToList, (petsclib, xis, yis)))
 end
 
 @for_petsc function ISPairToList(petsclib::$UnionPetscLib, xis::AbstractIS, yis::AbstractIS )
@@ -2312,7 +2312,7 @@ See also: `IS`, `MatPartitioningCreate()`, `AOCreateBasic()`, `ISPartitioningToN
 $(_doc_external("IS/ISPartitioningCount"))
 """
 function ISPartitioningCount(petsclib::PetscLibType, part::AbstractIS, len::Integer, count::AbstractVector{<:Number})
-    error("ISPartitioningCount: no generated method for these argument types")
+    throw(MethodError(ISPartitioningCount, (petsclib, part, len, count)))
 end
 
 @for_petsc function ISPartitioningCount(petsclib::$UnionPetscLib, part::AbstractIS, len::$PetscInt, count::Vector{$PetscInt} )
@@ -2351,7 +2351,7 @@ See also: `IS`, `MatPartitioningCreate()`, `AOCreateBasic()`, `ISPartitioningCou
 $(_doc_external("IS/ISPartitioningToNumbering"))
 """
 function ISPartitioningToNumbering(petsclib::PetscLibType, part::AbstractIS)
-    error("ISPartitioningToNumbering: no generated method for these argument types")
+    throw(MethodError(ISPartitioningToNumbering, (petsclib, part)))
 end
 
 @for_petsc function ISPartitioningToNumbering(petsclib::$UnionPetscLib, part::AbstractIS )
@@ -2390,7 +2390,7 @@ See also: `IS`, `ISSetPermutation()`, `ISGetInfo()`
 $(_doc_external("IS/ISPermutation"))
 """
 function ISPermutation(petsclib::PetscLibType, is::AbstractIS)
-    error("ISPermutation: no generated method for these argument types")
+    throw(MethodError(ISPermutation, (petsclib, is)))
 end
 
 @for_petsc function ISPermutation(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -2424,7 +2424,7 @@ See also: `IS`, `ISType`, `ISSetType()`, `ISRegisterAll()`, `ISRegisterDestroy()
 $(_doc_external("IS/ISRegister"))
 """
 function ISRegister(petsclib::PetscLibType, sname::String, fnc::external)
-    error("ISRegister: no generated method for these argument types")
+    throw(MethodError(ISRegister, (petsclib, sname, fnc)))
 end
 
 @for_petsc function ISRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
@@ -2454,7 +2454,7 @@ See also: `IS`, `ISType`, `ISRegister()`
 $(_doc_external("IS/ISRegisterAll"))
 """
 function ISRegisterAll(petsclib::PetscLibType)
-    error("ISRegisterAll: no generated method for these argument types")
+    throw(MethodError(ISRegisterAll, (petsclib, )))
 end
 
 @for_petsc function ISRegisterAll(petsclib::$UnionPetscLib)
@@ -2491,7 +2491,7 @@ See also: `IS`
 $(_doc_external("IS/ISRenumber"))
 """
 function ISRenumber(petsclib::PetscLibType, subset::AbstractIS, subset_mult::AbstractIS)
-    error("ISRenumber: no generated method for these argument types")
+    throw(MethodError(ISRenumber, (petsclib, subset, subset_mult)))
 end
 
 @for_petsc function ISRenumber(petsclib::$UnionPetscLib, subset::AbstractIS, subset_mult::AbstractIS )
@@ -2529,7 +2529,7 @@ See also: `IS`, `ISGetIndices()`
 $(_doc_external("IS/ISRestoreIndices"))
 """
 function ISRestoreIndices(petsclib::PetscLibType, is::AbstractIS, ptr::Union{Ptr, AbstractArray{<:Number}})
-    error("ISRestoreIndices: no generated method for these argument types")
+    throw(MethodError(ISRestoreIndices, (petsclib, is, ptr)))
 end
 
 @for_petsc function ISRestoreIndices(petsclib::$UnionPetscLib, is::AbstractIS, ptr::Union{Ptr, AbstractArray{$PetscInt}} )
@@ -2564,7 +2564,7 @@ See also: `IS`, `ISGetNonlocalIS()`, `ISGetNonlocalIndices()`, `ISRestoreNonloca
 $(_doc_external("IS/ISRestoreNonlocalIS"))
 """
 function ISRestoreNonlocalIS(petsclib::PetscLibType, is::AbstractIS, complement::AbstractIS)
-    error("ISRestoreNonlocalIS: no generated method for these argument types")
+    throw(MethodError(ISRestoreNonlocalIS, (petsclib, is, complement)))
 end
 
 @for_petsc function ISRestoreNonlocalIS(petsclib::$UnionPetscLib, is::AbstractIS, complement::AbstractIS )
@@ -2600,7 +2600,7 @@ See also: `IS`, `ISGetTotalIndices()`, `ISGetNonlocalIndices()`, `ISRestoreTotal
 $(_doc_external("IS/ISRestoreNonlocalIndices"))
 """
 function ISRestoreNonlocalIndices(petsclib::PetscLibType, is::AbstractIS, indices::Union{Ptr, AbstractArray{<:Number}})
-    error("ISRestoreNonlocalIndices: no generated method for these argument types")
+    throw(MethodError(ISRestoreNonlocalIndices, (petsclib, is, indices)))
 end
 
 @for_petsc function ISRestoreNonlocalIndices(petsclib::$UnionPetscLib, is::AbstractIS, indices::Union{Ptr, AbstractArray{$PetscInt}} )
@@ -2637,7 +2637,7 @@ See also: `IS`, `ISGetPointRange()`, `ISGetPointSubrange()`, `ISGetIndices()`, `
 $(_doc_external("IS/ISRestorePointRange"))
 """
 function ISRestorePointRange(petsclib::PetscLibType, pointIS::AbstractIS, pStart::Integer, pEnd::Integer, points::Union{Ptr, AbstractArray{<:Number}})
-    error("ISRestorePointRange: no generated method for these argument types")
+    throw(MethodError(ISRestorePointRange, (petsclib, pointIS, pStart, pEnd, points)))
 end
 
 @for_petsc function ISRestorePointRange(petsclib::$UnionPetscLib, pointIS::AbstractIS, pStart::$PetscInt, pEnd::$PetscInt, points::Union{Ptr, AbstractArray{$PetscInt}} )
@@ -2674,7 +2674,7 @@ See also: `IS`, `ISGetNonlocalIndices()`
 $(_doc_external("IS/ISRestoreTotalIndices"))
 """
 function ISRestoreTotalIndices(petsclib::PetscLibType, is::AbstractIS, indices::Union{Ptr, AbstractArray{<:Number}})
-    error("ISRestoreTotalIndices: no generated method for these argument types")
+    throw(MethodError(ISRestoreTotalIndices, (petsclib, is, indices)))
 end
 
 @for_petsc function ISRestoreTotalIndices(petsclib::$UnionPetscLib, is::AbstractIS, indices::Union{Ptr, AbstractArray{$PetscInt}} )
@@ -2709,7 +2709,7 @@ See also: `IS`, `ISGetBlockSize()`, `ISCreateBlock()`, `ISBlockGetIndices()`
 $(_doc_external("IS/ISSetBlockSize"))
 """
 function ISSetBlockSize(petsclib::PetscLibType, is::AbstractIS, bs::Integer)
-    error("ISSetBlockSize: no generated method for these argument types")
+    throw(MethodError(ISSetBlockSize, (petsclib, is, bs)))
 end
 
 @for_petsc function ISSetBlockSize(petsclib::$UnionPetscLib, is::AbstractIS, bs::$PetscInt )
@@ -2743,7 +2743,7 @@ See also: `IS`, `ISGetCompressOutput()`, `ISView()`
 $(_doc_external("IS/ISSetCompressOutput"))
 """
 function ISSetCompressOutput(petsclib::PetscLibType, is::AbstractIS, compress::PetscBool)
-    error("ISSetCompressOutput: no generated method for these argument types")
+    throw(MethodError(ISSetCompressOutput, (petsclib, is, compress)))
 end
 
 @for_petsc function ISSetCompressOutput(petsclib::$UnionPetscLib, is::AbstractIS, compress::PetscBool )
@@ -2776,7 +2776,7 @@ See also: `IS`, `ISIdentity()`, `ISSetInfo()`, `ISClearInfoCache()`
 $(_doc_external("IS/ISSetIdentity"))
 """
 function ISSetIdentity(petsclib::PetscLibType, is::AbstractIS)
-    error("ISSetIdentity: no generated method for these argument types")
+    throw(MethodError(ISSetIdentity, (petsclib, is)))
 end
 
 @for_petsc function ISSetIdentity(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -2822,7 +2822,7 @@ See also: `ISInfo`, `ISInfoType`, `IS`
 $(_doc_external("IS/ISSetInfo"))
 """
 function ISSetInfo(petsclib::PetscLibType, is::AbstractIS, info::ISInfo, type::ISInfoType, permanent::PetscBool, flg::PetscBool)
-    error("ISSetInfo: no generated method for these argument types")
+    throw(MethodError(ISSetInfo, (petsclib, is, info, type, permanent, flg)))
 end
 
 @for_petsc function ISSetInfo(petsclib::$UnionPetscLib, is::AbstractIS, info::ISInfo, type::ISInfoType, permanent::PetscBool, flg::PetscBool )
@@ -2856,7 +2856,7 @@ See also: `IS`, `PetscLayout`, `ISCreate()`, `ISGetLayout()`, `ISGetSize()`, `IS
 $(_doc_external("IS/ISSetLayout"))
 """
 function ISSetLayout(petsclib::PetscLibType, is::AbstractIS, map::PetscLayout)
-    error("ISSetLayout: no generated method for these argument types")
+    throw(MethodError(ISSetLayout, (petsclib, is, map)))
 end
 
 @for_petsc function ISSetLayout(petsclib::$UnionPetscLib, is::AbstractIS, map::PetscLayout )
@@ -2889,7 +2889,7 @@ See also: `IS`, `ISPermutation()`, `ISSetInfo()`, `ISClearInfoCache().`
 $(_doc_external("IS/ISSetPermutation"))
 """
 function ISSetPermutation(petsclib::PetscLibType, is::AbstractIS)
-    error("ISSetPermutation: no generated method for these argument types")
+    throw(MethodError(ISSetPermutation, (petsclib, is)))
 end
 
 @for_petsc function ISSetPermutation(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -2926,7 +2926,7 @@ See also: `IS`, `ISGENERAL`, `ISBLOCK`, `ISGetType()`, `ISCreate()`, `ISCreateGe
 $(_doc_external("IS/ISSetType"))
 """
 function ISSetType(petsclib::PetscLibType, is::AbstractIS, method::String)
-    error("ISSetType: no generated method for these argument types")
+    throw(MethodError(ISSetType, (petsclib, is, method)))
 end
 
 @for_petsc function ISSetType(petsclib::$UnionPetscLib, is::AbstractIS, method::String )
@@ -2963,7 +2963,7 @@ See also: `ISDuplicate()`, `ISCopy()`
 $(_doc_external("IS/ISShift"))
 """
 function ISShift(petsclib::PetscLibType, is::AbstractIS, offset::Integer, isy::AbstractIS)
-    error("ISShift: no generated method for these argument types")
+    throw(MethodError(ISShift, (petsclib, is, offset, isy)))
 end
 
 @for_petsc function ISShift(petsclib::$UnionPetscLib, is::AbstractIS, offset::$PetscInt, isy::AbstractIS )
@@ -2996,7 +2996,7 @@ See also: `IS`, `ISSortRemoveDups()`, `ISSorted()`
 $(_doc_external("IS/ISSort"))
 """
 function ISSort(petsclib::PetscLibType, is::AbstractIS)
-    error("ISSort: no generated method for these argument types")
+    throw(MethodError(ISSort, (petsclib, is)))
 end
 
 @for_petsc function ISSort(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -3033,7 +3033,7 @@ See also: `IS`, `ISLocalToGlobalMapping`, `ISSort()`
 $(_doc_external("IS/ISSortPermutation"))
 """
 function ISSortPermutation(petsclib::PetscLibType, f::AbstractIS, always::PetscBool)
-    error("ISSortPermutation: no generated method for these argument types")
+    throw(MethodError(ISSortPermutation, (petsclib, f, always)))
 end
 
 @for_petsc function ISSortPermutation(petsclib::$UnionPetscLib, f::AbstractIS, always::PetscBool )
@@ -3068,7 +3068,7 @@ See also: `IS`, `ISSort()`, `ISSorted()`
 $(_doc_external("IS/ISSortRemoveDups"))
 """
 function ISSortRemoveDups(petsclib::PetscLibType, is::AbstractIS)
-    error("ISSortRemoveDups: no generated method for these argument types")
+    throw(MethodError(ISSortRemoveDups, (petsclib, is)))
 end
 
 @for_petsc function ISSortRemoveDups(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -3105,7 +3105,7 @@ See also: `ISSort()`, `ISSortRemoveDups()`
 $(_doc_external("IS/ISSorted"))
 """
 function ISSorted(petsclib::PetscLibType, is::AbstractIS)
-    error("ISSorted: no generated method for these argument types")
+    throw(MethodError(ISSorted, (petsclib, is)))
 end
 
 @for_petsc function ISSorted(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -3144,7 +3144,7 @@ See also: `IS`, `ISCreateStride()`, `ISGetSize()`, `ISSTRIDE`
 $(_doc_external("IS/ISStrideGetInfo"))
 """
 function ISStrideGetInfo(petsclib::PetscLibType, is::AbstractIS)
-    error("ISStrideGetInfo: no generated method for these argument types")
+    throw(MethodError(ISStrideGetInfo, (petsclib, is)))
 end
 
 @for_petsc function ISStrideGetInfo(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -3184,7 +3184,7 @@ See also: `IS`, `ISCreateGeneral()`, `ISCreateBlock()`, `ISAllGather()`, `ISSTRI
 $(_doc_external("IS/ISStrideSetStride"))
 """
 function ISStrideSetStride(petsclib::PetscLibType, is::AbstractIS, n::Integer, first::Integer, step::Integer)
-    error("ISStrideSetStride: no generated method for these argument types")
+    throw(MethodError(ISStrideSetStride, (petsclib, is, n, first, step)))
 end
 
 @for_petsc function ISStrideSetStride(petsclib::$UnionPetscLib, is::AbstractIS, n::$PetscInt, first::$PetscInt, step::$PetscInt )
@@ -3221,7 +3221,7 @@ See also: `IS`, `ISDestroy()`, `ISView()`, `ISDifference()`, `ISExpand()`
 $(_doc_external("IS/ISSum"))
 """
 function ISSum(petsclib::PetscLibType, is1::AbstractIS, is2::AbstractIS)
-    error("ISSum: no generated method for these argument types")
+    throw(MethodError(ISSum, (petsclib, is1, is2)))
 end
 
 @for_petsc function ISSum(petsclib::$UnionPetscLib, is1::AbstractIS, is2::AbstractIS )
@@ -3256,7 +3256,7 @@ See also: `IS`, `ISSorted()`
 $(_doc_external("IS/ISToGeneral"))
 """
 function ISToGeneral(petsclib::PetscLibType, is::AbstractIS)
-    error("ISToGeneral: no generated method for these argument types")
+    throw(MethodError(ISToGeneral, (petsclib, is)))
 end
 
 @for_petsc function ISToGeneral(petsclib::$UnionPetscLib, is::AbstractIS )
@@ -3290,7 +3290,7 @@ See also: `IS`, `PetscViewer`, `PetscViewerASCIIOpen()`, `ISViewFromOptions()`
 $(_doc_external("IS/ISView"))
 """
 function ISView(petsclib::PetscLibType, is::AbstractIS, viewer::PetscViewer)
-    error("ISView: no generated method for these argument types")
+    throw(MethodError(ISView, (petsclib, is, viewer)))
 end
 
 @for_petsc function ISView(petsclib::$UnionPetscLib, is::AbstractIS, viewer::PetscViewer )
@@ -3328,7 +3328,7 @@ See also: `IS`, `ISView()`, `PetscObjectViewFromOptions()`, `ISCreate()`
 $(_doc_external("IS/ISViewFromOptions"))
 """
 function ISViewFromOptions(petsclib::PetscLibType, A::AbstractIS, obj, name::String)
-    error("ISViewFromOptions: no generated method for these argument types")
+    throw(MethodError(ISViewFromOptions, (petsclib, A, obj, name)))
 end
 
 @for_petsc function ISViewFromOptions(petsclib::$UnionPetscLib, A::AbstractIS, obj, name::String )

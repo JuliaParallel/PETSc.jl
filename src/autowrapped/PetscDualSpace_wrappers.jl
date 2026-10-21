@@ -27,7 +27,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceCreate()`
 $(_doc_external("DUALSPACE/PetscDualSpaceApply"))
 """
 function PetscDualSpaceApply(petsclib::PetscLibType, sp::PetscDualSpace, f::Integer, time::Real, cgeom::Vector{PetscFEGeom}, numComp::Integer, func::external, ctx::Ptr{Cvoid})
-    error("PetscDualSpaceApply: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceApply, (petsclib, sp, f, time, cgeom, numComp, func, ctx)))
 end
 
 @for_petsc function PetscDualSpaceApply(petsclib::$UnionPetscLib, sp::PetscDualSpace, f::$PetscInt, time::$PetscReal, cgeom::Vector{PetscFEGeom}, numComp::$PetscInt, func::external, ctx::Ptr{Cvoid} )
@@ -64,7 +64,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceCreate()`
 $(_doc_external("DUALSPACE/PetscDualSpaceApplyAll"))
 """
 function PetscDualSpaceApplyAll(petsclib::PetscLibType, sp::PetscDualSpace, pointEval::AbstractVector{<:Number})
-    error("PetscDualSpaceApplyAll: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceApplyAll, (petsclib, sp, pointEval)))
 end
 
 @for_petsc function PetscDualSpaceApplyAll(petsclib::$UnionPetscLib, sp::PetscDualSpace, pointEval::Vector{$PetscScalar} )
@@ -101,7 +101,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceCreate()`
 $(_doc_external("DUALSPACE/PetscDualSpaceApplyAllDefault"))
 """
 function PetscDualSpaceApplyAllDefault(petsclib::PetscLibType, sp::PetscDualSpace, pointEval::AbstractVector{<:Number})
-    error("PetscDualSpaceApplyAllDefault: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceApplyAllDefault, (petsclib, sp, pointEval)))
 end
 
 @for_petsc function PetscDualSpaceApplyAllDefault(petsclib::$UnionPetscLib, sp::PetscDualSpace, pointEval::Vector{$PetscScalar} )
@@ -148,7 +148,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceCreate()`
 $(_doc_external("DUALSPACE/PetscDualSpaceApplyDefault"))
 """
 function PetscDualSpaceApplyDefault(petsclib::PetscLibType, sp::PetscDualSpace, f::Integer, time::Real, cgeom::Vector{PetscFEGeom}, Nc::Integer, func::external, ctx::Ptr{Cvoid})
-    error("PetscDualSpaceApplyDefault: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceApplyDefault, (petsclib, sp, f, time, cgeom, Nc, func, ctx)))
 end
 
 @for_petsc function PetscDualSpaceApplyDefault(petsclib::$UnionPetscLib, sp::PetscDualSpace, f::$PetscInt, time::$PetscReal, cgeom::Vector{PetscFEGeom}, Nc::$PetscInt, func::external, ctx::Ptr{Cvoid} )
@@ -195,7 +195,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceCreate()`
 $(_doc_external("DUALSPACE/PetscDualSpaceApplyFVM"))
 """
 function PetscDualSpaceApplyFVM(petsclib::PetscLibType, sp::PetscDualSpace, f::Integer, time::Real, cgeom::Vector{PetscFVCellGeom}, Nc::Integer, func::external, ctx::Ptr{Cvoid})
-    error("PetscDualSpaceApplyFVM: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceApplyFVM, (petsclib, sp, f, time, cgeom, Nc, func, ctx)))
 end
 
 @for_petsc function PetscDualSpaceApplyFVM(petsclib::$UnionPetscLib, sp::PetscDualSpace, f::$PetscInt, time::$PetscReal, cgeom::Vector{PetscFVCellGeom}, Nc::$PetscInt, func::external, ctx::Ptr{Cvoid} )
@@ -232,7 +232,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceCreate()`
 $(_doc_external("DUALSPACE/PetscDualSpaceApplyInterior"))
 """
 function PetscDualSpaceApplyInterior(petsclib::PetscLibType, sp::PetscDualSpace, pointEval::AbstractVector{<:Number})
-    error("PetscDualSpaceApplyInterior: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceApplyInterior, (petsclib, sp, pointEval)))
 end
 
 @for_petsc function PetscDualSpaceApplyInterior(petsclib::$UnionPetscLib, sp::PetscDualSpace, pointEval::Vector{$PetscScalar} )
@@ -269,7 +269,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceCreate()`
 $(_doc_external("DUALSPACE/PetscDualSpaceApplyInteriorDefault"))
 """
 function PetscDualSpaceApplyInteriorDefault(petsclib::PetscLibType, sp::PetscDualSpace, pointEval::AbstractVector{<:Number})
-    error("PetscDualSpaceApplyInteriorDefault: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceApplyInteriorDefault, (petsclib, sp, pointEval)))
 end
 
 @for_petsc function PetscDualSpaceApplyInteriorDefault(petsclib::$UnionPetscLib, sp::PetscDualSpace, pointEval::Vector{$PetscScalar} )
@@ -307,7 +307,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceSetType()`, `PETSCDUALSPACELAGRANGE`
 $(_doc_external("DUALSPACE/PetscDualSpaceCreate"))
 """
 function PetscDualSpaceCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("PetscDualSpaceCreate: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceCreate, (petsclib, comm)))
 end
 
 @for_petsc function PetscDualSpaceCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -344,7 +344,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceCreate()`, `Mat`, `PetscQuadrature`
 $(_doc_external("DUALSPACE/PetscDualSpaceCreateAllDataDefault"))
 """
 function PetscDualSpaceCreateAllDataDefault(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceCreateAllDataDefault: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceCreateAllDataDefault, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceCreateAllDataDefault(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -385,7 +385,7 @@ See also: `PetscDualSpace`, `PetscQuadrature`, `Mat`, `PetscDualSpaceCreate()`, 
 $(_doc_external("DUALSPACE/PetscDualSpaceCreateInteriorDataDefault"))
 """
 function PetscDualSpaceCreateInteriorDataDefault(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceCreateInteriorDataDefault: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceCreateInteriorDataDefault, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceCreateInteriorDataDefault(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -427,7 +427,7 @@ See also: `PetscDualSpace`, `PETSCDUALSPACESUM`, `PETSCSPACESUM`
 $(_doc_external("DUALSPACE/PetscDualSpaceCreateSum"))
 """
 function PetscDualSpaceCreateSum(petsclib::PetscLibType, numSubspaces::Integer, subspaces::Vector{PetscDualSpace}, concatenate::PetscBool)
-    error("PetscDualSpaceCreateSum: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceCreateSum, (petsclib, numSubspaces, subspaces, concatenate)))
 end
 
 @for_petsc function PetscDualSpaceCreateSum(petsclib::$UnionPetscLib, numSubspaces::$PetscInt, subspaces::Vector{PetscDualSpace}, concatenate::PetscBool )
@@ -462,7 +462,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceView()`, `PetscDualSpace()`, `PetscDu
 $(_doc_external("DUALSPACE/PetscDualSpaceDestroy"))
 """
 function PetscDualSpaceDestroy(petsclib::PetscLibType, sp::Union{PetscDualSpace, Ref{PetscDualSpace}})
-    error("PetscDualSpaceDestroy: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceDestroy, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceDestroy(petsclib::$UnionPetscLib, sp::Union{PetscDualSpace, Ref{PetscDualSpace}} )
@@ -499,7 +499,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceCreate()`, `PetscDualSpaceSetType()`
 $(_doc_external("DUALSPACE/PetscDualSpaceDuplicate"))
 """
 function PetscDualSpaceDuplicate(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceDuplicate: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceDuplicate, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceDuplicate(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -536,7 +536,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceCreate()`
 $(_doc_external("DUALSPACE/PetscDualSpaceEqual"))
 """
 function PetscDualSpaceEqual(petsclib::PetscLibType, A::PetscDualSpace, B::PetscDualSpace)
-    error("PetscDualSpaceEqual: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceEqual, (petsclib, A, B)))
 end
 
 @for_petsc function PetscDualSpaceEqual(petsclib::$UnionPetscLib, A::PetscDualSpace, B::PetscDualSpace )
@@ -573,7 +573,7 @@ See also: `PetscQuadrature`, `PetscDualSpace`, `PetscDualSpaceCreate()`, `Mat`
 $(_doc_external("DUALSPACE/PetscDualSpaceGetAllData"))
 """
 function PetscDualSpaceGetAllData(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceGetAllData: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceGetAllData, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceGetAllData(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -613,7 +613,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceSetDM()`, `PetscDualSpaceCreate()`
 $(_doc_external("DUALSPACE/PetscDualSpaceGetDM"))
 """
 function PetscDualSpaceGetDM(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceGetDM: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceGetDM, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceGetDM(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -649,7 +649,7 @@ See also: `PetscDualSpace`, `PetscDualSpacePullback()`, `PetscDualSpacePushforwa
 $(_doc_external("DUALSPACE/PetscDualSpaceGetDeRahm"))
 """
 function PetscDualSpaceGetDeRahm(petsclib::PetscLibType, dsp::PetscDualSpace)
-    error("PetscDualSpaceGetDeRahm: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceGetDeRahm, (petsclib, dsp)))
 end
 
 @for_petsc function PetscDualSpaceGetDeRahm(petsclib::$UnionPetscLib, dsp::PetscDualSpace )
@@ -687,7 +687,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceGetFunctional()`, `PetscDualSpaceCrea
 $(_doc_external("DUALSPACE/PetscDualSpaceGetDimension"))
 """
 function PetscDualSpaceGetDimension(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceGetDimension: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceGetDimension, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceGetDimension(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -729,7 +729,7 @@ See also: `PetscDualSpace`, `PetscDTAltV`, `PetscDualSpacePullback()`, `PetscDua
 $(_doc_external("DUALSPACE/PetscDualSpaceGetFormDegree"))
 """
 function PetscDualSpaceGetFormDegree(petsclib::PetscLibType, dsp::PetscDualSpace)
-    error("PetscDualSpaceGetFormDegree: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceGetFormDegree, (petsclib, dsp)))
 end
 
 @for_petsc function PetscDualSpaceGetFormDegree(petsclib::$UnionPetscLib, dsp::PetscDualSpace )
@@ -768,7 +768,7 @@ See also: `PetscDualSpace`, `PetscQuadrature`, `PetscDualSpaceGetDimension()`, `
 $(_doc_external("DUALSPACE/PetscDualSpaceGetFunctional"))
 """
 function PetscDualSpaceGetFunctional(petsclib::PetscLibType, sp::PetscDualSpace, i::Integer)
-    error("PetscDualSpaceGetFunctional: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceGetFunctional, (petsclib, sp, i)))
 end
 
 @for_petsc function PetscDualSpaceGetFunctional(petsclib::$UnionPetscLib, sp::PetscDualSpace, i::$PetscInt )
@@ -809,7 +809,7 @@ See also: `PetscDualSpace`, `PetscSpaceGetHeightSubspace()`, `PetscDualSpaceGetP
 $(_doc_external("DUALSPACE/PetscDualSpaceGetHeightSubspace"))
 """
 function PetscDualSpaceGetHeightSubspace(petsclib::PetscLibType, sp::PetscDualSpace, height::Integer)
-    error("PetscDualSpaceGetHeightSubspace: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceGetHeightSubspace, (petsclib, sp, height)))
 end
 
 @for_petsc function PetscDualSpaceGetHeightSubspace(petsclib::$UnionPetscLib, sp::PetscDualSpace, height::$PetscInt )
@@ -852,7 +852,7 @@ See also: `PetscDualSpace`, `PetscQuadrature`, `Mat`, `PetscDualSpaceCreate()`, 
 $(_doc_external("DUALSPACE/PetscDualSpaceGetInteriorData"))
 """
 function PetscDualSpaceGetInteriorData(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceGetInteriorData: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceGetInteriorData, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceGetInteriorData(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -892,7 +892,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceGetFunctional()`, `PetscDualSpaceCrea
 $(_doc_external("DUALSPACE/PetscDualSpaceGetInteriorDimension"))
 """
 function PetscDualSpaceGetInteriorDimension(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceGetInteriorDimension: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceGetInteriorDimension, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceGetInteriorDimension(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -931,7 +931,7 @@ See also: `PetscDualSpace`, `PetscSection`, `PetscDualSpaceCreate()`, `DMPLEX`
 $(_doc_external("DUALSPACE/PetscDualSpaceGetInteriorSection"))
 """
 function PetscDualSpaceGetInteriorSection(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceGetInteriorSection: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceGetInteriorSection, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceGetInteriorSection(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -967,7 +967,7 @@ See also: `PetscDualSpaceSetNumComponents()`, `PetscDualSpaceGetDimension()`, `P
 $(_doc_external("DUALSPACE/PetscDualSpaceGetNumComponents"))
 """
 function PetscDualSpaceGetNumComponents(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceGetNumComponents: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceGetNumComponents, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceGetNumComponents(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -1005,7 +1005,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceGetFunctional()`, `PetscDualSpaceCrea
 $(_doc_external("DUALSPACE/PetscDualSpaceGetNumDof"))
 """
 function PetscDualSpaceGetNumDof(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceGetNumDof: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceGetNumDof, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceGetNumDof(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -1043,7 +1043,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceSetOrder()`, `PetscDualSpaceCreate()`
 $(_doc_external("DUALSPACE/PetscDualSpaceGetOrder"))
 """
 function PetscDualSpaceGetOrder(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceGetOrder: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceGetOrder, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceGetOrder(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -1082,7 +1082,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceGetHeightSubspace()`
 $(_doc_external("DUALSPACE/PetscDualSpaceGetPointSubspace"))
 """
 function PetscDualSpaceGetPointSubspace(petsclib::PetscLibType, sp::PetscDualSpace, point::Integer)
-    error("PetscDualSpaceGetPointSubspace: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceGetPointSubspace, (petsclib, sp, point)))
 end
 
 @for_petsc function PetscDualSpaceGetPointSubspace(petsclib::$UnionPetscLib, sp::PetscDualSpace, point::$PetscInt )
@@ -1120,7 +1120,7 @@ See also: `PetscDualSpace`, `PetscSection`, `PetscDualSpaceCreate()`, `DMPLEX`
 $(_doc_external("DUALSPACE/PetscDualSpaceGetSection"))
 """
 function PetscDualSpaceGetSection(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceGetSection: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceGetSection, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceGetSection(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -1159,7 +1159,7 @@ See also: `PetscDualSpace`
 $(_doc_external("DUALSPACE/PetscDualSpaceGetSymmetries"))
 """
 function PetscDualSpaceGetSymmetries(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceGetSymmetries: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceGetSymmetries, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceGetSymmetries(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -1199,7 +1199,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceType`, `PetscDualSpaceSetType()`, `Pe
 $(_doc_external("DUALSPACE/PetscDualSpaceGetType"))
 """
 function PetscDualSpaceGetType(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceGetType: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceGetType, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceGetType(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -1238,7 +1238,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceGetPointSubspace()`, `PetscDualSpaceG
 $(_doc_external("DUALSPACE/PetscDualSpaceGetUniform"))
 """
 function PetscDualSpaceGetUniform(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceGetUniform: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceGetUniform, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceGetUniform(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -1276,7 +1276,7 @@ See also: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeSet
 $(_doc_external("DUALSPACE/PetscDualSpaceLagrangeGetContinuity"))
 """
 function PetscDualSpaceLagrangeGetContinuity(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceLagrangeGetContinuity: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceLagrangeGetContinuity, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceLagrangeGetContinuity(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -1314,7 +1314,7 @@ See also: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeSet
 $(_doc_external("DUALSPACE/PetscDualSpaceLagrangeGetMomentOrder"))
 """
 function PetscDualSpaceLagrangeGetMomentOrder(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceLagrangeGetMomentOrder: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceLagrangeGetMomentOrder, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceLagrangeGetMomentOrder(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -1357,7 +1357,7 @@ See also: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDTNodeType`, `PetscD
 $(_doc_external("DUALSPACE/PetscDualSpaceLagrangeGetNodeType"))
 """
 function PetscDualSpaceLagrangeGetNodeType(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceLagrangeGetNodeType: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceLagrangeGetNodeType, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceLagrangeGetNodeType(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -1399,7 +1399,7 @@ See also: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeSet
 $(_doc_external("DUALSPACE/PetscDualSpaceLagrangeGetTensor"))
 """
 function PetscDualSpaceLagrangeGetTensor(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceLagrangeGetTensor: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceLagrangeGetTensor, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceLagrangeGetTensor(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -1437,7 +1437,7 @@ See also: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeSet
 $(_doc_external("DUALSPACE/PetscDualSpaceLagrangeGetTrimmed"))
 """
 function PetscDualSpaceLagrangeGetTrimmed(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceLagrangeGetTrimmed: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceLagrangeGetTrimmed, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceLagrangeGetTrimmed(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -1475,7 +1475,7 @@ See also: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeSet
 $(_doc_external("DUALSPACE/PetscDualSpaceLagrangeGetUseMoments"))
 """
 function PetscDualSpaceLagrangeGetUseMoments(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceLagrangeGetUseMoments: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceLagrangeGetUseMoments, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceLagrangeGetUseMoments(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -1514,7 +1514,7 @@ See also: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeGet
 $(_doc_external("DUALSPACE/PetscDualSpaceLagrangeSetContinuity"))
 """
 function PetscDualSpaceLagrangeSetContinuity(petsclib::PetscLibType, sp::PetscDualSpace, continuous::PetscBool)
-    error("PetscDualSpaceLagrangeSetContinuity: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceLagrangeSetContinuity, (petsclib, sp, continuous)))
 end
 
 @for_petsc function PetscDualSpaceLagrangeSetContinuity(petsclib::$UnionPetscLib, sp::PetscDualSpace, continuous::PetscBool )
@@ -1548,7 +1548,7 @@ See also: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeGet
 $(_doc_external("DUALSPACE/PetscDualSpaceLagrangeSetMomentOrder"))
 """
 function PetscDualSpaceLagrangeSetMomentOrder(petsclib::PetscLibType, sp::PetscDualSpace, order::Integer)
-    error("PetscDualSpaceLagrangeSetMomentOrder: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceLagrangeSetMomentOrder, (petsclib, sp, order)))
 end
 
 @for_petsc function PetscDualSpaceLagrangeSetMomentOrder(petsclib::$UnionPetscLib, sp::PetscDualSpace, order::$PetscInt )
@@ -1587,7 +1587,7 @@ See also: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDTNodeType`, `PetscD
 $(_doc_external("DUALSPACE/PetscDualSpaceLagrangeSetNodeType"))
 """
 function PetscDualSpaceLagrangeSetNodeType(petsclib::PetscLibType, sp::PetscDualSpace, nodeType::PetscDTNodeType, boundary::PetscBool, exponent::Real)
-    error("PetscDualSpaceLagrangeSetNodeType: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceLagrangeSetNodeType, (petsclib, sp, nodeType, boundary, exponent)))
 end
 
 @for_petsc function PetscDualSpaceLagrangeSetNodeType(petsclib::$UnionPetscLib, sp::PetscDualSpace, nodeType::PetscDTNodeType, boundary::PetscBool, exponent::$PetscReal )
@@ -1621,7 +1621,7 @@ See also: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeGet
 $(_doc_external("DUALSPACE/PetscDualSpaceLagrangeSetTensor"))
 """
 function PetscDualSpaceLagrangeSetTensor(petsclib::PetscLibType, sp::PetscDualSpace, tensor::PetscBool)
-    error("PetscDualSpaceLagrangeSetTensor: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceLagrangeSetTensor, (petsclib, sp, tensor)))
 end
 
 @for_petsc function PetscDualSpaceLagrangeSetTensor(petsclib::$UnionPetscLib, sp::PetscDualSpace, tensor::PetscBool )
@@ -1655,7 +1655,7 @@ See also: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeGet
 $(_doc_external("DUALSPACE/PetscDualSpaceLagrangeSetTrimmed"))
 """
 function PetscDualSpaceLagrangeSetTrimmed(petsclib::PetscLibType, sp::PetscDualSpace, trimmed::PetscBool)
-    error("PetscDualSpaceLagrangeSetTrimmed: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceLagrangeSetTrimmed, (petsclib, sp, trimmed)))
 end
 
 @for_petsc function PetscDualSpaceLagrangeSetTrimmed(petsclib::$UnionPetscLib, sp::PetscDualSpace, trimmed::PetscBool )
@@ -1689,7 +1689,7 @@ See also: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeGet
 $(_doc_external("DUALSPACE/PetscDualSpaceLagrangeSetUseMoments"))
 """
 function PetscDualSpaceLagrangeSetUseMoments(petsclib::PetscLibType, sp::PetscDualSpace, useMoments::PetscBool)
-    error("PetscDualSpaceLagrangeSetUseMoments: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceLagrangeSetUseMoments, (petsclib, sp, useMoments)))
 end
 
 @for_petsc function PetscDualSpaceLagrangeSetUseMoments(petsclib::$UnionPetscLib, sp::PetscDualSpace, useMoments::PetscBool )
@@ -1727,7 +1727,7 @@ See also: `PetscDualSpace`, `PetscDualSpacePushforward()`, `PetscDualSpaceTransf
 $(_doc_external("DUALSPACE/PetscDualSpacePullback"))
 """
 function PetscDualSpacePullback(petsclib::PetscLibType, dsp::PetscDualSpace, fegeom::Vector{PetscFEGeom}, Nq::Integer, Nc::Integer, pointEval::AbstractVector{<:Number})
-    error("PetscDualSpacePullback: no generated method for these argument types")
+    throw(MethodError(PetscDualSpacePullback, (petsclib, dsp, fegeom, Nq, Nc, pointEval)))
 end
 
 @for_petsc function PetscDualSpacePullback(petsclib::$UnionPetscLib, dsp::PetscDualSpace, fegeom::Vector{PetscFEGeom}, Nq::$PetscInt, Nc::$PetscInt, pointEval::Vector{$PetscScalar} )
@@ -1765,7 +1765,7 @@ See also: `PetscDualSpace`, `PetscDualSpacePullback()`, `PetscDualSpaceTransform
 $(_doc_external("DUALSPACE/PetscDualSpacePushforward"))
 """
 function PetscDualSpacePushforward(petsclib::PetscLibType, dsp::PetscDualSpace, fegeom::Vector{PetscFEGeom}, Nq::Integer, Nc::Integer, pointEval::AbstractVector{<:Number})
-    error("PetscDualSpacePushforward: no generated method for these argument types")
+    throw(MethodError(PetscDualSpacePushforward, (petsclib, dsp, fegeom, Nq, Nc, pointEval)))
 end
 
 @for_petsc function PetscDualSpacePushforward(petsclib::$UnionPetscLib, dsp::PetscDualSpace, fegeom::Vector{PetscFEGeom}, Nq::$PetscInt, Nc::$PetscInt, pointEval::Vector{$PetscScalar} )
@@ -1803,7 +1803,7 @@ See also: `PetscDualSpace`, `PetscDualSpacePushforward()`, `PetscDualSpacePullba
 $(_doc_external("DUALSPACE/PetscDualSpacePushforwardGradient"))
 """
 function PetscDualSpacePushforwardGradient(petsclib::PetscLibType, dsp::PetscDualSpace, fegeom::Vector{PetscFEGeom}, Nq::Integer, Nc::Integer, pointEval::AbstractVector{<:Number})
-    error("PetscDualSpacePushforwardGradient: no generated method for these argument types")
+    throw(MethodError(PetscDualSpacePushforwardGradient, (petsclib, dsp, fegeom, Nq, Nc, pointEval)))
 end
 
 @for_petsc function PetscDualSpacePushforwardGradient(petsclib::$UnionPetscLib, dsp::PetscDualSpace, fegeom::Vector{PetscFEGeom}, Nq::$PetscInt, Nc::$PetscInt, pointEval::Vector{$PetscScalar} )
@@ -1841,7 +1841,7 @@ See also: `PetscDualSpace`, `PetscDualSpacePushforward()`, `PetscDualSpacePullba
 $(_doc_external("DUALSPACE/PetscDualSpacePushforwardHessian"))
 """
 function PetscDualSpacePushforwardHessian(petsclib::PetscLibType, dsp::PetscDualSpace, fegeom::Vector{PetscFEGeom}, Nq::Integer, Nc::Integer, pointEval::AbstractVector{<:Number})
-    error("PetscDualSpacePushforwardHessian: no generated method for these argument types")
+    throw(MethodError(PetscDualSpacePushforwardHessian, (petsclib, dsp, fegeom, Nq, Nc, pointEval)))
 end
 
 @for_petsc function PetscDualSpacePushforwardHessian(petsclib::$UnionPetscLib, dsp::PetscDualSpace, fegeom::Vector{PetscFEGeom}, Nq::$PetscInt, Nc::$PetscInt, pointEval::Vector{$PetscScalar} )
@@ -1877,7 +1877,7 @@ See also: `PETSCDUALSPACEREFINED`, `PetscDualSpace`, `PetscFERefine()`
 $(_doc_external("DUALSPACE/PetscDualSpaceRefinedSetCellSpaces"))
 """
 function PetscDualSpaceRefinedSetCellSpaces(petsclib::PetscLibType, sp::PetscDualSpace, cellSpaces::Vector{PetscDualSpace})
-    error("PetscDualSpaceRefinedSetCellSpaces: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceRefinedSetCellSpaces, (petsclib, sp, cellSpaces)))
 end
 
 @for_petsc function PetscDualSpaceRefinedSetCellSpaces(petsclib::$UnionPetscLib, sp::PetscDualSpace, cellSpaces::Vector{PetscDualSpace} )
@@ -1909,7 +1909,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceType`, `PetscDualSpaceRegisterAll()`,
 $(_doc_external("DUALSPACE/PetscDualSpaceRegister"))
 """
 function PetscDualSpaceRegister(petsclib::PetscLibType, sname::String, fnc::external)
-    error("PetscDualSpaceRegister: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceRegister, (petsclib, sname, fnc)))
 end
 
 @for_petsc function PetscDualSpaceRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
@@ -1943,7 +1943,7 @@ See also: `PetscDualSpace`, `DM`, `PetscDualSpaceGetDM()`, `PetscDualSpaceCreate
 $(_doc_external("DUALSPACE/PetscDualSpaceSetDM"))
 """
 function PetscDualSpaceSetDM(petsclib::PetscLibType, sp::PetscDualSpace, dm::AbstractPetscDM)
-    error("PetscDualSpaceSetDM: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceSetDM, (petsclib, sp, dm)))
 end
 
 @for_petsc function PetscDualSpaceSetDM(petsclib::$UnionPetscLib, sp::PetscDualSpace, dm::AbstractPetscDM )
@@ -1981,7 +1981,7 @@ See also: `PetscDualSpace`, `PetscDTAltV`, `PetscDualSpacePullback()`, `PetscDua
 $(_doc_external("DUALSPACE/PetscDualSpaceSetFormDegree"))
 """
 function PetscDualSpaceSetFormDegree(petsclib::PetscLibType, dsp::PetscDualSpace, k::Integer)
-    error("PetscDualSpaceSetFormDegree: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceSetFormDegree, (petsclib, dsp, k)))
 end
 
 @for_petsc function PetscDualSpaceSetFormDegree(petsclib::$UnionPetscLib, dsp::PetscDualSpace, k::$PetscInt )
@@ -2028,7 +2028,7 @@ See also: `PetscDualSpaceView()`, `PetscDualSpace`, `PetscObjectSetFromOptions()
 $(_doc_external("DUALSPACE/PetscDualSpaceSetFromOptions"))
 """
 function PetscDualSpaceSetFromOptions(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceSetFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceSetFromOptions, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceSetFromOptions(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -2060,7 +2060,7 @@ See also: `PetscDualSpaceGetNumComponents()`, `PetscDualSpaceCreate()`, `PetscDu
 $(_doc_external("DUALSPACE/PetscDualSpaceSetNumComponents"))
 """
 function PetscDualSpaceSetNumComponents(petsclib::PetscLibType, sp::PetscDualSpace, Nc::Integer)
-    error("PetscDualSpaceSetNumComponents: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceSetNumComponents, (petsclib, sp, Nc)))
 end
 
 @for_petsc function PetscDualSpaceSetNumComponents(petsclib::$UnionPetscLib, sp::PetscDualSpace, Nc::$PetscInt )
@@ -2094,7 +2094,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceGetOrder()`, `PetscDualSpaceCreate()`
 $(_doc_external("DUALSPACE/PetscDualSpaceSetOrder"))
 """
 function PetscDualSpaceSetOrder(petsclib::PetscLibType, sp::PetscDualSpace, order::Integer)
-    error("PetscDualSpaceSetOrder: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceSetOrder, (petsclib, sp, order)))
 end
 
 @for_petsc function PetscDualSpaceSetOrder(petsclib::$UnionPetscLib, sp::PetscDualSpace, order::$PetscInt )
@@ -2131,7 +2131,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceType`, `PetscDualSpaceGetType()`, `Pe
 $(_doc_external("DUALSPACE/PetscDualSpaceSetType"))
 """
 function PetscDualSpaceSetType(petsclib::PetscLibType, sp::PetscDualSpace, name::String)
-    error("PetscDualSpaceSetType: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceSetType, (petsclib, sp, name)))
 end
 
 @for_petsc function PetscDualSpaceSetType(petsclib::$UnionPetscLib, sp::PetscDualSpace, name::String )
@@ -2164,7 +2164,7 @@ See also: `PetscDualSpaceView()`, `PetscDualSpaceDestroy()`, `PetscDualSpace`
 $(_doc_external("DUALSPACE/PetscDualSpaceSetUp"))
 """
 function PetscDualSpaceSetUp(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceSetUp: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceSetUp, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceSetUp(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -2198,7 +2198,7 @@ See also: `PETSCDUALSPACESIMPLE`, `PetscDualSpace`, `PetscDualSpaceSimpleSetFunc
 $(_doc_external("DUALSPACE/PetscDualSpaceSimpleSetDimension"))
 """
 function PetscDualSpaceSimpleSetDimension(petsclib::PetscLibType, sp::PetscDualSpace, dim::Integer)
-    error("PetscDualSpaceSimpleSetDimension: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceSimpleSetDimension, (petsclib, sp, dim)))
 end
 
 @for_petsc function PetscDualSpaceSimpleSetDimension(petsclib::$UnionPetscLib, sp::PetscDualSpace, dim::$PetscInt )
@@ -2233,7 +2233,7 @@ See also: `PETSCDUALSPACESIMPLE`, `PetscDualSpace`, `PetscDualSpaceSimpleSetDime
 $(_doc_external("DUALSPACE/PetscDualSpaceSimpleSetFunctional"))
 """
 function PetscDualSpaceSimpleSetFunctional(petsclib::PetscLibType, sp::PetscDualSpace, func::Integer, q::PetscQuadrature)
-    error("PetscDualSpaceSimpleSetFunctional: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceSimpleSetFunctional, (petsclib, sp, func, q)))
 end
 
 @for_petsc function PetscDualSpaceSimpleSetFunctional(petsclib::$UnionPetscLib, sp::PetscDualSpace, func::$PetscInt, q::PetscQuadrature )
@@ -2267,7 +2267,7 @@ See also: `PETSCDUALSPACESUM`, `PetscDualSpace`, `PetscDualSpaceSumSetConcatenat
 $(_doc_external("DUALSPACE/PetscDualSpaceSumGetConcatenate"))
 """
 function PetscDualSpaceSumGetConcatenate(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceSumGetConcatenate: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceSumGetConcatenate, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceSumGetConcatenate(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -2307,7 +2307,7 @@ See also: `PetscDualSpace`, `PETSCDUALSPACESUM`, `PETSCFEVECTOR`, `PetscDualSpac
 $(_doc_external("DUALSPACE/PetscDualSpaceSumGetInterleave"))
 """
 function PetscDualSpaceSumGetInterleave(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceSumGetInterleave: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceSumGetInterleave, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceSumGetInterleave(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -2345,7 +2345,7 @@ See also: `PETSCDUALSPACESUM`, `PetscDualSpace`, `PetscDualSpaceSumSetNumSubspac
 $(_doc_external("DUALSPACE/PetscDualSpaceSumGetNumSubspaces"))
 """
 function PetscDualSpaceSumGetNumSubspaces(petsclib::PetscLibType, sp::PetscDualSpace)
-    error("PetscDualSpaceSumGetNumSubspaces: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceSumGetNumSubspaces, (petsclib, sp)))
 end
 
 @for_petsc function PetscDualSpaceSumGetNumSubspaces(petsclib::$UnionPetscLib, sp::PetscDualSpace )
@@ -2382,7 +2382,7 @@ See also: `PETSCDUALSPACESUM`, `PetscDualSpace`, `PetscDualSpaceSumSetSubspace()
 $(_doc_external("DUALSPACE/PetscDualSpaceSumGetSubspace"))
 """
 function PetscDualSpaceSumGetSubspace(petsclib::PetscLibType, sp::PetscDualSpace, s::Integer)
-    error("PetscDualSpaceSumGetSubspace: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceSumGetSubspace, (petsclib, sp, s)))
 end
 
 @for_petsc function PetscDualSpaceSumGetSubspace(petsclib::$UnionPetscLib, sp::PetscDualSpace, s::$PetscInt )
@@ -2416,7 +2416,7 @@ See also: `PETSCDUALSPACESUM`, `PetscDualSpace`, `PetscDualSpaceSumGetConcatenat
 $(_doc_external("DUALSPACE/PetscDualSpaceSumSetConcatenate"))
 """
 function PetscDualSpaceSumSetConcatenate(petsclib::PetscLibType, sp::PetscDualSpace, concatenate::PetscBool)
-    error("PetscDualSpaceSumSetConcatenate: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceSumSetConcatenate, (petsclib, sp, concatenate)))
 end
 
 @for_petsc function PetscDualSpaceSumSetConcatenate(petsclib::$UnionPetscLib, sp::PetscDualSpace, concatenate::PetscBool )
@@ -2452,7 +2452,7 @@ See also: `PetscDualSpace`, `PETSCDUALSPACESUM`, `PETSCFEVECTOR`, `PetscDualSpac
 $(_doc_external("DUALSPACE/PetscDualSpaceSumSetInterleave"))
 """
 function PetscDualSpaceSumSetInterleave(petsclib::PetscLibType, sp::PetscDualSpace, interleave_basis::PetscBool, interleave_components::PetscBool)
-    error("PetscDualSpaceSumSetInterleave: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceSumSetInterleave, (petsclib, sp, interleave_basis, interleave_components)))
 end
 
 @for_petsc function PetscDualSpaceSumSetInterleave(petsclib::$UnionPetscLib, sp::PetscDualSpace, interleave_basis::PetscBool, interleave_components::PetscBool )
@@ -2484,7 +2484,7 @@ See also: `PETSCDUALSPACESUM`, `PetscDualSpace`, `PetscDualSpaceSumGetNumSubspac
 $(_doc_external("DUALSPACE/PetscDualSpaceSumSetNumSubspaces"))
 """
 function PetscDualSpaceSumSetNumSubspaces(petsclib::PetscLibType, sp::PetscDualSpace, numSumSpaces::Integer)
-    error("PetscDualSpaceSumSetNumSubspaces: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceSumSetNumSubspaces, (petsclib, sp, numSumSpaces)))
 end
 
 @for_petsc function PetscDualSpaceSumSetNumSubspaces(petsclib::$UnionPetscLib, sp::PetscDualSpace, numSumSpaces::$PetscInt )
@@ -2517,7 +2517,7 @@ See also: `PETSCDUALSPACESUM`, `PetscDualSpace`, `PetscDualSpaceSumGetSubspace()
 $(_doc_external("DUALSPACE/PetscDualSpaceSumSetSubspace"))
 """
 function PetscDualSpaceSumSetSubspace(petsclib::PetscLibType, sp::PetscDualSpace, s::Integer, subsp::PetscDualSpace)
-    error("PetscDualSpaceSumSetSubspace: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceSumSetSubspace, (petsclib, sp, s, subsp)))
 end
 
 @for_petsc function PetscDualSpaceSumSetSubspace(petsclib::$UnionPetscLib, sp::PetscDualSpace, s::$PetscInt, subsp::PetscDualSpace )
@@ -2557,7 +2557,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceTransformGradient()`, `PetscDualSpace
 $(_doc_external("DUALSPACE/PetscDualSpaceTransform"))
 """
 function PetscDualSpaceTransform(petsclib::PetscLibType, dsp::PetscDualSpace, trans::PetscDualSpaceTransformType, isInverse::PetscBool, fegeom::Vector{PetscFEGeom}, Nv::Integer, Nc::Integer, vals::AbstractVector{<:Number})
-    error("PetscDualSpaceTransform: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceTransform, (petsclib, dsp, trans, isInverse, fegeom, Nv, Nc, vals)))
 end
 
 @for_petsc function PetscDualSpaceTransform(petsclib::$UnionPetscLib, dsp::PetscDualSpace, trans::PetscDualSpaceTransformType, isInverse::PetscBool, fegeom::Vector{PetscFEGeom}, Nv::$PetscInt, Nc::$PetscInt, vals::Vector{$PetscScalar} )
@@ -2597,7 +2597,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceTransform()`, `PetscDualSpacePullback
 $(_doc_external("DUALSPACE/PetscDualSpaceTransformGradient"))
 """
 function PetscDualSpaceTransformGradient(petsclib::PetscLibType, dsp::PetscDualSpace, trans::PetscDualSpaceTransformType, isInverse::PetscBool, fegeom::Vector{PetscFEGeom}, Nv::Integer, Nc::Integer, vals::AbstractVector{<:Number})
-    error("PetscDualSpaceTransformGradient: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceTransformGradient, (petsclib, dsp, trans, isInverse, fegeom, Nv, Nc, vals)))
 end
 
 @for_petsc function PetscDualSpaceTransformGradient(petsclib::$UnionPetscLib, dsp::PetscDualSpace, trans::PetscDualSpaceTransformType, isInverse::PetscBool, fegeom::Vector{PetscFEGeom}, Nv::$PetscInt, Nc::$PetscInt, vals::Vector{$PetscScalar} )
@@ -2637,7 +2637,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceTransform()`, `PetscDualSpacePullback
 $(_doc_external("DUALSPACE/PetscDualSpaceTransformHessian"))
 """
 function PetscDualSpaceTransformHessian(petsclib::PetscLibType, dsp::PetscDualSpace, trans::PetscDualSpaceTransformType, isInverse::PetscBool, fegeom::Vector{PetscFEGeom}, Nv::Integer, Nc::Integer, vals::AbstractVector{<:Number})
-    error("PetscDualSpaceTransformHessian: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceTransformHessian, (petsclib, dsp, trans, isInverse, fegeom, Nv, Nc, vals)))
 end
 
 @for_petsc function PetscDualSpaceTransformHessian(petsclib::$UnionPetscLib, dsp::PetscDualSpace, trans::PetscDualSpaceTransformType, isInverse::PetscBool, fegeom::Vector{PetscFEGeom}, Nv::$PetscInt, Nc::$PetscInt, vals::Vector{$PetscScalar} )
@@ -2671,7 +2671,7 @@ See also: `PetscViewer`, `PetscDualSpaceDestroy()`, `PetscDualSpace`
 $(_doc_external("DUALSPACE/PetscDualSpaceView"))
 """
 function PetscDualSpaceView(petsclib::PetscLibType, sp::PetscDualSpace, v::PetscViewer)
-    error("PetscDualSpaceView: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceView, (petsclib, sp, v)))
 end
 
 @for_petsc function PetscDualSpaceView(petsclib::$UnionPetscLib, sp::PetscDualSpace, v::PetscViewer )
@@ -2709,7 +2709,7 @@ See also: `PetscDualSpace`, `PetscDualSpaceView()`, `PetscObjectViewFromOptions(
 $(_doc_external("DUALSPACE/PetscDualSpaceViewFromOptions"))
 """
 function PetscDualSpaceViewFromOptions(petsclib::PetscLibType, A::PetscDualSpace, obj, name::String)
-    error("PetscDualSpaceViewFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscDualSpaceViewFromOptions, (petsclib, A, obj, name)))
 end
 
 @for_petsc function PetscDualSpaceViewFromOptions(petsclib::$UnionPetscLib, A::PetscDualSpace, obj, name::String )

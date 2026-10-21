@@ -99,6 +99,18 @@ end
         shell = PETSc.MatShell(petsclib, (y, x) -> (y .= x), wrapper_comm, 4, 4)
         @test LibPETSc.MatGetLocalSize(petsclib, shell) == (4, 4)
 
+        # A call that matches only the documented signature, here an integer
+        # where the library takes its scalar type, is a MethodError naming the types
+        err = try
+            LibPETSc.VecScale(petsclib, v, 3)
+        catch e
+            e
+        end
+        @test err isa MethodError
+        @test err.f === LibPETSc.VecScale
+        @test occursin("VecScale(", sprint(showerror, err))
+        @test occursin("::Int", sprint(showerror, err))
+
         PETSc.destroy!(v)
         PETSc.destroy!(shell)
         PETSc.finalize(petsclib)

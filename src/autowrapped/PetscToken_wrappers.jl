@@ -19,7 +19,7 @@ See also: `PetscToken`, `PetscTokenFind()`, `PetscTokenDestroy()`
 $(_doc_external("Sys/PetscTokenCreate"))
 """
 function PetscTokenCreate(petsclib::PetscLibType, a::String, b::Cchar)
-    error("PetscTokenCreate: no generated method for these argument types")
+    throw(MethodError(PetscTokenCreate, (petsclib, a, b)))
 end
 
 @for_petsc function PetscTokenCreate(petsclib::$UnionPetscLib, a::String, b::Cchar )
@@ -54,7 +54,7 @@ See also: `PetscToken`, `PetscTokenCreate()`, `PetscTokenFind()`
 $(_doc_external("Sys/PetscTokenDestroy"))
 """
 function PetscTokenDestroy(petsclib::PetscLibType, a::Union{PetscToken, Ref{PetscToken}})
-    error("PetscTokenDestroy: no generated method for these argument types")
+    throw(MethodError(PetscTokenDestroy, (petsclib, a)))
 end
 
 @for_petsc function PetscTokenDestroy(petsclib::$UnionPetscLib, a::Union{PetscToken, Ref{PetscToken}} )
@@ -91,7 +91,7 @@ See also: `PetscToken`, `PetscTokenCreate()`, `PetscTokenDestroy()`
 $(_doc_external("Sys/PetscTokenFind"))
 """
 function PetscTokenFind(petsclib::PetscLibType, a::PetscToken)
-    error("PetscTokenFind: no generated method for these argument types")
+    throw(MethodError(PetscTokenFind, (petsclib, a)))
 end
 
 @for_petsc function PetscTokenFind(petsclib::$UnionPetscLib, a::PetscToken )

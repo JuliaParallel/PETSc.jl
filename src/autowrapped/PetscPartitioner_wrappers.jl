@@ -18,7 +18,7 @@ See also: `PetscPartitionerSetType()`, `PetscPartitionerDestroy()`
 $(_doc_external("MatGraphOperations/PetscPartitionerCreate"))
 """
 function PetscPartitionerCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("PetscPartitionerCreate: no generated method for these argument types")
+    throw(MethodError(PetscPartitionerCreate, (petsclib, comm)))
 end
 
 @for_petsc function PetscPartitionerCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -60,7 +60,7 @@ See also: `DM`, `DMPLEX`, `PetscPartitioner`, `PetscSection`, `DMPlexDistribute(
 $(_doc_external("DMPlex/PetscPartitionerDMPlexPartition"))
 """
 function PetscPartitionerDMPlexPartition(petsclib::PetscLibType, part::PetscPartitioner, dm::AbstractPetscDM, targetSection::PetscSection, partSection::PetscSection)
-    error("PetscPartitionerDMPlexPartition: no generated method for these argument types")
+    throw(MethodError(PetscPartitionerDMPlexPartition, (petsclib, part, dm, targetSection, partSection)))
 end
 
 @for_petsc function PetscPartitionerDMPlexPartition(petsclib::$UnionPetscLib, part::PetscPartitioner, dm::AbstractPetscDM, targetSection::PetscSection, partSection::PetscSection )
@@ -95,7 +95,7 @@ See also: `PetscPartitionerView()`
 $(_doc_external("MatGraphOperations/PetscPartitionerDestroy"))
 """
 function PetscPartitionerDestroy(petsclib::PetscLibType, part::Union{PetscPartitioner, Ref{PetscPartitioner}})
-    error("PetscPartitionerDestroy: no generated method for these argument types")
+    throw(MethodError(PetscPartitionerDestroy, (petsclib, part)))
 end
 
 @for_petsc function PetscPartitionerDestroy(petsclib::$UnionPetscLib, part::Union{PetscPartitioner, Ref{PetscPartitioner}} )
@@ -125,7 +125,7 @@ See also: `PetscInitialize()`
 $(_doc_external("MatGraphOperations/PetscPartitionerFinalizePackage"))
 """
 function PetscPartitionerFinalizePackage(petsclib::PetscLibType)
-    error("PetscPartitionerFinalizePackage: no generated method for these argument types")
+    throw(MethodError(PetscPartitionerFinalizePackage, (petsclib, )))
 end
 
 @for_petsc function PetscPartitionerFinalizePackage(petsclib::$UnionPetscLib)
@@ -160,7 +160,7 @@ See also: `PetscPartitionerSetType()`, `PetscPartitionerCreate()`
 $(_doc_external("MatGraphOperations/PetscPartitionerGetType"))
 """
 function PetscPartitionerGetType(petsclib::PetscLibType, part::PetscPartitioner)
-    error("PetscPartitionerGetType: no generated method for these argument types")
+    throw(MethodError(PetscPartitionerGetType, (petsclib, part)))
 end
 
 @for_petsc function PetscPartitionerGetType(petsclib::$UnionPetscLib, part::PetscPartitioner )
@@ -190,7 +190,7 @@ See also: `PetscInitialize()`
 $(_doc_external("MatGraphOperations/PetscPartitionerInitializePackage"))
 """
 function PetscPartitionerInitializePackage(petsclib::PetscLibType)
-    error("PetscPartitionerInitializePackage: no generated method for these argument types")
+    throw(MethodError(PetscPartitionerInitializePackage, (petsclib, )))
 end
 
 @for_petsc function PetscPartitionerInitializePackage(petsclib::$UnionPetscLib)
@@ -225,7 +225,7 @@ See also: `DMPlexDistribute()`, `PetscPartitionerCreate()`
 $(_doc_external("MatGraphOperations/PetscPartitionerMatPartitioningGetMatPartitioning"))
 """
 function PetscPartitionerMatPartitioningGetMatPartitioning(petsclib::PetscLibType, part::PetscPartitioner)
-    error("PetscPartitionerMatPartitioningGetMatPartitioning: no generated method for these argument types")
+    throw(MethodError(PetscPartitionerMatPartitioningGetMatPartitioning, (petsclib, part)))
 end
 
 @for_petsc function PetscPartitionerMatPartitioningGetMatPartitioning(petsclib::$UnionPetscLib, part::PetscPartitioner )
@@ -275,7 +275,7 @@ See also: `PetscPartitionerCreate()`, `PetscPartitionerSetType()`, `PetscSection
 $(_doc_external("MatGraphOperations/PetscPartitionerPartition"))
 """
 function PetscPartitionerPartition(petsclib::PetscLibType, part::PetscPartitioner, nparts::Integer, numVertices::Integer, start::AbstractVector{<:Number}, adjacency::AbstractVector{<:Number}, vertexSection::PetscSection, edgeSection::PetscSection, targetSection::PetscSection, partSection::PetscSection)
-    error("PetscPartitionerPartition: no generated method for these argument types")
+    throw(MethodError(PetscPartitionerPartition, (petsclib, part, nparts, numVertices, start, adjacency, vertexSection, edgeSection, targetSection, partSection)))
 end
 
 @for_petsc function PetscPartitionerPartition(petsclib::$UnionPetscLib, part::PetscPartitioner, nparts::$PetscInt, numVertices::$PetscInt, start::Vector{$PetscInt}, adjacency::Vector{$PetscInt}, vertexSection::PetscSection, edgeSection::PetscSection, targetSection::PetscSection, partSection::PetscSection )
@@ -309,7 +309,7 @@ See also: `PetscPartitionerRegisterAll()`
 $(_doc_external("MatGraphOperations/PetscPartitionerRegister"))
 """
 function PetscPartitionerRegister(petsclib::PetscLibType, sname::String, fnc::external)
-    error("PetscPartitionerRegister: no generated method for these argument types")
+    throw(MethodError(PetscPartitionerRegister, (petsclib, sname, fnc)))
 end
 
 @for_petsc function PetscPartitionerRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
@@ -342,7 +342,7 @@ See also: `PetscPartitionerSetUp()`, `PetscPartitionerDestroy()`
 $(_doc_external("MatGraphOperations/PetscPartitionerReset"))
 """
 function PetscPartitionerReset(petsclib::PetscLibType, part::PetscPartitioner)
-    error("PetscPartitionerReset: no generated method for these argument types")
+    throw(MethodError(PetscPartitionerReset, (petsclib, part)))
 end
 
 @for_petsc function PetscPartitionerReset(petsclib::$UnionPetscLib, part::PetscPartitioner )
@@ -380,7 +380,7 @@ See also: `PetscPartitionerView()`, `PetscPartitionerSetType()`, `PetscPartition
 $(_doc_external("MatGraphOperations/PetscPartitionerSetFromOptions"))
 """
 function PetscPartitionerSetFromOptions(petsclib::PetscLibType, part::PetscPartitioner)
-    error("PetscPartitionerSetFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscPartitionerSetFromOptions, (petsclib, part)))
 end
 
 @for_petsc function PetscPartitionerSetFromOptions(petsclib::$UnionPetscLib, part::PetscPartitioner )
@@ -417,7 +417,7 @@ See also: `PetscPartitionerGetType()`, `PetscPartitionerCreate()`
 $(_doc_external("MatGraphOperations/PetscPartitionerSetType"))
 """
 function PetscPartitionerSetType(petsclib::PetscLibType, part::PetscPartitioner, name::String)
-    error("PetscPartitionerSetType: no generated method for these argument types")
+    throw(MethodError(PetscPartitionerSetType, (petsclib, part, name)))
 end
 
 @for_petsc function PetscPartitionerSetType(petsclib::$UnionPetscLib, part::PetscPartitioner, name::String )
@@ -450,7 +450,7 @@ See also: `PetscPartitionerView()`, `PetscPartitionerDestroy()`
 $(_doc_external("MatGraphOperations/PetscPartitionerSetUp"))
 """
 function PetscPartitionerSetUp(petsclib::PetscLibType, part::PetscPartitioner)
-    error("PetscPartitionerSetUp: no generated method for these argument types")
+    throw(MethodError(PetscPartitionerSetUp, (petsclib, part)))
 end
 
 @for_petsc function PetscPartitionerSetUp(petsclib::$UnionPetscLib, part::PetscPartitioner )
@@ -486,7 +486,7 @@ See also: `PetscPartitionerShellSetRandom()`, `PetscPartitionerCreate()`
 $(_doc_external("MatGraphOperations/PetscPartitionerShellGetRandom"))
 """
 function PetscPartitionerShellGetRandom(petsclib::PetscLibType, part::PetscPartitioner)
-    error("PetscPartitionerShellGetRandom: no generated method for these argument types")
+    throw(MethodError(PetscPartitionerShellGetRandom, (petsclib, part)))
 end
 
 @for_petsc function PetscPartitionerShellGetRandom(petsclib::$UnionPetscLib, part::PetscPartitioner )
@@ -524,7 +524,7 @@ See also: `DMPlexDistribute()`, `PetscPartitionerCreate()`
 $(_doc_external("MatGraphOperations/PetscPartitionerShellSetPartition"))
 """
 function PetscPartitionerShellSetPartition(petsclib::PetscLibType, part::PetscPartitioner, size::Integer, sizes::AbstractVector{<:Number}, points::AbstractVector{<:Number})
-    error("PetscPartitionerShellSetPartition: no generated method for these argument types")
+    throw(MethodError(PetscPartitionerShellSetPartition, (petsclib, part, size, sizes, points)))
 end
 
 @for_petsc function PetscPartitionerShellSetPartition(petsclib::$UnionPetscLib, part::PetscPartitioner, size::$PetscInt, sizes::Vector{$PetscInt}, points::Vector{$PetscInt} )
@@ -558,7 +558,7 @@ See also: `PetscPartitionerShellGetRandom()`, `PetscPartitionerCreate()`
 $(_doc_external("MatGraphOperations/PetscPartitionerShellSetRandom"))
 """
 function PetscPartitionerShellSetRandom(petsclib::PetscLibType, part::PetscPartitioner, random::PetscBool)
-    error("PetscPartitionerShellSetRandom: no generated method for these argument types")
+    throw(MethodError(PetscPartitionerShellSetRandom, (petsclib, part, random)))
 end
 
 @for_petsc function PetscPartitionerShellSetRandom(petsclib::$UnionPetscLib, part::PetscPartitioner, random::PetscBool )
@@ -592,7 +592,7 @@ See also: `PetscPartitionerDestroy()`
 $(_doc_external("MatGraphOperations/PetscPartitionerView"))
 """
 function PetscPartitionerView(petsclib::PetscLibType, part::PetscPartitioner, v::PetscViewer)
-    error("PetscPartitionerView: no generated method for these argument types")
+    throw(MethodError(PetscPartitionerView, (petsclib, part, v)))
 end
 
 @for_petsc function PetscPartitionerView(petsclib::$UnionPetscLib, part::PetscPartitioner, v::PetscViewer )
@@ -630,7 +630,7 @@ See also: `PetscPartitionerView()`, `PetscObjectViewFromOptions()`
 $(_doc_external("MatGraphOperations/PetscPartitionerViewFromOptions"))
 """
 function PetscPartitionerViewFromOptions(petsclib::PetscLibType, A::PetscPartitioner, obj, name::String)
-    error("PetscPartitionerViewFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscPartitionerViewFromOptions, (petsclib, A, obj, name)))
 end
 
 @for_petsc function PetscPartitionerViewFromOptions(petsclib::$UnionPetscLib, A::PetscPartitioner, obj, name::String )

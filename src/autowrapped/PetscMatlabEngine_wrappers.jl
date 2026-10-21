@@ -26,7 +26,7 @@ See also: `PetscMatlabEngineDestroy()`, `PetscMatlabEnginePut()`, `PetscMatlabEn
 $(_doc_external("Matlab/PetscMatlabEngineCreate"))
 """
 function PetscMatlabEngineCreate(petsclib::PetscLibType, comm::MPI_Comm, host::String)
-    error("PetscMatlabEngineCreate: no generated method for these argument types")
+    throw(MethodError(PetscMatlabEngineCreate, (petsclib, comm, host)))
 end
 
 @for_petsc function PetscMatlabEngineCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, host::String )
@@ -63,7 +63,7 @@ See also: `PetscMatlabEngineCreate()`, `PetscMatlabEnginePut()`, `PetscMatlabEng
 $(_doc_external("Matlab/PetscMatlabEngineDestroy"))
 """
 function PetscMatlabEngineDestroy(petsclib::PetscLibType, v::Union{PetscMatlabEngine, Ref{PetscMatlabEngine}})
-    error("PetscMatlabEngineDestroy: no generated method for these argument types")
+    throw(MethodError(PetscMatlabEngineDestroy, (petsclib, v)))
 end
 
 @for_petsc function PetscMatlabEngineDestroy(petsclib::$UnionPetscLib, v::Union{PetscMatlabEngine, Ref{PetscMatlabEngine}} )
@@ -100,7 +100,7 @@ See also: `PetscMatlabEngineDestroy()`, `PetscMatlabEnginePut()`, `PetscMatlabEn
 $(_doc_external("Matlab/PetscMatlabEngineGet"))
 """
 function PetscMatlabEngineGet(petsclib::PetscLibType, mengine::PetscMatlabEngine, obj)
-    error("PetscMatlabEngineGet: no generated method for these argument types")
+    throw(MethodError(PetscMatlabEngineGet, (petsclib, mengine, obj)))
 end
 
 @for_petsc function PetscMatlabEngineGet(petsclib::$UnionPetscLib, mengine::PetscMatlabEngine, obj )
@@ -139,7 +139,7 @@ See also: `PetscMatlabEngineDestroy()`, `PetscMatlabEnginePut()`, `PetscMatlabEn
 $(_doc_external("Matlab/PetscMatlabEngineGetArray"))
 """
 function PetscMatlabEngineGetArray(petsclib::PetscLibType, mengine::PetscMatlabEngine, m::Cint, n::Cint, array::AbstractVector{<:Number}, name::String)
-    error("PetscMatlabEngineGetArray: no generated method for these argument types")
+    throw(MethodError(PetscMatlabEngineGetArray, (petsclib, mengine, m, n, array, name)))
 end
 
 @for_petsc function PetscMatlabEngineGetArray(petsclib::$UnionPetscLib, mengine::PetscMatlabEngine, m::Cint, n::Cint, array::Vector{$PetscScalar}, name::String )
@@ -178,7 +178,7 @@ See also: `PetscMatlabEngineDestroy()`, `PetscMatlabEnginePut()`, `PetscMatlabEn
 $(_doc_external("Matlab/PetscMatlabEngineGetOutput"))
 """
 function PetscMatlabEngineGetOutput(petsclib::PetscLibType, mengine::PetscMatlabEngine)
-    error("PetscMatlabEngineGetOutput: no generated method for these argument types")
+    throw(MethodError(PetscMatlabEngineGetOutput, (petsclib, mengine)))
 end
 
 @for_petsc function PetscMatlabEngineGetOutput(petsclib::$UnionPetscLib, mengine::PetscMatlabEngine )
@@ -216,7 +216,7 @@ See also: `PetscMatlabEngineDestroy()`, `PetscMatlabEnginePut()`, `PetscMatlabEn
 $(_doc_external("Matlab/PetscMatlabEnginePrintOutput"))
 """
 function PetscMatlabEnginePrintOutput(petsclib::PetscLibType, mengine::PetscMatlabEngine, fd::Libc.FILE)
-    error("PetscMatlabEnginePrintOutput: no generated method for these argument types")
+    throw(MethodError(PetscMatlabEnginePrintOutput, (petsclib, mengine, fd)))
 end
 
 @for_petsc function PetscMatlabEnginePrintOutput(petsclib::$UnionPetscLib, mengine::PetscMatlabEngine, fd::Libc.FILE )
@@ -253,7 +253,7 @@ See also: `PetscMatlabEngineDestroy()`, `PetscMatlabEngineCreate()`, `PetscMatla
 $(_doc_external("Matlab/PetscMatlabEnginePut"))
 """
 function PetscMatlabEnginePut(petsclib::PetscLibType, mengine::PetscMatlabEngine, obj)
-    error("PetscMatlabEnginePut: no generated method for these argument types")
+    throw(MethodError(PetscMatlabEnginePut, (petsclib, mengine, obj)))
 end
 
 @for_petsc function PetscMatlabEnginePut(petsclib::$UnionPetscLib, mengine::PetscMatlabEngine, obj )
@@ -293,7 +293,7 @@ See also: `PetscMatlabEngineDestroy()`, `PetscMatlabEngineCreate()`, `PetscMatla
 $(_doc_external("Matlab/PetscMatlabEnginePutArray"))
 """
 function PetscMatlabEnginePutArray(petsclib::PetscLibType, mengine::PetscMatlabEngine, m::Cint, n::Cint, array::AbstractVector{<:Number}, name::String)
-    error("PetscMatlabEnginePutArray: no generated method for these argument types")
+    throw(MethodError(PetscMatlabEnginePutArray, (petsclib, mengine, m, n, array, name)))
 end
 
 @for_petsc function PetscMatlabEnginePutArray(petsclib::$UnionPetscLib, mengine::PetscMatlabEngine, m::Cint, n::Cint, array::Vector{$PetscScalar}, name::String )

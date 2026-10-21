@@ -19,7 +19,7 @@ See also: `PetscDLLibrary`, `PetscDLLibraryOpen()`, `PetscLoadDynamicLibrary()`,
 $(_doc_external("Sys/PetscDLLibraryAppend"))
 """
 function PetscDLLibraryAppend(petsclib::PetscLibType, comm::MPI_Comm, path::String)
-    error("PetscDLLibraryAppend: no generated method for these argument types")
+    throw(MethodError(PetscDLLibraryAppend, (petsclib, comm, path)))
 end
 
 @for_petsc function PetscDLLibraryAppend(petsclib::$UnionPetscLib, comm::MPI_Comm, path::String )
@@ -55,7 +55,7 @@ See also: `PetscDLLibrary`, `PetscDLLibraryOpen()`, `PetscLoadDynamicLibrary()`,
 $(_doc_external("Sys/PetscDLLibraryClose"))
 """
 function PetscDLLibraryClose(petsclib::PetscLibType, list::PetscDLLibrary)
-    error("PetscDLLibraryClose: no generated method for these argument types")
+    throw(MethodError(PetscDLLibraryClose, (petsclib, list)))
 end
 
 @for_petsc function PetscDLLibraryClose(petsclib::$UnionPetscLib, list::PetscDLLibrary )
@@ -92,7 +92,7 @@ See also: `PetscDLLibrary`, `PetscLoadDynamicLibrary()`, `PetscDLLibraryAppend()
 $(_doc_external("Sys/PetscDLLibraryOpen"))
 """
 function PetscDLLibraryOpen(petsclib::PetscLibType, comm::MPI_Comm, path::String)
-    error("PetscDLLibraryOpen: no generated method for these argument types")
+    throw(MethodError(PetscDLLibraryOpen, (petsclib, comm, path)))
 end
 
 @for_petsc function PetscDLLibraryOpen(petsclib::$UnionPetscLib, comm::MPI_Comm, path::String )
@@ -131,7 +131,7 @@ See also: `PetscDLLibrary`, `PetscDLLibraryOpen()`, `PetscLoadDynamicLibrary()`,
 $(_doc_external("Sys/PetscDLLibraryPrepend"))
 """
 function PetscDLLibraryPrepend(petsclib::PetscLibType, comm::MPI_Comm, path::String)
-    error("PetscDLLibraryPrepend: no generated method for these argument types")
+    throw(MethodError(PetscDLLibraryPrepend, (petsclib, comm, path)))
 end
 
 @for_petsc function PetscDLLibraryPrepend(petsclib::$UnionPetscLib, comm::MPI_Comm, path::String )
@@ -166,7 +166,7 @@ See also: `PetscDLLibrary`, `PetscDLLibraryOpen()`, `PetscDLLibrarySym()`, `Pets
 $(_doc_external("Sys/PetscDLLibraryPrintPath"))
 """
 function PetscDLLibraryPrintPath(petsclib::PetscLibType, libs::PetscDLLibrary)
-    error("PetscDLLibraryPrintPath: no generated method for these argument types")
+    throw(MethodError(PetscDLLibraryPrintPath, (petsclib, libs)))
 end
 
 @for_petsc function PetscDLLibraryPrintPath(petsclib::$UnionPetscLib, libs::PetscDLLibrary )
@@ -206,7 +206,7 @@ See also: `PetscFileRetrieve()`
 $(_doc_external("Sys/PetscDLLibraryRetrieve"))
 """
 function PetscDLLibraryRetrieve(petsclib::PetscLibType, comm::MPI_Comm, libname::String, lname::String, llen::Csize_t)
-    error("PetscDLLibraryRetrieve: no generated method for these argument types")
+    throw(MethodError(PetscDLLibraryRetrieve, (petsclib, comm, libname, lname, llen)))
 end
 
 @for_petsc function PetscDLLibraryRetrieve(petsclib::$UnionPetscLib, comm::MPI_Comm, libname::String, lname::String, llen::Csize_t )
@@ -247,7 +247,7 @@ See also: `PetscDLLibrary`, `PetscLoadDynamicLibrary()`, `PetscDLLibraryAppend()
 $(_doc_external("Sys/PetscDLLibrarySym"))
 """
 function PetscDLLibrarySym(petsclib::PetscLibType, comm::MPI_Comm, outlist::PetscDLLibrary, path::String, insymbol::String)
-    error("PetscDLLibrarySym: no generated method for these argument types")
+    throw(MethodError(PetscDLLibrarySym, (petsclib, comm, outlist, path, insymbol)))
 end
 
 @for_petsc function PetscDLLibrarySym(petsclib::$UnionPetscLib, comm::MPI_Comm, outlist::PetscDLLibrary, path::String, insymbol::String )

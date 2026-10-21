@@ -13,9 +13,11 @@ function doc_header(r::Rules, args::Vector{FArg}, fname::String)
     end
     str_in = join(ins, ", ")
     str_out = join(outs, ",")
+    # The input names in the order of `ins`, for the stub's MethodError
+    names_in = join((a.name for a in args if !a.output || a.inout), ", ")
     call = isempty(ins) ? "$fname(petsclib::PetscLibType)" : "$fname(petsclib::PetscLibType, $str_in)"
     hdr = isempty(outs) ? call : "$(join(outs_doc, ",")) = $call"
-    return hdr, str_in, str_out, length(ins), length(outs)
+    return hdr, str_in, str_out, names_in, length(ins), length(outs)
 end
 
 function ccall_header(args::Vector{FArg})
@@ -47,7 +49,7 @@ Writes the docstring, the untyped stub and the `@for_petsc` method for `fn`.
 """
 function render_function(io::IO, r::Rules, fn::Fn, args::Vector{FArg}, doc_lines, mansec::String)
     name = fn.name
-    hdr, str_in, str_out, num_in, num_out = doc_header(r, args, name)
+    hdr, str_in, str_out, names_in, num_in, num_out = doc_header(r, args, name)
     ctypes, cnames = ccall_header(args)
     println(io, "\"\"\"")
     println(io, "\t$hdr ")
@@ -61,14 +63,14 @@ function render_function(io::IO, r::Rules, fn::Fn, args::Vector{FArg}, doc_lines
     println(io, "\$(_doc_external(\"$mansec/$name\"))")
     println(io, "\"\"\"")
     # The untyped stub carries the docstring. Its scalar types are loosened (PetscScalar -> Number, ...)
-    # so it is never more specific than a generated method (no ambiguities), and it throws, so a call
-    # with wrong argument types is an error rather than a silent no-op.
+    # so it is never more specific than a generated method (no ambiguities), and it throws a
+    # MethodError naming the argument types, so a call with wrong types reads as one.
     if num_in > 0
         println(io, "function $name(petsclib::PetscLibType, $(loosen(str_in)))")
     else
         println(io, "function $name(petsclib::PetscLibType)")
     end
-    println(io, "    error(\"$name: no generated method for these argument types\")")
+    println(io, "    throw(MethodError($name, (petsclib, $names_in)))")
     println(io, "end")
     println(io, "")
     if num_in > 0

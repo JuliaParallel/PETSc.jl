@@ -608,13 +608,13 @@ end
 
 
 """
-    mul!(y::PetscVec{PetscLib}, M::AbstractPetscMat{PetscLib}, x::PetscVec{PetscLib})
+    mul!(y::AbstractPetscVec, M::AbstractPetscMat, x::AbstractPetscVec)
 
 Computes
     `y` = `M`*`x`
 
 """
-function LinearAlgebra.mul!(y::PetscVec{PetscLib},M::AbstractPetscMat{PetscLib},x::PetscVec{PetscLib}) where {PetscLib} 
+function LinearAlgebra.mul!(y::AbstractPetscVec{PetscLib}, M::AbstractPetscMat{PetscLib}, x::AbstractPetscVec{PetscLib}) where {PetscLib}
     capture_callback_errors(() -> LibPETSc.MatMult(PetscLib, M, x, y))
     return y
 end
@@ -639,8 +639,8 @@ const TransposedPetscMat{PetscLib} = Union{
 }
 
 """
-    mul!(y::PetscVec, A', x::PetscVec)
-    mul!(y::PetscVec, transpose(A), x::PetscVec)
+    mul!(y::AbstractPetscVec, A', x::AbstractPetscVec)
+    mul!(y::AbstractPetscVec, transpose(A), x::AbstractPetscVec)
 
 Compute `y = Aᴴx` or `y = Aᵀx` without forming the transpose, and return `y`.
 
@@ -649,9 +649,9 @@ $(doc_external("Mat/MatMultHermitianTranspose"))
 $(doc_external("Mat/MatMultTranspose"))
 """
 function LinearAlgebra.mul!(
-    y::PetscVec{PetscLib},
+    y::AbstractPetscVec{PetscLib},
     M::TransposedPetscMat{PetscLib},
-    x::PetscVec{PetscLib},
+    x::AbstractPetscVec{PetscLib},
 ) where {PetscLib}
     multiply = M isa Adjoint ? LibPETSc.MatMultHermitianTranspose : LibPETSc.MatMultTranspose
     capture_callback_errors(() -> multiply(PetscLib, parent(M), x, y))
@@ -826,14 +826,8 @@ Does nothing on a matrix that only borrows its handle: see [`owns`](@ref).
 # External Links
 $(doc_external("Mat/MatDestroy"))
 """
-function destroy!(m::AbstractPetscMat{PetscLib}) where {PetscLib}
-    owns(m) || return nothing
-    if isdestroyable(m, PetscLib)
-        LibPETSc.MatDestroy(PetscLib, m)
-    end
-    m.ptr = C_NULL
-    return nothing
-end
+destroy!(m::AbstractPetscMat{PetscLib}) where {PetscLib} =
+    destroy_handle!(LibPETSc.MatDestroy, m, PetscLib)
 
 """
     copyto!(M::AbstractPetscMat, S::SparseMatrixCSC)

@@ -11,7 +11,7 @@ See also: `PetscOmpCtrlOmpRegionOnMasterBegin()`, `PetscOmpCtrlOmpRegionOnMaster
 $(_doc_external("Sys/PetscOmpCtrlBarrier"))
 """
 function PetscOmpCtrlBarrier(petsclib::PetscLibType, ctrl::PetscOmpCtrl)
-    error("PetscOmpCtrlBarrier: no generated method for these argument types")
+    throw(MethodError(PetscOmpCtrlBarrier, (petsclib, ctrl)))
 end
 
 @for_petsc function PetscOmpCtrlBarrier(petsclib::$UnionPetscLib, ctrl::PetscOmpCtrl )
@@ -46,7 +46,7 @@ See also: `PetscOmpCtrlDestroy()`, `PetscOmpCtrlGetOmpComms()`, `PetscOmpCtrlBar
 $(_doc_external("Sys/PetscOmpCtrlCreate"))
 """
 function PetscOmpCtrlCreate(petsclib::PetscLibType, petsc_comm::MPI_Comm, nthreads::Integer)
-    error("PetscOmpCtrlCreate: no generated method for these argument types")
+    throw(MethodError(PetscOmpCtrlCreate, (petsclib, petsc_comm, nthreads)))
 end
 
 @for_petsc function PetscOmpCtrlCreate(petsclib::$UnionPetscLib, petsc_comm::MPI_Comm, nthreads::$PetscInt )
@@ -79,7 +79,7 @@ See also: `PetscOmpCtrlCreate()`, `PetscOmpCtrlGetOmpComms()`, `PetscOmpCtrlBarr
 $(_doc_external("Sys/PetscOmpCtrlDestroy"))
 """
 function PetscOmpCtrlDestroy(petsclib::PetscLibType, pctrl::Union{PetscOmpCtrl, Ref{PetscOmpCtrl}})
-    error("PetscOmpCtrlDestroy: no generated method for these argument types")
+    throw(MethodError(PetscOmpCtrlDestroy, (petsclib, pctrl)))
 end
 
 @for_petsc function PetscOmpCtrlDestroy(petsclib::$UnionPetscLib, pctrl::Union{PetscOmpCtrl, Ref{PetscOmpCtrl}} )
@@ -115,7 +115,7 @@ See also: `PetscOmpCtrlCreate()`, `PetscOmpCtrlDestroy()`, `PetscOmpCtrlBarrier(
 $(_doc_external("Sys/PetscOmpCtrlGetOmpComms"))
 """
 function PetscOmpCtrlGetOmpComms(petsclib::PetscLibType, ctrl::PetscOmpCtrl)
-    error("PetscOmpCtrlGetOmpComms: no generated method for these argument types")
+    throw(MethodError(PetscOmpCtrlGetOmpComms, (petsclib, ctrl)))
 end
 
 @for_petsc function PetscOmpCtrlGetOmpComms(petsclib::$UnionPetscLib, ctrl::PetscOmpCtrl )
@@ -150,7 +150,7 @@ See also: `PetscOmpCtrlOmpRegionOnMasterEnd()`, `PetscOmpCtrlCreate()`, `PetscOm
 $(_doc_external("Sys/PetscOmpCtrlOmpRegionOnMasterBegin"))
 """
 function PetscOmpCtrlOmpRegionOnMasterBegin(petsclib::PetscLibType, ctrl::PetscOmpCtrl)
-    error("PetscOmpCtrlOmpRegionOnMasterBegin: no generated method for these argument types")
+    throw(MethodError(PetscOmpCtrlOmpRegionOnMasterBegin, (petsclib, ctrl)))
 end
 
 @for_petsc function PetscOmpCtrlOmpRegionOnMasterBegin(petsclib::$UnionPetscLib, ctrl::PetscOmpCtrl )
@@ -179,7 +179,7 @@ See also: `PetscOmpCtrlOmpRegionOnMasterBegin()`, `PetscOmpCtrlCreate()`, `Petsc
 $(_doc_external("Sys/PetscOmpCtrlOmpRegionOnMasterEnd"))
 """
 function PetscOmpCtrlOmpRegionOnMasterEnd(petsclib::PetscLibType, ctrl::PetscOmpCtrl)
-    error("PetscOmpCtrlOmpRegionOnMasterEnd: no generated method for these argument types")
+    throw(MethodError(PetscOmpCtrlOmpRegionOnMasterEnd, (petsclib, ctrl)))
 end
 
 @for_petsc function PetscOmpCtrlOmpRegionOnMasterEnd(petsclib::$UnionPetscLib, ctrl::PetscOmpCtrl )

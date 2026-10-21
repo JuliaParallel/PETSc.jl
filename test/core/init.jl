@@ -186,8 +186,7 @@ using PETSc
         end
     end
 
-    # naming.md §12: `library_info` returns the values it used to print, and the
-    # report is its `show` method.
+    # naming.md §12: `library_info` returns its values as a plain NamedTuple
     @testset "library_info" begin
         info = PETSc.library_info()
         @test info isa NamedTuple
@@ -198,14 +197,10 @@ using PETSc
         @test info.real === real(PETSc.petsclibs[1].PetscScalar)
         @test info.path isa AbstractString
 
-        report = sprint(show, MIME"text/plain"(), info)
-        @test occursin("Source  : ", report)
-        @test occursin("Loaded libraries (this session):", report)
-        if info.source === :preferences
-            @test occursin("Path    : $(info.path)", report)
-        else
-            @test occursin("PETSc_jll", report)
-        end
+        # PETSc defines no `show` for it, so a NamedTuple of the user's with the
+        # same field names prints as Julia prints any NamedTuple
+        nt = (source = 1, path = 2, scalar = 3, int = 4, real = 5)
+        @test sprint(show, MIME"text/plain"(), nt) == "(source = 1, path = 2, scalar = 3, int = 4, real = 5)"
     end
 
     # `options` reach PETSc on every platform: they are handed to PetscInitialize

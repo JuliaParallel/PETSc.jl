@@ -400,14 +400,8 @@ nothing on a vector that only borrows its handle: see [`owns`](@ref).
 # External Links
 $(doc_external("Vec/VecDestroy"))
 """
-function destroy!(m::AbstractPetscVec{PetscLib}) where {PetscLib}
-    owns(m) || return nothing
-    if isdestroyable(m, PetscLib)
-        LibPETSc.VecDestroy(PetscLib, m)
-    end
-    m.ptr = C_NULL
-    return nothing
-end
+destroy!(m::AbstractPetscVec{PetscLib}) where {PetscLib} =
+    destroy_handle!(LibPETSc.VecDestroy, m, PetscLib)
 
 
 """
@@ -625,6 +619,7 @@ as_petsc_vec(v::LibPETSc.PetscVec) = v
 as_petsc_vec(v::AbstractPetscVec) = LibPETSc.PetscVec(v)
 
 """
+    memtype(vecs::AbstractPetscVec...)
 
 Query the `PetscMemType` of each Vec and return the corresponding array type.
 Errors if the Vecs are on heterogeneous devices (different `PetscMemType`
@@ -779,9 +774,12 @@ end
         scattermode = SCATTER_FORWARD,
     )
 
-Finishes scattering `vec` to the local or global representations
+Update the ghost values of `vec` and return it: [`ghost_update_begin!`](@ref)
+followed by [`ghost_update_end!`](@ref). Use the two halves separately to overlap
+the communication with other work.
 
 # External Links
+$(doc_external("Vec/VecGhostUpdateBegin"))
 $(doc_external("Vec/VecGhostUpdateEnd"))
 """
 function ghost_update!(

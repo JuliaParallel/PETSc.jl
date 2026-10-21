@@ -17,7 +17,7 @@ See also: `PetscSF`, `PetscSFComposeInverse()`, `PetscSFGetGraph()`, `PetscSFSet
 $(_doc_external("PetscSF/PetscSFCompose"))
 """
 function PetscSFCompose(petsclib::PetscLibType, sfA::PetscSF, sfB::PetscSF)
-    error("PetscSFCompose: no generated method for these argument types")
+    throw(MethodError(PetscSFCompose, (petsclib, sfA, sfB)))
 end
 
 @for_petsc function PetscSFCompose(petsclib::$UnionPetscLib, sfA::PetscSF, sfB::PetscSF )
@@ -54,7 +54,7 @@ See also: `PetscSF`, `PetscSFCompose()`, `PetscSFGetGraph()`, `PetscSFSetGraph()
 $(_doc_external("PetscSF/PetscSFComposeInverse"))
 """
 function PetscSFComposeInverse(petsclib::PetscLibType, sfA::PetscSF, sfB::PetscSF)
-    error("PetscSFComposeInverse: no generated method for these argument types")
+    throw(MethodError(PetscSFComposeInverse, (petsclib, sfA, sfB)))
 end
 
 @for_petsc function PetscSFComposeInverse(petsclib::$UnionPetscLib, sfA::PetscSF, sfB::PetscSF )
@@ -92,7 +92,7 @@ See also: `PetscSF`, `PetscSFGatherBegin()`, `PetscSFComputeDegreeEnd()`
 $(_doc_external("PetscSF/PetscSFComputeDegreeBegin"))
 """
 function PetscSFComputeDegreeBegin(petsclib::PetscLibType, sf::PetscSF)
-    error("PetscSFComputeDegreeBegin: no generated method for these argument types")
+    throw(MethodError(PetscSFComputeDegreeBegin, (petsclib, sf)))
 end
 
 @for_petsc function PetscSFComputeDegreeBegin(petsclib::$UnionPetscLib, sf::PetscSF )
@@ -130,7 +130,7 @@ See also: `PetscSF`, `PetscSFGatherBegin()`, `PetscSFComputeDegreeBegin()`
 $(_doc_external("PetscSF/PetscSFComputeDegreeEnd"))
 """
 function PetscSFComputeDegreeEnd(petsclib::PetscLibType, sf::PetscSF)
-    error("PetscSFComputeDegreeEnd: no generated method for these argument types")
+    throw(MethodError(PetscSFComputeDegreeEnd, (petsclib, sf)))
 end
 
 @for_petsc function PetscSFComputeDegreeEnd(petsclib::$UnionPetscLib, sf::PetscSF )
@@ -171,7 +171,7 @@ See also: `PetscSF`, `PetscSFComputeDegreeBegin()`, `PetscSFComputeDegreeEnd()`,
 $(_doc_external("PetscSF/PetscSFComputeMultiRootOriginalNumbering"))
 """
 function PetscSFComputeMultiRootOriginalNumbering(petsclib::PetscLibType, sf::PetscSF, degree::AbstractVector{<:Number})
-    error("PetscSFComputeMultiRootOriginalNumbering: no generated method for these argument types")
+    throw(MethodError(PetscSFComputeMultiRootOriginalNumbering, (petsclib, sf, degree)))
 end
 
 @for_petsc function PetscSFComputeMultiRootOriginalNumbering(petsclib::$UnionPetscLib, sf::PetscSF, degree::Vector{$PetscInt} )
@@ -213,7 +213,7 @@ See also: `PetscSF`, `PetscSFCompose()`, `PetscSFGetGraph()`, `PetscSFSetGraph()
 $(_doc_external("PetscSF/PetscSFConcatenate"))
 """
 function PetscSFConcatenate(petsclib::PetscLibType, comm::MPI_Comm, nsfs::Integer, sfs::Vector{PetscSF}, rootMode::PetscSFConcatenateRootMode, leafOffsets::AbstractVector{<:Number})
-    error("PetscSFConcatenate: no generated method for these argument types")
+    throw(MethodError(PetscSFConcatenate, (petsclib, comm, nsfs, sfs, rootMode, leafOffsets)))
 end
 
 @for_petsc function PetscSFConcatenate(petsclib::$UnionPetscLib, comm::MPI_Comm, nsfs::$PetscInt, sfs::Vector{PetscSF}, rootMode::PetscSFConcatenateRootMode, leafOffsets::Vector{$PetscInt} )
@@ -255,7 +255,7 @@ See also: `PetscSF`, `PetscSFSetType`, `PetscSFSetGraph()`, `PetscSFSetGraphWith
 $(_doc_external("PetscSF/PetscSFCreate"))
 """
 function PetscSFCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("PetscSFCreate: no generated method for these argument types")
+    throw(MethodError(PetscSFCreate, (petsclib, comm)))
 end
 
 @for_petsc function PetscSFCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -354,7 +354,7 @@ See also: `PetscSF`, `PetscSFCreate()`
 $(_doc_external("PetscSF/PetscSFCreateByMatchingIndices"))
 """
 function PetscSFCreateByMatchingIndices(petsclib::PetscLibType, layout::PetscLayout, numRootIndices::Integer, rootIndices::AbstractVector{<:Number}, rootLocalIndices::AbstractVector{<:Number}, rootLocalOffset::Integer, numLeafIndices::Integer, leafIndices::AbstractVector{<:Number}, leafLocalIndices::AbstractVector{<:Number}, leafLocalOffset::Integer)
-    error("PetscSFCreateByMatchingIndices: no generated method for these argument types")
+    throw(MethodError(PetscSFCreateByMatchingIndices, (petsclib, layout, numRootIndices, rootIndices, rootLocalIndices, rootLocalOffset, numLeafIndices, leafIndices, leafLocalIndices, leafLocalOffset)))
 end
 
 @for_petsc function PetscSFCreateByMatchingIndices(petsclib::$UnionPetscLib, layout::PetscLayout, numRootIndices::$PetscInt, rootIndices::Vector{$PetscInt}, rootLocalIndices::Vector{$PetscInt}, rootLocalOffset::$PetscInt, numLeafIndices::$PetscInt, leafIndices::Vector{$PetscInt}, leafLocalIndices::Vector{$PetscInt}, leafLocalOffset::$PetscInt )
@@ -396,7 +396,7 @@ See also: `PetscSF`, `PetscSFCreateEmbeddedRootSF()`, `PetscSFSetGraph()`, `Pets
 $(_doc_external("PetscSF/PetscSFCreateEmbeddedLeafSF"))
 """
 function PetscSFCreateEmbeddedLeafSF(petsclib::PetscLibType, sf::PetscSF, nselected::Integer, selected::AbstractVector{<:Number})
-    error("PetscSFCreateEmbeddedLeafSF: no generated method for these argument types")
+    throw(MethodError(PetscSFCreateEmbeddedLeafSF, (petsclib, sf, nselected, selected)))
 end
 
 @for_petsc function PetscSFCreateEmbeddedLeafSF(petsclib::$UnionPetscLib, sf::PetscSF, nselected::$PetscInt, selected::Vector{$PetscInt} )
@@ -436,7 +436,7 @@ See also: `PetscSF`, `PetscSFSetGraph()`, `PetscSFGetGraph()`
 $(_doc_external("PetscSF/PetscSFCreateEmbeddedRootSF"))
 """
 function PetscSFCreateEmbeddedRootSF(petsclib::PetscLibType, sf::PetscSF, nselected::Integer, selected::AbstractVector{<:Number})
-    error("PetscSFCreateEmbeddedRootSF: no generated method for these argument types")
+    throw(MethodError(PetscSFCreateEmbeddedRootSF, (petsclib, sf, nselected, selected)))
 end
 
 @for_petsc function PetscSFCreateEmbeddedRootSF(petsclib::$UnionPetscLib, sf::PetscSF, nselected::$PetscInt, selected::Vector{$PetscInt} )
@@ -475,7 +475,7 @@ See also: `PetscSF`, `PetscLayout`, `PetscSFCreate()`, `PetscSFSetGraph()`, `Pet
 $(_doc_external("PetscSF/PetscSFCreateFromLayouts"))
 """
 function PetscSFCreateFromLayouts(petsclib::PetscLibType, rmap::PetscLayout, lmap::PetscLayout)
-    error("PetscSFCreateFromLayouts: no generated method for these argument types")
+    throw(MethodError(PetscSFCreateFromLayouts, (petsclib, rmap, lmap)))
 end
 
 @for_petsc function PetscSFCreateFromLayouts(petsclib::$UnionPetscLib, rmap::PetscLayout, lmap::PetscLayout )
@@ -513,7 +513,7 @@ See also: `PetscSF`, `PetscSFType`, `PetscSFSetGraph()`
 $(_doc_external("PetscSF/PetscSFCreateInverseSF"))
 """
 function PetscSFCreateInverseSF(petsclib::PetscLibType, sf::PetscSF)
-    error("PetscSFCreateInverseSF: no generated method for these argument types")
+    throw(MethodError(PetscSFCreateInverseSF, (petsclib, sf)))
 end
 
 @for_petsc function PetscSFCreateInverseSF(petsclib::$UnionPetscLib, sf::PetscSF )
@@ -553,7 +553,7 @@ See also: `PetscSF`, `PetscSFCreate()`
 $(_doc_external("PetscSF/PetscSFCreateRemoteOffsets"))
 """
 function PetscSFCreateRemoteOffsets(petsclib::PetscLibType, sf::PetscSF, rootSection::PetscSection, leafSection::PetscSection)
-    error("PetscSFCreateRemoteOffsets: no generated method for these argument types")
+    throw(MethodError(PetscSFCreateRemoteOffsets, (petsclib, sf, rootSection, leafSection)))
 end
 
 @for_petsc function PetscSFCreateRemoteOffsets(petsclib::$UnionPetscLib, sf::PetscSF, rootSection::PetscSection, leafSection::PetscSection )
@@ -594,7 +594,7 @@ See also: `PetscSF`, `PetscSFCreate()`, `PetscSFDistributeSection()`
 $(_doc_external("PetscSF/PetscSFCreateSectionSF"))
 """
 function PetscSFCreateSectionSF(petsclib::PetscLibType, sf::PetscSF, rootSection::PetscSection, remoteOffsets::AbstractVector{<:Number}, leafSection::PetscSection)
-    error("PetscSFCreateSectionSF: no generated method for these argument types")
+    throw(MethodError(PetscSFCreateSectionSF, (petsclib, sf, rootSection, remoteOffsets, leafSection)))
 end
 
 @for_petsc function PetscSFCreateSectionSF(petsclib::$UnionPetscLib, sf::PetscSF, rootSection::PetscSection, remoteOffsets::Vector{$PetscInt}, leafSection::PetscSection )
@@ -635,7 +635,7 @@ See also: `PetscSF`, `PetscSFCreate()`, `PetscSFSetGraph()`
 $(_doc_external("PetscSF/PetscSFCreateStridedSF"))
 """
 function PetscSFCreateStridedSF(petsclib::PetscLibType, sf::PetscSF, bs::Integer, ldr::Integer, ldl::Integer)
-    error("PetscSFCreateStridedSF: no generated method for these argument types")
+    throw(MethodError(PetscSFCreateStridedSF, (petsclib, sf, bs, ldr, ldl)))
 end
 
 @for_petsc function PetscSFCreateStridedSF(petsclib::$UnionPetscLib, sf::PetscSF, bs::$PetscInt, ldr::$PetscInt, ldl::$PetscInt )
@@ -670,7 +670,7 @@ See also: `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFReset()`
 $(_doc_external("PetscSF/PetscSFDestroy"))
 """
 function PetscSFDestroy(petsclib::PetscLibType, sf::Union{PetscSF, Ref{PetscSF}})
-    error("PetscSFDestroy: no generated method for these argument types")
+    throw(MethodError(PetscSFDestroy, (petsclib, sf)))
 end
 
 @for_petsc function PetscSFDestroy(petsclib::$UnionPetscLib, sf::Union{PetscSF, Ref{PetscSF}} )
@@ -709,7 +709,7 @@ See also: `PetscSF`, `PetscSFCreate()`, `PetscSFCreateSectionSF()`
 $(_doc_external("PetscSF/PetscSFDistributeSection"))
 """
 function PetscSFDistributeSection(petsclib::PetscLibType, sf::PetscSF, rootSection::PetscSection, leafSection::PetscSection)
-    error("PetscSFDistributeSection: no generated method for these argument types")
+    throw(MethodError(PetscSFDistributeSection, (petsclib, sf, rootSection, leafSection)))
 end
 
 @for_petsc function PetscSFDistributeSection(petsclib::$UnionPetscLib, sf::PetscSF, rootSection::PetscSection, leafSection::PetscSection )
@@ -748,7 +748,7 @@ See also: `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFSetType()`, `Pets
 $(_doc_external("PetscSF/PetscSFDuplicate"))
 """
 function PetscSFDuplicate(petsclib::PetscLibType, sf::PetscSF, opt::PetscSFDuplicateOption)
-    error("PetscSFDuplicate: no generated method for these argument types")
+    throw(MethodError(PetscSFDuplicate, (petsclib, sf, opt)))
 end
 
 @for_petsc function PetscSFDuplicate(petsclib::$UnionPetscLib, sf::PetscSF, opt::PetscSFDuplicateOption )
@@ -780,7 +780,7 @@ See also: `PetscSF`, `PetscSFInitializePackage()`
 $(_doc_external("PetscSF/PetscSFFinalizePackage"))
 """
 function PetscSFFinalizePackage(petsclib::PetscLibType)
-    error("PetscSFFinalizePackage: no generated method for these argument types")
+    throw(MethodError(PetscSFFinalizePackage, (petsclib, )))
 end
 
 @for_petsc function PetscSFFinalizePackage(petsclib::$UnionPetscLib)
@@ -904,7 +904,7 @@ See also: `PetscSF`, `PetscSFGetWindow()`, `PetscSFRestoreWindow()`
 $(_doc_external("PetscSF/PetscSFGetGroups"))
 """
 function PetscSFGetGroups(petsclib::PetscLibType, sf::PetscSF)
-    error("PetscSFGetGroups: no generated method for these argument types")
+    throw(MethodError(PetscSFGetGroups, (petsclib, sf)))
 end
 
 @for_petsc function PetscSFGetGroups(petsclib::$UnionPetscLib, sf::PetscSF )
@@ -945,7 +945,7 @@ See also: `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFView()`, `PetscSF
 $(_doc_external("PetscSF/PetscSFGetLeafRange"))
 """
 function PetscSFGetLeafRange(petsclib::PetscLibType, sf::PetscSF)
-    error("PetscSFGetLeafRange: no generated method for these argument types")
+    throw(MethodError(PetscSFGetLeafRange, (petsclib, sf)))
 end
 
 @for_petsc function PetscSFGetLeafRange(petsclib::$UnionPetscLib, sf::PetscSF )
@@ -988,7 +988,7 @@ See also: `PetscSF`, `PetscSFGetRootRanks()`
 $(_doc_external("PetscSF/PetscSFGetLeafRanks"))
 """
 function PetscSFGetLeafRanks(petsclib::PetscLibType, sf::PetscSF)
-    error("PetscSFGetLeafRanks: no generated method for these argument types")
+    throw(MethodError(PetscSFGetLeafRanks, (petsclib, sf)))
 end
 
 @for_petsc function PetscSFGetLeafRanks(petsclib::$UnionPetscLib, sf::PetscSF )
@@ -1032,7 +1032,7 @@ See also: `PetscSF`, `PetscSFSetGraph()`, `PetscSFGatherBegin()`, `PetscSFScatte
 $(_doc_external("PetscSF/PetscSFGetMultiSF"))
 """
 function PetscSFGetMultiSF(petsclib::PetscLibType, sf::PetscSF)
-    error("PetscSFGetMultiSF: no generated method for these argument types")
+    throw(MethodError(PetscSFGetMultiSF, (petsclib, sf)))
 end
 
 @for_petsc function PetscSFGetMultiSF(petsclib::$UnionPetscLib, sf::PetscSF )
@@ -1070,7 +1070,7 @@ See also: `PetscSF`, `PetscSFSetGraph()`, `PetscSFGetRootRanks()`
 $(_doc_external("PetscSF/PetscSFGetRanksSF"))
 """
 function PetscSFGetRanksSF(petsclib::PetscLibType, sf::PetscSF)
-    error("PetscSFGetRanksSF: no generated method for these argument types")
+    throw(MethodError(PetscSFGetRanksSF, (petsclib, sf)))
 end
 
 @for_petsc function PetscSFGetRanksSF(petsclib::$UnionPetscLib, sf::PetscSF )
@@ -1112,7 +1112,7 @@ See also: `PetscSF`, `PetscSFGetLeafRanks()`
 $(_doc_external("PetscSF/PetscSFGetRootRanks"))
 """
 function PetscSFGetRootRanks(petsclib::PetscLibType, sf::PetscSF)
-    error("PetscSFGetRootRanks: no generated method for these argument types")
+    throw(MethodError(PetscSFGetRootRanks, (petsclib, sf)))
 end
 
 @for_petsc function PetscSFGetRootRanks(petsclib::$UnionPetscLib, sf::PetscSF )
@@ -1159,7 +1159,7 @@ See also: `PetscSF`
 $(_doc_external("DMNetwork/PetscSFGetSubSF"))
 """
 function PetscSFGetSubSF(petsclib::PetscLibType, mainsf::PetscSF, map::ISLocalToGlobalMapping)
-    error("PetscSFGetSubSF: no generated method for these argument types")
+    throw(MethodError(PetscSFGetSubSF, (petsclib, mainsf, map)))
 end
 
 @for_petsc function PetscSFGetSubSF(petsclib::$UnionPetscLib, mainsf::PetscSF, map::ISLocalToGlobalMapping )
@@ -1197,7 +1197,7 @@ See also: `PetscSF`, `PetscSFType`, `PetscSFSetType()`, `PetscSFCreate()`
 $(_doc_external("PetscSF/PetscSFGetType"))
 """
 function PetscSFGetType(petsclib::PetscLibType, sf::PetscSF)
-    error("PetscSFGetType: no generated method for these argument types")
+    throw(MethodError(PetscSFGetType, (petsclib, sf)))
 end
 
 @for_petsc function PetscSFGetType(petsclib::$UnionPetscLib, sf::PetscSF )
@@ -1229,7 +1229,7 @@ See also: `PetscSF`, `PetscSFFinalizePackage()`
 $(_doc_external("Sys/PetscSFInitializePackage"))
 """
 function PetscSFInitializePackage(petsclib::PetscLibType)
-    error("PetscSFInitializePackage: no generated method for these argument types")
+    throw(MethodError(PetscSFInitializePackage, (petsclib, )))
 end
 
 @for_petsc function PetscSFInitializePackage(petsclib::$UnionPetscLib)
@@ -1265,7 +1265,7 @@ See also: `PetscSF`, `PetscSFCompose()`
 $(_doc_external("PetscSF/PetscSFMerge"))
 """
 function PetscSFMerge(petsclib::PetscLibType, sfa::PetscSF, sfb::PetscSF)
-    error("PetscSFMerge: no generated method for these argument types")
+    throw(MethodError(PetscSFMerge, (petsclib, sfa, sfb)))
 end
 
 @for_petsc function PetscSFMerge(petsclib::$UnionPetscLib, sfa::PetscSF, sfb::PetscSF )
@@ -1299,7 +1299,7 @@ See also: `PetscSF`, `PetscSFType`, `PetscSFRegisterAll()`, `PetscSFInitializePa
 $(_doc_external("PetscSF/PetscSFRegister"))
 """
 function PetscSFRegister(petsclib::PetscLibType, name::String, create::external)
-    error("PetscSFRegister: no generated method for these argument types")
+    throw(MethodError(PetscSFRegister, (petsclib, name, create)))
 end
 
 @for_petsc function PetscSFRegister(petsclib::$UnionPetscLib, name::String, create::external )
@@ -1332,7 +1332,7 @@ See also: `PetscSF`, `PetscSFCreate()`, `PetscSFSetGraph()`, `PetscSFDestroy()`
 $(_doc_external("PetscSF/PetscSFReset"))
 """
 function PetscSFReset(petsclib::PetscLibType, sf::PetscSF)
-    error("PetscSFReset: no generated method for these argument types")
+    throw(MethodError(PetscSFReset, (petsclib, sf)))
 end
 
 @for_petsc function PetscSFReset(petsclib::$UnionPetscLib, sf::PetscSF )
@@ -1376,7 +1376,7 @@ See also: `PetscSF`, `PetscSFCreate()`, `PetscSFSetType()`
 $(_doc_external("PetscSF/PetscSFSetFromOptions"))
 """
 function PetscSFSetFromOptions(petsclib::PetscLibType, sf::PetscSF)
-    error("PetscSFSetFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscSFSetFromOptions, (petsclib, sf)))
 end
 
 @for_petsc function PetscSFSetFromOptions(petsclib::$UnionPetscLib, sf::PetscSF )
@@ -1415,7 +1415,7 @@ See also: `PetscSF`, `PetscSFType`, `PetscSFCreate()`, `PetscSFView()`, `PetscSF
 $(_doc_external("PetscSF/PetscSFSetGraph"))
 """
 function PetscSFSetGraph(petsclib::PetscLibType, sf::PetscSF, nroots::Integer, nleaves::Integer, ilocal::AbstractVector{<:Number}, localmode::PetscCopyMode, iremote::Vector{PetscSFNode}, remotemode::PetscCopyMode)
-    error("PetscSFSetGraph: no generated method for these argument types")
+    throw(MethodError(PetscSFSetGraph, (petsclib, sf, nroots, nleaves, ilocal, localmode, iremote, remotemode)))
 end
 
 @for_petsc function PetscSFSetGraph(petsclib::$UnionPetscLib, sf::PetscSF, nroots::$PetscInt, nleaves::$PetscInt, ilocal::Vector{$PetscInt}, localmode::PetscCopyMode, iremote::Vector{PetscSFNode}, remotemode::PetscCopyMode )
@@ -1452,7 +1452,7 @@ See also: `PetscSFCreate()`, `PetscSFSetGraph()`, `PetscSFCreateByMatchingIndice
 $(_doc_external("PetscSF/PetscSFSetGraphFromCoordinates"))
 """
 function PetscSFSetGraphFromCoordinates(petsclib::PetscLibType, sf::PetscSF, nroots::Integer, nleaves::Integer, dim::Integer, tol::Real, rootcoords::AbstractVector{<:Number}, leafcoords::AbstractVector{<:Number})
-    error("PetscSFSetGraphFromCoordinates: no generated method for these argument types")
+    throw(MethodError(PetscSFSetGraphFromCoordinates, (petsclib, sf, nroots, nleaves, dim, tol, rootcoords, leafcoords)))
 end
 
 @for_petsc function PetscSFSetGraphFromCoordinates(petsclib::$UnionPetscLib, sf::PetscSF, nroots::$PetscInt, nleaves::$PetscInt, dim::$PetscInt, tol::$PetscReal, rootcoords::Vector{$PetscReal}, leafcoords::Vector{$PetscReal} )
@@ -1490,7 +1490,7 @@ See also: `PetscSF`, `PetscSFGetGraphLayout()`, `PetscSFCreate()`, `PetscSFView(
 $(_doc_external("PetscSF/PetscSFSetGraphLayout"))
 """
 function PetscSFSetGraphLayout(petsclib::PetscLibType, sf::PetscSF, layout::PetscLayout, nleaves::Integer, ilocal::AbstractVector{<:Number}, localmode::PetscCopyMode, gremote::AbstractVector{<:Number})
-    error("PetscSFSetGraphLayout: no generated method for these argument types")
+    throw(MethodError(PetscSFSetGraphLayout, (petsclib, sf, layout, nleaves, ilocal, localmode, gremote)))
 end
 
 @for_petsc function PetscSFSetGraphLayout(petsclib::$UnionPetscLib, sf::PetscSF, layout::PetscLayout, nleaves::$PetscInt, ilocal::Vector{$PetscInt}, localmode::PetscCopyMode, gremote::Vector{$PetscInt} )
@@ -1523,7 +1523,7 @@ See also: `PetscSF`, `PetscSFSetGraph()`, `PetscSFSetGraphLayout()`
 $(_doc_external("PetscSF/PetscSFSetGraphSection"))
 """
 function PetscSFSetGraphSection(petsclib::PetscLibType, sf::PetscSF, localSection::PetscSection, globalSection::PetscSection)
-    error("PetscSFSetGraphSection: no generated method for these argument types")
+    throw(MethodError(PetscSFSetGraphSection, (petsclib, sf, localSection, globalSection)))
 end
 
 @for_petsc function PetscSFSetGraphSection(petsclib::$UnionPetscLib, sf::PetscSF, localSection::PetscSection, globalSection::PetscSection )
@@ -1558,7 +1558,7 @@ See also: `PetscSF`, `PetscSFCreate()`, `PetscSFView()`, `PetscSFGetGraph()`
 $(_doc_external("PetscSF/PetscSFSetGraphWithPattern"))
 """
 function PetscSFSetGraphWithPattern(petsclib::PetscLibType, sf::PetscSF, map::PetscLayout, pattern::PetscSFPattern)
-    error("PetscSFSetGraphWithPattern: no generated method for these argument types")
+    throw(MethodError(PetscSFSetGraphWithPattern, (petsclib, sf, map, pattern)))
 end
 
 @for_petsc function PetscSFSetGraphWithPattern(petsclib::$UnionPetscLib, sf::PetscSF, map::PetscLayout, pattern::PetscSFPattern )
@@ -1592,7 +1592,7 @@ See also: `PetscSF`, `PetscSFType`, `PetscSFGatherBegin()`, `PetscSFScatterBegin
 $(_doc_external("PetscSF/PetscSFSetRankOrder"))
 """
 function PetscSFSetRankOrder(petsclib::PetscLibType, sf::PetscSF, flg::PetscBool)
-    error("PetscSFSetRankOrder: no generated method for these argument types")
+    throw(MethodError(PetscSFSetRankOrder, (petsclib, sf, flg)))
 end
 
 @for_petsc function PetscSFSetRankOrder(petsclib::$UnionPetscLib, sf::PetscSF, flg::PetscBool )
@@ -1633,7 +1633,7 @@ See also: `PetscSF`, `PetscSFType`, `PetscSFCreate()`
 $(_doc_external("PetscSF/PetscSFSetType"))
 """
 function PetscSFSetType(petsclib::PetscLibType, sf::PetscSF, type::String)
-    error("PetscSFSetType: no generated method for these argument types")
+    throw(MethodError(PetscSFSetType, (petsclib, sf, type)))
 end
 
 @for_petsc function PetscSFSetType(petsclib::$UnionPetscLib, sf::PetscSF, type::String )
@@ -1666,7 +1666,7 @@ See also: `PetscSF`, `PetscSFType`, `PetscSFSetFromOptions()`, `PetscSFSetType()
 $(_doc_external("PetscSF/PetscSFSetUp"))
 """
 function PetscSFSetUp(petsclib::PetscLibType, sf::PetscSF)
-    error("PetscSFSetUp: no generated method for these argument types")
+    throw(MethodError(PetscSFSetUp, (petsclib, sf)))
 end
 
 @for_petsc function PetscSFSetUp(petsclib::$UnionPetscLib, sf::PetscSF )
@@ -1700,7 +1700,7 @@ See also: `PetscSF`, `PetscSFGetRootRanks()`
 $(_doc_external("PetscSF/PetscSFSetUpRanks"))
 """
 function PetscSFSetUpRanks(petsclib::PetscLibType, sf::PetscSF, dgroup::MPI_Group)
-    error("PetscSFSetUpRanks: no generated method for these argument types")
+    throw(MethodError(PetscSFSetUpRanks, (petsclib, sf, dgroup)))
 end
 
 @for_petsc function PetscSFSetUpRanks(petsclib::$UnionPetscLib, sf::PetscSF, dgroup::MPI_Group )
@@ -1734,7 +1734,7 @@ See also: `PetscSF`, `PetscViewer`, `PetscSFCreate()`, `PetscSFSetGraph()`
 $(_doc_external("PetscSF/PetscSFView"))
 """
 function PetscSFView(petsclib::PetscLibType, sf::PetscSF, viewer::PetscViewer)
-    error("PetscSFView: no generated method for these argument types")
+    throw(MethodError(PetscSFView, (petsclib, sf, viewer)))
 end
 
 @for_petsc function PetscSFView(petsclib::$UnionPetscLib, sf::PetscSF, viewer::PetscViewer )
@@ -1772,7 +1772,7 @@ See also: `PetscSF`, `PetscSFView`, `PetscObjectViewFromOptions()`, `PetscSFCrea
 $(_doc_external("PetscSF/PetscSFViewFromOptions"))
 """
 function PetscSFViewFromOptions(petsclib::PetscLibType, A::PetscSF, obj, name::String)
-    error("PetscSFViewFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscSFViewFromOptions, (petsclib, A, obj, name)))
 end
 
 @for_petsc function PetscSFViewFromOptions(petsclib::$UnionPetscLib, A::PetscSF, obj, name::String )
@@ -1808,7 +1808,7 @@ See also: `PetscSF`, `PETSCSFWINDOW`, `PetscSFSetFromOptions()`, `PetscSFWindowS
 $(_doc_external("PetscSF/PetscSFWindowGetFlavorType"))
 """
 function PetscSFWindowGetFlavorType(petsclib::PetscLibType, sf::PetscSF)
-    error("PetscSFWindowGetFlavorType: no generated method for these argument types")
+    throw(MethodError(PetscSFWindowGetFlavorType, (petsclib, sf)))
 end
 
 @for_petsc function PetscSFWindowGetFlavorType(petsclib::$UnionPetscLib, sf::PetscSF )
@@ -1846,7 +1846,7 @@ See also: `PetscSF`, `PETSCSFWINDOW`, `PetscSFSetFromOptions()`, `PetscSFWindowS
 $(_doc_external("PetscSF/PetscSFWindowGetInfo"))
 """
 function PetscSFWindowGetInfo(petsclib::PetscLibType, sf::PetscSF)
-    error("PetscSFWindowGetInfo: no generated method for these argument types")
+    throw(MethodError(PetscSFWindowGetInfo, (petsclib, sf)))
 end
 
 @for_petsc function PetscSFWindowGetInfo(petsclib::$UnionPetscLib, sf::PetscSF )
@@ -1884,7 +1884,7 @@ See also: `PetscSF`, `PETSCSFWINDOW`, `PetscSFSetFromOptions()`, `PetscSFWindowS
 $(_doc_external("PetscSF/PetscSFWindowGetSyncType"))
 """
 function PetscSFWindowGetSyncType(petsclib::PetscLibType, sf::PetscSF)
-    error("PetscSFWindowGetSyncType: no generated method for these argument types")
+    throw(MethodError(PetscSFWindowGetSyncType, (petsclib, sf)))
 end
 
 @for_petsc function PetscSFWindowGetSyncType(petsclib::$UnionPetscLib, sf::PetscSF )
@@ -1923,7 +1923,7 @@ See also: `PetscSF`, `PETSCSFWINDOW`, `PetscSFSetFromOptions()`, `PetscSFWindowG
 $(_doc_external("PetscSF/PetscSFWindowSetFlavorType"))
 """
 function PetscSFWindowSetFlavorType(petsclib::PetscLibType, sf::PetscSF, flavor::PetscSFWindowFlavorType)
-    error("PetscSFWindowSetFlavorType: no generated method for these argument types")
+    throw(MethodError(PetscSFWindowSetFlavorType, (petsclib, sf, flavor)))
 end
 
 @for_petsc function PetscSFWindowSetFlavorType(petsclib::$UnionPetscLib, sf::PetscSF, flavor::PetscSFWindowFlavorType )
@@ -1957,7 +1957,7 @@ See also: `PetscSF`, `PETSCSFWINDOW`, `PetscSFSetFromOptions()`, `PetscSFWindowG
 $(_doc_external("PetscSF/PetscSFWindowSetInfo"))
 """
 function PetscSFWindowSetInfo(petsclib::PetscLibType, sf::PetscSF, info::MPI_Info)
-    error("PetscSFWindowSetInfo: no generated method for these argument types")
+    throw(MethodError(PetscSFWindowSetInfo, (petsclib, sf, info)))
 end
 
 @for_petsc function PetscSFWindowSetInfo(petsclib::$UnionPetscLib, sf::PetscSF, info::MPI_Info )
@@ -1994,7 +1994,7 @@ See also: `PetscSF`, `PETSCSFWINDOW`, `PetscSFSetFromOptions()`, `PetscSFWindowG
 $(_doc_external("PetscSF/PetscSFWindowSetSyncType"))
 """
 function PetscSFWindowSetSyncType(petsclib::PetscLibType, sf::PetscSF, sync::PetscSFWindowSyncType)
-    error("PetscSFWindowSetSyncType: no generated method for these argument types")
+    throw(MethodError(PetscSFWindowSetSyncType, (petsclib, sf, sync)))
 end
 
 @for_petsc function PetscSFWindowSetSyncType(petsclib::$UnionPetscLib, sf::PetscSF, sync::PetscSFWindowSyncType )

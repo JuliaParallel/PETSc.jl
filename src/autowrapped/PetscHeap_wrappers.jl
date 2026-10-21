@@ -17,7 +17,7 @@ See also: `PetscHeap`, `PetscHeapCreate()`, `PetscHeapPop()`, `PetscHeapPeek()`,
 $(_doc_external("Mat/PetscHeapAdd"))
 """
 function PetscHeapAdd(petsclib::PetscLibType, h::PetscHeap, id::Integer, val::Integer)
-    error("PetscHeapAdd: no generated method for these argument types")
+    throw(MethodError(PetscHeapAdd, (petsclib, h, id, val)))
 end
 
 @for_petsc function PetscHeapAdd(petsclib::$UnionPetscLib, h::PetscHeap, id::$PetscInt, val::$PetscInt )
@@ -53,7 +53,7 @@ See also: `PetscHeap`, `PetscHeapAdd()`, `PetscHeapPop()`, `PetscHeapPeek()`, `P
 $(_doc_external("Mat/PetscHeapCreate"))
 """
 function PetscHeapCreate(petsclib::PetscLibType, maxsize::Integer)
-    error("PetscHeapCreate: no generated method for these argument types")
+    throw(MethodError(PetscHeapCreate, (petsclib, maxsize)))
 end
 
 @for_petsc function PetscHeapCreate(petsclib::$UnionPetscLib, maxsize::$PetscInt )
@@ -88,7 +88,7 @@ See also: `PetscHeap`, `PetscHeapCreate()`
 $(_doc_external("Mat/PetscHeapDestroy"))
 """
 function PetscHeapDestroy(petsclib::PetscLibType, heap::Union{PetscHeap, Ref{PetscHeap}})
-    error("PetscHeapDestroy: no generated method for these argument types")
+    throw(MethodError(PetscHeapDestroy, (petsclib, heap)))
 end
 
 @for_petsc function PetscHeapDestroy(petsclib::$UnionPetscLib, heap::Union{PetscHeap, Ref{PetscHeap}} )
@@ -126,7 +126,7 @@ See also: `PetscHeap`, `PetscHeapCreate()`, `PetscHeapAdd()`, `PetscHeapPop()`, 
 $(_doc_external("Mat/PetscHeapPeek"))
 """
 function PetscHeapPeek(petsclib::PetscLibType, h::PetscHeap)
-    error("PetscHeapPeek: no generated method for these argument types")
+    throw(MethodError(PetscHeapPeek, (petsclib, h)))
 end
 
 @for_petsc function PetscHeapPeek(petsclib::$UnionPetscLib, h::PetscHeap )
@@ -167,7 +167,7 @@ See also: `PetscHeap`, `PetscHeapCreate()`, `PetscHeapAdd()`, `PetscHeapPeek()`,
 $(_doc_external("Mat/PetscHeapPop"))
 """
 function PetscHeapPop(petsclib::PetscLibType, h::PetscHeap)
-    error("PetscHeapPop: no generated method for these argument types")
+    throw(MethodError(PetscHeapPop, (petsclib, h)))
 end
 
 @for_petsc function PetscHeapPop(petsclib::$UnionPetscLib, h::PetscHeap )
@@ -206,7 +206,7 @@ See also: `PetscHeap`, `PetscHeapCreate()`, `PetscHeapAdd()`, `PetscHeapUnstash(
 $(_doc_external("Mat/PetscHeapStash"))
 """
 function PetscHeapStash(petsclib::PetscLibType, h::PetscHeap, id::Integer, val::Integer)
-    error("PetscHeapStash: no generated method for these argument types")
+    throw(MethodError(PetscHeapStash, (petsclib, h, id, val)))
 end
 
 @for_petsc function PetscHeapStash(petsclib::$UnionPetscLib, h::PetscHeap, id::$PetscInt, val::$PetscInt )
@@ -239,7 +239,7 @@ See also: `PetscHeap`, `PetscHeapCreate()`, `PetscHeapAdd()`, `PetscHeapStash()`
 $(_doc_external("Mat/PetscHeapUnstash"))
 """
 function PetscHeapUnstash(petsclib::PetscLibType, h::PetscHeap)
-    error("PetscHeapUnstash: no generated method for these argument types")
+    throw(MethodError(PetscHeapUnstash, (petsclib, h)))
 end
 
 @for_petsc function PetscHeapUnstash(petsclib::$UnionPetscLib, h::PetscHeap )
@@ -273,7 +273,7 @@ See also: `PetscHeap`, `PetscHeapCreate()`, `PetscHeapAdd()`, `PetscHeapPop()`
 $(_doc_external("Mat/PetscHeapView"))
 """
 function PetscHeapView(petsclib::PetscLibType, h::PetscHeap, viewer::PetscViewer)
-    error("PetscHeapView: no generated method for these argument types")
+    throw(MethodError(PetscHeapView, (petsclib, h, viewer)))
 end
 
 @for_petsc function PetscHeapView(petsclib::$UnionPetscLib, h::PetscHeap, viewer::PetscViewer )

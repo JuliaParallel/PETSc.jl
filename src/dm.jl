@@ -182,14 +182,8 @@ Does nothing on a DM that only borrows its handle: see [`owns`](@ref).
 # External Links
 $(doc_external("DM/DMDestroy"))
 """
-function destroy!(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
-    owns(dm) || return nothing
-    if isdestroyable(dm, PetscLib)
-        LibPETSc.DMDestroy(PetscLib, dm)
-    end
-    dm.ptr = C_NULL
-    return nothing
-end
+destroy!(dm::AbstractPetscDM{PetscLib}) where {PetscLib} =
+    destroy_handle!(LibPETSc.DMDestroy, dm, PetscLib)
 
 
 

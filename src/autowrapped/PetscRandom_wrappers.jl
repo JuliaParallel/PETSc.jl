@@ -20,7 +20,7 @@ See also: `PetscRandomSetType()`, `PetscRandomGetValue()`, `PetscRandomGetValueR
 $(_doc_external("Sys/PetscRandomCreate"))
 """
 function PetscRandomCreate(petsclib::PetscLibType, comm::MPI_Comm)
-    error("PetscRandomCreate: no generated method for these argument types")
+    throw(MethodError(PetscRandomCreate, (petsclib, comm)))
 end
 
 @for_petsc function PetscRandomCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
@@ -55,7 +55,7 @@ See also: `PetscRandom`, `PetscRandomGetValue()`, `PetscRandomCreate()`, `VecSet
 $(_doc_external("Sys/PetscRandomDestroy"))
 """
 function PetscRandomDestroy(petsclib::PetscLibType, r::Union{PetscRandom, Ref{PetscRandom}})
-    error("PetscRandomDestroy: no generated method for these argument types")
+    throw(MethodError(PetscRandomDestroy, (petsclib, r)))
 end
 
 @for_petsc function PetscRandomDestroy(petsclib::$UnionPetscLib, r::Union{PetscRandom, Ref{PetscRandom}} )
@@ -85,7 +85,7 @@ See also: `PetscFinalize()`
 $(_doc_external("Sys/PetscRandomFinalizePackage"))
 """
 function PetscRandomFinalizePackage(petsclib::PetscLibType)
-    error("PetscRandomFinalizePackage: no generated method for these argument types")
+    throw(MethodError(PetscRandomFinalizePackage, (petsclib, )))
 end
 
 @for_petsc function PetscRandomFinalizePackage(petsclib::$UnionPetscLib)
@@ -122,7 +122,7 @@ See also: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomSetInterval()`
 $(_doc_external("Sys/PetscRandomGetInterval"))
 """
 function PetscRandomGetInterval(petsclib::PetscLibType, r::PetscRandom)
-    error("PetscRandomGetInterval: no generated method for these argument types")
+    throw(MethodError(PetscRandomGetInterval, (petsclib, r)))
 end
 
 @for_petsc function PetscRandomGetInterval(petsclib::$UnionPetscLib, r::PetscRandom )
@@ -162,7 +162,7 @@ See also: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomSetSeed()`, `PetscRa
 $(_doc_external("Sys/PetscRandomGetSeed"))
 """
 function PetscRandomGetSeed(petsclib::PetscLibType, r::PetscRandom)
-    error("PetscRandomGetSeed: no generated method for these argument types")
+    throw(MethodError(PetscRandomGetSeed, (petsclib, r)))
 end
 
 @for_petsc function PetscRandomGetSeed(petsclib::$UnionPetscLib, r::PetscRandom )
@@ -200,7 +200,7 @@ See also: `PetscRandom`, `PetscRandomType`, `PetscRandomSetType()`, `PetscRandom
 $(_doc_external("Sys/PetscRandomGetType"))
 """
 function PetscRandomGetType(petsclib::PetscLibType, rnd::PetscRandom)
-    error("PetscRandomGetType: no generated method for these argument types")
+    throw(MethodError(PetscRandomGetType, (petsclib, rnd)))
 end
 
 @for_petsc function PetscRandomGetType(petsclib::$UnionPetscLib, rnd::PetscRandom )
@@ -239,7 +239,7 @@ See also: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomDestroy()`, `VecSetR
 $(_doc_external("Sys/PetscRandomGetValue"))
 """
 function PetscRandomGetValue(petsclib::PetscLibType, r::PetscRandom)
-    error("PetscRandomGetValue: no generated method for these argument types")
+    throw(MethodError(PetscRandomGetValue, (petsclib, r)))
 end
 
 @for_petsc function PetscRandomGetValue(petsclib::$UnionPetscLib, r::PetscRandom )
@@ -278,7 +278,7 @@ See also: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomDestroy()`, `VecSetR
 $(_doc_external("Sys/PetscRandomGetValueReal"))
 """
 function PetscRandomGetValueReal(petsclib::PetscLibType, r::PetscRandom)
-    error("PetscRandomGetValueReal: no generated method for these argument types")
+    throw(MethodError(PetscRandomGetValueReal, (petsclib, r)))
 end
 
 @for_petsc function PetscRandomGetValueReal(petsclib::$UnionPetscLib, r::PetscRandom )
@@ -318,7 +318,7 @@ See also: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomDestroy()`, `VecSetR
 $(_doc_external("Sys/PetscRandomGetValues"))
 """
 function PetscRandomGetValues(petsclib::PetscLibType, r::PetscRandom, n::Integer)
-    error("PetscRandomGetValues: no generated method for these argument types")
+    throw(MethodError(PetscRandomGetValues, (petsclib, r, n)))
 end
 
 @for_petsc function PetscRandomGetValues(petsclib::$UnionPetscLib, r::PetscRandom, n::$PetscInt )
@@ -358,7 +358,7 @@ See also: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomDestroy()`, `VecSetR
 $(_doc_external("Sys/PetscRandomGetValuesReal"))
 """
 function PetscRandomGetValuesReal(petsclib::PetscLibType, r::PetscRandom, n::Integer)
-    error("PetscRandomGetValuesReal: no generated method for these argument types")
+    throw(MethodError(PetscRandomGetValuesReal, (petsclib, r, n)))
 end
 
 @for_petsc function PetscRandomGetValuesReal(petsclib::$UnionPetscLib, r::PetscRandom, n::$PetscInt )
@@ -390,7 +390,7 @@ See also: `PetscInitialize()`
 $(_doc_external("Sys/PetscRandomInitializePackage"))
 """
 function PetscRandomInitializePackage(petsclib::PetscLibType)
-    error("PetscRandomInitializePackage: no generated method for these argument types")
+    throw(MethodError(PetscRandomInitializePackage, (petsclib, )))
 end
 
 @for_petsc function PetscRandomInitializePackage(petsclib::$UnionPetscLib)
@@ -423,7 +423,7 @@ See also: `PetscRandom`, `PetscRandomRegisterAll()`, `PetscRandomRegisterDestroy
 $(_doc_external("Sys/PetscRandomRegister"))
 """
 function PetscRandomRegister(petsclib::PetscLibType, sname::String, fnc::external)
-    error("PetscRandomRegister: no generated method for these argument types")
+    throw(MethodError(PetscRandomRegister, (petsclib, sname, fnc)))
 end
 
 @for_petsc function PetscRandomRegister(petsclib::$UnionPetscLib, sname::String, fnc::external )
@@ -456,7 +456,7 @@ See also: `PetscRandomCreate()`, `PetscRandomGetSeed()`, `PetscRandomSetSeed()`
 $(_doc_external("Sys/PetscRandomSeed"))
 """
 function PetscRandomSeed(petsclib::PetscLibType, r::PetscRandom)
-    error("PetscRandomSeed: no generated method for these argument types")
+    throw(MethodError(PetscRandomSeed, (petsclib, r)))
 end
 
 @for_petsc function PetscRandomSeed(petsclib::$UnionPetscLib, r::PetscRandom )
@@ -494,7 +494,7 @@ See also: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomSetType()`
 $(_doc_external("Sys/PetscRandomSetFromOptions"))
 """
 function PetscRandomSetFromOptions(petsclib::PetscLibType, rnd::PetscRandom)
-    error("PetscRandomSetFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscRandomSetFromOptions, (petsclib, rnd)))
 end
 
 @for_petsc function PetscRandomSetFromOptions(petsclib::$UnionPetscLib, rnd::PetscRandom )
@@ -530,7 +530,7 @@ See also: `PetscRandomCreate()`, `PetscRandomGetInterval()`
 $(_doc_external("Sys/PetscRandomSetInterval"))
 """
 function PetscRandomSetInterval(petsclib::PetscLibType, r::PetscRandom, low::Number, high::Number)
-    error("PetscRandomSetInterval: no generated method for these argument types")
+    throw(MethodError(PetscRandomSetInterval, (petsclib, r, low, high)))
 end
 
 @for_petsc function PetscRandomSetInterval(petsclib::$UnionPetscLib, r::PetscRandom, low::$PetscScalar, high::$PetscScalar )
@@ -565,7 +565,7 @@ See also: `PetscRandom`, `PetscRandomSetFromOptions()`
 $(_doc_external("Sys/PetscRandomSetOptionsPrefix"))
 """
 function PetscRandomSetOptionsPrefix(petsclib::PetscLibType, r::PetscRandom, prefix::String)
-    error("PetscRandomSetOptionsPrefix: no generated method for these argument types")
+    throw(MethodError(PetscRandomSetOptionsPrefix, (petsclib, r, prefix)))
 end
 
 @for_petsc function PetscRandomSetOptionsPrefix(petsclib::$UnionPetscLib, r::PetscRandom, prefix::String )
@@ -599,7 +599,7 @@ See also: `PetscRandom`, `PetscRandomCreate()`, `PetscRandomGetSeed()`, `PetscRa
 $(_doc_external("Sys/PetscRandomSetSeed"))
 """
 function PetscRandomSetSeed(petsclib::PetscLibType, r::PetscRandom, seed::PetscInt64)
-    error("PetscRandomSetSeed: no generated method for these argument types")
+    throw(MethodError(PetscRandomSetSeed, (petsclib, r, seed)))
 end
 
 @for_petsc function PetscRandomSetSeed(petsclib::$UnionPetscLib, r::PetscRandom, seed::$PetscInt64 )
@@ -636,7 +636,7 @@ See also: `PetscRandom`, `PetscRandomType`, `PetscRandomGetType()`, `PetscRandom
 $(_doc_external("Sys/PetscRandomSetType"))
 """
 function PetscRandomSetType(petsclib::PetscLibType, rnd::PetscRandom, type::String)
-    error("PetscRandomSetType: no generated method for these argument types")
+    throw(MethodError(PetscRandomSetType, (petsclib, rnd, type)))
 end
 
 @for_petsc function PetscRandomSetType(petsclib::$UnionPetscLib, rnd::PetscRandom, type::String )
@@ -670,7 +670,7 @@ See also: `PetscRandom`, `PetscRealView()`, `PetscScalarView()`, `PetscIntView()
 $(_doc_external("Sys/PetscRandomView"))
 """
 function PetscRandomView(petsclib::PetscLibType, rnd::PetscRandom, viewer::PetscViewer)
-    error("PetscRandomView: no generated method for these argument types")
+    throw(MethodError(PetscRandomView, (petsclib, rnd, viewer)))
 end
 
 @for_petsc function PetscRandomView(petsclib::$UnionPetscLib, rnd::PetscRandom, viewer::PetscViewer )
@@ -708,7 +708,7 @@ See also: `PetscRandom`, `PetscRandomView`, `PetscObjectViewFromOptions()`, `Pet
 $(_doc_external("Sys/PetscRandomViewFromOptions"))
 """
 function PetscRandomViewFromOptions(petsclib::PetscLibType, A::PetscRandom, obj, name::String)
-    error("PetscRandomViewFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscRandomViewFromOptions, (petsclib, A, obj, name)))
 end
 
 @for_petsc function PetscRandomViewFromOptions(petsclib::$UnionPetscLib, A::PetscRandom, obj, name::String )

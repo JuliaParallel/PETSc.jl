@@ -5,7 +5,7 @@
 $(_doc_external("Sys/PetscDeviceConfigure"))
 """
 function PetscDeviceConfigure(petsclib::PetscLibType, device::PetscDevice)
-    error("PetscDeviceConfigure: no generated method for these argument types")
+    throw(MethodError(PetscDeviceConfigure, (petsclib, device)))
 end
 
 @for_petsc function PetscDeviceConfigure(petsclib::$UnionPetscLib, device::PetscDevice )
@@ -28,7 +28,7 @@ end
 $(_doc_external("Sys/PetscDeviceContextCreate"))
 """
 function PetscDeviceContextCreate(petsclib::PetscLibType)
-    error("PetscDeviceContextCreate: no generated method for these argument types")
+    throw(MethodError(PetscDeviceContextCreate, (petsclib, )))
 end
 
 @for_petsc function PetscDeviceContextCreate(petsclib::$UnionPetscLib)
@@ -53,7 +53,7 @@ end
 $(_doc_external("Sys/PetscDeviceContextDestroy"))
 """
 function PetscDeviceContextDestroy(petsclib::PetscLibType, dctx::Union{PetscDeviceContext, Ref{PetscDeviceContext}})
-    error("PetscDeviceContextDestroy: no generated method for these argument types")
+    throw(MethodError(PetscDeviceContextDestroy, (petsclib, dctx)))
 end
 
 @for_petsc function PetscDeviceContextDestroy(petsclib::$UnionPetscLib, dctx::Union{PetscDeviceContext, Ref{PetscDeviceContext}} )
@@ -77,7 +77,7 @@ end
 $(_doc_external("Sys/PetscDeviceContextDuplicate"))
 """
 function PetscDeviceContextDuplicate(petsclib::PetscLibType, dctx::PetscDeviceContext)
-    error("PetscDeviceContextDuplicate: no generated method for these argument types")
+    throw(MethodError(PetscDeviceContextDuplicate, (petsclib, dctx)))
 end
 
 @for_petsc function PetscDeviceContextDuplicate(petsclib::$UnionPetscLib, dctx::PetscDeviceContext )
@@ -102,7 +102,7 @@ end
 $(_doc_external("Sys/PetscDeviceContextFork"))
 """
 function PetscDeviceContextFork(petsclib::PetscLibType, dctx::PetscDeviceContext, n::Integer, dsub::PetscDeviceContext)
-    error("PetscDeviceContextFork: no generated method for these argument types")
+    throw(MethodError(PetscDeviceContextFork, (petsclib, dctx, n, dsub)))
 end
 
 @for_petsc function PetscDeviceContextFork(petsclib::$UnionPetscLib, dctx::PetscDeviceContext, n::$PetscInt, dsub::PetscDeviceContext )
@@ -125,7 +125,7 @@ end
 $(_doc_external("Sys/PetscDeviceContextForkWithStreamType"))
 """
 function PetscDeviceContextForkWithStreamType(petsclib::PetscLibType, dctx::PetscDeviceContext, stype::PetscStreamType, n::Integer, dsub::PetscDeviceContext)
-    error("PetscDeviceContextForkWithStreamType: no generated method for these argument types")
+    throw(MethodError(PetscDeviceContextForkWithStreamType, (petsclib, dctx, stype, n, dsub)))
 end
 
 @for_petsc function PetscDeviceContextForkWithStreamType(petsclib::$UnionPetscLib, dctx::PetscDeviceContext, stype::PetscStreamType, n::$PetscInt, dsub::PetscDeviceContext )
@@ -148,7 +148,7 @@ end
 $(_doc_external("Sys/PetscDeviceContextGetCurrentContext"))
 """
 function PetscDeviceContextGetCurrentContext(petsclib::PetscLibType, dctx::PetscDeviceContext)
-    error("PetscDeviceContextGetCurrentContext: no generated method for these argument types")
+    throw(MethodError(PetscDeviceContextGetCurrentContext, (petsclib, dctx)))
 end
 
 @for_petsc function PetscDeviceContextGetCurrentContext(petsclib::$UnionPetscLib, dctx::PetscDeviceContext )
@@ -171,7 +171,7 @@ end
 $(_doc_external("Sys/PetscDeviceContextGetDevice"))
 """
 function PetscDeviceContextGetDevice(petsclib::PetscLibType, dctx::PetscDeviceContext, device::PetscDevice)
-    error("PetscDeviceContextGetDevice: no generated method for these argument types")
+    throw(MethodError(PetscDeviceContextGetDevice, (petsclib, dctx, device)))
 end
 
 @for_petsc function PetscDeviceContextGetDevice(petsclib::$UnionPetscLib, dctx::PetscDeviceContext, device::PetscDevice )
@@ -194,7 +194,7 @@ end
 $(_doc_external("Sys/PetscDeviceContextGetDeviceType"))
 """
 function PetscDeviceContextGetDeviceType(petsclib::PetscLibType, dctx::PetscDeviceContext)
-    error("PetscDeviceContextGetDeviceType: no generated method for these argument types")
+    throw(MethodError(PetscDeviceContextGetDeviceType, (petsclib, dctx)))
 end
 
 @for_petsc function PetscDeviceContextGetDeviceType(petsclib::$UnionPetscLib, dctx::PetscDeviceContext )
@@ -219,7 +219,7 @@ end
 $(_doc_external("Sys/PetscDeviceContextGetStreamHandle"))
 """
 function PetscDeviceContextGetStreamHandle(petsclib::PetscLibType, dctx::PetscDeviceContext)
-    error("PetscDeviceContextGetStreamHandle: no generated method for these argument types")
+    throw(MethodError(PetscDeviceContextGetStreamHandle, (petsclib, dctx)))
 end
 
 @for_petsc function PetscDeviceContextGetStreamHandle(petsclib::$UnionPetscLib, dctx::PetscDeviceContext )
@@ -244,7 +244,7 @@ end
 $(_doc_external("Sys/PetscDeviceContextGetStreamType"))
 """
 function PetscDeviceContextGetStreamType(petsclib::PetscLibType, dctx::PetscDeviceContext)
-    error("PetscDeviceContextGetStreamType: no generated method for these argument types")
+    throw(MethodError(PetscDeviceContextGetStreamType, (petsclib, dctx)))
 end
 
 @for_petsc function PetscDeviceContextGetStreamType(petsclib::$UnionPetscLib, dctx::PetscDeviceContext )
@@ -269,7 +269,7 @@ end
 $(_doc_external("Sys/PetscDeviceContextJoin"))
 """
 function PetscDeviceContextJoin(petsclib::PetscLibType, dctx::PetscDeviceContext, n::Integer, joinMode::PetscDeviceContextJoinMode, dsub::PetscDeviceContext)
-    error("PetscDeviceContextJoin: no generated method for these argument types")
+    throw(MethodError(PetscDeviceContextJoin, (petsclib, dctx, n, joinMode, dsub)))
 end
 
 @for_petsc function PetscDeviceContextJoin(petsclib::$UnionPetscLib, dctx::PetscDeviceContext, n::$PetscInt, joinMode::PetscDeviceContextJoinMode, dsub::PetscDeviceContext )
@@ -292,7 +292,7 @@ end
 $(_doc_external("Sys/PetscDeviceContextQueryIdle"))
 """
 function PetscDeviceContextQueryIdle(petsclib::PetscLibType, dctx::PetscDeviceContext)
-    error("PetscDeviceContextQueryIdle: no generated method for these argument types")
+    throw(MethodError(PetscDeviceContextQueryIdle, (petsclib, dctx)))
 end
 
 @for_petsc function PetscDeviceContextQueryIdle(petsclib::$UnionPetscLib, dctx::PetscDeviceContext )
@@ -317,7 +317,7 @@ end
 $(_doc_external("Sys/PetscDeviceContextSetCurrentContext"))
 """
 function PetscDeviceContextSetCurrentContext(petsclib::PetscLibType, dctx::PetscDeviceContext)
-    error("PetscDeviceContextSetCurrentContext: no generated method for these argument types")
+    throw(MethodError(PetscDeviceContextSetCurrentContext, (petsclib, dctx)))
 end
 
 @for_petsc function PetscDeviceContextSetCurrentContext(petsclib::$UnionPetscLib, dctx::PetscDeviceContext )
@@ -340,7 +340,7 @@ end
 $(_doc_external("Sys/PetscDeviceContextSetDevice"))
 """
 function PetscDeviceContextSetDevice(petsclib::PetscLibType, dctx::PetscDeviceContext, device::PetscDevice)
-    error("PetscDeviceContextSetDevice: no generated method for these argument types")
+    throw(MethodError(PetscDeviceContextSetDevice, (petsclib, dctx, device)))
 end
 
 @for_petsc function PetscDeviceContextSetDevice(petsclib::$UnionPetscLib, dctx::PetscDeviceContext, device::PetscDevice )
@@ -363,7 +363,7 @@ end
 $(_doc_external("Sys/PetscDeviceContextSetFromOptions"))
 """
 function PetscDeviceContextSetFromOptions(petsclib::PetscLibType, comm::MPI_Comm, dctx::PetscDeviceContext)
-    error("PetscDeviceContextSetFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscDeviceContextSetFromOptions, (petsclib, comm, dctx)))
 end
 
 @for_petsc function PetscDeviceContextSetFromOptions(petsclib::$UnionPetscLib, comm::MPI_Comm, dctx::PetscDeviceContext )
@@ -386,7 +386,7 @@ end
 $(_doc_external("Sys/PetscDeviceContextSetStreamType"))
 """
 function PetscDeviceContextSetStreamType(petsclib::PetscLibType, dctx::PetscDeviceContext, type::PetscStreamType)
-    error("PetscDeviceContextSetStreamType: no generated method for these argument types")
+    throw(MethodError(PetscDeviceContextSetStreamType, (petsclib, dctx, type)))
 end
 
 @for_petsc function PetscDeviceContextSetStreamType(petsclib::$UnionPetscLib, dctx::PetscDeviceContext, type::PetscStreamType )
@@ -409,7 +409,7 @@ end
 $(_doc_external("Sys/PetscDeviceContextSetUp"))
 """
 function PetscDeviceContextSetUp(petsclib::PetscLibType, dctx::PetscDeviceContext)
-    error("PetscDeviceContextSetUp: no generated method for these argument types")
+    throw(MethodError(PetscDeviceContextSetUp, (petsclib, dctx)))
 end
 
 @for_petsc function PetscDeviceContextSetUp(petsclib::$UnionPetscLib, dctx::PetscDeviceContext )
@@ -432,7 +432,7 @@ end
 $(_doc_external("Sys/PetscDeviceContextSynchronize"))
 """
 function PetscDeviceContextSynchronize(petsclib::PetscLibType, dctx::PetscDeviceContext)
-    error("PetscDeviceContextSynchronize: no generated method for these argument types")
+    throw(MethodError(PetscDeviceContextSynchronize, (petsclib, dctx)))
 end
 
 @for_petsc function PetscDeviceContextSynchronize(petsclib::$UnionPetscLib, dctx::PetscDeviceContext )
@@ -455,7 +455,7 @@ end
 $(_doc_external("Sys/PetscDeviceContextView"))
 """
 function PetscDeviceContextView(petsclib::PetscLibType, dctx::PetscDeviceContext, viewer::PetscViewer)
-    error("PetscDeviceContextView: no generated method for these argument types")
+    throw(MethodError(PetscDeviceContextView, (petsclib, dctx, viewer)))
 end
 
 @for_petsc function PetscDeviceContextView(petsclib::$UnionPetscLib, dctx::PetscDeviceContext, viewer::PetscViewer )
@@ -478,7 +478,7 @@ end
 $(_doc_external("Sys/PetscDeviceContextViewFromOptions"))
 """
 function PetscDeviceContextViewFromOptions(petsclib::PetscLibType, dctx::PetscDeviceContext, obj, name::String)
-    error("PetscDeviceContextViewFromOptions: no generated method for these argument types")
+    throw(MethodError(PetscDeviceContextViewFromOptions, (petsclib, dctx, obj, name)))
 end
 
 @for_petsc function PetscDeviceContextViewFromOptions(petsclib::$UnionPetscLib, dctx::PetscDeviceContext, obj, name::String )
@@ -501,7 +501,7 @@ end
 $(_doc_external("Sys/PetscDeviceContextWaitForContext"))
 """
 function PetscDeviceContextWaitForContext(petsclib::PetscLibType, dctxa::PetscDeviceContext, dctxb::PetscDeviceContext)
-    error("PetscDeviceContextWaitForContext: no generated method for these argument types")
+    throw(MethodError(PetscDeviceContextWaitForContext, (petsclib, dctxa, dctxb)))
 end
 
 @for_petsc function PetscDeviceContextWaitForContext(petsclib::$UnionPetscLib, dctxa::PetscDeviceContext, dctxb::PetscDeviceContext )
@@ -524,7 +524,7 @@ end
 $(_doc_external("Sys/PetscDeviceCreate"))
 """
 function PetscDeviceCreate(petsclib::PetscLibType, type::PetscDeviceType, devid::Integer)
-    error("PetscDeviceCreate: no generated method for these argument types")
+    throw(MethodError(PetscDeviceCreate, (petsclib, type, devid)))
 end
 
 @for_petsc function PetscDeviceCreate(petsclib::$UnionPetscLib, type::PetscDeviceType, devid::$PetscInt )
@@ -549,7 +549,7 @@ end
 $(_doc_external("Sys/PetscDeviceDestroy"))
 """
 function PetscDeviceDestroy(petsclib::PetscLibType, device::Union{PetscDevice, Ref{PetscDevice}})
-    error("PetscDeviceDestroy: no generated method for these argument types")
+    throw(MethodError(PetscDeviceDestroy, (petsclib, device)))
 end
 
 @for_petsc function PetscDeviceDestroy(petsclib::$UnionPetscLib, device::Union{PetscDevice, Ref{PetscDevice}} )
@@ -577,7 +577,7 @@ See also: `PetscFinalize()`, `PetscDeviceInitializePackage()`
 $(_doc_external("Sys/PetscDeviceFinalizePackage"))
 """
 function PetscDeviceFinalizePackage(petsclib::PetscLibType)
-    error("PetscDeviceFinalizePackage: no generated method for these argument types")
+    throw(MethodError(PetscDeviceFinalizePackage, (petsclib, )))
 end
 
 @for_petsc function PetscDeviceFinalizePackage(petsclib::$UnionPetscLib)
@@ -599,7 +599,7 @@ end
 $(_doc_external("Sys/PetscDeviceGetDeviceId"))
 """
 function PetscDeviceGetDeviceId(petsclib::PetscLibType, device::PetscDevice)
-    error("PetscDeviceGetDeviceId: no generated method for these argument types")
+    throw(MethodError(PetscDeviceGetDeviceId, (petsclib, device)))
 end
 
 @for_petsc function PetscDeviceGetDeviceId(petsclib::$UnionPetscLib, device::PetscDevice )
@@ -624,7 +624,7 @@ end
 $(_doc_external("Sys/PetscDeviceGetType"))
 """
 function PetscDeviceGetType(petsclib::PetscLibType, device::PetscDevice)
-    error("PetscDeviceGetType: no generated method for these argument types")
+    throw(MethodError(PetscDeviceGetType, (petsclib, device)))
 end
 
 @for_petsc function PetscDeviceGetType(petsclib::$UnionPetscLib, device::PetscDevice )
@@ -649,7 +649,7 @@ end
 $(_doc_external("Sys/PetscDeviceInitialize"))
 """
 function PetscDeviceInitialize(petsclib::PetscLibType, type::PetscDeviceType)
-    error("PetscDeviceInitialize: no generated method for these argument types")
+    throw(MethodError(PetscDeviceInitialize, (petsclib, type)))
 end
 
 @for_petsc function PetscDeviceInitialize(petsclib::$UnionPetscLib, type::PetscDeviceType )
@@ -680,7 +680,7 @@ See also: `PetscInitialize()`, `PetscDeviceFinalizePackage()`, `PetscDeviceConte
 $(_doc_external("Sys/PetscDeviceInitializePackage"))
 """
 function PetscDeviceInitializePackage(petsclib::PetscLibType)
-    error("PetscDeviceInitializePackage: no generated method for these argument types")
+    throw(MethodError(PetscDeviceInitializePackage, (petsclib, )))
 end
 
 @for_petsc function PetscDeviceInitializePackage(petsclib::$UnionPetscLib)
@@ -702,7 +702,7 @@ end
 $(_doc_external("Sys/PetscDeviceMemcpy"))
 """
 function PetscDeviceMemcpy(petsclib::PetscLibType, dctx::PetscDeviceContext, dest::Ptr{Cvoid}, src::Ptr{Cvoid}, n::Csize_t)
-    error("PetscDeviceMemcpy: no generated method for these argument types")
+    throw(MethodError(PetscDeviceMemcpy, (petsclib, dctx, dest, src, n)))
 end
 
 @for_petsc function PetscDeviceMemcpy(petsclib::$UnionPetscLib, dctx::PetscDeviceContext, dest::Ptr{Cvoid}, src::Ptr{Cvoid}, n::Csize_t )
@@ -725,7 +725,7 @@ end
 $(_doc_external("Sys/PetscDeviceMemset"))
 """
 function PetscDeviceMemset(petsclib::PetscLibType, dctx::PetscDeviceContext, ptr::Ptr{Cvoid}, v::Integer, n::Csize_t)
-    error("PetscDeviceMemset: no generated method for these argument types")
+    throw(MethodError(PetscDeviceMemset, (petsclib, dctx, ptr, v, n)))
 end
 
 @for_petsc function PetscDeviceMemset(petsclib::$UnionPetscLib, dctx::PetscDeviceContext, ptr::Ptr{Cvoid}, v::$PetscInt, n::Csize_t )
@@ -748,7 +748,7 @@ end
 $(_doc_external("Sys/PetscDeviceSetDefaultDeviceType"))
 """
 function PetscDeviceSetDefaultDeviceType(petsclib::PetscLibType, type::PetscDeviceType)
-    error("PetscDeviceSetDefaultDeviceType: no generated method for these argument types")
+    throw(MethodError(PetscDeviceSetDefaultDeviceType, (petsclib, type)))
 end
 
 @for_petsc function PetscDeviceSetDefaultDeviceType(petsclib::$UnionPetscLib, type::PetscDeviceType )
@@ -771,7 +771,7 @@ end
 $(_doc_external("Sys/PetscDeviceView"))
 """
 function PetscDeviceView(petsclib::PetscLibType, device::PetscDevice, viewer::PetscViewer)
-    error("PetscDeviceView: no generated method for these argument types")
+    throw(MethodError(PetscDeviceView, (petsclib, device, viewer)))
 end
 
 @for_petsc function PetscDeviceView(petsclib::$UnionPetscLib, device::PetscDevice, viewer::PetscViewer )

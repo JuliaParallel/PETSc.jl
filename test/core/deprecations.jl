@@ -309,4 +309,14 @@ const SHIMS = [
         foreach(PETSc.destroy!, (lazy, dm, da))
     end
 
+    @testset "add_coarsen_hook! with the hook first" begin
+        petsclib = PETSc.petsclibs[1]
+        PETSc.initialize(petsclib)
+        B = PETSc.DM_BOUNDARY_NONE
+        da = PETSc.DMDA(petsclib, PETSc.MPI.COMM_SELF, (B,), (9,), 1)
+        # PETSc skips a null hook, so the shim's forwarding is all this exercises
+        @test warns(() -> PETSc.add_coarsen_hook!(Ptr{Cvoid}(C_NULL), da)) === da
+        PETSc.destroy!(da)
+    end
+
 end

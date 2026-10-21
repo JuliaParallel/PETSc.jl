@@ -97,12 +97,7 @@ end
 @renamed dm_create_global_vec global_vec
 @renamed dm_create_local_vec local_vec
 @renamed dm_set_auxiliary_vec! set_auxiliary_vec!
-function dm_coarsen_hook_add!(args...; kwargs...)
-    @warn "dm_coarsen_hook_add! is deprecated, use add_coarsen_hook!" maxlog = 1
-    dm, hook, rest... = args
-    return add_coarsen_hook!(hook, dm, rest...; kwargs...)
-end
-
+@renamed dm_coarsen_hook_add! add_coarsen_hook!
 @renamed dm_copy_disc! copy_disc!
 @renamed dm_get_coarse coarse_dm
 @renamed fe_copy_quadrature! copy_quadrature!
@@ -363,6 +358,19 @@ function DMStag(
           "stencil_type)" maxlog = 1
     return DMStag(petsclib, comm, boundary_type, global_dim, dof_per_node;
                   stencil_width, stencil_type, kwargs...)
+end
+
+# add_coarsen_hook! with the hook first
+# The hooks are C pointers, which `do` cannot supply, so naming.md §8.1 does
+# not apply and the DM comes first. The hook-first order warns for one release.
+function add_coarsen_hook!(
+    coarsenhook::Ptr{Cvoid},
+    dm::AbstractPetscDM,
+    restricthook::Ptr{Cvoid} = C_NULL,
+)
+    @warn "add_coarsen_hook!(coarsenhook, dm, restricthook) is deprecated, use " *
+          "add_coarsen_hook!(dm, coarsenhook, restricthook)" maxlog = 1
+    return add_coarsen_hook!(dm, coarsenhook, restricthook)
 end
 
 

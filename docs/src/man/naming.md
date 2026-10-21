@@ -451,6 +451,8 @@ with_local_array!(v) do arr
 end
 ```
 
+The rule is for Julia functions. A C function pointer from `@cfunction` can't be a `do` block, so a setter that takes only pointers keeps the subject first: `set_residual!(ds, field, f0, f1)`, `add_coarsen_hook!(dm, hook)`.
+
 PETSc callbacks are where `do` earns its keep, and `setfunction!`, `setjacobian!` and `withlocalarray!` already take the callback first in v0.4.
 
 The order of a callback's own arguments, what it returns, and how its closure is kept alive are in [§18](#18.-Handles,-callbacks-and-their-state).

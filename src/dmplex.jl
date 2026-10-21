@@ -862,10 +862,11 @@ function set_auxiliary_vec!(dm::AbstractPetscDM{PetscLib}, aux_local) where {Pet
 end
 
 """
-    add_coarsen_hook!(coarsenhook, dm, restricthook = C_NULL)
+    add_coarsen_hook!(dm, coarsenhook, restricthook = C_NULL)
 
 Register a C callback invoked each time `dm` is coarsened (e.g. during FAS
-hierarchy setup).  The callback comes first (§8.1), so `dm` is argument 2.  The coarsenhook signature is:
+hierarchy setup).  The hooks are C function pointers, not Julia functions, so
+`dm` comes first as in `set_residual!`.  The coarsenhook signature is:
 ```
 hook(fine::Ptr{Cvoid}, coarse::Ptr{Cvoid}, ctx::Ptr{Cvoid}) → Cint
 ```
@@ -877,8 +878,8 @@ function add_coarsen_hook! end
 
 # Convenience: infer petsclib from the DM type parameter
 function add_coarsen_hook!(
-    coarsenhook::Ptr{Cvoid},
     dm::AbstractPetscDM{PL},
+    coarsenhook::Ptr{Cvoid},
     restricthook::Ptr{Cvoid} = C_NULL,
 ) where {PL}
     LibPETSc.DMCoarsenHookAdd(getlib(PL), dm, coarsenhook, restricthook, C_NULL)

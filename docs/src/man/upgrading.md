@@ -36,7 +36,7 @@ Everything else, including functions 0.4 exported such as `set_library!`, `libra
 
 These changes have no deprecation warning, because the name stayed the same or dispatch cannot tell the old call from the new one. Check your code for each of them.
 
-**Callback setters take the callback first.** 0.4 accepted both orders; 0.5 accepts only the callback-first one, which is the one `do` syntax needs. This applies to `set_function!`, `set_snes_jacobian!`, `set_convergence_test!`, `set_compute_rhs!`, `set_compute_operators!`, `set_rhs_function!`, `set_rhs_jacobian!`, `set_ifunction!`, `set_ijacobian!`, `set_monitor!` and `add_coarsen_hook!`.
+**Callback setters take the callback first.** 0.4 accepted both orders; 0.5 accepts only the callback-first one, which is the one `do` syntax needs. This applies to `set_function!`, `set_snes_jacobian!`, `set_convergence_test!`, `set_compute_rhs!`, `set_compute_operators!`, `set_rhs_function!`, `set_rhs_jacobian!`, `set_ifunction!`, `set_ijacobian!` and `set_monitor!`. `add_coarsen_hook!` takes C function pointers, which `do` can't supply, so it takes the DM first: `add_coarsen_hook!(dm, hook)`.
 
 ```julia
 # 0.4

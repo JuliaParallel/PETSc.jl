@@ -258,15 +258,6 @@ const CUSTOM_SHIMS = Dict{Symbol, String}(
         return save_vtk(vecs, filename; kwargs...)
     end
     """,
-
-    # `dm_coarsen_hook_add!(dm, hook, restrict)` puts the callback first (§8.1).
-    :dm_coarsen_hook_add! => """
-    function dm_coarsen_hook_add!(args...; kwargs...)
-        @warn "dm_coarsen_hook_add! is deprecated, use add_coarsen_hook!" maxlog = 1
-        dm, hook, rest... = args
-        return add_coarsen_hook!(hook, dm, rest...; kwargs...)
-    end
-    """,
 )
 
 # ---------------------------------------------------------------------------
@@ -584,6 +575,33 @@ const EXTRA_SHIMS = NamedTuple{(:name, :code, :test), Tuple{String, String, Stri
             lazy = warns(() -> PETSc.DMStag(dm, (1, 1); dmsetfromoptions = false, dmsetup = false))
             PETSc.setup!(lazy)
             foreach(PETSc.destroy!, (lazy, dm, da))
+        end
+        """,
+    ),
+    (
+        name = "add_coarsen_hook! with the hook first",
+        code = """
+        # The hooks are C pointers, which `do` cannot supply, so naming.md §8.1 does
+        # not apply and the DM comes first. The hook-first order warns for one release.
+        function add_coarsen_hook!(
+            coarsenhook::Ptr{Cvoid},
+            dm::AbstractPetscDM,
+            restricthook::Ptr{Cvoid} = C_NULL,
+        )
+            @warn "add_coarsen_hook!(coarsenhook, dm, restricthook) is deprecated, use " *
+                  "add_coarsen_hook!(dm, coarsenhook, restricthook)" maxlog = 1
+            return add_coarsen_hook!(dm, coarsenhook, restricthook)
+        end
+        """,
+        test = """
+        @testset "add_coarsen_hook! with the hook first" begin
+            petsclib = PETSc.petsclibs[1]
+            PETSc.initialize(petsclib)
+            B = PETSc.DM_BOUNDARY_NONE
+            da = PETSc.DMDA(petsclib, PETSc.MPI.COMM_SELF, (B,), (9,), 1)
+            # PETSc skips a null hook, so the shim's forwarding is all this exercises
+            @test warns(() -> PETSc.add_coarsen_hook!(Ptr{Cvoid}(C_NULL), da)) === da
+            PETSc.destroy!(da)
         end
         """,
     ),

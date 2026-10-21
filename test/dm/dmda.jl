@@ -601,4 +601,23 @@ end
     PETSc.finalize(petsclib)
 end
 
+const coarsen_hook_calls = Ref(0)
+count_coarsen_hook(::Ptr{Cvoid}, ::Ptr{Cvoid}, ::Ptr{Cvoid}) = (coarsen_hook_calls[] += 1; Cint(0))
+
+@testset "add_coarsen_hook!" begin
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    comm = MPI.COMM_SELF
+    da = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (9,), 1)
+    hook = @cfunction(count_coarsen_hook, Cint, (Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}))
+    @test PETSc.add_coarsen_hook!(da, hook) === da
+
+    # The hook runs once per coarsening
+    coarsen_hook_calls[] = 0
+    dac = PETSc.LibPETSc.DMCoarsen(petsclib, da, comm)
+    @test coarsen_hook_calls[] == 1
+    foreach(PETSc.destroy!, (dac, da))
+    PETSc.finalize(petsclib)
+end
+
 nothing

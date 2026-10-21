@@ -43,8 +43,8 @@ MPI.Initialized() || MPI.Init()
                     comm,
                     (boundary_type,),
                     (global_size,),
-                    dof_per_node,
-                    stencil_width;
+                    dof_per_node;
+                    stencil_width,
                     points_per_proc = (points_per_proc,),
                 )
 
@@ -146,7 +146,7 @@ end
                     comm,
                     (boundary_type_x, boundary_type_y),
                     (global_size_x, global_size_y),
-                    dof_per_node,
+                    dof_per_node;
                     stencil_width
                 )
 
@@ -250,7 +250,7 @@ end
                     comm,
                     (boundary_type_x, boundary_type_y, boundary_type_z),
                     (global_size_x, global_size_y, global_size_z),
-                    dof_per_node,
+                    dof_per_node;
                     stencil_width
                 )
 

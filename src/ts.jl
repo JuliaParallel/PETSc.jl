@@ -279,7 +279,7 @@ $(doc_external("TS/TSSetExactFinalTime"))
 function TS(
     petsclib::PetscLib,
     comm::MPI.Comm;
-    prefix::String = "",
+    prefix::AbstractString = "",
     exact_final_time::LibPETSc.TSExactFinalTimeOption = LibPETSc.TS_EXACTFINALTIME_MATCHSTEP,
     options_at::Symbol = :each_solve,
     options...,
@@ -290,7 +290,7 @@ function TS(
     ts = LibPETSc.TSCreate(petsclib, comm)
 
     if !isempty(prefix)
-        LibPETSc.TSSetOptionsPrefix(petsclib, ts, prefix)
+        LibPETSc.TSSetOptionsPrefix(petsclib, ts, String(prefix))
     end
 
     LibPETSc.TSSetExactFinalTime(petsclib, ts, exact_final_time)

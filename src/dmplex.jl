@@ -257,9 +257,9 @@ end
     DMPlex(
         petsclib::PetscLib,
         comm::MPI.Comm;
-        setfromoptions = true,
-        dmsetup        = false,
-        prefix         = "",
+        set_from_options = true,
+        setup            = false,
+        prefix           = "",
         options...,
     )
 
@@ -281,9 +281,9 @@ $(doc_external("DM/DMSetFromOptions"))
 function DMPlex(
     petsclib::PetscLib,
     comm::MPI.Comm;
-    setfromoptions = true,
-    dmsetup        = false,
-    prefix         = "",
+    set_from_options::Bool = true,
+    setup::Bool = false,
+    prefix::AbstractString = "",
     options...,
 ) where {PetscLib}
     check_initialized(getlib(PetscLib))
@@ -291,23 +291,7 @@ function DMPlex(
     dm = LibPETSc.DMCreate(petsclib, comm)
     LibPETSc.DMSetType(petsclib, dm, "plex")
     dm = DMPlex{PetscLib}(dm.ptr, getlib(PetscLib).age, true)
-
-    if !isempty(prefix)
-        LibPETSc.DMSetOptionsPrefix(petsclib, dm, prefix)
-    end
-
-    if setfromoptions
-        opts = PetscOptions(petsclib; options...)
-        with_options(opts) do
-            LibPETSc.DMSetFromOptions(petsclib, dm)
-        end
-    end
-
-    if dmsetup
-        setup!(dm)
-    end
-
-    return own_dm!(dm, comm)
+    return finish_dm!(dm, comm, options; prefix, set_from_options, setup)
 end
 
 """
@@ -323,8 +307,8 @@ end
         interpolate   = true,
         localize_height = 0,
         sparse_localize = false,
-        setfromoptions  = true,
-        dmsetup         = false,
+        set_from_options = true,
+        setup           = false,
         prefix          = "",
         options...,
     )
@@ -349,9 +333,9 @@ function DMPlex(
     interpolate      = true,
     localize_height  = 0,
     sparse_localize  = false,
-    setfromoptions   = true,
-    dmsetup          = false,
-    prefix           = "",
+    set_from_options::Bool = true,
+    setup::Bool      = false,
+    prefix::AbstractString = "",
     options...,
 ) where {PetscLib}
     check_initialized(getlib(PetscLib))
@@ -380,23 +364,7 @@ function DMPlex(
         LibPETSc.PetscBool(sparse_localize),
     )
     dm = DMPlex{PetscLib}(dm.ptr, getlib(PetscLib).age, true)
-
-    if !isempty(prefix)
-        LibPETSc.DMSetOptionsPrefix(petsclib, dm, prefix)
-    end
-
-    if setfromoptions
-        opts = PetscOptions(petsclib; options...)
-        with_options(opts) do
-            LibPETSc.DMSetFromOptions(petsclib, dm)
-        end
-    end
-
-    if dmsetup
-        setup!(dm)
-    end
-
-    return own_dm!(dm, comm)
+    return finish_dm!(dm, comm, options; prefix, set_from_options, setup)
 end
 
 

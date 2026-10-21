@@ -14,7 +14,7 @@ MPI.Initialized() || MPI.Init()
     comm = MPI.COMM_SELF
     LibPETSc = PETSc.LibPETSc
     none(n) = ntuple(_ -> PETSc.DM_BOUNDARY_NONE, n)
-    stag(n, dofs) = PETSc.DMStag(petsclib, comm, none(length(n)), n, dofs, 1)
+    stag(n, dofs) = PETSc.DMStag(petsclib, comm, none(length(n)), n, dofs; stencil_width = 1)
 
     @testset "views address the points stencil names" begin
         dm = stag((3, 2), (1, 1, 1))

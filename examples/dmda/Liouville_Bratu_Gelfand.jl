@@ -70,9 +70,9 @@ da = PETSc.DMDA(
     comm,
     bcs,                     # boundary conditions
     Nq,                      # Global grid size
-    1,                       # Number of DOF per node
-    1,                       # Stencil width
-    PETSc.DMDA_STENCIL_STAR; # Stencil type
+    1;                       # Number of DOF per node
+    stencil_width = 1,
+    stencil_type = PETSc.DMDA_STENCIL_STAR,
     opts...,
 )
 

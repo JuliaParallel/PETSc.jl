@@ -327,6 +327,44 @@ function project_field!(X, dm, time, U, funcs, mode)
     return project_field!(X, dm, time, U, funcs; mode)
 end
 
+# DMDA and DMStag with a positional stencil width
+# §9: the stencil width and type have defaults, so they are keywords. The
+# positional forms warn for one release (§17.2, "argument dropped"). The
+# renamed keywords `setfromoptions`/`dmsetup` are caught in `finish_dm!`.
+function DMDA(
+    petsclib::LibPETSc.PetscLibType,
+    comm::MPI.Comm,
+    boundary_type::Tuple,
+    global_dim::Tuple,
+    dof_per_node::Integer,
+    stencil_width::Integer,
+    stencil_type = :box;
+    kwargs...,
+)
+    @warn "DMDA(petsclib, comm, boundary, dims, dof, stencil_width, stencil_type) is " *
+          "deprecated, use DMDA(petsclib, comm, boundary, dims, dof; stencil_width, " *
+          "stencil_type)" maxlog = 1
+    return DMDA(petsclib, comm, boundary_type, global_dim, dof_per_node;
+                stencil_width, stencil_type = something(stencil_type, :box), kwargs...)
+end
+
+function DMStag(
+    petsclib::LibPETSc.PetscLibType,
+    comm::MPI.Comm,
+    boundary_type::Tuple,
+    global_dim::Tuple,
+    dof_per_node::Tuple,
+    stencil_width::Integer,
+    stencil_type = :box;
+    kwargs...,
+)
+    @warn "DMStag(petsclib, comm, boundary, dims, dof, stencil_width, stencil_type) is " *
+          "deprecated, use DMStag(petsclib, comm, boundary, dims, dof; stencil_width, " *
+          "stencil_type)" maxlog = 1
+    return DMStag(petsclib, comm, boundary_type, global_dim, dof_per_node;
+                  stencil_width, stencil_type, kwargs...)
+end
+
 
 # Renamed types: a `const` alias, so `isa` and dispatch keep working
 

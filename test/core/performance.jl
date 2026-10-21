@@ -22,7 +22,7 @@ MPI.Initialized() || MPI.Init()
     function cases(n)
         m = round(Int, sqrt(n))
         none2 = (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE)
-        dm = PETSc.DMStag(petsclib, comm, none2, (m, m), (0, 1, 1), 1)
+        dm = PETSc.DMStag(petsclib, comm, none2, (m, m), (0, 1, 1); stencil_width = 1)
         x = PETSc.PetscVec(petsclib, comm, rand(PetscScalar, n))
         y = PETSc.PetscVec(petsclib, comm, rand(PetscScalar, n))
         S = spdiagm(-1 => -ones(PetscScalar, n - 1), 0 => 2ones(PetscScalar, n),

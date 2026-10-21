@@ -25,9 +25,9 @@ xend =   1;
 dm  = PETSc.DMStag(petsclib, comm,
                             (PETSc.DM_BOUNDARY_NONE,),
                             (nx,),
-                            (1,1),
-                            1,
-                            PETSc.DMSTAG_STENCIL_BOX)
+                            (1,1);
+                            stencil_width = 1,
+                            stencil_type = PETSc.DMSTAG_STENCIL_BOX)
 
 # create uniform coordinates
 LibPETSc.DMStagSetUniformCoordinatesProduct(petsclib, dm, PetscReal(x0), PetscReal(xend), PetscReal(0.0), PetscReal(1.0), PetscReal(0.0), PetscReal(1.0))

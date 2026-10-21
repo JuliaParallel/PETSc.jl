@@ -55,7 +55,7 @@ const CONSTRUCTS = joinpath(dirname(@__DIR__), "fixtures", "constructs.jl")
                 mat = PETSc.PetscMat(petsclib, 10, 10, 3)
                 finalizer(m -> (destroy!(m); data), mat)
 
-                dm = PETSc.DMStag(petsclib, comm, bt, sz, 1, 1)
+                dm = PETSc.DMStag(petsclib, comm, bt, sz, 1; stencil_width = 1)
                 """,
             )
             close(io)

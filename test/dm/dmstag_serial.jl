@@ -24,9 +24,9 @@ MPI.Initialized() || MPI.Init()
                                 comm,
                                 (PETSc.DM_BOUNDARY_NONE,),
                                 (20,),
-                                (1,1),
-                                2,
-                                PETSc.DMSTAG_STENCIL_BOX;
+                                (1,1);
+                                stencil_width = 2,
+                                stencil_type = PETSc.DMSTAG_STENCIL_BOX,
                                 points_per_proc=([PetscInt(20)],))
 
         # Create 2D DMStag with new unified constructor
@@ -34,9 +34,9 @@ MPI.Initialized() || MPI.Init()
                                 comm,
                                 (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE),
                                 (20, 21),
-                                (1,1,1),
-                                2,
-                                PETSc.DMSTAG_STENCIL_BOX;
+                                (1,1,1);
+                                stencil_width = 2,
+                                stencil_type = PETSc.DMSTAG_STENCIL_BOX,
                                 processors=(1,1),
                                 points_per_proc=([PetscInt(20)],[PetscInt(21)]))
 
@@ -47,9 +47,9 @@ MPI.Initialized() || MPI.Init()
             comm,
             (PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE),
             (PetscInt(20),PetscInt(21),PetscInt(22)),    # global size
-            (PetscInt(1),PetscInt(1),PetscInt(1),PetscInt(2)),     # dof_per_node (4 in 3D)
-            PetscInt(1),             # stencil_width
-            PETSc.DMSTAG_STENCIL_BOX    # stencil type
+            (PetscInt(1),PetscInt(1),PetscInt(1),PetscInt(2));     # dof_per_node (4 in 3D)
+            stencil_width = PetscInt(1),             # stencil_width
+            stencil_type = PETSc.DMSTAG_STENCIL_BOX
         )        
 
         dmTo = PETSc.DMStag(
@@ -57,9 +57,9 @@ MPI.Initialized() || MPI.Init()
             comm,
             (PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE),
             (20,21,22),    # global size
-            (1,1,2,2),     # dof_per_node (4 in 3D)
-            1,             # stencil_width
-            PETSc.DMSTAG_STENCIL_BOX    # stencil type
+            (1,1,2,2);     # dof_per_node (4 in 3D)
+            stencil_width = 1,             # stencil_width
+            stencil_type = PETSc.DMSTAG_STENCIL_BOX
         )   
         @test size(dm_3D) == (20, 21, 22)
         
@@ -224,9 +224,9 @@ MPI.Initialized() || MPI.Init()
             comm,
             (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE),
             (20, 21, 22),               # global sizes
-            (1, 1, 1, 1),               # dof_per_node (vertex, edge, face, element)
-            2,                          # stencil width
-            PETSc.DMSTAG_STENCIL_BOX;   # stencil type
+            (1, 1, 1, 1);               # dof_per_node (vertex, edge, face, element)
+            stencil_width = 2,
+            stencil_type = PETSc.DMSTAG_STENCIL_BOX,
             processors = (1, 1, 1),
             points_per_proc = ([PetscInt(20)], [PetscInt(21)], [PetscInt(22)])
         )
@@ -265,9 +265,9 @@ MPI.Initialized() || MPI.Init()
             comm,
             (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE),
             (32, 32),            # global sizes
-            (1, 0, 0),           # dof_per_node (vertex, edge, element)
-            2,                   # stencil width
-            PETSc.DMSTAG_STENCIL_BOX;
+            (1, 0, 0);           # dof_per_node (vertex, edge, element)
+            stencil_width = 2,
+            stencil_type = PETSc.DMSTAG_STENCIL_BOX,
             processors = (1, 1),
             points_per_proc = ([PetscInt(32)], [PetscInt(32)])
         )
@@ -279,9 +279,9 @@ MPI.Initialized() || MPI.Init()
             comm,
             (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE),
             (16, 16),            # global sizes
-            (1, 0, 0),           # dof_per_node (vertex, edge, element)
-            2,                   # stencil width
-            PETSc.DMSTAG_STENCIL_BOX;
+            (1, 0, 0);           # dof_per_node (vertex, edge, element)
+            stencil_width = 2,
+            stencil_type = PETSc.DMSTAG_STENCIL_BOX,
             processors = (1, 1),
             points_per_proc = ([PetscInt(16)], [PetscInt(16)])
         )    
@@ -327,7 +327,7 @@ end
         # staggered Stokes layout: velocities on faces, pressure in cells
         for (bnd, n, dofs) in (((PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE), (4, 3), (0, 1, 1)),
                                (ntuple(_ -> PETSc.DM_BOUNDARY_NONE, 3), (3, 3, 2), (0, 0, 1, 1)))
-            dm = PETSc.DMStag(petsclib, comm, bnd, n, dofs, 1, PETSc.DMSTAG_STENCIL_BOX)
+            dm = PETSc.DMStag(petsclib, comm, bnd, n, dofs; stencil_width = 1, stencil_type = PETSc.DMSTAG_STENCIL_BOX)
             len, names, iss, dms = LibPETSc.DMCreateFieldDecomposition(petsclib, dm)
             @test len == 2
             @test names == ["face", "element"]
@@ -360,9 +360,9 @@ end
                 comm,
                 (PETSc.DM_BOUNDARY_PERIODIC,),
                 (20,),
-                (2,0),
-                2,
-                PETSc.DMSTAG_STENCIL_BOX)
+                (2,0);
+                stencil_width = 2,
+                stencil_type = PETSc.DMSTAG_STENCIL_BOX)
 
         @test LibPETSc.DMStagGetBoundaryTypes(petsclib, dm)[1]== PETSc.LibPETSc.DM_BOUNDARY_PERIODIC
         PETSc.destroy!(dm)
@@ -373,8 +373,8 @@ end
             comm,
             (PETSc.DM_BOUNDARY_NONE,),
             (20,),
-            (2,2),
-            2;
+            (2,2);
+            stencil_width = 2,
             points_per_proc = ([PetscInt(20)],),
         )
 
@@ -414,7 +414,7 @@ end
 
         ##
         # Create new struct and pass keyword arguments
-        dm_1D = PETSc.DMStag(petsclib,comm,(PETSc.DM_BOUNDARY_NONE,),(200,),(2,2),PetscInt(2); stag_grid_x=PetscInt(10));
+        dm_1D = PETSc.DMStag(petsclib,comm,(PETSc.DM_BOUNDARY_NONE,),(200,),(2,2);stencil_width = PetscInt(2), stag_grid_x=PetscInt(10));
        
         @test  LibPETSc.DMStagGetGlobalSizes(petsclib,dm_1D)[1] == 10
         @test LibPETSc.DMStagGetEntriesPerElement(petsclib, dm_1D)==4
@@ -431,8 +431,8 @@ end
             comm,
             (PETSc.DM_BOUNDARY_GHOSTED,),
             (200,),
-            (2,2),
-            2;
+            (2,2);
+            stencil_width = 2,
             stag_grid_x = PetscInt(10),
         )
 
@@ -480,9 +480,9 @@ end
             comm,
             (PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE),
             (20,21),    # global size
-            (1,1,1),    # dof_per_node (3 in 2D)
-            1,          # stencil_width
-            PETSc.DMSTAG_STENCIL_BOX    # stencil type
+            (1,1,1);    # dof_per_node (3 in 2D)
+            stencil_width = 1,          # stencil_width
+            stencil_type = PETSc.DMSTAG_STENCIL_BOX
         )
 
         @test LibPETSc.DMStagGetGlobalSizes(petsclib, dm_2D) == (20,21,0)
@@ -518,9 +518,9 @@ end
             comm,
             (PETSc.DM_BOUNDARY_NONE,),
             (200,),
-            (2,2),
-            1,
-            PETSc.DMSTAG_STENCIL_BOX,
+            (2,2);
+            stencil_width = 1,
+            stencil_type = PETSc.DMSTAG_STENCIL_BOX,
             stag_grid_x=PetscInt(10))
 
         @test LibPETSc.DMStagGetGlobalSizes(petsclib, dm_1D) == (10,0,0)
@@ -562,9 +562,9 @@ end
             comm,
             (PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE),
             (3,4),      # global size
-            (1,1,1),    # dof_per_node (3 in 2D)
-            1,          # stencil_width
-            PETSc.DMSTAG_STENCIL_BOX    # stencil type
+            (1,1,1);    # dof_per_node (3 in 2D)
+            stencil_width = 1,          # stencil_width
+            stencil_type = PETSc.DMSTAG_STENCIL_BOX
         )
 
         LibPETSc.DMStagSetUniformCoordinatesProduct(petsclib, dm_2D,PetscReal(1.),PetscReal(3.),PetscReal(10.),PetscReal(11.),PetscReal(0.),PetscReal(0.))
@@ -647,7 +647,7 @@ end
         PetscReal   = real(PetscScalar)
 
         # Converted from old DMStagCreate1d to new DMStag constructor
-        dm_1D = PETSc.DMStag(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (200,), (2, 2), 2;
+        dm_1D = PETSc.DMStag(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (200,), (2, 2); stencil_width = 2,
                   stag_grid_x = 10)
         #PETSc.setuniformcoordinates!(dm_1D, (0,), (10,))
         LibPETSc.DMStagSetUniformCoordinatesProduct(petsclib, dm_1D,PetscScalar(0.),PetscScalar(10.),PetscScalar(0.),PetscScalar(1.),PetscScalar(0.),PetscScalar(1.) )
@@ -692,9 +692,9 @@ end
             comm,
             (PETSc.DM_BOUNDARY_GHOSTED, PETSc.DM_BOUNDARY_GHOSTED),
             (10, 11),                        # global sizes
-            (dofVertex, dofEdge, dofCenter), # dof_per_node
-            stencilWidth,
-            PETSc.DMSTAG_STENCIL_BOX;
+            (dofVertex, dofEdge, dofCenter); # dof_per_node
+            stencil_width = stencilWidth,
+            stencil_type = PETSc.DMSTAG_STENCIL_BOX,
             processors = (PETSc.PETSC_DECIDE, PETSc.PETSC_DECIDE)
         )
 
@@ -775,7 +775,7 @@ end
         PetscInt    = PETSc.inttype(petsclib)
         
         # Test 1D with no ghost boundaries
-        dm_1D = PETSc.DMStag(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (10,), (2,2), 1, PETSc.DMSTAG_STENCIL_BOX)
+        dm_1D = PETSc.DMStag(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (10,), (2,2); stencil_width = 1, stencil_type = PETSc.DMSTAG_STENCIL_BOX)
         x_l_1D = PETSc.local_vec(dm_1D)
         x_l_1D .= 1:length(x_l_1D)
         
@@ -799,7 +799,7 @@ end
         # Test 2D with ghost boundaries
         dm_2D_ghost = PETSc.DMStag(petsclib, comm, 
                                    (PETSc.DM_BOUNDARY_GHOSTED, PETSc.DM_BOUNDARY_GHOSTED),
-                                   (4, 4), (1, 1, 1), 1, PETSc.DMSTAG_STENCIL_BOX)
+                                   (4, 4), (1, 1, 1); stencil_width = 1, stencil_type = PETSc.DMSTAG_STENCIL_BOX)
         x_g = PETSc.global_vec(dm_2D_ghost)
         x_g[1] = PetscScalar(42.0)
         x_g[5] = PetscScalar(99.0)
@@ -831,7 +831,7 @@ end
         # Test 2D with no ghost boundaries
         dm_2D_noghost = PETSc.DMStag(petsclib, comm,
                                      (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE),
-                                     (5, 6), (1, 1, 1), 1, PETSc.DMSTAG_STENCIL_BOX)
+                                     (5, 6), (1, 1, 1); stencil_width = 1, stencil_type = PETSc.DMSTAG_STENCIL_BOX)
         x_l_2D = PETSc.local_vec(dm_2D_noghost)
         x_l_2D .= 1:length(x_l_2D)
         
@@ -867,9 +867,9 @@ end
         dm_1D = PETSc.DMStag(petsclib, MPI.COMM_SELF,
                          (PETSc.DM_BOUNDARY_NONE,),
                          (nx,),
-                         (1, 1),  # dofVertex, dofElement
-                         1,
-                         PETSc.DMSTAG_STENCIL_BOX)
+                         (1, 1);  # dofVertex, dofElement
+                         stencil_width = 1,
+                         stencil_type = PETSc.DMSTAG_STENCIL_BOX)
         PETSc.set_uniform_coordinates!(dm_1D, (0.0,), (1.0,))
         
         x_l_1D = PETSc.local_vec(dm_1D)
@@ -902,9 +902,9 @@ end
         dm_2D_ghost = PETSc.DMStag(petsclib, MPI.COMM_SELF,
                          (PETSc.DM_BOUNDARY_GHOSTED, PETSc.DM_BOUNDARY_GHOSTED),
                          (nx, nz),
-                         (0, 1, 1),  # dofVertex, dofEdge, dofCenter
-                         1,
-                         PETSc.DMSTAG_STENCIL_BOX)
+                         (0, 1, 1);  # dofVertex, dofEdge, dofCenter
+                         stencil_width = 1,
+                         stencil_type = PETSc.DMSTAG_STENCIL_BOX)
         PETSc.set_uniform_coordinates!(dm_2D_ghost, (0.0, 0.0), (1.0, 1.0))
         
         x_l_2D_ghost = PETSc.local_vec(dm_2D_ghost)
@@ -938,9 +938,9 @@ end
         dm_2D_noghost = PETSc.DMStag(petsclib, MPI.COMM_SELF,
                          (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE),
                          (nx2, nz2),
-                         (0, 1, 1),
-                         1,
-                         PETSc.DMSTAG_STENCIL_BOX)
+                         (0, 1, 1);
+                         stencil_width = 1,
+                         stencil_type = PETSc.DMSTAG_STENCIL_BOX)
         PETSc.set_uniform_coordinates!(dm_2D_noghost, (0.0, 0.0), (2.0, 1.0))
         
         x_l_2D_noghost = PETSc.local_vec(dm_2D_noghost)

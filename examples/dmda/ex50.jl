@@ -131,9 +131,9 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
         comm,
         boundary_type,
         global_size,
-        dof_per_node,
+        dof_per_node;
         stencil_width,
-        stencil_type;
+        stencil_type,
         opts...,
     )
 

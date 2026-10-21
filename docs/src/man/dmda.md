@@ -18,9 +18,9 @@ da = DMDA(
     MPI.COMM_WORLD,
     (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE),  # boundary types
     (nx, ny),                                          # global dimensions
-    1,                                                 # degrees of freedom per node
-    1,                                                 # stencil width
-    PETSc.DMDA_STENCIL_STAR,                           # stencil type
+    1;                                                 # degrees of freedom per node
+    stencil_width = 1,
+    stencil_type = PETSc.DMDA_STENCIL_STAR,
 )
 
 da isa PETSc.DMDA{typeof(petsclib), 2}   # true: the flavour and the dimension

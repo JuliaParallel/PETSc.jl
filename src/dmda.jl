@@ -4,7 +4,6 @@ import .LibPETSc: AbstractPetscDM, PetscDM, CDM
 # it as a `Symbol` in the constructor examples. Both work: the Symbol is mapped
 # here, the enum passes through.
 stencil_type_enum(::Type{DMDAStencilType}, t::DMDAStencilType) = t
-stencil_type_enum(::Type{DMDAStencilType}, ::Nothing) = nothing
 function stencil_type_enum(::Type{DMDAStencilType}, t::Symbol)
     t === :star && return DMDA_STENCIL_STAR
     t === :box && return DMDA_STENCIL_BOX
@@ -24,23 +23,26 @@ end
 
 """
     DMDA(
-        petsclib::PetscLib
+        petsclib::PetscLib,
         comm::MPI.Comm,
         boundary_type::NTuple{D, DMBoundaryType},
         global_dim::NTuple{D, Integer},
-        dof_per_node::Integer,
-        stencil_width::Integer,
-        stencil_type;
+        dof_per_node::Integer;
+        stencil_width::Integer = 1,
+        stencil_type = :box,
         points_per_proc::Tuple,
         processors::Tuple,
-        setfromoptions = true,
-        dmsetup = true,
-        prefix = "",
+        set_from_options::Bool = true,
+        setup::Bool = true,
+        prefix::AbstractString = "",
         options...
     )
 
-Creates a `D`-dimensional distributed array with the options specified using
-keyword arguments.
+Creates a `D`-dimensional distributed array with `dof_per_node` degrees of
+freedom per grid point.
+
+`stencil_width` is the number of ghost points on each side. `stencil_type` is
+`:box` or `:star` (or a `DMDAStencilType`); a 1D `DMDA` ignores it.
 
 If keyword argument `points_per_proc[k] isa Vector{petsclib.PetscInt}` then this
 specifies the points per processor in dimension `k`.
@@ -48,11 +50,9 @@ specifies the points per processor in dimension `k`.
 If keyword argument `processors[k] isa Integer` then this specifies the number of
 processors used in dimension `k`; ignored when `D == 1`.
 
-If keyword argument `setfromoptions == true` then `set_from_options!` called.
-
-If keyword argument `dmsetup == true` then `setup!` is called.
-
-When `D == 1` the `stencil_type` argument is not required and ignored if specified.
+With `set_from_options = true`, [`set_from_options!`](@ref) is applied with the
+remaining keywords `options...` as the options database, under `prefix`. With
+`setup = true`, [`setup!`](@ref) is called.
 
 # External Links
 $(doc_external("DMDA/DMDACreate1d"))
@@ -64,14 +64,14 @@ function DMDA(
     comm::MPI.Comm,
     boundary_type::NTuple{N, DMBoundaryType},
     global_dim::NTuple{N, Integer},
-    dof_per_node::Integer,
-    stencil_width::Integer,
-    stencil_type = nothing;
+    dof_per_node::Integer;
+    stencil_width::Integer = 1,
+    stencil_type = :box,
     points_per_proc::Union{Tuple, Nothing} = nothing,
     processors = nothing,
-    setfromoptions = true,
-    dmsetup = true,
-    prefix = "",
+    set_from_options::Bool = true,
+    setup::Bool = true,
+    prefix::AbstractString = "",
     options...,
 ) where {PetscLib, N}
     check_initialized(getlib(PetscLib))
@@ -144,28 +144,7 @@ function DMDA(
     # Take ownership of the handle the creator returned: from here on `da` is a
     # `DMDA{PetscLib, N}` and every DMDA method dispatches on it.
     da = DMDA{PetscLib, N}(da.ptr, petsclib.age, true)
-
-    if !isempty(prefix)
-        # options prefix
-        LibPETSc.DMSetOptionsPrefix(petsclib, da, prefix)
-    end
-
-    if setfromoptions
-        # set options (if any)
-        opts = PetscOptions(petsclib; options...)
-        with_options(opts) do
-            LibPETSc.DMSetFromOptions(PetscLib, da)
-        end
-    end
-    
-    if dmsetup
-        # initialize dmda
-        setup!(da)            
-    end
-
-    # We can only let the garbage collect finalize when we do not need to
-    # worry about MPI (since garbage collection is asyncronous)
-    return own_dm!(da, comm)
+    return finish_dm!(da, comm, options; prefix, set_from_options, setup)
 end
 
 """

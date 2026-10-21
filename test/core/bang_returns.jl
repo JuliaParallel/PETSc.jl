@@ -59,7 +59,7 @@ MPI.Initialized() || MPI.Init()
     end
 
     @testset "DMs and options" begin
-        da = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (8,), 1, 1)
+        da = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (8,), 1; stencil_width = 1)
         @test PETSc.set_uniform_coordinates!(da, (0.0,), (1.0,)) === da
         g = PETSc.global_vec(da)
         l = PETSc.local_vec(da)

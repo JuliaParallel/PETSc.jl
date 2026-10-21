@@ -18,7 +18,7 @@ PETSc.destroy!(p::Probe) = (push!(p.log, p.name); nothing)
     petsclib = PETSc.petsclibs[1]
     PETSc.initialize(petsclib)
     comm = MPI.COMM_WORLD
-    da() = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (16,), 1, 1)
+    da() = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (16,), 1; stencil_width = 1)
 
     @testset "destroys what it tracks, last tracked first" begin
         log = Symbol[]

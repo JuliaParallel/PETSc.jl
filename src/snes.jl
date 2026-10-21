@@ -88,7 +88,7 @@ them (see [`with_options`](@ref)).
 # Arguments
 - `petsclib`: The PETSc library instance
 - `comm::MPI.Comm`: MPI communicator
-- `prefix::String`: Optional prefix for command-line options
+- `prefix::AbstractString`: Optional prefix for command-line options
 - `options_at::Symbol`: When the options are applied, see above
 - `options...`: Additional PETSc options as keyword arguments
 
@@ -102,7 +102,7 @@ $(doc_external("SNES/SNESSetFromOptions"))
 function SNES(
     petsclib::PetscLib,
     comm::MPI.Comm;
-    prefix="",
+    prefix::AbstractString = "",
     options_at::Symbol = :each_solve,
     options...,
 ) where {PetscLib <: LibPETSc.PetscLibType}
@@ -112,7 +112,7 @@ function SNES(
     snes = LibPETSc.SNESCreate(petsclib, comm)
 
     if !isempty(prefix)
-        LibPETSc.SNESSetOptionsPrefix(petsclib, snes, prefix)
+        LibPETSc.SNESSetOptionsPrefix(petsclib, snes, String(prefix))
     end
     
     store_options!(snes, petsclib, options_at, options)

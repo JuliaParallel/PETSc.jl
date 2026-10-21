@@ -35,7 +35,7 @@ The DMStag has one unknown on each face and one in each cell:
 
 ```julia
 ghosted = PETSc.DM_BOUNDARY_GHOSTED
-dm = PETSc.DMStag(petsclib, comm, (ghosted, ghosted), (n, n), (0, 1, 1), 1, PETSc.DMSTAG_STENCIL_BOX)
+dm = PETSc.DMStag(petsclib, comm, (ghosted, ghosted), (n, n), (0, 1, 1); stencil_width = 1, stencil_type = PETSc.DMSTAG_STENCIL_BOX)
 ```
 
 `DM_BOUNDARY_GHOSTED` adds ghost points outside the walls. A stencil next to a wall then still has a valid index, and PETSc drops what is written to a point that has no global row. With `DM_BOUNDARY_NONE` the same stencil is out of range.

@@ -22,9 +22,9 @@ MPI.Initialized() || MPI.Init()
             comm,
             ntuple(_ -> PETSc.DM_BOUNDARY_NONE, N),
             ntuple(i -> 8 + i, N),
-            2,
-            1,
-            PETSc.DMDA_STENCIL_STAR,
+            2;
+            stencil_width = 1,
+            stencil_type = PETSc.DMDA_STENCIL_STAR,
         )
     end
     dmstag = ntuple(3) do N
@@ -33,9 +33,9 @@ MPI.Initialized() || MPI.Init()
             comm,
             ntuple(_ -> PETSc.DM_BOUNDARY_NONE, N),
             ntuple(i -> 8 + i, N),
-            ntuple(_ -> 1, N + 1),
-            1,
-            :box,       # §3.1: the Symbol spelling of the stencil type
+            ntuple(_ -> 1, N + 1);
+            stencil_width = 1,
+            stencil_type = :box,       # §3.1: the Symbol spelling of the stencil type
         )
     end
 

@@ -10,6 +10,7 @@
 ### Added
 
 - The handle types are public API, with docstrings: the abstract types to annotate with (`AbstractPetscVec`, `AbstractPetscMat`, `AbstractPetscDM`, `AbstractKSP`, `AbstractPC`, `AbstractSNES`, `AbstractTS`, `AbstractPetscOptions`, `AbstractIS`, `AbstractAO`, `AbstractPF`, `AbstractTao`) and the handles `PetscDM`, `PC`, `IS`, `AO`, `PF` and `Tao`, all reachable as `PETSc.X`. `PETSc.realtype(petsclib)` gives the library's real type.
+- A `PetscError` prints the C function the failing call went to and PETSc's message for it, for example `PetscError(56) from VecSetSizes: No support for this operation for this object type. Cannot change/reset vector sizes to 4 local 4 global after previously setting them to 3 local 3 global`, where it printed `PetscError(56)`. The fields `func` and `message` hold the two; `PetscError(code)` still works.
 
 ### Fixed
 

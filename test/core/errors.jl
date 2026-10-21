@@ -93,3 +93,41 @@ MPI.Initialized() || MPI.Init()
         PETSc.finalize(petsclib)
     end
 end
+
+@testset "PetscError names the C function and PETSc's message" begin
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    PetscInt = petsclib.PetscInt
+    LibPETSc = PETSc.LibPETSc
+
+    v = PETSc.PetscVec(petsclib, 3)
+    err = try
+        LibPETSc.VecSetSizes(petsclib, v, PetscInt(4), PetscInt(4))
+    catch e
+        e
+    end
+    @test err isa LibPETSc.PetscError
+    @test err.code == 56               # PETSC_ERR_SUP
+    @test err.func === :VecSetSizes
+    @test occursin("Cannot change/reset vector sizes", err.message)
+    @test_throws "PetscError(56) from VecSetSizes: No support for this operation" throw(err)
+
+    # An error raised deep inside PETSc is named after the call Julia made
+    err = try
+        PETSc.DMDA(petsclib, MPI.COMM_SELF, (PETSc.DM_BOUNDARY_NONE,), (10,), 1, 1; da_refine = "abc")
+    catch e
+        e
+    end
+    @test err.func === :DMSetFromOptions
+    @test occursin("Input string abc has no integer value", err.message)
+
+    PETSc.destroy!(v)
+    PETSc.finalize(petsclib)
+
+    # The message is captured when the error is raised, so it still prints
+    # once the library is finalized
+    @test occursin("Input string abc", sprint(showerror, err))
+    # A code alone prints as it always has
+    @test sprint(showerror, LibPETSc.PetscError(63)) == "PetscError(63)"
+    @test LibPETSc.PetscError(63).code == 63
+end

@@ -8,6 +8,7 @@
 - `DMDA` and `DMStag` take the stencil width and type as keywords with defaults, `DMStag(petsclib, comm, boundary, dims, dof; stencil_width = 1, stencil_type = :box)`, where they were positional. The DM constructors' `setfromoptions` and `dmsetup` keywords are `set_from_options` and `setup`. The old forms still work and warn once; they go in v0.6.
 - `add_coarsen_hook!` takes the DM first, `add_coarsen_hook!(dm, coarsenhook, restricthook)`, as `set_residual!` does. Its hooks are C function pointers, which `do` syntax can't supply, so putting them first bought nothing. The hook-first order still works and warns.
 - `distribute!` is `distribute`: it returns a new distributed DM and leaves its argument unchanged, so the name has no `!`. `distribute!` and `plexdistribute!` still work and warn.
+- `own` is a keyword with default `false` when wrapping a raw handle: `VecPtr(petsclib, ptr; own = true)`, `MatPtr(petsclib, ptr; own)` and `PetscVec(petsclib, ptr; own)`, as in `narrow(dm; own)`. The positional `own` still works and warns.
 
 ### Behaviour changes
 

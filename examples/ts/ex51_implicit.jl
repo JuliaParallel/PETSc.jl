@@ -62,9 +62,9 @@ function ex51_rhs_ifunction!(
     ctx = unsafe_pointer_to_objref(ctx_ptr)::Ex51ImplicitContext
     petsclib = ctx.petsclib
     # `own = false` since memory is managed by PETSc internally
-    u = PETSc.VecPtr(petsclib, u_ptr, false)
-    udot = PETSc.VecPtr(petsclib, udot_ptr, false)
-    f = PETSc.VecPtr(petsclib, f_ptr, false)
+    u = PETSc.VecPtr(petsclib, u_ptr; own = false)
+    udot = PETSc.VecPtr(petsclib, udot_ptr; own = false)
+    f = PETSc.VecPtr(petsclib, f_ptr; own = false)
 
     PETSc.with_local_array!(
         (u, udot, f);
@@ -151,7 +151,7 @@ function ex51_ijacobian!(
     ctx = unsafe_pointer_to_objref(ctx_ptr)::Ex51ImplicitContext
     petsclib = ctx.petsclib
     # `u` is borrowed from PETSc; do not take ownership.
-    u = PETSc.VecPtr(petsclib, u_ptr, false)
+    u = PETSc.VecPtr(petsclib, u_ptr; own = false)
     A = PETSc.LibPETSc.PetscMat(A_ptr, petsclib)
     B = PETSc.LibPETSc.PetscMat(B_ptr, petsclib)
 

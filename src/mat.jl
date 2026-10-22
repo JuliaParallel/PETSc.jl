@@ -18,13 +18,13 @@ function Base.show(io::IO, v::AbstractPetscMat{PetscLib}) where {PetscLib}
 end
 
 """
-    MatPtr(petsclib, ptr::CMat, own::Bool)
+    MatPtr(petsclib, ptr::CMat; own::Bool = false)
 
 Container type for a PETSc Mat that is just a raw pointer.
 
 If `own` is `true` a finalizer is set on the matrix, but only on a serial
 communicator, since `MatDestroy` is collective and a GC finalizer runs at an
-arbitrary point. If `own` is `false` the handle belongs to PETSc and `destroy!`
+arbitrary point. If `own` is `false`, the default, the handle belongs to PETSc and `destroy!`
 is a no-op, leaving the wrapper usable.
 """
 mutable struct MatPtr{PetscLib} <:
@@ -35,8 +35,8 @@ mutable struct MatPtr{PetscLib} <:
 end
 function MatPtr(
     petsclib::PetscLib,
-    ptr::CMat,
-    own,
+    ptr::CMat;
+    own::Bool = false,
 ) where {PetscLib <: PetscLibType}
     m = MatPtr{PetscLib}(ptr, petsclib.age, own)
     # Short-circuits on a borrowed handle, which is the hot path: callbacks wrap
@@ -46,8 +46,8 @@ function MatPtr(
     end
     return m
 end
-MatPtr(::Type{PetscLib}, x...) where {PetscLib <: PetscLibType} =
-    MatPtr(getlib(PetscLib), x...)
+MatPtr(::Type{PetscLib}, x...; kwargs...) where {PetscLib <: PetscLibType} =
+    MatPtr(getlib(PetscLib), x...; kwargs...)
 
 Base.size(m::AbstractPetscMat{PetscLib}) where {PetscLib} = LibPETSc.MatGetSize(PetscLib,m)
 Base.length(m::AbstractPetscMat{PetscLib}) where {PetscLib} = prod(size(m))

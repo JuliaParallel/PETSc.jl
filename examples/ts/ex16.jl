@@ -137,8 +137,8 @@ function ex16_rhs!(
 )::PETSc.LibPETSc.PetscErrorCode
     ctx = unsafe_pointer_to_objref(ctx_ptr)::Ex16Context
     petsclib = ctx.petsclib
-    x = PETSc.VecPtr(petsclib, x_ptr, false)
-    f = PETSc.VecPtr(petsclib, f_ptr, false)
+    x = PETSc.VecPtr(petsclib, x_ptr; own = false)
+    f = PETSc.VecPtr(petsclib, f_ptr; own = false)
 
     PETSc.with_local_array!(
         (x, f);
@@ -179,9 +179,9 @@ function ex16_ifunction!(
 )::PETSc.LibPETSc.PetscErrorCode
     ctx = unsafe_pointer_to_objref(ctx_ptr)::Ex16Context
     petsclib = ctx.petsclib
-    x = PETSc.VecPtr(petsclib, x_ptr, false)
-    xdot = PETSc.VecPtr(petsclib, xdot_ptr, false)
-    f = PETSc.VecPtr(petsclib, f_ptr, false)
+    x = PETSc.VecPtr(petsclib, x_ptr; own = false)
+    xdot = PETSc.VecPtr(petsclib, xdot_ptr; own = false)
+    f = PETSc.VecPtr(petsclib, f_ptr; own = false)
 
     PETSc.with_local_array!(
         (x, xdot, f);
@@ -264,7 +264,7 @@ function ex16_ijacobian!(
 )::PETSc.LibPETSc.PetscErrorCode
     ctx = unsafe_pointer_to_objref(ctx_ptr)::Ex16Context
     petsclib = ctx.petsclib
-    x = PETSc.VecPtr(petsclib, x_ptr, false)
+    x = PETSc.VecPtr(petsclib, x_ptr; own = false)
     A = PETSc.LibPETSc.PetscMat(A_ptr, petsclib)
     B = PETSc.LibPETSc.PetscMat(B_ptr, petsclib)
 
@@ -307,7 +307,7 @@ function ex16_monitor!(
     ctx = unsafe_pointer_to_objref(ctx_ptr)::Ex16Context
     petsclib = ctx.petsclib
     ts = PETSc.LibPETSc.TS(ts_ptr, petsclib)
-    x = PETSc.VecPtr(petsclib, x_ptr, false)
+    x = PETSc.VecPtr(petsclib, x_ptr; own = false)
     dt = PETSc.LibPETSc.TSGetTimeStep(petsclib, ts)
     tfinal = PETSc.LibPETSc.TSGetMaxTime(petsclib, ts)
 

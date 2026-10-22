@@ -68,7 +68,7 @@ const CONSTRUCTS = joinpath(dirname(@__DIR__), "fixtures", "constructs.jl")
         mktemp() do path, io
             # VecPtr/MatPtr wrap a handle the caller may not own, so they must
             # not be reported as objects needing a destroy
-            write(io, "f = PETSc.VecPtr(petsclib, f_ptr, false)\n")
+            write(io, "f = PETSc.VecPtr(petsclib, f_ptr; own = false)\n")
             close(io)
             @test isempty(PETSc.audit_file(path; verbose = false).leaked)
         end

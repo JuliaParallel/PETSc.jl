@@ -27,13 +27,13 @@ function Base.show(io::IO, v::AbstractPetscVec{PetscLib}) where {PetscLib}
 end
 
 """
-    VecPtr(petsclib, ptr::CVec, own::Bool)
+    VecPtr(petsclib, ptr::CVec; own::Bool = false)
 
 Container type for a PETSc Vec that is just a raw pointer.
 
 If `own` is `true` a finalizer is set on the vector, but only on a serial
 communicator, since `VecDestroy` is collective and a GC finalizer runs at an
-arbitrary point. If `own` is `false` the handle belongs to PETSc and `destroy!`
+arbitrary point. If `own` is `false`, the default, the handle belongs to PETSc and `destroy!`
 is a no-op, leaving the wrapper usable.
 """
 mutable struct VecPtr{PetscLib} <:
@@ -44,8 +44,8 @@ mutable struct VecPtr{PetscLib} <:
 end
 function VecPtr(
     petsclib::PetscLib,
-    ptr::CVec,
-    own,
+    ptr::CVec;
+    own::Bool = false,
 ) where {PetscLib <: PetscLibType}
     v = VecPtr{PetscLib}(ptr, petsclib.age, own)
     # Short-circuits on a borrowed handle, which is the hot path: callbacks wrap
@@ -55,11 +55,12 @@ function VecPtr(
     end
     return v
 end
-VecPtr(::Type{PetscLib}, x...) where {PetscLib <: PetscLibType} = VecPtr(getlib(PetscLib), x...)
+VecPtr(::Type{PetscLib}, x...; kwargs...) where {PetscLib <: PetscLibType} =
+    VecPtr(getlib(PetscLib), x...; kwargs...)
 
 
 """
-    PetscVec(petsclib, ptr::CVec, own::Bool)
+    PetscVec(petsclib, ptr::CVec; own::Bool = false)
 
 Wrap a raw PETSc `Vec` handle.
 
@@ -67,8 +68,8 @@ Wrap a raw PETSc `Vec` handle.
 is attached and `destroy!` is a no-op. The result is a [`VecPtr`](@ref), the
 wrapper type that carries the ownership flag.
 """
-LibPETSc.PetscVec(petsclib::PetscLibType, ptr::CVec, own::Bool) =
-    VecPtr(petsclib, ptr, own)
+LibPETSc.PetscVec(petsclib::PetscLibType, ptr::CVec; own::Bool = false) =
+    VecPtr(petsclib, ptr; own)
 
 """
     PetscVec(v::AbstractPetscVec)

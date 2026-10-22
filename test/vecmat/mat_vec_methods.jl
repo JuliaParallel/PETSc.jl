@@ -116,8 +116,8 @@ MPI.Initialized() || MPI.Init()
         x = PETSc.PetscVec(petsclib, PetscScalar[1, 1])
         y = PETSc.PetscVec(petsclib, PetscScalar[0, 0])
         # borrowed VecPtr handles onto the same vectors
-        xp = PETSc.VecPtr(petsclib, x.ptr, false)
-        yp = PETSc.VecPtr(petsclib, y.ptr, false)
+        xp = PETSc.VecPtr(petsclib, x.ptr; own = false)
+        yp = PETSc.VecPtr(petsclib, y.ptr; own = false)
         @test mul!(yp, A, xp) === yp
         @test y[:] == PetscScalar[3, 7]
         @test mul!(yp, A', xp) === yp
@@ -125,7 +125,7 @@ MPI.Initialized() || MPI.Init()
         @test (A * xp)[:] == PetscScalar[3, 7]
         ksp = PETSc.KSP(A; ksp_type = "preonly", pc_type = "lu")
         b = PETSc.PetscVec(petsclib, PetscScalar[3, 7])
-        bp = PETSc.VecPtr(petsclib, b.ptr, false)
+        bp = PETSc.VecPtr(petsclib, b.ptr; own = false)
         @test (ksp \ bp)[:] ≈ PetscScalar[1, 1]
         fill!(y, 0)
         @test PETSc.solve!(yp, ksp, bp) === yp

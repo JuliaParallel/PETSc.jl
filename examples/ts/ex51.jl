@@ -41,8 +41,8 @@ function ex51_rhs!(
     ctx = unsafe_pointer_to_objref(ctx_ptr)::Ex51Context
     petsclib = ctx.petsclib
     # `own = false` since memory is managed by PETSc internally
-    u = PETSc.VecPtr(petsclib, u_ptr, false)
-    f = PETSc.VecPtr(petsclib, f_ptr, false)
+    u = PETSc.VecPtr(petsclib, u_ptr; own = false)
+    f = PETSc.VecPtr(petsclib, f_ptr; own = false)
 
     PETSc.with_local_array!(
         (u, f);

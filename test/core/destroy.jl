@@ -107,7 +107,7 @@ for petsclib in PETSc.petsclibs
             PETSc.initialize(petsclib)
 
             v = PETSc.PetscVec(petsclib, PetscScalar[1, 2, 3, 4])
-            borrowed_v = PETSc.VecPtr(petsclib, v.ptr, false)
+            borrowed_v = PETSc.VecPtr(petsclib, v.ptr; own = false)
             @test PETSc.owns(v)
             @test !PETSc.owns(borrowed_v)
             @test PETSc.destroy!(borrowed_v) === nothing
@@ -115,7 +115,7 @@ for petsclib in PETSc.petsclibs
             @test PETSc.LibPETSc.VecGetSize(petsclib, v) == 4
 
             m = PETSc.PetscMat(petsclib, 4, 4, 1)
-            borrowed_m = PETSc.MatPtr(petsclib, m.ptr, false)
+            borrowed_m = PETSc.MatPtr(petsclib, m.ptr; own = false)
             @test !PETSc.owns(borrowed_m)
             @test PETSc.destroy!(borrowed_m) === nothing
             @test borrowed_m.ptr == m.ptr
@@ -179,7 +179,7 @@ for petsclib in PETSc.petsclibs
             raw = PETSc.LibPETSc.VecCreateSeq(
                 petsclib, PETSc.LibPETSc.PETSC_COMM_SELF, PetscInt(4),
             )
-            owned = PETSc.VecPtr(petsclib, raw.ptr, true)
+            owned = PETSc.VecPtr(petsclib, raw.ptr; own = true)
             @test owned.age == libage
             @test PETSc.owns(owned)
             @test PETSc.isdestroyable(owned, typeof(petsclib))

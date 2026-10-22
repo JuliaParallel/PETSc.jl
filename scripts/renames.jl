@@ -606,6 +606,38 @@ const EXTRA_SHIMS = NamedTuple{(:name, :code, :test), Tuple{String, String, Stri
         end
         """,
     ),
+    (
+        name = "positional own",
+        code = """
+        # §9: `own` has a default, so it is a keyword, as in `narrow(dm; own)`.
+        function VecPtr(petsclib::LibPETSc.PetscLibType, ptr::CVec, own::Bool)
+            @warn "VecPtr(petsclib, ptr, own) is deprecated, use VecPtr(petsclib, ptr; own)" maxlog = 1
+            return VecPtr(petsclib, ptr; own)
+        end
+
+        function MatPtr(petsclib::LibPETSc.PetscLibType, ptr::CMat, own::Bool)
+            @warn "MatPtr(petsclib, ptr, own) is deprecated, use MatPtr(petsclib, ptr; own)" maxlog = 1
+            return MatPtr(petsclib, ptr; own)
+        end
+
+        function LibPETSc.PetscVec(petsclib::LibPETSc.PetscLibType, ptr::CVec, own::Bool)
+            @warn "PetscVec(petsclib, ptr, own) is deprecated, use PetscVec(petsclib, ptr; own)" maxlog = 1
+            return LibPETSc.PetscVec(petsclib, ptr; own)
+        end
+        """,
+        test = """
+        @testset "positional own" begin
+            petsclib = PETSc.petsclibs[1]
+            PETSc.initialize(petsclib)
+            v = PETSc.PetscVec(petsclib, 3)
+            m = PETSc.PetscMat(petsclib, 3, 3, 1)
+            @test !warns(() -> PETSc.VecPtr(petsclib, v.ptr, false)).own
+            @test !warns(() -> PETSc.MatPtr(petsclib, m.ptr, false)).own
+            @test !warns(() -> PETSc.PetscVec(petsclib, v.ptr, false)).own
+            foreach(PETSc.destroy!, (m, v))
+        end
+        """,
+    ),
 ]
 
 # ---------------------------------------------------------------------------

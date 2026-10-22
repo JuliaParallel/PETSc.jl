@@ -62,7 +62,7 @@ function solve_ex45(N=7; da_grid_x=7, da_grid_y=7, da_grid_z=7, kwargs...)
     boundary    = Tuple(fill(PETSc.DM_BOUNDARY_NONE, dim))
     stencil     = PETSc.DMDA_STENCIL_STAR
     global_size = dim == 3 ? (Nx, Ny, Nz) : (Nx, Ny, 1)
-    da = PETSc.DMDA(petsclib, comm, boundary, global_size, 1, 1, stencil; opts...)
+    da = PETSc.DMDA(petsclib, comm, boundary, global_size, 1; stencil_width = 1, stencil_type = stencil, opts...)
 
     final_grid = PETSc.info(da).global_size
     if MPI.Comm_rank(comm) == 0

@@ -9,19 +9,18 @@ to_petscint_tuple(t::Tuple, PetscInt) = map(arr -> PetscInt.(arr), t)
         comm::MPI.Comm,
         boundary_type::NTuple{D, DMBoundaryType},
         global_dim::NTuple{D, Integer},
-        dof_per_node::NTuple{1 + D, Integer},
-        stencil_width::Integer,
-        stencil_type;
+        dof_per_node::NTuple{1 + D, Integer};
+        stencil_width::Integer = 1,
+        stencil_type = :box,
         points_per_proc::Tuple,
         processors::Tuple,
-        setfromoptions = true,
-        dmsetup = true,
-        prefix = "",
+        set_from_options::Bool = true,
+        setup::Bool = true,
+        prefix::AbstractString = "",
         options...
     )
 
-Creates a `D`-dimensional distributed staggered array with the options specified
-using keyword arguments.
+Creates a `D`-dimensional distributed staggered array.
 
 The Tuple `dof_per_node` specifies how many degrees of freedom are at all the
 staggerings in the order:
@@ -35,12 +34,12 @@ specifies the points per processor in dimension `k`.
 If keyword argument `processors[k] isa Integer` then this specifies the number of
 processors used in dimension `k`; ignored when `D == 1`.
 
-If keyword argument `setfromoptions == true` then `set_from_options!` called.
+`stencil_width` is the number of ghost points on each side. `stencil_type` is
+`:box`, `:star` or `:none` (or a `DMStagStencilType`).
 
-If keyword argument `dmsetup == true` then `setup!` is called.
-
-When `D == 1` the `stencil_type` argument is not required and ignored if
-specified.
+With `set_from_options = true`, [`set_from_options!`](@ref) is applied with the
+remaining keywords `options...` as the options database, under `prefix`. With
+`setup = true`, [`setup!`](@ref) is called.
 
 # External Links
 $(doc_external("DMStag/DMStagCreate1d"))
@@ -52,14 +51,14 @@ function DMStag(
     comm::MPI.Comm,
     boundary_type::NTuple{N, DMBoundaryType},
     global_dim::NTuple{N, Integer},
-    dof_per_node::NTuple{N1, Integer},
-    stencil_width::Integer,
-    stencil_type = DMSTAG_STENCIL_BOX;
+    dof_per_node::NTuple{N1, Integer};
+    stencil_width::Integer = 1,
+    stencil_type = :box,
     points_per_proc::Union{Tuple, Nothing} = nothing,
     processors = nothing,
-    setfromoptions = true,
-    dmsetup = true,
-    prefix = "",
+    set_from_options::Bool = true,
+    setup::Bool = true,
+    prefix::AbstractString = "",
     options...,
 ) where {PetscLib, N, N1}
     check_initialized(getlib(PetscLib))
@@ -146,40 +145,16 @@ function DMStag(
     # Take ownership of the handle the creator returned: from here on `da` is a
     # `DMStag{PetscLib, N}` and every DMStag method dispatches on it.
     da = DMStag{PetscLib, N}(da.ptr, petsclib.age, true)
-
-    if !isempty(prefix)
-        # options prefix
-        LibPETSc.DMSetOptionsPrefix(petsclib, da, prefix)
-    end
-
-    if setfromoptions
-        # set options (if any)
-        opts = PetscOptions(petsclib; options...)
-        with_options(opts) do
-            LibPETSc.DMSetFromOptions(PetscLib, da)
-        end
-    end
-    
-    if dmsetup
-        # initialize dmda
-        setup!(da)            
-    end
-
-    # We can only let the garbage collect finalize when we do not need to
-    # worry about MPI (since garbage collection is asyncronous)
-    return own_dm!(da, comm)
+    return finish_dm!(da, comm, options; prefix, set_from_options, setup)
 end
 
 
 """
-    DMStag(dm::DMStag, dof_per_node; setfromoptions = true, dmsetup = true, options...)
+    DMStag(dm::DMStag, dof_per_node; set_from_options = true, setup = true, prefix = "", options...)
 
-A `DMStag` compatible with `dm` — same dimension, communicator and layout — but
-with the degrees of freedom per stratum given by `dof_per_node`.
-
-The v0.4 spelling took `dmsetfromoptions` and slurped anything else into an
-`options` collection it never used. Both are honoured here, and `options...` is
-the same options database keyword set the other constructors take.
+A `DMStag` compatible with `dm` (same dimension, communicator and layout) but
+with the degrees of freedom per stratum given by `dof_per_node`. The keywords
+work as in the other `DMStag` constructor.
 
 # External Links
 $(doc_external("DMSTAG/DMStagCreateCompatibleDMStag"))
@@ -187,8 +162,9 @@ $(doc_external("DMSTAG/DMStagCreateCompatibleDMStag"))
 function DMStag(
     dm::DMStag{PetscLib, N},
     dof_per_node::Union{NTuple{2, Integer}, NTuple{3, Integer}, NTuple{4, Integer}};
-    setfromoptions = true,
-    dmsetup = true,
+    set_from_options::Bool = true,
+    setup::Bool = true,
+    prefix::AbstractString = "",
     options...,
 ) where {PetscLib, N}
     petsclib = getlib(PetscLib)
@@ -206,17 +182,7 @@ function DMStag(
         dof_per_node_C[4],
     )
     dmnew = DMStag{PetscLib, N}(dmnew.ptr, petsclib.age, true)
-
-    if setfromoptions
-        opts = PetscOptions(petsclib; options...)
-        with_options(opts) do
-            LibPETSc.DMSetFromOptions(PetscLib, dmnew)
-        end
-    end
-
-    dmsetup && setup!(dmnew)
-
-    return own_dm!(dmnew, comm(dm))
+    return finish_dm!(dmnew, comm(dm), options; prefix, set_from_options, setup)
 end
 
 

@@ -92,7 +92,7 @@ $(doc_external("KSP/KSPSetFromOptions"))
 function KSP(
     A::AbstractPetscMat{PetscLib},
     P::AbstractPetscMat{PetscLib} = A;
-    prefix::String="",
+    prefix::AbstractString = "",
     options_at::Symbol = :construction,
     options...
 ) where {PetscLib}
@@ -105,7 +105,7 @@ function KSP(
     LibPETSc.KSPSetOperators(petsclib, ksp, A, P)
     
     if !isempty(prefix)
-        LibPETSc.KSPSetOptionsPrefix(petsclib, ksp, prefix)
+        LibPETSc.KSPSetOptionsPrefix(petsclib, ksp, String(prefix))
     end
     
     store_options!(ksp, petsclib, options_at, options)
@@ -141,7 +141,7 @@ multigrid when the DM provides grid hierarchy information.
 
 # Arguments
 - `dm::AbstractPetscDM`: The DM object to associate with the KSP
-- `prefix::String`: Optional prefix for command-line options
+- `prefix::AbstractString`: Optional prefix for command-line options
 - `options_at::Symbol`: When the options are applied, see above
 - `options...`: Additional PETSc options as keyword arguments
 
@@ -151,7 +151,7 @@ $(doc_external("KSP/KSPSetDM"))
 $(doc_external("KSP/KSPSetFromOptions"))
 """
 function KSP(dm::AbstractPetscDM{PetscLib};
-    prefix::String="",
+    prefix::AbstractString = "",
     options_at::Symbol = :construction,
     options...
 ) where {PetscLib}
@@ -161,7 +161,7 @@ function KSP(dm::AbstractPetscDM{PetscLib};
     ksp = LibPETSc.KSPCreate(petsclib, c)
     
     if !isempty(prefix)
-        LibPETSc.KSPSetOptionsPrefix(petsclib, ksp, prefix)
+        LibPETSc.KSPSetOptionsPrefix(petsclib, ksp, String(prefix))
     end
     
     LibPETSc.KSPSetDM(petsclib, ksp, dm)

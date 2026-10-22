@@ -37,9 +37,9 @@ dm = DMStag(
     MPI.COMM_WORLD,
     (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE),  # boundary types
     (nx, ny),                                          # global dimensions
-    (dof_vertex, dof_edge, dof_element),               # DOF at each location
-    1,                                                 # stencil width
-    PETSc.DMSTAG_STENCIL_BOX,                          # stencil type
+    (dof_vertex, dof_edge, dof_element);               # DOF at each location
+    stencil_width = 1,
+    stencil_type = PETSc.DMSTAG_STENCIL_BOX,
 )
 
 dm isa PETSc.DMStag{typeof(petsclib), 2}   # true: the flavour and the dimension
@@ -50,9 +50,9 @@ dm = DMStag(
     MPI.COMM_WORLD,
     (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE),
     (nx, ny, nz),
-    (dof_vertex, dof_edge, dof_face, dof_element),
-    1,
-    PETSc.DMSTAG_STENCIL_BOX,
+    (dof_vertex, dof_edge, dof_face, dof_element);
+    stencil_width = 1,
+    stencil_type = PETSc.DMSTAG_STENCIL_BOX,
 )
 ```
 
@@ -198,9 +198,9 @@ dm = DMStag(
     MPI.COMM_WORLD,
     (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE),
     (64, 64),      # 64x64 grid
-    (0, 1, 1),     # 0 DOF at vertices, 1 at edges (velocity), 1 in elements (pressure)
-    1,
-    PETSc.DMSTAG_STENCIL_BOX,
+    (0, 1, 1);     # 0 DOF at vertices, 1 at edges (velocity), 1 in elements (pressure)
+    stencil_width = 1,
+    stencil_type = PETSc.DMSTAG_STENCIL_BOX,
 )
 
 PETSc.set_uniform_coordinates!(dm, 0.0, 1.0, 0.0, 1.0)

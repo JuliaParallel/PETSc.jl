@@ -187,7 +187,7 @@ Dispatch does the work:
 ```julia
 project_function!(vec, dm, f)   # was dm_project_function!
 set_nullspace!(A, ns)           # was mat_set_null_space!
-distribute!(dm)                 # was plexdistribute!
+distribute(dm)                  # was plexdistribute!
 ```
 
 Keep a prefix only for free functions, where no argument identifies the domain.
@@ -451,6 +451,8 @@ with_local_array!(v) do arr
 end
 ```
 
+The rule is for Julia functions. A C function pointer from `@cfunction` can't be a `do` block, so a setter that takes only pointers keeps the subject first: `set_residual!(ds, field, f0, f1)`, `add_coarsen_hook!(dm, hook)`.
+
 PETSc callbacks are where `do` earns its keep, and `setfunction!`, `setjacobian!` and `withlocalarray!` already take the callback first in v0.4.
 
 The order of a callback's own arguments, what it returns, and how its closure is kept alive are in [§18](#18.-Handles,-callbacks-and-their-state).
@@ -467,7 +469,7 @@ DMStag(petsclib, comm, boundary, dims, dof;
 PetscMat(petsclib, m, n, nnz)             # required
 PetscMat(petsclib, m, n; type = :dense)   # optional, defaults to :seqaij
 
-distribute!(dm; overlap = 0)
+distribute(dm; overlap = 0)
 
 set_values!(A, rows_0b, cols_0b, vals; mode = ADD_VALUES)   # InsertMode and ScatterMode
 ghost_update!(v; mode = ADD_VALUES, scatter = SCATTER_REVERSE)
@@ -825,7 +827,7 @@ Each pair collapses to one name, so two shims point at each replacement.
 | v0.4 | v0.5 |
 |---|---|
 | `isplexsimplex` | `issimplex` |
-| `plexdistribute!` | `distribute!` |
+| `plexdistribute!` | `distribute` |
 | `petsc_setname!` | `set_name!` |
 | `getds` | `ds` |
 | `createds!` | `create_ds!` |

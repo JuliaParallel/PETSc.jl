@@ -69,7 +69,8 @@ const SHIMS = [
     :localinteriorlinearindex => :local_interior_linear_index,
     :dmda_star_fd_coloring => :star_fd_coloring,
     :isplexsimplex => :issimplex,
-    :plexdistribute! => :distribute!,
+    :plexdistribute! => :distribute,
+    :distribute! => :distribute,
     :petsc_setname! => :set_name!,
     :getds => :ds,
     :createds! => :create_ds!,
@@ -238,7 +239,7 @@ const SHIMS = [
             end) === gv
         end
 
-        da = PETSc.DMDA(petsclib, comm, (B,), (4,), 1, 1)
+        da = PETSc.DMDA(petsclib, comm, (B,), (4,), 1)
         g = PETSc.global_vec(da)
         l = PETSc.local_vec(da)
         fill!(g, 1)
@@ -260,7 +261,7 @@ const SHIMS = [
         warns(() -> PETSc.zero_rows_local!(J, [0], 7))
         @test J[1, 1] == 7
 
-        dm = PETSc.DMStag(petsclib, comm, (B,), (3,), (1, 1), 1)
+        dm = PETSc.DMStag(petsclib, comm, (B,), (3,), (1, 1))
         loc = PETSc.element_location(dm)
         at = PETSc.stencil(dm, loc, (1,))
         K = PETSc.PetscMat(dm)
@@ -283,6 +284,40 @@ const SHIMS = [
         end
 
         foreach(PETSc.destroy!, (v, K, dm, J, A, l, g, da, gv))
+    end
+
+    @testset "DMDA and DMStag with a positional stencil width" begin
+        petsclib = PETSc.petsclibs[1]
+        PETSc.initialize(petsclib)
+        comm = PETSc.MPI.COMM_SELF
+        LibPETSc = PETSc.LibPETSc
+        B = PETSc.DM_BOUNDARY_NONE
+
+        da = warns(() -> PETSc.DMDA(petsclib, comm, (B, B), (5, 5), 1, 2, :star))
+        @test PETSc.info(da).stencil_width == 2
+        @test PETSc.info(da).stencil_type == LibPETSc.DMDA_STENCIL_STAR
+        dm = warns(() -> PETSc.DMStag(petsclib, comm, (B,), (5,), (1, 1), 2))
+        @test LibPETSc.DMStagGetStencilWidth(petsclib, dm) == 2
+        @test LibPETSc.DMStagGetStencilType(petsclib, dm) == LibPETSc.DMSTAG_STENCIL_BOX
+
+        # The renamed keywords keep their meaning instead of becoming options
+        for kw in (:dmsetup, :setfromoptions)
+            d = warns(() -> PETSc.DMDA(petsclib, comm, (B,), (5,), 1; (kw => false,)...))
+            PETSc.destroy!(d)
+        end
+        lazy = warns(() -> PETSc.DMStag(dm, (1, 1); dmsetfromoptions = false, dmsetup = false))
+        PETSc.setup!(lazy)
+        foreach(PETSc.destroy!, (lazy, dm, da))
+    end
+
+    @testset "add_coarsen_hook! with the hook first" begin
+        petsclib = PETSc.petsclibs[1]
+        PETSc.initialize(petsclib)
+        B = PETSc.DM_BOUNDARY_NONE
+        da = PETSc.DMDA(petsclib, PETSc.MPI.COMM_SELF, (B,), (9,), 1)
+        # PETSc skips a null hook, so the shim's forwarding is all this exercises
+        @test warns(() -> PETSc.add_coarsen_hook!(Ptr{Cvoid}(C_NULL), da)) === da
+        PETSc.destroy!(da)
     end
 
 end

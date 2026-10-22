@@ -135,7 +135,7 @@ for petsclib in PETSc.petsclibs
             comm = MPI.COMM_SELF
 
             da = PETSc.DMDA(
-                petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (8,), 1, 1,
+                petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (8,), 1; stencil_width = 1,
             )
             @test da isa PETSc.DMDA{typeof(petsclib), 1}
             @test PETSc.owns(da)

@@ -29,7 +29,7 @@ MPI.Initialized() || MPI.Init()
     end
 
     @testset "ISColoringGetIS: borrowed or owned by mode" begin
-        da = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (6,), 1, 1)
+        da = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (6,), 1; stencil_width = 1)
         coloring = LibPETSc.DMCreateColoring(petsclib, da, LibPETSc.IS_COLORING_GLOBAL)
 
         # PETSC_USE_POINTER: the coloring keeps the index sets
@@ -66,7 +66,7 @@ MPI.Initialized() || MPI.Init()
         PETSc.set_solution!(ts, x)
         PETSc.set_tolerances!(ts; vatol = x)
 
-        da = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (4,), 1, 1)
+        da = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (4,), 1; stencil_width = 1)
         PETSc.set_uniform_coordinates!(da, (0.0,), (1.0,))
 
         for v in (PETSc.solution(ksp), PETSc.solution(snes), PETSc.solution(ts),

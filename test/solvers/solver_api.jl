@@ -50,7 +50,7 @@ MPI.Initialized() || MPI.Init()
     end
 
     @testset "KSP: set_dm_active!" begin
-        da = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (8,), 1, 1)
+        da = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (8,), 1; stencil_width = 1)
         ksp = PETSc.KSP(da)
         @test PETSc.set_dm_active!(ksp, false) === ksp
         @test PETSc.set_dm_active!(ksp, :rhs, true) === ksp
@@ -210,7 +210,7 @@ MPI.Initialized() || MPI.Init()
         @test LibPETSc.MatGetType(petsclib, M) == "seqdense"
         @test LibPETSc.VecGetType(petsclib, v) == "mpi"
 
-        da = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (8,), 1, 1)
+        da = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (8,), 1; stencil_width = 1)
         @test PETSc.set_options_prefix!(da, "grid_") === da
         @test PETSc.options_prefix(da) == "grid_"
 

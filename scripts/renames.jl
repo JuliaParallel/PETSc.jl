@@ -56,7 +56,8 @@ const RENAMES = Pair{Symbol, Symbol}[
 
     # dmplex.jl
     :isplexsimplex => :issimplex,
-    :plexdistribute! => :distribute!,
+    :plexdistribute! => :distribute,
+    :distribute! => :distribute,   # returns a new DM and leaves `dm` as it is
     :petsc_setname! => :set_name!,
     :getds => :ds,
     :createds! => :create_ds!,
@@ -256,15 +257,6 @@ const CUSTOM_SHIMS = Dict{Symbol, String}(
         @warn "vtk_save_fields! is deprecated, use save_vtk" maxlog = 1
         petsclib, comm, filename, vecs = args
         return save_vtk(vecs, filename; kwargs...)
-    end
-    """,
-
-    # `dm_coarsen_hook_add!(dm, hook, restrict)` puts the callback first (§8.1).
-    :dm_coarsen_hook_add! => """
-    function dm_coarsen_hook_add!(args...; kwargs...)
-        @warn "dm_coarsen_hook_add! is deprecated, use add_coarsen_hook!" maxlog = 1
-        dm, hook, rest... = args
-        return add_coarsen_hook!(hook, dm, rest...; kwargs...)
     end
     """,
 )
@@ -473,7 +465,7 @@ const EXTRA_SHIMS = NamedTuple{(:name, :code, :test), Tuple{String, String, Stri
                 end) === gv
             end
 
-            da = PETSc.DMDA(petsclib, comm, (B,), (4,), 1, 1)
+            da = PETSc.DMDA(petsclib, comm, (B,), (4,), 1)
             g = PETSc.global_vec(da)
             l = PETSc.local_vec(da)
             fill!(g, 1)
@@ -495,7 +487,7 @@ const EXTRA_SHIMS = NamedTuple{(:name, :code, :test), Tuple{String, String, Stri
             warns(() -> PETSc.zero_rows_local!(J, [0], 7))
             @test J[1, 1] == 7
 
-            dm = PETSc.DMStag(petsclib, comm, (B,), (3,), (1, 1), 1)
+            dm = PETSc.DMStag(petsclib, comm, (B,), (3,), (1, 1))
             loc = PETSc.element_location(dm)
             at = PETSc.stencil(dm, loc, (1,))
             K = PETSc.PetscMat(dm)
@@ -518,6 +510,99 @@ const EXTRA_SHIMS = NamedTuple{(:name, :code, :test), Tuple{String, String, Stri
             end
 
             foreach(PETSc.destroy!, (v, K, dm, J, A, l, g, da, gv))
+        end
+        """,
+    ),
+    (
+        name = "DMDA and DMStag with a positional stencil width",
+        code = """
+        # §9: the stencil width and type have defaults, so they are keywords. The
+        # positional forms warn for one release (§17.2, "argument dropped"). The
+        # renamed keywords `setfromoptions`/`dmsetup` are caught in `finish_dm!`.
+        function DMDA(
+            petsclib::LibPETSc.PetscLibType,
+            comm::MPI.Comm,
+            boundary_type::Tuple,
+            global_dim::Tuple,
+            dof_per_node::Integer,
+            stencil_width::Integer,
+            stencil_type = :box;
+            kwargs...,
+        )
+            @warn "DMDA(petsclib, comm, boundary, dims, dof, stencil_width, stencil_type) is " *
+                  "deprecated, use DMDA(petsclib, comm, boundary, dims, dof; stencil_width, " *
+                  "stencil_type)" maxlog = 1
+            return DMDA(petsclib, comm, boundary_type, global_dim, dof_per_node;
+                        stencil_width, stencil_type = something(stencil_type, :box), kwargs...)
+        end
+
+        function DMStag(
+            petsclib::LibPETSc.PetscLibType,
+            comm::MPI.Comm,
+            boundary_type::Tuple,
+            global_dim::Tuple,
+            dof_per_node::Tuple,
+            stencil_width::Integer,
+            stencil_type = :box;
+            kwargs...,
+        )
+            @warn "DMStag(petsclib, comm, boundary, dims, dof, stencil_width, stencil_type) is " *
+                  "deprecated, use DMStag(petsclib, comm, boundary, dims, dof; stencil_width, " *
+                  "stencil_type)" maxlog = 1
+            return DMStag(petsclib, comm, boundary_type, global_dim, dof_per_node;
+                          stencil_width, stencil_type, kwargs...)
+        end
+        """,
+        test = """
+        @testset "DMDA and DMStag with a positional stencil width" begin
+            petsclib = PETSc.petsclibs[1]
+            PETSc.initialize(petsclib)
+            comm = PETSc.MPI.COMM_SELF
+            LibPETSc = PETSc.LibPETSc
+            B = PETSc.DM_BOUNDARY_NONE
+
+            da = warns(() -> PETSc.DMDA(petsclib, comm, (B, B), (5, 5), 1, 2, :star))
+            @test PETSc.info(da).stencil_width == 2
+            @test PETSc.info(da).stencil_type == LibPETSc.DMDA_STENCIL_STAR
+            dm = warns(() -> PETSc.DMStag(petsclib, comm, (B,), (5,), (1, 1), 2))
+            @test LibPETSc.DMStagGetStencilWidth(petsclib, dm) == 2
+            @test LibPETSc.DMStagGetStencilType(petsclib, dm) == LibPETSc.DMSTAG_STENCIL_BOX
+
+            # The renamed keywords keep their meaning instead of becoming options
+            for kw in (:dmsetup, :setfromoptions)
+                d = warns(() -> PETSc.DMDA(petsclib, comm, (B,), (5,), 1; (kw => false,)...))
+                PETSc.destroy!(d)
+            end
+            lazy = warns(() -> PETSc.DMStag(dm, (1, 1); dmsetfromoptions = false, dmsetup = false))
+            PETSc.setup!(lazy)
+            foreach(PETSc.destroy!, (lazy, dm, da))
+        end
+        """,
+    ),
+    (
+        name = "add_coarsen_hook! with the hook first",
+        code = """
+        # The hooks are C pointers, which `do` cannot supply, so naming.md §8.1 does
+        # not apply and the DM comes first. The hook-first order warns for one release.
+        function add_coarsen_hook!(
+            coarsenhook::Ptr{Cvoid},
+            dm::AbstractPetscDM,
+            restricthook::Ptr{Cvoid} = C_NULL,
+        )
+            @warn "add_coarsen_hook!(coarsenhook, dm, restricthook) is deprecated, use " *
+                  "add_coarsen_hook!(dm, coarsenhook, restricthook)" maxlog = 1
+            return add_coarsen_hook!(dm, coarsenhook, restricthook)
+        end
+        """,
+        test = """
+        @testset "add_coarsen_hook! with the hook first" begin
+            petsclib = PETSc.petsclibs[1]
+            PETSc.initialize(petsclib)
+            B = PETSc.DM_BOUNDARY_NONE
+            da = PETSc.DMDA(petsclib, PETSc.MPI.COMM_SELF, (B,), (9,), 1)
+            # PETSc skips a null hook, so the shim's forwarding is all this exercises
+            @test warns(() -> PETSc.add_coarsen_hook!(Ptr{Cvoid}(C_NULL), da)) === da
+            PETSc.destroy!(da)
         end
         """,
     ),
@@ -607,6 +692,9 @@ const INTERNAL = Set{Symbol}([
     :check_initialized,
     :isdestroyable,
     :destroy_handle!,
+    :finish_dm!,
+    :take_renamed_dm_keywords,
+    :RENAMED_DM_KEYWORDS,
     :destroy_options!,
     :as_petsc_vec,
     :csr_from_csc,

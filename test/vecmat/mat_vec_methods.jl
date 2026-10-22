@@ -81,7 +81,7 @@ MPI.Initialized() || MPI.Init()
 
     @testset "zero_rows_local!" begin
         # a DMDA matrix carries the local-to-global mapping zero_rows_local! needs
-        da = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (4,), 1, 1)
+        da = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (4,), 1; stencil_width = 1)
         A = LibPETSc.DMCreateMatrix(petsclib, da)
         for i in 1:4
             A[i, i] = 2
@@ -222,7 +222,7 @@ MPI.Initialized() || MPI.Init()
         @test_throws "needs 4 values" PETSc.set_values!(B, PetscInt[0, 1], PetscInt[0, 1], PetscScalar[1, 2, 3])
 
         # the MatStencil form, on a 1D DMDA: the x index is the third field
-        da = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (3,), 1, 1)
+        da = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (3,), 1; stencil_width = 1)
         S = PETSc.PetscMat(da)
         stencils = OffsetVector([LibPETSc.MatStencil(0, 0, i, 0) for i in 0:1], 0:1)
         PETSc.set_values!(S, stencils, stencils, OffsetVector(PetscScalar[1, 2, 3, 4], 0:3))
@@ -259,7 +259,7 @@ MPI.Initialized() || MPI.Init()
     end
 
     @testset "dof_slot takes any integer" begin
-        dm = PETSc.DMStag(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (3,), (1, 1), 1)
+        dm = PETSc.DMStag(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (3,), (1, 1); stencil_width = 1)
         loc = PETSc.element_location(dm)
         @test PETSc.dof_slot(dm, loc, Int32(0)) == PETSc.dof_slot(dm, loc, 0)
         PETSc.destroy!(dm)

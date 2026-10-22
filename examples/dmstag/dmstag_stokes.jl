@@ -128,8 +128,8 @@ function stokes_system(petsclib, comm, n, contrast)
     dm = PETSc.DMStag(petsclib, comm, 
                       (ghosted, ghosted),           # Boundary type 
                       (n, n),                       # Global dimensions
-                      (0, 1, 1),                    # nothing on vertices, 1 per face, 1 per cell
-                      1, PETSc.DMSTAG_STENCIL_BOX)  # Stencil type
+                      (0, 1, 1);                    # nothing on vertices, 1 per face, 1 per cell
+                      stencil_width = 1, stencil_type = PETSc.DMSTAG_STENCIL_BOX)
     A = PETSc.PetscMat(dm)
     P = PETSc.PetscMat(dm)
     b = PETSc.global_vec(dm)

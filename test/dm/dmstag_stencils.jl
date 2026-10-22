@@ -15,9 +15,9 @@ MPI.Initialized() || MPI.Init()
     LibPETSc = PETSc.LibPETSc
     PetscInt = petsclib.PetscInt
     none(n) = ntuple(_ -> PETSc.DM_BOUNDARY_NONE, n)
-    dm1 = PETSc.DMStag(petsclib, comm, none(1), (4,), (1, 1), 1)
-    dm2 = PETSc.DMStag(petsclib, comm, none(2), (3, 2), (1, 1, 1), 1)
-    dm3 = PETSc.DMStag(petsclib, comm, none(3), (2, 2, 2), (1, 1, 1, 1), 1)
+    dm1 = PETSc.DMStag(petsclib, comm, none(1), (4,), (1, 1); stencil_width = 1)
+    dm2 = PETSc.DMStag(petsclib, comm, none(2), (3, 2), (1, 1, 1); stencil_width = 1)
+    dm3 = PETSc.DMStag(petsclib, comm, none(3), (2, 2, 2), (1, 1, 1, 1); stencil_width = 1)
 
     @testset "locations" begin
         @test PETSc.vertex_location(dm1) == LibPETSc.DMSTAG_LEFT
@@ -73,7 +73,7 @@ MPI.Initialized() || MPI.Init()
 
     @testset "set_values!, zero_rows_local! and IS" begin
         # element dofs only: element (i, j) has global row (i - 1) + 3(j - 1) + 1
-        dm = PETSc.DMStag(petsclib, comm, none(2), (3, 2), (0, 0, 1), 1)
+        dm = PETSc.DMStag(petsclib, comm, none(2), (3, 2), (0, 0, 1); stencil_width = 1)
         e = PETSc.element_location(dm)
         at(I...) = PETSc.stencil(dm, e, I)
         A = PETSc.PetscMat(dm)
@@ -112,7 +112,7 @@ MPI.Initialized() || MPI.Init()
     end
 
     @testset "set_values! from reused buffers" begin
-        dm = PETSc.DMStag(petsclib, comm, none(2), (3, 2), (0, 0, 1), 1)
+        dm = PETSc.DMStag(petsclib, comm, none(2), (3, 2), (0, 0, 1); stencil_width = 1)
         e = PETSc.element_location(dm)
         at(I...) = PETSc.stencil(dm, e, I)
         rows = [at(1, 1), at(2, 1), at(3, 2)]

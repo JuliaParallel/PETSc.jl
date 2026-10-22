@@ -134,11 +134,11 @@ end
     global_opts = PETSc.LibPETSc.PetscOptions{PetscLib}(C_NULL, petsclib.age; own = false)
     visible(key) = PETSc.LibPETSc.PetscOptionsHasName(petsclib, global_opts, "", key)
 
-    base = PETSc.DMStag(petsclib, comm, (nb,), (10,), (1, 1), 1)
+    base = PETSc.DMStag(petsclib, comm, (nb,), (10,), (1, 1); stencil_width = 1)
     # Each call fails inside PETSc, on an option value that isn't an integer
     cases = [
-        "-da_refine" => () -> PETSc.DMDA(petsclib, comm, (nb,), (10,), 1, 1; da_refine = "abc"),
-        "-stag_grid_x" => () -> PETSc.DMStag(petsclib, comm, (nb,), (10,), (1, 1), 1; stag_grid_x = "abc"),
+        "-da_refine" => () -> PETSc.DMDA(petsclib, comm, (nb,), (10,), 1; stencil_width = 1, da_refine = "abc"),
+        "-stag_grid_x" => () -> PETSc.DMStag(petsclib, comm, (nb,), (10,), (1, 1); stencil_width = 1, stag_grid_x = "abc"),
         "-stag_grid_x" => () -> PETSc.DMStag(base, (1, 1); stag_grid_x = "abc"),
         "-dm_refine" => () -> PETSc.DMPlex(petsclib, comm; dm_refine = "abc"),
         "-dm_refine" => () -> PETSc.DMPlex(petsclib, comm, 2, false, [2, 2]; dm_refine = "abc"),

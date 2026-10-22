@@ -276,9 +276,9 @@ da = PETSc.DMDA(
     petsclib, comm,
     (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE),
     (4, 4),
-    4,   # DOFs per node: (u, v, ω, T)
-    1,   # stencil width
-    PETSc.DMDA_STENCIL_STAR;
+    4;   # DOFs per node: (u, v, ω, T)
+    stencil_width = 1,
+    stencil_type = PETSc.DMDA_STENCIL_STAR,
     opts...,
 )
 

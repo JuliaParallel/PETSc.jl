@@ -23,7 +23,7 @@ function leaky(petsclib, comm)
     LibPETSc.VecDestroy(petsclib, x)
 
     # never destroyed
-    dm = PETSc.DMStag(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (10,), 1, 1)
+    dm = PETSc.DMStag(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (10,), 1; stencil_width = 1)
     mat = PETSc.PetscMat(petsclib, 10, 10, 3)
 
     # a comment mentioning PETSc.destroy!(dm) must not count as a release

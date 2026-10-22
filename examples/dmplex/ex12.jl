@@ -326,7 +326,7 @@ function fas_coarsen_hook(fine_ptr::Ptr{Cvoid}, coarse_ptr::Ptr{Cvoid}, ::Ptr{Cv
 end
 const fas_coarsen_hook_ptr = Base.@cfunction(fas_coarsen_hook, Cint,
     (Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}))
-PETSc.add_coarsen_hook!(fas_coarsen_hook_ptr, dm)
+PETSc.add_coarsen_hook!(dm, fas_coarsen_hook_ptr)
 
 # ── SNES + matrix + vectors ───────────────────────────────────────────────────
 snes = PETSc.SNES(petsclib, comm; opts...)

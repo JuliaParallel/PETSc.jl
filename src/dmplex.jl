@@ -257,9 +257,9 @@ end
     DMPlex(
         petsclib::PetscLib,
         comm::MPI.Comm;
-        setfromoptions = true,
-        dmsetup        = false,
-        prefix         = "",
+        set_from_options = true,
+        setup            = false,
+        prefix           = "",
         options...,
     )
 
@@ -281,9 +281,9 @@ $(doc_external("DM/DMSetFromOptions"))
 function DMPlex(
     petsclib::PetscLib,
     comm::MPI.Comm;
-    setfromoptions = true,
-    dmsetup        = false,
-    prefix         = "",
+    set_from_options::Bool = true,
+    setup::Bool = false,
+    prefix::AbstractString = "",
     options...,
 ) where {PetscLib}
     check_initialized(getlib(PetscLib))
@@ -291,23 +291,7 @@ function DMPlex(
     dm = LibPETSc.DMCreate(petsclib, comm)
     LibPETSc.DMSetType(petsclib, dm, "plex")
     dm = DMPlex{PetscLib}(dm.ptr, getlib(PetscLib).age, true)
-
-    if !isempty(prefix)
-        LibPETSc.DMSetOptionsPrefix(petsclib, dm, prefix)
-    end
-
-    if setfromoptions
-        opts = PetscOptions(petsclib; options...)
-        with_options(opts) do
-            LibPETSc.DMSetFromOptions(petsclib, dm)
-        end
-    end
-
-    if dmsetup
-        setup!(dm)
-    end
-
-    return own_dm!(dm, comm)
+    return finish_dm!(dm, comm, options; prefix, set_from_options, setup)
 end
 
 """
@@ -323,8 +307,8 @@ end
         interpolate   = true,
         localize_height = 0,
         sparse_localize = false,
-        setfromoptions  = true,
-        dmsetup         = false,
+        set_from_options = true,
+        setup           = false,
         prefix          = "",
         options...,
     )
@@ -349,9 +333,9 @@ function DMPlex(
     interpolate      = true,
     localize_height  = 0,
     sparse_localize  = false,
-    setfromoptions   = true,
-    dmsetup          = false,
-    prefix           = "",
+    set_from_options::Bool = true,
+    setup::Bool      = false,
+    prefix::AbstractString = "",
     options...,
 ) where {PetscLib}
     check_initialized(getlib(PetscLib))
@@ -380,23 +364,7 @@ function DMPlex(
         LibPETSc.PetscBool(sparse_localize),
     )
     dm = DMPlex{PetscLib}(dm.ptr, getlib(PetscLib).age, true)
-
-    if !isempty(prefix)
-        LibPETSc.DMSetOptionsPrefix(petsclib, dm, prefix)
-    end
-
-    if setfromoptions
-        opts = PetscOptions(petsclib; options...)
-        with_options(opts) do
-            LibPETSc.DMSetFromOptions(petsclib, dm)
-        end
-    end
-
-    if dmsetup
-        setup!(dm)
-    end
-
-    return own_dm!(dm, comm)
+    return finish_dm!(dm, comm, options; prefix, set_from_options, setup)
 end
 
 
@@ -415,18 +383,18 @@ function issimplex(dm::DMPlex{PetscLib}) where {PetscLib}
 end
 
 """
-    distribute!(dm::DMPlex; overlap = 0) -> Union{Nothing, DMPlex}
+    distribute(dm::DMPlex; overlap = 0) -> DMPlex
 
-Distribute the (serial) `DMPLEX` `dm` across the communicator with the given
-point-overlap.  Returns the new distributed `DM` on the owning communicator, or
-`nothing` if no redistribution occurred (e.g. serial run).
-
-The original `dm` is *not* destroyed — the caller is responsible for that.
+Distribute `dm` across its communicator, with `overlap` layers of cells shared
+between neighboring ranks, and return the distributed mesh as a new, owned DM.
+`dm` itself is left unchanged and still has to be destroyed. When PETSc doesn't
+redistribute (on one rank) the returned DM has a null pointer, and `destroy!` on
+it does nothing.
 
 # External Links
 $(doc_external("DMPlex/DMPlexDistribute"))
 """
-function distribute!(
+function distribute(
     dm::DMPlex{PetscLib};
     overlap::Integer = 0,
 ) where {PetscLib}
@@ -894,10 +862,11 @@ function set_auxiliary_vec!(dm::AbstractPetscDM{PetscLib}, aux_local) where {Pet
 end
 
 """
-    add_coarsen_hook!(coarsenhook, dm, restricthook = C_NULL)
+    add_coarsen_hook!(dm, coarsenhook, restricthook = C_NULL)
 
 Register a C callback invoked each time `dm` is coarsened (e.g. during FAS
-hierarchy setup).  The callback comes first (§8.1), so `dm` is argument 2.  The coarsenhook signature is:
+hierarchy setup).  The hooks are C function pointers, not Julia functions, so
+`dm` comes first as in `set_residual!`.  The coarsenhook signature is:
 ```
 hook(fine::Ptr{Cvoid}, coarse::Ptr{Cvoid}, ctx::Ptr{Cvoid}) → Cint
 ```
@@ -909,8 +878,8 @@ function add_coarsen_hook! end
 
 # Convenience: infer petsclib from the DM type parameter
 function add_coarsen_hook!(
-    coarsenhook::Ptr{Cvoid},
     dm::AbstractPetscDM{PL},
+    coarsenhook::Ptr{Cvoid},
     restricthook::Ptr{Cvoid} = C_NULL,
 ) where {PL}
     LibPETSc.DMCoarsenHookAdd(getlib(PL), dm, coarsenhook, restricthook, C_NULL)

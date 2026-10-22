@@ -5,6 +5,9 @@
 ### Deprecated
 
 - Insert modes, scatter modes and `diag` are keywords, `mode`, `scatter` and `diag`: `set_values!(A, rows, cols, vals; mode = ADD_VALUES)`, `ghost_update!(v; mode = ADD_VALUES, scatter = SCATTER_REVERSE)`, `global_to_local!(l, dm, g; mode)`, `zero_rows!(A, rows; diag = 2)`. This covers `ghost_update!`, `ghost_update_begin!`, `ghost_update_end!`, `local_to_global!`, `global_to_local!`, `local_to_local!`, `set_values!`, `project_function!`, `project_field!`, `zero_rows!` and `zero_rows_local!`. The positional forms still work and warn once; they go in v0.6. `project_function!` also takes `ctxs` as a keyword, and both projections default to `mode = INSERT_VALUES`.
+- `DMDA` and `DMStag` take the stencil width and type as keywords with defaults, `DMStag(petsclib, comm, boundary, dims, dof; stencil_width = 1, stencil_type = :box)`, where they were positional. The DM constructors' `setfromoptions` and `dmsetup` keywords are `set_from_options` and `setup`. The old forms still work and warn once; they go in v0.6.
+- `add_coarsen_hook!` takes the DM first, `add_coarsen_hook!(dm, coarsenhook, restricthook)`, as `set_residual!` does. Its hooks are C function pointers, which `do` syntax can't supply, so putting them first bought nothing. The hook-first order still works and warns.
+- `distribute!` is `distribute`: it returns a new distributed DM and leaves its argument unchanged, so the name has no `!`. `distribute!` and `plexdistribute!` still work and warn.
 
 ### Behaviour changes
 
@@ -15,6 +18,7 @@
 
 - The handle types are public API, with docstrings: the abstract types to annotate with (`AbstractPetscVec`, `AbstractPetscMat`, `AbstractPetscDM`, `AbstractKSP`, `AbstractPC`, `AbstractSNES`, `AbstractTS`, `AbstractPetscOptions`, `AbstractIS`, `AbstractAO`, `AbstractPF`, `AbstractTao`) and the handles `PetscDM`, `PC`, `IS`, `AO`, `PF` and `Tao`, all reachable as `PETSc.X`. `PETSc.realtype(petsclib)` gives the library's real type.
 - A `PetscError` prints the C function the failing call went to and PETSc's message for it, for example `PetscError(56) from VecSetSizes: No support for this operation for this object type. Cannot change/reset vector sizes to 4 local 4 global after previously setting them to 3 local 3 global`, where it printed `PetscError(56)`. The fields `func` and `message` hold the two; `PetscError(code)` still works.
+- `DMStag(dm, dof)` takes `prefix`, and every `DMDA`, `DMStag`, `DMPlex`, `KSP`, `SNES` and `TS` constructor takes any `AbstractString` as `prefix`, a `SubString` included.
 
 ### Fixed
 
@@ -22,6 +26,8 @@
 - A `DMDA`, `DMStag` or `DMPlex` constructor, or `fe_create_default`, that threw inside PETSc (for example on `da_refine = "abc"`) left its options pushed on PETSc's options stack. Every object created afterwards read them, and the options could no longer be destroyed. The options are now popped whether or not the call throws.
 - `PETSc.scalartype` and `PETSc.inttype` are now the same functions as `LibPETSc.scalartype` and `LibPETSc.inttype`. They were two separate copies, so a method added to one was missing from the other.
 - `mul!`, `ksp \ b`, `ldiv!` and `solve!(x, ksp, b)` took only `PetscVec`, so a borrowed `VecPtr` gave a `MethodError` (`A * x` with a `VecPtr` failed inside). They take any vector handle.
+- A 2D or 3D `DMDA` built without a stencil type threw a `MethodError`; it now defaults to `:box`, as `DMStag` does.
+- `DMStag(dm, dof; dmsetfromoptions = false)` passed `-dmsetfromoptions` to PETSc as an option and still applied the options; the keyword is honoured, with a deprecation warning pointing to `set_from_options`.
 
 ## v0.5.3
 

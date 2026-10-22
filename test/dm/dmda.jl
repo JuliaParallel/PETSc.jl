@@ -94,8 +94,8 @@ MPI.Initialized() || MPI.Init()
                     comm,
                     (boundary_type,),
                     (global_size,),
-                    dof_per_node,
-                    stencil_width;
+                    dof_per_node;
+                    stencil_width,
                 )
                 @test LibPETSc.DMGetType(petsclib,da) == "da"
                 @test LibPETSc.DMGetDimension(petsclib, da) == 1
@@ -157,7 +157,7 @@ end
                     comm,
                     (boundary_type_x, boundary_type_y),
                     (global_size_x, global_size_y),
-                    dof_per_node,
+                    dof_per_node;
                     stencil_width,
                     stencil_type,
                 )
@@ -182,9 +182,9 @@ end
                     comm,
                     (boundary_type_x, boundary_type_y),
                     (global_size_x, global_size_y),
-                    dof_per_node,
+                    dof_per_node;
                     stencil_width,
-                    stencil_type;
+                    stencil_type,
                     da_refine = da_refine,
                 )
                 @test LibPETSc.DMGetType(petsclib,da) == "da"
@@ -255,7 +255,7 @@ end
                     comm,
                     (boundary_type_x, boundary_type_y, boundary_type_z),
                     (global_size_x, global_size_y, global_size_z),
-                    dof_per_node,
+                    dof_per_node;
                     stencil_width,
                     stencil_type,
                 )
@@ -281,9 +281,9 @@ end
                     comm,
                     (boundary_type_x, boundary_type_y, boundary_type_z),
                     (global_size_x, global_size_y, global_size_z),
-                    dof_per_node,
+                    dof_per_node;
                     stencil_width,
-                    stencil_type;
+                    stencil_type,
                     da_refine = da_refine,
                 )
                 @test LibPETSc.DMGetType(petsclib,da) == "da"
@@ -352,9 +352,9 @@ end
                 comm,
                 boundary_type,
                 global_size[1:dim],
-                dof_per_node,
+                dof_per_node;
                 stencil_width,
-                PETSc.DMDA_STENCIL_STAR;
+                stencil_type = PETSc.DMDA_STENCIL_STAR,
                 # Force processor distribution so that we know how to go from
                 # Stencil to Linear easily
                 processors = (ntuple(i -> 1, dim - 1)..., mpisize),
@@ -440,8 +440,8 @@ end
             comm,
             (boundary_type,),
             (global_size,),
-            dof_per_node,
-            stencil_width;
+            dof_per_node;
+            stencil_width,
             points_per_proc = (points_per_proc,),
         )
 
@@ -519,9 +519,9 @@ end
             comm,
             (boundary_type, boundary_type),
             (global_size_x, global_size_y),
-            dof_per_node,
+            dof_per_node;
             stencil_width,
-            PETSc.DMDA_STENCIL_STAR,
+            stencil_type = PETSc.DMDA_STENCIL_STAR,
         )
 
         # Set uniform coordinates
@@ -577,5 +577,47 @@ end
     end
 end
 
+
+@testset "DM constructor keyword defaults" begin
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    comm = MPI.COMM_SELF
+    B = PETSc.DM_BOUNDARY_NONE
+
+    # Without stencil arguments a DMDA gets width 1 and a box stencil, in every dimension
+    for dims in ((5,), (5, 5), (4, 4, 4))
+        da = PETSc.DMDA(petsclib, comm, ntuple(_ -> B, length(dims)), dims, 1)
+        @test PETSc.info(da).stencil_width == 1
+        length(dims) > 1 && @test PETSc.info(da).stencil_type == PETSc.LibPETSc.DMDA_STENCIL_BOX
+        PETSc.destroy!(da)
+    end
+
+    # `prefix` takes any string, on the compatible-DMStag constructor too
+    dm = PETSc.DMStag(petsclib, comm, (B,), (5,), (1, 1); stencil_type = :star)
+    @test PETSc.LibPETSc.DMStagGetStencilType(petsclib, dm) == PETSc.LibPETSc.DMSTAG_STENCIL_STAR
+    vdm = PETSc.DMStag(dm, (0, 1); prefix = SubString("vel_x", 1, 4))
+    @test PETSc.options_prefix(vdm) == "vel_"
+    foreach(PETSc.destroy!, (vdm, dm))
+    PETSc.finalize(petsclib)
+end
+
+const coarsen_hook_calls = Ref(0)
+count_coarsen_hook(::Ptr{Cvoid}, ::Ptr{Cvoid}, ::Ptr{Cvoid}) = (coarsen_hook_calls[] += 1; Cint(0))
+
+@testset "add_coarsen_hook!" begin
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    comm = MPI.COMM_SELF
+    da = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (9,), 1)
+    hook = @cfunction(count_coarsen_hook, Cint, (Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}))
+    @test PETSc.add_coarsen_hook!(da, hook) === da
+
+    # The hook runs once per coarsening
+    coarsen_hook_calls[] = 0
+    dac = PETSc.LibPETSc.DMCoarsen(petsclib, da, comm)
+    @test coarsen_hook_calls[] == 1
+    foreach(PETSc.destroy!, (dac, da))
+    PETSc.finalize(petsclib)
+end
 
 nothing

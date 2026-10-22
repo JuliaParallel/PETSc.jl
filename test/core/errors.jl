@@ -26,7 +26,7 @@ MPI.Initialized() || MPI.Init()
 
         # a DMStag to derive from, created before the library goes down
         PETSc.initialize(petsclib)
-        stag = PETSc.DMStag(petsclib, comm, (B,), (5,), (1, 1), 1)
+        stag = PETSc.DMStag(petsclib, comm, (B,), (5,), (1, 1); stencil_width = 1)
         PETSc.finalize(petsclib)
 
         S = sparse(PetscScalar[1 0; 0 1])
@@ -38,8 +38,8 @@ MPI.Initialized() || MPI.Init()
         @test_throws PETSc.PetscNotInitialized PETSc.KSP(petsclib, comm, S)
         @test_throws PETSc.PetscNotInitialized PETSc.SNES(petsclib, comm)
         @test_throws PETSc.PetscNotInitialized PETSc.TS(petsclib, comm)
-        @test_throws PETSc.PetscNotInitialized PETSc.DMDA(petsclib, comm, (B,), (5,), 1, 1)
-        @test_throws PETSc.PetscNotInitialized PETSc.DMStag(petsclib, comm, (B,), (5,), (1, 1), 1)
+        @test_throws PETSc.PetscNotInitialized PETSc.DMDA(petsclib, comm, (B,), (5,), 1; stencil_width = 1)
+        @test_throws PETSc.PetscNotInitialized PETSc.DMStag(petsclib, comm, (B,), (5,), (1, 1); stencil_width = 1)
         @test_throws PETSc.PetscNotInitialized PETSc.DMStag(stag, (1, 1))
         @test_throws PETSc.PetscNotInitialized PETSc.DMPlex(petsclib, comm)
         @test_throws PETSc.PetscNotInitialized PETSc.PetscOptions(petsclib; ksp_monitor = "")
@@ -73,10 +73,10 @@ MPI.Initialized() || MPI.Init()
         @testset "DMs have 1 to 3 dimensions ($PetscScalar)" begin
             none = ntuple(_ -> PETSc.DM_BOUNDARY_NONE, 4)
             @test_throws "a DMDA has 1, 2 or 3 dimensions, got 4" PETSc.DMDA(
-                petsclib, MPI.COMM_SELF, none, (3, 3, 3, 3), 1, 1,
+                petsclib, MPI.COMM_SELF, none, (3, 3, 3, 3), 1; stencil_width = 1,
             )
             @test_throws "a DMStag has 1, 2 or 3 dimensions, got 4" PETSc.DMStag(
-                petsclib, MPI.COMM_SELF, none, (3, 3, 3, 3), (1, 0, 0, 0, 0), 1,
+                petsclib, MPI.COMM_SELF, none, (3, 3, 3, 3), (1, 0, 0, 0, 0); stencil_width = 1,
             )
         end
 
@@ -114,7 +114,7 @@ end
 
     # An error raised deep inside PETSc is named after the call Julia made
     err = try
-        PETSc.DMDA(petsclib, MPI.COMM_SELF, (PETSc.DM_BOUNDARY_NONE,), (10,), 1, 1; da_refine = "abc")
+        PETSc.DMDA(petsclib, MPI.COMM_SELF, (PETSc.DM_BOUNDARY_NONE,), (10,), 1; stencil_width = 1, da_refine = "abc")
     catch e
         e
     end

@@ -38,9 +38,9 @@ comm = MPI.COMM_WORLD
 dm = PETSc.DMStag(petsclib, comm,
     (PETSc.DM_BOUNDARY_NONE,),       # boundary type
     (8,),                              # global element count (overridable via -stag_grid_x)
-    (1, 0),                            # (dof_vertex, dof_element)
-    1,                                 # stencil width
-    PETSc.DMSTAG_STENCIL_BOX;
+    (1, 0);                            # (dof_vertex, dof_element)
+    stencil_width = 1,
+    stencil_type = PETSc.DMSTAG_STENCIL_BOX,
     opts...)
 
 # ── Assemble the linear system  Ax = b ──────────────────────────────────────

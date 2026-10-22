@@ -28,7 +28,7 @@ PETSc provides several DM implementations for different mesh types:
 type:
 
 ```julia
-da = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (10,), 1, 1)
+da = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (10,), 1; stencil_width = 1)
 da isa PETSc.DMDA{typeof(petsclib), 1}     # true: flavour and dimension
 ```
 

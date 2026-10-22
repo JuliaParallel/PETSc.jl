@@ -24,7 +24,7 @@ import .LibPETSc: AbstractPetscDM, PetscDM, CDM
 
 A `DMDA`: a `N`-dimensional PETSc distributed array.
 
-Build one with [`DMDA(petsclib, comm, boundary_type, global_dim, dof_per_node,
+Build one with [`DMDA(petsclib, comm, boundary_type, global_dim, dof_per_node;
 stencil_width, stencil_type)`](@ref). A handle onto a DMDA that PETSc owns comes
 from [`narrow`](@ref).
 
@@ -42,7 +42,7 @@ end
 
 A `DMSTAG`: a `N`-dimensional PETSc staggered-grid distributed array.
 
-Build one with [`DMStag(petsclib, comm, boundary_type, global_dim, dof_per_node,
+Build one with [`DMStag(petsclib, comm, boundary_type, global_dim, dof_per_node;
 stencil_width, stencil_type)`](@ref). A handle onto a DMStag that PETSc owns
 comes from [`narrow`](@ref).
 
@@ -106,6 +106,51 @@ function own_dm!(dm::TypedPetscDM{PetscLib}, comm) where {PetscLib}
     return dm
 end
 
+# What every DM constructor does once PETSc has created the DM: set the options
+# prefix, apply `set_from_options!` with the constructor's leftover keywords as
+# the options database, call `setup!`, and take ownership.
+function finish_dm!(
+    dm::TypedPetscDM{PetscLib},
+    comm,
+    options;
+    prefix::AbstractString,
+    set_from_options::Bool,
+    setup::Bool,
+) where {PetscLib}
+    options, set_from_options, setup = take_renamed_dm_keywords(options, set_from_options, setup)
+    petsclib = getlib(PetscLib)
+    isempty(prefix) || LibPETSc.DMSetOptionsPrefix(petsclib, dm, String(prefix))
+    if set_from_options
+        opts = PetscOptions(petsclib; options...)
+        with_options(opts) do
+            LibPETSc.DMSetFromOptions(petsclib, dm)
+        end
+    end
+    setup && setup!(dm)
+    return own_dm!(dm, comm)
+end
+
+# The DM constructors' keywords before they were renamed. Left in `options...`
+# they would become PETSc options (`-dmsetup`) and do nothing, so they are taken
+# out, warned about and honoured.
+# TODO: remove in v0.6 with the other 0.5 deprecations.
+const RENAMED_DM_KEYWORDS = (
+    setfromoptions = :set_from_options,
+    dmsetfromoptions = :set_from_options,
+    dmsetup = :setup,
+)
+
+function take_renamed_dm_keywords(options, set_from_options, setup)
+    for (old, new) in pairs(RENAMED_DM_KEYWORDS)
+        haskey(options, old) || continue
+        @warn "the DM constructor keyword `$old` is deprecated, use `$new`" maxlog = 1 _id = old
+        value = options[old]::Bool
+        new === :setup ? (setup = value) : (set_from_options = value)
+    end
+    rest = Base.structdiff(values(options), RENAMED_DM_KEYWORDS)
+    return rest, set_from_options, setup
+end
+
 """
     narrow(dm::AbstractPetscDM; own = false)
 
@@ -121,7 +166,7 @@ unchanged.
 $(doc_borrowed())
 
 The exception is `own = true`, which the callers that really do hand over a new
-object use: [`clone`](@ref) and [`distribute!`](@ref).
+object use: [`clone`](@ref) and [`distribute`](@ref).
 
 # External Links
 $(doc_external("DM/DMGetType"))

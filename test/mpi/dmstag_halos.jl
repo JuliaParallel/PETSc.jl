@@ -14,7 +14,7 @@ using PETSc
     nranks = MPI.Comm_size(comm)
 
     # 1D, one element dof, two elements per rank
-    dm = PETSc.DMStag(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (2nranks,), (0, 1), 1)
+    dm = PETSc.DMStag(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (2nranks,), (0, 1); stencil_width = 1)
     owned = PETSc.corners(dm)
     ghosted = PETSc.ghost_corners(dm)
     element(k) = ghosted.lower[1] + k - 1       # global element of local entry k

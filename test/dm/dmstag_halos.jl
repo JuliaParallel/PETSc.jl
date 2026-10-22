@@ -17,7 +17,7 @@ MPI.Initialized() || MPI.Init()
 
     @testset "local_to_local!" begin
         # 1D, periodic, one element dof: the local vector is [x4, x1, x2, x3, x4, x1]
-        dm = PETSc.DMStag(petsclib, comm, (PETSc.DM_BOUNDARY_PERIODIC,), (4,), (0, 1), 1)
+        dm = PETSc.DMStag(petsclib, comm, (PETSc.DM_BOUNDARY_PERIODIC,), (4,), (0, 1); stencil_width = 1)
         g = PETSc.global_vec(dm)
         g[1:4] = [1.0, 2.0, 3.0, 4.0]
         PETSc.assemble!(g)
@@ -39,7 +39,7 @@ MPI.Initialized() || MPI.Init()
     end
 
     @testset "with_product_coordinates" begin
-        dm = PETSc.DMStag(petsclib, comm, none(2), (3, 2), (1, 1, 1), 1)
+        dm = PETSc.DMStag(petsclib, comm, none(2), (3, 2), (1, 1, 1); stencil_width = 1)
         PETSc.set_uniform_coordinates!(dm, (0.0, 0.0), (3.0, 2.0))
 
         # slot 1 is the lower face, slot 2 the centre
@@ -53,17 +53,17 @@ MPI.Initialized() || MPI.Init()
         PETSc.set_uniform_coordinates!(dm, (0.0, 0.0), (6.0, 4.0))
         @test PETSc.with_product_coordinates((x, y) -> x[1, 2], dm) == 1.0
 
-        dm1 = PETSc.DMStag(petsclib, comm, none(1), (4,), (1, 1), 1)
+        dm1 = PETSc.DMStag(petsclib, comm, none(1), (4,), (1, 1); stencil_width = 1)
         PETSc.set_uniform_coordinates!(dm1, (0.0,), (1.0,))
         @test PETSc.with_product_coordinates(x -> x[4, 2], dm1) == 0.875
-        dm3 = PETSc.DMStag(petsclib, comm, none(3), (2, 2, 2), (0, 0, 0, 1), 1)
+        dm3 = PETSc.DMStag(petsclib, comm, none(3), (2, 2, 2), (0, 0, 0, 1); stencil_width = 1)
         PETSc.set_uniform_coordinates!(dm3, (0.0, 0.0, 0.0), (2.0, 2.0, 2.0))
         @test PETSc.with_product_coordinates((x, y, z) -> z[2, 1], dm3) == 1.0
         foreach(PETSc.destroy!, (dm3, dm1, dm))
     end
 
     @testset "set_matrix_preallocate_only!" begin
-        dm = PETSc.DMStag(petsclib, comm, none(2), (3, 2), (0, 1, 1), 1)
+        dm = PETSc.DMStag(petsclib, comm, none(2), (3, 2), (0, 1, 1); stencil_width = 1)
         nonzeros(A) = LibPETSc.MatGetInfo(petsclib, A, LibPETSc.MAT_LOCAL).nz_used
         A = PETSc.PetscMat(dm)
         @test nonzeros(A) > 0                   # the stencil pattern, stored as zeros

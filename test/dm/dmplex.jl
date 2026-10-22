@@ -385,12 +385,12 @@ for petsclib in PETSc.petsclibs
         PETSc.destroy!(dm_hex)
     end
 
-    # ── distribute! (serial: mesh stays on one rank) ────────────────────
-    @testset "distribute! serial" begin
+    # ── distribute (serial: mesh stays on one rank) ─────────────────────
+    @testset "distribute serial" begin
         dm = PETSc.DMPlex(petsclib, _TC, 2, false, [4, 4])
         # On COMM_SELF (1 rank), DMPlexDistribute returns a DM with NULL ptr
         # (no redistribution needed).  We just check it does not throw.
-        dm_par = @test_nowarn PETSc.distribute!(dm; overlap = 0)
+        dm_par = @test_nowarn PETSc.distribute(dm; overlap = 0)
         @test dm_par isa LibPETSc.AbstractPetscDM
 
         # destroy! skips a NULL pointer, so this is a no-op on one rank and

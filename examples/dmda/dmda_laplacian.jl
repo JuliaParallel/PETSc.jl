@@ -95,9 +95,9 @@ da = PETSc.DMDA(
     comm,
     (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE),
     Nq,
-    1,
-    1,
-    PETSc.DMDA_STENCIL_STAR;
+    1;
+    stencil_width = 1,
+    stencil_type = PETSc.DMDA_STENCIL_STAR,
     opts...,
 )
 

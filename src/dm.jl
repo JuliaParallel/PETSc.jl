@@ -166,7 +166,7 @@ unchanged.
 $(doc_borrowed())
 
 The exception is `own = true`, which the callers that really do hand over a new
-object use: [`clone`](@ref) and [`distribute!`](@ref).
+object use: [`clone`](@ref) and [`distribute`](@ref).
 
 # External Links
 $(doc_external("DM/DMGetType"))

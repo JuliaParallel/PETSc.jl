@@ -383,18 +383,18 @@ function issimplex(dm::DMPlex{PetscLib}) where {PetscLib}
 end
 
 """
-    distribute!(dm::DMPlex; overlap = 0) -> Union{Nothing, DMPlex}
+    distribute(dm::DMPlex; overlap = 0) -> DMPlex
 
-Distribute the (serial) `DMPLEX` `dm` across the communicator with the given
-point-overlap.  Returns the new distributed `DM` on the owning communicator, or
-`nothing` if no redistribution occurred (e.g. serial run).
-
-The original `dm` is *not* destroyed — the caller is responsible for that.
+Distribute `dm` across its communicator, with `overlap` layers of cells shared
+between neighboring ranks, and return the distributed mesh as a new, owned DM.
+`dm` itself is left unchanged and still has to be destroyed. When PETSc doesn't
+redistribute (on one rank) the returned DM has a null pointer, and `destroy!` on
+it does nothing.
 
 # External Links
 $(doc_external("DMPlex/DMPlexDistribute"))
 """
-function distribute!(
+function distribute(
     dm::DMPlex{PetscLib};
     overlap::Integer = 0,
 ) where {PetscLib}

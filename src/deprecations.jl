@@ -71,7 +71,8 @@ function dmda_star_fd_coloring(args...; kwargs...)
 end
 
 @renamed isplexsimplex issimplex
-@renamed plexdistribute! distribute!
+@renamed plexdistribute! distribute
+@renamed distribute! distribute
 @renamed petsc_setname! set_name!
 @renamed getds ds
 @renamed createds! create_ds!

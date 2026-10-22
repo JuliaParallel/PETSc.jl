@@ -16,7 +16,7 @@ public @bd_fn, @jacobian_fn, @residual_fn, @simple_fn, AO, AbstractAO, AbstractI
        audit_file, check_wrappers_version, clone, coarse_dm, comm,
        compose_constant_nullspace!, converged_reason, copy_disc!, copy_quadrature!, corners,
        create_ds!, create_split_boundary_labels!, current_time, destroy!, diagonal!,
-       distribute!, dm, dof_slot, ds, edge_location, element_location, equation_type,
+       distribute, dm, dof_slot, ds, edge_location, element_location, equation_type,
        face_location, fe_create_default, fe_create_lagrange, finalize, function_norm,
        ghost_corners, ghost_update!, ghost_update_begin!, ghost_update_end!, global_indices,
        global_to_local!, global_vec, info, initialize, interpolate, interpolate!, inttype,

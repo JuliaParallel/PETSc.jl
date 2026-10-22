@@ -56,7 +56,8 @@ const RENAMES = Pair{Symbol, Symbol}[
 
     # dmplex.jl
     :isplexsimplex => :issimplex,
-    :plexdistribute! => :distribute!,
+    :plexdistribute! => :distribute,
+    :distribute! => :distribute,   # returns a new DM and leaves `dm` as it is
     :petsc_setname! => :set_name!,
     :getds => :ds,
     :createds! => :create_ds!,

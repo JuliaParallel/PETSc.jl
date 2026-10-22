@@ -187,7 +187,7 @@ Dispatch does the work:
 ```julia
 project_function!(vec, dm, f)   # was dm_project_function!
 set_nullspace!(A, ns)           # was mat_set_null_space!
-distribute!(dm)                 # was plexdistribute!
+distribute(dm)                  # was plexdistribute!
 ```
 
 Keep a prefix only for free functions, where no argument identifies the domain.
@@ -469,7 +469,7 @@ DMStag(petsclib, comm, boundary, dims, dof;
 PetscMat(petsclib, m, n, nnz)             # required
 PetscMat(petsclib, m, n; type = :dense)   # optional, defaults to :seqaij
 
-distribute!(dm; overlap = 0)
+distribute(dm; overlap = 0)
 
 set_values!(A, rows_0b, cols_0b, vals; mode = ADD_VALUES)   # InsertMode and ScatterMode
 ghost_update!(v; mode = ADD_VALUES, scatter = SCATTER_REVERSE)
@@ -827,7 +827,7 @@ Each pair collapses to one name, so two shims point at each replacement.
 | v0.4 | v0.5 |
 |---|---|
 | `isplexsimplex` | `issimplex` |
-| `plexdistribute!` | `distribute!` |
+| `plexdistribute!` | `distribute` |
 | `petsc_setname!` | `set_name!` |
 | `getds` | `ds` |
 | `createds!` | `create_ds!` |

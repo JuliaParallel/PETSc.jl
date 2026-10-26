@@ -163,6 +163,14 @@ end
         @test LibPETSc.VecGetSize(petsclib, v) == 10
         PETSc.destroy!(v)
 
+        # On a communicator: by global length, or by local length alone
+        v = PETSc.PetscVec(petsclib, test_comm, 10)
+        @test LibPETSc.VecGetSize(petsclib, v) == 10
+        @test LibPETSc.VecGetType(petsclib, v) == "mpi"
+        w = PETSc.PetscVec(petsclib, test_comm, LibPETSc.PETSC_DETERMINE; local_size = 4)
+        @test LibPETSc.VecGetSize(petsclib, w) == 4
+        foreach(PETSc.destroy!, (w, v))
+
         PETSc.destroy!(petsc_x)
         PETSc.finalize(petsclib)
     end

@@ -331,4 +331,14 @@ const SHIMS = [
         foreach(PETSc.destroy!, (m, v))
     end
 
+    @testset "CSR PetscMat with comm as a keyword" begin
+        petsclib = PETSc.petsclibs[1]
+        PETSc.initialize(petsclib)
+        PetscInt, PetscScalar = petsclib.PetscInt, petsclib.PetscScalar
+        A = warns(() -> PETSc.PetscMat(petsclib, PetscInt[0, 1], PetscInt[0], PetscScalar[2];
+                                       comm = PETSc.MPI.COMM_SELF))
+        @test A[1, 1] == PetscScalar(2)
+        PETSc.destroy!(A)
+    end
+
 end

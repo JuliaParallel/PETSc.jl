@@ -742,9 +742,11 @@ function csr_from_csc(petsclib::PetscLibType, A::SparseMatrixCSC)
 end
 
 """
-    B = PetscMat(petsclib, rowptr, colval, nzval; comm = MPI.COMM_SELF, ncols = …)
+    B = PetscMat(petsclib, rowptr, colval, nzval; ncols = …)
+    B = PetscMat(petsclib, comm, rowptr, colval, nzval; ncols = …)
 
-Create a PETSc SeqAIJ matrix on the CSR arrays `rowptr`, `colval` and `nzval`.
+Create a PETSc SeqAIJ matrix on the CSR arrays `rowptr`, `colval` and `nzval`,
+on `comm` (`MPI.COMM_SELF` when it is left out).
 Arrays that are already `Vector`s of the library's integer and scalar types are
 borrowed rather than copied; 
 any other vector (another element type, a view, an offset array) is copied once.
@@ -767,7 +769,25 @@ function LibPETSc.PetscMat(
     rowptr::AbstractVector{<:Integer},
     colval::AbstractVector{<:Integer},
     nzval::AbstractVector;
-    comm = MPI.COMM_SELF,
+    comm = nothing,
+    kwargs...,
+)
+    # TODO: remove the `comm` keyword in v0.6 with the other 0.5 deprecations.
+    if comm === nothing
+        comm = MPI.COMM_SELF
+    else
+        @warn "PetscMat(petsclib, rowptr, colval, nzval; comm) is deprecated, " *
+              "use PetscMat(petsclib, comm, rowptr, colval, nzval)" maxlog = 1
+    end
+    return LibPETSc.PetscMat(petsclib, comm, rowptr, colval, nzval; kwargs...)
+end
+
+function LibPETSc.PetscMat(
+    petsclib::PetscLibType,
+    comm::MPI.Comm,
+    rowptr::AbstractVector{<:Integer},
+    colval::AbstractVector{<:Integer},
+    nzval::AbstractVector;
     ncols::Integer = isempty(colval) ? 0 : (maximum(colval) + 1),
 )
     check_initialized(petsclib)
@@ -804,14 +824,7 @@ The v0.4 `MatSeqAIJWithArrays` body, kept for its deprecation shim: converts
 """
 function mat_seqaij_with_arrays(petsclib::PetscLibType, comm, A::SparseMatrixCSC)
     rowptr, colval, nzval = csr_from_csc(petsclib, A)
-    return LibPETSc.PetscMat(
-        petsclib,
-        rowptr,
-        colval,
-        nzval;
-        comm = comm,
-        ncols = size(A, 2),
-    )
+    return LibPETSc.PetscMat(petsclib, comm, rowptr, colval, nzval; ncols = size(A, 2))
 end
 
 """

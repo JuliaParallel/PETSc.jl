@@ -104,6 +104,33 @@ function LibPETSc.PetscVec(petsclib::PetscLib, n::Integer) where {PetscLib <: Pe
     return v
 end
 
+"""
+    PetscVec(petsclib, comm, n::Integer; local_size = PETSC_DECIDE)
+
+A standard PETSc vector of global length `n` distributed over `comm`, with
+`local_size` entries on this rank. Pass `n = PETSC_DETERMINE` to give only the
+local sizes. On a communicator of more than one rank the vector has no
+finalizer, since `VecDestroy` is collective: call [`destroy!`](@ref) on every
+rank.
+
+# External Links
+$(doc_external("Vec/VecCreateMPI"))
+"""
+function LibPETSc.PetscVec(
+    petsclib::PetscLib,
+    comm::MPI.Comm,
+    n::Integer;
+    local_size::Integer = LibPETSc.PETSC_DECIDE,
+) where {PetscLib <: PetscLibType}
+    check_initialized(petsclib)
+    PetscInt = petsclib.PetscInt
+    v = LibPETSc.VecCreateMPI(petsclib, comm, PetscInt(local_size), PetscInt(n))
+    if MPI.Comm_size(comm) == 1
+        finalizer(destroy!, v)
+    end
+    return v
+end
+
 
 """
     PetscVec(petsclib, v::Vector)

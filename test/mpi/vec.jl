@@ -28,7 +28,7 @@ using LinearAlgebra: norm
         for version in 1:2
             if version == 1
                 # Create using local size
-                petsc_x = LibPETSc.VecCreateMPI(petsclib, comm, PetscInt(n1 - n0 + 1), PetscInt(LibPETSc.PETSC_DECIDE))
+                petsc_x = PETSc.PetscVec(petsclib, comm, LibPETSc.PETSC_DETERMINE; local_size = n1 - n0 + 1)
 
                 # check the data ownership
                 rng = n0:n1
@@ -37,12 +37,7 @@ using LinearAlgebra: norm
                 @test rng == PETSc.ownership_range(petsc_x) .- 1
             else
                 # Create using global size
-                petsc_x = LibPETSc.VecCreateMPI(
-                    petsclib,
-                    comm,
-                    PetscInt(LibPETSc.PETSC_DECIDE),
-                    PetscInt(exact_length),
-                )
+                petsc_x = PETSc.PetscVec(petsclib, comm, exact_length)
 
                 # get the data ownership
                 rng = PETSc.ownership_range(petsc_x) .- 1

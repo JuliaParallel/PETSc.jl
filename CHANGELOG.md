@@ -9,6 +9,7 @@
 - `add_coarsen_hook!` takes the DM first, `add_coarsen_hook!(dm, coarsenhook, restricthook)`, as `set_residual!` does. Its hooks are C function pointers, which `do` syntax can't supply, so putting them first bought nothing. The hook-first order still works and warns.
 - `distribute!` is `distribute`: it returns a new distributed DM and leaves its argument unchanged, so the name has no `!`. `distribute!` and `plexdistribute!` still work and warn.
 - `own` is a keyword with default `false` when wrapping a raw handle: `VecPtr(petsclib, ptr; own = true)`, `MatPtr(petsclib, ptr; own)` and `PetscVec(petsclib, ptr; own)`, as in `narrow(dm; own)`. The positional `own` still works and warns.
+- The CSR constructor takes the communicator second, `PetscMat(petsclib, comm, rowptr, colval, nzval)`, as every other constructor does; the `comm` keyword still works and warns. Without `comm` the matrix is on `MPI.COMM_SELF`, as before.
 
 ### Behaviour changes
 
@@ -20,6 +21,7 @@
 - The handle types are public API, with docstrings: the abstract types to annotate with (`AbstractPetscVec`, `AbstractPetscMat`, `AbstractPetscDM`, `AbstractKSP`, `AbstractPC`, `AbstractSNES`, `AbstractTS`, `AbstractPetscOptions`, `AbstractIS`, `AbstractAO`, `AbstractPF`, `AbstractTao`) and the handles `PetscDM`, `PC`, `IS`, `AO`, `PF` and `Tao`, all reachable as `PETSc.X`. `PETSc.realtype(petsclib)` gives the library's real type.
 - A `PetscError` prints the C function the failing call went to and PETSc's message for it, for example `PetscError(56) from VecSetSizes: No support for this operation for this object type. Cannot change/reset vector sizes to 4 local 4 global after previously setting them to 3 local 3 global`, where it printed `PetscError(56)`. The fields `func` and `message` hold the two; `PetscError(code)` still works.
 - `DMStag(dm, dof)` takes `prefix`, and every `DMDA`, `DMStag`, `DMPlex`, `KSP`, `SNES` and `TS` constructor takes any `AbstractString` as `prefix`, a `SubString` included.
+- `PetscVec(petsclib, comm, n; local_size = PETSC_DECIDE)` creates a vector distributed over `comm`, by global length `n` or by `local_size` with `n = PETSC_DETERMINE`.
 
 ### Fixed
 

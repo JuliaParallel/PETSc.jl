@@ -391,6 +391,10 @@ function LibPETSc.PetscVec(petsclib::LibPETSc.PetscLibType, ptr::CVec, own::Bool
     return LibPETSc.PetscVec(petsclib, ptr; own)
 end
 
+# CSR PetscMat with comm as a keyword
+# §9: `comm` is positional second, as in every other constructor.
+# The keyword form is caught in the CSR `PetscMat` method in src/mat.jl.
+
 
 # Renamed types: a `const` alias, so `isa` and dispatch keep working
 

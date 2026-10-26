@@ -237,6 +237,13 @@ end
 
         PETSc.destroy!(B)
 
+        # CSR arrays, with and without the communicator
+        rowptr, colval, nzval = PetscInt[0, 1, 2], PetscInt[0, 1], PetscScalar[3, 4]
+        C = PETSc.PetscMat(petsclib, MPI.COMM_SELF, rowptr, colval, nzval)
+        D = PETSc.PetscMat(petsclib, rowptr, colval, nzval)
+        @test C[2, 2] == D[2, 2] == PetscScalar(4)
+        foreach(PETSc.destroy!, (D, C))
+
         PETSc.finalize(petsclib)
     end
 end

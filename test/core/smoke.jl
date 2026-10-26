@@ -33,7 +33,7 @@ MPI.Initialized() || MPI.Init()
 
     # a matrix-free operator
     f!(y, x) = y .= 2 .* x
-    shell = PETSc.MatShell(petsclib, f!, comm, 10, 10)
+    shell = PETSc.MatShell(f!, petsclib, comm, 10, 10)
     z = rand(10)
     @test shell * z ≈ 2z
     @test PETSc.KSP(shell) \ z ≈ z / 2

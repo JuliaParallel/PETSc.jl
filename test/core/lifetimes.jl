@@ -102,7 +102,7 @@ end
                 ya .= 2 .* xa
             end
         end
-        M = PETSc.MatShell(petsclib, f!, comm, 3, 3)
+        M = PETSc.MatShell(f!, petsclib, comm, 3, 3)
         @test M * PetscScalar[1, 2, 3] == PetscScalar[2, 4, 6]
         PETSc.destroy!(M)
     end

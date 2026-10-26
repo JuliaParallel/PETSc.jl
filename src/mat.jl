@@ -1025,22 +1025,20 @@ end
 
 
 """
-    MatShell(
-        petsclib::PetscLib,
-        obj::OType,
-        comm::MPI.Comm,
-        local_rows,
-        local_cols,
-        global_rows = LibPETSc.PETSC_DECIDE,
-        global_cols = LibPETSc.PETSC_DECIDE,
-    )
+    MatShell(obj, petsclib, comm::MPI.Comm, local_rows, local_cols;
+             global_rows = PETSC_DECIDE, global_cols = PETSC_DECIDE)
 
 Create a `global_rows X global_cols` PETSc shell matrix object wrapping `obj`
 with local size `local_rows X local_cols`.
 
-The `obj` will be registered as an `MATOP_MULT` function and if if `obj` is a
-`Function`, then the multiply action `obj(y,x)`; otherwise it calls `mul!(y,
-obj, x)`.
+`obj` is the multiply: a `Function` is called as `obj(y, x)` to fill `y`,
+anything else goes through `mul!(y, obj, x)`. It comes first so `do` works:
+
+```julia
+A = MatShell(petsclib, comm, n, n) do y, x
+    y .= 2 .* x
+end
+```
 
 if `comm == MPI.COMM_SELF` then the garbage connector can finalize the object,
 otherwise the user is responsible for calling [`destroy!`](@ref).
@@ -1069,14 +1067,29 @@ end
 MatShellState() = MatShellState(nothing, true)
 state_type(::Type{<:MatShell}) = MatShellState
 
-LibPETSc.@for_petsc function MatShell(
+function MatShell(
+    obj,
+    petsclib::PetscLibType,
+    comm::MPI.Comm,
+    local_rows::Integer,
+    local_cols::Integer;
+    global_rows::Integer = LibPETSc.PETSC_DECIDE,
+    global_cols::Integer = LibPETSc.PETSC_DECIDE,
+)
+    return create_matshell(petsclib, obj, comm, local_rows, local_cols, global_rows, global_cols)
+end
+
+# The per-library body of `MatShell`. The public method above takes `petsclib`
+# as the abstract type, so the old argument order's shim can be told apart
+# from it without an ambiguity.
+LibPETSc.@for_petsc function create_matshell(
     petsclib::$PetscLib,
     obj::OType,
     comm::MPI.Comm,
     local_rows,
     local_cols,
-    global_rows = LibPETSc.PETSC_DECIDE,
-    global_cols = LibPETSc.PETSC_DECIDE,
+    global_rows,
+    global_cols,
 ) where {OType}
     mat = MatShell{$PetscLib, OType}(C_NULL, obj, petsclib.age, true)
 

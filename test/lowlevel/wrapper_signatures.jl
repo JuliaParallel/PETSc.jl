@@ -96,7 +96,7 @@ end
         @test LibPETSc.VecNorm(petsclib, v, LibPETSc.NORM_INFINITY) ≈ 6
 
         # A shell matrix, whose type carries the wrapped Julia operator.
-        shell = PETSc.MatShell(petsclib, (y, x) -> (y .= x), wrapper_comm, 4, 4)
+        shell = PETSc.MatShell((y, x) -> (y .= x), petsclib, wrapper_comm, 4, 4)
         @test LibPETSc.MatGetLocalSize(petsclib, shell) == (4, 4)
 
         # A call that matches only the documented signature, here an integer

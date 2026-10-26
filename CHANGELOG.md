@@ -10,6 +10,7 @@
 - `distribute!` is `distribute`: it returns a new distributed DM and leaves its argument unchanged, so the name has no `!`. `distribute!` and `plexdistribute!` still work and warn.
 - `own` is a keyword with default `false` when wrapping a raw handle: `VecPtr(petsclib, ptr; own = true)`, `MatPtr(petsclib, ptr; own)` and `PetscVec(petsclib, ptr; own)`, as in `narrow(dm; own)`. The positional `own` still works and warns.
 - The CSR constructor takes the communicator second, `PetscMat(petsclib, comm, rowptr, colval, nzval)`, as every other constructor does; the `comm` keyword still works and warns. Without `comm` the matrix is on `MPI.COMM_SELF`, as before.
+- `MatShell` takes the operator first, `MatShell(f, petsclib, comm, local_rows, local_cols; global_rows, global_cols)`, so `MatShell(petsclib, comm, m, n) do y, x … end` works. The global sizes are keywords. The library-first order still works and warns.
 
 ### Behaviour changes
 

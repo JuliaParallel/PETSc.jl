@@ -341,4 +341,17 @@ const SHIMS = [
         PETSc.destroy!(A)
     end
 
+    @testset "MatShell with the library first" begin
+        petsclib = PETSc.petsclibs[1]
+        PETSc.initialize(petsclib)
+        comm = PETSc.MPI.COMM_SELF
+        A = warns(() -> PETSc.MatShell(petsclib, (y, x) -> (y .= 3 .* x), comm, 2, 2))
+        x = PETSc.PetscVec(petsclib, petsclib.PetscScalar[1, 2])
+        y = PETSc.PetscVec(petsclib, 2)
+        PETSc.LinearAlgebra.mul!(y, A, x)
+        @test y[:] == petsclib.PetscScalar[3, 6]
+        @test_throws "operator first" PETSc.MatShell(petsclib, petsclib, comm, 2, 2)
+        foreach(PETSc.destroy!, (y, x, A))
+    end
+
 end

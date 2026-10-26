@@ -18,7 +18,7 @@ using MPI
             end
         end
 
-        matshell =  PETSc.MatShell(petsclib, f!, test_comm, local_rows, local_cols)
+        matshell =  PETSc.MatShell(f!, petsclib, test_comm, local_rows, local_cols)
         x = PetscScalar.(collect(1:5))
         petsc_x = LibPETSc.VecCreateSeqWithArray(petsclib, test_comm, PetscInt(1), PetscInt(local_cols), x)
         petsc_y = LibPETSc.VecCreateSeqWithArray(petsclib, test_comm, PetscInt(1), PetscInt(local_rows), zeros(PetscScalar, local_rows))

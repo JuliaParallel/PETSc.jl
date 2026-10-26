@@ -655,6 +655,51 @@ const EXTRA_SHIMS = NamedTuple{(:name, :code, :test), Tuple{String, String, Stri
             PETSc.destroy!(A)
         end
         """,
+    ),    (
+        name = "MatShell with the library first",
+        code = """
+        # §8.1: the operator comes first so `do` works. The old order dispatches on
+        # the library in argument 1.
+        function MatShell(
+            petsclib::LibPETSc.PetscLibType,
+            obj,
+            comm::MPI.Comm,
+            local_rows::Integer,
+            local_cols::Integer,
+            global_rows::Integer = LibPETSc.PETSC_DECIDE,
+            global_cols::Integer = LibPETSc.PETSC_DECIDE,
+        )
+            @warn "MatShell(petsclib, obj, comm, local_rows, local_cols, global_rows, global_cols) " *
+                  "is deprecated, use MatShell(obj, petsclib, comm, local_rows, local_cols; " *
+                  "global_rows, global_cols)" maxlog = 1
+            return MatShell(obj, petsclib, comm, local_rows, local_cols; global_rows, global_cols)
+        end
+
+        # Two libraries match both orders. A library is never an operator.
+        function MatShell(
+            ::LibPETSc.PetscLibType,
+            ::LibPETSc.PetscLibType,
+            ::MPI.Comm,
+            ::Integer,
+            ::Integer,
+        )
+            throw(ArgumentError("MatShell takes the operator first, then the library"))
+        end
+        """,
+        test = """
+        @testset "MatShell with the library first" begin
+            petsclib = PETSc.petsclibs[1]
+            PETSc.initialize(petsclib)
+            comm = PETSc.MPI.COMM_SELF
+            A = warns(() -> PETSc.MatShell(petsclib, (y, x) -> (y .= 3 .* x), comm, 2, 2))
+            x = PETSc.PetscVec(petsclib, petsclib.PetscScalar[1, 2])
+            y = PETSc.PetscVec(petsclib, 2)
+            PETSc.LinearAlgebra.mul!(y, A, x)
+            @test y[:] == petsclib.PetscScalar[3, 6]
+            @test_throws "operator first" PETSc.MatShell(petsclib, petsclib, comm, 2, 2)
+            foreach(PETSc.destroy!, (y, x, A))
+        end
+        """,
     ),
 ]
 
@@ -663,6 +708,8 @@ const EXTRA_SHIMS = NamedTuple{(:name, :code, :test), Tuple{String, String, Stri
 # ---------------------------------------------------------------------------
 
 const INTERNAL = Set{Symbol}([
+    # the per-library body of the MatShell constructor
+    :create_matshell,
     # leading underscore dropped (naming.md "Internals")
     :petsc_link,
     :petsc_subst,

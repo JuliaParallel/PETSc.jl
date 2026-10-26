@@ -426,7 +426,9 @@ end
 
     # a MatShell body written as a broadcast
     x, y, z, _, yv = vecs(n)
-    shell = PETSc.MatShell(petsclib, (b, a) -> (b .= 2 .* a), comm, n, n)
+    shell = PETSc.MatShell(petsclib, comm, n, n) do b, a
+        b .= 2 .* a
+    end
     mul!(z, shell, y)
     @test z[:] ≈ 2 .* yv
     foreach(PETSc.destroy!, (shell, x, y, z))

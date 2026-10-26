@@ -51,8 +51,8 @@ A = LibPETSc.DMCreateMatrix(petsclib, dm)
 ### Matrix Shell (Matrix-Free)
 
 ```julia
-# Create a shell matrix with custom mult operation, y = mult_function(y, x)
-A = PETSc.MatShell(petsclib, mult_function, MPI.COMM_SELF, local_rows, local_cols)
+# A shell matrix whose multiply is mult_function(y, x), filling y
+A = PETSc.MatShell(mult_function, petsclib, MPI.COMM_SELF, local_rows, local_cols)
 ```
 
 ## Setting Values

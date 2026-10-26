@@ -392,8 +392,37 @@ function LibPETSc.PetscVec(petsclib::LibPETSc.PetscLibType, ptr::CVec, own::Bool
 end
 
 # CSR PetscMat with comm as a keyword
-# §9: `comm` is positional second, as in every other constructor.
-# The keyword form is caught in the CSR `PetscMat` method in src/mat.jl.
+# §9: `comm` is positional second, as in every other constructor. The
+# keyword form is caught in the CSR `PetscMat` method in src/mat.jl.
+
+# MatShell with the library first
+# §8.1: the operator comes first so `do` works. The old order dispatches on
+# the library in argument 1.
+function MatShell(
+    petsclib::LibPETSc.PetscLibType,
+    obj,
+    comm::MPI.Comm,
+    local_rows::Integer,
+    local_cols::Integer,
+    global_rows::Integer = LibPETSc.PETSC_DECIDE,
+    global_cols::Integer = LibPETSc.PETSC_DECIDE,
+)
+    @warn "MatShell(petsclib, obj, comm, local_rows, local_cols, global_rows, global_cols) " *
+          "is deprecated, use MatShell(obj, petsclib, comm, local_rows, local_cols; " *
+          "global_rows, global_cols)" maxlog = 1
+    return MatShell(obj, petsclib, comm, local_rows, local_cols; global_rows, global_cols)
+end
+
+# Two libraries match both orders. A library is never an operator.
+function MatShell(
+    ::LibPETSc.PetscLibType,
+    ::LibPETSc.PetscLibType,
+    ::MPI.Comm,
+    ::Integer,
+    ::Integer,
+)
+    throw(ArgumentError("MatShell takes the operator first, then the library"))
+end
 
 
 # Renamed types: a `const` alias, so `isa` and dispatch keep working

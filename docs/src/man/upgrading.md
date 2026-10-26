@@ -105,7 +105,27 @@ The `LibPETSc` wrappers are regenerated for PETSc 3.25 and follow a new calling 
 
 The [Release notes](release_notes.md) list the remaining changes, and [`wrapping/DEVIATIONS.md`](https://github.com/JuliaParallel/PETSc.jl/blob/main/wrapping/DEVIATIONS.md) lists every category of changed wrapper.
 
-## 6. Looking up a name
+## 6. Within 0.5: the 0.5.4 spellings
+
+0.5.4 moves options to keywords and puts arguments in the same order across constructors. Every old form still works until 0.6 and warns, so step 2 finds them; this is the list to update by hand.
+
+| Up to 0.5.3 | From 0.5.4 |
+|---|---|
+| `set_values!(A, rows, cols, vals, ADD_VALUES)` | `set_values!(A, rows, cols, vals; mode = ADD_VALUES)` |
+| `ghost_update!(v, ADD_VALUES, SCATTER_REVERSE)` | `ghost_update!(v; mode = ADD_VALUES, scatter = SCATTER_REVERSE)` |
+| `global_to_local!(l, dm, g, ADD_VALUES)`, also `local_to_global!`, `local_to_local!`, `project_function!`, `project_field!` | `…; mode = ADD_VALUES` |
+| `zero_rows!(A, rows, 1.0)` | `zero_rows!(A, rows; diag = 1.0)` |
+| `DMStag(petsclib, comm, bnd, dims, dof, 1, :box)`, the same for `DMDA` | `DMStag(petsclib, comm, bnd, dims, dof; stencil_width = 1, stencil_type = :box)`; both default to these values |
+| `setfromoptions`, `dmsetup`, `dmsetfromoptions` on a DM constructor | `set_from_options`, `setup` |
+| `add_coarsen_hook!(hook, dm)` | `add_coarsen_hook!(dm, hook)` |
+| `distribute!(dm)` | `distribute(dm)`: it returns a new DM and leaves `dm` as it is |
+| `VecPtr(petsclib, ptr, false)`, also `MatPtr` and `PetscVec(petsclib, ptr, own)` | `VecPtr(petsclib, ptr; own = false)`; `own` defaults to `false` |
+| `PetscMat(petsclib, rowptr, colval, nzval; comm)` | `PetscMat(petsclib, comm, rowptr, colval, nzval)` |
+| `MatShell(petsclib, f, comm, m, n, M, N)` | `MatShell(f, petsclib, comm, m, n; global_rows = M, global_cols = N)`, or `MatShell(petsclib, comm, m, n) do y, x … end` |
+
+0.5.4 also adds `PetscVec(petsclib, comm, n; local_size)` for a vector distributed over `comm`.
+
+## 7. Looking up a name
 
 - **An old high-level name:** the rename table at the end of [Naming Conventions](naming.md).
 - **A PETSc C function:** the [C to Julia name index](api_index.md).

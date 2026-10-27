@@ -424,6 +424,10 @@ function MatShell(
     throw(ArgumentError("MatShell takes the operator first, then the library"))
 end
 
+# local_arrays and restore_local_arrays!
+# The pair warns in src/vec.jl: `with_local_arrays!` replaces it and restores
+# the arrays also when the kernel throws.
+
 
 # Renamed types: a `const` alias, so `isa` and dispatch keep working
 

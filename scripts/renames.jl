@@ -700,6 +700,26 @@ const EXTRA_SHIMS = NamedTuple{(:name, :code, :test), Tuple{String, String, Stri
             foreach(PETSc.destroy!, (y, x, A))
         end
         """,
+    ),    (
+        name = "local_arrays and restore_local_arrays!",
+        code = """
+        # The pair warns in src/vec.jl: `with_local_arrays!` replaces it and restores
+        # the arrays also when the kernel throws.
+        """,
+        test = """
+        @testset "local_arrays and restore_local_arrays!" begin
+            petsclib = PETSc.petsclibs[1]
+            PETSc.initialize(petsclib)
+            T = petsclib.PetscScalar
+            x = PETSc.PetscVec(petsclib, T[1, 2])
+            fx = PETSc.PetscVec(petsclib, 2)
+            arrays = warns(() -> PETSc.local_arrays(petsclib, fx, x))
+            arrays[1] .= 3 .* arrays[2]
+            @test warns(() -> PETSc.restore_local_arrays!(petsclib, fx, x, arrays...)) === nothing
+            @test fx[:] == T[3, 6]
+            foreach(PETSc.destroy!, (fx, x))
+        end
+        """,
     ),
 ]
 
@@ -708,6 +728,8 @@ const EXTRA_SHIMS = NamedTuple{(:name, :code, :test), Tuple{String, String, Stri
 # ---------------------------------------------------------------------------
 
 const INTERNAL = Set{Symbol}([
+    # the checkout behind with_local_arrays! and the deprecated local_arrays
+    :checkout_local_arrays,
     # the per-library body of the MatShell constructor
     :create_matshell,
     # leading underscore dropped (naming.md "Internals")
@@ -990,6 +1012,7 @@ const UNCHANGED_PUBLIC = Symbol[
     :PetscNotInitialized,
     :ConvergenceError,       # new in v0.5.3
     :with_options,           # new in v0.5.3
+    :with_local_arrays!,     # new in v0.5.5
     :with_destroy,           # new in v0.5.3
     :track!,                 # new in v0.5.3
     :untrack!,               # new in v0.5.3

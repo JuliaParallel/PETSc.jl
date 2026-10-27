@@ -304,6 +304,30 @@ end
     end
 end
 
+@testset "with_local_arrays!" begin
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    PetscScalar = petsclib.PetscScalar
+    x = PETSc.PetscVec(petsclib, PetscScalar[1, 2, 3])
+    fx = PETSc.PetscVec(petsclib, 3)
+
+    # fx is written from x; the block's value comes back
+    @test PETSc.with_local_arrays!(fx, x) do f, a
+        f .= 2 .* a
+        :done
+    end === :done
+    @test fx[:] == PetscScalar[2, 4, 6]
+
+    # a throwing block still hands both arrays back, so the Vecs stay usable
+    @test_throws ErrorException PETSc.with_local_arrays!((f, a) -> error("kernel failed"), fx, x)
+    fx .= 1
+    @test fx[:] == PetscScalar[1, 1, 1]
+    @test x[:] == PetscScalar[1, 2, 3]
+
+    foreach(PETSc.destroy!, (fx, x))
+    PETSc.finalize(petsclib)
+end
+
 @testset "with_local_array! typed (Array)" begin
     for petsclib in PETSc.petsclibs
         PETSc.initialize(petsclib)

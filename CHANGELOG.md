@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+### Deprecated
+
+- `local_arrays` and `restore_local_arrays!` warn: use `with_local_arrays!`. An exception between the two calls left both Vecs checked out.
+
+### Added
+
+- `with_local_arrays!(f!, g_fx, l_x)` calls `f!(fx, lx)` with the local arrays of the two Vecs, on the device when a GPU extension is loaded, and hands them back afterwards, also when `f!` throws.
+
 ## v0.5.4
 
 ### Deprecated

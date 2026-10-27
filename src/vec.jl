@@ -891,38 +891,69 @@ function LinearAlgebra.norm(v::AbstractPetscVec, p::Real)
     throw(ArgumentError("PETSc computes the vector norm only for p = 1, 2 and Inf, got p = $p"))
 end
 
-# ── GPU-aware array access helpers ────────────────────────────────────────────
-#
-# `local_arrays` calls `VecGetArrayAndMemType` on both Vecs, converts the
-# returned `PetscMemType` values to backend singletons, and dispatches to
-# `_local_arrays`.  The base package handles the pure-CPU case
-# (host × host (both backends nothing)).  GPU extensions add `_local_arrays`
-# methods for their backend combinations and a matching
-# `_restore_local_arrays!` method dispatched by `restore_local_arrays!`.
-#
-# Return tuple:  (fx, lx, fx_arr, lx_arr, fx_bounce)
-#   CPU:  fx, lx are plain Arrays with VecRestore finalizers;
-#         fx_arr = lx_arr = fx_bounce = nothing
-#   GPU:  fx, lx are device arrays; fx_arr, lx_arr are raw PETSc arrays
-#         (needed for restore); fx_bounce is a scratch device array or nothing.
+# ── GPU-aware array access for a pair of Vecs ─────────────────────────────────
+
+"""
+    with_local_arrays!(f!, g_fx::AbstractPetscVec, l_x::AbstractPetscVec)
+
+Call `f!(fx, lx)` with the local array of `g_fx` (written) and of `l_x` (read),
+as arrays a compute kernel can use, and hand both back to PETSc afterwards,
+also when `f!` throws. Returns what `f!` returns.
+
+Where each array lives is decided for the pair: with a GPU backend extension
+loaded and both Vecs on the device, `fx` and `lx` wrap the device memory. When
+`g_fx` is on the host, `fx` is a device scratch array whose contents are copied
+back into `g_fx` on return, so the kernel can run on the device either way.
+Without a GPU, both are plain host arrays.
+
+```julia
+with_local_arrays!(g_fx, l_x) do fx, lx
+    residual_kernel!(fx, lx)
+end
+```
+
+# External Links
+$(doc_external("Vec/VecGetArrayAndMemType"))
+"""
+function with_local_arrays!(
+    f!,
+    g_fx::AbstractPetscVec{PetscLib},
+    l_x::AbstractPetscVec,
+) where {PetscLib}
+    petsclib = getlib(PetscLib)
+    fx, lx, fx_arr, lx_arr, fx_bounce = checkout_local_arrays(petsclib, g_fx, l_x)
+    try
+        return f!(fx, lx)
+    finally
+        _restore_local_arrays!(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
+    end
+end
 
 """
     local_arrays(petsclib, g_fx, l_x) -> (fx, lx, fx_arr, lx_arr, fx_bounce)
 
-Return arrays for `g_fx` (read-write) and `l_x` (read-only) suitable for
-passing to a compute kernel.  Dispatches on the memory location of each Vec
-via `memtype_backend`.
+Check out the arrays of `g_fx` (read-write) and `l_x` (read-only) for a compute
+kernel; [`restore_local_arrays!`](@ref) must hand them back.
 
-On the pure-CPU path (`host × host (both backends nothing)`) `fx`/`lx` are plain
-`Array`s and `fx_arr = lx_arr = fx_bounce = nothing`.  When a GPU backend
-extension is loaded and a Vec lives on the device the returned `fx`/`lx` are
-device arrays.  An optional bounce buffer `fx_bounce` is allocated when `g_fx`
-is host-resident; its contents must be written back by `restore_local_arrays!`
-after the kernel completes.
-
-See also: [`restore_local_arrays!`](@ref)
+Deprecated: use [`with_local_arrays!`](@ref), which restores the arrays also
+when the kernel throws.
 """
 function local_arrays(petsclib, g_fx, l_x)
+    # TODO: remove in v0.6 with the other 0.5 deprecations.
+    @warn "local_arrays is deprecated, use with_local_arrays!(f!, g_fx, l_x)" maxlog = 1
+    return checkout_local_arrays(petsclib, g_fx, l_x)
+end
+
+# Checks out both arrays and picks where they live: `VecGetArrayAndMemType` gives
+# each Vec's memory type, and `_local_arrays` dispatches on the pair of backends.
+# The base package handles host × host; GPU extensions add the other cases and a
+# matching `_restore_local_arrays!`.
+#
+# Returns (fx, lx, fx_arr, lx_arr, fx_bounce):
+#   CPU:  fx, lx are the PETSc arrays; fx_arr = lx_arr = fx_bounce = nothing
+#   GPU:  fx, lx are device arrays; fx_arr, lx_arr are the raw PETSc arrays
+#         (needed for restore); fx_bounce is a scratch device array or nothing.
+function checkout_local_arrays(petsclib, g_fx, l_x)
     T = petsclib.PetscScalar
     fx_arr, fx_mtype = LibPETSc.VecGetArrayAndMemType(petsclib, as_petsc_vec(g_fx))
     lx_arr, lx_mtype = LibPETSc.VecGetArrayReadAndMemType(petsclib, as_petsc_vec(l_x))
@@ -932,8 +963,8 @@ function local_arrays(petsclib, g_fx, l_x)
     )
 end
 
-# CPU base case: return arrays directly. restore_local_arrays! calls VecRestore
-# explicitly — no finalizers to avoid the double-finalization crash.
+# CPU base case: the PETSc arrays themselves, restored explicitly (no finalizers,
+# which could restore a second time and crash PETSc).
 function _local_arrays(
     petsclib, g_fx, l_x, ::Type, fx_arr, lx_arr, ::Nothing, ::Nothing,
 )
@@ -943,15 +974,15 @@ end
 """
     restore_local_arrays!(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
 
-Restore PETSc Vecs after a kernel launched via [`local_arrays`](@ref).
+Hand back the arrays [`local_arrays`](@ref) checked out.
 
-Dispatches to `_restore_local_arrays!`.  On the CPU path (`fx_arr`,
-`lx_arr`, `fx_bounce` all `nothing`) this simply finalizes `fx` and `lx`,
-triggering the registered `VecRestoreArray*AndMemType` finalizers.  GPU backend
-extensions add a `_restore_local_arrays!` method for their array types.
+Deprecated: use [`with_local_arrays!`](@ref).
 """
 function restore_local_arrays!(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
+    # TODO: remove in v0.6 with the other 0.5 deprecations.
+    @warn "restore_local_arrays! is deprecated, use with_local_arrays!(f!, g_fx, l_x)" maxlog = 1
     _restore_local_arrays!(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
+    return nothing
 end
 
 # CPU base case: call VecRestore directly (no finalizers).

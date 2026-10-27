@@ -354,4 +354,17 @@ const SHIMS = [
         foreach(PETSc.destroy!, (y, x, A))
     end
 
+    @testset "local_arrays and restore_local_arrays!" begin
+        petsclib = PETSc.petsclibs[1]
+        PETSc.initialize(petsclib)
+        T = petsclib.PetscScalar
+        x = PETSc.PetscVec(petsclib, T[1, 2])
+        fx = PETSc.PetscVec(petsclib, 2)
+        arrays = warns(() -> PETSc.local_arrays(petsclib, fx, x))
+        arrays[1] .= 3 .* arrays[2]
+        @test warns(() -> PETSc.restore_local_arrays!(petsclib, fx, x, arrays...)) === nothing
+        @test fx[:] == T[3, 6]
+        foreach(PETSc.destroy!, (fx, x))
+    end
+
 end

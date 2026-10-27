@@ -547,12 +547,43 @@ local_coordinates(dm::AbstractPetscDM{PetscLib}) where {PetscLib} =
     LibPETSc.DMGetCoordinatesLocal(getlib(PetscLib), dm)
 
 """
+    with_local_coordinate_array(f, dm::Union{DMDA, DMStag})
+
+Call `f(coord)` with the coordinates of the local part of `dm`, ghost points
+included, and hand the array back to PETSc afterwards, also when `f` throws.
+Returns what `f` returns.
+
+`coord` is an `OffsetArray` addressed with global indices, the coordinate
+direction first: `coord[1, i, j]` is the x coordinate of point `(i, j)`. It
+reads PETSc's memory, so it is valid only inside `f`; return `copy(coord)` to
+keep the values.
+
+```julia
+coord = with_local_coordinate_array(copy, da)
+```
+
+# External Links
+$(doc_external("DM/DMGetCoordinatesLocal"))
+$(doc_external("Vec/VecGetArrayRead"))
+"""
+function with_local_coordinate_array(
+    f,
+    dm::Union{DMDA{PetscLib}, DMStag{PetscLib}},
+) where {PetscLib}
+    dim = LibPETSc.DMGetCoordinateDim(PetscLib, dm)
+    return with_local_array!(local_coordinates(dm); write = false) do a
+        f(reshape_local_array(a, dm, dim))
+    end
+end
+
+"""
     local_coordinate_array(da::Union{DMDA, DMStag})
 
-Return coordinate arrays for the local portion of the domain.
+Return coordinate arrays for the local portion of the domain, as `OffsetArray`s
+addressed with global indices, ghost points included.
 
-The returned arrays are `OffsetArray`s that can be addressed using global indices,
-accounting for ghost points.
+Deprecated: use [`with_local_coordinate_array`](@ref). The arrays are a copy,
+so writing to them does not change the coordinates.
 
 # External Links
 $(doc_external("DM/DMGetCoordinatesLocal"))
@@ -560,15 +591,11 @@ $(doc_external("DM/DMGetCoordinatesLocal"))
 function local_coordinate_array(
     da::Union{DMDA{PetscLib}, DMStag{PetscLib}},
 ) where {PetscLib}
-    # retrieve local coordinates
-    coord_vec = local_coordinates(da)
-    # array
-    array1D = unsafe_local_array(coord_vec; read = true, write = false)
-    dim = [PetscLib.PetscInt(0)]
-    dim = LibPETSc.DMGetCoordinateDim(PetscLib, da)
-    dim = dim[1]
-
-    return reshape_local_array(array1D, da, dim)
+    # TODO: remove in v0.6 with the other 0.5 deprecations.
+    @warn "local_coordinate_array is deprecated, use with_local_coordinate_array(f, dm)" maxlog = 1
+    # A copy: an array restored by a finalizer can run after `da` and its
+    # coordinate vector are destroyed, and restoring a freed Vec crashes.
+    return with_local_coordinate_array(copy, da)
 end
 
 

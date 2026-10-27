@@ -354,4 +354,30 @@ const SHIMS = [
         foreach(PETSc.destroy!, (y, x, A))
     end
 
+    @testset "local_arrays and restore_local_arrays!" begin
+        petsclib = PETSc.petsclibs[1]
+        PETSc.initialize(petsclib)
+        T = petsclib.PetscScalar
+        x = PETSc.PetscVec(petsclib, T[1, 2])
+        fx = PETSc.PetscVec(petsclib, 2)
+        arrays = warns(() -> PETSc.local_arrays(petsclib, fx, x))
+        arrays[1] .= 3 .* arrays[2]
+        @test warns(() -> PETSc.restore_local_arrays!(petsclib, fx, x, arrays...)) === nothing
+        @test fx[:] == T[3, 6]
+        foreach(PETSc.destroy!, (fx, x))
+    end
+
+    @testset "local_coordinate_array" begin
+        petsclib = PETSc.petsclibs[1]
+        PETSc.initialize(petsclib)
+        B = PETSc.DM_BOUNDARY_NONE
+        da = PETSc.DMDA(petsclib, PETSc.MPI.COMM_SELF, (B,), (3,), 1)
+        PETSc.set_uniform_coordinates!(da, (0.0,), (1.0,))
+        coord = warns(() -> PETSc.local_coordinate_array(da))
+        @test coord[1, 3] ≈ 1
+        # a copy: nothing is left checked out of the coordinate vector
+        PETSc.destroy!(da)
+        @test coord[1, 3] ≈ 1
+    end
+
 end

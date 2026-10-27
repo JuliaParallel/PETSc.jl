@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+### Deprecated
+
+- `local_arrays` and `restore_local_arrays!` warn: use `with_local_arrays!`. An exception between the two calls left both Vecs checked out.
+- `local_coordinate_array(dm)` warns: use `with_local_coordinate_array(f, dm)`. It now returns a copy. It used to leave the coordinate vector checked out until the garbage collector freed the array, and if the DM was destroyed first, that late hand-back crashed Julia.
+
+### Added
+
+- `with_local_arrays!(f!, g_fx, l_x)` calls `f!(fx, lx)` with the local arrays of the two Vecs, on the device when a GPU extension is loaded, and hands them back afterwards, also when `f!` throws.
+- `with_local_coordinate_array(f, dm)` calls `f(coord)` with the local coordinates of a `DMDA` or `DMStag`, addressed with global indices, and hands the array back when `f` returns or throws.
+
 ## v0.5.4
 
 ### Deprecated

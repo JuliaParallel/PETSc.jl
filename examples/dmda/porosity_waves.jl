@@ -99,7 +99,7 @@ bcs = (
     PETSc.DM_BOUNDARY_GHOSTED,
    )[1:dim]
 
-# `corners`, `info`, `local_coordinate_array` and `reshape_local_array` are
+# `corners`, `info`, `with_local_coordinate_array` and `reshape_local_array` are
 # dimension-correct (docs/src/man/naming.md §12): on a `dim`-dimensional DMDA
 # they answer with `dim`-tuples, `CartesianIndex{dim}` and `1 + dim` axes.
 
@@ -131,7 +131,7 @@ PETSc.set_uniform_coordinates!(da, (-20, -10, -10), (150, 10, 10))
 
 # Cache local coordinates as a plain Julia array. This avoids repeatedly
 # mapping/restoring PETSc coordinate vectors during AD/Jacobian evaluations.
-coord_cache = copy(PETSc.local_coordinate_array(da))
+coord_cache = PETSc.with_local_coordinate_array(copy, da)
 
 # Create the PETSC snes object
 snes = PETSc.SNES(petsclib, comm; opts...)
@@ -431,7 +431,7 @@ while (it < max_it && time < max_time)
 
     # Visualisation
     if (mod(it, 40) == 0 && CreatePlots == true)
-        coord = PETSc.local_coordinate_array(da)
+        coord = PETSc.with_local_coordinate_array(copy, da)
         if dim==1
             x = collect(dof_slice(coord, 1))
             time_vec = ones(size(x)) * time

@@ -173,8 +173,10 @@ PETSc.set_uniform_coordinates!(dm, xmin, xmax)                           # 1D
 PETSc.set_uniform_coordinates!(dm, xmin, xmax, ymin, ymax)               # 2D
 PETSc.set_uniform_coordinates!(dm, xmin, xmax, ymin, ymax, zmin, zmax)   # 3D
 
-# Get local coordinate array
-coords = PETSc.local_coordinate_array(dm)
+# Local coordinates as an array addressed with global indices, valid inside the block
+PETSc.with_local_coordinate_array(dm) do coords
+    coords[1, i, j]   # x of point (i, j)
+end
 
 # Read the per-axis coordinates: x[i, 1] is the lower face of element i, x[i, 2] its centre
 PETSc.with_product_coordinates(dm) do x, y

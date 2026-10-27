@@ -130,8 +130,6 @@ MPI.Initialized() || MPI.Init()
 PETSc.initialize(petsclib)
 
 const PetscInt    = petsclib.PetscInt
-const PetscScalar = Float64
-const PetscReal   = Float64
 
 comm = MPI.COMM_WORLD
 
@@ -148,13 +146,13 @@ let _b = get(NamedTuple(pairs(opts)), :bc,    nothing); global bc    = _b === no
 function quadratic_u(t, x, u, ctx)
     u[1] = sum(xi^2 for xi in x)
 end
-const quadratic_u_ptr = PETSc.@simple_fn(quadratic_u)
+const quadratic_u_ptr = PETSc.@simple_fn(petsclib, quadratic_u)
 
 # Zero initial guess for the interior DOFs.
 function zero_u(t, x, u, ctx)
     fill!(u, 0)
 end
-const zero_u_ptr = PETSc.@simple_fn(zero_u)
+const zero_u_ptr = PETSc.@simple_fn(petsclib, zero_u)
 
 # ── COEFF_FIELD:  κ(x) = x₂ + 1 ─────────────────────────────────────────────
 #
@@ -166,14 +164,14 @@ function f0_field(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                   aOff, aOff_x, a, a_t, a_x, t, x, numConstants, constants, f0)
     f0[1] = (2*dim_+2)*x[2] + 2*dim_
 end
-const f0_field_ptr = PETSc.@residual_fn(f0_field, Nf)
+const f0_field_ptr = PETSc.@residual_fn(petsclib, f0_field, Nf)
 
 function f1_field(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                   aOff, aOff_x, a, a_t, a_x, t, x, numConstants, constants, f1)
     kap = x[2] + 1.0
     @inbounds for d in 1:dim_; f1[d] = kap * u_x[d]; end
 end
-const f1_field_ptr = PETSc.@residual_fn(f1_field, dim_)
+const f1_field_ptr = PETSc.@residual_fn(petsclib, f1_field, dim_)
 
 function g3_field(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                   aOff, aOff_x, a, a_t, a_x, t, u_tShift, x, numConstants, constants, g3)
@@ -181,7 +179,7 @@ function g3_field(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
     fill!(g3, 0)
     @inbounds for d in 1:dim_; g3[(d-1)*dim_ + d] = kap; end
 end
-const g3_field_ptr = PETSc.@jacobian_fn(g3_field, dim_*dim_)
+const g3_field_ptr = PETSc.@jacobian_fn(petsclib, g3_field, dim_*dim_)
 
 # Neumann flux for COEFF_FIELD:  h = κ(x)·∇u·n = (x₂+1)·2(x·n)
 # Convention: f0_bd = −h  (PETSc boundary residual sign)
@@ -192,7 +190,7 @@ function f0_bd_field(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
     @inbounds for d in 1:dim_; xdotn += x[d]*n[d]; end
     f0[1] = -kap * 2.0 * xdotn
 end
-const f0_bd_field_ptr = PETSc.@bd_fn(f0_bd_field, Nf)
+const f0_bd_field_ptr = PETSc.@bd_fn(petsclib, f0_bd_field, Nf)
 
 # ── COEFF_NONLINEAR:  κ(u) = u + 1 ──────────────────────────────────────────
 #
@@ -214,28 +212,28 @@ function f0_nl(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
     u_val = u[Int(uOff[1])+1]
     f0[1] = (2*dim_+4)*u_val + 2*dim_
 end
-const f0_nl_ptr = PETSc.@residual_fn(f0_nl, Nf)
+const f0_nl_ptr = PETSc.@residual_fn(petsclib, f0_nl, Nf)
 
 function f1_nl(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                aOff, aOff_x, a, a_t, a_x, t, x, numConstants, constants, f1)
     kap = u[Int(uOff[1])+1] + 1.0
     @inbounds for d in 1:dim_; f1[d] = kap * u_x[d]; end
 end
-const f1_nl_ptr = PETSc.@residual_fn(f1_nl, dim_)
+const f1_nl_ptr = PETSc.@residual_fn(petsclib, f1_nl, dim_)
 
 # g0: ∂f0/∂u = 2·dim+4
 function g0_nl(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                aOff, aOff_x, a, a_t, a_x, t, u_tShift, x, numConstants, constants, g0)
     g0[1] = 2*dim_ + 4
 end
-const g0_nl_ptr = PETSc.@jacobian_fn(g0_nl, Nf*Nf)
+const g0_nl_ptr = PETSc.@jacobian_fn(petsclib, g0_nl, Nf*Nf)
 
 # g2: ∂f1[d]/∂u = u_x[d]   (κ′(u)=1, so ∂((u+1)·u_x[d])/∂u = u_x[d])
 function g2_nl(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                aOff, aOff_x, a, a_t, a_x, t, u_tShift, x, numConstants, constants, g2)
     @inbounds for d in 1:dim_; g2[d] = u_x[d]; end
 end
-const g2_nl_ptr = PETSc.@jacobian_fn(g2_nl, Nf*Nf*dim_)
+const g2_nl_ptr = PETSc.@jacobian_fn(petsclib, g2_nl, Nf*Nf*dim_)
 
 # g3: ∂f1[d]/∂(∂u/∂xd′) = (u+1)·δ_{dd′}
 function g3_nl(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
@@ -244,7 +242,7 @@ function g3_nl(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
     fill!(g3, 0)
     @inbounds for d in 1:dim_; g3[(d-1)*dim_ + d] = kap; end
 end
-const g3_nl_ptr = PETSc.@jacobian_fn(g3_nl, dim_*dim_)
+const g3_nl_ptr = PETSc.@jacobian_fn(petsclib, g3_nl, dim_*dim_)
 
 # Neumann flux for COEFF_NONLINEAR:  h = (u+1)·2(x·n)
 # f0_bd = −h
@@ -255,7 +253,7 @@ function f0_bd_nl(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
     @inbounds for d in 1:dim_; xdotn += x[d]*n[d]; end
     f0[1] = -kap * 2.0 * xdotn
 end
-const f0_bd_nl_ptr = PETSc.@bd_fn(f0_bd_nl, Nf)
+const f0_bd_nl_ptr = PETSc.@bd_fn(petsclib, f0_bd_nl, Nf)
 
 # ── Build the mesh ────────────────────────────────────────────────────────────
 # 3-D simplex (TetGen) is broken in the current PETSc_jll; use hexahedra for 3D.

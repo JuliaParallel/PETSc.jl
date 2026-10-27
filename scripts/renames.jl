@@ -741,6 +741,33 @@ const EXTRA_SHIMS = NamedTuple{(:name, :code, :test), Tuple{String, String, Stri
         end
         """,
     ),
+    (
+        name = "pointwise macros without a library",
+        code = """
+        # Warns in src/dmplex.jl: the one-argument-shorter forms of @simple_fn,
+        # @residual_fn, @jacobian_fn and @bd_fn take PetscInt, PetscScalar and
+        # PetscReal from the calling module.
+        """,
+        test = """
+        @testset "pointwise macros without a library" begin
+            m = Module()
+            Core.eval(m, quote
+                using PETSc
+                const PetscInt = Int64
+                const PetscScalar = Float64
+                const PetscReal = Float64
+                one_u(t, x, u, ctx) = (u[1] = x[1] + 1; nothing)
+            end)
+            ptr = warns(() -> Core.eval(m, :(PETSc.@simple_fn(one_u))))
+            x = [2.0]
+            u = [0.0]
+            err = ccall(ptr, Cint, (Int64, Float64, Ptr{Float64}, Int64, Ptr{Float64}, Ptr{Cvoid}),
+                        1, 0.0, x, 1, u, C_NULL)
+            @test err == 0
+            @test u[1] == 3
+        end
+        """,
+    ),
 ]
 
 # ---------------------------------------------------------------------------
@@ -752,6 +779,13 @@ const INTERNAL = Set{Symbol}([
     :checkout_local_arrays,
     # the per-library body of the MatShell constructor
     :create_matshell,
+    # the expansions behind the pointwise macros and their type lookup
+    :simple_fn_expr,
+    :residual_fn_expr,
+    :jacobian_fn_expr,
+    :bd_fn_expr,
+    :pointwise_types,
+    :pointwise_types_from_scope,
     # leading underscore dropped (naming.md "Internals")
     :petsc_link,
     :petsc_subst,

@@ -104,8 +104,6 @@ MPI.Initialized() || MPI.Init()
 PETSc.initialize(petsclib)
 
 const PetscInt    = petsclib.PetscInt
-const PetscScalar = Float64
-const PetscReal   = Float64
 
 comm = MPI.COMM_WORLD
 
@@ -135,7 +133,7 @@ function f1_u(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         f1[c*dim_+c+1] -= u[dim_+1]   # subtract pressure (field 1)
     end
 end
-const f1_u_ptr = PETSc.@residual_fn(f1_u, dim_*dim_)
+const f1_u_ptr = PETSc.@residual_fn(petsclib, f1_u, dim_*dim_)
 
 # Continuity: f0 = −∇·u
 function f0_p(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
@@ -145,7 +143,7 @@ function f0_p(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         f0[1] -= u_x[d*dim_+d+1]
     end
 end
-const f0_p_ptr = PETSc.@residual_fn(f0_p, 1)
+const f0_p_ptr = PETSc.@residual_fn(petsclib, f0_p, 1)
 
 # ── Body-force functions (one per MMS solution type) ──────────────────────────
 #
@@ -163,7 +161,7 @@ function f0_quadratic_u(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         f0[d] = 4mu - 1.0
     end
 end
-const f0_quadratic_u_ptr = PETSc.@residual_fn(f0_quadratic_u, dim_)
+const f0_quadratic_u_ptr = PETSc.@residual_fn(petsclib, f0_quadratic_u, dim_)
 
 # Trigonometric MMS body force:
 #   f_x = 2π cos(2πx) + μ(dim−1)π² sin(πx) + μπ² Σ_{d>0} sin(πx_d)
@@ -178,7 +176,7 @@ function f0_trig_u(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         f0[d]  = -2π*cos(2π*x[d]) + mu*π^3*cos(π*x[1])*x[d]
     end
 end
-const f0_trig_u_ptr = PETSc.@residual_fn(f0_trig_u, dim_)
+const f0_trig_u_ptr = PETSc.@residual_fn(petsclib, f0_trig_u, dim_)
 
 # ── Jacobians ─────────────────────────────────────────────────────────────────
 
@@ -191,28 +189,28 @@ function g3_uu(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         g3[((c*dim_+d)*dim_+d)*dim_+c+1] += mu
     end
 end
-const g3_uu_ptr = PETSc.@jacobian_fn(g3_uu, dim_*dim_*dim_*dim_)
+const g3_uu_ptr = PETSc.@jacobian_fn(petsclib, g3_uu, dim_*dim_*dim_*dim_)
 
 # J_up (g2): −⟨∇·v, p⟩
 function g2_up(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                aOff, aOff_x, a, a_t, a_x, t, utShift, x, nC, cst, g2)
     for d in 0:dim_-1; g2[d*dim_+d+1] = -1.0; end
 end
-const g2_up_ptr = PETSc.@jacobian_fn(g2_up, dim_*dim_)
+const g2_up_ptr = PETSc.@jacobian_fn(petsclib, g2_up, dim_*dim_)
 
 # J_pu (g1): ⟨q, −∇·u⟩
 function g1_pu(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                aOff, aOff_x, a, a_t, a_x, t, utShift, x, nC, cst, g1)
     for d in 0:dim_-1; g1[d*dim_+d+1] = -1.0; end
 end
-const g1_pu_ptr = PETSc.@jacobian_fn(g1_pu, dim_*dim_)
+const g1_pu_ptr = PETSc.@jacobian_fn(petsclib, g1_pu, dim_*dim_)
 
 # J_pp preconditioner (g0): (1/μ)⟨q, p⟩
 function g0_pp(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                aOff, aOff_x, a, a_t, a_x, t, utShift, x, nC, cst, g0)
     g0[1] = 1.0 / real(cst[1])
 end
-const g0_pp_ptr = PETSc.@jacobian_fn(g0_pp, 1)
+const g0_pp_ptr = PETSc.@jacobian_fn(petsclib, g0_pp, 1)
 
 # ── Exact solutions ───────────────────────────────────────────────────────────
 #
@@ -228,12 +226,12 @@ function quadratic_vel(t, x, u, ctx)
         u[c]  = 2*x[1]^2 - 2*x[1]*x[c]
     end
 end
-const quadratic_vel_ptr = PETSc.@simple_fn(quadratic_vel)
+const quadratic_vel_ptr = PETSc.@simple_fn(petsclib, quadratic_vel)
 
 function quadratic_pres(t, x, u, ctx)
     u[1] = sum(x) - 0.5*length(x)
 end
-const quadratic_pres_ptr = PETSc.@simple_fn(quadratic_pres)
+const quadratic_pres_ptr = PETSc.@simple_fn(petsclib, quadratic_pres)
 
 #
 # Trigonometric MMS:
@@ -249,23 +247,23 @@ function trig_vel(t, x, u, ctx)
         u[c]  = -π*cos(π*x[1])*x[c]
     end
 end
-const trig_vel_ptr = PETSc.@simple_fn(trig_vel)
+const trig_vel_ptr = PETSc.@simple_fn(petsclib, trig_vel)
 
 function trig_pres(t, x, u, ctx)
     u[1] = sum(sin(2π*xi) for xi in x)
 end
-const trig_pres_ptr = PETSc.@simple_fn(trig_pres)
+const trig_pres_ptr = PETSc.@simple_fn(petsclib, trig_pres)
 
 # Helper functions for the pressure null space constructor
 function zero_vel(t, x, u, ctx)
     for c in 1:length(u); u[c] = 0.0; end
 end
-const zero_vel_ptr = PETSc.@simple_fn(zero_vel)
+const zero_vel_ptr = PETSc.@simple_fn(petsclib, zero_vel)
 
 function one_pres(t, x, u, ctx)
     u[1] = 1.0
 end
-const one_pres_ptr = PETSc.@simple_fn(one_pres)
+const one_pres_ptr = PETSc.@simple_fn(petsclib, one_pres)
 
 # ── Select exact solution functions based on sol_type ─────────────────────────
 exact_vel_ptr  = sol_type == "quadratic" ? quadratic_vel_ptr  : trig_vel_ptr

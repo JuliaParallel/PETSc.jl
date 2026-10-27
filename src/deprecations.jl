@@ -432,6 +432,11 @@ end
 # Warns in src/dm.jl and returns a copy; `with_local_coordinate_array` hands
 # the array back when its block returns.
 
+# pointwise macros without a library
+# Warns in src/dmplex.jl: the one-argument-shorter forms of @simple_fn,
+# @residual_fn, @jacobian_fn and @bd_fn take PetscInt, PetscScalar and
+# PetscReal from the calling module.
+
 
 # Renamed types: a `const` alias, so `isa` and dispatch keep working
 

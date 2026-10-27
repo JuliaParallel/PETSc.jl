@@ -428,6 +428,10 @@ end
 # The pair warns in src/vec.jl: `with_local_arrays!` replaces it and restores
 # the arrays also when the kernel throws.
 
+# local_coordinate_array
+# Warns in src/dm.jl and returns a copy; `with_local_coordinate_array` hands
+# the array back when its block returns.
+
 
 # Renamed types: a `const` alias, so `isa` and dispatch keep working
 

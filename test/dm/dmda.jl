@@ -532,15 +532,16 @@ end
 
         PETSc.set_uniform_coordinates!(da_2D, (xmin, ymin), (xmax, ymax))
 
-         # Retrieve local coordinate array (shaped accordingly)
-        coord = PETSc.local_coordinate_array(da_2D)
-
-        # Check
+        # Local coordinates, addressed with global indices
         corners = PETSc.corners(da_2D)
-        for i in ((corners.lower):(corners.upper))
-            @test coord[1, i] ≈ (i[1] - 1) * Δx + xmin
-            @test coord[2, i] ≈ (i[2] - 1) * Δy + ymin
+        PETSc.with_local_coordinate_array(da_2D) do coord
+            for i in ((corners.lower):(corners.upper))
+                @test coord[1, i] ≈ (i[1] - 1) * Δx + xmin
+                @test coord[2, i] ≈ (i[2] - 1) * Δy + ymin
+            end
         end
+        # the coordinate vector is handed back, so it can be checked out again
+        @test PETSc.with_local_coordinate_array(c -> c[1, corners.lower], da_2D) ≈ xmin
 
         # Retrieve local array of the 2 DOF DMDA and set values
         x_g = PETSc.global_vec(da_2D)

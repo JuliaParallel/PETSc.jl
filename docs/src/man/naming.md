@@ -62,7 +62,7 @@ set_type!(ksp, :gmres)
 ghost_corners(dm)
 ownership_range(A)
 local_indices(dm)
-local_coordinate_array(dm)
+with_local_coordinate_array(f, dm)
 project_function!(vec, dm, f)
 ```
 

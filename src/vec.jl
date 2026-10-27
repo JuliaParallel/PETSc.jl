@@ -439,8 +439,11 @@ Return an `Array{PetscScalar}` containing local portion of the PETSc `vec`
 
 Use `read=false` if the array is write-only; `write=false` if read-only.
 
-!!! note
-    `Base.finalize` should be called on the `Array` before the data can be used.
+The caller hands the array back: `vec` stays checked out, and the next
+`VecGetArray` or assembly on it fails, until `Base.finalize` runs on the array
+(or the garbage collector gets to it). Prefer [`with_local_array!`](@ref), which
+hands it back when its block returns or throws; [`acquire_local_array`](@ref) and
+[`release_local_array`](@ref) are the explicit pair with no finalizer.
 
 # External Links
 $(doc_external("Vec/VecGetArray"))

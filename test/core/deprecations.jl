@@ -367,4 +367,17 @@ const SHIMS = [
         foreach(PETSc.destroy!, (fx, x))
     end
 
+    @testset "local_coordinate_array" begin
+        petsclib = PETSc.petsclibs[1]
+        PETSc.initialize(petsclib)
+        B = PETSc.DM_BOUNDARY_NONE
+        da = PETSc.DMDA(petsclib, PETSc.MPI.COMM_SELF, (B,), (3,), 1)
+        PETSc.set_uniform_coordinates!(da, (0.0,), (1.0,))
+        coord = warns(() -> PETSc.local_coordinate_array(da))
+        @test coord[1, 3] ≈ 1
+        # a copy: nothing is left checked out of the coordinate vector
+        PETSc.destroy!(da)
+        @test coord[1, 3] ≈ 1
+    end
+
 end

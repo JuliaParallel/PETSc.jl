@@ -98,8 +98,11 @@ PETSc.set_name!(petsclib, dm, "stokes")
 ## Pointwise Callbacks
 
 PETSc's FEM assembly calls user-supplied C function pointers at each
-quadrature point.  Three macros generate the required `@cfunction` wrappers
-from plain Julia functions.
+quadrature point.  Four macros (`@simple_fn`, `@residual_fn`, `@jacobian_fn`,
+`@bd_fn`) generate the required `@cfunction` wrappers from plain Julia
+functions.  Their first argument is the library (or its type), which sets the
+C types; it is evaluated when the macro expands, so it must be a global
+defined before the macro call.
 
 ### `@simple_fn` — boundary / exact-solution functions
 
@@ -111,7 +114,7 @@ function bg_vel(t, x, u, ctx)
     u[1] = x[1] * 0.1    # Vx = exx * x
     u[2] = x[2] * (-0.1) # Vy = eyy * y
 end
-const bg_vel_ptr = PETSc.@simple_fn(bg_vel)
+const bg_vel_ptr = PETSc.@simple_fn(petsclib, bg_vel)
 ```
 
 ### `@residual_fn` — f0 / f1 residual and post-processing functions
@@ -127,7 +130,7 @@ function f0_p(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
     f0[1] = 0.0
     for d in 0:dim_-1; f0[1] -= u_x[d*dim_+d+1]; end
 end
-const f0_p_ptr = PETSc.@residual_fn(f0_p, 1)
+const f0_p_ptr = PETSc.@residual_fn(petsclib, f0_p, 1)
 ```
 
 ### `@jacobian_fn` — g0/g1/g2/g3 Jacobian functions
@@ -140,7 +143,7 @@ function g1_pu(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                aOff, aOff_x, a, a_t, a_x, t, utShift, x, nC, cst, g1)
     for d in 0:dim_-1; g1[d*dim_+d+1] = -1.0; end
 end
-const g1_pu_ptr = PETSc.@jacobian_fn(g1_pu, dim_*dim_)
+const g1_pu_ptr = PETSc.@jacobian_fn(petsclib, g1_pu, dim_*dim_)
 ```
 
 !!! note "Automatic differentiation"

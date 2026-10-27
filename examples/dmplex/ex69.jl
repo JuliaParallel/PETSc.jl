@@ -144,8 +144,6 @@ MPI.Initialized() || MPI.Init()
 PETSc.initialize(petsclib)
 
 const PetscInt    = petsclib.PetscInt
-const PetscScalar = Float64
-const PetscReal   = Float64
 
 comm = MPI.COMM_WORLD
 
@@ -176,7 +174,7 @@ function f0_stokes_u(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
     f0[1] = 0.0
     f0[2] = -sin(real(cst[2]) * pi * x[2]) * cos(real(cst[1]) * pi * x[1])
 end
-const f0_stokes_u_ptr = PETSc.@residual_fn(f0_stokes_u, dim_)
+const f0_stokes_u_ptr = PETSc.@residual_fn(petsclib, f0_stokes_u, dim_)
 
 # Momentum flux σ = 2μ ε(u) − pI  for SolKx (μ = exp(2Bx), cst[3]=B)
 function stokes_momentum_kx(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
@@ -189,7 +187,7 @@ function stokes_momentum_kx(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         f1[c*dim_+c+1] -= u[dim_+1]      # subtract pressure
     end
 end
-const stokes_momentum_kx_ptr = PETSc.@residual_fn(stokes_momentum_kx, dim_*dim_)
+const stokes_momentum_kx_ptr = PETSc.@residual_fn(petsclib, stokes_momentum_kx, dim_*dim_)
 
 # Momentum flux for SolCx (μ = etaA or etaB, cst[3]=etaA, cst[4]=etaB, cst[5]=xc)
 function stokes_momentum_cx(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
@@ -202,7 +200,7 @@ function stokes_momentum_cx(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         f1[c*dim_+c+1] -= u[dim_+1]
     end
 end
-const stokes_momentum_cx_ptr = PETSc.@residual_fn(stokes_momentum_cx, dim_*dim_)
+const stokes_momentum_cx_ptr = PETSc.@residual_fn(petsclib, stokes_momentum_cx, dim_*dim_)
 
 # Continuity: f0 = −∇·u
 function stokes_mass(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
@@ -212,14 +210,14 @@ function stokes_mass(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         f0[1] -= u_x[d*dim_+d+1]
     end
 end
-const stokes_mass_ptr = PETSc.@residual_fn(stokes_mass, 1)
+const stokes_mass_ptr = PETSc.@residual_fn(petsclib, stokes_mass, 1)
 
 # Zero f1 for pressure field
 function f1_zero_p(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                    aOff, aOff_x, a, a_t, a_x, t, x, nC, cst, f1)
     for d in 1:dim_; f1[d] = 0.0; end
 end
-const f1_zero_p_ptr = PETSc.@residual_fn(f1_zero_p, dim_)
+const f1_zero_p_ptr = PETSc.@residual_fn(petsclib, f1_zero_p, dim_)
 
 # ── Pointwise functions: Jacobians ────────────────────────────────────────────
 
@@ -232,7 +230,7 @@ function stokes_vel_J_kx(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         g3[((cI*dim_+d)*dim_+d)*dim_+cI+1] += mu
     end
 end
-const stokes_vel_J_kx_ptr = PETSc.@jacobian_fn(stokes_vel_J_kx, dim_*dim_*dim_*dim_)
+const stokes_vel_J_kx_ptr = PETSc.@jacobian_fn(petsclib, stokes_vel_J_kx, dim_*dim_*dim_*dim_)
 
 function stokes_vel_J_cx(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                           aOff, aOff_x, a, a_t, a_x, t, utShift, x, nC, cst, g3)
@@ -242,35 +240,35 @@ function stokes_vel_J_cx(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         g3[((cI*dim_+d)*dim_+d)*dim_+cI+1] += mu
     end
 end
-const stokes_vel_J_cx_ptr = PETSc.@jacobian_fn(stokes_vel_J_cx, dim_*dim_*dim_*dim_)
+const stokes_vel_J_cx_ptr = PETSc.@jacobian_fn(petsclib, stokes_vel_J_cx, dim_*dim_*dim_*dim_)
 
 # J_up (g2): −⟨∇·v, p⟩  →  g2[d*dim+d] = -1
 function stokes_pres_J(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                         aOff, aOff_x, a, a_t, a_x, t, utShift, x, nC, cst, g2)
     for d in 0:dim_-1; g2[d*dim_+d+1] = -1.0; end
 end
-const stokes_pres_J_ptr = PETSc.@jacobian_fn(stokes_pres_J, dim_*dim_)
+const stokes_pres_J_ptr = PETSc.@jacobian_fn(petsclib, stokes_pres_J, dim_*dim_)
 
 # J_pu (g1): ⟨q, ∇·u⟩  →  g1[d*dim+d] = -1
 function stokes_mass_J(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                         aOff, aOff_x, a, a_t, a_x, t, utShift, x, nC, cst, g1)
     for d in 0:dim_-1; g1[d*dim_+d+1] = -1.0; end
 end
-const stokes_mass_J_ptr = PETSc.@jacobian_fn(stokes_mass_J, dim_*dim_)
+const stokes_mass_J_ptr = PETSc.@jacobian_fn(petsclib, stokes_mass_J, dim_*dim_)
 
 # J_pp preconditioner (g0): (1/μ)⟨q, p⟩
 function stokes_id_J_kx(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                           aOff, aOff_x, a, a_t, a_x, t, utShift, x, nC, cst, g0)
     g0[1] = 1.0 / exp(2.0 * real(cst[3]) * x[1])
 end
-const stokes_id_J_kx_ptr = PETSc.@jacobian_fn(stokes_id_J_kx, 1)
+const stokes_id_J_kx_ptr = PETSc.@jacobian_fn(petsclib, stokes_id_J_kx, 1)
 
 function stokes_id_J_cx(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                           aOff, aOff_x, a, a_t, a_x, t, utShift, x, nC, cst, g0)
     mu = x[1] < real(cst[5]) ? real(cst[3]) : real(cst[4])
     g0[1] = 1.0 / mu
 end
-const stokes_id_J_cx_ptr = PETSc.@jacobian_fn(stokes_id_J_cx, 1)
+const stokes_id_J_cx_ptr = PETSc.@jacobian_fn(petsclib, stokes_id_J_cx, 1)
 
 # ── Exact solution / BC callbacks ─────────────────────────────────────────────
 # PetscSimplePointFn: f(t, x, u, ctx) → nothing
@@ -278,38 +276,38 @@ const stokes_id_J_cx_ptr = PETSc.@jacobian_fn(stokes_id_J_cx, 1)
 function zero_vel(t, x, u, ctx)
     for c in 1:length(u); u[c] = 0.0; end
 end
-const zero_vel_ptr = PETSc.@simple_fn(zero_vel)
+const zero_vel_ptr = PETSc.@simple_fn(petsclib, zero_vel)
 
 function one_pres(t, x, u, ctx)
     u[1] = 1.0
 end
-const one_pres_ptr = PETSc.@simple_fn(one_pres)
+const one_pres_ptr = PETSc.@simple_fn(petsclib, one_pres)
 
 # SolKx exact solution (captures parameters via module-level globals)
 function exact_vel_kx(t, x, u, ctx)
     vx, vz, _ = SolKxSolution(x, m_val, n_val, B_val)
     u[1] = vx; u[2] = vz
 end
-const exact_vel_kx_ptr = PETSc.@simple_fn(exact_vel_kx)
+const exact_vel_kx_ptr = PETSc.@simple_fn(petsclib, exact_vel_kx)
 
 function exact_pres_kx(t, x, u, ctx)
     _, _, p = SolKxSolution(x, m_val, n_val, B_val)
     u[1] = p
 end
-const exact_pres_kx_ptr = PETSc.@simple_fn(exact_pres_kx)
+const exact_pres_kx_ptr = PETSc.@simple_fn(petsclib, exact_pres_kx)
 
 # SolCx exact solution
 function exact_vel_cx(t, x, u, ctx)
     vx, vz, _ = SolCxSolution(x, m_val, n_val, xc_val, etaA_val, etaB_val)
     u[1] = vx; u[2] = vz
 end
-const exact_vel_cx_ptr = PETSc.@simple_fn(exact_vel_cx)
+const exact_vel_cx_ptr = PETSc.@simple_fn(petsclib, exact_vel_cx)
 
 function exact_pres_cx(t, x, u, ctx)
     _, _, p = SolCxSolution(x, m_val, n_val, xc_val, etaA_val, etaB_val)
     u[1] = p
 end
-const exact_pres_cx_ptr = PETSc.@simple_fn(exact_pres_cx)
+const exact_pres_cx_ptr = PETSc.@simple_fn(petsclib, exact_pres_cx)
 
 exact_vel_ptr  = sol_type == "solkx" ? exact_vel_kx_ptr  : exact_vel_cx_ptr
 exact_pres_ptr = sol_type == "solkx" ? exact_pres_kx_ptr : exact_pres_cx_ptr

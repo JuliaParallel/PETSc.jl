@@ -10,18 +10,15 @@ using MPI
 
 MPI.Initialized() || MPI.Init()
 
-# ── PETSc library and scalar types ───────────────────────────────────────────
-# @simple_fn / @residual_fn / @jacobian_fn resolve
-# PetscInt / PetscScalar / PetscReal from the calling module at macro-expansion
-# time, so they MUST be module-level names before the macros are invoked.
-# We define them once for the Float64/Int64 lib that owns the FEM callbacks.
+# ── PETSc library ────────────────────────────────────────────────────────────
+# @simple_fn / @residual_fn / @jacobian_fn evaluate their library argument at
+# macro-expansion time, so it must be a module-level name before the macros
+# are invoked. The FEM callbacks use the Float64/Int64 lib.
 
 const _dmplex_petsclib = PETSc.petsclibs[1]
 PETSc.initialize(_dmplex_petsclib)
 
 const PetscInt    = _dmplex_petsclib.PetscInt
-const PetscScalar = Float64
-const PetscReal   = Float64
 
 # Serial-safe communicator (shared across all lib loops)
 const _TC = MPI.COMM_SELF
@@ -46,7 +43,7 @@ function _dm_f0(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                 aOff, aOff_x, a, a_t, a_x, t, x, nC, cst, f0)
     f0[1] = 0.0
 end
-const _dm_f0_ptr = PETSc.@residual_fn(_dm_f0, 1)
+const _dm_f0_ptr = PETSc.@residual_fn(_dmplex_petsclib, _dm_f0, 1)
 
 # f1: diffusion flux ∇u
 function _dm_f1(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
@@ -55,7 +52,7 @@ function _dm_f1(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         f1[d] = u_x[d]
     end
 end
-const _dm_f1_ptr = PETSc.@residual_fn(_dm_f1, dim_)
+const _dm_f1_ptr = PETSc.@residual_fn(_dmplex_petsclib, _dm_f1, dim_)
 
 # g3: identity stiffness tensor (Laplacian Jacobian)
 function _dm_g3(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
@@ -65,7 +62,7 @@ function _dm_g3(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         g3[d * dim_ + d + 1] = 1.0
     end
 end
-const _dm_g3_ptr = PETSc.@jacobian_fn(_dm_g3, dim_ * dim_)
+const _dm_g3_ptr = PETSc.@jacobian_fn(_dmplex_petsclib, _dm_g3, dim_ * dim_)
 
 # exact solution: u(t, x) = x₁ + x₂  (linear → exact in P1/Q1)
 function _dm_exact(t, x, u, ctx)
@@ -74,13 +71,17 @@ function _dm_exact(t, x, u, ctx)
         u[1] += x[d]
     end
 end
-const _dm_exact_ptr = PETSc.@simple_fn(_dm_exact)
+const _dm_exact_ptr = PETSc.@simple_fn(_dmplex_petsclib, _dm_exact)
 
 # zero BC function
 function _dm_zero(t, x, u, ctx)
     fill!(u, 0.0)
 end
-const _dm_zero_ptr = PETSc.@simple_fn(_dm_zero)
+const _dm_zero_ptr = PETSc.@simple_fn(_dmplex_petsclib, _dm_zero)
+
+# The library's type names the C types as well as the library does.
+_dm_one(t, x, u, ctx) = (u[1] = x[1] + 1; nothing)
+const _dm_one_ptr = PETSc.@simple_fn(typeof(_dmplex_petsclib), _dm_one)
 
 # ─────────────────────────────────────────────────────────────────────────────
 @testset "DMPlex" begin
@@ -88,6 +89,18 @@ const _dm_zero_ptr = PETSc.@simple_fn(_dm_zero)
 if isintelmac
     @test_skip "DMPlex+PETSc tests skipped on macOS Intel (known SIGSEGV in PETSc_jll)"
 else
+
+@testset "pointwise macro library argument" begin
+    @test _dmplex_petsclib.PetscScalar === Float64
+    x = [2.0]
+    u = [0.0]
+    err = ccall(_dm_one_ptr, Cint, (PetscInt, Float64, Ptr{Float64}, PetscInt, Ptr{Float64}, Ptr{Cvoid}),
+                1, 0, x, 1, u, C_NULL)
+    @test err == 0
+    @test u[1] == 3
+    @test_throws "must name a PETSc library" macroexpand(@__MODULE__, :(PETSc.@simple_fn(1, _dm_one)))
+end
+
 
 for petsclib in PETSc.petsclibs
     PETSc.initialize(petsclib)

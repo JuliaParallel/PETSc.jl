@@ -350,7 +350,6 @@ PETSc.initialize(petsclib)
 
 @isdefined(PetscInt)    || const PetscInt    = petsclib.PetscInt
 @isdefined(PetscScalar) || const PetscScalar = Float64
-@isdefined(PetscReal)   || const PetscReal   = Float64
 
 # Module-level globals for background strain rates — read by @cfunction-based BCs.
 bg_exx = 0.0
@@ -518,7 +517,7 @@ function f1_u(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
     compute_strainrate!(f1, dim_, u_x)
     deviatoric_stress_pressure!(f1, dim_, f1, phase, cst, p, tau_old)
 end
-const f1_u_ptr = PETSc.@residual_fn(f1_u, dim_*dim_)
+const f1_u_ptr = PETSc.@residual_fn(petsclib, f1_u, dim_*dim_)
 
 # Continuity: f0 = −∇·u
 function f0_p(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
@@ -528,7 +527,7 @@ function f0_p(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         f0[1] -= u_x[d*dim_+d+1]
     end
 end
-const f0_p_ptr = PETSc.@residual_fn(f0_p, 1)
+const f0_p_ptr = PETSc.@residual_fn(petsclib, f0_p, 1)
 
 # ── Body-force functions (one per MMS solution type) ──────────────────────────
 #
@@ -546,7 +545,7 @@ function f0_quadratic_u(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         f0[d] = 4mu - 1.0
     end
 end
-const f0_quadratic_u_ptr = PETSc.@residual_fn(f0_quadratic_u, dim_)
+const f0_quadratic_u_ptr = PETSc.@residual_fn(petsclib, f0_quadratic_u, dim_)
 
 # Trigonometric MMS body force:
 #   f_x = 2π cos(2πx) + μ(dim−1)π² sin(πx) + μπ² Σ_{d>0} sin(πx_d)
@@ -561,14 +560,14 @@ function f0_trig_u(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         f0[d]  = -2π*cos(2π*x[d]) + mu*π^3*cos(π*x[1])*x[d]
     end
 end
-const f0_trig_u_ptr = PETSc.@residual_fn(f0_trig_u, dim_)
+const f0_trig_u_ptr = PETSc.@residual_fn(petsclib, f0_trig_u, dim_)
 
 # Zero body force for background deformation mode (no MMS forcing)
 function f0_zero_u(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                    aOff, aOff_x, a, a_t, a_x, t, x, nC, cst, f0)
     for d in 1:dim_; f0[d] = 0.0; end
 end
-const f0_zero_u_ptr = PETSc.@residual_fn(f0_zero_u, dim_)
+const f0_zero_u_ptr = PETSc.@residual_fn(petsclib, f0_zero_u, dim_)
 
 # Gravity body force: f_body = ρ g (−ŷ direction).
 # In PETSc weak-form sign convention, f0 = −f_body, so:
@@ -581,7 +580,7 @@ function f0_grav_u(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
     for d in 1:dim_; f0[d] = 0.0; end
     f0[dim_] = rho * g
 end
-const f0_grav_u_ptr = PETSc.@residual_fn(f0_grav_u, dim_)
+const f0_grav_u_ptr = PETSc.@residual_fn(petsclib, f0_grav_u, dim_)
 
 # ── Jacobians ─────────────────────────────────────────────────────────────────
 
@@ -593,7 +592,7 @@ function g3_uu(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
     p         = real(u[dim_+1])
     deviatoric_stress_tangent!(g3, dim_, u_x, phase, cst, p, tau_old)
 end
-const g3_uu_ptr = PETSc.@jacobian_fn(g3_uu, dim_*dim_*dim_*dim_)
+const g3_uu_ptr = PETSc.@jacobian_fn(petsclib, g3_uu, dim_*dim_*dim_*dim_)
 
 # J_up (g2): ∂σ_{fc,df}/∂p via AD of deviatoric_stress_pressure! w.r.t. p.
 # Layout: g2[fc*dim+df + 1] = ∂σ_{fc,df}/∂p.
@@ -615,14 +614,14 @@ function g2_up(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
     end
     for i in 1:n; g2[i] = dσ_dp[i]; end
 end
-const g2_up_ptr = PETSc.@jacobian_fn(g2_up, dim_*dim_)
+const g2_up_ptr = PETSc.@jacobian_fn(petsclib, g2_up, dim_*dim_)
 
 # J_pu (g1): ⟨q, −∇·u⟩ — kinematic incompressibility, independent of rheology.
 function g1_pu(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                aOff, aOff_x, a, a_t, a_x, t, utShift, x, nC, cst, g1)
     for d in 0:dim_-1; g1[d*dim_+d+1] = -1.0; end
 end
-const g1_pu_ptr = PETSc.@jacobian_fn(g1_pu, dim_*dim_)
+const g1_pu_ptr = PETSc.@jacobian_fn(petsclib, g1_pu, dim_*dim_)
 
 # J_pp preconditioner (g0): (1/η_eff)⟨q, p⟩ using the Maxwell effective viscosity
 function g0_pp(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
@@ -640,7 +639,7 @@ function g0_pp(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
     eta_eff = eta * G_mod * dt / (eta + G_mod * dt)
     g0[1]   = 1.0 / eta_eff
 end
-const g0_pp_ptr = PETSc.@jacobian_fn(g0_pp, 1)
+const g0_pp_ptr = PETSc.@jacobian_fn(petsclib, g0_pp, 1)
 
 # ── Deviatoric stress computation (for VTK and viscoelastic history) ─────────
 #
@@ -668,7 +667,7 @@ function compute_tau(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         out[i] = 2 * eta_eff * eps_buf[i] + relax_fac * real(tau_old[i])
     end
 end
-const compute_tau_ptr = PETSc.@residual_fn(compute_tau, dim_*dim_)
+const compute_tau_ptr = PETSc.@residual_fn(petsclib, compute_tau, dim_*dim_)
 
 # Same as compute_tau but zero-padded to 3×3 row-major for VTK tensor output.
 function compute_tau_3x3(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
@@ -691,7 +690,7 @@ function compute_tau_3x3(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         out[c*3+d+1] = 2 * eta_eff * eps_buf[c*dim_+d+1] + relax_fac * real(tau_old[c*dim_+d+1])
     end
 end
-const compute_tau_3x3_ptr = PETSc.@residual_fn(compute_tau_3x3, 9)
+const compute_tau_3x3_ptr = PETSc.@residual_fn(petsclib, compute_tau_3x3, 9)
 
 # Second invariants (DG-P0, 1 DOF/cell) — used for domain averages and VTK output.
 # ε_II = sqrt(½ ε:ε),  τ_II = sqrt(½ τ:τ)
@@ -703,7 +702,7 @@ function compute_eps_II(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
     compute_strainrate!(eps_buf, dim_, eps_buf)
     out[1] = real(second_invariant(eps_buf, dim_))
 end
-const compute_eps_II_ptr = PETSc.@residual_fn(compute_eps_II, 1)
+const compute_eps_II_ptr = PETSc.@residual_fn(petsclib, compute_eps_II, 1)
 
 function compute_tau_II(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                         aOff, aOff_x, a, a_t, a_x, t, x, nC, cst, out)
@@ -727,7 +726,7 @@ function compute_tau_II(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
     end
     out[1] = sqrt(0.5 * s)
 end
-const compute_tau_II_ptr = PETSc.@residual_fn(compute_tau_II, 1)
+const compute_tau_II_ptr = PETSc.@residual_fn(petsclib, compute_tau_II, 1)
 
 # ── VTK post-processing: strain rate tensor ─────────────────────────────────
 #
@@ -741,7 +740,7 @@ function compute_strainrate_3x3(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
         out[c*3+d+1] = 0.5*(u_x[c*dim_+d+1] + u_x[d*dim_+c+1])
     end
 end
-const compute_strainrate_3x3_ptr = PETSc.@residual_fn(compute_strainrate_3x3, 9)
+const compute_strainrate_3x3_ptr = PETSc.@residual_fn(petsclib, compute_strainrate_3x3, 9)
 
 # VTK copy kernels: extract velocity (field 0) and pressure (field 1) from the
 # combined solution vector.  Must be at top-level scope for @cfunction.
@@ -749,13 +748,13 @@ function copy_vel(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                   aOff, aOff_x, a, a_t, a_x, t, x, nC, cst, out_)
     for c in 1:dim_; out_[c] = u[c]; end
 end
-const copy_vel_ptr = PETSc.@residual_fn(copy_vel, dim_)
+const copy_vel_ptr = PETSc.@residual_fn(petsclib, copy_vel, dim_)
 
 function copy_pres(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                    aOff, aOff_x, a, a_t, a_x, t, x, nC, cst, out_)
     out_[1] = u[dim_+1]
 end
-const copy_pres_ptr = PETSc.@residual_fn(copy_pres, 1)
+const copy_pres_ptr = PETSc.@residual_fn(petsclib, copy_pres, 1)
 
 # copy_mu reports the Maxwell effective viscosity η_eff = η·G·dt/(η+G·dt).
 function copy_mu(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
@@ -772,13 +771,13 @@ function copy_mu(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
     dt      = real(cst[17])
     out_[1] = eta * G_mod * dt / (eta + G_mod * dt)
 end
-const copy_mu_ptr = PETSc.@residual_fn(copy_mu, 1)
+const copy_mu_ptr = PETSc.@residual_fn(petsclib, copy_mu, 1)
 
 function copy_phase(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                     aOff, aOff_x, a, a_t, a_x, t, x, nC, cst, out_)
     out_[1] = real(a[1])   # phase from aux field — correct after Lagrangian advection
 end
-const copy_phase_ptr = PETSc.@residual_fn(copy_phase, 1)
+const copy_phase_ptr = PETSc.@residual_fn(petsclib, copy_phase, 1)
 
 # Pass-through kernel: copies dim×dim values from the source field to the output.
 # Used by advance_tau! to project tau_vec (on dm_tau) into field 1 of aux_vec.
@@ -786,7 +785,7 @@ function identity_tau(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                       aOff, aOff_x, a, a_t, a_x, t, x, nC, cst, out)
     for i in 1:dim_*dim_; out[i] = u[i]; end
 end
-const identity_tau_ptr = PETSc.@residual_fn(identity_tau, dim_*dim_)
+const identity_tau_ptr = PETSc.@residual_fn(petsclib, identity_tau, dim_*dim_)
 
 # ── Time-stepping helpers ─────────────────────────────────────────────────────
 
@@ -986,12 +985,12 @@ function quadratic_vel(t, x, u, ctx)
         u[c]  = 2*x[1]^2 - 2*x[1]*x[c]
     end
 end
-const quadratic_vel_ptr = PETSc.@simple_fn(quadratic_vel)
+const quadratic_vel_ptr = PETSc.@simple_fn(petsclib, quadratic_vel)
 
 function quadratic_pres(t, x, u, ctx)
     u[1] = sum(x) - 0.5*length(x)
 end
-const quadratic_pres_ptr = PETSc.@simple_fn(quadratic_pres)
+const quadratic_pres_ptr = PETSc.@simple_fn(petsclib, quadratic_pres)
 
 #
 # Trigonometric MMS:
@@ -1007,23 +1006,23 @@ function trig_vel(t, x, u, ctx)
         u[c]  = -π*cos(π*x[1])*x[c]
     end
 end
-const trig_vel_ptr = PETSc.@simple_fn(trig_vel)
+const trig_vel_ptr = PETSc.@simple_fn(petsclib, trig_vel)
 
 function trig_pres(t, x, u, ctx)
     u[1] = sum(sin(2π*xi) for xi in x)
 end
-const trig_pres_ptr = PETSc.@simple_fn(trig_pres)
+const trig_pres_ptr = PETSc.@simple_fn(petsclib, trig_pres)
 
 # Helper functions for the pressure null space constructor
 function zero_vel(t, x, u, ctx)
     for c in 1:length(u); u[c] = 0.0; end
 end
-const zero_vel_ptr = PETSc.@simple_fn(zero_vel)
+const zero_vel_ptr = PETSc.@simple_fn(petsclib, zero_vel)
 
 function one_pres(t, x, u, ctx)
     u[1] = 1.0
 end
-const one_pres_ptr = PETSc.@simple_fn(one_pres)
+const one_pres_ptr = PETSc.@simple_fn(petsclib, one_pres)
 
 # Background deformation BC: Vx = x*exx_bg, Vy = y*eyy_bg, Vz = z*ezz_bg.
 # ezz_bg defaults to -(exx_bg+eyy_bg) to satisfy incompressibility.
@@ -1032,7 +1031,7 @@ function bg_vel(t, x, u, ctx)
     u[2] = x[2] * bg_eyy
     length(u) >= 3 && (u[3] = x[3] * bg_ezz)
 end
-const bg_vel_ptr = PETSc.@simple_fn(bg_vel)
+const bg_vel_ptr = PETSc.@simple_fn(petsclib, bg_vel)
 
 """
     update_tau!(petsclib, dm_tau, u, tau_vec, t=0.0)
@@ -1055,7 +1054,7 @@ end
 function phase_fn(t, x, u, ctx)
     u[1] = sum(xi^2 for xi in x) < inclusion_R^2 ? 2.0 : 1.0
 end
-const phase_fn_ptr = PETSc.@simple_fn(phase_fn)
+const phase_fn_ptr = PETSc.@simple_fn(petsclib, phase_fn)
 
 exact_vel_ptr  = sol_type == "quadratic" ? quadratic_vel_ptr  :
                  sol_type == "trig"      ? trig_vel_ptr        :

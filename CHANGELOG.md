@@ -6,6 +6,7 @@
 
 - `local_arrays` and `restore_local_arrays!` warn: use `with_local_arrays!`. An exception between the two calls left both Vecs checked out.
 - `local_coordinate_array(dm)` warns: use `with_local_coordinate_array(f, dm)`. It now returns a copy. It used to leave the coordinate vector checked out until the garbage collector freed the array, and if the DM was destroyed first, that late hand-back crashed Julia.
+- `@simple_fn`, `@residual_fn`, `@jacobian_fn` and `@bd_fn` take the library first, `@residual_fn(petsclib, f0, Nf)`, and use its `PetscInt`, `PetscReal` and `PetscScalar` for the C signature. The library value or its type both work; it is evaluated when the macro expands, so it must be a global defined before the call. Without the library, the macros take `PetscInt`, `PetscScalar` and `PetscReal` from the calling module's globals as before, and warn. That form needed those three consts and allowed only one library per module.
 
 ### Added
 

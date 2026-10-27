@@ -380,4 +380,22 @@ const SHIMS = [
         @test coord[1, 3] ≈ 1
     end
 
+    @testset "pointwise macros without a library" begin
+        m = Module()
+        Core.eval(m, quote
+            using PETSc
+            const PetscInt = Int64
+            const PetscScalar = Float64
+            const PetscReal = Float64
+            one_u(t, x, u, ctx) = (u[1] = x[1] + 1; nothing)
+        end)
+        ptr = warns(() -> Core.eval(m, :(PETSc.@simple_fn(one_u))))
+        x = [2.0]
+        u = [0.0]
+        err = ccall(ptr, Cint, (Int64, Float64, Ptr{Float64}, Int64, Ptr{Float64}, Ptr{Cvoid}),
+                    1, 0.0, x, 1, u, C_NULL)
+        @test err == 0
+        @test u[1] == 3
+    end
+
 end

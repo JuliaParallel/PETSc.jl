@@ -13,20 +13,42 @@ Base.unsafe_convert(::Type{LibPETSc.PetscDS}, v::PetscDS) = v.ptr
 # These macros generate a thin C-callable wrapper that unwraps all C pointer
 # arguments into Julia Vectors, then calls the user's pure-Julia function.
 #
-# PetscInt, PetscReal, PetscScalar must be concrete types in the calling scope
-# (e.g. `const PetscInt = petsclib.PetscInt`).
+# The first argument names the library (a PetscLibType value or type). It is
+# evaluated when the macro expands, so it must be a global defined before the
+# macro call; the C signature uses that library's PetscInt, PetscReal and
+# PetscScalar.
 #
 # Usage:
+#   const petsclib = PETSc.getlib(; PetscScalar = Float64)
 #   function my_fn(t, x, u, ctx);  u[1] = x[1]^2 + x[2]^2;  end
-#   const my_fn_ptr = PETSc.@simple_fn(my_fn)
+#   const my_fn_ptr = PETSc.@simple_fn(petsclib, my_fn)
 #
 #   function f0(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
 #               aOff, aOff_x, a, a_t, a_x, t, x, numConstants, constants, out)
 #       out .= 4
 #   end
-#   const f0_ptr = PETSc.@residual_fn(f0, Nf)        # outsz = Nf
-#   const f1_ptr = PETSc.@residual_fn(f1, dim_*Nf)   # outsz = dim*Nf
-#   const g3_ptr = PETSc.@jacobian_fn(g3, dim_*dim_) # outsz = dim² (Nf=1)
+#   const f0_ptr = PETSc.@residual_fn(petsclib, f0, Nf)        # outsz = Nf
+#   const f1_ptr = PETSc.@residual_fn(petsclib, f1, dim_*Nf)   # outsz = dim*Nf
+#   const g3_ptr = PETSc.@jacobian_fn(petsclib, g3, dim_*dim_) # outsz = dim² (Nf=1)
+#
+# The wrapper's C pointer comes from an `@eval` at run time: within a single
+# top-level block the `@cfunction` is compiled before the wrapper exists.
+
+# Look up the PetscInt, PetscScalar and PetscReal of the library `lib` names
+# in module `mod`.
+function pointwise_types(mod::Module, lib)
+    L = Core.eval(mod, lib)
+    L isa LibPETSc.PetscLibType || (L isa Type && L <: LibPETSc.PetscLibType && isconcretetype(L)) ||
+        throw(ArgumentError("the first argument of a pointwise macro must name a PETSc library or its type, got `$lib` = $L"))
+    return LibPETSc.inttype(L), LibPETSc.scalartype(L), LibPETSc.realtype(L)
+end
+
+# Old form: the types are the globals PetscInt, PetscScalar and PetscReal of `mod`.
+# TODO: remove in v0.6 with the other 0.5 deprecations.
+function pointwise_types_from_scope(mod::Module, name::Symbol, f)
+    @warn "$name without a library is deprecated, use $name(petsclib, $f, …)" maxlog = 1 _id = name
+    return Core.eval(mod, :PetscInt), Core.eval(mod, :PetscScalar), Core.eval(mod, :PetscReal)
+end
 
 # Helper: substitute gensymmed param names into an output-size expression.
 petsc_subst(ex, m) =
@@ -35,7 +57,7 @@ petsc_subst(ex, m) =
     ex
 
 """
-    @simple_fn(f)
+    @simple_fn(petsclib, f)
 
 Generate a C-callable wrapper for `f(t, x, u, ctx)` and return its C pointer,
 matching the `PetscSimplePointFn` signature.  Arguments seen by `f`:
@@ -45,14 +67,20 @@ matching the `PetscSimplePointFn` signature.  Arguments seen by `f`:
   - `ctx` — user context (`Ptr{Cvoid}`)
 
 Used by `project_function!`, `add_boundary!`, `set_exact_solution!`.
-`PetscInt`, `PetscReal`, `PetscScalar` must be in scope.
+`petsclib` is a PETSc library or its type, and must be a global defined before
+the macro call: it sets the C types of the arguments.
 """
+macro simple_fn(lib, f)
+    return simple_fn_expr(f, pointwise_types(__module__, lib)...)
+end
+
 macro simple_fn(f)
+    return simple_fn_expr(f, pointwise_types_from_scope(__module__, Symbol("@simple_fn"), f)...)
+end
+
+function simple_fn_expr(f, PI, PS, PR)
     cfn = Symbol(f, :__cfn__)
     gdim = gensym("dim"); gNc = gensym("Nc")
-    PI = Core.eval(__module__, :PetscInt)
-    PS = Core.eval(__module__, :PetscScalar)
-    PR = Core.eval(__module__, :PetscReal)
     cfn_ptr_expr = :(Base.@cfunction($cfn, Cint,
         ($PI, $PR, Ptr{$PR}, $PI, Ptr{$PS}, Ptr{Cvoid})))
     quote
@@ -70,7 +98,7 @@ macro simple_fn(f)
 end
 
 """
-    @residual_fn(f, outsz)
+    @residual_fn(petsclib, f, outsz)
 
 Generate a C-callable wrapper for the pure-Julia residual function `f` and
 return its C pointer, matching the `PetscPointFn` signature.  All pointer
@@ -85,16 +113,21 @@ User function signature:
 f(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
   aOff, aOff_x, a, a_t, a_x, t, x, numConstants, constants, out)
 ```
-`PetscInt`, `PetscReal`, `PetscScalar` must be in scope.
+`petsclib` is as in `@simple_fn`.
 """
+macro residual_fn(lib, f, outsz)
+    return residual_fn_expr(f, outsz, pointwise_types(__module__, lib)...)
+end
+
 macro residual_fn(f, outsz)
+    return residual_fn_expr(f, outsz, pointwise_types_from_scope(__module__, Symbol("@residual_fn"), f)...)
+end
+
+function residual_fn_expr(f, outsz, PI, PS, PR)
     cfn = Symbol(f, :__cfn__)
     gdim = gensym("dim"); gNf = gensym("Nf"); gNfAux = gensym("NfAux"); gnC = gensym("nC")
     m = Dict{Symbol,Any}(:dim_ => gdim, :Nf => gNf, :NfAux => gNfAux, :numConstants => gnC)
     outsz_s = petsc_subst(outsz, m)
-    PI = Core.eval(__module__, :PetscInt)
-    PS = Core.eval(__module__, :PetscScalar)
-    PR = Core.eval(__module__, :PetscReal)
     cfn_ptr_expr = :(Base.@cfunction($cfn, Cvoid,
         ($PI, $PI, $PI, Ptr{$PI}, Ptr{$PI},
          Ptr{$PS}, Ptr{$PS}, Ptr{$PS}, Ptr{$PI}, Ptr{$PI},
@@ -132,7 +165,7 @@ macro residual_fn(f, outsz)
 end
 
 """
-    @jacobian_fn(f, outsz)
+    @jacobian_fn(petsclib, f, outsz)
 
 Generate a C-callable wrapper for the pure-Julia Jacobian function `f` and
 return its C pointer, matching the `PetscPointJacFn` signature.  Identical to
@@ -143,16 +176,21 @@ User function signature:
 f(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
   aOff, aOff_x, a, a_t, a_x, t, u_tShift, x, numConstants, constants, out)
 ```
-`PetscInt`, `PetscReal`, `PetscScalar` must be in scope.
+`petsclib` is as in `@simple_fn`.
 """
+macro jacobian_fn(lib, f, outsz)
+    return jacobian_fn_expr(f, outsz, pointwise_types(__module__, lib)...)
+end
+
 macro jacobian_fn(f, outsz)
+    return jacobian_fn_expr(f, outsz, pointwise_types_from_scope(__module__, Symbol("@jacobian_fn"), f)...)
+end
+
+function jacobian_fn_expr(f, outsz, PI, PS, PR)
     cfn = Symbol(f, :__cfn__)
     gdim = gensym("dim"); gNf = gensym("Nf"); gNfAux = gensym("NfAux"); gnC = gensym("nC")
     m = Dict{Symbol,Any}(:dim_ => gdim, :Nf => gNf, :NfAux => gNfAux, :numConstants => gnC)
     outsz_s = petsc_subst(outsz, m)
-    PI = Core.eval(__module__, :PetscInt)
-    PS = Core.eval(__module__, :PetscScalar)
-    PR = Core.eval(__module__, :PetscReal)
     cfn_ptr_expr = :(Base.@cfunction($cfn, Cvoid,
         ($PI, $PI, $PI, Ptr{$PI}, Ptr{$PI},
          Ptr{$PS}, Ptr{$PS}, Ptr{$PS}, Ptr{$PI}, Ptr{$PI},
@@ -191,7 +229,7 @@ macro jacobian_fn(f, outsz)
 end
 
 """
-    @bd_fn(f, outsz)
+    @bd_fn(petsclib, f, outsz)
 
 Generate a C-callable wrapper for the pure-Julia boundary pointwise function `f`
 and return its C pointer, matching the `PetscBdPointFn` signature.  Identical to
@@ -203,16 +241,21 @@ User function signature:
 f(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
   aOff, aOff_x, a, a_t, a_x, t, x, n, numConstants, constants, out)
 ```
-`PetscInt`, `PetscReal`, `PetscScalar` must be in scope.
+`petsclib` is as in `@simple_fn`.
 """
+macro bd_fn(lib, f, outsz)
+    return bd_fn_expr(f, outsz, pointwise_types(__module__, lib)...)
+end
+
 macro bd_fn(f, outsz)
+    return bd_fn_expr(f, outsz, pointwise_types_from_scope(__module__, Symbol("@bd_fn"), f)...)
+end
+
+function bd_fn_expr(f, outsz, PI, PS, PR)
     cfn = Symbol(f, :__cfn__)
     gdim = gensym("dim"); gNf = gensym("Nf"); gNfAux = gensym("NfAux"); gnC = gensym("nC")
     m = Dict{Symbol,Any}(:dim_ => gdim, :Nf => gNf, :NfAux => gNfAux, :numConstants => gnC)
     outsz_s = petsc_subst(outsz, m)
-    PI = Core.eval(__module__, :PetscInt)
-    PS = Core.eval(__module__, :PetscScalar)
-    PR = Core.eval(__module__, :PetscReal)
     cfn_ptr_expr = :(Base.@cfunction($cfn, Cvoid,
         ($PI, $PI, $PI, Ptr{$PI}, Ptr{$PI},
          Ptr{$PS}, Ptr{$PS}, Ptr{$PS}, Ptr{$PI}, Ptr{$PI},

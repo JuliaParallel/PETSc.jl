@@ -14,6 +14,7 @@
 
 ### Added
 
+- `MatShell` takes the operations `mult_transpose(y, x)`, `diagonal(d)` and `mult_add(z, x, y)` as keywords, so `transpose(A) * x`, `A' * x`, `pc_type = jacobi` and `MatMultAdd` work on a shell.
 - `with_local_arrays!(f!, g_fx, l_x)` calls `f!(fx, lx)` with the local arrays of the two Vecs, on the device when a GPU extension is loaded, and hands them back afterwards, also when `f!` throws.
 - `with_local_coordinate_array(f, dm)` calls `f(coord)` with the local coordinates of a `DMDA` or `DMStag`, addressed with global indices, and hands the array back when `f` returns or throws.
 - AMD GPUs: with AMDGPU.jl loaded and a PETSc built with HIP, `with_local_array!` and `with_local_arrays!` return `ROCArray`s for Vecs in HIP memory (`PETScAMDGPUExt`). `with_local_arrays!` also handles one Vec on the host and the other on the device, as on coarser multigrid levels. `with_field_views!` on a DMStag with device vectors gives views of device arrays for kernels; broadcast over `parent(view)`, since `OffsetArray` broadcasts on the host.

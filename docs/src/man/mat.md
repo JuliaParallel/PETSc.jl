@@ -53,7 +53,13 @@ A = LibPETSc.DMCreateMatrix(petsclib, dm)
 ```julia
 # A shell matrix whose multiply is mult_function(y, x), filling y
 A = PETSc.MatShell(mult_function, petsclib, MPI.COMM_SELF, local_rows, local_cols)
+
+# With the transpose, the diagonal (for pc_type = jacobi) and z = y + Ax as well
+A = PETSc.MatShell(mult_function, petsclib, MPI.COMM_SELF, local_rows, local_cols;
+                   mult_transpose = (y, x) -> ..., diagonal = d -> ..., mult_add = (z, x, y) -> ...)
 ```
+
+With `mult_transpose`, `transpose(A) * x` and `A' * x` work on the shell.
 
 ## Setting Values
 

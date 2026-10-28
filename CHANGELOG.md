@@ -14,6 +14,11 @@
 - `with_local_coordinate_array(f, dm)` calls `f(coord)` with the local coordinates of a `DMDA` or `DMStag`, addressed with global indices, and hands the array back when `f` returns or throws.
 - AMD GPUs: with AMDGPU.jl loaded and a PETSc built with HIP, `with_local_array!` and `with_local_arrays!` return `ROCArray`s for Vecs in HIP memory (`PETScAMDGPUExt`). `with_local_arrays!` also handles one Vec on the host and the other on the device, as on coarser multigrid levels. `with_field_views!` on a DMStag with device vectors gives views of device arrays for kernels; broadcast over `parent(view)`, since `OffsetArray` broadcasts on the host.
 
+### Fixed
+
+- CUDA: `with_local_arrays!` with one Vec on the host and the other on the device threw a `MethodError`, and arrays went back to PETSc before CUDA.jl's kernels on them had finished unless one was a host copy. Both now work as with AMDGPU: the host Vec is copied to the device and back, and the device is synchronized before every hand-back. Not tested on an NVIDIA GPU.
+- `examples/dmda/ex19.jl` runs on the GPU again, with CUDA or HIP (`const gpu = :cuda` or `:hip`). Its GPU branch passed a raw pointer to `MatSetValuesCOO`, which takes a `Vector`, and its residual got a host and a device array on coarser multigrid levels.
+
 ## v0.5.4
 
 ### Deprecated

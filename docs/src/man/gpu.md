@@ -92,9 +92,9 @@ The same kernel runs on CPU (when Vecs are host-resident) and GPU (when Vecs are
 
 [`examples/dmda/ex19.jl`](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/dmda/ex19.jl) is a full 2D driven-cavity example (velocity–vorticity–temperature) that demonstrates:
 
-- Switching between CPU and GPU with a single `useCUDA` flag.
+- Switching between CPU, CUDA and HIP with a single `gpu` flag.
 - FD coloring-based Jacobian assembly running entirely on-device.
-- `with_local_array!` in the residual callback for transparent CPU/GPU dispatch.
+- `with_local_arrays!` in the residual callback, which also covers the multigrid levels where one Vec is on the host.
   
 - Using [KernelAbstractions](https://github.com/JuliaGPU/KernelAbstractions.jl) to run kernels on various flavors of GPUs or CPUs.
   
@@ -102,11 +102,11 @@ The same kernel runs on CPU (when Vecs are host-resident) and GPU (when Vecs are
 
 To run it on a GPU:
 
-1. Set `const useCUDA = true` near the top of `ex19.jl`.
-2. Ensure your local PETSc build has CUDA support and is linked via `PETSc.set_library!`.
+1. Set `const gpu = :cuda` (or `:hip`) near the top of `ex19.jl`.
+2. Ensure your local PETSc build has CUDA (or HIP) support and is linked via `PETSc.set_library!`.
 3. Launch:
    ```bash
-   julia --project ex19.jl -da_grid_x 256 -da_grid_y 256 \
+   julia --project ex19.jl -da_grid_x 257 -da_grid_y 257 \
        -pc_type mg -pc_mg_levels 4 \
        -mg_levels_ksp_type chebyshev -mg_levels_pc_type jacobi \
        -snes_monitor -ksp_monitor

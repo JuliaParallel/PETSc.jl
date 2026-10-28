@@ -35,12 +35,12 @@
 
     # MPI parallel (4 ranks)
     mpiexec -n 4 julia --project ex19.jl \\
-        -da_grid_x 256 -da_grid_y 256 \\
+        -da_grid_x 257 -da_grid_y 257 \\
         -pc_type mg -pc_mg_levels 4 \\
         -mg_levels_ksp_type chebyshev -mg_levels_pc_type jacobi
 
-    # GPU (CUDA) — set  useCUDA = true  at the top of the file, then:
-    julia --project ex19.jl -da_grid_x 256 -da_grid_y 256 \\
+    # GPU: set  gpu = :cuda  or  gpu = :hip  at the top of the file, then:
+    julia --project ex19.jl -da_grid_x 257 -da_grid_y 257 \\
         -pc_type mg -pc_mg_levels 4 \\
         -mg_levels_ksp_type chebyshev -mg_levels_pc_type jacobi
 
@@ -54,20 +54,26 @@
   Requires: LocalPreferences.toml in examples/ with PetscInt = "Int32" matching
     the PETSc build (check with: grep sizeof_PetscInt petscconf.h).
 
-  GPU usage: set  useCUDA = true  at the top of this file.
-    Requires PETSc built with --with-cuda, and CUDA.jl in the environment.
+  GPU usage: set  gpu = :cuda  (NVIDIA) or  gpu = :hip  (AMD) at the top of this
+    file. Requires PETSc built with --with-cuda or --with-hip, and CUDA.jl or
+    AMDGPU.jl in the environment.
 =#
 
 # ── GPU switch ────────────────────────────────────────────────────────────────
-const useCUDA = false
+const gpu = :none   # :cuda (CUDA.jl) or :hip (AMDGPU.jl)
 
 using MPI
 using PETSc
 using KernelAbstractions
 
-if useCUDA
+if gpu === :cuda
     using CUDA
+elseif gpu === :hip
+    using AMDGPU
 end
+
+# A copy of `a` on the GPU, or `a` itself on the CPU
+to_device(a) = gpu === :cuda ? CuArray(a) : gpu === :hip ? ROCArray(a) : a
 
 
 # ── Physical parameters ──────────────────────────────────────────────────────
@@ -209,8 +215,8 @@ end
 # F(x + h·eₖ), then accumulate (F1 − F0)/h into val_dev at the matching slots.
 # Does NOT call MatSetValuesCOO or MatAssembly; those remain with the caller.
 #
-# Captures from module scope: useCUDA, backend, CuArray, CuPtr,
-#   scatter_perturb_kernel!, fd_accumulate_kernel!, KernelAbstractions.
+# Captures from module scope: scatter_perturb_kernel!, fd_accumulate_kernel!,
+#   KernelAbstractions.
 #
 function fd_coloring_jac!(
     petsclib,
@@ -284,9 +290,12 @@ da = PETSc.DMDA(
 
 # GPU vecs and GPU matrix enable a fully GPU-resident FD coloring path via
 # COO preallocation.  No host↔device bouncing in residual or Jacobian.
-if useCUDA
+if gpu === :cuda
     LibPETSc.DMSetVecType(petsclib, da, "cuda")
     LibPETSc.DMSetMatType(petsclib, da, "aijcusparse")
+elseif gpu === :hip
+    LibPETSc.DMSetVecType(petsclib, da, "hip")
+    LibPETSc.DMSetMatType(petsclib, da, "aijhipsparse")
 end
 
 snes = PETSc.SNES(petsclib, comm; opts...)
@@ -363,9 +372,10 @@ PETSc.set_function!(snes, r) do g_fx, snes, g_x
     hydhx_ = hy_ * dhx_;    hxdhy_ = hx_ * dhy_
     lid_   = _T(1) / dhx_    # lidvelocity = 1/(mx-1)
 
-    # with_local_array! handles CPU/GPU dispatch: returns Vector on host, CuArray
-    # on device.  Both vecs must be on the same device (guaranteed per MG level).
-    PETSc.with_local_array!(g_fx, l_x; read=(true, true), write=(true, false)) do fx, lx
+    # with_local_arrays! hands out both arrays on the same side: on the GPU when
+    # either Vec is there (coarser MG levels and PETSc's FD coloring can pass a
+    # host Vec), on the CPU otherwise.
+    PETSc.with_local_arrays!(g_fx, l_x) do fx, lx
         kern  = KernelAbstractions.get_backend(fx)
         x_par = reshape(lx, 4, nx_g,   ny_g)
         f_par = reshape(fx, 4, nx_own, ny_own)
@@ -426,17 +436,14 @@ perturb_cols_1b = coloring.perturb_cols_1b
 coo_idxs_1b     = coloring.coo_idxs_1b
 local_rows_1b   = coloring.local_rows_1b
 
-if useCUDA
-    perturb_cols_dev = [CuArray(v) for v in perturb_cols_1b]
-    coo_idxs_dev     = [CuArray(v) for v in coo_idxs_1b]
-    local_rows_dev   = [CuArray(v) for v in local_rows_1b]
-    val_dev          = CUDA.zeros(_T, nnz_coo)
-else
-    perturb_cols_dev = perturb_cols_1b
-    coo_idxs_dev     = coo_idxs_1b
-    local_rows_dev   = local_rows_1b
-    val_dev          = zeros(_T, nnz_coo)
-end
+perturb_cols_dev = map(to_device, perturb_cols_1b)
+coo_idxs_dev     = map(to_device, coo_idxs_1b)
+local_rows_dev   = map(to_device, local_rows_1b)
+val_dev          = to_device(zeros(_T, nnz_coo))
+# What MatSetValuesCOO takes: on the GPU an Array over the device memory (the
+# wrapper wants a Vector; PETSc reads device values for a device matrix)
+coo_vals = gpu === :none ? val_dev :
+    unsafe_wrap(Array, Ptr{_T}(UInt(pointer(val_dev))), length(val_dev))
 
 # ── Scratch vectors for the FD loop ────────────────────────────────────────
 x_pert_vec = LibPETSc.VecDuplicate(petsclib, x)
@@ -465,19 +472,14 @@ PETSc.set_snes_jacobian!(snes, J) do Jmat, actual_snes, g_x
     )
 
     # ── Assemble J via COO ─────────────────────────────────────────────────────
-    # On GPU: pass a raw device pointer so cuSPARSE scatters directly on device.
-    # On CPU: pass the Vector{T} directly (uses the vector overload).
-    # Both paths use the COO pattern registered by MatSetPreallocationCOOLocal.
-    if useCUDA
-        LibPETSc.MatSetValuesCOO(petsclib, Jmat, Ptr{_T}(UInt64(pointer(val_dev))), LibPETSc.INSERT_VALUES)
-    else
-        LibPETSc.MatSetValuesCOO(petsclib, Jmat, val_dev, LibPETSc.INSERT_VALUES)
-    end
+    # On GPU the sparse library scatters the device values directly. Both paths
+    # use the COO pattern registered by MatSetPreallocationCOOLocal.
+    LibPETSc.MatSetValuesCOO(petsclib, Jmat, coo_vals, LibPETSc.INSERT_VALUES)
     LibPETSc.MatAssemblyBegin(petsclib, Jmat, LibPETSc.MAT_FINAL_ASSEMBLY)
     LibPETSc.MatAssemblyEnd(petsclib, Jmat, LibPETSc.MAT_FINAL_ASSEMBLY)
-    if useCUDA
+    if gpu !== :none
         # Force GPU→CPU sync so both copies are valid.
-        # MatBindToCPU(PETSC_TRUE) triggers MatSeqAIJCUSPARSECopyFromGPU when
+        # MatBindToCPU(PETSC_TRUE) triggers the device-to-host copy when
         # offloadmask==PETSC_OFFLOAD_GPU, making the CPU CSR correct.
         # MatBindToCPU(PETSC_FALSE) then releases the CPU-only restriction,
         # leaving offloadmask==PETSC_OFFLOAD_BOTH so that:

@@ -1018,6 +1018,46 @@ function (::MatOp{PetscLib, LibPETSc.MATOP_MULT})(
     end
 end
 
+function (::MatOp{PetscLib, LibPETSc.MATOP_MULT_TRANSPOSE})(
+            M::CMat,
+            cx::CVec,
+            cy::CVec,
+        ) where {PetscLib}
+    return run_callback("MatShell mult_transpose") do
+        state = unsafe_pointer_to_objref(LibPETSc.MatShellGetContext(PetscLib, M))::MatShellState
+        petsclib = getlib(PetscLib)
+        state.mult_transpose(PetscVec(cy, petsclib; own = false), PetscVec(cx, petsclib; own = false))
+    end
+end
+
+function (::MatOp{PetscLib, LibPETSc.MATOP_GET_DIAGONAL})(
+            M::CMat,
+            cd::CVec,
+        ) where {PetscLib}
+    return run_callback("MatShell diagonal") do
+        state = unsafe_pointer_to_objref(LibPETSc.MatShellGetContext(PetscLib, M))::MatShellState
+        state.diagonal(PetscVec(cd, getlib(PetscLib); own = false))
+    end
+end
+
+# MatMultAdd(A, x, y, z) is z = y + Ax; z may be y
+function (::MatOp{PetscLib, LibPETSc.MATOP_MULT_ADD})(
+            M::CMat,
+            cx::CVec,
+            cy::CVec,
+            cz::CVec,
+        ) where {PetscLib}
+    return run_callback("MatShell mult_add") do
+        state = unsafe_pointer_to_objref(LibPETSc.MatShellGetContext(PetscLib, M))::MatShellState
+        petsclib = getlib(PetscLib)
+        state.mult_add(
+            PetscVec(cz, petsclib; own = false),
+            PetscVec(cx, petsclib; own = false),
+            PetscVec(cy, petsclib; own = false),
+        )
+    end
+end
+
 
 
 
@@ -1026,7 +1066,8 @@ end
 
 """
     MatShell(obj, petsclib, comm::MPI.Comm, local_rows, local_cols;
-             global_rows = PETSC_DECIDE, global_cols = PETSC_DECIDE)
+             global_rows = PETSC_DECIDE, global_cols = PETSC_DECIDE,
+             mult_transpose = nothing, diagonal = nothing, mult_add = nothing)
 
 Create a `global_rows X global_cols` PETSc shell matrix object wrapping `obj`
 with local size `local_rows X local_cols`.
@@ -1040,6 +1081,18 @@ A = MatShell(petsclib, comm, n, n) do y, x
 end
 ```
 
+The keywords give the shell more operations, each a function that fills its
+first argument, as `obj` does:
+
+- `mult_transpose(y, x)`: `y = Aᵀx`. Then `transpose(A) * x` and `A' * x` work,
+  the second through the conjugate of `x` in a complex build.
+- `diagonal(d)`: `d` gets the diagonal of `A`. Then `pc_type = jacobi` works.
+- `mult_add(z, x, y)`: `z = y + Ax`, where `z` may be `y`. Without it PETSc
+  multiplies and adds. PETSc calls it as given, so a `MatScale` or `MatShift`
+  on the shell does not reach it.
+
+An operation left out throws a `PetscError` when PETSc needs it.
+
 if `comm == MPI.COMM_SELF` then the garbage connector can finalize the object,
 otherwise the user is responsible for calling [`destroy!`](@ref).
 
@@ -1049,6 +1102,9 @@ $(doc_callback())
 $(doc_external("Mat/MatCreateShell"))
 $(doc_external("Mat/MatShellSetOperation"))
 $(doc_external("Mat/MATOP_MULT"))
+$(doc_external("Mat/MatMultTranspose"))
+$(doc_external("Mat/MatGetDiagonal"))
+$(doc_external("Mat/MatMultAdd"))
 """
 mutable struct MatShell{PetscLib, OType} <: AbstractPetscMat{PetscLib}
     ptr::CMat
@@ -1058,13 +1114,16 @@ mutable struct MatShell{PetscLib, OType} <: AbstractPetscMat{PetscLib}
 end
 
 # The Julia side of a MatShell, kept with the PETSc object.
-# It holds the operator, not the wrapper, so the wrapper can still be collected
+# It holds the operators, not the wrapper, so the wrapper can still be collected
 # and its finalizer run.
 mutable struct MatShellState <: ObjectState
     obj::Any
+    mult_transpose::Any
+    diagonal::Any
+    mult_add::Any
     alive::Bool
 end
-MatShellState() = MatShellState(nothing, true)
+MatShellState() = MatShellState(nothing, nothing, nothing, nothing, true)
 state_type(::Type{<:MatShell}) = MatShellState
 
 function MatShell(
@@ -1075,8 +1134,12 @@ function MatShell(
     local_cols::Integer;
     global_rows::Integer = LibPETSc.PETSC_DECIDE,
     global_cols::Integer = LibPETSc.PETSC_DECIDE,
+    mult_transpose = nothing,
+    diagonal = nothing,
+    mult_add = nothing,
 )
-    return create_matshell(petsclib, obj, comm, local_rows, local_cols, global_rows, global_cols)
+    return create_matshell(petsclib, obj, comm, local_rows, local_cols, global_rows, global_cols,
+                           mult_transpose, diagonal, mult_add)
 end
 
 # The per-library body of `MatShell`. The public method above takes `petsclib`
@@ -1090,6 +1153,9 @@ LibPETSc.@for_petsc function create_matshell(
     local_cols,
     global_rows,
     global_cols,
+    mult_transpose,
+    diagonal,
+    mult_add,
 ) where {OType}
     mat = MatShell{$PetscLib, OType}(C_NULL, obj, petsclib.age, true)
 
@@ -1159,6 +1225,26 @@ LibPETSc.@for_petsc function create_matshell(
     )
 
     LibPETSc.MatShellSetOperation(petsclib, mat, LibPETSc.MATOP_MULT, mulptr)
+
+    # The optional operations, each registered only when given
+    state.mult_transpose = mult_transpose
+    state.diagonal = diagonal
+    state.mult_add = mult_add
+    if !isnothing(mult_transpose)
+        ptr = @cfunction(MatOp{$PetscLib, LibPETSc.MATOP_MULT_TRANSPOSE}(),
+                         LibPETSc.PetscErrorCode, (CMat, CVec, CVec))
+        LibPETSc.MatShellSetOperation(petsclib, mat, LibPETSc.MATOP_MULT_TRANSPOSE, ptr)
+    end
+    if !isnothing(diagonal)
+        ptr = @cfunction(MatOp{$PetscLib, LibPETSc.MATOP_GET_DIAGONAL}(),
+                         LibPETSc.PetscErrorCode, (CMat, CVec))
+        LibPETSc.MatShellSetOperation(petsclib, mat, LibPETSc.MATOP_GET_DIAGONAL, ptr)
+    end
+    if !isnothing(mult_add)
+        ptr = @cfunction(MatOp{$PetscLib, LibPETSc.MATOP_MULT_ADD}(),
+                         LibPETSc.PetscErrorCode, (CMat, CVec, CVec, CVec))
+        LibPETSc.MatShellSetOperation(petsclib, mat, LibPETSc.MATOP_MULT_ADD, ptr)
+    end
 
     # The garbage collector can only destroy it when no other rank takes part
     if MPI.Comm_size(comm) == 1

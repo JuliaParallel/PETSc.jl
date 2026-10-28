@@ -624,12 +624,14 @@ make_local_array(_, b::AbstractPetscMemBackend) =
 """
     release_local_array(cpu_arr, backend, vec; read, write)
 
-Restore a previously acquired local array.  Called in `finally` blocks by
-`with_local_array!`.  Extensions overload this for GPU backends.
+Restore a local array taken with `acquire_local_array`, after waiting for the device to
+finish with it.  Called in `finally` blocks by `with_local_array!`.
 """
 function release_local_array(
-    cpu_arr, ::Nothing, vec::AbstractPetscVec{PLib}; read::Bool, write::Bool,
+    cpu_arr, backend::Union{Nothing, AbstractPetscMemBackend}, vec::AbstractPetscVec{PLib};
+    read::Bool, write::Bool,
 ) where {PLib}
+    synchronize_device(backend)
     pv = as_petsc_vec(vec)
     if write && read
         LibPETSc.VecRestoreArrayAndMemType(PLib, pv, cpu_arr)
@@ -640,9 +642,11 @@ function release_local_array(
     end
     return nothing
 end
-release_local_array(cpu_arr, b::AbstractPetscMemBackend, vec; kw...) =
-    error("release_local_array not implemented for backend $(typeof(b)) — " *
-          "load the corresponding GPU package (e.g. CUDA.jl)")
+
+# Wait until the kernels Julia launched on the arrays are done. The GPU packages
+# launch on their own streams, not on PETSc's, so PETSc could otherwise read the
+# memory before a kernel has written it. Extensions add a method per backend.
+synchronize_device(::Union{Nothing, AbstractPetscMemBackend}) = nothing
 
 # The auto-generated *AndMemType wrappers are typed `x::PetscVec`, but
 # `AbstractPetscVec` also includes `VecPtr`.  Convert transparently.

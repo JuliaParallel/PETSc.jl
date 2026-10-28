@@ -197,10 +197,9 @@ PETSc.add_boundary!(dm,
     0,              # field index
     PetscInt[],     # components (empty = all)
     exact_vel_ptr)
-
-# Split a Gmsh "boundary" label into per-face labels (for box meshes)
-PETSc.create_split_boundary_labels!(dm)
 ```
+
+To give each wall of a box mesh its own boundary label, split the `"marker"` label with `DMCreateLabel`, `DMGetStratumIS` and `DMLabelInsertIS`, as `split_boundary_labels!` in examples/dmplex/ex69.jl does. `PETSc.create_split_boundary_labels!` did this and is deprecated.
 
 ---
 
@@ -280,12 +279,13 @@ PETSc.destroy!(petsclib, nullspace)
 # Write a named vector to a VTU file (merges parallel pieces automatically)
 PETSc.save_vtk(out_vec, "solution.vtu")
 
-# Mark tensor fields so ParaView shows them as tensors
-PETSc.vtk_merge_tensor(fname, "strainrate", "tau")
+# Mark tensor fields so ParaView shows them as tensors (examples/dmplex/vtk_tensor.jl)
+include("vtk_tensor.jl")
+vtk_merge_tensor(fname, "strainrate", "tau")
 ```
 
 `save_vtk` calls `PetscViewerVTKOpen` + `DMView` / `VecView` internally and works in parallel (each rank writes its own piece; PETSc merges the XML).
-`vtk_merge_tensor` post-processes the XML header to annotate multiple tensor fields so ParaView's tensor glyph filter recognises them.
+`vtk_merge_tensor` post-processes the XML header to annotate multiple tensor fields so ParaView's tensor glyph filter recognises them. It lives in the examples: `PETSc.vtk_merge_tensor` is deprecated and goes in v0.6.
 
 ### Writing a ParaView PVD animation file
 

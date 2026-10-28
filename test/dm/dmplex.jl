@@ -730,6 +730,8 @@ end # @testset "DMPlex"
 
 # ── vtk_merge_tensor ────────────────────────────────────────────────────────
 # These tests are pure Julia string/binary manipulation — no PETSc lib needed.
+# They test the copy in the examples, which ex17 and ex62b include.
+include(joinpath(pkgdir(PETSc), "examples", "dmplex", "vtk_tensor.jl"))
 @testset "vtk_merge_tensor" begin
 
     # Build a minimal appended-binary VTK file with two sets of 9 scalar arrays
@@ -768,7 +770,7 @@ _"""
     @testset "single tensor" begin
         f = tempname() * ".vtu"
         _make_vtu(f, ["strainrate"])
-        PETSc.vtk_merge_tensor(f, "strainrate")
+        vtk_merge_tensor(f, "strainrate")
         xml = read(f, String)
         @test contains(xml, "Tensors=\"strainrate\"")
         @test contains(xml, "Name=\"strainrate\" NumberOfComponents=\"9\"")
@@ -778,7 +780,7 @@ _"""
     @testset "two tensors — Tensors attribute has both names" begin
         f = tempname() * ".vtu"
         _make_vtu(f, ["strainrate", "stress_dev"])
-        PETSc.vtk_merge_tensor(f, "strainrate", "stress_dev")
+        vtk_merge_tensor(f, "strainrate", "stress_dev")
         xml = read(f, String)
         @test contains(xml, "Tensors=\"strainrate stress_dev\"")
         @test contains(xml, "Name=\"strainrate\" NumberOfComponents=\"9\"")
@@ -794,7 +796,7 @@ _"""
         # capture group.
         f = tempname() * ".vtu"
         _make_vtu(f, ["strainrate", "stress_dev"])
-        PETSc.vtk_merge_tensor(f, "strainrate", "stress_dev")
+        vtk_merge_tensor(f, "strainrate", "stress_dev")
         xml = read(f, String)
         @test !contains(xml, "\"T stress_dev\"")
         @test !contains(xml, "\"T strainrate\"")

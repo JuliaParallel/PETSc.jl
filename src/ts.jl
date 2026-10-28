@@ -1036,8 +1036,15 @@ interpolate(ts::AbstractTS, t) = interpolate!(similar(solution(ts)), ts, t)
     user_ctx(ts::AbstractTS)
 
 Whatever was stored with [`set_user_ctx!`](@ref), or `nothing`.
+
+Deprecated: a closure carries the context without this extra argument, and the
+callbacks then have one calling form. `user_ctx` and the trailing-context
+callback forms go in v0.6.
 """
-user_ctx(ts::AbstractTS) = ts.user_ctx
+function user_ctx(ts::AbstractTS)
+    @warn "user_ctx is deprecated and goes in v0.6: capture the context in a closure" maxlog = 1
+    return ts.user_ctx
+end
 
 """
     set_user_ctx!(ts::AbstractTS, ctx)
@@ -1045,8 +1052,13 @@ user_ctx(ts::AbstractTS) = ts.user_ctx
 Attach `ctx` to `ts`, to be handed back as the last argument of every callback
 that has a method accepting it. It is kept with the PETSc object, so every
 handle onto it sees it too. Returns `ts`.
+
+Deprecated: a closure carries the context without this extra argument, and the
+callbacks then have one calling form. `user_ctx` and the trailing-context
+callback forms go in v0.6.
 """
 function set_user_ctx!(ts::AbstractTS, ctx)
+    @warn "set_user_ctx! is deprecated and goes in v0.6: capture the context in a closure" maxlog = 1
     ts.user_ctx = ctx
     return ts
 end
@@ -1064,8 +1076,9 @@ end
 
 Set the right-hand side ``G`` of an explicit problem ``du/dt = G(t, u)``.
 
-`f!` is called as `f!(F, ts, t, u)`, filling the vector `F`. If `ts.user_ctx`
-is set, `f!(F, ts, t, u, user_ctx)` is used instead when that method exists.
+`f!` is called as `f!(F, ts, t, u)`, filling the vector `F`. (Deprecated: if
+`ts.user_ctx` is set, `f!(F, ts, t, u, user_ctx)` is used instead when that
+method exists. Capture the context in the closure.)
 
 `r` is an optional template vector for the residual.
 
@@ -1095,6 +1108,7 @@ function (::TSSetRHSFunctionFn{PetscLib, PetscReal})(
 
     run_callback("rhs_function!") do
         if Base.applicable(ts.rhs_function!, F, actual_ts, t, u, ts.user_ctx)
+            warn_user_ctx(ts.user_ctx)
             ts.rhs_function!(F, actual_ts, t, u, ts.user_ctx)
         else
             ts.rhs_function!(F, actual_ts, t, u)
@@ -1123,8 +1137,8 @@ end
 Set the Jacobian of the right-hand side ``G``.
 
 `updateJ!` is called as `updateJ!(A, P, ts, t, u)`, filling the Jacobian `A`
-and the preconditioning matrix `P`. If `ts.user_ctx` is set,
-`updateJ!(A, P, ts, t, u, user_ctx)` is used instead when that method exists.
+and the preconditioning matrix `P`. (Deprecated: if `ts.user_ctx` is set,
+`updateJ!(A, P, ts, t, u, user_ctx)` is used instead when that method exists.)
 
 $(doc_callback())
 
@@ -1154,6 +1168,7 @@ function (::TSSetRHSJacobianFn{PetscLib, PetscReal})(
 
     run_callback("rhs_jacobian!") do
         if Base.applicable(ts.rhs_jacobian!, A, P, actual_ts, t, u, ts.user_ctx)
+            warn_user_ctx(ts.user_ctx)
             ts.rhs_jacobian!(A, P, actual_ts, t, u, ts.user_ctx)
         else
             ts.rhs_jacobian!(A, P, actual_ts, t, u)
@@ -1190,8 +1205,8 @@ end
 Set the residual ``F`` of an implicit problem ``F(t, u, du/dt) = 0``.
 
 `f!` is called as `f!(F, ts, t, u, u_t)`, filling the vector `F`. 
-If `ts.user_ctx` is set, `f!(F, ts, t, u, u_t, user_ctx)` is used instead 
-when that method exists.
+(Deprecated: if `ts.user_ctx` is set, `f!(F, ts, t, u, u_t, user_ctx)` is used
+instead when that method exists.)
 
 $(doc_callback())
 
@@ -1221,6 +1236,7 @@ function (::TSSetIFunctionFn{PetscLib, PetscReal})(
 
     run_callback("ifunction!") do
         if Base.applicable(ts.ifunction!, F, actual_ts, t, u, u_t, ts.user_ctx)
+            warn_user_ctx(ts.user_ctx)
             ts.ifunction!(F, actual_ts, t, u, u_t, ts.user_ctx)
         else
             ts.ifunction!(F, actual_ts, t, u, u_t)
@@ -1249,8 +1265,8 @@ end
 Set the Jacobian of the implicit residual ``F``.
 
 `updateJ!` is called as `updateJ!(A, P, ts, t, u, u_t, shift)` and should fill
-`A` with ``dF/du + shift * dF/du_t``. If `ts.user_ctx` is set, the method
-taking a trailing `user_ctx` is used instead when it exists.
+`A` with ``dF/du + shift * dF/du_t``. (Deprecated: if `ts.user_ctx` is set, the
+method taking a trailing `user_ctx` is used instead when it exists.)
 
 $(doc_callback())
 
@@ -1293,6 +1309,7 @@ function (::TSSetIJacobianFn{PetscLib, PetscReal})(
             shift,
             ts.user_ctx,
         )
+            warn_user_ctx(ts.user_ctx)
             ts.ijacobian!(A, P, actual_ts, t, u, u_t, shift, ts.user_ctx)
         else
             ts.ijacobian!(A, P, actual_ts, t, u, u_t, shift)
@@ -1329,8 +1346,9 @@ end
 Call `f` once after every accepted step.
 
 `f` is called as `f(ts, step, t, u)`, where `step` counts the steps taken, `t`
-is the time reached and `u` holds the solution there. If `ts.user_ctx` is set,
-`f(ts, step, t, u, user_ctx)` is used instead when that method exists. 
+is the time reached and `u` holds the solution there. (Deprecated: if
+`ts.user_ctx` is set, `f(ts, step, t, u, user_ctx)` is used instead when that
+method exists.)
 `u` is owned by `ts` and must not be destroyed.
 
 Only one monitor can be set this way; a second call replaces the first. 
@@ -1362,6 +1380,7 @@ function (::TSMonitorSetFn{PetscLib, PetscInt, PetscReal})(
 
     run_callback("monitor") do
         if Base.applicable(ts.monitor, actual_ts, step, t, u, ts.user_ctx)
+            warn_user_ctx(ts.user_ctx)
             ts.monitor(actual_ts, step, t, u, ts.user_ctx)
         else
             ts.monitor(actual_ts, step, t, u)
@@ -1384,8 +1403,8 @@ end
     set_pre_step!(f!, ts::AbstractTS)
 
 Call `f!(ts)` at the start of every step [`solve!`](@ref) takes, before the
-step is attempted; `f!(ts, user_ctx)` is used instead when `ts.user_ctx` is set
-and that method exists. Unlike a monitor, `f!` may change the state of the run,
+step is attempted (deprecated: `f!(ts, user_ctx)` is used instead when
+`ts.user_ctx` is set and that method exists). Unlike a monitor, `f!` may change the state of the run,
 for example the time step. [`step!`](@ref) does not call it.
 
 A second call replaces the first. Returns `ts`.
@@ -1400,9 +1419,9 @@ function set_pre_step! end
 """
     set_post_step!(f!, ts::AbstractTS)
 
-Call `f!(ts)` after every step [`solve!`](@ref) accepts; `f!(ts, user_ctx)` is
-used instead when `ts.user_ctx` is set and that method exists. Unlike a
-monitor, `f!` may change the state of the run: the solution from
+Call `f!(ts)` after every step [`solve!`](@ref) accepts (deprecated:
+`f!(ts, user_ctx)` is used instead when `ts.user_ctx` is set and that method
+exists). Unlike a monitor, `f!` may change the state of the run: the solution from
 [`solution`](@ref), auxiliary fields, the time step. [`step!`](@ref) does not
 call it.
 
@@ -1425,6 +1444,7 @@ function (::TSStepHookFn{PetscLib, Hook})(ts_ptr::CTS) where {PetscLib, Hook}
     # the return value is ignored: these hooks never took an error code
     run_callback(String(Hook)) do
         if Base.applicable(f!, actual_ts, state.user_ctx)
+            warn_user_ctx(state.user_ctx)
             f!(actual_ts, state.user_ctx)
         else
             f!(actual_ts)

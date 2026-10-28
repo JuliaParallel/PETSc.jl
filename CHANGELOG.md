@@ -8,9 +8,15 @@
 
 ### Deprecated
 
+- `user_ctx`, `set_user_ctx!` and the callback forms with a trailing context warn and go in v0.6. A closure carries the context: `set_rhs_function!(ts) do F, ts, t, u … end` reads what it needs from the enclosing scope, and every callback then has one calling form.
+- `vtk_merge_tensor` and `create_split_boundary_labels!` warn and go in v0.6. Both fit particular examples rather than PETSc: copies are in `examples/dmplex/vtk_tensor.jl` and `examples/dmplex/ex69.jl`.
 - `local_arrays` and `restore_local_arrays!` warn: use `with_local_arrays!`. An exception between the two calls left both Vecs checked out.
 - `local_coordinate_array(dm)` warns: use `with_local_coordinate_array(f, dm)`. It now returns a copy. It used to leave the coordinate vector checked out until the garbage collector freed the array, and if the DM was destroyed first, that late hand-back crashed Julia.
 - `@simple_fn`, `@residual_fn`, `@jacobian_fn` and `@bd_fn` take the library first, `@residual_fn(petsclib, f0, Nf)`, and use its `PetscInt`, `PetscReal` and `PetscScalar` for the C signature. The library value or its type both work; it is evaluated when the macro expands, so it must be a global defined before the call. Without the library, the macros take `PetscInt`, `PetscScalar` and `PetscReal` from the calling module's globals as before, and warn. That form needed those three consts and allowed only one library per module.
+
+### Behaviour changes
+
+- `star_fd_coloring` throws an `ArgumentError` for a DMDA that is not 2-D with a STAR stencil, where a 1-D or 3-D one gave a `MethodError` and a BOX one a coloring that leaves out entries.
 
 ### Added
 

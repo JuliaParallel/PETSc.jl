@@ -277,21 +277,20 @@ using .PETScTestUtils: without_petsc_traceback
         PETSc.solve!(x5, snes5, b5; check = false)
         @test LibPETSc.SNESGetConvergedReason(petsclib, snes5) == LibPETSc.SNES_DIVERGED_LOCAL_MIN
 
-        # set_convergence_test! leaves user_ctx alone, so the residual and Jacobian
-        # still receive it, and the test survives a GC between install and solve
+        # the residual closes over its data, and the convergence test survives a GC
+        # between install and solve
         snes6 = PETSc.SNES(petsclib, comm; ksp_rtol = 1e-4, pc_type = "none")
         ctx6 = (rhs = PetscScalar.([3, 6]),)
-        snes6.user_ctx = ctx6
         r6 = LibPETSc.VecCreateSeqWithArray(petsclib, comm, PetscInt(1), PetscInt(2), zeros(PetscScalar, 2))
-        PETSc.set_function!(snes6, r6) do fx, snes, x, ctx::NamedTuple
+        PETSc.set_function!(snes6, r6) do fx, snes, x
             PETSc.with_local_array!(fx, x; read = (false, true), write = (true, false)) do fx, x
-                fx[1] = x[1]^2 + x[1] * x[2] - ctx.rhs[1]
-                fx[2] = x[1] * x[2] + x[2]^2 - ctx.rhs[2]
+                fx[1] = x[1]^2 + x[1] * x[2] - ctx6.rhs[1]
+                fx[2] = x[1] * x[2] + x[2]^2 - ctx6.rhs[2]
             end
             return PetscInt(0)
         end
         J6 = LibPETSc.MatCreateSeqDense(petsclib, comm, PetscInt(2), PetscInt(2), zeros(PetscScalar, 4))
-        PETSc.set_snes_jacobian!(snes6, J6) do J, snes, x, ctx::NamedTuple
+        PETSc.set_snes_jacobian!(snes6, J6) do J, snes, x
             PETSc.with_local_array!(x; write = false) do x
                 J[1, 1] = 2x[1] + x[2]
                 J[1, 2] = x[1]
@@ -312,14 +311,12 @@ using .PETScTestUtils: without_petsc_traceback
             ntest6[] += 1
             return fnorm < 1e-6 ? LibPETSc.SNES_CONVERGED_FNORM_ABS : LibPETSc.SNES_CONVERGED_ITERATING
         end
-        @test snes6.user_ctx === ctx6
         GC.gc()
         x6 = LibPETSc.VecCreateSeqWithArray(petsclib, comm, PetscInt(1), PetscInt(2), PetscScalar.([2, 3]))
         PETSc.solve!(x6, snes6)
         @test x6[:] ≈ [1, 2] rtol = 1e-4
         @test ntest6[] > 0
         @test replaced_calls[] == 0
-        @test snes6.user_ctx === ctx6
         @test LibPETSc.SNESGetConvergedReason(petsclib, snes6) == LibPETSc.SNES_CONVERGED_FNORM_ABS
 
         # an exception in a callback comes out of solve! as itself
@@ -338,13 +335,6 @@ using .PETScTestUtils: without_petsc_traceback
         @test_logs (:warn, r"returned 3") match_mode = :any begin
             @test_throws LibPETSc.PetscError without_petsc_traceback(() -> PETSc.solve!(x7, snes7), petsclib)
         end
-
-        # user_ctx is kept with the PETSc object, and snes.user_ctx forwards to its
-        @test PETSc.set_user_ctx!(snes7, (rhs = 1,)) === snes7
-        @test PETSc.user_ctx(snes7) == (rhs = 1,)
-        @test snes7.user_ctx == (rhs = 1,)
-        snes7.user_ctx = :forwarded
-        @test PETSc.user_ctx(snes7) === :forwarded
         # ----------------------------------------------------------------
 
         # cleanup
@@ -419,13 +409,11 @@ end
     r = PETSc.PetscVec(petsclib, zeros(PetscScalar, 2))
 
     snes = PETSc.SNES(petsclib, comm; ksp_rtol = 1e-4, pc_type = "none")
-    snes.user_ctx = (label = "anything",)   # a user context survives the solve
     PETSc.set_function!(residual!, snes, r)
     PETSc.set_snes_jacobian!(jacobian!, snes, J, J)
     x = PETSc.PetscVec(petsclib, PetscScalar[2, 3])
     PETSc.solve!(x, snes)
     @test x[:] ≈ [1.0, 2.0] rtol = 1e-4
-    @test snes.user_ctx.label == "anything"
 
     PETSc.set_function!(snes, r) do fx, snes, x
         residual!(fx, snes, x)

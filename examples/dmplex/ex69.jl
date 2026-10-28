@@ -340,10 +340,25 @@ const pressure_nsp_ptr = Base.@cfunction(pressure_nsp_constructor, PetscInt,
 # ── Mesh ──────────────────────────────────────────────────────────────────────
 dm = PETSc.DMPlex(petsclib, comm; opts...)
 
+# Split the "marker" label of the box mesh into one label per wall
+# (markerBottom, markerRight, markerTop, markerLeft for marker IDs 1 to 4), so a
+# corner DOF can belong to two walls
+function split_boundary_labels!(dm)
+    for (id, name) in enumerate(("markerBottom", "markerRight", "markerTop", "markerLeft"))
+        LibPETSc.DMCreateLabel(petsclib, dm, name)
+        is = LibPETSc.DMGetStratumIS(petsclib, dm, "marker", PetscInt(id))
+        is.ptr == C_NULL && continue
+        label = LibPETSc.DMGetLabel(petsclib, dm, name)
+        LibPETSc.DMLabelInsertIS(petsclib, label, is, PetscInt(1))
+        LibPETSc.ISDestroy(petsclib, is)
+    end
+    return dm
+end
+
 # Split "marker" into per-wall labels on the main DM and all coarser DMs
 let cdm = dm
     while convert(Ptr{Cvoid}, cdm) != C_NULL
-        PETSc.create_split_boundary_labels!(cdm)
+        split_boundary_labels!(cdm)
         cdm = PETSc.coarse_dm(cdm)
     end
 end

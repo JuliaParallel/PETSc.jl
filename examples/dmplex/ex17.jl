@@ -104,7 +104,7 @@
   - elas_ge has no analytical exact solution; the printed L² error is meaningless.
   - VTK output (-vtk_output file.vtu) writes displacement as a 3-component vector
     and the Cauchy stress as a 9-component 3×3 tensor (row-major, zero-padded in 2D).
-    PETSc.vtk_merge_tensor post-processes the file so ParaView sees a proper tensor.
+    vtk_merge_tensor (vtk_tensor.jl) post-processes the file so ParaView sees a proper tensor.
 
   References:
     - PETSc 3.23  src/snes/tutorials/ex17.c
@@ -114,6 +114,7 @@
 using MPI
 using PETSc
 using PETSc: LibPETSc
+include("vtk_tensor.jl")   # vtk_merge_tensor
 
 # ── PETSc setup ─────────────────────────────────────────────────────────────────
 _args    = isinteractive() ? String[] : collect(String, ARGS)
@@ -525,7 +526,7 @@ let _vtk = get(NamedTuple(pairs(opts)), :vtk_output, nothing)
 
         PETSc.save_vtk(out_vec, fname)
 
-        MPI.Comm_rank(comm) == 0 && PETSc.vtk_merge_tensor(fname, "stress")
+        MPI.Comm_rank(comm) == 0 && vtk_merge_tensor(fname, "stress")
 
         MPI.Comm_rank(comm) == 0 &&
             println("Displacement (vector) and stress (tensor) written to $fname")

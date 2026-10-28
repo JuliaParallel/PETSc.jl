@@ -76,13 +76,12 @@ MPI.Initialized() || MPI.Init()
         PETSc.destroy!(u)
     end
 
-    @testset "hooks see user_ctx; a throwing hook is rethrown" begin
+    @testset "hooks capture their data; a throwing hook is rethrown" begin
         ts = still_ts()
         u = PETSc.PetscVec(petsclib, PetscScalar[1])
         PETSc.set_max_steps!(ts, 2)
         count = Ref(0)
-        PETSc.set_user_ctx!(ts, count)
-        PETSc.set_post_step!((_t, ctx) -> ctx[] += 1, ts)
+        PETSc.set_post_step!(_t -> count[] += 1, ts)
         PETSc.solve!(u, ts)
         @test count[] == 2
 

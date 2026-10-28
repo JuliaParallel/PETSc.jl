@@ -742,6 +742,61 @@ const EXTRA_SHIMS = NamedTuple{(:name, :code, :test), Tuple{String, String, Stri
         """,
     ),
     (
+        name = "vtk_merge_tensor and create_split_boundary_labels!",
+        code = """
+        # Both warn in src/dmplex.jl and leave PETSc.jl in v0.6: copies live in
+        # examples/dmplex/vtk_tensor.jl and examples/dmplex/ex69.jl.
+        """,
+        test = """
+        @testset "vtk_merge_tensor and create_split_boundary_labels!" begin
+            petsclib = PETSc.petsclibs[1]
+            PETSc.initialize(petsclib)
+            # A missing file is left alone, so only the warning is checked
+            @test warns(() -> PETSc.vtk_merge_tensor(tempname(), "stress")) === nothing
+            dm = PETSc.DMPlex(petsclib, PETSc.MPI.COMM_SELF, 2, false, [2, 2])
+            @test warns(() -> PETSc.create_split_boundary_labels!(dm)) === dm
+            @test PETSc.label(dm, "markerLeft") !== nothing
+            PETSc.destroy!(dm)
+        end
+        """,
+    ),
+    (
+        name = "user_ctx and callbacks with a trailing context",
+        code = """
+        # Both setters and readers warn in src/snes.jl and src/ts.jl, as does a
+        # callback called with a context set. Closures carry the data instead.
+        """,
+        test = """
+        @testset "user_ctx and callbacks with a trailing context" begin
+            petsclib = PETSc.petsclibs[1]
+            PETSc.initialize(petsclib)
+            T = petsclib.PetscScalar
+            comm = PETSc.MPI.COMM_SELF
+            snes = PETSc.SNES(petsclib, comm; pc_type = "none")
+            @test warns(() -> PETSc.set_user_ctx!(snes, 3)) === snes
+            @test warns(() -> PETSc.user_ctx(snes)) == 3
+            PETSc.destroy!(snes)
+
+            ts = PETSc.TS(petsclib, comm)
+            PETSc.set_type!(ts, :beuler)
+            PETSc.set_adapt_type!(ts, :none)
+            @test warns(() -> PETSc.set_user_ctx!(ts, (rate = 2.0,))) === ts
+            @test warns(() -> PETSc.user_ctx(ts)).rate == 2.0
+            PETSc.set_rhs_function!(ts) do F, _ts, _t, x, ctx
+                F[1] = -ctx.rate * x[1]
+                return 0
+            end
+            u = PETSc.PetscVec(petsclib, T[1])
+            PETSc.set_time!(ts, 0.0)
+            PETSc.set_timestep!(ts, 0.1)
+            PETSc.set_max_time!(ts, 0.5)
+            warns(() -> PETSc.solve!(u, ts))
+            @test u[1] ≈ 1 / (1 + 0.2)^5 rtol = 1e-6
+            foreach(PETSc.destroy!, (ts, u))
+        end
+        """,
+    ),
+    (
         name = "pointwise macros without a library",
         code = """
         # Warns in src/dmplex.jl: the one-argument-shorter forms of @simple_fn,
@@ -929,6 +984,7 @@ const INTERNAL = Set{Symbol}([
     :waxpy,
     :scaled_copy,
     :add_scaled,
+    :warn_user_ctx,
 ])
 
 # ---------------------------------------------------------------------------

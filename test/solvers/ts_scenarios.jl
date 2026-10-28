@@ -42,7 +42,6 @@ end
         )
         PETSc.set_type!(ts, :beuler)
         PETSc.set_problem_type!(ts, PETSc.LibPETSc.TS_NONLINEAR)
-        PETSc.set_user_ctx!(ts, (; mu, imex))
 
         u = PETSc.PetscVec(petsclib, 2)
         PETSc.with_local_array!(u; read = false, write = true) do ua
@@ -58,42 +57,42 @@ end
         PETSc.LibPETSc.MatZeroEntries(petsclib, jac)
 
         # G(u, t), the explicit half of the IMEX split.
-        PETSc.set_rhs_function!(ts) do F, _ts, _t, x, ctx
+        PETSc.set_rhs_function!(ts) do F, _ts, _t, x
             PETSc.with_local_array!(
                 (x, F);
                 read = (true, false),
                 write = (false, true),
             ) do xa, Fa
-                Fa[1] = ctx.imex ? xa[2] : 0.0
+                Fa[1] = imex ? xa[2] : 0.0
                 Fa[2] = 0.0
             end
             return 0
         end
 
         # F(u_t, u, t), the implicit half.
-        PETSc.set_ifunction!(ts) do F, _ts, _t, x, xdot, ctx
+        PETSc.set_ifunction!(ts) do F, _ts, _t, x, xdot
             PETSc.with_local_array!(
                 (x, xdot, F);
                 read = (true, true, false),
                 write = (false, false, true),
             ) do xa, xda, Fa
-                Fa[1] = xda[1] + (ctx.imex ? 0.0 : xa[2])
+                Fa[1] = xda[1] + (imex ? 0.0 : xa[2])
                 Fa[2] =
                     xda[2] -
-                    ctx.mu *
+                    mu *
                     ((1.0 - xa[1] * xa[1]) * xa[2] - xa[1])
             end
             return 0
         end
 
-        PETSc.set_ijacobian!(ts, jac) do A, _P, _ts, _t, x, _xdot, shift, ctx
+        PETSc.set_ijacobian!(ts, jac) do A, _P, _ts, _t, x, _xdot, shift
             x1, x2 = PETSc.with_local_array!(x; read = true, write = false) do xa
                 (xa[1], xa[2])
             end
             A[1, 1] = PetscScalar(shift)
-            A[1, 2] = PetscScalar(ctx.imex ? 0.0 : 1.0)
-            A[2, 1] = PetscScalar(ctx.mu * (2.0 * x1 * x2 + 1.0))
-            A[2, 2] = PetscScalar(shift - ctx.mu * (1.0 - x1 * x1))
+            A[1, 2] = PetscScalar(imex ? 0.0 : 1.0)
+            A[2, 1] = PetscScalar(mu * (2.0 * x1 * x2 + 1.0))
+            A[2, 2] = PetscScalar(shift - mu * (1.0 - x1 * x1))
             PETSc.assemble!(A)
             return 0
         end

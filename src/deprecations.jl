@@ -432,6 +432,14 @@ end
 # Warns in src/dm.jl and returns a copy; `with_local_coordinate_array` hands
 # the array back when its block returns.
 
+# vtk_merge_tensor and create_split_boundary_labels!
+# Both warn in src/dmplex.jl and leave PETSc.jl in v0.6: copies live in
+# examples/dmplex/vtk_tensor.jl and examples/dmplex/ex69.jl.
+
+# user_ctx and callbacks with a trailing context
+# Both setters and readers warn in src/snes.jl and src/ts.jl, as does a
+# callback called with a context set. Closures carry the data instead.
+
 # pointwise macros without a library
 # Warns in src/dmplex.jl: the one-argument-shorter forms of @simple_fn,
 # @residual_fn, @jacobian_fn and @bd_fn take PetscInt, PetscScalar and

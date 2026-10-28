@@ -226,8 +226,8 @@ Build all data needed for manual FD coloring of a **2-D** DMDA with a STAR
 stencil, using `IS_COLORING_LOCAL` and ghost-local COO indexing.
 
 `petsclib` is not an argument: the `DMDA` carries it as a type parameter
-(docs/src/man/naming.md §8). The dimension is a type parameter too, so a DMDA
-of any other dimension is a `MethodError` rather than a silently wrong answer.
+(docs/src/man/naming.md §8). A DMDA of another dimension, or with a BOX
+stencil, throws an `ArgumentError`: the coloring would leave out entries.
 
 Specifically, this function:
 1. Creates an `IS_COLORING_LOCAL` `ISColoring` via `DMCreateColoring` and
@@ -260,7 +260,10 @@ index Julia arrays and are 1-based.
     - reshape `col_colors_mat` to `(dof, nx_g, ny_g, nz_g)`,
     - decode `z_owned` in the `perturb_cols_1b` loop.
 """
-function star_fd_coloring(da::DMDA{PetscLib, 2}) where {PetscLib}
+function star_fd_coloring(da::DMDA{PetscLib, N}) where {PetscLib, N}
+    N == 2 || throw(ArgumentError("star_fd_coloring needs a 2-D DMDA, got a $N-D one"))
+    info(da).stencil_type == LibPETSc.DMDA_STENCIL_STAR || throw(ArgumentError(
+        "star_fd_coloring needs a DMDA with a STAR stencil, got a BOX stencil"))
     petsclib = getlib(PetscLib)
     CPetscInt = petsclib.PetscInt
 

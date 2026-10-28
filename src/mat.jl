@@ -677,6 +677,65 @@ function LinearAlgebra.ishermitian(A::PetscMat{PetscLib}; tol = 0.0) where {Pets
     return LibPETSc.MatIsHermitian(PetscLib, A, PetscReal(tol))
 end
 
+"""
+    copy(A::PetscMat)
+
+A new assembled `PetscMat` with the type, layout, nonzero pattern and entries of
+`A`, which must be assembled. Collective. As from a constructor, the copy has a
+finalizer only on a one-rank communicator; on more ranks call
+[`destroy!`](@ref) on it on every rank.
+
+# External Links
+$(doc_external("Mat/MatDuplicate"))
+"""
+function Base.copy(A::PetscMat{PetscLib}) where {PetscLib}
+    B = LibPETSc.MatDuplicate(getlib(PetscLib), A, LibPETSc.MAT_COPY_VALUES)
+    return finalize_if_serial!(B)
+end
+
+"""
+    A + B
+    A - B
+    -A
+    α * A, A * α
+
+Matrix arithmetic on assembled `PetscMat`s, each giving a new `PetscMat` of the
+type and layout of `A`. Collective. The nonzero pattern of `A ± B` is the union
+of the two patterns. The result has a finalizer only on a one-rank communicator,
+as [`copy`](@ref) does.
+
+# External Links
+$(doc_external("Mat/MatAXPY"))
+$(doc_external("Mat/MatScale"))
+"""
+function Base.:+(A::PetscMat{PetscLib}, B::PetscMat{PetscLib}) where {PetscLib}
+    return add_scaled(A, one(scalartype(PetscLib)), B)
+end
+
+function Base.:-(A::PetscMat{PetscLib}, B::PetscMat{PetscLib}) where {PetscLib}
+    return add_scaled(A, -one(scalartype(PetscLib)), B)
+end
+
+Base.:-(A::PetscMat) = scaled_copy(A, -1)
+Base.:*(α::Number, A::PetscMat) = scaled_copy(A, α)
+Base.:*(A::PetscMat, α::Number) = scaled_copy(A, α)
+
+function scaled_copy(A::PetscMat{PetscLib}, α::Number) where {PetscLib}
+    C = copy(A)
+    LibPETSc.MatScale(PetscLib, C, scalartype(PetscLib)(α))
+    return C
+end
+
+# A copy of A plus αB. UNKNOWN_NONZERO_PATTERN lets PETSc compare the two
+# patterns and merge them when they differ.
+function add_scaled(A::PetscMat{PetscLib}, α, B::PetscMat{PetscLib}) where {PetscLib}
+    size(A) == size(B) ||
+        throw(DimensionMismatch("matrices have sizes $(size(A)) and $(size(B))"))
+    C = copy(A)
+    LibPETSc.MatAXPY(PetscLib, C, α, B, LibPETSc.UNKNOWN_NONZERO_PATTERN)
+    return C
+end
+
 
 """
     setup!(mat::AbstractMat)

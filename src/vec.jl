@@ -898,6 +898,162 @@ function LinearAlgebra.norm(v::AbstractPetscVec, p::Real)
     throw(ArgumentError("PETSc computes the vector norm only for p = 1, 2 and Inf, got p = $p"))
 end
 
+# =============================================================================
+# Linear algebra on Vecs
+# =============================================================================
+
+# A new Vec or Mat gets a finalizer only on one rank, as from its constructor:
+# its Destroy is collective, and a GC finalizer runs at an arbitrary point
+function finalize_if_serial!(
+    obj::Union{AbstractPetscVec{PetscLib}, LibPETSc.AbstractPetscMat{PetscLib}},
+) where {PetscLib}
+    if MPI.Comm_size(LibPETSc.PetscObjectGetComm(getlib(PetscLib), obj)) == 1
+        finalizer(destroy!, obj)
+    end
+    return obj
+end
+
+function check_same_length(x::AbstractPetscVec, y::AbstractPetscVec)
+    length(x) == length(y) ||
+        throw(DimensionMismatch("vectors have lengths $(length(x)) and $(length(y))"))
+    return nothing
+end
+
+"""
+    copy(v::AbstractPetscVec)
+
+A new `PetscVec` with the layout and entries of `v`. Collective. As from a
+constructor, the copy has a finalizer only on a one-rank communicator; on more
+ranks call [`destroy!`](@ref) on it on every rank.
+
+# External Links
+$(doc_external("Vec/VecDuplicate"))
+$(doc_external("Vec/VecCopy"))
+"""
+function Base.copy(v::AbstractPetscVec{PetscLib}) where {PetscLib}
+    w = LibPETSc.VecDuplicate(getlib(PetscLib), v)
+    LibPETSc.VecCopy(PetscLib, v, w)
+    return finalize_if_serial!(w)
+end
+
+"""
+    dot(x::AbstractPetscVec, y::AbstractPetscVec)
+
+`xᴴy`, conjugating `x` as `dot` does for Julia arrays. Collective: every rank
+gets the global result.
+
+# External Links
+$(doc_external("Vec/VecDot"))
+"""
+function LinearAlgebra.dot(
+    x::AbstractPetscVec{PetscLib},
+    y::AbstractPetscVec{PetscLib},
+) where {PetscLib}
+    check_same_length(x, y)
+    # VecDot(x, y) is yᴴx
+    return LibPETSc.VecDot(PetscLib, y, x)
+end
+
+"""
+    axpy!(α, x::AbstractPetscVec, y::AbstractPetscVec)
+
+`y = αx + y`, returning `y`. Collective.
+
+# External Links
+$(doc_external("Vec/VecAXPY"))
+"""
+function LinearAlgebra.axpy!(
+    α::Number,
+    x::AbstractPetscVec{PetscLib},
+    y::AbstractPetscVec{PetscLib},
+) where {PetscLib}
+    check_same_length(x, y)
+    LibPETSc.VecAXPY(PetscLib, y, scalartype(PetscLib)(α), x)
+    return y
+end
+
+"""
+    axpby!(α, x::AbstractPetscVec, β, y::AbstractPetscVec)
+
+`y = αx + βy`, returning `y`. Collective.
+
+# External Links
+$(doc_external("Vec/VecAXPBY"))
+"""
+function LinearAlgebra.axpby!(
+    α::Number,
+    x::AbstractPetscVec{PetscLib},
+    β::Number,
+    y::AbstractPetscVec{PetscLib},
+) where {PetscLib}
+    check_same_length(x, y)
+    PetscScalar = scalartype(PetscLib)
+    LibPETSc.VecAXPBY(PetscLib, y, PetscScalar(α), PetscScalar(β), x)
+    return y
+end
+
+"""
+    rmul!(v::AbstractPetscVec, α)
+    lmul!(α, v::AbstractPetscVec)
+
+Scale `v` by `α` in place and return it. Collective.
+
+# External Links
+$(doc_external("Vec/VecScale"))
+"""
+function LinearAlgebra.rmul!(v::AbstractPetscVec{PetscLib}, α::Number) where {PetscLib}
+    LibPETSc.VecScale(PetscLib, v, scalartype(PetscLib)(α))
+    return v
+end
+LinearAlgebra.lmul!(α::Number, v::AbstractPetscVec) = rmul!(v, α)
+
+"""
+    x + y
+    x - y
+    -x
+    α * x, x * α
+    x / α
+
+Vector arithmetic on `PetscVec`s, each giving a new `PetscVec` with the layout of
+`x`. Collective. The result has a finalizer only on a one-rank communicator, as
+[`copy`](@ref) does. For an update in place use [`axpy!`](@ref), [`axpby!`](@ref)
+and [`rmul!`](@ref), or broadcast into an existing vector, `y .= α .* x .+ y`.
+
+# External Links
+$(doc_external("Vec/VecWAXPY"))
+$(doc_external("Vec/VecScale"))
+"""
+function Base.:+(x::AbstractPetscVec{PetscLib}, y::AbstractPetscVec{PetscLib}) where {PetscLib}
+    return waxpy(one(scalartype(PetscLib)), x, y)
+end
+
+function Base.:-(x::AbstractPetscVec{PetscLib}, y::AbstractPetscVec{PetscLib}) where {PetscLib}
+    return waxpy(-one(scalartype(PetscLib)), y, x)
+end
+
+Base.:-(x::AbstractPetscVec) = rmul!(copy(x), -1)
+Base.:*(α::Number, x::AbstractPetscVec) = rmul!(copy(x), α)
+Base.:*(x::AbstractPetscVec, α::Number) = rmul!(copy(x), α)
+# Through the broadcast rather than VecScale with 1/α, so each entry is divided
+# exactly as `x ./ α` would
+function Base.:/(x::AbstractPetscVec{PetscLib}, α::Number) where {PetscLib}
+    w = finalize_if_serial!(similar(x))
+    w .= x ./ scalartype(PetscLib)(α)
+    return w
+end
+
+# A new vector αx + y with the layout of x
+function waxpy(
+    α,
+    x::AbstractPetscVec{PetscLib},
+    y::AbstractPetscVec{PetscLib},
+) where {PetscLib}
+    check_same_length(x, y)
+    w = finalize_if_serial!(similar(x))
+    LibPETSc.VecWAXPY(PetscLib, w, α, x, y)
+    return w
+end
+
 # ── GPU-aware array access for a pair of Vecs ─────────────────────────────────
 
 """

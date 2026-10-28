@@ -92,6 +92,8 @@ PETSc.setup!(A)            # Complete matrix setup
 PETSc.destroy!(A)          # Release it
 ```
 
+An assembled `PetscMat` supports `copy(A)`, `A + B`, `A - B`, `-A` and `α * A`. Each returns a new matrix and is collective; `A ± B` has the union of the two nonzero patterns. On more than one rank the result has no finalizer, so call `destroy!` on it on every rank.
+
 `ownership_range(A)` is 1-based and takes no second argument. v0.4's
 `ownershiprange(A, false)` still works and warns; it is a `MethodError` in v0.6
 ([naming conventions](naming.md), §12.1).

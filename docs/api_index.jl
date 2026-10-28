@@ -29,8 +29,9 @@ const HIGH_LEVEL_SOURCES = [
 const DOC_EXTERNAL_RE = r"_?doc_external\(\"([^\"]+)\"\)"
 
 # The name a definition line defines, whatever wraps it: `function f(`,
-# `LibPETSc.@for_petsc function f(`, `macro f(`, `mutable struct F{`, `f(x) = …`.
-const DEFINITION_RE = r"^\s*(?:LibPETSc\.@for_petsc\s+)?(?:@for_petsc\s+)?(?:function|macro|(?:mutable\s+)?struct|const|abstract\s+type)?\s*((?:Base\.|LibPETSc\.)?@?[A-Za-z_][A-Za-z0-9_!]*)"
+# `LibPETSc.@for_petsc function f(`, `macro f(`, `mutable struct F{`, `f(x) = …`,
+# and methods of Base and LinearAlgebra, operators included: `function Base.:+(`.
+const DEFINITION_RE = r"^\s*(?:LibPETSc\.@for_petsc\s+)?(?:@for_petsc\s+)?(?:function|macro|(?:mutable\s+)?struct|const|abstract\s+type)?\s*((?:Base\.|LibPETSc\.|LinearAlgebra\.)?(?:@?[A-Za-z_][A-Za-z0-9_!]*|:\(?[-+*/\\=<>]+\)?))"
 
 """
     collect_doc_external(srcdir) -> Dict{String, Vector{String}}

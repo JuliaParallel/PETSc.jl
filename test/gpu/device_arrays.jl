@@ -1,17 +1,30 @@
-# test/gpu/amdgpu.jl
-# PETScAMDGPUExt: Vecs in HIP memory come out of with_local_array! and
-# with_local_arrays! as ROCArrays, DMStag field views wrap them, and what a
-# kernel writes reaches PETSc.
+# test/gpu/device_arrays.jl
+# PETScCUDAExt and PETScAMDGPUExt: Vecs in device memory come out of
+# with_local_array! and with_local_arrays! as CuArrays or ROCArrays, DMStag
+# field views wrap them, and what a kernel writes reaches PETSc.
 #
-# Not part of runtests.jl: it needs an AMD GPU and a PETSc built with HIP. Run it
-# in an environment with PETSc.jl (dev'd), AMDGPU.jl and MPI.jl whose
-# LocalPreferences.toml points set_library! at that PETSc:
+# Not part of runtests.jl: it needs a GPU and a PETSc built with CUDA or HIP.
+# Run it in an environment with PETSc.jl (dev'd), MPI.jl, KernelAbstractions.jl
+# and CUDA.jl or AMDGPU.jl, whose LocalPreferences.toml points set_library! at
+# that PETSc:
 #
-#   julia --project=ENV test/gpu/amdgpu.jl
+#   julia --project=ENV test/gpu/device_arrays.jl cuda    # or hip
 
 using Test
-using PETSc, MPI, AMDGPU, KernelAbstractions
+using PETSc, MPI, KernelAbstractions
 using PETSc: LibPETSc
+
+const gpu = get(ARGS, 1, "")
+# The device array type and PETSc's names for a sequential and a DM vector type
+if gpu == "cuda"
+    using CUDA
+    const DeviceArray, seq_type, dm_vec_type = CuArray, :seqcuda, "cuda"
+elseif gpu == "hip"
+    using AMDGPU
+    const DeviceArray, seq_type, dm_vec_type = ROCArray, :seqhip, "hip"
+else
+    error("pass the GPU backend as the argument: cuda or hip, got $gpu")
+end
 
 MPI.Initialized() || MPI.Init()
 
@@ -27,7 +40,7 @@ PETSc.initialize(petsclib)
 const T = petsclib.PetscScalar
 const n = 100
 
-# A sequential Vec of the given type (:seqhip on the device, :seq on the host).
+# A sequential Vec of the given type (`seq_type` on the device, :seq on the host).
 function vec_of_type(type, values)
     v = LibPETSc.VecCreate(petsclib, MPI.COMM_SELF)
     LibPETSc.VecSetSizes(petsclib, v, petsclib.PetscInt(n), petsclib.PetscInt(n))
@@ -36,17 +49,17 @@ function vec_of_type(type, values)
     return v
 end
 
-@testset "PETScAMDGPUExt" begin
-    @testset "with_local_array! on a HIP Vec" begin
+@testset "device arrays ($gpu)" begin
+    @testset "with_local_array! on a device Vec" begin
         x = rand(T, n)
-        v = vec_of_type(:seqhip, x)
-        @test PETSc.memtype(v) === ROCArray
+        v = vec_of_type(seq_type, x)
+        @test PETSc.memtype(v) === DeviceArray
         PETSc.with_local_array!(v) do a
-            @test a isa ROCArray{T}
+            @test a isa DeviceArray{T}
             a .= 2 .* a
         end
         @test v[1:n] ≈ 2x
-        @test PETSc.with_local_array!(sum, ROCArray, v) ≈ sum(2x)
+        @test PETSc.with_local_array!(sum, DeviceArray, v) ≈ sum(2x)
         @test_throws "expected array of type Vector" PETSc.with_local_array!(sum, Vector, v)
         # plain VecGetArray: PETSc copies to the host
         a = PETSc.unsafe_local_array(v; write = false)
@@ -57,13 +70,13 @@ end
     end
 
     @testset "with_local_arrays!, $fx_type × $lx_type" for
-            (fx_type, lx_type) in ((:seqhip, :seqhip), (:seq, :seqhip), (:seqhip, :seq))
+            (fx_type, lx_type) in ((seq_type, seq_type), (:seq, seq_type), (seq_type, :seq))
         x = rand(T, n)
         g = vec_of_type(fx_type, ones(T, n))
         l = vec_of_type(lx_type, x)
         PETSc.with_local_arrays!(g, l) do fx, lx
-            @test fx isa ROCArray{T}
-            @test lx isa ROCArray{T}
+            @test fx isa DeviceArray{T}
+            @test lx isa DeviceArray{T}
             fx .+= 3 .* lx
         end
         @test g[1:n] ≈ 1 .+ 3x
@@ -72,7 +85,7 @@ end
         PETSc.destroy!(l)
     end
 
-    # with_field_views! on a DMStag with HIP Vecs, against the same steps on the host
+    # with_field_views! on a DMStag with device Vecs, against the same steps on the host
     @testset "DMStag field views on the device" begin
         none = ntuple(_ -> LibPETSc.DM_BOUNDARY_NONE, 2)
         function stag_result(vec_type)
@@ -89,7 +102,7 @@ end
             # OffsetArray broadcasts element by element whatever its parent, so
             # whole-view broadcasts go through `parent`; kernels take the views as they are
             PETSc.with_field_views!(dm, x, r; fields = flow, write = (false, true)) do (Vx, Vy, P), (Rx, Ry, Rp)
-                vec_type == "hip" && @test parent(parent(Rp)) isa ROCArray{T}
+                vec_type == dm_vec_type && @test parent(parent(Rp)) isa DeviceArray{T}
                 backend = get_backend(Rp)
                 parent(Rx) .= 3
                 divergence!(backend, 64)(Rp, Vx, Vy, lo; ndrange = Tuple(c.upper - c.lower) .+ 1)
@@ -106,7 +119,7 @@ end
             return result
         end
         host = stag_result("standard")
-        @test stag_result("hip") == host
+        @test stag_result(dm_vec_type) == host
         @test count(!iszero, host) > 0
     end
 

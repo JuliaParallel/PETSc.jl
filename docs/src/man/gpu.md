@@ -15,7 +15,9 @@ NVIDIA GPUs go through CUDA.jl (`PETScCUDAExt`), AMD GPUs through AMDGPU.jl (`PE
    grep -i -e cuda -e hip $PETSC_DIR/$PETSC_ARCH/include/petscconf.h
    # should show: #define PETSC_HAVE_CUDA 1  (or PETSC_HAVE_HIP 1)
    ```
-   PETSc and the Julia GPU package must use the same GPU runtime: for HIP, AMDGPU.jl loads the system ROCm, so build PETSc against that ROCm.
+   PETSc and the Julia GPU package must use the same GPU runtime: for HIP, AMDGPU.jl loads the system ROCm, so build PETSc against that ROCm. CUDA.jl downloads its own CUDA runtime by default; point it at the toolkit PETSc was built with by running `CUDA.set_runtime_version!(local_toolkit = true)` once in your environment, then restarting Julia.
+
+   A PETSc built with CUDA stops at startup with "your MPI is not GPU-aware" when MPI.jl uses its default MPI (MPICH_jll), which cannot pass device memory. On one rank that costs nothing; turn the check off with the option `-use_gpu_aware_mpi 0`, for example `PETSC_OPTIONS="-use_gpu_aware_mpi 0"` in the environment. On several ranks, use a GPU-aware system MPI instead (see [Running on HPC Systems](hpc.md)).
 
 2. **CUDA.jl** or **AMDGPU.jl** in your Julia environment:
    ```julia

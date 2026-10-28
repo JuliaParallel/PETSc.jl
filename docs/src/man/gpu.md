@@ -1,23 +1,28 @@
-# GPU Support (CUDA + KernelAbstractions)
+# GPU Support (CUDA, HIP + KernelAbstractions)
 
 Julia has outstanding support for GPUs as it compiles machine code for the particular devices. Importantly, all modern GPUs are supported, which implies that it is quite straightforward to write GPU kernels in Julia, for example using packages such as [KernelAbstractions](https://github.com/JuliaGPU/KernelAbstractions.jl) with no need to write new code when you use AMD instead of NVIDIA GPU's
 
 PETSc has also added GPU support in recent years, and PETSc vector and matrix objects, along with many of the solvers, can be moved to the GPU.
 
-GPU support in PETSc.jl requires a **locally built PETSc** with CUDA or HIP enabled — the precompiled `PETSc_jll` binaries do not include GPU support. See [Installation](@ref) for instructions on pointing PETSc.jl to a local library.
-The example below are given for CUDA. Doing this on AMD machines (HIP) will likely work the same, but will require a specific extension to be added.
+GPU support in PETSc.jl requires a **locally built PETSc** with CUDA or HIP enabled: the precompiled `PETSc_jll` binaries do not include GPU support. See [Installation](@ref) for instructions on pointing PETSc.jl to a local library.
+
+NVIDIA GPUs go through CUDA.jl (`PETScCUDAExt`), AMD GPUs through AMDGPU.jl (`PETScAMDGPUExt`). The examples below use CUDA; for AMD, load AMDGPU instead, use PETSc's HIP types (`-vec_type hip`, `-mat_type aijhipsparse`) and expect `ROCArray` where the text says `CuArray`.
 
 ## Prerequisites
 
-1. **PETSc built with CUDA** — configure with `--with-cuda=1` (and the matching `--with-cuda-dir`). Confirm with:
+1. **PETSc built with CUDA or HIP**: configure with `--with-cuda=1` (and the matching `--with-cuda-dir`), or `--with-hip=1 --with-hip-dir=$ROCM_DIR --with-hip-arch=gfx1100` (your GPU's architecture). Confirm with:
    ```bash
-   grep -i cuda $PETSC_DIR/$PETSC_ARCH/include/petscconf.h
-   # should show: #define PETSC_HAVE_CUDA 1
+   grep -i -e cuda -e hip $PETSC_DIR/$PETSC_ARCH/include/petscconf.h
+   # should show: #define PETSC_HAVE_CUDA 1  (or PETSC_HAVE_HIP 1)
    ```
+   PETSc and the Julia GPU package must use the same GPU runtime: for HIP, AMDGPU.jl loads the system ROCm, so build PETSc against that ROCm. CUDA.jl downloads its own CUDA runtime by default; point it at the toolkit PETSc was built with by running `CUDA.set_runtime_version!(local_toolkit = true)` once in your environment, then restarting Julia.
 
-2. **CUDA.jl** in your Julia environment:
+   A PETSc built with CUDA stops at startup with "your MPI is not GPU-aware" when MPI.jl uses its default MPI (MPICH_jll), which cannot pass device memory. On one rank that costs nothing; turn the check off with the option `-use_gpu_aware_mpi 0`, for example `PETSC_OPTIONS="-use_gpu_aware_mpi 0"` in the environment. On several ranks, use a GPU-aware system MPI instead (see [Running on HPC Systems](hpc.md)).
+
+2. **CUDA.jl** or **AMDGPU.jl** in your Julia environment:
    ```julia
-   pkg> add CUDA
+   pkg> add CUDA      # NVIDIA
+   pkg> add AMDGPU    # AMD
    ```
 
 3. **KernelAbstractions.jl** if you want to write portable GPU/CPU kernels:
@@ -27,7 +32,7 @@ The example below are given for CUDA. Doing this on AMD machines (HIP) will like
 
 ## How it works
 
-When CUDA.jl is loaded alongside PETSc.jl, the `PETScCUDAExt` extension is activated automatically. It registers CUDA-aware implementations for the functions below via Julia's package extension mechanism — no extra configuration is needed.
+When CUDA.jl or AMDGPU.jl is loaded alongside PETSc.jl, the matching extension (`PETScCUDAExt` or `PETScAMDGPUExt`) is activated automatically and adds device-aware methods for the functions below. No extra configuration is needed.
 
 PETSc manages where vector data lives (host or device). The extension inspects the `PetscMemType` returned by `VecGetArray*AndMemType` calls and either wraps the device pointer as a `CuArray` (zero-copy) or allocates a bounce buffer if the data needs to move between host and device.
 
@@ -55,9 +60,12 @@ PETSc.with_local_array!(g_fx, l_x; read=(true, true), write=(true, false)) do fx
 end
 ```
 
-The array type (`CuArray` or `Vector`) is determined automatically from the `PetscMemType`
-of each Vec, so the same code works on both CPU and GPU.  On coarser multigrid levels where
-Vecs may be host-resident even in a CUDA run, the CPU path is taken transparently.
+The array type (`CuArray` or `Vector`) is determined automatically from the `PetscMemType` of each Vec, so the same code works on both CPU and GPU.  Each Vec keeps its own memory, so when one Vec is on the host and the other on the device the arrays are of different types.
+
+### `with_local_arrays!`
+
+For a residual callback, `with_local_arrays!(g_fx, l_x) do fx, lx … end` checks out the output and the input Vec as a pair and always hands the kernel arrays on the same side.
+With both on the device they wrap device memory; when one is on the host (coarser multigrid levels, PETSc's finite-difference coloring) it is copied to the device and, for the output, copied back on return. Without a GPU extension loaded both are host arrays. The device is synchronized before the arrays go back to PETSc, since the GPU packages launch kernels on their own streams.
 
 ## Writing portable kernels with KernelAbstractions
 
@@ -86,9 +94,9 @@ The same kernel runs on CPU (when Vecs are host-resident) and GPU (when Vecs are
 
 [`examples/dmda/ex19.jl`](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/dmda/ex19.jl) is a full 2D driven-cavity example (velocity–vorticity–temperature) that demonstrates:
 
-- Switching between CPU and GPU with a single `useCUDA` flag.
+- Switching between CPU, CUDA and HIP with a single `gpu` flag.
 - FD coloring-based Jacobian assembly running entirely on-device.
-- `with_local_array!` in the residual callback for transparent CPU/GPU dispatch.
+- `with_local_arrays!` in the residual callback, which also covers the multigrid levels where one Vec is on the host.
   
 - Using [KernelAbstractions](https://github.com/JuliaGPU/KernelAbstractions.jl) to run kernels on various flavors of GPUs or CPUs.
   
@@ -96,11 +104,11 @@ The same kernel runs on CPU (when Vecs are host-resident) and GPU (when Vecs are
 
 To run it on a GPU:
 
-1. Set `const useCUDA = true` near the top of `ex19.jl`.
-2. Ensure your local PETSc build has CUDA support and is linked via `PETSc.set_library!`.
+1. Set `const gpu = :cuda` (or `:hip`) near the top of `ex19.jl`.
+2. Ensure your local PETSc build has CUDA (or HIP) support and is linked via `PETSc.set_library!`.
 3. Launch:
    ```bash
-   julia --project ex19.jl -da_grid_x 256 -da_grid_y 256 \
+   julia --project ex19.jl -da_grid_x 257 -da_grid_y 257 \
        -pc_type mg -pc_mg_levels 4 \
        -mg_levels_ksp_type chebyshev -mg_levels_pc_type jacobi \
        -snes_monitor -ksp_monitor

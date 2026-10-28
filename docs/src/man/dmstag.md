@@ -116,6 +116,14 @@ end
 
 Without `fields`, the block gets each whole array, indexed `[I..., slot]` with `slot` from `dof_slot`. `write = false` checks out read-only.
 
+On a DM whose vectors live on the GPU (`dm_vec_type = "hip"` or `"cuda"`, with AMDGPU.jl or CUDA.jl loaded), the views wrap device arrays. Pass them to a KernelAbstractions kernel as they are, with the same indices, and write the loop above as the kernel body. A broadcast over a view runs element by element on the host, because `OffsetArray` doesn't pass its parent's broadcast style on, so broadcast over `parent(view)` instead, which drops the offsets and stays on the device:
+
+```julia
+PETSc.with_field_views!(dm, r_local; fields = flow) do (Rx, Ry, Rp)
+    parent(Rp) .= 0
+end
+```
+
 ### Locations and stencils
 
 DMStag names a point by where it sits on an element: `DMSTAG_LEFT`, `DMSTAG_DOWN`, `DMSTAG_BACK_DOWN_LEFT`, and so on. Those names shift meaning between dimensions (`DOWN` is the second axis, whatever it's called in your model), so the location functions count axes instead:

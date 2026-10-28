@@ -743,6 +743,10 @@ vector. `write = false` checks out read-only; the views have the same types eith
 way. The vectors must be local vectors of `dm` ([`local_vec`](@ref)); anything else
 throws an `ArgumentError` before any vector is checked out.
 
+Vectors on a GPU, with its extension loaded, give views of device arrays, for use in
+a kernel. Broadcast over `parent(view)`: an `OffsetArray` broadcasts element by
+element on the host whatever its parent.
+
 ```julia
 flow = (face_location(dm, 1) => 0, face_location(dm, 2) => 0, element_location(dm) => 0)
 c = corners(dm)
@@ -776,7 +780,7 @@ end
 ```
 
 # External Links
-$(doc_external("DMStag/DMStagVecGetArray"))
+$(doc_external("Vec/VecGetArrayAndMemType"))
 $(doc_external("DMStag/DMStagGetLocationSlot"))
 """
 function with_field_views!(

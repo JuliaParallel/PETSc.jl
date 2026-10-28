@@ -879,6 +879,7 @@ const INTERNAL = Set{Symbol}([
     :stencil_type_enum,
     :petsclib_of,
     :make_local_array,
+    :synchronize_device,
     :with_broadcast_arrays,
     :aliases_dest,
     :check_undistributed,

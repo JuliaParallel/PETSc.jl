@@ -497,9 +497,11 @@ Add methods to `Base` and `LinearAlgebra` wherever the PETSc operation satisfies
 
 ```julia
 Base.size, Base.length, Base.ndims, Base.eltype, Base.axes
-Base.similar, Base.fill!, Base.iterate, Base.copyto!
+Base.similar, Base.copy, Base.fill!, Base.iterate, Base.copyto!
 Base.getindex, Base.setindex!, Base.show
-LinearAlgebra.norm, LinearAlgebra.mul!,
+Base.:+, Base.:-, Base.:*, Base.:/
+LinearAlgebra.norm, LinearAlgebra.mul!, LinearAlgebra.dot,
+LinearAlgebra.axpy!, LinearAlgebra.axpby!, LinearAlgebra.rmul!, LinearAlgebra.lmul!,
 LinearAlgebra.issymmetric, LinearAlgebra.ishermitian
 ```
 

@@ -923,6 +923,11 @@ const INTERNAL = Set{Symbol}([
     :AUDIT_TYPE_CREATORS,
     :AUDIT_NAMED_CREATORS,
     :AUDIT_DESTROYER_NAMES,
+    :finalize_if_serial!,
+    :check_same_length,
+    :waxpy,
+    :scaled_copy,
+    :add_scaled,
 ])
 
 # ---------------------------------------------------------------------------

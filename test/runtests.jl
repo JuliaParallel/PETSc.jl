@@ -66,6 +66,7 @@ if selected("vecmat")
     include("vecmat/mat.jl")
     include("vecmat/mat_vec_methods.jl")  # copyto!, fill!, zero_rows!, set_option!, diagonal!, isassembled
     include("vecmat/matshell.jl")
+    include("vecmat/linear_algebra.jl")  # copy, dot, axpy!, +, -, * on Vecs and Mats
 end
 
 if selected("solvers")
@@ -130,7 +131,7 @@ end
 # Last, so that no MPI run happens inside another
 if selected("mpi")
     @testset "MPI Tests" begin
-        for file in ("mpi/vec.jl", "mpi/mat.jl", "solvers/ksp.jl", "dm/dmstag.jl",
+        for file in ("mpi/vec.jl", "mpi/mat.jl", "vecmat/linear_algebra.jl", "solvers/ksp.jl", "dm/dmstag.jl",
                      "mpi/dmstag_halos.jl", "mpi/blas_threads.jl",
                      "core/with_destroy.jl")
             @test run_separately(file; nranks = 4)

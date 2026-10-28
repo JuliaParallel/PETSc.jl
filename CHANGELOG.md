@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- `PetscVec` has `copy`, `dot`, `axpy!`, `axpby!`, `rmul!`, `lmul!` and the operators `x + y`, `x - y`, `-x`, `α * x` and `x / α`, through `VecCopy`, `VecDot`, `VecAXPY`, `VecAXPBY`, `VecScale` and `VecWAXPY`. An assembled `PetscMat` has `copy`, `A + B`, `A - B`, `-A` and `α * A`, through `MatDuplicate`, `MatAXPY` and `MatScale`. All are collective and work on distributed objects; `copy` and the operators return a new Vec or Mat, which on more than one rank needs `destroy!` like any other. `dot(x, y)` conjugates `x`, as for Julia arrays.
+
 ### Deprecated
 
 - `local_arrays` and `restore_local_arrays!` warn: use `with_local_arrays!`. An exception between the two calls left both Vecs checked out.

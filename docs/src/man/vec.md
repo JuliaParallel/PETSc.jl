@@ -50,6 +50,23 @@ length(v)            # Get length
 size(v)              # Get size tuple
 ```
 
+## Linear Algebra
+
+The vector operations of `LinearAlgebra` and the arithmetic operators call PETSc directly. All of them are collective, so every rank must make the call:
+
+```julia
+using LinearAlgebra
+
+w = copy(v)            # VecDuplicate + VecCopy
+dot(x, y)              # xᴴy, the global result on every rank
+axpy!(α, x, y)         # y = αx + y
+axpby!(α, x, β, y)     # y = αx + βy
+rmul!(v, α)            # v = αv
+z = x + y              # a new vector; so are x - y, -x, α * x and x / α
+```
+
+`copy` and the operators return a new `PetscVec` with the layout of their first vector argument. On more than one rank it has no finalizer, so call `destroy!` on it on every rank. Broadcasting is different for now: `y .= α .* x .+ y` updates `y` in place and works on any number of ranks, while an out-of-place broadcast such as `2 .* x` returns a Julia `Vector` and needs an undistributed vector.
+
 ## Assembly
 
 After setting values, vectors must be assembled:

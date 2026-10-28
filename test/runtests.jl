@@ -5,9 +5,9 @@ using PETSc, Pkg
 # Make sure that all dependencies are installed also on a clean system
 Pkg.instantiate()
 
-# When set_library! has been used, petsc_library is a path string and PETSc_jll
-# is not loaded.  Only import JLL-specific symbols when using the default binaries.
-const USING_CUSTOM_LIB = PETSc.petsclibs[1].petsc_library isa AbstractString
+# When set_library! has been used, PETSc_jll is not loaded. Only import
+# JLL-specific symbols when using the default binaries.
+const USING_CUSTOM_LIB = PETSc.library_info().source === :preferences
 
 import MPIPreferences  # always import to ensure local MPI API is configured
 

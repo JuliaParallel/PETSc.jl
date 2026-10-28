@@ -50,3 +50,28 @@ jobs:
           # anything still on `Base.@deprecate` is silent without this.
           depwarn: yes
         
+
+  # The suite against PETSc built from source and loaded through set_library!,
+  # the path a cluster or GPU installation takes.
+  custom-library:
+    name: Julia 1 - ubuntu-latest - PETSc built from source
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v7
+      - uses: julia-actions/setup-julia@v3
+        with:
+          version: '1'
+      - uses: julia-actions/cache@v3
+      - uses: julia-actions/julia-buildpkg@latest
+      - uses: actions/cache@v6
+        with:
+          path: ~/petsc
+          key: petsc-${{ runner.os }}-${{ hashFiles('scripts/build_petsc.sh') }}
+      - name: Build PETSc
+        run: test -f ~/petsc/lib/libpetsc.so || scripts/build_petsc.sh ~/petsc -j 4
+      - name: Select the library
+        run: julia --project -e 'using PETSc; PETSc.set_library!(expanduser("~/petsc/lib/libpetsc.so"))'
+      - uses: julia-actions/julia-runtest@latest
+        with:
+          depwarn: yes

@@ -32,7 +32,16 @@ PETSc.set_petscint!(Int32)   # stored in LocalPreferences.toml; restart Julia
 
 ## Using a custom PETSc build
 
-Sometimes, you may be interested in a PETSc installation that comes with additional external packages, or that you compiled yourself. Ensure the library is compiled as a **dynamic** (not static) library.
+Sometimes, you may be interested in a PETSc installation that comes with additional external packages, or that you compiled yourself. Ensure the library is compiled as a **dynamic** (not static) library, against the same MPI library that MPI.jl uses.
+
+`scripts/build_petsc.sh` in the repository builds such a library: PETSc 3.25 with `Int64` indices, linked against the MPI library MPI.jl loads, with BLAS and LAPACK from Julia's libblastrampoline and with Triangle and CTetGen for simplex meshes. CI uses it to run the test suite on a custom library.
+
+```
+scripts/build_petsc.sh ~/petsc -j 4
+scripts/build_petsc.sh ~/petsc -- --download-hypre   # with extra configure options
+```
+
+It prints the library path on its last line, ready for `set_library!`.
 
 Use `set_library!` to configure the path once — it is stored in `LocalPreferences.toml` and no environment variables are needed afterwards:
 

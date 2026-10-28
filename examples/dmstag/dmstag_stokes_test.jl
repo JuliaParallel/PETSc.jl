@@ -19,15 +19,17 @@ function iterative(n; levels, options...)
 end
 
 # LU on A. In a closed box A is singular, since the pressure is defined up to a constant,
-# so the pressure in the first cell is fixed at zero.
+# so the pressure in the first cell is fixed at zero. The zero pressure block needs a
+# pivoting LU, so A is factored dense through LAPACK, which every PETSc build has.
 function direct(n)
     dm, A, P, b = stokes_system(petsclib, comm, n, 1e4)
     PETSc.zero_rows_local!(A, dm, [PETSc.stencil(dm, PC, (1, 1))]; diag = 1.0)
-    ksp = PETSc.KSP(A; ksp_type = "preonly", pc_type = "lu", pc_factor_mat_solver_type = "umfpack")
+    Ad = LibPETSc.MatConvert(petsclib, A, LibPETSc.MATDENSE, LibPETSc.MAT_INITIAL_MATRIX)
+    ksp = PETSc.KSP(Ad; ksp_type = "preonly", pc_type = "lu")
     x = PETSc.global_vec(dm)
     PETSc.solve!(x, ksp, b; check = true)
     sol = owned_fields(dm, x)
-    foreach(PETSc.destroy!, (ksp, x, b, P, A, dm))
+    foreach(PETSc.destroy!, (ksp, x, b, P, Ad, A, dm))
     return sol
 end
 

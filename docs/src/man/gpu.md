@@ -19,7 +19,7 @@ The examples below use CUDA. For AMD, load AMDGPU instead and expect `ROCArray` 
 **1. Build PETSc with GPU support.** `scripts/build_petsc.sh` builds PETSc for `set_library!` and passes everything after `--` to PETSc's configure:
 
 ```bash
-scripts/build_petsc.sh ~/petsc-gpu -- --with-cuda=1 --with-cuda-dir=/usr/local/cuda
+scripts/build_petsc.sh ~/petsc-gpu -- --with-cuda=1 --with-cuda-dir=/usr/local/cuda --with-cuda-arch=90   # your GPU's compute capability
 scripts/build_petsc.sh ~/petsc-gpu -- --with-hip=1 --with-hip-dir=$ROCM_DIR --with-hip-arch=gfx1100   # your GPU's architecture
 ```
 
@@ -133,7 +133,7 @@ using CUDA
 CUDA.@profile PETSc.solve!(x, snes)
 ```
 
-This records a trace for NSight Systems (`nsys profile`) and NVTX. For a quick look at kernel timings, `CUDA.@profile external = true` launches the process under `nsys` for you. On AMD, run Julia under ROCm's profiler (`rocprof`).
+This records a trace for NSight Systems (`nsys profile`) and NVTX. For a quick look at kernel timings, `CUDA.@profile external = true` launches the process under `nsys` for you.
 
 PETSc's own report, `-log_view`, shows how much work ran on the device: its `GPU %F` column is the fraction of flops executed on the GPU, and the `CpuToGpu` and `GpuToCpu` lines count host-device copies.
 

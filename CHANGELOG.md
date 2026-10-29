@@ -2,12 +2,30 @@
 
 ## Unreleased
 
+### Coming in v0.6
+
+These change what working code does or remove a name. The ones marked "warns" print a warning in this release; the others can't warn without firing on correct code.
+
+- KSP, SNES and TS apply their constructor options once, at the first `setup!` or `solve!`, as `options_at = :first_solve` does now. SNES no longer re-reads the options at every solve, which can reset a preconditioner configured in code.
+- `VecPtr` and `MatPtr` go (warns). Wrap a raw handle with `PetscVec(petsclib, ptr; own)` or `PetscMat(petsclib, ptr; own)`.
+- `isapprox(v, w)` on two PetscVecs compares norms, ‖v − w‖ ≤ max(atol, rtol·max(‖v‖, ‖w‖)), as for Julia arrays, instead of entry by entry (warns).
+- An out-of-place broadcast on a PetscVec, `w = 2 .* x`, returns a PetscVec of `x`'s layout instead of a `Vector`, and works on a distributed vector. The caller destroys it. `2 * x` and `x + y` already return a PetscVec.
+- `size(v)` on a PetscVec returns a tuple `(n,)` of `Int` and `length(v)` an `Int`, as for any vector. `size(v) == n` becomes false, so check code that uses `size(v)` as a number.
+- `copy_disc!(dst, src)` takes the destination first, as `copyto!` does. Both arguments are DMs, so a call in the old order runs and copies the wrong way.
+- `set_convergence_test!` passes the norms to the callback as `PetscReal`, not `Float64`. This matters only for a Float32 library with a callback whose arguments are annotated `Float64`.
+- `star_fd_coloring` returns its index arrays as `Vector{Int}`, not `Vector{Int32}`.
+- The `…Fn` callback types (`SNESSetFunctionFn`, `TSSetRHSFunctionFn`, …) are no longer public.
+- `PetscVec <: AbstractVector` and `PetscMat <: AbstractMatrix`. Element-by-element fallbacks throw by default, so a generic method that would make one C call per entry fails instead. `==` on two PetscVecs compares values (`VecEqual`, collective) as it already does on PetscMats, and `hash` on either throws.
+
 ### Added
 
+- `PetscMat(petsclib, ptr; own = false)` wraps a raw `Mat` handle, as `PetscVec(petsclib, ptr; own)` does for a `Vec`.
 - `PetscVec` has `copy`, `dot`, `axpy!`, `axpby!`, `rmul!`, `lmul!` and the operators `x + y`, `x - y`, `-x`, `α * x` and `x / α`, through `VecCopy`, `VecDot`, `VecAXPY`, `VecAXPBY`, `VecScale` and `VecWAXPY`. An assembled `PetscMat` has `copy`, `A + B`, `A - B`, `-A` and `α * A`, through `MatDuplicate`, `MatAXPY` and `MatScale`. All are collective and work on distributed objects; `copy` and the operators return a new Vec or Mat, which on more than one rank needs `destroy!` like any other. `dot(x, y)` conjugates `x`, as for Julia arrays.
 
 ### Deprecated
 
+- `VecPtr(petsclib, ptr; own)` and `MatPtr(…)` warn and go in v0.6: use `PetscVec(petsclib, ptr; own)` and `PetscMat(petsclib, ptr; own)`, which give the same wrappers.
+- `isapprox(v, w)` on two PetscVecs warns once that it compares norms from v0.6.
 - `user_ctx`, `set_user_ctx!` and the callback forms with a trailing context warn and go in v0.6. A closure carries the context: `set_rhs_function!(ts) do F, ts, t, u … end` reads what it needs from the enclosing scope, and every callback then has one calling form.
 - `vtk_merge_tensor` and `create_split_boundary_labels!` warn and go in v0.6. Both fit particular examples rather than PETSc: copies are in `examples/dmplex/vtk_tensor.jl` and `examples/dmplex/ex69.jl`.
 - `local_arrays` and `restore_local_arrays!` warn: use `with_local_arrays!`. An exception between the two calls left both Vecs checked out.
@@ -29,6 +47,7 @@
 
 - CUDA: `with_local_arrays!` with one Vec on the host and the other on the device threw a `MethodError`, and arrays went back to PETSc before CUDA.jl's kernels on them had finished unless one was a host copy. Both now work as with AMDGPU: the host Vec is copied to the device and back, and the device is synchronized before every hand-back. Not tested on an NVIDIA GPU.
 - `examples/dmda/ex19.jl` runs on the GPU again, with CUDA or HIP (`const gpu = :cuda` or `:hip`). Its GPU branch passed a raw pointer to `MatSetValuesCOO`, which takes a `Vector`, and its residual got a host and a device array on coarser multigrid levels.
+- `audit_file` no longer reports `PetscVec(petsclib, ptr; own = false)` or `PetscMat(…; own = false)` as a leak: a borrowed handle has nothing to destroy.
 
 ## v0.5.4
 

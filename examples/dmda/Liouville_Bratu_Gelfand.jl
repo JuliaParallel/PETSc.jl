@@ -221,9 +221,9 @@ PETSc.set_snes_jacobian!(snes, J) do J, snes, g_x
 end
 
 if MPI.Comm_rank(comm) == 0
-    println(@elapsed(PETSc.solve!(x, snes)))
+    println(@elapsed(PETSc.solve!(x, snes; check = true)))
 else
-    PETSc.solve!(x, snes)
+    PETSc.solve!(x, snes; check = true)
 end
 g = similar(x)
 snes.f!(g, snes, x)

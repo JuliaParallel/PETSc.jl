@@ -493,7 +493,7 @@ end
 
 # ── Solve ─────────────────────────────────────────────────────────────────────
 @show Threads.nthreads()
-PETSc.solve!(x, snes)
+PETSc.solve!(x, snes; check = true)
 
 if MPI.Comm_rank(comm) == 0
     its = LibPETSc.SNESGetIterationNumber(petsclib, snes)
@@ -517,14 +517,7 @@ MPI.Barrier(comm)
 
 # SNES holds internal PETSc references to J, da, and r — destroy it first so
 # those reference counts are decremented before we explicitly free the objects.
-PETSc.destroy!(snes)
-PETSc.destroy!(J)
-PETSc.destroy!(x_pert_vec)
-PETSc.destroy!(f0_vec)
-PETSc.destroy!(f1_vec)
-PETSc.destroy!(x)
-PETSc.destroy!(r)
-PETSc.destroy!(da)
+foreach(PETSc.destroy!, (snes, J, x_pert_vec, f0_vec, f1_vec, x, r, da))
 PETSc.finalize(petsclib)
 
 MPI.Barrier(comm)

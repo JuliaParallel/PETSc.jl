@@ -177,3 +177,42 @@ function waxpy(
     LibPETSc.VecWAXPY(PetscLib, w, α, x, y)
     return w
 end
+
+"""
+    isapprox(v::AbstractPetscVec, w::AbstractPetscVec; atol = 0, rtol, nans = false, norm = norm)
+
+Whether `v ≈ w` as for Julia arrays: ‖v − w‖ ≤ max(atol, rtol·max(‖v‖, ‖w‖)), where
+`rtol` defaults to `√eps` of the real type when `atol` is zero. Collective: every rank
+gets the same answer. If ‖v − w‖ is not finite, because of an `Inf` or `NaN` entry, the
+entries are compared one by one, as Base does, and `nans = true` counts two `NaN`s as
+equal.
+"""
+function Base.isapprox(
+    v::AbstractPetscVec{PetscLib},
+    w::AbstractPetscVec{PetscLib};
+    atol::Real = 0,
+    rtol::Real = default_rtol(real(scalartype(PetscLib)), atol),
+    nans::Bool = false,
+    norm::Function = LinearAlgebra.norm,
+) where {PetscLib}
+    diff = v - w
+    d = try
+        norm(diff)
+    finally
+        destroy!(diff)
+    end
+    isfinite(d) && return d <= max(atol, rtol * max(norm(v), norm(w)))
+    return entrywise_isapprox(v, w; atol, rtol, nans)
+end
+
+# Base's default for `isapprox`: relative tolerance √eps, unless an absolute one is given
+default_rtol(::Type{R}, atol) where {R} = atol > 0 ? zero(R) : sqrt(eps(R))
+
+# Every owned entry of `v` ≈ the matching entry of `w`, reduced over the ranks
+function entrywise_isapprox(v::AbstractPetscVec{PetscLib}, w::AbstractPetscVec{PetscLib}; kwargs...) where {PetscLib}
+    ok = with_local_array!((v, w); write = false) do a, b
+        all(isapprox.(a, b; kwargs...))
+    end
+    comm = LibPETSc.PetscObjectGetComm(getlib(PetscLib), v)
+    return MPI.Allreduce(Int(ok), min, comm) == 1
+end

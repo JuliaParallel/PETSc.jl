@@ -58,6 +58,17 @@ end
             @test owned(x) == owned(x, xs)
 
             @test dot(x, y) ≈ dot(xs, ys)
+
+            # isapprox is norm-wise over the whole vector, the same on every rank
+            for kw in ((;), (; rtol = 0), (; rtol = 0.5), (; atol = 1e3, rtol = 0))
+                @test isapprox(x, y; kw...) == isapprox(xs, ys; kw...)
+            end
+            @test isapprox(x, x; rtol = 0)
+            # one non-finite entry on the last rank switches every rank to entry by entry
+            u = petsc_vec(petsclib, comm, [xs[1:end-1]; PetscScalar(NaN)])
+            @test !isapprox(u, u)
+            @test isapprox(u, u; nans = true)
+            PETSc.destroy!(u)
             @test dot(x, y) ≈ conj(dot(y, x))
             @test dot(x, x) ≈ sum(abs2, xs)
 

@@ -32,18 +32,6 @@ using PETSc: LibPETSc
         @test LibPETSc.MatGetSize(petsclib, m) == (3, 3)
     end
 
-    @testset "isapprox on two PetscVecs" begin
-        w = PETSc.PetscVec(petsclib, PetscScalar[1, 2, 3 + 1e-12])
-        @test @test_logs (:warn, r"isapprox on two PetscVecs.*v0.6") isapprox(v, w)
-        # Entry by entry, 1e-9 is not ≈ 0, though the norm of the difference is
-        # within rtol of the norms, so Julia arrays compare as approximately equal
-        x = PETSc.PetscVec(petsclib, PetscScalar[1e-9, 1])
-        y = PETSc.PetscVec(petsclib, PetscScalar[0, 1])
-        @test !(@test_logs (:warn, r"isapprox on two PetscVecs") isapprox(x, y))
-        @test isapprox(x[:], y[:])
-        foreach(PETSc.destroy!, (w, x, y))
-    end
-
     foreach(PETSc.destroy!, (v, m))
     PETSc.finalize(petsclib)
 end

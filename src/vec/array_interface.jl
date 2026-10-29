@@ -75,19 +75,6 @@ function Base.getindex(v::AbstractPetscVec{PetscLib}, ::Colon) where {PetscLib}
     return getindex(v, 1:n)
 end
 
-"""
-    isapprox(v::AbstractPetscVec, w::AbstractPetscVec; atol, rtol, nans)
-
-Whether every entry of `v` is approximately equal to the matching entry of `w`, with
-the keywords of `isapprox` for numbers applied entry by entry. Unlike `isapprox` on two
-Julia arrays, this does not compare the norm of the difference. It warns once: from v0.6 it
-compares norms, ‖v − w‖ ≤ max(atol, rtol·max(‖v‖, ‖w‖)), as for Julia arrays.
-"""
-function Base.isapprox(v::AbstractPetscVec{PetscLib}, w::AbstractPetscVec{PetscLib}; kwargs...) where {PetscLib}
-    @warn "isapprox on two PetscVecs compares entry by entry; from v0.6 it compares norms as for Julia arrays, ‖v - w‖ ≤ max(atol, rtol * max(‖v‖, ‖w‖))" maxlog = 1
-    return all(isapprox.(v[:], w[:]; kwargs...))
-end
-
 function Base.setindex!(v::AbstractPetscVec{PetscLib}, val, i::Integer) where {PetscLib}
     PetscInt = inttype(PetscLib)
     PetscScalar = scalartype(PetscLib)

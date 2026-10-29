@@ -939,6 +939,8 @@ const INTERNAL = Set{Symbol}([
     :aliases_dest,
     :first_petscvec,
     :check_scalar_result,
+    :default_rtol,
+    :entrywise_isapprox,
     :PetscVecStyle,
     :TransposedPetscMat,
     :seq_vec_with_array,

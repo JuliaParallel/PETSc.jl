@@ -35,16 +35,14 @@ function PetscStrToArray(petsclib::PetscLibType, s::String, sp::Cchar) end
                s, sp, argc_, args_,
               )
 
-	# argc malloc'd strings in a malloc'd array: copy, then free each string and the array
-	args = String[]
-	if args_[] != C_NULL
-		for i in 1:argc_[]
-			arg_ = unsafe_load(args_[], i)
-			push!(args, unsafe_string(arg_))
-			PetscFree(petsclib, arg_)
-		end
-		PetscFree(petsclib, args_[])
-	end
+	# PETSc allocates with C malloc here, not PetscMalloc, so PetscStrToArrayDestroy (C free) releases it
+	args = String[unsafe_string(unsafe_load(args_[], i)) for i in 1:(args_[] == C_NULL ? 0 : argc_[])]
+	args_[] == C_NULL || @chk ccall(
+		(:PetscStrToArrayDestroy, $petsc_library),
+		PetscErrorCode,
+		(Cint, Ptr{Ptr{Cchar}}),
+		argc_[], args_[],
+	)
 
 	return args
 end

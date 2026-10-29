@@ -57,7 +57,7 @@ PETSc.set_snes_jacobian!(snes, J) do J, _, u
     jacobian!(J, u[:])          # u[:] copies the iterate into a Vector
     PETSc.assemble!(J)
 end
-PETSc.solve!(u, snes; check = true)
+PETSc.solve!(u, snes)
 
 solution = u[:]
 @show norm(residual!(zeros(n), solution))

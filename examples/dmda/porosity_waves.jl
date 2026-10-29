@@ -409,7 +409,7 @@ while (it < max_it && time < max_time)
     global time, it, x_old, g_xold, g_x, ax1, fig
 
     # Solve nonlinear system of equations
-    PETSc.solve!(g_x, snes; check = true)
+    PETSc.solve!(g_x, snes)
 
     # Just for checking: compute norm of nonlinear solution
     g = similar(g_x)

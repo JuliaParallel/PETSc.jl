@@ -150,6 +150,7 @@ MPI.Initialized() || MPI.Init()
         x = PETSc.PetscVec(petsclib, PetscScalar[0, 0, 0])
 
         ksp = PETSc.KSP(A; ksp_rtol = 1e-7, ksp_type = "gmres", pc_type = "none")
+        PETSc.setup!(ksp)   # applies the constructor options
         t = PETSc.tolerances(ksp)
         @test keys(t) == (:rtol, :atol, :divtol, :max_it)
         @test t.rtol == 1e-7 && t.max_it isa Int

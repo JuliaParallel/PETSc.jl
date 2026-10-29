@@ -180,6 +180,9 @@ function stokes_solver(petsclib, comm, dm, A, P; levels = 3, options...)
         fieldsplit_p_pc_type = "jacobi",
         options...)
 
+    # The options are applied at the first solve, and `set_fieldsplit_is!` needs the type now
+    PETSc.set_type!(PETSc.pc(ksp), :fieldsplit)
+
     velocity = LibPETSc.IS(dm, VX => 0, VY => 0)
     pressure = LibPETSc.IS(dm, PC => 0)
 
@@ -263,7 +266,7 @@ comm = MPI.COMM_WORLD
 dm, A, P, b = stokes_system(petsclib, comm, 32, 1e4)
 ksp         = stokes_solver(petsclib, comm, dm, A, P; PETSc.parse_options(ARGS)...)
 x           = PETSc.global_vec(dm)
-PETSc.solve!(x, ksp, b; check = true)
+PETSc.solve!(x, ksp, b)
 
 # Gather solution from the ranks
 sol = owned_fields(dm, x)

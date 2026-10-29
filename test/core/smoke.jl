@@ -27,8 +27,8 @@ MPI.Initialized() || MPI.Init()
     @test w[:] ≈ S * x
 
     ksp = PETSc.KSP(M; ksp_rtol = 1e-8, pc_type = "jacobi", ksp_monitor = false)
-    @test PETSc.type_name(ksp) === :gmres   # the default
     y = ksp \ w
+    @test PETSc.type_name(ksp) === :gmres   # the default, set when the options are applied
     @test S * y[:] ≈ w[:] rtol = 1e-6
 
     # a matrix-free operator

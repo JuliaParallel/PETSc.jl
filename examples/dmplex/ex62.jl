@@ -356,7 +356,7 @@ LibPETSc.VecNormalize(petsclib, null_vec)
 nullspace = GC.@preserve null_vec PETSc.mat_nullspace_create(petsclib, comm, (null_vec,))
 
 # ── SNES + solve ─────────────────────────────────────────────────────────────
-snes = PETSc.SNES(petsclib, comm; options_at = :first_solve, opts...)
+snes = PETSc.SNES(petsclib, comm; opts...)
 PETSc.set_dm!(snes, dm)
 u = PETSc.global_vec(dm)
 PETSc.set_snes_local_fem!(dm)
@@ -365,7 +365,7 @@ PETSc.set_snes_local_fem!(dm)
 # options are applied there, at the first setup.
 PETSc.setup!(snes)
 PETSc.set_jacobian_nullspace!(snes, nullspace)
-PETSc.solve!(u, snes; check = true)
+PETSc.solve!(u, snes)
 
 if MPI.Comm_rank(comm) == 0
     its = LibPETSc.SNESGetIterationNumber(petsclib, snes)

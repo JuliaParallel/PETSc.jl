@@ -1,12 +1,13 @@
 # test/solvers/convergence.jl
-# What solve! does when a solver fails: ConvergenceError with `check = true`,
-# nothing with `check = false`, and without `check` a warning once per call site.
+# What solve! does when a solver fails: ConvergenceError by default and with
+# `check = true`, nothing with `check = false`.
 
 using Test
 using PETSc
 using MPI
 using Logging
 using SparseArrays: spdiagm
+using LinearAlgebra: LinearAlgebra
 
 MPI.Initialized() || MPI.Init()
 isdefined(Main, :PETScTestUtils) || include(joinpath(@__DIR__, "..", "testutils.jl"))
@@ -38,7 +39,7 @@ end
         # one CG iteration cannot reach rtol = 1e-12
         failing = PETSc.KSP(A; ksp_type = "cg", pc_type = "none", ksp_max_it = 1, ksp_rtol = 1e-12)
         err = try
-            PETSc.solve!(x, failing, b; check = true)
+            PETSc.solve!(x, failing, b)
             nothing
         catch e
             e
@@ -56,25 +57,19 @@ end
         @test isempty(collect_logs(() -> PETSc.solve!(x, failing, b; check = false)))
         @test PETSc.converged_reason(failing) == LibPETSc.KSP_DIVERGED_ITS
 
-        # without `check`: one warning per call site, pointing at the caller
-        solve_twice() = for _ in 1:2
-            PETSc.solve!(x, failing, b)
-        end
-        logs = collect_logs(solve_twice)
-        @test length(logs) == 1
-        @test logs[1].level == Logging.Warn
-        @test occursin("From v0.6 this throws", logs[1].message)
-        @test logs[1].file == @__FILE__
-        # a second call site warns again
-        logs = collect_logs(() -> (PETSc.solve!(x, failing, b); PETSc.solve!(x, failing, b)))
-        @test length(logs) == 1
-        @test length(collect_logs(() -> failing \ b)) == 1
+        @test_throws PETSc.ConvergenceError PETSc.solve!(x, failing, b; check = true)
+        @test_throws PETSc.ConvergenceError PETSc.solve!(failing)
+        @test_throws PETSc.ConvergenceError failing \ b
+        @test_throws PETSc.ConvergenceError LinearAlgebra.ldiv!(x, failing, b)
+        # `nothing` meant "warn" before the default became `true`
+        @test_throws TypeError PETSc.solve!(x, failing, b; check = nothing)
 
-        # a converged solve is silent whatever `check` says
+        # a converged solve returns quietly whatever `check` says
         working = PETSc.KSP(A; ksp_type = "cg", pc_type = "none", ksp_rtol = 1e-10)
-        for check in (nothing, true, false)
+        for check in (true, false)
             @test isempty(collect_logs(() -> PETSc.solve!(x, working, b; check)))
         end
+        @test isempty(collect_logs(() -> PETSc.solve!(x, working, b)))
         @test x[:] ≈ laplacian \ ones(PetscScalar, n)
         foreach(PETSc.destroy!, (working, failing, x, b, A))
     end
@@ -99,7 +94,7 @@ end
 
         x = start()
         err = try
-            PETSc.solve!(x, snes; check = true)
+            PETSc.solve!(x, snes)
             nothing
         catch e
             e
@@ -111,7 +106,8 @@ end
         @test occursin("SNES did not converge: SNES_DIVERGED_MAX_IT", sprint(showerror, err))
 
         @test isempty(collect_logs(() -> PETSc.solve!(start(), snes; check = false)))
-        @test length(collect_logs(() -> PETSc.solve!(start(), snes))) == 1
+        @test PETSc.converged_reason(snes) == LibPETSc.SNES_DIVERGED_MAX_IT
+        @test_throws PETSc.ConvergenceError PETSc.solve!(start(), snes; check = true)
         PETSc.destroy!(snes)
         PETSc.destroy!(J)
     end
@@ -142,7 +138,7 @@ end
         ts, J = failing_ts()
         PETSc.set_error_if_step_fails!(ts, false)
         err = try
-            PETSc.solve!(u, ts; check = true)
+            PETSc.solve!(u, ts)
             nothing
         catch e
             e
@@ -152,20 +148,24 @@ end
         @test occursin("TS did not converge", sprint(showerror, err))
         PETSc.set_time!(ts, 0.0)
         @test isempty(collect_logs(() -> PETSc.solve!(u, ts; check = false)))
+        @test PETSc.converged_reason(ts) == LibPETSc.TS_DIVERGED_NONLINEAR_SOLVE
         PETSc.set_time!(ts, 0.0)
-        @test length(collect_logs(() -> PETSc.solve!(u, ts))) == 1
+        @test_throws PETSc.ConvergenceError PETSc.step!(ts)
         PETSc.set_time!(ts, 0.0)
         @test_throws PETSc.ConvergenceError PETSc.step!(ts; check = true)
+        PETSc.set_time!(ts, 0.0)
+        PETSc.step!(ts; check = false)
+        @test PETSc.converged_reason(ts) == LibPETSc.TS_DIVERGED_NONLINEAR_SOLVE
         PETSc.destroy!(ts)
         PETSc.destroy!(J)
 
-        # PETSc's default raises the failure itself: a PetscError, or a
-        # ConvergenceError with `check = true`
+        # PETSc's default raises the failure itself: a ConvergenceError, or the
+        # PetscError with `check = false`
         ts, J = failing_ts()
-        @test_throws LibPETSc.PetscError without_petsc_traceback(() -> PETSc.solve!(u, ts), petsclib)
+        @test_throws PETSc.ConvergenceError without_petsc_traceback(() -> PETSc.solve!(u, ts), petsclib)
         PETSc.set_time!(ts, 0.0)
-        @test_throws PETSc.ConvergenceError without_petsc_traceback(
-            () -> PETSc.solve!(u, ts; check = true), petsclib,
+        @test_throws LibPETSc.PetscError without_petsc_traceback(
+            () -> PETSc.solve!(u, ts; check = false), petsclib,
         )
         PETSc.destroy!(ts)
         PETSc.destroy!(J)

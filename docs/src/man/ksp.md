@@ -43,16 +43,16 @@ ksp = KSP(dm;
 
 The keyword options of `KSP`, `SNES` and `TS` are applied through `XSetFromOptions`, and `options_at` says when:
 
-| `options_at` | Applied | Default for |
-|---|---|---|
-| `:construction` | in the constructor, once | `KSP` |
-| `:each_solve` | at the start of every `solve!` | `SNES`, `TS` |
-| `:first_solve` | once, at the first `setup!` or `solve!` (or `step!` for a TS) | |
+| `options_at` | Applied |
+|---|---|
+| `:first_solve` (the default) | once, at the first `setup!` or `solve!` (or `step!` for a TS) |
+| `:each_solve` | at the start of every `solve!` |
+| `:construction` | in the constructor, once |
 
 The order matters because a setting made in code and an option for the same thing overwrite each other, and the later one wins. Under `:each_solve`, `pc_type = "ilu"` replaces a `set_type!(pc(ksp), :jacobi)` made before every solve. Under `:construction`, the options are read before anything set up after the constructor. `:first_solve` waits until the solver is complete and then reads them once:
 
 ```julia
-ksp = KSP(dm; options_at = :first_solve, pc_type = "mg")
+ksp = KSP(dm; pc_type = "mg")
 PETSc.set_dm_active!(ksp, false)   # the DM gives multigrid its hierarchy only
 PETSc.set_operators!(ksp, J)
 PETSc.solve!(x, ksp, b)            # options applied here, and not again

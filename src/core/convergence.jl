@@ -5,8 +5,9 @@
 """
     ConvergenceError <: Exception
 
-Thrown by [`solve!`](@ref) and [`step!`](@ref) with `check = true` when the solver
-stopped without converging. The solution vector is left as PETSc left it.
+Thrown by [`solve!`](@ref) and [`step!`](@ref) when the solver stopped without
+converging, unless they are called with `check = false`. The solution vector is
+left as PETSc left it.
 
 # Fields
 - `solver`: the `KSP`, `SNES` or `TS` that was solved
@@ -84,49 +85,21 @@ convergence_error(ts::AbstractTS, reason) =
     ConvergenceError(ts, reason, Int(step_number(ts)), nothing)
 
 # Runs the solve `f` on `solver` and then acts on how it ended: `check = true` throws a
-# ConvergenceError, `false` does nothing, and `nothing` warns once per call site.
-function with_convergence_check(f, solver, check::Union{Nothing, Bool})
+# ConvergenceError, `false` does nothing.
+function with_convergence_check(f, solver, check::Bool)
     try
         f()
     catch err
         # A solver set to error out when it fails (a TS by default, or
-        # -ksp_error_if_not_converged) raises a PetscError; `check = true` asks for
-        # a ConvergenceError instead. Without it the PetscError stands until v0.6.
-        err isa LibPETSc.PetscError && check === true || rethrow()
+        # -ksp_error_if_not_converged) raises a PetscError; `check = true` turns it
+        # into a ConvergenceError, `check = false` lets it stand.
+        err isa LibPETSc.PetscError && check || rethrow()
         reason = converged_reason(solver)
         Int(reason) < 0 || rethrow()
         throw(convergence_error(solver, reason))
     end
-    check === false && return nothing
+    check || return nothing
     reason = converged_reason(solver)
-    Int(reason) < 0 || return nothing
-    err = convergence_error(solver, reason)
-    check === true && throw(err)
-    warn_divergence(err)
-    return nothing
-end
-
-# Every caller of `with_convergence_check` lives under src/, one level up
-const SOURCE_DIR = dirname(@__DIR__)
-
-# The first frame outside PETSc.jl's source, below the frames of PETSc.jl itself
-function caller_location()
-    inside = false
-    for frame in stacktrace(backtrace())
-        frame.from_c && continue
-        file = String(frame.file)
-        if startswith(file, SOURCE_DIR)
-            inside = true
-        elseif inside
-            return file, frame.line
-        end
-    end
-    return "unknown", 0
-end
-
-function warn_divergence(err::ConvergenceError)
-    file, line = caller_location()
-    @warn sprint(showerror, err) * "\n\nFrom v0.6 this throws. Pass `check = false` to " *
-        "handle it yourself, or `check = true` to throw now." _id = (file, line) _file = file _line = line maxlog = 1
+    Int(reason) < 0 && throw(convergence_error(solver, reason))
     return nothing
 end

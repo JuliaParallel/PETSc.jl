@@ -174,7 +174,7 @@ PETSc.set_compute_rhs!(ksp) do petsc_b, ksp
 end
 
 # Solve the problem; a diverged solve throws a ConvergenceError
-PETSc.solve!(ksp; check = true)
+PETSc.solve!(ksp)
 
 # Get the solution and compute error
 sol = PETSc.solution(ksp)

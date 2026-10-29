@@ -25,7 +25,7 @@ snes = SNES(petsclib, MPI.COMM_WORLD;
 )
 ```
 
-The options are applied at the start of every `solve!`, after the DM and the callbacks are attached, and override a setting made in code for the same option. The `options_at` keyword changes that; see [When the options apply](@ref) in the KSP page.
+The options are applied once, at the first `setup!` or `solve!`, after the DM and the callbacks are attached. A setting made in code after that overrides them. The `options_at` keyword changes that; see [When the options apply](@ref) in the KSP page.
 
 ## Setting the Nonlinear Function
 

@@ -191,7 +191,7 @@ TSState() = TSState(
     _ -> error("post_step! not defined"),
     nothing,
     nothing,
-    :each_solve,
+    :first_solve,
     false,
     true,
 )
@@ -243,17 +243,17 @@ function Base.show(io::IO, ts::AbstractTS{PetscLib}) where {PetscLib}
 end
 
 """
-    TS(petsclib, comm::MPI.Comm; prefix = "", options_at = :each_solve, options...)
+    TS(petsclib, comm::MPI.Comm; prefix = "", options_at = :first_solve, options...)
 
 Create a PETSc time stepper on the communicator `comm`.
 
 `options_at` decides when the options are applied, through `TSSetFromOptions`:
 
-- `:each_solve` (the default): at the start of every [`solve!`](@ref), once the DM
-  and the callbacks are attached. They override a setting made in code for the
-  same option.
-- `:first_solve`: once, at the first [`setup!`](@ref) or `solve!` or [`step!`](@ref). A setting
-  made in code after that overrides them.
+- `:first_solve` (the default): once, at the first [`setup!`](@ref), `solve!` or
+  [`step!`](@ref), once the DM and the callbacks are attached. A setting made in
+  code after that overrides them.
+- `:each_solve`: at the start of every [`solve!`](@ref). They override a setting
+  made in code for the same option.
 - `:construction`: here, once. A DM or callback attached afterwards is not
   visible to them.
 
@@ -278,7 +278,7 @@ function TS(
     comm::MPI.Comm;
     prefix::AbstractString = "",
     exact_final_time::LibPETSc.TSExactFinalTimeOption = LibPETSc.TS_EXACTFINALTIME_MATCHSTEP,
-    options_at::Symbol = :each_solve,
+    options_at::Symbol = :first_solve,
     options...,
 ) where {PetscLib}
     check_initialized(getlib(PetscLib))
@@ -910,8 +910,8 @@ LibPETSc.@for_petsc function LibPETSc.TSSolve(
 end
 
 """
-    solve!(u::AbstractPetscVec, ts::AbstractTS; check = nothing)
-    solve!(ts::AbstractTS; check = nothing)
+    solve!(u::AbstractPetscVec, ts::AbstractTS; check = true)
+    solve!(ts::AbstractTS; check = true)
 
 Integrate `ts`, starting from `u` and returning it. 
 The second form uses the solution vector already set on `ts` and returns `ts`.
@@ -920,18 +920,16 @@ The second form uses the solution vector already set on `ts` and returns `ts`.
 Passing it to `TSSolve` alone leaves the stepper reading an uninitialized solution vector,
 which the implicit methods see as an initial condition of zero.
 
-The options passed to the [`TS`](@ref) constructor are applied here by default;
-its `options_at` keyword says when.
+The options passed to the [`TS`](@ref) constructor are applied at the first
+`setup!`, `solve!` or `step!` by default; its `options_at` keyword says when.
 
 A failed step stops the run. With `errorifstepfailed` set, PETSc's default (see
-[`set_error_if_step_fails!`](@ref)), the failure is thrown as a `PetscError`, or as a
-[`ConvergenceError`](@ref) with `check = true`. Without it the run returns and
+[`set_error_if_step_fails!`](@ref)), the failure is thrown as a [`ConvergenceError`](@ref),
+or as a `PetscError` with `check = false`. Without it the run returns and
 [`converged_reason`](@ref) says why it stopped; `check` decides what happens then:
 
-- `check = true` throws a [`ConvergenceError`](@ref).
+- `check = true` (the default) throws a [`ConvergenceError`](@ref).
 - `check = false` returns normally, and the caller reads `converged_reason`.
-- Not passed, it returns normally and warns once per call site that from v0.6 a
-  failed run throws.
 
 # External Links
 $(doc_external("TS/TSSolve"))
@@ -940,7 +938,7 @@ $(doc_external("TS/TSSetSolution"))
 function solve!(
     u::AbstractPetscVec{PetscLib},
     ts::AbstractTS{PetscLib};
-    check::Union{Nothing, Bool} = nothing,
+    check::Bool = true,
 ) where {PetscLib}
     LibPETSc.TSSetSolution(PetscLib, ts, u)
     with_solver_options(ts; solving = true) do
@@ -951,7 +949,7 @@ function solve!(
     return u
 end
 
-function solve!(ts::AbstractTS{PetscLib}; check::Union{Nothing, Bool} = nothing) where {PetscLib}
+function solve!(ts::AbstractTS{PetscLib}; check::Bool = true) where {PetscLib}
     with_solver_options(ts; solving = true) do
         with_convergence_check(ts, check) do
             capture_callback_errors(() -> LibPETSc.TSSolve(PetscLib, ts, nothing))
@@ -961,7 +959,7 @@ function solve!(ts::AbstractTS{PetscLib}; check::Union{Nothing, Bool} = nothing)
 end
 
 """
-    step!(ts::AbstractTS; check = nothing)
+    step!(ts::AbstractTS; check = true)
 
 Take a single step. It ignores the time set by [`set_max_time!`](@ref), and
 applies the options given to the constructor only under `options_at = :first_solve`,
@@ -972,7 +970,7 @@ when it is the first call to do so (see [`TS`](@ref)).
 # External Links
 $(doc_external("TS/TSStep"))
 """
-function step!(ts::AbstractTS{PetscLib}; check::Union{Nothing, Bool} = nothing) where {PetscLib}
+function step!(ts::AbstractTS{PetscLib}; check::Bool = true) where {PetscLib}
     with_solver_options(ts; solving = false) do
         with_convergence_check(ts, check) do
             capture_callback_errors(() -> LibPETSc.TSStep(getlib(PetscLib), ts))

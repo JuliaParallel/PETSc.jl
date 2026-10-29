@@ -187,7 +187,7 @@ function solve_ex45(N=7; da_grid_x=7, da_grid_y=7, da_grid_z=7, kwargs...)
         return 0
     end
 
-    solve_time = @elapsed PETSc.solve!(ksp; check = true)
+    solve_time = @elapsed PETSc.solve!(ksp)
     niter      = LibPETSc.KSPGetIterationNumber(petsclib, ksp)
     final_grid = PETSc.info(da).global_size
 

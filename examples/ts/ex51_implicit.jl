@@ -241,7 +241,7 @@ function solve_ex51_implicit(;
             PETSc.set_timestep!(ts, dt)
             PETSc.set_adapt_type!(ts, :none)
 
-            PETSc.solve!(u, ts; check = true)
+            PETSc.solve!(u, ts)
 
             # Error against the analytical solution at the achieved final time
             current_time = PETSc.current_time(ts)

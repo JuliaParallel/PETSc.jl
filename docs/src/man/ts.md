@@ -25,7 +25,7 @@ ts = PETSc.TS(petsclib, MPI.COMM_WORLD;
 )
 ```
 
-Options given here are held and applied inside [`PETSc.solve!`](@ref) rather than at construction, so a DM and the callbacks attached afterwards are in place before PETSc reads them. Until then the object has no type, and [`PETSc.type_name`](@ref) answers `nothing`. They are applied again on every `solve!`; `options_at = :first_solve` applies them once, and `:construction` in the constructor (see [When the options apply](@ref) in the KSP page).
+Options given here are held and applied inside [`PETSc.solve!`](@ref) rather than at construction, so a DM and the callbacks attached afterwards are in place before PETSc reads them. Until then the object has no type, and [`PETSc.type_name`](@ref) answers `nothing`. They are applied once, at the first `setup!`, `solve!` or `step!`; `options_at = :each_solve` applies them again on every `solve!`, and `:construction` in the constructor (see [When the options apply](@ref) in the KSP page).
 
 On a communicator of size 1 the garbage collector calls [`PETSc.destroy!`](@ref). On a larger one, destruction is yours to do, since collection is asynchronous and the call is collective.
 
@@ -155,7 +155,7 @@ What stops a run early, and how:
 ```julia
 PETSc.set_max_snes_failures!(ts, 5)       # failed nonlinear solves over the run (default 1)
 PETSc.set_max_step_rejections!(ts, 20)    # rejected attempts at one step (default 10)
-PETSc.set_error_if_step_fails!(ts, false) # return instead of throwing; then read converged_reason
+PETSc.set_error_if_step_fails!(ts, false) # with solve!(…; check = false), return instead of throwing
 ```
 
 `LibPETSc.PETSC_UNLIMITED` removes either limit. A domain error reported with [`PETSc.set_function_domain_error!`](@ref) rejects the step rather than counting as a failed solve.

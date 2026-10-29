@@ -13,7 +13,7 @@ KSPState() = KSPState(
     x -> error("computeops! not defined"),
     nothing,
     nothing,
-    :construction,
+    :first_solve,
     false,
     true,
 )
@@ -60,19 +60,19 @@ end
 
 
 """
-    KSP(A::AbstractPetscMat, P::AbstractPetscMat = A; prefix = "", options_at = :construction, options...)
+    KSP(A::AbstractPetscMat, P::AbstractPetscMat = A; prefix = "", options_at = :first_solve, options...)
 
 Create a `KSP` using the matrix `A` and preconditioner construction matrix `P`
 with optional `prefix` and `options`.
 
 `options_at` decides when the options are applied, through `KSPSetFromOptions`:
 
-- `:construction` (the default): here, once. A setting made in code afterwards,
+- `:first_solve` (the default): once, at the first [`setup!`](@ref) or `solve!`,
+  after the DM and callbacks are attached. A setting made in code after that,
   such as [`set_tolerances!`](@ref), overrides them.
 - `:each_solve`: at the start of every [`solve!`](@ref), so they override a
   setting made in code for the same option.
-- `:first_solve`: once, at the first [`setup!`](@ref) or `solve!`, after the DM
-  and callbacks are attached.
+- `:construction`: here, once. A setting made in code afterwards overrides them.
 
 The options stay pushed during `solve!`, and during `setup!` too unless
 `options_at = :each_solve`, so the sub-solvers PETSc creates during setup read
@@ -91,7 +91,7 @@ function KSP(
     A::AbstractPetscMat{PetscLib},
     P::AbstractPetscMat{PetscLib} = A;
     prefix::AbstractString = "",
-    options_at::Symbol = :construction,
+    options_at::Symbol = :first_solve,
     options...
 ) where {PetscLib}
     check_initialized(getlib(PetscLib))
@@ -117,18 +117,18 @@ function KSP(
 end
 
 """
-    KSP(dm::AbstractPetscDM; prefix = "", options_at = :construction, options...)
+    KSP(dm::AbstractPetscDM; prefix = "", options_at = :first_solve, options...)
 
 Create a `KSP` associated with the `dm` with optional `prefix` and `options`.
 
 `options_at` decides when the options are applied, through `KSPSetFromOptions`:
 
-- `:construction` (the default): here, once. A setting made in code afterwards,
+- `:first_solve` (the default): once, at the first [`setup!`](@ref) or `solve!`,
+  after the DM and callbacks are attached. A setting made in code after that,
   such as [`set_tolerances!`](@ref), overrides them.
 - `:each_solve`: at the start of every [`solve!`](@ref), so they override a
   setting made in code for the same option.
-- `:first_solve`: once, at the first [`setup!`](@ref) or `solve!`, after the DM
-  and callbacks are attached.
+- `:construction`: here, once. A setting made in code afterwards overrides them.
 
 The options stay pushed during `solve!`, and during `setup!` too unless
 `options_at = :each_solve`, so the sub-solvers PETSc creates during setup read
@@ -150,7 +150,7 @@ $(doc_external("KSP/KSPSetFromOptions"))
 """
 function KSP(dm::AbstractPetscDM{PetscLib};
     prefix::AbstractString = "",
-    options_at::Symbol = :construction,
+    options_at::Symbol = :first_solve,
     options...
 ) where {PetscLib}
     check_initialized(getlib(PetscLib))
@@ -195,8 +195,8 @@ end
 
 
 """
-    solve!(x::AbstractPetscVec, ksp::AbstractKSP, b::AbstractPetscVec; check = nothing)
-    solve!(ksp::KSP; check = nothing)
+    solve!(x::AbstractPetscVec, ksp::AbstractKSP, b::AbstractPetscVec; check = true)
+    solve!(ksp::KSP; check = true)
 
 Solve the linear system of `ksp` for the right-hand side `b` into `x`, and return
 `x`. The second form uses the vectors set on `ksp` (for example by
@@ -206,10 +206,8 @@ The initial guess is zero unless `-ksp_initial_guess_nonzero` is set.
 PETSc does not report a failed solve: `x` holds the last iterate and
 [`converged_reason`](@ref) says why it stopped. `check` decides what happens then:
 
-- `check = true` throws a [`ConvergenceError`](@ref).
+- `check = true` (the default) throws a [`ConvergenceError`](@ref).
 - `check = false` returns normally, and the caller reads `converged_reason`.
-- Not passed, it returns normally and warns once per call site that from v0.6 a
-  failed solve throws.
 
 # External Links
 $(doc_external("KSP/KSPSolve"))
@@ -219,7 +217,7 @@ function solve!(
     x::AbstractPetscVec{PetscLib},
     ksp::AbstractKSP{PetscLib},
     b::AbstractPetscVec{PetscLib};
-    check::Union{Nothing, Bool} = nothing,
+    check::Bool = true,
 ) where {PetscLib}
     with_solver_options(ksp; solving = true) do
         with_convergence_check(ksp, check) do
@@ -233,7 +231,7 @@ end
 
 function solve!(
     ksp::AbstractKSP{PetscLib};
-    check::Union{Nothing, Bool} = nothing,
+    check::Bool = true,
 ) where {PetscLib}
     with_solver_options(ksp; solving = true) do
         with_convergence_check(ksp, check) do

@@ -124,11 +124,16 @@ MPI.Initialized() || MPI.Init()
         @test PETSc.converged_reason(ts) == LibPETSc.TS_DIVERGED_NONLINEAR_SOLVE
         @test PETSc.snes_failures(ts) == 3
 
-        # with PETSc's default, the same failure throws
+        # with PETSc's default, the same failure throws: a ConvergenceError, or
+        # the PetscError with `check = false`
         PETSc.set_error_if_step_fails!(ts, true)
         PETSc.set_time!(ts, 0.0)
-        @test_throws LibPETSc.PetscError redirect_stderr(devnull) do
+        @test_throws PETSc.ConvergenceError redirect_stderr(devnull) do
             PETSc.solve!(u, ts)
+        end
+        PETSc.set_time!(ts, 0.0)
+        @test_throws LibPETSc.PetscError redirect_stderr(devnull) do
+            PETSc.solve!(u, ts; check = false)
         end
         PETSc.destroy!(ts)
         PETSc.destroy!(J)

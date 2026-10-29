@@ -1287,6 +1287,7 @@ end
 	return data
 end 
 
+# override for PetscViewerBinaryReadStringArray; C signature: PetscViewerBinaryReadStringArray(PetscViewer viewer, char*** data)
 """
 	data::Vector{String} = PetscViewerBinaryReadStringArray(petsclib::PetscLibType, viewer::PetscViewer) 
 Reads a null terminated array of strings from a binary file.
@@ -1335,8 +1336,6 @@ function PetscViewerBinaryReadStringArray(petsclib::PetscLibType, viewer::PetscV
 
 	return data
 end
-
-
 """
 	PetscViewerBinarySetFlowControl(petsclib::PetscLibType, viewer::PetscViewer, fc::PetscInt) 
 Sets how many messages are allowed to be outstanding at the same time during parallel IO reads/writes

@@ -4188,6 +4188,7 @@ end
 	return nothing
 end 
 
+# override for PetscGetArgs; C signature: PetscGetArgs(int* argc, char*** args)
 """
 	argc::Cint,args::Vector{String} = PetscGetArgs(petsclib::PetscLibType) 
 Allows you to access the raw command line arguments anywhere
@@ -4228,8 +4229,7 @@ function PetscGetArgs(petsclib::PetscLibType) end
 
 	return argc,args
 end
-
-
+# override for PetscGetArguments; C signature: PetscGetArguments(char*** args)
 """
 	args::Vector{String} = PetscGetArguments(petsclib::PetscLibType) 
 Gets the command line arguments, without the program name.
@@ -4276,8 +4276,6 @@ function PetscGetArguments(petsclib::PetscLibType) end
 
 	return args
 end
-
-
 """
 	t::PetscLogDouble = PetscGetCPUTime(petsclib::PetscLibType) 
 Returns the CPU time in seconds used by the process.
@@ -13061,6 +13059,7 @@ end
 	return t
 end 
 
+# override for PetscStrToArray; C signature: PetscStrToArray(const char s[], char sp, int* argc, char*** args)
 """
 	args::Vector{String} = PetscStrToArray(petsclib::PetscLibType, s::String, sp::Cchar) 
 Converts a string to an array of strings by splitting it at every `sp`.
@@ -13110,8 +13109,6 @@ function PetscStrToArray(petsclib::PetscLibType, s::String, sp::Cchar) end
 
 	return args
 end
-
-
 """
 	args::String = PetscStrToArrayDestroy(petsclib::PetscLibType, argc::Cint) 
 Frees array created with `PetscStrToArray()`.

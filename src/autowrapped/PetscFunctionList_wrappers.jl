@@ -99,6 +99,7 @@ end
 	return nl
 end 
 
+# override for PetscFunctionListGet; C signature: PetscFunctionListGet(PetscFunctionList list, const char*** array, int* n)
 """
 	array::Vector{String} = PetscFunctionListGet(petsclib::PetscLibType, list::PetscFunctionList) 
 Gets the names of the entries in a `PetscFunctionList`, this is used
@@ -141,8 +142,6 @@ function PetscFunctionListGet(petsclib::PetscLibType, list::PetscFunctionList) e
 
 	return array
 end
-
-
 """
 	PetscFunctionListPrintAll(petsclib::PetscLibType) 
 Prints the names of all functions registered in every `PetscFunctionList` known to PETSc

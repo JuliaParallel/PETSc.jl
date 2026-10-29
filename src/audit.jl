@@ -35,6 +35,25 @@ function audit_creator(name::Symbol)
 end
 
 """
+    audit_isborrowed(call::Expr) -> Bool
+
+Whether `call` passes the keyword `own = false`, as in `PetscVec(petsclib, ptr; own = false)`,
+which wraps a handle the caller does not own and so creates nothing to destroy.
+"""
+function audit_isborrowed(call::Expr)
+    call.head === :call || return false
+    kws = Any[]
+    for a in call.args[2:end]
+        if a isa Expr && a.head === :parameters
+            append!(kws, a.args)
+        elseif a isa Expr && a.head === :kw
+            push!(kws, a)
+        end
+    end
+    return any(kw -> kw isa Expr && kw.head === :kw && kw.args[1] === :own && kw.args[2] === false, kws)
+end
+
+"""
     audit_destroyer(name::Symbol) -> Bool
 
 Whether `name` releases a PETSc object. Covers the names in
@@ -227,7 +246,7 @@ function audit_file(path::AbstractString; verbose::Bool = true)
             rhs = ex.args[2]
             callee = audit_callee(rhs)
             if callee !== nothing
-                kind = audit_creator(callee)
+                kind = audit_isborrowed(rhs) ? nothing : audit_creator(callee)
                 if kind !== nothing
                     push!(assigned, rhs)
                     targets = audit_targets(ex.args[1])
@@ -246,7 +265,7 @@ function audit_file(path::AbstractString; verbose::Bool = true)
         callee = audit_callee(ex)
         callee === nothing && return
 
-        if audit_creator(callee) !== nothing && !(ex in assigned)
+        if audit_creator(callee) !== nothing && !(ex in assigned) && !audit_isborrowed(ex)
             push!(created, (line, nothing, audit_creator(callee)))
         end
 

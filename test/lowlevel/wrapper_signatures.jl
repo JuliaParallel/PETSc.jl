@@ -87,7 +87,7 @@ end
         # A borrowed vector handle, as PETScDiffEq.jl builds in every callback.
         v = LibPETSc.VecCreateSeq(petsclib, wrapper_comm, PetscInt(6))
         LibPETSc.VecZeroEntries(petsclib, v)
-        borrowed = PETSc.VecPtr(petsclib, v.ptr; own = false)
+        borrowed = PETSc.PetscVec(petsclib, v.ptr; own = false)
         LibPETSc.VecSet(petsclib, borrowed, petsclib.PetscScalar(2))
         @test LibPETSc.VecNorm(petsclib, borrowed, LibPETSc.NORM_INFINITY) ≈ 2
 

@@ -45,62 +45,35 @@ dm = PETSc.DMStag(petsclib, comm,
 
 # ── Assemble the linear system  Ax = b ──────────────────────────────────────
 
-function assemble_system!(dm, petsclib, PetscScalar, PetscInt)
-    A   = LibPETSc.DMCreateMatrix(petsclib, dm)
-    b   = PETSc.global_vec(dm)
+function assemble_system(dm, PetscScalar)
+    A = PETSc.PetscMat(dm)
+    b = PETSc.global_vec(dm)
 
     corners = PETSc.corners(dm)
     N       = size(dm)[1]       # global element count  (= number of intervals)
     n_extra = corners.nextra[1] # 1 on the rightmost rank, 0 elsewhere
+    vertex  = PETSc.face_location(dm, 1)    # in 1D the vertices are the faces
 
     # Loop over owned elements, including the extra partial element on the
-    # rightmost rank (which holds the right-boundary vertex N).
-    for e in (corners.lower[1] - 1) : (corners.upper[1] - 1 + n_extra)
-        # Stencil row for the LEFT vertex of element e  (vertex index = e)
-        row = LibPETSc.DMStagStencil(
-            LibPETSc.DMSTAG_LEFT, PetscInt(e), PetscInt(0), PetscInt(0), PetscInt(0))
+    # rightmost rank (which holds the right-boundary vertex N). The left
+    # vertex of element i is vertex number i - 1.
+    for i in corners.lower[1]:(corners.upper[1] + n_extra)
+        row = PETSc.stencil(dm, vertex, (i,))
 
-        if e == 0
-            # ── Left boundary: Dirichlet u(0) = 0 ──
-            LibPETSc.DMStagMatSetValuesStencil(petsclib, dm, A,
-                PetscInt(1), [row],
-                PetscInt(1), [row],
-                PetscScalar[1.0],
-                PETSc.INSERT_VALUES)
-
-        elseif e == N
-            # ── Right boundary: Dirichlet u(1) = 0 ──
-            LibPETSc.DMStagMatSetValuesStencil(petsclib, dm, A,
-                PetscInt(1), [row],
-                PetscInt(1), [row],
-                PetscScalar[1.0],
-                PETSc.INSERT_VALUES)
-
+        if i == 1 || i == N + 1
+            # ── Boundaries: Dirichlet u(0) = u(1) = 0 ──
+            PETSc.set_values!(A, dm, [row], [row], PetscScalar[1.0])
         else
             # ── Interior: standard 3-point Laplacian stencil ──
-            col = [
-                LibPETSc.DMStagStencil(LibPETSc.DMSTAG_LEFT, PetscInt(e - 1), PetscInt(0), PetscInt(0), PetscInt(0)),
-                LibPETSc.DMStagStencil(LibPETSc.DMSTAG_LEFT, PetscInt(e),     PetscInt(0), PetscInt(0), PetscInt(0)),
-                LibPETSc.DMStagStencil(LibPETSc.DMSTAG_LEFT, PetscInt(e + 1), PetscInt(0), PetscInt(0), PetscInt(0)),
-            ]
-            val = PetscScalar[1.0, -2.0, 1.0]
-
-            LibPETSc.DMStagMatSetValuesStencil(petsclib, dm, A,
-                PetscInt(1), [row],
-                PetscInt(3), col,
-                val,
-                PETSc.INSERT_VALUES)
+            col = [PETSc.stencil(dm, vertex, (i - 1,)), row, PETSc.stencil(dm, vertex, (i + 1,))]
+            PETSc.set_values!(A, dm, [row], col, PetscScalar[1.0, -2.0, 1.0])
         end
 
         # ── Right-hand side (forcing) ──
         h = PetscScalar(1.0 / N)
-        x = PetscScalar(e) / PetscScalar(N)
+        x = PetscScalar(i - 1) / PetscScalar(N)
         f = (x - PetscScalar(0.5)) * h * h        # scaled by h²
-
-        LibPETSc.DMStagVecSetValuesStencil(petsclib, dm, b,
-            PetscInt(1), [row],
-            PetscScalar[f],
-            PETSc.INSERT_VALUES)
+        PETSc.set_values!(b, dm, [row], PetscScalar[f])
     end
 
     PETSc.assemble!(A)
@@ -109,39 +82,24 @@ function assemble_system!(dm, petsclib, PetscScalar, PetscInt)
     return A, b
 end
 
-A, b = assemble_system!(dm, petsclib, PetscScalar, PetscInt)
+A, b = assemble_system(dm, PetscScalar)
 
 # ── Solve ────────────────────────────────────────────────────────────────────
-# Create KSP from the DM (enables geometric multigrid via DM hierarchy),
-# then set operators and disable DM-active mode (we supply our own A).
+# Create KSP from the DM (enables geometric multigrid via DM hierarchy), then
+# supply our own A and keep the DM for its geometry only. The options are
+# applied at the first solve, after the operators and the DM mode are set, so
+# command-line choices such as -pc_type mg take effect.
 ksp = PETSc.KSP(dm;
     ksp_type = "fgmres",
     ksp_monitor = true,
     ksp_converged_reason = true,
+    options_at = :first_solve,
     opts...)
-
-LibPETSc.KSPSetOperators(petsclib, ksp, A, A)
-LibPETSc.KSPSetDMActive(petsclib, ksp, LibPETSc.KSP_DMACTIVE_ALL, LibPETSc.PETSC_FALSE)  # PETSc >= 3.25 signature
-
-# Re-apply options so that command-line overrides (e.g. -pc_type mg) take effect
-# after KSPSetOperators / KSPSetDMActive
-if !isempty(opts)
-    popts = PETSc.PetscOptions(petsclib; opts...)
-    push!(popts)
-    LibPETSc.KSPSetFromOptions(petsclib, ksp)
-    pop!(popts)
-else
-    LibPETSc.KSPSetFromOptions(petsclib, ksp)
-end
+PETSc.set_operators!(ksp, A)
+PETSc.set_dm_active!(ksp, false)
 
 x = similar(b)
-PETSc.solve!(x, ksp, b)
-
-# ── Check convergence ────────────────────────────────────────────────────────
-reason = LibPETSc.KSPGetConvergedReason(petsclib, ksp)
-if Integer(reason) < 0
-    error("Linear solve failed with reason $reason")
-end
+PETSc.solve!(x, ksp, b; check = true)    # throws ConvergenceError if it diverges
 
 # ── Optional: print solution on rank 0 ───────────────────────────────────────
 if MPI.Comm_rank(comm) == 0

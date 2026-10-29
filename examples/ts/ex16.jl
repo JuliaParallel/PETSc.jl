@@ -20,16 +20,6 @@ using PETSc, MPI, Printf
 # with the special case `imex = false` folding `u2` back into the implicit
 # residual, matching the upstream example.
 
-mutable struct Ex16Context{
-    PetscLib <: PETSc.LibPETSc.PetscLibType,
-    PetscReal <: Real,
-}
-    petsclib::PetscLib
-    mu::PetscReal
-    imex::Bool
-    next_output::PetscReal
-end
-
 # In Julia it is common to load this file once and call `solve_ex16(...)`
 # repeatedly from the same interactive session. The custom `myark2` ARKIMEX
 # method therefore needs a small "register once per PETSc lifetime" guard so we
@@ -124,208 +114,101 @@ function ex16_register_myark2!(petsclib)
 end
 
 """
-    ex16_rhs!
+    ex16_rhs!(F, x, imex)
 
-Right-hand side callback for the explicit part of the van der Pol split.
+Right-hand side of the explicit part of the van der Pol split, filling `F`.
 """
-function ex16_rhs!(
-    ::PETSc.LibPETSc.CTS,
-    ::PETSc.LibPETSc.PetscReal,
-    x_ptr::PETSc.LibPETSc.CVec,
-    f_ptr::PETSc.LibPETSc.CVec,
-    ctx_ptr::Ptr{Cvoid},
-)::PETSc.LibPETSc.PetscErrorCode
-    ctx = unsafe_pointer_to_objref(ctx_ptr)::Ex16Context
-    petsclib = ctx.petsclib
-    x = PETSc.VecPtr(petsclib, x_ptr; own = false)
-    f = PETSc.VecPtr(petsclib, f_ptr; own = false)
-
+function ex16_rhs!(F, x, imex)
     PETSc.with_local_array!(
-        (x, f);
+        (x, F);
         read = (true, false),
         write = (false, true),
     ) do x_array, f_array
-        f_array[1] = ctx.imex ? x_array[2] : 0.0
+        f_array[1] = imex ? x_array[2] : 0.0
         f_array[2] = 0.0
     end
-
-    return PETSc.LibPETSc.PetscErrorCode(0)
-end
-
-const EX16_RHS_FUNCTION_PTR = @cfunction(
-    ex16_rhs!,
-    PETSc.LibPETSc.PetscErrorCode,
-    (
-        PETSc.LibPETSc.CTS,
-        PETSc.LibPETSc.PetscReal,
-        PETSc.LibPETSc.CVec,
-        PETSc.LibPETSc.CVec,
-        Ptr{Cvoid},
-    ),
-)
-
-"""
-    ex16_ifunction!
-
-Implicit residual callback for the van der Pol problem.
-"""
-function ex16_ifunction!(
-    ::PETSc.LibPETSc.CTS,
-    ::PETSc.LibPETSc.PetscReal,
-    x_ptr::PETSc.LibPETSc.CVec,
-    xdot_ptr::PETSc.LibPETSc.CVec,
-    f_ptr::PETSc.LibPETSc.CVec,
-    ctx_ptr::Ptr{Cvoid},
-)::PETSc.LibPETSc.PetscErrorCode
-    ctx = unsafe_pointer_to_objref(ctx_ptr)::Ex16Context
-    petsclib = ctx.petsclib
-    x = PETSc.VecPtr(petsclib, x_ptr; own = false)
-    xdot = PETSc.VecPtr(petsclib, xdot_ptr; own = false)
-    f = PETSc.VecPtr(petsclib, f_ptr; own = false)
-
-    PETSc.with_local_array!(
-        (x, xdot, f);
-        read = (true, true, false),
-        write = (false, false, true),
-    ) do x_array, xdot_array, f_array
-        f_array[1] = xdot_array[1] + (ctx.imex ? 0.0 : x_array[2])
-        f_array[2] =
-            xdot_array[2] - ctx.mu * ((1.0 - x_array[1] * x_array[1]) * x_array[2] - x_array[1])
-    end
-
-    return PETSc.LibPETSc.PetscErrorCode(0)
-end
-
-const EX16_IFUNCTION_PTR = @cfunction(
-    ex16_ifunction!,
-    PETSc.LibPETSc.PetscErrorCode,
-    (
-        PETSc.LibPETSc.CTS,
-        PETSc.LibPETSc.PetscReal,
-        PETSc.LibPETSc.CVec,
-        PETSc.LibPETSc.CVec,
-        PETSc.LibPETSc.CVec,
-        Ptr{Cvoid},
-    ),
-)
-
-# PETSc's IMEX TS interface does not ask for the Jacobian of the full ODE
-# right-hand side `u_t = f(u, t)`. It asks for the shifted Jacobian
-# corresponding to the implicit residual supplied via `TSSetIFunction`, with
-# the time-derivative contribution folded in through the scalar `a` passed to
-# `IJacobian`. In this example
-#   `G(u, t) = [u2, 0]`
-#   `F(u_t, u, t) = [u1_t + (imex ? 0 : u2),
-#                    u2_t - mu * ((1 - u1^2) * u2 - u1)]`
-# so the 2x2 entries assembled below match that residual, not the explicit
-# `RHSFunction` alone.
-function ex16_fill_ijacobian!(
-    A::PETSc.LibPETSc.PetscMat,
-    B::PETSc.LibPETSc.PetscMat,
-    a,
-    x1,
-    x2,
-    ctx::Ex16Context,
-)
-    PetscScalar = ctx.petsclib.PetscScalar
-    mu = ctx.mu
-
-    A[1, 1] = PetscScalar(a)
-    A[1, 2] = PetscScalar(ctx.imex ? 0.0 : 1.0)
-    A[2, 1] = PetscScalar(mu * (2.0 * x1 * x2 + 1.0))
-    A[2, 2] = PetscScalar(a - mu * (1.0 - x1 * x1))
-    PETSc.assemble!(A)
-
-    if B.ptr != A.ptr
-        B[1, 1] = PetscScalar(a)
-        B[1, 2] = PetscScalar(ctx.imex ? 0.0 : 1.0)
-        B[2, 1] = PetscScalar(mu * (2.0 * x1 * x2 + 1.0))
-        B[2, 2] = PetscScalar(a - mu * (1.0 - x1 * x1))
-        PETSc.assemble!(B)
-    end
-
     return nothing
 end
 
 """
-    ex16_ijacobian!
+    ex16_ifunction!(F, x, xdot, mu, imex)
 
-Implicit Jacobian callback corresponding to `ex16.c`.
+Implicit residual of the van der Pol problem, filling `F`.
 """
-function ex16_ijacobian!(
-    ::PETSc.LibPETSc.CTS,
-    ::PETSc.LibPETSc.PetscReal,
-    x_ptr::PETSc.LibPETSc.CVec,
-    ::PETSc.LibPETSc.CVec,
-    a::PETSc.LibPETSc.PetscReal,
-    A_ptr::PETSc.LibPETSc.CMat,
-    B_ptr::PETSc.LibPETSc.CMat,
-    ctx_ptr::Ptr{Cvoid},
-)::PETSc.LibPETSc.PetscErrorCode
-    ctx = unsafe_pointer_to_objref(ctx_ptr)::Ex16Context
-    petsclib = ctx.petsclib
-    x = PETSc.VecPtr(petsclib, x_ptr; own = false)
-    A = PETSc.LibPETSc.PetscMat(A_ptr, petsclib)
-    B = PETSc.LibPETSc.PetscMat(B_ptr, petsclib)
+function ex16_ifunction!(F, x, xdot, mu, imex)
+    PETSc.with_local_array!(
+        (x, xdot, F);
+        read = (true, true, false),
+        write = (false, false, true),
+    ) do x_array, xdot_array, f_array
+        f_array[1] = xdot_array[1] + (imex ? 0.0 : x_array[2])
+        f_array[2] =
+            xdot_array[2] - mu * ((1.0 - x_array[1] * x_array[1]) * x_array[2] - x_array[1])
+    end
+    return nothing
+end
 
+# PETSc's IMEX TS interface does not ask for the Jacobian of the full ODE
+# right-hand side `u_t = f(u, t)`. It asks for the shifted Jacobian
+# corresponding to the implicit residual supplied via `set_ifunction!`, with
+# the time-derivative contribution folded in through the scalar `a` passed to
+# the Jacobian callback. In this example
+#   `G(u, t) = [u2, 0]`
+#   `F(u_t, u, t) = [u1_t + (imex ? 0 : u2),
+#                    u2_t - mu * ((1 - u1^2) * u2 - u1)]`
+# so the 2x2 entries assembled below match that residual, not the explicit
+# right-hand side alone.
+function ex16_fill_ijacobian!(M, a, x1, x2, mu, imex, PetscScalar)
+    M[1, 1] = PetscScalar(a)
+    M[1, 2] = PetscScalar(imex ? 0.0 : 1.0)
+    M[2, 1] = PetscScalar(mu * (2.0 * x1 * x2 + 1.0))
+    M[2, 2] = PetscScalar(a - mu * (1.0 - x1 * x1))
+    PETSc.assemble!(M)
+    return nothing
+end
+
+"""
+    ex16_ijacobian!(A, P, x, a, mu, imex, PetscScalar)
+
+Implicit Jacobian corresponding to `ex16.c`, filling `A` and, when it is a
+different matrix, `P`.
+"""
+function ex16_ijacobian!(A, P, x, a, mu, imex, PetscScalar)
     x1, x2 = PETSc.with_local_array!(x; read = true, write = false) do x_array
         (x_array[1], x_array[2])
     end
 
-    ex16_fill_ijacobian!(A, B, a, x1, x2, ctx)
-    return PETSc.LibPETSc.PetscErrorCode(0)
+    ex16_fill_ijacobian!(A, a, x1, x2, mu, imex, PetscScalar)
+    A.ptr == P.ptr || ex16_fill_ijacobian!(P, a, x1, x2, mu, imex, PetscScalar)
+    return nothing
 end
 
-const EX16_IJACOBIAN_PTR = @cfunction(
-    ex16_ijacobian!,
-    PETSc.LibPETSc.PetscErrorCode,
-    (
-        PETSc.LibPETSc.CTS,
-        PETSc.LibPETSc.PetscReal,
-        PETSc.LibPETSc.CVec,
-        PETSc.LibPETSc.CVec,
-        PETSc.LibPETSc.PetscReal,
-        PETSc.LibPETSc.CMat,
-        PETSc.LibPETSc.CMat,
-        Ptr{Cvoid},
-    ),
-)
-
 """
-    ex16_monitor!
+    ex16_monitor!(petsclib, ts, step, t, x, next_output)
 
-Optional monitor callback that interpolates the TS solution at multiples of
-`0.1`, mirroring the upstream example.
+Optional monitor that interpolates the TS solution at multiples of `0.1`,
+mirroring the upstream example. `next_output` is a `Ref` holding the next
+multiple to print.
 """
-function ex16_monitor!(
-    ts_ptr::PETSc.LibPETSc.CTS,
-    step::PETSc.LibPETSc.PetscInt,
-    t::PETSc.LibPETSc.PetscReal,
-    x_ptr::PETSc.LibPETSc.CVec,
-    ctx_ptr::Ptr{Cvoid},
-)::PETSc.LibPETSc.PetscErrorCode
-    ctx = unsafe_pointer_to_objref(ctx_ptr)::Ex16Context
-    petsclib = ctx.petsclib
-    ts = PETSc.LibPETSc.TS(ts_ptr, petsclib)
-    x = PETSc.VecPtr(petsclib, x_ptr; own = false)
-    dt = PETSc.LibPETSc.TSGetTimeStep(petsclib, ts)
-    tfinal = PETSc.LibPETSc.TSGetMaxTime(petsclib, ts)
+function ex16_monitor!(petsclib, ts, step, t, x, next_output)
+    dt = PETSc.timestep(ts)
+    tfinal = PETSc.max_time(ts)
 
-    while ctx.next_output <= t && ctx.next_output <= tfinal
-        # `x` is a borrowed `VecPtr` from PETSc's callback interface, so create
-        # an owning work vector explicitly instead of calling `similar(x)`.
+    while next_output[] <= t && next_output[] <= tfinal
+        # `x` is borrowed from PETSc, so create an owning work vector
+        # explicitly instead of calling `similar(x)`.
         interpolated_x = PETSc.PetscVec(petsclib, length(x))
         try
             PETSc.LibPETSc.TSInterpolate(
                 petsclib,
                 ts,
-                petsclib.PetscReal(ctx.next_output),
+                petsclib.PetscReal(next_output[]),
                 interpolated_x,
             )
             PETSc.with_local_array!(interpolated_x; read = true, write = false) do x_array
                 @printf(
                     "[%.1f] %d TS %.6f (dt = %.6f) X % 12.6e % 12.6e\n",
-                    ctx.next_output,
+                    next_output[],
                     step,
                     t,
                     dt,
@@ -337,23 +220,11 @@ function ex16_monitor!(
             PETSc.destroy!(interpolated_x)
         end
 
-        ctx.next_output += 0.1
+        next_output[] += 0.1
     end
 
-    return PETSc.LibPETSc.PetscErrorCode(0)
+    return nothing
 end
-
-const EX16_MONITOR_PTR = @cfunction(
-    ex16_monitor!,
-    PETSc.LibPETSc.PetscErrorCode,
-    (
-        PETSc.LibPETSc.CTS,
-        PETSc.LibPETSc.PetscInt,
-        PETSc.LibPETSc.PetscReal,
-        PETSc.LibPETSc.CVec,
-        Ptr{Cvoid},
-    ),
-)
 
 function ex16_create_jacobian_template(petsclib)
     PetscScalar = petsclib.PetscScalar
@@ -361,7 +232,7 @@ function ex16_create_jacobian_template(petsclib)
     jac[1, [1, 2]] = PetscScalar.([1.0, 1.0])
     jac[2, [1, 2]] = PetscScalar.([1.0, 1.0])
     PETSc.assemble!(jac)
-    PETSc.LibPETSc.MatZeroEntries(petsclib, jac)
+    fill!(jac, 0)
     return jac
 end
 
@@ -428,137 +299,85 @@ function solve_ex16(;
         imex,
         monitor,
     )
-
-    ts = PETSc.LibPETSc.TS(petsclib)
-    u = PETSc.LibPETSc.PetscVec(petsclib)
-    jac = PETSc.LibPETSc.PetscMat(petsclib)
-    current_time = petsclib.PetscReal(NaN)
-    steps = petsclib.PetscInt(-1)
-    solution = PetscScalar[]
-    ctx = Ex16Context(
-        petsclib,
-        runtime_options.mu,
-        runtime_options.imex,
-        petsclib.PetscReal(0),
-    )
-    petsc_options = PETSc.PetscOptions(petsclib; solver_options...)
-    pushed_options = false
+    mu = runtime_options.mu
+    imex = runtime_options.imex
 
     try
         ex16_register_myark2!(petsclib)
 
-        ts = PETSc.LibPETSc.TSCreate(petsclib, comm)
-        PETSc.LibPETSc.TSSetType(petsclib, ts, "beuler")
-        PETSc.LibPETSc.TSSetProblemType(petsclib, ts, PETSc.LibPETSc.TS_NONLINEAR)
+        return PETSc.with_destroy() do list
+            # The options are applied at the solve, after what is set below.
+            ts = PETSc.track!(list, PETSc.TS(petsclib, comm;
+                exact_final_time = PETSc.LibPETSc.TS_EXACTFINALTIME_STEPOVER,
+                solver_options...))
+            PETSc.set_type!(ts, :beuler)
+            PETSc.set_problem_type!(ts, PETSc.LibPETSc.TS_NONLINEAR)
 
-        u = PETSc.PetscVec(petsclib, 2)
-        ex16_initial_condition!(u, runtime_options.mu)
-        PETSc.LibPETSc.TSSetSolution(petsclib, ts, u)
+            u = PETSc.track!(list, PETSc.PetscVec(petsclib, 2))
+            ex16_initial_condition!(u, mu)
+            PETSc.set_solution!(ts, u)
 
-        jac = ex16_create_jacobian_template(petsclib)
+            jac = PETSc.track!(list, ex16_create_jacobian_template(petsclib))
 
-        callback_ctx_ptr = pointer_from_objref(ctx)
-        GC.@preserve ctx begin
-            PETSc.LibPETSc.TSSetRHSFunction(
-                petsclib,
-                ts,
-                nothing,
-                EX16_RHS_FUNCTION_PTR,
-                callback_ctx_ptr,
-            )
-            PETSc.LibPETSc.TSSetIFunction(
-                petsclib,
-                ts,
-                nothing,
-                EX16_IFUNCTION_PTR,
-                callback_ctx_ptr,
-            )
-            PETSc.LibPETSc.TSSetIJacobian(
-                petsclib,
-                ts,
-                jac,
-                jac,
-                EX16_IJACOBIAN_PTR,
-                callback_ctx_ptr,
-            )
-            PETSc.LibPETSc.TSSetMaxTime(petsclib, ts, petsclib.PetscReal(final_time))
-            PETSc.LibPETSc.TSSetExactFinalTime(
-                petsclib,
-                ts,
-                PETSc.LibPETSc.TS_EXACTFINALTIME_STEPOVER,
-            )
-            PETSc.LibPETSc.TSSetTimeStep(petsclib, ts, petsclib.PetscReal(dt))
+            PETSc.set_rhs_function!(ts) do F, _ts, _t, x
+                ex16_rhs!(F, x, imex)
+            end
+            PETSc.set_ifunction!(ts) do F, _ts, _t, x, xdot
+                ex16_ifunction!(F, x, xdot, mu, imex)
+            end
+            PETSc.set_ijacobian!(ts, jac) do A, P, _ts, _t, x, _xdot, a
+                ex16_ijacobian!(A, P, x, a, mu, imex, PetscScalar)
+            end
+            PETSc.set_max_time!(ts, final_time)
+            PETSc.set_timestep!(ts, dt)
 
             if runtime_options.monitor
-                PETSc.LibPETSc.TSMonitorSet(
-                    petsclib,
-                    ts,
-                    EX16_MONITOR_PTR,
-                    callback_ctx_ptr,
-                )
+                next_output = Ref(petsclib.PetscReal(0))
+                PETSc.set_monitor!(ts) do ts, step, t, x
+                    ex16_monitor!(petsclib, ts, step, t, x, next_output)
+                end
             end
 
-            push!(petsc_options)
-            pushed_options = true
-            PETSc.LibPETSc.TSSetFromOptions(petsclib, ts)
-            pop!(petsc_options)
-            pushed_options = false
+            PETSc.solve!(u, ts; check = true)
 
-            PETSc.LibPETSc.TSSolve(petsclib, ts, u)
-        end
+            current_time = PETSc.solve_time(ts)
+            steps = PETSc.step_number(ts)
+            solution = copy(u[:])
 
-        current_time = PETSc.LibPETSc.TSGetSolveTime(petsclib, ts)
-        steps = PETSc.LibPETSc.TSGetStepNumber(petsclib, ts)
-        solution = copy(u[:])
+            if verbose
+                if abs(current_time - final_time) > 100 * eps(petsclib.PetscReal)
+                    @printf(
+                        "Note: prescribed final time %.16g differs from actual final time %.16g\n",
+                        final_time,
+                        current_time,
+                    )
+                end
 
-        if verbose
-            if abs(current_time - final_time) > 100 * eps(petsclib.PetscReal)
+                ts_type = PETSc.type_name(ts)
+                @printf("TS type: %s\n", ts_type)
+                if ts_type == :arkimex
+                    @printf("ARKIMEX type: %s\n", PETSc.LibPETSc.TSARKIMEXGetType(petsclib, ts))
+                end
+                @printf("mu: %.16g\n", mu)
+                @printf("IMEX split: %s\n", imex ? "true" : "false")
+                @printf("Final time: %.16g\n", current_time)
+                @printf("Steps: %d\n", steps)
                 @printf(
-                    "Note: prescribed final time %.16g differs from actual final time %.16g\n",
-                    final_time,
-                    current_time,
+                    "Final solution: [% .16e, % .16e]\n",
+                    solution[1],
+                    solution[2],
                 )
             end
 
-            ts_type = PETSc.LibPETSc.TSGetType(petsclib, ts)
-            @printf("TS type: %s\n", ts_type)
-            if ts_type == "arkimex"
-                @printf("ARKIMEX type: %s\n", PETSc.LibPETSc.TSARKIMEXGetType(petsclib, ts))
-            end
-            @printf("mu: %.16g\n", runtime_options.mu)
-            @printf("IMEX split: %s\n", runtime_options.imex ? "true" : "false")
-            @printf("Final time: %.16g\n", current_time)
-            @printf("Steps: %d\n", steps)
-            @printf(
-                "Final solution: [% .16e, % .16e]\n",
-                solution[1],
-                solution[2],
+            return (
+                final_time = current_time,
+                steps = steps,
+                solution = solution,
+                mu = mu,
+                imex = imex,
             )
         end
-
-        return (
-            final_time = current_time,
-            steps = steps,
-            solution = solution,
-            mu = runtime_options.mu,
-            imex = runtime_options.imex,
-        )
     finally
-        if pushed_options
-            pop!(petsc_options)
-        end
-        if petsc_options.ptr != C_NULL
-            PETSc.destroy!(petsc_options)
-        end
-        if jac.ptr != C_NULL
-            PETSc.destroy!(jac)
-        end
-        if u.ptr != C_NULL
-            PETSc.destroy!(u)
-        end
-        if ts.ptr != C_NULL
-            PETSc.LibPETSc.TSDestroy(petsclib, ts)
-        end
         if did_initialize && finalize_petsc
             PETSc.finalize(petsclib)
         end

@@ -26,6 +26,9 @@ If `own` is `true` a finalizer is set on the matrix, but only on a serial
 communicator, since `MatDestroy` is collective and a GC finalizer runs at an
 arbitrary point. If `own` is `false`, the default, the handle belongs to PETSc and `destroy!`
 is a no-op, leaving the wrapper usable.
+
+Calling `MatPtr` is deprecated and goes in v0.6: wrap a raw handle with
+[`PetscMat(petsclib, ptr; own)`](@ref LibPETSc.PetscMat(::PetscLibType, ::CMat)).
 """
 mutable struct MatPtr{PetscLib} <:
                AbstractPetscMat{PetscLib}
@@ -33,11 +36,12 @@ mutable struct MatPtr{PetscLib} <:
     age::Int
     own::Bool
 end
-function MatPtr(
-    petsclib::PetscLib,
-    ptr::CMat;
-    own::Bool = false,
-) where {PetscLib <: PetscLibType}
+function MatPtr(petsclib::PetscLibType, ptr::CMat; own::Bool = false)
+    @warn "MatPtr goes in v0.6: wrap a raw Mat with PetscMat(petsclib, ptr; own)" maxlog = 1
+    return mat_from_ptr(petsclib, ptr, own)
+end
+
+function mat_from_ptr(petsclib::PetscLib, ptr::CMat, own::Bool) where {PetscLib <: PetscLibType}
     m = MatPtr{PetscLib}(ptr, petsclib.age, own)
     # Short-circuits on a borrowed handle, which is the hot path: callbacks wrap
     # PETSc-owned matrices on every invocation and never need the communicator.
@@ -48,6 +52,18 @@ function MatPtr(
 end
 MatPtr(::Type{PetscLib}, x...; kwargs...) where {PetscLib <: PetscLibType} =
     MatPtr(getlib(PetscLib), x...; kwargs...)
+
+"""
+    PetscMat(petsclib, ptr::CMat; own::Bool = false)
+
+Wrap a raw PETSc `Mat` handle.
+
+`own = false` is the borrowed case of docs/src/man/naming.md §3.3: no finalizer
+is attached and `destroy!` is a no-op. The result is a [`MatPtr`](@ref), the
+wrapper type that carries the ownership flag.
+"""
+LibPETSc.PetscMat(petsclib::PetscLibType, ptr::CMat; own::Bool = false) =
+    mat_from_ptr(petsclib, ptr, own)
 
 Base.size(m::AbstractPetscMat{PetscLib}) where {PetscLib} = LibPETSc.MatGetSize(PetscLib,m)
 Base.length(m::AbstractPetscMat{PetscLib}) where {PetscLib} = prod(size(m))

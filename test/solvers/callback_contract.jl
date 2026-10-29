@@ -19,7 +19,7 @@ function square_snes(petsclib, comm, residual_return, jacobian_return, test = no
         fx[1] = x[1]^2 - 4
         return residual_return
     end
-    J = PETSc.LibPETSc.MatCreateSeqDense(petsclib, comm, PetscInt(1), PetscInt(1), zeros(PetscScalar, 1))
+    J = PETSc.PetscMat(petsclib, zeros(PetscScalar, 1, 1))
     PETSc.set_snes_jacobian!(snes, J) do J, _snes, x
         J[1, 1] = 2x[1]
         PETSc.assemble!(J)

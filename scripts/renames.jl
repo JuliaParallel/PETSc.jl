@@ -611,13 +611,13 @@ const EXTRA_SHIMS = NamedTuple{(:name, :code, :test), Tuple{String, String, Stri
         code = """
         # §9: `own` has a default, so it is a keyword, as in `narrow(dm; own)`.
         function VecPtr(petsclib::LibPETSc.PetscLibType, ptr::CVec, own::Bool)
-            @warn "VecPtr(petsclib, ptr, own) is deprecated, use VecPtr(petsclib, ptr; own)" maxlog = 1
-            return VecPtr(petsclib, ptr; own)
+            @warn "VecPtr(petsclib, ptr, own) is deprecated, use PetscVec(petsclib, ptr; own)" maxlog = 1
+            return LibPETSc.PetscVec(petsclib, ptr; own)
         end
 
         function MatPtr(petsclib::LibPETSc.PetscLibType, ptr::CMat, own::Bool)
-            @warn "MatPtr(petsclib, ptr, own) is deprecated, use MatPtr(petsclib, ptr; own)" maxlog = 1
-            return MatPtr(petsclib, ptr; own)
+            @warn "MatPtr(petsclib, ptr, own) is deprecated, use PetscMat(petsclib, ptr; own)" maxlog = 1
+            return LibPETSc.PetscMat(petsclib, ptr; own)
         end
 
         function LibPETSc.PetscVec(petsclib::LibPETSc.PetscLibType, ptr::CVec, own::Bool)
@@ -975,6 +975,7 @@ const INTERNAL = Set{Symbol}([
     :audit_callee,
     :audit_argnames,
     :audit_isbroadcast,
+    :audit_isborrowed,
     :audit_hasparseerror,
     :AUDIT_TYPE_CREATORS,
     :AUDIT_NAMED_CREATORS,
@@ -985,6 +986,8 @@ const INTERNAL = Set{Symbol}([
     :scaled_copy,
     :add_scaled,
     :warn_user_ctx,
+    :vec_from_ptr,
+    :mat_from_ptr,
 ])
 
 # ---------------------------------------------------------------------------

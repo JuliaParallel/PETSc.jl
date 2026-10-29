@@ -99,15 +99,16 @@ for petsclib in PETSc.petsclibs
         end
 
         # ── wrappers that borrow a handle instead of owning it ───────────────
-        # VecPtr and MatPtr wrap a pointer PETSc still owns, which is how the
-        # TS and SNES callbacks hand their arguments to Julia. Destroying one of
+        # `PetscVec(petsclib, ptr; own = false)` and the `PetscMat` one wrap a
+        # pointer PETSc still owns, which is how the TS and SNES callbacks hand
+        # their arguments to Julia. Destroying one of
         # those frees an object the solver is still using, so `destroy!` consults
         # `own` and leaves the wrapper untouched.
         @testset "borrowed handles" begin
             PETSc.initialize(petsclib)
 
             v = PETSc.PetscVec(petsclib, PetscScalar[1, 2, 3, 4])
-            borrowed_v = PETSc.VecPtr(petsclib, v.ptr; own = false)
+            borrowed_v = PETSc.PetscVec(petsclib, v.ptr; own = false)
             @test PETSc.owns(v)
             @test !PETSc.owns(borrowed_v)
             @test PETSc.destroy!(borrowed_v) === nothing
@@ -115,7 +116,7 @@ for petsclib in PETSc.petsclibs
             @test PETSc.LibPETSc.VecGetSize(petsclib, v) == 4
 
             m = PETSc.PetscMat(petsclib, 4, 4, 1)
-            borrowed_m = PETSc.MatPtr(petsclib, m.ptr; own = false)
+            borrowed_m = PETSc.PetscMat(petsclib, m.ptr; own = false)
             @test !PETSc.owns(borrowed_m)
             @test PETSc.destroy!(borrowed_m) === nothing
             @test borrowed_m.ptr == m.ptr
@@ -169,7 +170,7 @@ for petsclib in PETSc.petsclibs
             PETSc.finalize(petsclib)
         end
 
-        # ── an owning VecPtr still destroys ──────────────────────────────────
+        # ── an owning raw-pointer wrapper still destroys ─────────────────────
         # It records an age like every other wrapper, so `isdestroyable` reads
         # the field instead of throwing on a type that never had one.
         @testset "owned raw pointer" begin
@@ -179,7 +180,7 @@ for petsclib in PETSc.petsclibs
             raw = PETSc.LibPETSc.VecCreateSeq(
                 petsclib, PETSc.LibPETSc.PETSC_COMM_SELF, PetscInt(4),
             )
-            owned = PETSc.VecPtr(petsclib, raw.ptr; own = true)
+            owned = PETSc.PetscVec(petsclib, raw.ptr; own = true)
             @test owned.age == libage
             @test PETSc.owns(owned)
             @test PETSc.isdestroyable(owned, typeof(petsclib))
@@ -188,7 +189,7 @@ for petsclib in PETSc.petsclibs
             @test owned.ptr == C_NULL
             @test PETSc.destroy!(owned) === nothing
 
-            raw.ptr = C_NULL  # the VecPtr freed it; keep the finalizer off it
+            raw.ptr = C_NULL  # the wrapper freed it; keep the finalizer off it
             PETSc.finalize(petsclib)
         end
 

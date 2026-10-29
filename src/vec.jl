@@ -35,6 +35,9 @@ If `own` is `true` a finalizer is set on the vector, but only on a serial
 communicator, since `VecDestroy` is collective and a GC finalizer runs at an
 arbitrary point. If `own` is `false`, the default, the handle belongs to PETSc and `destroy!`
 is a no-op, leaving the wrapper usable.
+
+Calling `VecPtr` is deprecated and goes in v0.6: wrap a raw handle with
+[`PetscVec(petsclib, ptr; own)`](@ref LibPETSc.PetscVec(::PetscLibType, ::CVec)).
 """
 mutable struct VecPtr{PetscLib} <:
                AbstractPetscVec{PetscLib}
@@ -42,11 +45,12 @@ mutable struct VecPtr{PetscLib} <:
     age::Int
     own::Bool
 end
-function VecPtr(
-    petsclib::PetscLib,
-    ptr::CVec;
-    own::Bool = false,
-) where {PetscLib <: PetscLibType}
+function VecPtr(petsclib::PetscLibType, ptr::CVec; own::Bool = false)
+    @warn "VecPtr goes in v0.6: wrap a raw Vec with PetscVec(petsclib, ptr; own)" maxlog = 1
+    return vec_from_ptr(petsclib, ptr, own)
+end
+
+function vec_from_ptr(petsclib::PetscLib, ptr::CVec, own::Bool) where {PetscLib <: PetscLibType}
     v = VecPtr{PetscLib}(ptr, petsclib.age, own)
     # Short-circuits on a borrowed handle, which is the hot path: callbacks wrap
     # PETSc-owned vectors on every invocation and never need the communicator.
@@ -69,7 +73,7 @@ is attached and `destroy!` is a no-op. The result is a [`VecPtr`](@ref), the
 wrapper type that carries the ownership flag.
 """
 LibPETSc.PetscVec(petsclib::PetscLibType, ptr::CVec; own::Bool = false) =
-    VecPtr(petsclib, ptr; own)
+    vec_from_ptr(petsclib, ptr, own)
 
 """
     PetscVec(v::AbstractPetscVec)
@@ -285,10 +289,13 @@ end
 
 Whether every entry of `v` is approximately equal to the matching entry of `w`, with
 the keywords of `isapprox` for numbers applied entry by entry. Unlike `isapprox` on two
-Julia arrays, this does not compare the norm of the difference.
+Julia arrays, this does not compare the norm of the difference. It warns once: from v0.6 it
+compares norms, ‖v − w‖ ≤ max(atol, rtol·max(‖v‖, ‖w‖)), as for Julia arrays.
 """
-Base.isapprox(v::AbstractPetscVec{PetscLib}, w::AbstractPetscVec{PetscLib}; kwargs...) where {PetscLib} =
-    all(isapprox.(v[:], w[:]; kwargs...))
+function Base.isapprox(v::AbstractPetscVec{PetscLib}, w::AbstractPetscVec{PetscLib}; kwargs...) where {PetscLib}
+    @warn "isapprox on two PetscVecs compares entry by entry; from v0.6 it compares norms as for Julia arrays, ‖v - w‖ ≤ max(atol, rtol * max(‖v‖, ‖w‖))" maxlog = 1
+    return all(isapprox.(v[:], w[:]; kwargs...))
+end
 
 function Base.setindex!(v::AbstractPetscVec{PetscLib}, val, i::Integer) where {PetscLib}
     PetscInt = inttype(PetscLib)

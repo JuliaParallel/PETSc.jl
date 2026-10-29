@@ -47,6 +47,7 @@ These change what working code does or remove a name. The ones marked "warns" pr
 
 - CUDA: `with_local_arrays!` with one Vec on the host and the other on the device threw a `MethodError`, and arrays went back to PETSc before CUDA.jl's kernels on them had finished unless one was a host copy. Both now work as with AMDGPU: the host Vec is copied to the device and back, and the device is synchronized before every hand-back. Not tested on an NVIDIA GPU.
 - `examples/dmda/ex19.jl` runs on the GPU again, with CUDA or HIP (`const gpu = :cuda` or `:hip`). Its GPU branch passed a raw pointer to `MatSetValuesCOO`, which takes a `Vector`, and its residual got a host and a device array on coarser multigrid levels.
+- `LibPETSc.PetscGetArgs`, `PetscGetArguments`, `PetscStrToArray`, `PetscFunctionListGet` and `PetscViewerBinaryReadStringArray` return a `Vector{String}`. They passed one `char **` where PETSc takes a `char ***`, so they returned a wrong string or crashed. `PetscStrArrayallocpy`, `PetscStrArrayDestroy`, `PetscStrNArrayallocpy`, `PetscStrNArrayDestroy` and `PetscOptionsInsert` still take a `char ***` or `char **` as one string and are not usable.
 - `audit_file` no longer reports `PetscVec(petsclib, ptr; own = false)` or `PetscMat(…; own = false)` as a leak: a borrowed handle has nothing to destroy.
 
 ## v0.5.4

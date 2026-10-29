@@ -98,6 +98,7 @@ end
 
 if selected("lowlevel")
     include("lowlevel/readers.jl")             # LibPETSc readers return plain values
+    include("lowlevel/string_arrays.jl")       # char *** out-parameters return Vector{String}
     include("lowlevel/wrapper_signatures.jl")  # wrapper arguments take the abstract types
     include("lowlevel/wrapper_quality.jl")     # every generated method infers a concrete return type; no allocations
     include("lowlevel/wrapper_leaks.jl")       # repeated create/destroy and Get/Restore pairs do not grow memory

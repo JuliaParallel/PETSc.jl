@@ -4188,81 +4188,94 @@ end
 	return nothing
 end 
 
+# override for PetscGetArgs; C signature: PetscGetArgs(int* argc, char*** args)
 """
-	argc::Cint,args::String = PetscGetArgs(petsclib::PetscLibType) 
+	argc::Cint,args::Vector{String} = PetscGetArgs(petsclib::PetscLibType) 
 Allows you to access the raw command line arguments anywhere
-after `PetscInitialize()` is called but before `PetscFinalize()`.
+after PetscInitialize() is called but before `PetscFinalize()`.
 
 Not Collective, No Fortran Support
 
 Output Parameters:
-- `argc` - count of the number of command line arguments
+- `argc` - count of number of command line arguments
 - `args` - the command line arguments
 
 Level: intermediate
+
+Note:
+The arguments are copied into Julia `String`s. PETSc keeps ownership of its own copy, which is not freed here.
 
 See also: `PetscFinalize()`, `PetscInitializeFortran()`, `PetscGetArguments()`, `PetscInitialize()`
 
 # External Links
 $(_doc_external("Sys/PetscGetArgs"))
 """
-function PetscGetArgs(petsclib::PetscLibType)
-    throw(MethodError(PetscGetArgs, (petsclib, )))
-end
+function PetscGetArgs(petsclib::PetscLibType) end
 
 @for_petsc function PetscGetArgs(petsclib::$UnionPetscLib)
 	argc_ = Ref{Cint}()
-	args_ = Ref{Ptr{Cchar}}()
+	args_ = Ref{Ptr{Ptr{Cchar}}}(C_NULL)
 
     @chk ccall(
                (:PetscGetArgs, $petsc_library),
                PetscErrorCode,
-               (Ptr{Cint}, Ptr{Ptr{Cchar}}),
+               (Ptr{Cint}, Ptr{Ptr{Ptr{Cchar}}}),
                argc_, args_,
               )
 
 	argc = argc_[]
-	args = args_[] == C_NULL ? "" : unsafe_string(args_[])
+	# PETSc keeps ownership of its copy of argv
+	args = String[unsafe_string(unsafe_load(args_[], i)) for i in 1:(args_[] == C_NULL ? 0 : argc)]
 
 	return argc,args
-end 
-
+end
+# override for PetscGetArguments; C signature: PetscGetArguments(char*** args)
 """
-	args::String = PetscGetArguments(petsclib::PetscLibType) 
-Allows you to access the command line arguments anywhere
-after `PetscInitialize()` is called but before `PetscFinalize()`.
+	args::Vector{String} = PetscGetArguments(petsclib::PetscLibType) 
+Gets the command line arguments, without the program name.
 
 Not Collective, No Fortran Support
 
 Output Parameter:
 - `args` - the command line arguments
 
-Level: intermediate
+Level: developer
 
-See also: `PetscFinalize()`, `PetscInitializeFortran()`, `PetscGetArgs()`, `PetscFreeArguments()`, `PetscInitialize()`
+Note:
+The arguments are copied into Julia `String`s and the C memory is freed here. `PetscFreeArguments()` is not needed (and
+in PETSc 3.25 it frees every other string and then runs past the end of the array).
+
+See also: `PetscFinalize()`, `PetscInitializeFortran()`, `PetscGetArgs()`, `PetscInitialize()`
 
 # External Links
 $(_doc_external("Sys/PetscGetArguments"))
 """
-function PetscGetArguments(petsclib::PetscLibType)
-    throw(MethodError(PetscGetArguments, (petsclib, )))
-end
+function PetscGetArguments(petsclib::PetscLibType) end
 
 @for_petsc function PetscGetArguments(petsclib::$UnionPetscLib)
-	args_ = Ref{Ptr{Cchar}}()
+	args_ = Ref{Ptr{Ptr{Cchar}}}(C_NULL)
 
     @chk ccall(
                (:PetscGetArguments, $petsc_library),
                PetscErrorCode,
-               (Ptr{Ptr{Cchar}},),
+               (Ptr{Ptr{Ptr{Cchar}}},),
                args_,
               )
 
-	args = args_[] == C_NULL ? "" : unsafe_string(args_[])
+	# NULL-terminated array of malloc'd strings: copy, then free each string and the array
+	args = String[]
+	if args_[] != C_NULL
+		i = 1
+		while (arg_ = unsafe_load(args_[], i)) != C_NULL
+			push!(args, unsafe_string(arg_))
+			PetscFree(petsclib, arg_)
+			i += 1
+		end
+		PetscFree(petsclib, args_[])
+	end
 
 	return args
-end 
-
+end
 """
 	t::PetscLogDouble = PetscGetCPUTime(petsclib::PetscLibType) 
 Returns the CPU time in seconds used by the process.
@@ -13046,48 +13059,54 @@ end
 	return t
 end 
 
+# override for PetscStrToArray; C signature: PetscStrToArray(const char s[], char sp, int* argc, char*** args)
 """
-	argc::Cint,args::String = PetscStrToArray(petsclib::PetscLibType, s::String, sp::Cchar) 
-Separates a string by a character (for example ' ' or '\\n') and creates an array of strings
+	args::Vector{String} = PetscStrToArray(petsclib::PetscLibType, s::String, sp::Cchar) 
+Converts a string to an array of strings by splitting it at every `sp`.
 
-Not Collective; No Fortran Support
+Not Collective, No Fortran Support
 
 Input Parameters:
 - `s`  - pointer to string
 - `sp` - separator character
 
-Output Parameters:
-- `argc` - the number of entries in `args`
-- `args` - an array of the entries with a `NULL` at the end
+Output Parameter:
+- `args` - the pieces of `s`
 
 Level: intermediate
+
+Note:
+The pieces are copied into Julia `String`s and the C memory is freed here, so `PetscStrToArrayDestroy()` is not needed.
 
 See also: `PetscStrToArrayDestroy()`, `PetscToken`, `PetscTokenCreate()`
 
 # External Links
 $(_doc_external("Sys/PetscStrToArray"))
 """
-function PetscStrToArray(petsclib::PetscLibType, s::String, sp::Cchar)
-    throw(MethodError(PetscStrToArray, (petsclib, s, sp)))
-end
+function PetscStrToArray(petsclib::PetscLibType, s::String, sp::Cchar) end
 
 @for_petsc function PetscStrToArray(petsclib::$UnionPetscLib, s::String, sp::Cchar )
 	argc_ = Ref{Cint}()
-	args_ = Ref{Ptr{Cchar}}()
+	args_ = Ref{Ptr{Ptr{Cchar}}}(C_NULL)
 
     @chk ccall(
                (:PetscStrToArray, $petsc_library),
                PetscErrorCode,
-               (Ptr{Cchar}, Cchar, Ptr{Cint}, Ptr{Ptr{Cchar}}),
+               (Ptr{Cchar}, Cchar, Ptr{Cint}, Ptr{Ptr{Ptr{Cchar}}}),
                s, sp, argc_, args_,
               )
 
-	argc = argc_[]
-	args = args_[] == C_NULL ? "" : unsafe_string(args_[])
+	# PETSc allocates with C malloc here, not PetscMalloc, so PetscStrToArrayDestroy (C free) releases it
+	args = String[unsafe_string(unsafe_load(args_[], i)) for i in 1:(args_[] == C_NULL ? 0 : argc_[])]
+	args_[] == C_NULL || @chk ccall(
+		(:PetscStrToArrayDestroy, $petsc_library),
+		PetscErrorCode,
+		(Cint, Ptr{Ptr{Cchar}}),
+		argc_[], args_[],
+	)
 
-	return argc,args
-end 
-
+	return args
+end
 """
 	args::String = PetscStrToArrayDestroy(petsclib::PetscLibType, argc::Cint) 
 Frees array created with `PetscStrToArray()`.

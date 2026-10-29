@@ -1,5 +1,7 @@
 # Tao (Optimization) - Low-level Interface
 
+Tao has no high-level interface in PETSc.jl beyond the `Tao` handle and `destroy!`: call the `LibPETSc.Tao*` functions below directly.
+
 The Tao (Toolkit for Advanced Optimization) component provides methods for solving optimization problems, including unconstrained minimization, bound-constrained optimization, and constrained optimization.
 
 ## Overview

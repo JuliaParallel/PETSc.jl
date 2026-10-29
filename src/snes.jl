@@ -193,6 +193,7 @@ function (w::SNESSetFunctionFn{PetscLib})(
 
     return run_callback("residual f!") do
         if Base.applicable(snes.f!, fx, actual_snes, x, snes.user_ctx)
+            warn_user_ctx(snes.user_ctx)
             snes.f!(fx, actual_snes, x, snes.user_ctx)
         else
             snes.f!(fx, actual_snes, x)
@@ -237,11 +238,10 @@ PETSc Jacobian (approximation).
 If `J ≠ P` then a call to `updateJ!(J, P, snes, x)` should set the elements of
 the PETSc Jacobian (approximation) and preconditioning matrix `P`.
 
-If a user context is set with [`set_user_ctx!`](@ref), then `updateJ!` may optionally accept that as an
-additional last argument:
-
-- `updateJ!(J, snes, x, user_ctx)` when `J == P`
-- `updateJ!(J, P, snes, x, user_ctx)` when `J ≠ P`
+Deprecated: if a user context is set with [`set_user_ctx!`](@ref), `updateJ!` may
+accept it as an additional last argument (`updateJ!(J, snes, x, user_ctx)` when
+`J == P`, `updateJ!(J, P, snes, x, user_ctx)` when `J ≠ P`). Capture the context
+in a closure instead; the trailing form goes in v0.6.
 
 $(doc_callback())
 
@@ -274,12 +274,14 @@ function (w::SNESSetJacobianFn{PetscLib})(
     return run_callback("Jacobian updateJ!") do
         if same_mat
             if Base.applicable(snes.updateJ!, A, actual_snes, x, snes.user_ctx)
+                warn_user_ctx(snes.user_ctx)
                 snes.updateJ!(A, actual_snes, x, snes.user_ctx)
             else
                 snes.updateJ!(A, actual_snes, x)
             end
         else
             if Base.applicable(snes.updateJ!, A, P, actual_snes, x, snes.user_ctx)
+                warn_user_ctx(snes.user_ctx)
                 snes.updateJ!(A, P, actual_snes, x, snes.user_ctx)
             else
                 snes.updateJ!(A, P, actual_snes, x)
@@ -379,8 +381,15 @@ end
     user_ctx(snes::AbstractSNES)
 
 Whatever was stored with [`set_user_ctx!`](@ref), or `nothing`.
+
+Deprecated: a closure carries the context without this extra argument, and the
+callbacks then have one calling form. `user_ctx` and the trailing-context
+callback forms go in v0.6.
 """
-user_ctx(snes::AbstractSNES) = snes.user_ctx
+function user_ctx(snes::AbstractSNES)
+    @warn "user_ctx is deprecated and goes in v0.6: capture the context in a closure" maxlog = 1
+    return snes.user_ctx
+end
 
 """
     set_user_ctx!(snes::AbstractSNES, ctx)
@@ -388,8 +397,13 @@ user_ctx(snes::AbstractSNES) = snes.user_ctx
 Attach `ctx` to `snes`, to be handed back as the last argument of the residual
 and Jacobian callbacks that have a method accepting it. It is kept with the
 PETSc object, so a borrowed handle such as `snes(ts)` sees it too. Returns `snes`.
+
+Deprecated: a closure carries the context without this extra argument, and the
+callbacks then have one calling form. `user_ctx` and the trailing-context
+callback forms go in v0.6.
 """
 function set_user_ctx!(snes::AbstractSNES, ctx)
+    @warn "set_user_ctx! is deprecated and goes in v0.6: capture the context in a closure" maxlog = 1
     snes.user_ctx = ctx
     return snes
 end

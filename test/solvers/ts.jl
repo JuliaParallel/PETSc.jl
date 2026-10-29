@@ -304,26 +304,22 @@ MPI.Initialized() || MPI.Init()
             PETSc.destroy!(J)
         end
 
-        @testset "user context" begin
+        @testset "a callback captures its data" begin
             dt, n = 0.1, 10
             ts = PETSc.TS(petsclib, comm)
             PETSc.set_type!(ts, :beuler)
             PETSc.set_adapt_type!(ts, :none)
 
-            @test PETSc.user_ctx(ts) === nothing
-            @test PETSc.set_user_ctx!(ts, (rate = PetscReal(2),)) === ts
-            @test PETSc.user_ctx(ts).rate == 2
+            params = (rate = PetscReal(2),)
 
             u = PETSc.PetscVec(petsclib, 1)
             u[1] = PetscScalar(1)
             PETSc.assemble!(u)
 
             seen = Ref(false)
-            # The method taking a trailing context is the one that must be
-            # picked, since `user_ctx` is set.
-            PETSc.set_rhs_function!(ts) do F, _ts, _t, x, ctx
+            PETSc.set_rhs_function!(ts) do F, _ts, _t, x
                 seen[] = true
-                F[1] = -ctx.rate * x[1]
+                F[1] = -params.rate * x[1]
                 return 0
             end
 

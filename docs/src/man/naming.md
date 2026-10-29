@@ -856,7 +856,7 @@ Each pair collapses to one name, so two shims point at each replacement.
 | `snes_set_jacobian_null_space!` | `set_jacobian_nullspace!` |
 | `fe_compose_constant_null_space!` | `compose_constant_nullspace!` |
 | `add_boundary!`, `add_natural_boundary!` | unchanged |
-| `create_split_boundary_labels!` | unchanged |
+| `create_split_boundary_labels!` | unchanged; deprecated in 0.5.5, removed in 0.6 (a copy is in examples/dmplex/ex69.jl) |
 | `set_constants!`, `set_exact_solution!` | unchanged |
 | `set_residual!`, `set_jacobian!`, `set_jacobian_preconditioner!` | unchanged |
 | `@petsc_residual_fn`, `@petsc_jacobian_fn` | `@residual_fn`, `@jacobian_fn` |
@@ -897,7 +897,7 @@ They are listed because the rename table is the register of what is public, not 
 | `set_rhs_function!`, `set_rhs_jacobian!` | callback setters, callback first per [§8.1](#8.1-Callbacks-come-first) |
 | `set_ifunction!`, `set_ijacobian!` | callback setters, likewise |
 | `set_monitor!` | callback setter, likewise |
-| `set_user_ctx!`, `user_ctx` | writer and reader |
+| `set_user_ctx!`, `user_ctx` | writer and reader; deprecated in 0.5.5, removed in 0.6 |
 | `set_solution!` | writer |
 | `set_time!`, `set_timestep!`, `set_max_time!`, `set_max_steps!` | writers |
 | `current_time`, `timestep`, `max_time`, `max_steps` | noun readers per [§3](#3.-Accessors-and-setters) |
@@ -1097,7 +1097,7 @@ The DMPlex pointwise functions (`@residual_fn` and the other macros) are exempt.
 - The callback is the setter's first argument ([§8.1](#8.1-Callbacks-come-first)).
 - A callback that fills an argument takes that argument first, then the object, then what it reads: `f!(F, snes, x)`, `updateJ!(J, P, snes, x)`, `apply!(y, pc, x)`, `f!(F, ts, t, u)`. A callback that only observes takes the object first: `monitor(ts, step, t, u)`, `test!(snes, it, xnorm, gnorm, fnorm)`.
 - A callback succeeds by returning and fails by throwing. Its return value is ignored, unless it carries a meaning its setter's docstring states, such as the convergence reason `test!` returns. In 0.5 a nonzero `Integer` return still fails the call, as the PETSc error code 0.5.0 read it as, and warns once; from v0.6 it is ignored like any other value. `return PetscInt(0)`, which 0.5.0 callbacks end in, keeps working throughout.
-- New callbacks take no trailing `user_ctx`: a closure captures what it needs. `SNES` and `TS` callbacks keep the optional trailing argument they have in 0.5.0.
+- New callbacks take no trailing `user_ctx`: a closure captures what it needs. `SNES` and `TS` callbacks keep the optional trailing argument they have in 0.5.0, deprecated in 0.5.5 and removed in 0.6.
 
 ### 18.6 Public surface
 

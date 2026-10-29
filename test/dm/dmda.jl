@@ -622,3 +622,41 @@ count_coarsen_hook(::Ptr{Cvoid}, ::Ptr{Cvoid}, ::Ptr{Cvoid}) = (coarsen_hook_cal
 end
 
 nothing
+
+@testset "star_fd_coloring and local_interior_linear_index" begin
+    comm = MPI.COMM_WORLD
+    B = PETSc.DM_BOUNDARY_NONE
+    for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
+        dmda(dims, st) = PETSc.DMDA(petsclib, comm, ntuple(_ -> B, length(dims)), dims, 2;
+                                    stencil_width = 1, stencil_type = st)
+
+        da = dmda((9, 8), :star)
+        c = PETSc.star_fd_coloring(da)
+        @test c.n_colors > 1
+        g = PETSc.global_vec(da)
+        @test c.n_local_dofs == length(PETSc.ownership_range(g))
+        foreach(PETSc.destroy!, (g, da))
+
+        for (dims, st, msg) in (((9,), :star, "2-D"), ((5, 4, 3), :star, "2-D"), ((9, 8), :box, "STAR"))
+            da = dmda(dims, st)
+            @test_throws ArgumentError PETSc.star_fd_coloring(da)
+            @test_throws msg PETSc.star_fd_coloring(da)
+            PETSc.destroy!(da)
+        end
+
+        # The owned entries of a local vector, in any dimension and stencil
+        for (dims, st) in (((17,), :star), ((9, 8), :star), ((9, 8), :box), ((6, 6, 5), :box))
+            da = dmda(dims, st)
+            g = PETSc.global_vec(da)
+            l = PETSc.local_vec(da)
+            r = PETSc.ownership_range(g)
+            g[r] = petsclib.PetscScalar.(r)
+            PETSc.assemble!(g)
+            PETSc.global_to_local!(l, da, g)
+            ind = PETSc.local_interior_linear_index(da)
+            @test PETSc.with_local_array!(a -> a[ind], l) == r
+            foreach(PETSc.destroy!, (g, l, da))
+        end
+    end
+end

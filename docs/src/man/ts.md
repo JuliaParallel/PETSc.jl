@@ -114,13 +114,13 @@ captures a pointer during precompilation and hands PETSc a stale one in every la
 
 ## Passing your own data
 
-Anything stored with [`PETSc.set_user_ctx!`](@ref) is handed back as a trailing argument, to whichever callbacks have a method that accepts one:
+A callback is a closure, so it carries your data itself:
 
 ```julia
-PETSc.set_user_ctx!(ts, (; viscosity = 1e-3))
+params = (; viscosity = 1e-3)
 
-PETSc.set_rhs_function!(ts) do F, ts, t, u, ctx
-    # ctx.viscosity is available here
+PETSc.set_rhs_function!(ts) do F, ts, t, u
+    # params.viscosity is available here
 end
 ```
 

@@ -292,6 +292,7 @@ end
 using MPI
 using PETSc
 using PETSc: LibPETSc
+include("vtk_tensor.jl")   # vtk_merge_tensor
 import Gmsh: gmsh
 using ForwardDiff
 using Printf
@@ -965,7 +966,7 @@ function save_solution_vtk(petsclib, comm, fname::AbstractString, dm, u, aux_vec
     PETSc.destroy!(dm_out)
 
     if MPI.Comm_rank(comm) == 0
-        PETSc.vtk_merge_tensor(fname, "strainrate", "tau")
+        vtk_merge_tensor(fname, "strainrate", "tau")
         println("VTK written to $fname (velocity, pressure, strainrate, tau, eps_II, tau_II, viscosity, phase)")
     end
     return nothing

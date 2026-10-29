@@ -1,5 +1,3 @@
-import .LibPETSc: AbstractPC, CPC, PC, AbstractIS, CVec
-
 # Custom display for REPL
 function Base.show(io::IO, v::AbstractPC{PetscLib}) where {PetscLib}
     if v.ptr == C_NULL
@@ -240,3 +238,12 @@ LibPETSc.@for_petsc function set_post_setup!(post_setup!, p::AbstractPC{$PetscLi
     LibPETSc.PCSetPostSetUp($PetscLib, p, fptr)
     return p
 end
+
+
+"""
+    PC{PetscLib}
+
+Handle to a PETSc preconditioner. [`pc`](@ref) hands one back, borrowed from its
+KSP; there is no high-level constructor, since a PC always belongs to a solver.
+"""
+LibPETSc.PC

@@ -34,3 +34,21 @@ Pkg.test("PETSc"; test_args = ["dm", "mpi"])
 Please open a pull request to add any of the above contributions.
 
 New high-level functions must follow the [naming conventions](naming.md). The low-level `LibPETSc` layer is exempt: it keeps the PETSc C names verbatim.
+#### Where the code lives
+The high-level code in `src/` has one directory per PETSc family, as in PETSc's own `src/`, so a new object gets a new file and existing files don't need splitting. Three rules place the code:
+
+- One file per PETSc class (`vec/is.jl`, `mat/shell.jl`), plus one file per concern that several classes share (`vec/local_arrays.jl` for local-array checkout, used by every DM).
+- A function lives with the PETSc class whose C functions it calls: `project_function!(x, dm, …)` calls `DMProjectFunction`, so it is in `dm/fields.jl`, even though its first argument is a Vec.
+- `src/PETSc.jl` includes the files in dependency order and imports the `LibPETSc` names they extend, so no file depends on another file's imports.
+
+| Directory | Contents |
+|---|---|
+| `core/` | initialization, library selection, handle ownership, callbacks, solve checks, `with_destroy` |
+| `sys/` | `PetscObject` (`comm`, names), the options database, viewers (VTK output) |
+| `vec/` | `PetscVec` with its array interface, local arrays, ghost updates and linear algebra; `IS`, `AO`, `PF` |
+| `mat/` | `PetscMat` with indexing, assembly and linear algebra; `MatShell`, `MatNullSpace` |
+| `dm/` | the DM interface and the `DMDA`, `DMStag` and `DMPlex` types (`dm.jl`), fields and boundary conditions on a DM (`fields.jl`), labels, `da.jl`, `stag/`, `plex/` |
+| `dm/dt/` | the discretization objects, as in PETSc's `src/dm/dt`: `PetscDS`, `PetscFE` and the pointwise-function macros |
+| `ksp/`, `snes/`, `ts/`, `tao/` | the solvers; `ksp/` also holds `PC` |
+
+`src/autowrapped/` is generated, and `deprecations.jl`, `public_names.jl` and `audit_names.jl` are generated from `scripts/renames.jl`. The docs pages list their files in `Pages = [...]`, so a new file also goes into its page's list.

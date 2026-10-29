@@ -91,5 +91,5 @@ LibPETSc.DMDestroy(petsclib, dm)
 
 ```@autodocs
 Modules = [PETSc]
-Pages   = ["dm.jl"]
+Pages   = ["dm/dm.jl"]
 ```

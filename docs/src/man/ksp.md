@@ -201,5 +201,5 @@ A `LibPETSc.PC` is also what every low-level `PC*` function takes, so anything w
 
 ```@autodocs
 Modules = [PETSc]
-Pages   = ["ksp.jl", "pc.jl"]
+Pages   = ["ksp/ksp.jl", "ksp/pc.jl"]
 ```

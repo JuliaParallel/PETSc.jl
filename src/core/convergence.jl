@@ -106,8 +106,8 @@ function with_convergence_check(f, solver, check::Union{Nothing, Bool})
     return nothing
 end
 
-# Every caller of `with_convergence_check` lives in this directory
-const SOURCE_DIR = @__DIR__
+# Every caller of `with_convergence_check` lives under src/, one level up
+const SOURCE_DIR = dirname(@__DIR__)
 
 # The first frame outside PETSc.jl's source, below the frames of PETSc.jl itself
 function caller_location()

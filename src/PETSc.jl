@@ -63,6 +63,19 @@ const _doc_external = doc_external
 include("LibPETSc.jl")
 using .LibPETSc
 
+# The LibPETSc names the high-level files extend or dispatch on, imported once
+# here so that no file depends on another file's imports.
+import .LibPETSc: scalartype, inttype, realtype, getlib
+import .LibPETSc: AbstractPetscVec, PetscVec, CVec
+import .LibPETSc: AbstractPetscMat, PetscMat, CMat, MatStencil, InsertMode
+import .LibPETSc: AbstractPetscOptions, PetscOptions, COptions
+import .LibPETSc: AbstractPetscDM, PetscDM, CDM
+import .LibPETSc: AbstractIS, AbstractAO, AbstractPF, AbstractTao, IS, AO, PF, Tao
+import .LibPETSc: AbstractKSP, CKSP, KSP   # the KSP methods are constructors of LibPETSc.KSP
+import .LibPETSc: AbstractPC, CPC, PC
+import .LibPETSc: AbstractSNES, CSNES, SNES
+import .LibPETSc: AbstractTS, CTS, TS
+
 # Only types, construction entry points and `petsclibs` are exported (§13); every
 # verb and accessor stays qualified. The v0.4 list exported twelve functions and
 # no types at all; those names are still reachable qualified (`PETSc.set_library!`)
@@ -77,23 +90,64 @@ export petsclibs
 using Libdl
 
 
-include("init.jl")
-include("callbacks.jl")
-include("vec.jl")       
-include("mat.jl")          
-include("options.jl")
-include("ts.jl")
-include("ksp.jl")
-include("pc.jl")
-include("handles.jl")
-include("snes.jl")
-include("convergence.jl")    # ConvergenceError and the `check` keyword of solve!
-include("dm.jl")          
-include("sys.jl")
-include("dmda.jl")
-include("dmstag.jl")
-include("dmplex.jl")
-include("with_destroy.jl")    # with_destroy, track!, untrack!
+# One directory per PETSc family, as in PETSc's own src/, and one file per PETSc
+# class or per concern several classes share. A function lives with the class
+# whose C functions it calls. Types come before the files that dispatch on them.
+
+# core: initialization, the library, handle ownership, callbacks, solve checks
+include("core/init.jl")
+include("core/library.jl")
+include("core/handles.jl")
+include("core/callbacks.jl")
+include("core/with_destroy.jl")   # with_destroy, track!, untrack!
+
+# sys: PetscObject, the options database, viewers
+include("sys/object.jl")
+include("sys/options.jl")
+include("sys/viewer.jl")
+
+# vec: Vec, IS, AO, PF
+include("vec/vec.jl")
+include("vec/array_interface.jl")
+include("vec/local_arrays.jl")
+include("vec/ghost.jl")
+include("vec/linalg.jl")
+include("vec/is.jl")
+include("vec/ao.jl")
+include("vec/pf.jl")
+
+# mat: Mat, MatShell, MatNullSpace
+include("mat/mat.jl")
+include("mat/indexing.jl")
+include("mat/assembly.jl")
+include("mat/linalg.jl")
+include("mat/shell.jl")
+include("mat/nullspace.jl")
+
+# dm: the DM interface, the discretization objects (dt/) and the DM types
+include("dm/dm.jl")
+include("dm/dt/ds.jl")
+include("dm/dt/fe.jl")
+include("dm/dt/pointwise.jl")
+include("dm/fields.jl")
+include("dm/label.jl")
+include("dm/da.jl")
+include("dm/stag/stag.jl")
+include("dm/stag/locations.jl")
+include("dm/stag/assembly.jl")
+include("dm/stag/coordinates.jl")
+include("dm/stag/field_views.jl")
+include("dm/plex/plex.jl")
+
+# solvers
+include("ksp/ksp.jl")
+include("ksp/pc.jl")
+include("snes/snes.jl")
+include("ts/ts.jl")
+include("tao/tao.jl")
+
+# After the solvers, whose imports it dispatches on
+include("core/convergence.jl")    # ConvergenceError and the `check` keyword of solve!
 
 include("audit_names.jl")   # generated from scripts/renames.jl
 include("audit.jl")

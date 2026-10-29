@@ -1,5 +1,3 @@
-import .LibPETSc: AbstractPetscDM, PetscDM, CDM
-
 # ─────────────────────────────────────────────────────────────────────────────
 # The typed DM hierarchy (docs/src/man/naming.md §5.3)
 #
@@ -229,98 +227,6 @@ $(doc_external("DM/DMDestroy"))
 """
 destroy!(dm::AbstractPetscDM{PetscLib}) where {PetscLib} =
     destroy_handle!(LibPETSc.DMDestroy, dm, PetscLib)
-
-
-
-"""
-    info(dm::DMDA)
-
-Get information about a DMDA.
-
-# Returns
-
-A `NamedTuple` with the following fields, all of them `N`-dimensional for an
-`N`-dimensional `DMDA` (docs/src/man/naming.md §12):
-- `dim`: Dimension of the `DMDA` (1, 2, or 3)
-- `global_size`: `NTuple{N,Int}` with the global dimensions in each direction
-- `procs`: `NTuple{N,Int}` with the number of MPI processes in each direction
-- `ndofs`: Degrees of freedom per node
-- `stencil_width`: Width of the stencil
-- `boundary_type`: `NTuple{N,DMBoundaryType}` with the boundary type per direction
-- `stencil_type`: Stencil type, either `DMDA_STENCIL_STAR` or `DMDA_STENCIL_BOX`
-
-v0.4 reported the stencil width twice, as `s` and as `stencil_width`, spelled
-the dof count `dof` and the process grid `mpi_proc_size`, and padded every
-tuple to three entries. All four are gone; this is a break with no shim (§16).
-
-# External Links
-$(doc_external("DMDA/DMDAGetInfo"))
-"""
-function info(dm::DMDA{PetscLib, N}) where {PetscLib, N}
-    dim, M, Ny, P, m, n, p, dof, s, bx, by, bz, st =
-        LibPETSc.DMDAGetInfo(PetscLib, dm)
-    gsize = (Int(M), Int(Ny), Int(P))
-    nproc = (Int(m), Int(n), Int(p))
-    btype = (bx, by, bz)
-
-    return (;
-        dim = Int(dim),
-        global_size = ntuple(i -> gsize[i], Val(N)),
-        procs = ntuple(i -> nproc[i], Val(N)),
-        ndofs = Int(dof),
-        stencil_width = Int(s),
-        boundary_type = ntuple(i -> btype[i], Val(N)),
-        stencil_type = st,
-    )
-end
-
-"""
-    lower, upper, size = corners(da::DMDA{PetscLib, N})
-
-Returns a `NamedTuple` with the global indices (excluding ghost points) of the
-`lower` and `upper` corners as well as the `size`.
-
-The result is dimension-correct (§12): `lower` and `upper` are
-`CartesianIndex{N}` and `size` is an `NTuple{N,Int}`, with no padding to three
-entries. This is a break with no shim (§16).
-
-# External Links
-$(doc_external("DMDA/DMDAGetCorners"))
-"""
-function corners(dm::DMDA{PetscLib, N}) where {PetscLib, N}
-    xs, ys, zs, xm, ym, zm = LibPETSc.DMDAGetCorners(PetscLib, dm)
-    lo = (Int(xs), Int(ys), Int(zs))
-    sz = (Int(xm), Int(ym), Int(zm))
-
-    return (
-        lower = CartesianIndex(ntuple(i -> lo[i] + 1, Val(N))),
-        upper = CartesianIndex(ntuple(i -> lo[i] + sz[i], Val(N))),
-        size = ntuple(i -> sz[i], Val(N)),
-    )
-end
-
-"""
-    lower, upper, size = ghost_corners(da::DMDA{PetscLib, N})
-
-Returns a `NamedTuple` with the global indices (including ghost points) of the
-`lower` and `upper` corners as well as the `size` of the local part of the domain.
-
-Dimension-correct like [`corners`](@ref): `CartesianIndex{N}` and `NTuple{N,Int}`.
-
-# External Links
-$(doc_external("DMDA/DMDAGetGhostCorners"))
-"""
-function ghost_corners(dm::DMDA{PetscLib, N}) where {PetscLib, N}
-    xs, ys, zs, xm, ym, zm = LibPETSc.DMDAGetGhostCorners(PetscLib, dm)
-    lo = (Int(xs), Int(ys), Int(zs))
-    sz = (Int(xm), Int(ym), Int(zm))
-
-    return (
-        lower = CartesianIndex(ntuple(i -> lo[i] + 1, Val(N))),
-        upper = CartesianIndex(ntuple(i -> lo[i] + sz[i], Val(N))),
-        size = ntuple(i -> sz[i], Val(N)),
-    )
-end
 
 """
     corners(dm)
@@ -643,32 +549,6 @@ $(doc_external("DM/DMGetDimension"))
 Base.ndims(dm::AbstractPetscDM{PetscLib}) where {PetscLib} =
     LibPETSc.DMGetDimension(PetscLib, dm)
 
-
-"""
-    size(dm::DMDA{PetscLib, N})
-    size(dm::DMStag{PetscLib, N})
-
-Return the global size of the DM as an `NTuple{N,Int}`.
-
-v0.4 returned `(M, N, P)` with the unused dimensions padded to `1`; the result
-is now dimension-correct (§12), which is a break with no shim (§16).
-
-# External Links
-$(doc_external("DMDA/DMDAGetInfo"))
-$(doc_external("DMSTAG/DMStagGetGlobalSizes"))
-"""
-function Base.size(dm::DMDA{PetscLib, N}) where {PetscLib, N}
-    _, M, Ny, P, _ = LibPETSc.DMDAGetInfo(PetscLib, dm)
-    gsize = (Int(M), Int(Ny), Int(P))
-    return ntuple(i -> gsize[i], Val(N))
-end
-
-function Base.size(dm::DMStag{PetscLib, N}) where {PetscLib, N}
-    M, Ny, P = LibPETSc.DMStagGetGlobalSizes(PetscLib, dm)
-    gsize = (Int(M), Int(Ny), Int(P))
-    return ntuple(i -> gsize[i], Val(N))
-end
-
 """
     PetscMat(da::AbstractPetscDM)
 
@@ -708,3 +588,72 @@ function set_matrix_preallocate_only!(
     return dm
 end
 
+
+
+"""
+    clone(dm::AbstractPetscDM) -> AbstractPetscDM
+
+Return a new DM that is a clone of `dm` (same topology, no fields or DS).
+
+The clone is a new object the caller owns, and comes back [`narrow`](@ref)ed to
+its flavour.
+
+# External Links
+$(doc_external("DM/DMClone"))
+"""
+function clone(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+    return narrow(LibPETSc.DMClone(getlib(PetscLib), dm); own = true)
+end
+
+"""
+    add_coarsen_hook!(dm, coarsenhook, restricthook = C_NULL)
+
+Register a C callback invoked each time `dm` is coarsened (e.g. during FAS
+hierarchy setup).  The hooks are C function pointers, not Julia functions, so
+`dm` comes first as in `set_residual!`.  The coarsenhook signature is:
+```
+hook(fine::Ptr{Cvoid}, coarse::Ptr{Cvoid}, ctx::Ptr{Cvoid}) → Cint
+```
+Use `@cfunction(f, Cint, (Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}))` to create
+the pointer.  `restricthook` (optional) is called on each nonlinear solve
+restriction step.
+"""
+function add_coarsen_hook! end
+
+# Convenience: infer petsclib from the DM type parameter
+function add_coarsen_hook!(
+    dm::AbstractPetscDM{PL},
+    coarsenhook::Ptr{Cvoid},
+    restricthook::Ptr{Cvoid} = C_NULL,
+) where {PL}
+    LibPETSc.DMCoarsenHookAdd(getlib(PL), dm, coarsenhook, restricthook, C_NULL)
+    return dm
+end
+
+"""
+    coarse_dm(dm::AbstractPetscDM) -> AbstractPetscDM
+
+Return the coarse `DM` from which `dm` was obtained by refinement (e.g. via
+`-dm_refine_hierarchy`).  Check `convert(Ptr{Cvoid}, cdm) == C_NULL` to
+detect when there is no coarser level.
+
+$(doc_borrowed())
+
+# External Links
+$(doc_external("DM/DMGetCoarseDM"))
+"""
+function coarse_dm end
+
+LibPETSc.@for_petsc function coarse_dm(dm::AbstractPetscDM{$PetscLib})
+    petsclib = getlib($PetscLib)
+    return narrow(LibPETSc.DMGetCoarseDM(petsclib, dm))
+end
+
+"""
+    PetscDM{PetscLib}
+
+Low-level handle to a PETSc DM of any flavour, as `LibPETSc.DMCreate` and the
+other generated functions return it. [`narrow`](@ref) gives the typed handle,
+`DMDA`, `DMStag` or `DMPlex`, that the high-level functions dispatch on.
+"""
+LibPETSc.PetscDM

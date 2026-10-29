@@ -69,9 +69,9 @@ Other differences from the baseline that are not per-function:
 - `PC_wrappers.jl` is generated and included (the baseline excluded it).
 
 Tests adapted: `test/dm/dmplex.jl`, `test/vecmat/mat.jl`, `test/solvers/snes.jl`, `test/dm/dmstag_serial.jl`; example
-`examples/dmplex/ex62b.jl`. Also `src/mat.jl` (`MatShellGetContext`), `src/ksp.jl`/`src/ts.jl`/`src/dm.jl`
+`examples/dmplex/ex62b.jl`. Also `src/mat/shell.jl` (`MatShellGetContext`), `src/ksp/ksp.jl`/`src/ts/ts.jl`/`src/dm/dm.jl`
 (solution and coordinate accessors return borrowed `VecPtr` handles, `destroy!` is a no-op on them),
-`src/options.jl` (NULL viewer for `PetscOptionsView`).
+`src/sys/options.jl` (NULL viewer for `PetscOptionsView`).
 
 High-level code adapted for the return convention: `dm.jl` (`DMGetCoordinatesLocal`),
 `dmplex.jl` (`DMPlexDistribute`, `DMClone`, `DMCoarsenHookAdd`, `DMGetStratumIS`, `DMGetCoarseDM`),

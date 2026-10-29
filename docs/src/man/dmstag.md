@@ -227,5 +227,5 @@ A = PETSc.PetscMat(dm)
 
 ```@autodocs
 Modules = [PETSc]
-Pages   = ["dmstag.jl"]
+Pages   = ["dm/stag/stag.jl", "dm/stag/locations.jl", "dm/stag/assembly.jl", "dm/stag/coordinates.jl", "dm/stag/field_views.jl"]
 ```

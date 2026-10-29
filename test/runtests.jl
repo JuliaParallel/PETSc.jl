@@ -119,7 +119,7 @@ end
 if selected("examples")
     include("examples/manual_is.jl")      # the IS examples in the manual
     # The lmvm Tao types work only in the first PETSc cycle of a process (see
-    # _reset_stale_register_flags in src/init.jl), so the Tao manual examples run in a fresh one
+    # _reset_stale_register_flags in src/core/init.jl), so the Tao manual examples run in a fresh one
     @testset "Tao manual examples, fresh process" begin
         @test run_separately("examples/manual_tao.jl")
     end

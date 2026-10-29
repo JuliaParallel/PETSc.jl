@@ -95,5 +95,5 @@ PETSc.ghost_update_end!(vec; mode = PETSc.INSERT_VALUES, scatter = PETSc.SCATTER
 
 ```@autodocs
 Modules = [PETSc]
-Pages   = ["vec.jl"]
+Pages   = ["vec/vec.jl", "vec/array_interface.jl", "vec/local_arrays.jl", "vec/ghost.jl", "vec/linalg.jl"]
 ```

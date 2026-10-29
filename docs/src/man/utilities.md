@@ -8,7 +8,7 @@ The initialization functions manage PETSc's lifecycle, including MPI initializat
 
 ```@autodocs
 Modules = [PETSc]
-Pages   = ["init.jl"]
+Pages   = ["core/init.jl", "core/library.jl"]
 ```
 
 ## Handle types
@@ -17,7 +17,7 @@ Every PETSc object is held by a handle type with an abstract supertype, such as 
 
 ```@autodocs
 Modules = [PETSc]
-Pages   = ["handles.jl"]
+Pages   = ["core/handles.jl", "vec/is.jl", "vec/ao.jl", "vec/pf.jl", "tao/tao.jl"]
 ```
 
 ## Destroying objects together
@@ -26,7 +26,7 @@ On more than one process nothing frees a PETSc object but `destroy!`, called on 
 
 ```@autodocs
 Modules = [PETSc]
-Pages   = ["with_destroy.jl"]
+Pages   = ["core/with_destroy.jl"]
 ```
 
 ## Options
@@ -35,7 +35,7 @@ PETSc uses an options database to configure solvers and other objects at runtime
 
 ```@autodocs
 Modules = [PETSc]
-Pages   = ["options.jl"]
+Pages   = ["sys/options.jl"]
 ```
 
 ## System Utilities
@@ -44,7 +44,7 @@ General system-level utilities for working with PETSc objects.
 
 ```@autodocs
 Modules = [PETSc]
-Pages   = ["sys.jl"]
+Pages   = ["sys/object.jl"]
 ```
 
 ## Code Auditing

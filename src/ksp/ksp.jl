@@ -1,5 +1,3 @@
-import .LibPETSc: AbstractKSP, CKSP, KSP, AbstractPetscDM   # KSP methods below are constructors of LibPETSc.KSP
-
 # The Julia side of a KSP, kept with the PETSc object
 mutable struct KSPState <: ObjectState
     computerhs!::Any

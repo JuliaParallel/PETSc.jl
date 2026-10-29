@@ -108,5 +108,5 @@ An assembled `PetscMat` supports `copy(A)`, `A + B`, `A - B`, `-A` and `α * A`.
 
 ```@autodocs
 Modules = [PETSc]
-Pages   = ["mat.jl"]
+Pages   = ["mat/mat.jl", "mat/indexing.jl", "mat/assembly.jl", "mat/linalg.jl", "mat/shell.jl"]
 ```

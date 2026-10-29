@@ -199,5 +199,5 @@ Safe to call more than once, and a no-op on a handle left over from a previous i
 
 ```@autodocs
 Modules = [PETSc]
-Pages   = ["ts.jl"]
+Pages   = ["ts/ts.jl"]
 ```

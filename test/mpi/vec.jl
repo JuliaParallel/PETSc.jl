@@ -52,6 +52,8 @@ using LinearAlgebra: norm
             PETSc.assemble!(petsc_x)
 
             @test length(petsc_x) == exact_length
+            @test size(petsc_x) === (Int(exact_length),)
+            @test length(petsc_x) isa Int
             
             # use this instead of norm(petsc_x), as it can deal with parallel vectors
             vec_norm1 = LibPETSc.VecNorm(petsclib,petsc_x, LibPETSc.NORM_2)
@@ -137,6 +139,8 @@ end
 
             PETSc.assemble!(petsc_x)
             @test length(petsc_x) == exact_length
+            @test size(petsc_x) === (Int(exact_length),)
+            @test length(petsc_x) isa Int
 
             vec_norm = norm(petsc_x)
             @test exact_norm ≈ vec_norm

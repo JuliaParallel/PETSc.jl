@@ -150,6 +150,7 @@ These can't warn without firing on correct code, so check them now. The [release
 - **`w = 2 .* x` returns a `PetscVec`**, not a `Vector`, and `size(v)` becomes `(n,)`. `2 * x` already returns a `PetscVec`.
 - **`set_convergence_test!` passes `PetscReal` norms**, not `Float64`. This matters only for a Float32 library with a callback whose arguments are annotated `Float64`.
 - **A callback's return value is ignored**, a nonzero `Integer` too. 0.5.5 warns once per callback that returns one; throw an exception to report a failure.
+- **`size(v)` is a tuple.** `size(v) == n` is `false` from 0.6 and raises no error; use `length(v) == n`. `length(v)` is an `Int`.
 - **`copy_disc!(dst, src)`** takes the destination first.
 - **`PetscVec <: AbstractVector` and `PetscMat <: AbstractMatrix`**, with `==` comparing values and `hash` throwing.
 

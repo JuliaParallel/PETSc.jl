@@ -29,14 +29,15 @@ PetscVecStyle(::Val{N}) where {N} = Broadcast.DefaultArrayStyle{N}()
 petsclib_of(::AbstractPetscVec{PetscLib}) where {PetscLib} = getlib(PetscLib)
 
 # Array interface - size and length
-Base.size(v::AbstractPetscVec{PetscLib}) where {PetscLib} = LibPETSc.VecGetSize(PetscLib,v)
-Base.length(v::AbstractPetscVec{PetscLib}) where {PetscLib} = prod(size(v))
-Base.lastindex(v::AbstractPetscVec{PetscLib}) where {PetscLib} = length(v)
+# Global length, as `Int` and as a tuple, like any `AbstractVector`
+Base.size(v::AbstractPetscVec{PetscLib}) where {PetscLib} = (Int(LibPETSc.VecGetSize(PetscLib, v)),)
+Base.length(v::AbstractPetscVec) = only(size(v))
+Base.lastindex(v::AbstractPetscVec) = length(v)
 
 # As for any vector: the global length along dimension 1, and 1 beyond it
 function Base.size(v::AbstractPetscVec, d::Integer)
     d >= 1 || throw(ArgumentError("dimension must be ≥ 1, got $d"))
-    return d == 1 ? Int(length(v)) : 1
+    return d == 1 ? length(v) : 1
 end
 
 """

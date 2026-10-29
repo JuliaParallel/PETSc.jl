@@ -433,20 +433,35 @@ end
     @test small == large
     @test small <= 8
 
-    # out of place gives a Vector, from the local array rather than entry by entry
+    # out of place gives a PetscVec of the layout of the first PetscVec, computed on the
+    # local arrays rather than entry by entry
     x, y, z, xv, yv = vecs(n)
-    @test 2 .* x == 2 .* xv
-    @test (2 .* x) isa Vector{PetscScalar}
-    @test x .+ y == xv .+ yv
-    @test x .* (1:n) == xv .* (1:n)
-    @test (real.(x) .> 0.5) == (real.(xv) .> 0.5)
-    out(v) = 2 .* v
-    out(x)
-    @test @allocations(out(x)) <= 8
-    big = PETSc.PetscVec(petsclib, comm, rand(RealT, 10_000))
-    out(big)
-    @test @allocations(out(big)) <= 8     # the entries cost nothing per call
-    foreach(PETSc.destroy!, (big, x, y, z))
+    w = 2 .* x
+    @test w isa PETSc.PetscVec
+    @test w !== x && w.ptr != x.ptr
+    @test w[:] == 2 .* xv
+    @test (x .+ y)[:] == xv .+ yv
+    @test (x .* (1:n))[:] == xv .* (1:n)    # a Julia array of the same length
+    @test (sin.(x) .+ 2 .* y)[:] ≈ sin.(xv) .+ 2 .* yv
+    @test (3 .+ x)[:] == 3 .+ xv            # the Vec is not the first argument
+    @test xv == x[:]                         # the arguments are unchanged
+    @test length(w) == n && PETSc.ownership_range(w) == PETSc.ownership_range(x)
+    @test_throws DimensionMismatch x .+ ones(n + 1)
+    # entries that are not numbers have no PetscVec to land in
+    @test_throws ArgumentError real.(x) .> 0.5
+    PETSc.destroy!(w)
+
+    # the entries cost nothing per call: the allocations do not grow with the length
+    function broadcast_allocations(n)
+        x = PETSc.PetscVec(petsclib, comm, rand(RealT, n))
+        out(v) = PETSc.destroy!(2 .* v)
+        out(x)
+        a = @allocations out(x)
+        PETSc.destroy!(x)
+        return a
+    end
+    @test broadcast_allocations(100) == broadcast_allocations(10_000)
+    foreach(PETSc.destroy!, (x, y, z))
 
     # a MatShell body written as a broadcast
     x, y, z, _, yv = vecs(n)

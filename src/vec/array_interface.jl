@@ -6,6 +6,10 @@
 Base.ndims(::Type{<:AbstractPetscVec}) = 1
 Base.ndims(v::AbstractPetscVec) = ndims(typeof(v))
 Base.IndexStyle(::Type{<:AbstractPetscVec}) = IndexLinear()
+# Every vector of a library holds that library's scalar type; broadcasting reads it to
+# infer the type of a result
+Base.eltype(::Type{<:AbstractPetscVec{PetscLib}}) where {PetscLib} = scalartype(PetscLib)
+Base.eltype(v::AbstractPetscVec) = eltype(typeof(v))
 Base.axes(v::AbstractPetscVec) = (Base.OneTo(length(v)),)
 # A Vec takes part in a broadcast as itself; the default would `collect` it
 # entry by entry, since it iterates but is not an AbstractArray
@@ -143,32 +147,41 @@ function Base.copyto!(dest::AbstractPetscVec, bc::Base.Broadcast.Broadcasted)
     return dest
 end
 
-# Out-of-place broadcasting, `w = f.(args...)`, runs on the local arrays too and
-# gives a `Vector`, so `2 .* x` is what it was before, without the one C call per
-# entry. A `Vector` of the whole vector only means something where one rank holds
-# all of it, so a distributed vector throws instead.
+# Out-of-place broadcasting, `w = f.(args...)`, gives a new `PetscVec` with the layout
+# of the first `PetscVec` among the arguments, filled by the in-place broadcast above.
+# So it works on a distributed vector, and the caller owns the result: on more than
+# one rank it has no finalizer (as `copy(v)`), and `destroy!` must be called on every rank.
 function Base.copy(bc::Broadcast.Broadcasted{PetscVecStyle})
     flat = Broadcast.flatten(bc)
-    foreach(check_undistributed, flat.args)
-    return with_broadcast_arrays(nothing, nothing, flat.args) do args
-        copy(Broadcast.instantiate(Broadcast.Broadcasted(flat.f, args)))
+    check_scalar_result(Broadcast.combine_eltypes(flat.f, flat.args))
+    w = finalize_if_serial!(similar(first_petscvec(flat.args)))
+    try
+        copyto!(w, bc)
+    catch
+        destroy!(w)
+        rethrow()
     end
+    return w
 end
 
-check_undistributed(_) = nothing
-function check_undistributed(v::AbstractPetscVec{PetscLib}) where {PetscLib}
-    lib = getlib(PetscLib)
-    LibPETSc.VecGetLocalSize(lib, v) == LibPETSc.VecGetSize(lib, v) || throw(ArgumentError(
-        "a broadcast of a distributed Vec cannot give a Vector of the whole vector. " *
-        "Broadcast into a Vec of the same layout, or use with_local_array! for the " *
-        "entries this rank owns."
+first_petscvec(::Tuple{}) = throw(ArgumentError("a PetscVec broadcast needs a PetscVec argument"))
+first_petscvec(args::Tuple) = first_petscvec(first(args), Base.tail(args))
+first_petscvec(a::AbstractPetscVec, ::Tuple) = a
+first_petscvec(::Any, rest::Tuple) = first_petscvec(rest)
+
+# A PetscVec holds only its library's scalar type, so a broadcast whose entries are
+# not numbers (`x .> 0` gives `Bool`) has no PetscVec to land in. Converting a mask
+# to 0 and 1 silently would be a different result from Julia's, so it throws.
+function check_scalar_result(::Type{T}) where {T}
+    (T === Any || (T <: Number && !(T <: Bool))) && return nothing
+    throw(ArgumentError(
+        "the broadcast gives entries of type $T, which a PetscVec cannot hold. " *
+        "Broadcast over x[:] (or with_local_array!) for the entries as a Julia array."
     ))
-    return nothing
 end
 
 # Calls `f` with `args`, each `PetscVec` replaced by its local array: `dest_arr`
-# for `dest` itself, a read-only checkout for any other. `dest` is `nothing` when
-# the broadcast is out of place and nothing can alias.
+# for `dest` itself, a read-only checkout for any other.
 with_broadcast_arrays(f, dest, dest_arr, ::Tuple{}) = f(())
 function with_broadcast_arrays(f, dest, dest_arr, args::Tuple)
     a = first(args)
@@ -183,7 +196,6 @@ function with_broadcast_arrays(f, dest, dest_arr, args::Tuple)
     end
 end
 
-aliases_dest(::AbstractPetscVec, ::Nothing) = false
 aliases_dest(a::AbstractPetscVec, dest::AbstractPetscVec) = a.ptr == dest.ptr
 
 Base.materialize!(dest::AbstractPetscVec, bc::Base.Broadcast.Broadcasted) = (Base.copyto!(dest, bc); dest)

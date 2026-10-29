@@ -65,7 +65,7 @@ rmul!(v, α)            # v = αv
 z = x + y              # a new vector; so are x - y, -x, α * x and x / α
 ```
 
-`copy` and the operators return a new `PetscVec` with the layout of their first vector argument. On more than one rank it has no finalizer, so call `destroy!` on it on every rank. Broadcasting is different for now: `y .= α .* x .+ y` updates `y` in place and works on any number of ranks, while an out-of-place broadcast such as `2 .* x` returns a Julia `Vector` and needs an undistributed vector.
+`copy` and the operators return a new `PetscVec` with the layout of their first vector argument. On more than one rank it has no finalizer, so call `destroy!` on it on every rank. Broadcasting follows the same rule: `y .= α .* x .+ y` updates `y` in place, and an out-of-place broadcast such as `2 .* x` returns a new `PetscVec` with the layout of the first `PetscVec` in the expression. Both run on the entries each rank owns and work on any number of ranks. A broadcast whose entries are not numbers (`x .> 0` gives `Bool`) throws, since a `PetscVec` holds only the library's scalar type: broadcast over `x[:]` for those.
 
 ## Assembly
 

@@ -171,6 +171,8 @@ MPI.Initialized() || MPI.Init()
 
     @testset "size, axes, ndims" begin
         v = PETSc.PetscVec(petsclib, PetscScalar[1, 2, 3])
+        @test eltype(v) === PetscScalar
+        @test eltype(typeof(v)) === PetscScalar
         @test size(v) === (3,)
         @test length(v) === 3
         @test axes(v) === (Base.OneTo(3),)

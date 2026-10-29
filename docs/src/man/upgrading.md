@@ -119,13 +119,39 @@ The [Release notes](release_notes.md) list the remaining changes, and [`wrapping
 | `setfromoptions`, `dmsetup`, `dmsetfromoptions` on a DM constructor | `set_from_options`, `setup` |
 | `add_coarsen_hook!(hook, dm)` | `add_coarsen_hook!(dm, hook)` |
 | `distribute!(dm)` | `distribute(dm)`: it returns a new DM and leaves `dm` as it is |
-| `VecPtr(petsclib, ptr, false)`, also `MatPtr` and `PetscVec(petsclib, ptr, own)` | `VecPtr(petsclib, ptr; own = false)`; `own` defaults to `false` |
+| `VecPtr(petsclib, ptr, false)`, also `MatPtr` and `PetscVec(petsclib, ptr, own)` | `PetscVec(petsclib, ptr; own = false)`, `PetscMat(petsclib, ptr; own = false)`; `own` defaults to `false` |
 | `PetscMat(petsclib, rowptr, colval, nzval; comm)` | `PetscMat(petsclib, comm, rowptr, colval, nzval)` |
 | `MatShell(petsclib, f, comm, m, n, M, N)` | `MatShell(f, petsclib, comm, m, n; global_rows = M, global_cols = N)`, or `MatShell(petsclib, comm, m, n) do y, x … end` |
 
 0.5.4 also adds `PetscVec(petsclib, comm, n; local_size)` for a vector distributed over `comm`.
 
-## 7. Looking up a name
+## 7. Within 0.5: the 0.5.5 deprecations
+
+0.5.5 is the last release before 0.6. Everything below still works and warns once, and is removed in 0.6, so step 2 finds it; this is the list to update by hand.
+
+| Up to 0.5.4 | From 0.5.5 |
+|---|---|
+| `VecPtr(petsclib, ptr; own)`, `MatPtr(petsclib, ptr; own)` | `PetscVec(petsclib, ptr; own)`, `PetscMat(petsclib, ptr; own)` (new) |
+| A SNES or TS callback that takes a trailing context argument; `user_ctx(snes)`, `user_ctx(ts)`, `set_user_ctx!` | A closure carries the context: `set_rhs_function!(ts) do F, ts, t, u … end` reads it from the enclosing scope |
+| `local_arrays(…)` with `restore_local_arrays!` | `with_local_arrays!(f!, g_fx, l_x)` |
+| `local_coordinate_array(dm)` | `with_local_coordinate_array(f, dm)`; the array is handed back when `f` returns or throws |
+| `@residual_fn f0 Nf`, `@jacobian_fn`, `@bd_fn`, `@simple_fn` | `@residual_fn petsclib f0 Nf`: the library comes first, as a top-level `const` |
+| `vtk_merge_tensor`, `create_split_boundary_labels!` | Copies in `examples/dmplex/vtk_tensor.jl` and `examples/dmplex/ex69.jl` |
+| `isapprox(v, w)` on two PetscVecs | Compares entry by entry now and norm-wise from 0.6, ‖v − w‖ ≤ max(atol, rtol·max(‖v‖, ‖w‖)); say which you mean with `all(isapprox.(v[:], w[:]))` or `norm(v - w) ≤ …` |
+
+0.5.5 also adds `x + y`, `x - y`, `α * x`, `dot`, `axpy!` and `copy` on PetscVecs and PetscMats, `MatShell` operations (`mult_transpose`, `diagonal`, `mult_add`) and AMD GPU support.
+
+### What changes in 0.6 without a warning
+
+These can't warn without firing on correct code, so check them now. The [release notes](release_notes.md) give the detail under "Coming in v0.6".
+
+- **Options are applied once**, at the first `setup!` or `solve!` of a KSP, SNES or TS. Pass `options_at = :first_solve` today to get that behavior.
+- **Solves throw on divergence.** Pass `check = true` to `solve!` today.
+- **`w = 2 .* x` returns a `PetscVec`**, not a `Vector`, and `size(v)` becomes `(n,)`. `2 * x` already returns a `PetscVec`.
+- **`copy_disc!(dst, src)`** takes the destination first.
+- **`PetscVec <: AbstractVector` and `PetscMat <: AbstractMatrix`**, with `==` comparing values and `hash` throwing.
+
+## 8. Looking up a name
 
 - **An old high-level name:** the rename table at the end of [Naming Conventions](naming.md).
 - **A PETSc C function:** the [C to Julia name index](api_index.md).

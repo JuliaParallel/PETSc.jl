@@ -642,7 +642,7 @@ const EXTRA_SHIMS = NamedTuple{(:name, :code, :test), Tuple{String, String, Stri
         name = "CSR PetscMat with comm as a keyword",
         code = """
         # §9: `comm` is positional second, as in every other constructor. The
-        # keyword form is caught in the CSR `PetscMat` method in src/mat.jl.
+        # keyword form is caught in the CSR `PetscMat` method in src/mat/mat.jl.
         """,
         test = """
         @testset "CSR PetscMat with comm as a keyword" begin
@@ -703,7 +703,7 @@ const EXTRA_SHIMS = NamedTuple{(:name, :code, :test), Tuple{String, String, Stri
     ),    (
         name = "local_arrays and restore_local_arrays!",
         code = """
-        # The pair warns in src/vec.jl: `with_local_arrays!` replaces it and restores
+        # The pair warns in src/vec/local_arrays.jl: `with_local_arrays!` replaces it and restores
         # the arrays also when the kernel throws.
         """,
         test = """
@@ -723,7 +723,7 @@ const EXTRA_SHIMS = NamedTuple{(:name, :code, :test), Tuple{String, String, Stri
     ),    (
         name = "local_coordinate_array",
         code = """
-        # Warns in src/dm.jl and returns a copy; `with_local_coordinate_array` hands
+        # Warns in src/dm/dm.jl and returns a copy; `with_local_coordinate_array` hands
         # the array back when its block returns.
         """,
         test = """
@@ -744,7 +744,7 @@ const EXTRA_SHIMS = NamedTuple{(:name, :code, :test), Tuple{String, String, Stri
     (
         name = "vtk_merge_tensor and create_split_boundary_labels!",
         code = """
-        # Both warn in src/dmplex.jl and leave PETSc.jl in v0.6: copies live in
+        # Both warn in src/dm/label.jl and src/sys/viewer.jl and leave PETSc.jl in v0.6: copies live in
         # examples/dmplex/vtk_tensor.jl and examples/dmplex/ex69.jl.
         """,
         test = """
@@ -763,7 +763,7 @@ const EXTRA_SHIMS = NamedTuple{(:name, :code, :test), Tuple{String, String, Stri
     (
         name = "user_ctx and callbacks with a trailing context",
         code = """
-        # Both setters and readers warn in src/snes.jl and src/ts.jl, as does a
+        # Both setters and readers warn in src/snes/snes.jl and src/ts/ts.jl, as does a
         # callback called with a context set. Closures carry the data instead.
         """,
         test = """
@@ -799,7 +799,7 @@ const EXTRA_SHIMS = NamedTuple{(:name, :code, :test), Tuple{String, String, Stri
     (
         name = "pointwise macros without a library",
         code = """
-        # Warns in src/dmplex.jl: the one-argument-shorter forms of @simple_fn,
+        # Warns in src/dm/dt/pointwise.jl: the one-argument-shorter forms of @simple_fn,
         # @residual_fn, @jacobian_fn and @bd_fn take PetscInt, PetscScalar and
         # PetscReal from the calling module.
         """,

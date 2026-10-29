@@ -1,5 +1,3 @@
-import .LibPETSc: AbstractPetscDM, PetscDM, CDM
-
 # `stencil_type` is a PETSc enum (§3.1's enum rule), and naming.md also spells
 # it as a `Symbol` in the constructor examples. Both work: the Symbol is mapped
 # here, the enum passes through.
@@ -399,4 +397,116 @@ function star_fd_coloring(da::DMDA{PetscLib, N}) where {PetscLib, N}
         coo_idxs_1b,
         local_rows_1b,
     )
+end
+
+
+
+"""
+    info(dm::DMDA)
+
+Get information about a DMDA.
+
+# Returns
+
+A `NamedTuple` with the following fields, all of them `N`-dimensional for an
+`N`-dimensional `DMDA` (docs/src/man/naming.md §12):
+- `dim`: Dimension of the `DMDA` (1, 2, or 3)
+- `global_size`: `NTuple{N,Int}` with the global dimensions in each direction
+- `procs`: `NTuple{N,Int}` with the number of MPI processes in each direction
+- `ndofs`: Degrees of freedom per node
+- `stencil_width`: Width of the stencil
+- `boundary_type`: `NTuple{N,DMBoundaryType}` with the boundary type per direction
+- `stencil_type`: Stencil type, either `DMDA_STENCIL_STAR` or `DMDA_STENCIL_BOX`
+
+v0.4 reported the stencil width twice, as `s` and as `stencil_width`, spelled
+the dof count `dof` and the process grid `mpi_proc_size`, and padded every
+tuple to three entries. All four are gone; this is a break with no shim (§16).
+
+# External Links
+$(doc_external("DMDA/DMDAGetInfo"))
+"""
+function info(dm::DMDA{PetscLib, N}) where {PetscLib, N}
+    dim, M, Ny, P, m, n, p, dof, s, bx, by, bz, st =
+        LibPETSc.DMDAGetInfo(PetscLib, dm)
+    gsize = (Int(M), Int(Ny), Int(P))
+    nproc = (Int(m), Int(n), Int(p))
+    btype = (bx, by, bz)
+
+    return (;
+        dim = Int(dim),
+        global_size = ntuple(i -> gsize[i], Val(N)),
+        procs = ntuple(i -> nproc[i], Val(N)),
+        ndofs = Int(dof),
+        stencil_width = Int(s),
+        boundary_type = ntuple(i -> btype[i], Val(N)),
+        stencil_type = st,
+    )
+end
+
+"""
+    lower, upper, size = corners(da::DMDA{PetscLib, N})
+
+Returns a `NamedTuple` with the global indices (excluding ghost points) of the
+`lower` and `upper` corners as well as the `size`.
+
+The result is dimension-correct (§12): `lower` and `upper` are
+`CartesianIndex{N}` and `size` is an `NTuple{N,Int}`, with no padding to three
+entries. This is a break with no shim (§16).
+
+# External Links
+$(doc_external("DMDA/DMDAGetCorners"))
+"""
+function corners(dm::DMDA{PetscLib, N}) where {PetscLib, N}
+    xs, ys, zs, xm, ym, zm = LibPETSc.DMDAGetCorners(PetscLib, dm)
+    lo = (Int(xs), Int(ys), Int(zs))
+    sz = (Int(xm), Int(ym), Int(zm))
+
+    return (
+        lower = CartesianIndex(ntuple(i -> lo[i] + 1, Val(N))),
+        upper = CartesianIndex(ntuple(i -> lo[i] + sz[i], Val(N))),
+        size = ntuple(i -> sz[i], Val(N)),
+    )
+end
+
+"""
+    lower, upper, size = ghost_corners(da::DMDA{PetscLib, N})
+
+Returns a `NamedTuple` with the global indices (including ghost points) of the
+`lower` and `upper` corners as well as the `size` of the local part of the domain.
+
+Dimension-correct like [`corners`](@ref): `CartesianIndex{N}` and `NTuple{N,Int}`.
+
+# External Links
+$(doc_external("DMDA/DMDAGetGhostCorners"))
+"""
+function ghost_corners(dm::DMDA{PetscLib, N}) where {PetscLib, N}
+    xs, ys, zs, xm, ym, zm = LibPETSc.DMDAGetGhostCorners(PetscLib, dm)
+    lo = (Int(xs), Int(ys), Int(zs))
+    sz = (Int(xm), Int(ym), Int(zm))
+
+    return (
+        lower = CartesianIndex(ntuple(i -> lo[i] + 1, Val(N))),
+        upper = CartesianIndex(ntuple(i -> lo[i] + sz[i], Val(N))),
+        size = ntuple(i -> sz[i], Val(N)),
+    )
+end
+
+
+"""
+    size(dm::DMDA{PetscLib, N})
+    size(dm::DMStag{PetscLib, N})
+
+Return the global size of the DM as an `NTuple{N,Int}`.
+
+v0.4 returned `(M, N, P)` with the unused dimensions padded to `1`; the result
+is now dimension-correct (§12), which is a break with no shim (§16).
+
+# External Links
+$(doc_external("DMDA/DMDAGetInfo"))
+$(doc_external("DMSTAG/DMStagGetGlobalSizes"))
+"""
+function Base.size(dm::DMDA{PetscLib, N}) where {PetscLib, N}
+    _, M, Ny, P, _ = LibPETSc.DMDAGetInfo(PetscLib, dm)
+    gsize = (Int(M), Int(Ny), Int(P))
+    return ntuple(i -> gsize[i], Val(N))
 end

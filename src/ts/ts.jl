@@ -166,9 +166,6 @@ end
 #   High-level TS interface
 # ============================================================================
 
-import .LibPETSc:
-    AbstractTS, CTS, TS, AbstractPetscDM, AbstractPetscVec, PetscVec, CVec
-
 # The Julia side of a TS, kept with the PETSc object
 mutable struct TSState <: ObjectState
     rhs_function!::Any

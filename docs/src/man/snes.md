@@ -143,5 +143,5 @@ PETSc.destroy!(snes)
 
 ```@autodocs
 Modules = [PETSc]
-Pages   = ["snes.jl"]
+Pages   = ["snes/snes.jl"]
 ```

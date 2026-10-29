@@ -1,5 +1,3 @@
-import .LibPETSc: AbstractSNES, CSNES, SNES
-
 # The Julia side of a SNES, kept with the PETSc object (naming.md §18.3)
 mutable struct SNESState <: ObjectState
     f!::Any
@@ -671,5 +669,24 @@ $(doc_external("SNES/SNESSetFunctionDomainError"))
 """
 function set_function_domain_error!(snes::AbstractSNES{PetscLib}) where {PetscLib}
     LibPETSc.SNESSetFunctionDomainError(getlib(PetscLib), snes)
+    return snes
+end
+
+
+"""
+    set_jacobian_nullspace!(snes, nullsp)
+
+Retrieve the assembled Jacobian matrix from `snes` (after `SNESSetUp`) and
+attach `nullsp` to it.  Must be called after `SNESSetUp` and before `SNESSolve`.
+"""
+function set_jacobian_nullspace! end
+
+LibPETSc.@for_petsc function set_jacobian_nullspace!(
+    snes::LibPETSc.SNES{$PetscLib},
+    nullsp::LibPETSc.MatNullSpace,
+)
+    petsclib = getlib($PetscLib)
+    J = LibPETSc.SNESGetJacobianMat(petsclib, snes)
+    LibPETSc.MatSetNullSpace(petsclib, J, nullsp)
     return snes
 end

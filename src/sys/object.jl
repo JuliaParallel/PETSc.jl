@@ -21,3 +21,22 @@ function comm(
     comm = LibPETSc.PetscObjectGetComm(PetscLib, obj)
     return comm
 end
+
+
+
+"""
+    set_name!(petsclib, obj, name)
+
+Set the name of any PETSc object (DM, Vec, FE, …) to `name`.
+`obj` can be any pointer type that is convertible to `Ptr{Cvoid}`.
+
+Thin wrapper around `PetscObjectSetName` that avoids needing an explicit
+`convert(Ptr{Cvoid}, obj)` at the call site.
+
+# External Links
+$(doc_external("Sys/PetscObjectSetName"))
+"""
+function set_name!(petsclib::LibPETSc.PetscLibType, obj, name::AbstractString)
+    LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, obj), String(name))
+    return obj
+end

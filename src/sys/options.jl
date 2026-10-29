@@ -1,7 +1,3 @@
-
-
-import .LibPETSc: AbstractPetscOptions, PetscOptions, COptions
-
 # Custom display for REPL
 function Base.show(io::IO, v::AbstractPetscOptions{PetscLib}) where {PetscLib}
     if v.ptr == C_NULL

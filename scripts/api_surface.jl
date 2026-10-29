@@ -37,7 +37,7 @@ const SRC = normpath(joinpath(@__DIR__, "..", "src"))
 """
     own_source(file) -> Bool
 
-Whether a method was defined in PETSc's own high-level source: `src/*.jl`, but
+Whether a method was defined in PETSc's own high-level source: `src/**/*.jl`, but
 not the generated `src/autowrapped/` layer and not the `LibPETSc` plumbing.
 """
 function own_source(file)
@@ -265,8 +265,9 @@ rather than the text, and §1.1 asks for a grep for the helper anyway.
 """
 function borrowed_documented()
     documented = Set{Symbol}()
-    for file in readdir(SRC; join = true)
-        endswith(file, ".jl") || continue
+    for (dir, _, files) in walkdir(SRC), name in files
+        file = joinpath(dir, name)
+        endswith(file, ".jl") && own_source(file) || continue
         lines = readlines(file)
         for (i, line) in pairs(lines)
             occursin("doc_borrowed()", line) || continue

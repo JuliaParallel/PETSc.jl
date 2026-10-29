@@ -633,5 +633,5 @@ on different cluster schedulers.
 
 ```@autodocs
 Modules = [PETSc]
-Pages   = ["dmplex.jl"]
+Pages   = ["dm/plex/plex.jl", "dm/dt/ds.jl", "dm/dt/fe.jl", "dm/dt/pointwise.jl", "dm/fields.jl", "dm/label.jl", "sys/viewer.jl", "mat/nullspace.jl"]
 ```

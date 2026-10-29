@@ -53,5 +53,5 @@ c.perturb_cols_1b      # indexes Julia arrays
 
 ```@autodocs
 Modules = [PETSc]
-Pages   = ["dmda.jl"]
+Pages   = ["dm/da.jl"]
 ```

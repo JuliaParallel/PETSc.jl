@@ -173,11 +173,8 @@ PETSc.set_compute_rhs!(ksp) do petsc_b, ksp
     return 0
 end
 
-# Solve the problem
-PETSc.solve!(ksp)
-
-# Check convergence
-reason = PETSc.LibPETSc.KSPGetConvergedReason(petsclib, ksp)
+# Solve the problem; a diverged solve throws a ConvergenceError
+PETSc.solve!(ksp; check = true)
 
 # Get the solution and compute error
 sol = PETSc.solution(ksp)
@@ -222,14 +219,8 @@ max_err = MPI.Reduce(loc_max_err, max, root, comm)
 if root == MPI.Comm_rank(comm)
     L2_error = sqrt(err2_sum / npts_total)
     
-    # Report convergence status
-    if Integer(reason) > 0
-        println("KSP converged with reason: $reason")
-    elseif Integer(reason) < 0
-        println("WARNING: KSP diverged with reason: $reason")
-    else
-        println("KSP still iterating: $reason")
-    end
+    # Report convergence status (a diverged solve has already thrown)
+    println("KSP converged with reason: $(PETSc.LibPETSc.KSPGetConvergedReason(petsclib, ksp))")
     
     println("L2-error (interior): $(Printf.@sprintf("%.6e", L2_error))")
     println("Max-error (interior): $(Printf.@sprintf("%.6e", max_err))")

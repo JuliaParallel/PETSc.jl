@@ -1,4 +1,5 @@
 using PETSc, MPI, Printf
+using LinearAlgebra: norm
 
 # Small ODE to test implicit TS accuracy with Gauss/IRK schemes; adapted from
 # https://petsc.org/main/src/ts/tutorials/ex51.c.html.
@@ -36,67 +37,33 @@ using PETSc, MPI, Printf
 #
 #     solve_ex51_implicit(options = ["-ts_irk_nstages", "3"])
 
-mutable struct Ex51ImplicitContext{PetscLib <: PETSc.LibPETSc.PetscLibType}
-    petsclib::PetscLib
-end
-
 """
-    ex51_rhs_ifunction!
+    ex51_rhs_ifunction!(F, ts, t, u, u_t)
 
-Implicit residual routine passed to `TSSetIFunction`, corresponding to the DAE
-form `F(t, u, u_t) = 0` with `F(t, u, u_t) = u_t - f(t, u)`.
+Implicit residual, corresponding to the DAE form `F(t, u, u_t) = 0` with
+`F(t, u, u_t) = u_t - f(t, u)`. It fills the vector `F`.
 """
-function ex51_rhs_ifunction!(
-    ::PETSc.LibPETSc.CTS,
-    t::Float64,
-    u_ptr::PETSc.LibPETSc.CVec,
-    udot_ptr::PETSc.LibPETSc.CVec,
-    f_ptr::PETSc.LibPETSc.CVec,
-    ctx_ptr::Ptr{Cvoid},
-)::PETSc.LibPETSc.PetscErrorCode
-    # This function is called through PETSc's C callback interface, so its
-    # argument types must match the low-level PETSc ABI. The current state,
-    # time derivative, and residual vectors arrive as raw `CVec` pointers. We
-    # wrap them with `VecPtr(..., own = false)` so we can use PETSc.jl's array
-    # helpers without taking ownership away from PETSc.
-    ctx = unsafe_pointer_to_objref(ctx_ptr)::Ex51ImplicitContext
-    petsclib = ctx.petsclib
-    # `own = false` since memory is managed by PETSc internally
-    u = PETSc.VecPtr(petsclib, u_ptr; own = false)
-    udot = PETSc.VecPtr(petsclib, udot_ptr; own = false)
-    f = PETSc.VecPtr(petsclib, f_ptr; own = false)
-
+function ex51_rhs_ifunction!(F, ts, t, u, udot)
     PETSc.with_local_array!(
-        (u, udot, f);
+        (u, udot, F);
         read = (true, true, false),
         write = (false, false, true),
     ) do u_array, udot_array, f_array
         f_array[1] = udot_array[1] - cos(t)
         f_array[2] = udot_array[2] - sin(u_array[2])
     end
-
-    return PETSc.LibPETSc.PetscErrorCode(0)
+    return nothing
 end
 
-const EX51_RHS_IFUNCTION_PTR = @cfunction(
-    ex51_rhs_ifunction!,
-    PETSc.LibPETSc.PetscErrorCode,
-    (
-        PETSc.LibPETSc.CTS,
-        Float64,
-        PETSc.LibPETSc.CVec,
-        PETSc.LibPETSc.CVec,
-        PETSc.LibPETSc.CVec,
-        Ptr{Cvoid},
-    ),
-)
-
 """
-    ex51_fill_ijacobian!
+    ex51_ijacobian(PetscScalar)
 
-Fill the tiny 2x2 implicit Jacobian matrix used by this example.
+The optional analytic implicit Jacobian callback `(A, P, ts, t, u, u_t, shift)`
+for the example, for a library with scalar type `PetscScalar`.
 
-For the residual
+The default solve path uses PETSc's finite-difference coloring instead, but
+keeping this explicit callback available is useful as a reference and a
+regression-tested fallback. For the residual
 
     F(t, u, u_t) = [u1_t - cos(t), u2_t - sin(u2)],
 
@@ -105,78 +72,23 @@ the implicit Jacobian is
     dF/du + shift * dF/du_t = [shift   0;
                                0   shift - cos(u2)].
 """
-function ex51_fill_ijacobian!(
-    A::PETSc.LibPETSc.PetscMat,
-    B::PETSc.LibPETSc.PetscMat,
-    shift,
-    diag22,
-    petsclib,
-)
-    PetscScalar = petsclib.PetscScalar
-
-    PETSc.LibPETSc.MatZeroEntries(petsclib, A)
-    A[1, [1, 2]] = PetscScalar.([shift, 0])
-    A[2, [1, 2]] = PetscScalar.([0, diag22])
-    PETSc.assemble!(A)
-
-    if B.ptr != A.ptr
-        PETSc.LibPETSc.MatZeroEntries(petsclib, B)
-        B[1, [1, 2]] = PetscScalar.([shift, 0])
-        B[2, [1, 2]] = PetscScalar.([0, diag22])
-        PETSc.assemble!(B)
+function ex51_ijacobian(PetscScalar)
+    function fill_jacobian!(M, shift, diag22)
+        fill!(M, 0)
+        M[1, [1, 2]] = PetscScalar.([shift, 0])
+        M[2, [1, 2]] = PetscScalar.([0, diag22])
+        PETSc.assemble!(M)
     end
 
-    return nothing
-end
-
-"""
-    ex51_ijacobian!
-
-Optional analytic implicit Jacobian callback for the example.
-
-The default solve path uses PETSc's finite-difference coloring instead, but
-keeping this explicit callback available is useful as a reference and a
-regression-tested fallback.
-"""
-function ex51_ijacobian!(
-    ::PETSc.LibPETSc.CTS,
-    ::Float64,
-    u_ptr::PETSc.LibPETSc.CVec,
-    ::PETSc.LibPETSc.CVec,
-    shift::Float64,
-    A_ptr::PETSc.LibPETSc.CMat,
-    B_ptr::PETSc.LibPETSc.CMat,
-    ctx_ptr::Ptr{Cvoid},
-)::PETSc.LibPETSc.PetscErrorCode
-    ctx = unsafe_pointer_to_objref(ctx_ptr)::Ex51ImplicitContext
-    petsclib = ctx.petsclib
-    # `u` is borrowed from PETSc; do not take ownership.
-    u = PETSc.VecPtr(petsclib, u_ptr; own = false)
-    A = PETSc.LibPETSc.PetscMat(A_ptr, petsclib)
-    B = PETSc.LibPETSc.PetscMat(B_ptr, petsclib)
-
-    diag22 = PETSc.with_local_array!(u; read = true, write = false) do u_array
-        shift - cos(u_array[2])
+    return function (A, P, ts, t, u, udot, shift)
+        diag22 = PETSc.with_local_array!(u; read = true, write = false) do u_array
+            shift - cos(u_array[2])
+        end
+        fill_jacobian!(A, shift, diag22)
+        A.ptr == P.ptr || fill_jacobian!(P, shift, diag22)
+        return nothing
     end
-
-    ex51_fill_ijacobian!(A, B, shift, diag22, petsclib)
-    return PETSc.LibPETSc.PetscErrorCode(0)
 end
-
-const EX51_IJACOBIAN_PTR = @cfunction(
-    ex51_ijacobian!,
-    PETSc.LibPETSc.PetscErrorCode,
-    (
-        PETSc.LibPETSc.CTS,
-        Float64,
-        PETSc.LibPETSc.CVec,
-        PETSc.LibPETSc.CVec,
-        Float64,
-        PETSc.LibPETSc.CMat,
-        PETSc.LibPETSc.CMat,
-        Ptr{Cvoid},
-    ),
-)
 
 function ex51_initial_condition!(u::PETSc.LibPETSc.PetscVec)
     PETSc.with_local_array!(u; read = false, write = true) do u_array
@@ -240,7 +152,7 @@ function ex51_implicit_create_jacobian_template(petsclib)
     jac[1, [1, 2]] = PetscScalar.([1, 1])
     jac[2, [1, 2]] = PetscScalar.([1, 1])
     PETSc.assemble!(jac)
-    PETSc.LibPETSc.MatZeroEntries(petsclib, jac)
+    fill!(jac, 0)
     return jac
 end
 
@@ -289,7 +201,6 @@ function solve_ex51_implicit(;
     parsed_options = ex51_implicit_default_options(PETSc.parse_options(options), jacobian_mode)
 
     comm = MPI.COMM_WORLD
-    PetscScalar = petsclib.PetscScalar
 
     # `did_initialize`: whether we initialized the library in this call
     did_initialize = !PETSc.isinitialized(petsclib)
@@ -299,139 +210,70 @@ function solve_ex51_implicit(;
 
     MPI.Comm_size(comm) == 1 || error("This example only supports sequential runs.")
 
-    # Keep these variables concretely typed across the whole function, even
-    # though the actual PETSc objects are created later inside the `try` block.
-    # The null-pointer placeholders are overwritten by `TSCreate`/`PetscVec`/
-    # `PetscMat`, and the `finally` block checks `ptr != C_NULL` before
-    # destroying them.
-    ts = PETSc.LibPETSc.TS(petsclib)
-    u = PETSc.LibPETSc.PetscVec(petsclib)
-    u_exact = PETSc.LibPETSc.PetscVec(petsclib)
-    jac = PETSc.LibPETSc.PetscMat(petsclib)
-    current_time = petsclib.PetscReal(NaN)
-    error_norm = petsclib.PetscReal(NaN)
-    solution = PetscScalar[]
-    ctx = Ex51ImplicitContext(petsclib)
-    petsc_options = PETSc.PetscOptions(petsclib; parsed_options...)
-    pushed_options = false
-
     try
-        # Create timestepping solver context. We start from PETSc's implicit
-        # Runge-Kutta (`irk`) implementation and let options choose the Gauss
-        # family member and the number of stages. By default the options path
-        # below keeps `-ts_irk_type gauss`.
-        ts = PETSc.LibPETSc.TSCreate(petsclib, comm)
-        PETSc.LibPETSc.TSSetType(petsclib, ts, "irk")
-        PETSc.LibPETSc.TSSetProblemType(petsclib, ts, PETSc.LibPETSc.TS_NONLINEAR)
+        return PETSc.with_destroy() do list
+            # The options are applied at the solve, after what is set below.
+            ts = PETSc.track!(list, PETSc.TS(petsclib, comm;
+                exact_final_time = PETSc.LibPETSc.TS_EXACTFINALTIME_STEPOVER,
+                parsed_options...))
+            # Start from PETSc's implicit Runge-Kutta (`irk`) and let the
+            # options choose the Gauss family member and the number of stages.
+            PETSc.set_type!(ts, :irk)
+            PETSc.set_problem_type!(ts, PETSc.LibPETSc.TS_NONLINEAR)
 
-        # Set initial conditions.
-        u = PETSc.PetscVec(petsclib, 2)
-        ex51_initial_condition!(u)
-        PETSc.LibPETSc.TSSetSolution(petsclib, ts, u)
+            u = PETSc.track!(list, PETSc.PetscVec(petsclib, 2))
+            ex51_initial_condition!(u)
+            PETSc.set_solution!(ts, u)
 
-        # Build the sparse AIJ Jacobian template required by PETSc's
-        # `TSIRK/Gauss` implementation.
-        jac = ex51_implicit_create_jacobian_template(petsclib)
+            # The sparse AIJ Jacobian template `TSIRK/Gauss` needs. With
+            # `jacobian_mode = :finite_difference_color` PETSc fills in the
+            # values from its sparsity pattern by finite differences and
+            # coloring. The analytic callback is the reference.
+            jac = PETSc.track!(list, ex51_implicit_create_jacobian_template(petsclib))
+            PETSc.set_ifunction!(ex51_rhs_ifunction!, ts)
+            PETSc.set_ijacobian!(ex51_ijacobian(petsclib.PetscScalar), ts, jac)
 
-        callback_ctx_ptr = pointer_from_objref(ctx)
-        GC.@preserve ctx begin
-            # Register the implicit residual and Jacobian callbacks. When
-            # `jacobian_mode = :finite_difference_color`, PETSc uses the AIJ
-            # sparsity pattern from `jac` and computes Jacobian values
-            # automatically via finite differences and coloring. The analytic
-            # callback remains available as a fallback and documentation aid.
-            PETSc.LibPETSc.TSSetIFunction(
-                petsclib,
-                ts,
-                nothing,
-                EX51_RHS_IFUNCTION_PTR,
-                callback_ctx_ptr,
-            )
-            PETSc.LibPETSc.TSSetIJacobian(
-                petsclib,
-                ts,
-                jac,
-                jac,
-                EX51_IJACOBIAN_PTR,
-                callback_ctx_ptr,
-            )
-
-            # Configure solver options. As in `ex51.jl`, adaptivity is forced
-            # to take constant time steps. Users can change the Gauss stage
-            # count through `-ts_irk_nstages <s>` in `options` or on the
-            # command line.
+            # As in `ex51.jl`, adaptivity is forced to take constant time steps.
+            # Users can change the Gauss stage count through `-ts_irk_nstages <s>`
+            # in `options` or on the command line.
             save_trajectory && PETSc.LibPETSc.TSSetSaveTrajectory(petsclib, ts)
-            PETSc.LibPETSc.TSSetMaxTime(petsclib, ts, petsclib.PetscReal(final_time))
-            PETSc.LibPETSc.TSSetExactFinalTime(
-                petsclib,
-                ts,
-                PETSc.LibPETSc.TS_EXACTFINALTIME_STEPOVER,
-            )
-            PETSc.LibPETSc.TSSetTimeStep(petsclib, ts, petsclib.PetscReal(dt))
+            PETSc.set_max_time!(ts, final_time)
+            PETSc.set_timestep!(ts, dt)
+            PETSc.set_adapt_type!(ts, :none)
 
-            adapt = PETSc.LibPETSc.TSGetAdapt(petsclib, ts)
-            PETSc.LibPETSc.TSAdaptSetType(petsclib, adapt, "none")
+            PETSc.solve!(u, ts; check = true)
 
-            push!(petsc_options)
-            pushed_options = true
-            PETSc.LibPETSc.TSSetFromOptions(petsclib, ts)
-            pop!(petsc_options)
-            pushed_options = false
+            # Error against the analytical solution at the achieved final time
+            current_time = PETSc.current_time(ts)
+            u_exact = PETSc.track!(list, similar(u))
+            ex51_exact_solution!(u_exact, current_time)
+            err = PETSc.track!(list, u - u_exact)
+            error_norm = norm(err)
+            solution = copy(u[:])
 
-            PETSc.LibPETSc.TSSolve(petsclib, ts, u)
-        end
+            if verbose
+                if abs(current_time - final_time) > 100 * eps(petsclib.PetscReal)
+                    @printf(
+                        "Note: prescribed final time %.16g differs from actual final time %.16g\n",
+                        final_time,
+                        current_time,
+                    )
+                end
 
-        # Compute the error against the analytical solution at the achieved
-        # final time, matching the `VecAYPX` + `VecNorm` pattern used in
-        # `ex51.jl`.
-        current_time = PETSc.LibPETSc.TSGetTime(petsclib, ts)
-        u_exact = similar(u)
-        ex51_exact_solution!(u_exact, current_time)
-
-        PETSc.LibPETSc.VecAYPX(petsclib, u_exact, PetscScalar(-1), u)
-        error_norm = PETSc.LibPETSc.VecNorm(petsclib, u_exact, PETSc.NORM_2)
-        solution = copy(u[:])
-
-        if verbose
-            if abs(current_time - final_time) > 100 * eps(petsclib.PetscReal)
-                @printf(
-                    "Note: prescribed final time %.16g differs from actual final time %.16g\n",
-                    final_time,
-                    current_time,
-                )
+                ts_type = PETSc.type_name(ts)
+                @printf("TS type: %s\n", ts_type)
+                if ts_type == :irk
+                    @printf("IRK type: %s\n", PETSc.LibPETSc.TSIRKGetType(petsclib, ts))
+                    @printf("IRK stages: %d\n", PETSc.LibPETSc.TSIRKGetNumStages(petsclib, ts))
+                end
+                @printf("Jacobian mode: %s\n", String(Symbol(jacobian_mode)))
+                @printf("Final time: %.16g\n", current_time)
+                @printf("Error at final time: %.2E\n", error_norm)
             end
 
-            ts_type = PETSc.LibPETSc.TSGetType(petsclib, ts)
-            @printf("TS type: %s\n", ts_type)
-            if ts_type == "irk"
-                @printf("IRK type: %s\n", PETSc.LibPETSc.TSIRKGetType(petsclib, ts))
-                @printf("IRK stages: %d\n", PETSc.LibPETSc.TSIRKGetNumStages(petsclib, ts))
-            end
-            @printf("Jacobian mode: %s\n", String(Symbol(jacobian_mode)))
-            @printf("Final time: %.16g\n", current_time)
-            @printf("Error at final time: %.2E\n", error_norm)
+            return (final_time = current_time, error = error_norm, solution = solution)
         end
-
-        return (final_time = current_time, error = error_norm, solution = solution)
     finally
-        if pushed_options
-            pop!(petsc_options)
-        end
-        if petsc_options.ptr != C_NULL
-            PETSc.destroy!(petsc_options)
-        end
-        if jac.ptr != C_NULL
-            PETSc.destroy!(jac)
-        end
-        if u_exact.ptr != C_NULL
-            PETSc.destroy!(u_exact)
-        end
-        if u.ptr != C_NULL
-            PETSc.destroy!(u)
-        end
-        if ts.ptr != C_NULL
-            PETSc.LibPETSc.TSDestroy(petsclib, ts)
-        end
         if did_initialize && finalize_petsc
             PETSc.finalize(petsclib)
         end

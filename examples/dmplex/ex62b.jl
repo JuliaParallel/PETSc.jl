@@ -794,16 +794,10 @@ const identity_tau_ptr = PETSc.@residual_fn(petsclib, identity_tau, dim_*dim_)
     solve_step!(petsclib, snes, u) -> iteration_count
 
 Run one SNES Newton solve on the current mesh/aux state. `snes` must already be
-configured via SNESSetFromOptions / SNESSetUp. Returns the Newton iteration count.
+set up with `setup!`. Returns the Newton iteration count.
 """
 function solve_step!(petsclib, snes, u)
-    has_opts = !isnothing(snes.opts)
-    has_opts && push!(snes.opts)
-    try
-        LibPETSc.SNESSolve(petsclib, snes, C_NULL, u)
-    finally
-        has_opts && pop!(snes.opts)
-    end
+    PETSc.solve!(u, snes; check = true)
     return LibPETSc.SNESGetIterationNumber(petsclib, snes)
 end
 
@@ -1307,20 +1301,14 @@ LibPETSc.VecNormalize(petsclib, null_vec)
 nullspace = GC.@preserve null_vec PETSc.mat_nullspace_create(petsclib, comm, (null_vec,))
 
 # ── SNES setup (one-time) ────────────────────────────────────────────────────
-snes = PETSc.SNES(petsclib, comm; opts...)
+snes = PETSc.SNES(petsclib, comm; options_at = :first_solve, opts...)
 PETSc.set_dm!(snes, dm)
 u = PETSc.global_vec(dm)
 PETSc.set_snes_local_fem!(dm)
 
-has_opts = !isnothing(snes.opts)
-has_opts && push!(snes.opts)
-try
-    LibPETSc.SNESSetFromOptions(petsclib, snes)
-    LibPETSc.SNESSetUp(petsclib, snes)
-    PETSc.set_jacobian_nullspace!(snes, nullspace)
-finally
-    has_opts && pop!(snes.opts)
-end
+# The options are applied here, at the first setup
+PETSc.setup!(snes)
+PETSc.set_jacobian_nullspace!(snes, nullspace)
 
 # ── Pre-create DMs for print_invariants! and advect_mesh! ────────────────────
 # DMClone + PetscFECreateDefault is expensive; doing it once here avoids the cost
@@ -1435,20 +1423,8 @@ end
 GC.gc(true)
 MPI.Barrier(comm)
 PETSc.destroy!(petsclib, nullspace)
-PETSc.destroy!(snes)
-PETSc.destroy!(u)
-PETSc.destroy!(null_vec)
-PETSc.destroy!(v_eII)
-PETSc.destroy!(v_tII)
-PETSc.destroy!(dm_eII)
-PETSc.destroy!(dm_tII)
-PETSc.destroy!(vel_p1)
-PETSc.destroy!(dm_p1)
-PETSc.destroy!(aux_vec)
-PETSc.destroy!(dm_aux)
-PETSc.destroy!(tau_vec)
-PETSc.destroy!(dm_tau)
-PETSc.destroy!(dm)
+foreach(PETSc.destroy!, (snes, u, null_vec, v_eII, v_tII, dm_eII, dm_tII, vel_p1, dm_p1,
+                         aux_vec, dm_aux, tau_vec, dm_tau, dm))
 
 if !isinteractive()
     flush(stdout); flush(stderr)

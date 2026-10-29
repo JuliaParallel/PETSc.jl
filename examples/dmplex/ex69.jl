@@ -444,8 +444,8 @@ nullspace = GC.@preserve null_vec PETSc.mat_nullspace_create(petsclib, comm, (nu
 # Do NOT call SNESSetJacobian with J,J — that forces a single matrix for both
 # Amat and Pmat, preventing PETSc from separately assembling the preconditioner
 # Jacobian (PetscDSSetJacobianPreconditioner).  Instead, let DMPlexSetSNESLocalFEM
-# + SNESSetUp create separate Amat and Pmat internally from the DM.
-snes = PETSc.SNES(petsclib, comm; opts...)
+# + setup! create separate Amat and Pmat internally from the DM.
+snes = PETSc.SNES(petsclib, comm; options_at = :first_solve, opts...)
 PETSc.set_dm!(snes, dm)
 u = PETSc.global_vec(dm)
 PETSc.set_snes_local_fem!(dm)
@@ -454,19 +454,12 @@ PETSc.set_snes_local_fem!(dm)
 PETSc.project_function!(u, dm, 0.0, [zero_vel_ptr, zero_vel_ptr]; mode = LibPETSc.INSERT_VALUES)
 
 # ── Solve ─────────────────────────────────────────────────────────────────────
-# The Stokes system has a constant-pressure null space.  We must attach it to
-# the Jacobian AFTER SNESSetUp assembles the matrix but BEFORE SNESSolve.
-# PETSc.solve! does SetFromOptions + SNESSolve in one shot, so we replicate the
-# relevant part of solve! manually to insert the MatSetNullSpace in between.
-push!(snes.opts)
-try
-    LibPETSc.SNESSetFromOptions(petsclib, snes)
-    LibPETSc.SNESSetUp(petsclib, snes)
-    PETSc.set_jacobian_nullspace!(snes, nullspace)
-    LibPETSc.SNESSolve(petsclib, snes, C_NULL, u)
-finally
-    pop!(snes.opts)
-end
+# The Stokes system has a constant-pressure null space.  It goes on the
+# Jacobian, which exists only after setup! (where the options are applied, at
+# the first setup), and before the solve.
+PETSc.setup!(snes)
+PETSc.set_jacobian_nullspace!(snes, nullspace)
+PETSc.solve!(u, snes; check = true)
 
 if MPI.Comm_rank(comm) == 0
     its = LibPETSc.SNESGetIterationNumber(petsclib, snes)

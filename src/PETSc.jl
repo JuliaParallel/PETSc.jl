@@ -44,7 +44,7 @@ lives, what its return value means and where an exception comes out.
 """
 function doc_callback(returns::AbstractString = "")
     ret = isempty(returns) ?
-        "its return value is ignored, except that a nonzero `Integer` still fails the call and warns until v0.6" :
+        "its return value is ignored" :
         returns
 """
 !!! note "Callback"

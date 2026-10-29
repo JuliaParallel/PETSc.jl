@@ -80,7 +80,7 @@ MPI.Initialized() || MPI.Init()
         @test PETSc.set_options_prefix!(snes, "outer_") === snes
         @test PETSc.options_prefix(PETSc.ksp(snes)) == "outer_"
         r = PETSc.PetscVec(petsclib, PetscScalar[0, 0])
-        J = LibPETSc.MatCreateSeqDense(petsclib, comm, PetscInt(2), PetscInt(2), zeros(PetscScalar, 4))
+        J = PETSc.PetscMat(petsclib, zeros(PetscScalar, 2, 2))
         PETSc.set_function!(residual!, snes, r)
         PETSc.set_snes_jacobian!(jacobian!, snes, J)
         x = PETSc.PetscVec(petsclib, PetscScalar[2, 3])
@@ -104,7 +104,7 @@ MPI.Initialized() || MPI.Init()
             residual!(fx, snes, u)
             @test PETSc.set_function_domain_error!(snes) === snes
         end
-        J = LibPETSc.MatCreateSeqDense(petsclib, comm, PetscInt(2), PetscInt(2), zeros(PetscScalar, 4))
+        J = PETSc.PetscMat(petsclib, zeros(PetscScalar, 2, 2))
         PETSc.set_snes_jacobian!(jacobian!, snes, J)
         x2 = PETSc.PetscVec(petsclib, PetscScalar[2, 3])
         PETSc.solve!(x2, snes; check = false)
@@ -166,7 +166,7 @@ MPI.Initialized() || MPI.Init()
         # u² = 2, from u = 1
         snes = PETSc.SNES(petsclib, comm)
         r = PETSc.PetscVec(petsclib, PetscScalar[0])
-        J = LibPETSc.MatCreateSeqDense(petsclib, comm, PetscInt(1), PetscInt(1), zeros(PetscScalar, 1))
+        J = PETSc.PetscMat(petsclib, zeros(PetscScalar, 1, 1))
         PETSc.set_function!(snes, r) do f, _, u
             f[1] = u[1]^2 - 2
             PETSc.assemble!(f)

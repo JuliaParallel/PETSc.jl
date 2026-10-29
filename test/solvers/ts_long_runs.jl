@@ -103,7 +103,7 @@ MPI.Initialized() || MPI.Init()
                 residual!(F, x, t)
                 PETSc.assemble!(F)
             end
-            J = LibPETSc.MatCreateSeqDense(petsclib, comm, petsclib.PetscInt(1), petsclib.PetscInt(1), zeros(PetscScalar, 1))
+            J = PETSc.PetscMat(petsclib, zeros(PetscScalar, 1, 1))
             PETSc.set_ijacobian!(ts, J) do A, _P, _t, _tt, x, _xdot, _shift
                 A[1, 1] = jacobian(x[1])
                 PETSc.assemble!(A)

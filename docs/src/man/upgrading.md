@@ -148,6 +148,8 @@ These can't warn without firing on correct code, so check them now. The [release
 - **Options are applied once**, at the first `setup!` or `solve!` of a KSP, SNES or TS. This is the default in 0.6; pass `options_at = :first_solve` on 0.5.5 to get it there.
 - **Solves throw on divergence.** This is the default in 0.6; pass `check = true` to `solve!` on 0.5.5 to get it there, and `check = false` where the code reads `converged_reason` after a failed solve.
 - **`w = 2 .* x` returns a `PetscVec`**, not a `Vector`, and `size(v)` becomes `(n,)`. `2 * x` already returns a `PetscVec`.
+- **`set_convergence_test!` passes `PetscReal` norms**, not `Float64`. This matters only for a Float32 library with a callback whose arguments are annotated `Float64`.
+- **A callback's return value is ignored**, a nonzero `Integer` too. 0.5.5 warns once per callback that returns one; throw an exception to report a failure.
 - **`copy_disc!(dst, src)`** takes the destination first.
 - **`PetscVec <: AbstractVector` and `PetscMat <: AbstractMatrix`**, with `==` comparing values and `hash` throwing.
 

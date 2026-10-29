@@ -1,6 +1,7 @@
 using Test
 using PETSc
 using MPI
+using Logging
 MPI.Initialized() || MPI.Init()
 isdefined(Main, :PETScTestUtils) || include(joinpath(@__DIR__, "..", "testutils.jl"))
 using .PETScTestUtils: without_petsc_traceback
@@ -55,7 +56,7 @@ using .PETScTestUtils: without_petsc_traceback
             PETSc.assemble!(J)
             return PetscInt(0)
         end
-        J = LibPETSc.MatCreateSeqDense(petsclib,comm, PetscInt(2), PetscInt(2), zeros(PetscScalar,4))
+        J = PETSc.PetscMat(petsclib, zeros(PetscScalar, 2, 2))
         PETSc.set_snes_jacobian!(jacobian!, snes, J)
 
         x = LibPETSc.VecCreateSeqWithArray(petsclib,comm, PetscInt(1), PetscInt(2), PetscScalar.([2, 3]))
@@ -101,7 +102,7 @@ using .PETScTestUtils: without_petsc_traceback
             PETSc.assemble!(J)
             return PetscInt(0)
         end
-        J2 = LibPETSc.MatCreateSeqDense(petsclib,comm, PetscInt(2), PetscInt(2), zeros(PetscScalar,4))
+        J2 = PETSc.PetscMat(petsclib, zeros(PetscScalar, 2, 2))
         PETSc.set_snes_jacobian!(jacobian2!, snes2, J2)
 
 
@@ -140,7 +141,7 @@ using .PETScTestUtils: without_petsc_traceback
         end
 
 
-        J3 = LibPETSc.MatCreateSeqDense(petsclib,comm, PetscInt(2), PetscInt(2), zeros(PetscScalar,4))
+        J3 = PETSc.PetscMat(petsclib, zeros(PetscScalar, 2, 2))
         PETSc.set_snes_jacobian!(snes3, J3) do J, snes, x
             J[1, 1] = 2x[1] + x[2]
             J[1, 2] = x[1]
@@ -182,7 +183,7 @@ using .PETScTestUtils: without_petsc_traceback
             end
             return PetscInt(0)
         end
-        J4 = LibPETSc.MatCreateSeqDense(petsclib, comm, PetscInt(2), PetscInt(2), zeros(PetscScalar, 4))
+        J4 = PETSc.PetscMat(petsclib, zeros(PetscScalar, 2, 2))
         PETSc.set_snes_jacobian!(snes4, J4) do J, snes, x
             PETSc.with_local_array!(x; write = false) do x
                 J[1, 1] = 2x[1] + x[2]
@@ -258,7 +259,7 @@ using .PETScTestUtils: without_petsc_traceback
             end
             return PetscInt(0)
         end
-        J5 = LibPETSc.MatCreateSeqDense(petsclib, comm, PetscInt(2), PetscInt(2), zeros(PetscScalar, 4))
+        J5 = PETSc.PetscMat(petsclib, zeros(PetscScalar, 2, 2))
         PETSc.set_snes_jacobian!(snes5, J5) do J, snes, x
             PETSc.with_local_array!(x; write = false) do x
                 J[1, 1] = 2x[1] + x[2]
@@ -289,7 +290,7 @@ using .PETScTestUtils: without_petsc_traceback
             end
             return PetscInt(0)
         end
-        J6 = LibPETSc.MatCreateSeqDense(petsclib, comm, PetscInt(2), PetscInt(2), zeros(PetscScalar, 4))
+        J6 = PETSc.PetscMat(petsclib, zeros(PetscScalar, 2, 2))
         PETSc.set_snes_jacobian!(snes6, J6) do J, snes, x
             PETSc.with_local_array!(x; write = false) do x
                 J[1, 1] = 2x[1] + x[2]
@@ -328,13 +329,12 @@ using .PETScTestUtils: without_petsc_traceback
         x7 = LibPETSc.VecCreateSeqWithArray(petsclib, comm, PetscInt(1), PetscInt(2), PetscScalar.([2, 3]))
         @test_throws DomainError without_petsc_traceback(() -> PETSc.solve!(x7, snes7), petsclib)
 
-        # a nonzero Integer return still fails the call, and warns
+        # a nonzero Integer return is ignored (test/solvers/callback_contract.jl): the zero residual converges
         PETSc.set_function!(snes7, r7) do fx, snes, x
             return 3
         end
-        @test_logs (:warn, r"returned 3") match_mode = :any begin
-            @test_throws LibPETSc.PetscError without_petsc_traceback(() -> PETSc.solve!(x7, snes7), petsclib)
-        end
+        @test_logs min_level = Logging.Warn PETSc.solve!(x7, snes7)
+        @test Int(PETSc.converged_reason(snes7)) > 0
         # ----------------------------------------------------------------
 
         # cleanup
@@ -405,7 +405,7 @@ end
         return nothing
     end
 
-    J = LibPETSc.MatCreateSeqDense(petsclib, comm, PetscInt(2), PetscInt(2), zeros(PetscScalar, 4))
+    J = PETSc.PetscMat(petsclib, zeros(PetscScalar, 2, 2))
     r = PETSc.PetscVec(petsclib, zeros(PetscScalar, 2))
 
     snes = PETSc.SNES(petsclib, comm; ksp_rtol = 1e-4, pc_type = "none")

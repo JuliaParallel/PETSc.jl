@@ -139,16 +139,8 @@ const _PETSC_ERR_LIB = LibPETSc.PetscErrorCode(76)
 # call that started the work
 const CALLBACK_ERROR = :PETSc_callback_error
 
-# A callback's return value is ignored. A nonzero `Integer` is still the PETSc
-# error code 0.5.0 read it as, and warns once per callback; v0.6 ignores it.
-function errorcode(r, name)
-    (r isa Integer && !iszero(r)) || return LibPETSc.PetscErrorCode(0)
-    @warn "PETSc.jl: the $name callback returned $r, which fails the call as a PETSc error code. " *
-          "From v0.6 a callback's return value is ignored: throw an exception to report a failure." maxlog = 1 _id = Symbol(name)
-    return LibPETSc.PetscErrorCode(r)
-end
-
-# Call `f` for PETSc and turn the outcome into a PETSc error code.
+# Call `f` for PETSc and turn the outcome into a PETSc error code. Its return
+# value is ignored: a callback fails by throwing.
 #
 # A Julia exception must not cross the `@cfunction` boundary: PETSc is C and
 # cannot unwind a Julia frame. The exception is left for the high-level call
@@ -157,7 +149,8 @@ end
 # `LibPETSc` call raises `PetscError`.
 function run_callback(f, name)
     try
-        return errorcode(f(), name)
+        f()
+        return LibPETSc.PetscErrorCode(0)
     catch e
         bt = catch_backtrace()
         # Nothing here may throw either

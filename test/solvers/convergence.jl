@@ -82,7 +82,7 @@ end
             fx[1] = x[1]^2 + x[1] * x[2] - 3
             fx[2] = x[1] * x[2] + x[2]^2 - 6
         end
-        J = LibPETSc.MatCreateSeqDense(petsclib, comm, PetscInt(2), PetscInt(2), zeros(PetscScalar, 4))
+        J = PETSc.PetscMat(petsclib, zeros(PetscScalar, 2, 2))
         PETSc.set_snes_jacobian!(snes, J) do J, _snes, x
             J[1, 1] = 2x[1] + x[2]
             J[1, 2] = x[1]
@@ -121,7 +121,7 @@ end
                 F[1] = exp(x[1])
                 PETSc.assemble!(F)
             end
-            J = LibPETSc.MatCreateSeqDense(petsclib, comm, PetscInt(1), PetscInt(1), zeros(PetscScalar, 1))
+            J = PETSc.PetscMat(petsclib, zeros(PetscScalar, 1, 1))
             PETSc.set_ijacobian!(ts, J) do A, _P, _ts, _t, x, _xdot, _shift
                 A[1, 1] = exp(x[1])
                 PETSc.assemble!(A)

@@ -445,7 +445,7 @@ nullspace = GC.@preserve null_vec PETSc.mat_nullspace_create(petsclib, comm, (nu
 # Amat and Pmat, preventing PETSc from separately assembling the preconditioner
 # Jacobian (PetscDSSetJacobianPreconditioner).  Instead, let DMPlexSetSNESLocalFEM
 # + setup! create separate Amat and Pmat internally from the DM.
-snes = PETSc.SNES(petsclib, comm; options_at = :first_solve, opts...)
+snes = PETSc.SNES(petsclib, comm; opts...)
 PETSc.set_dm!(snes, dm)
 u = PETSc.global_vec(dm)
 PETSc.set_snes_local_fem!(dm)
@@ -459,7 +459,7 @@ PETSc.project_function!(u, dm, 0.0, [zero_vel_ptr, zero_vel_ptr]; mode = LibPETS
 # the first setup), and before the solve.
 PETSc.setup!(snes)
 PETSc.set_jacobian_nullspace!(snes, nullspace)
-PETSc.solve!(u, snes; check = true)
+PETSc.solve!(u, snes)
 
 if MPI.Comm_rank(comm) == 0
     its = LibPETSc.SNESGetIterationNumber(petsclib, snes)

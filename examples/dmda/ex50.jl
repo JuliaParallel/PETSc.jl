@@ -272,7 +272,7 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
     end
 
     # Solve the problem
-    solve_time = @elapsed PETSc.solve!(ksp; check = true)
+    solve_time = @elapsed PETSc.solve!(ksp)
 
     # Get iteration count and print results (only on rank 0)
     niter = LibPETSc.KSPGetIterationNumber(petsclib, ksp)

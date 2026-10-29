@@ -474,7 +474,7 @@ PETSc.project_function!(u, dm, 0.0, [exact_ptr]; mode = LibPETSc.INSERT_ALL_VALU
 PETSc.project_function!(u, dm, 0.0, [zero_u_ptr]; mode = LibPETSc.INSERT_VALUES)
 
 # ── Solve ───────────────────────────────────────────────────────────────────────
-PETSc.solve!(u, snes; check = true)
+PETSc.solve!(u, snes)
 
 if MPI.Comm_rank(comm) == 0
     its = LibPETSc.SNESGetIterationNumber(petsclib, snes)

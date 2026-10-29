@@ -338,7 +338,7 @@ function solve_ex16(;
                 end
             end
 
-            PETSc.solve!(u, ts; check = true)
+            PETSc.solve!(u, ts)
 
             current_time = PETSc.solve_time(ts)
             steps = PETSc.step_number(ts)

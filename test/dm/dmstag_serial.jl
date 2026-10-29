@@ -452,6 +452,7 @@ end
         # simple test to retrieve the KSP object
         # NOTE: need to implement a similar SNES routine
         ksp = PETSc.KSP(dm_ghosted, ksp_type="gmres")
+        PETSc.set_from_options!(ksp)   # the constructor options apply at the first use
         @test LibPETSc.KSPGetType(petsclib, ksp)=="gmres"
 
         PETSc.destroy!(dm_ghosted)

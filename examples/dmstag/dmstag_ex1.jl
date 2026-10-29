@@ -106,7 +106,7 @@ PETSc.assemble!(A)
 # ── Solve and compare ────────────────────────────────────────────────────────
 x   = PETSc.global_vec(dm)
 ksp = PETSc.KSP(A)
-PETSc.solve!(x, ksp, rhs; check = true)
+PETSc.solve!(x, ksp, rhs)
 
 err         = xa - x
 xa_norm     = norm(xa)

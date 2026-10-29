@@ -1,12 +1,16 @@
 # Changelog
 
-## Unreleased
+## v0.5.5
+
+The last release before 0.6, which removes every shim and flips several defaults. Run your code on 0.5.5 with warnings on and fix what they report; "Coming in v0.6" lists the changes that print no warning.
 
 ### Coming in v0.6
 
 These change what working code does or remove a name. The ones marked "warns" print a warning in this release; the others can't warn without firing on correct code.
 
 - KSP, SNES and TS apply their constructor options once, at the first `setup!` or `solve!`, as `options_at = :first_solve` does now. SNES no longer re-reads the options at every solve, which can reset a preconditioner configured in code.
+- `solve!` throws a `ConvergenceError` when a KSP, SNES or TS solve does not converge, instead of warning (warns since 0.5.3; `check = true` throws now).
+- Every name, method and keyword form that warns in 0.5.x is removed.
 - `VecPtr` and `MatPtr` go (warns). Wrap a raw handle with `PetscVec(petsclib, ptr; own)` or `PetscMat(petsclib, ptr; own)`.
 - `isapprox(v, w)` on two PetscVecs compares norms, ‖v − w‖ ≤ max(atol, rtol·max(‖v‖, ‖w‖)), as for Julia arrays, instead of entry by entry (warns).
 - An out-of-place broadcast on a PetscVec, `w = 2 .* x`, returns a PetscVec of `x`'s layout instead of a `Vector`, and works on a distributed vector. The caller destroys it. `2 * x` and `x + y` already return a PetscVec.
@@ -21,6 +25,10 @@ These change what working code does or remove a name. The ones marked "warns" pr
 
 - `PetscMat(petsclib, ptr; own = false)` wraps a raw `Mat` handle, as `PetscVec(petsclib, ptr; own)` does for a `Vec`.
 - `PetscVec` has `copy`, `dot`, `axpy!`, `axpby!`, `rmul!`, `lmul!` and the operators `x + y`, `x - y`, `-x`, `α * x` and `x / α`, through `VecCopy`, `VecDot`, `VecAXPY`, `VecAXPBY`, `VecScale` and `VecWAXPY`. An assembled `PetscMat` has `copy`, `A + B`, `A - B`, `-A` and `α * A`, through `MatDuplicate`, `MatAXPY` and `MatScale`. All are collective and work on distributed objects; `copy` and the operators return a new Vec or Mat, which on more than one rank needs `destroy!` like any other. `dot(x, y)` conjugates `x`, as for Julia arrays.
+- `MatShell` takes the operations `mult_transpose(y, x)`, `diagonal(d)` and `mult_add(z, x, y)` as keywords, so `transpose(A) * x`, `A' * x`, `pc_type = jacobi` and `MatMultAdd` work on a shell.
+- `with_local_arrays!(f!, g_fx, l_x)` calls `f!(fx, lx)` with the local arrays of the two Vecs, on the device when a GPU extension is loaded, and hands them back afterwards, also when `f!` throws.
+- `with_local_coordinate_array(f, dm)` calls `f(coord)` with the local coordinates of a `DMDA` or `DMStag`, addressed with global indices, and hands the array back when `f` returns or throws.
+- AMD GPUs: with AMDGPU.jl loaded and a PETSc built with HIP, `with_local_array!` and `with_local_arrays!` return `ROCArray`s for Vecs in HIP memory (`PETScAMDGPUExt`). `with_local_arrays!` also handles one Vec on the host and the other on the device, as on coarser multigrid levels. `with_field_views!` on a DMStag with device vectors gives views of device arrays for kernels; broadcast over `parent(view)`, since `OffsetArray` broadcasts on the host.
 
 ### Deprecated
 
@@ -35,13 +43,6 @@ These change what working code does or remove a name. The ones marked "warns" pr
 ### Behaviour changes
 
 - `star_fd_coloring` throws an `ArgumentError` for a DMDA that is not 2-D with a STAR stencil, where a 1-D or 3-D one gave a `MethodError` and a BOX one a coloring that leaves out entries.
-
-### Added
-
-- `MatShell` takes the operations `mult_transpose(y, x)`, `diagonal(d)` and `mult_add(z, x, y)` as keywords, so `transpose(A) * x`, `A' * x`, `pc_type = jacobi` and `MatMultAdd` work on a shell.
-- `with_local_arrays!(f!, g_fx, l_x)` calls `f!(fx, lx)` with the local arrays of the two Vecs, on the device when a GPU extension is loaded, and hands them back afterwards, also when `f!` throws.
-- `with_local_coordinate_array(f, dm)` calls `f(coord)` with the local coordinates of a `DMDA` or `DMStag`, addressed with global indices, and hands the array back when `f` returns or throws.
-- AMD GPUs: with AMDGPU.jl loaded and a PETSc built with HIP, `with_local_array!` and `with_local_arrays!` return `ROCArray`s for Vecs in HIP memory (`PETScAMDGPUExt`). `with_local_arrays!` also handles one Vec on the host and the other on the device, as on coarser multigrid levels. `with_field_views!` on a DMStag with device vectors gives views of device arrays for kernels; broadcast over `parent(view)`, since `OffsetArray` broadcasts on the host.
 
 ### Fixed
 

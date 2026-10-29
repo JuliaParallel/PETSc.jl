@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+### Breaking
+
+- `solve!` (KSP, SNES, TS) and `step!` throw a `ConvergenceError` when the solver stops without converging. Pass `check = false` to return normally and read `converged_reason`; a TS that raises a `PetscError` on a failed step (`set_error_if_step_fails!`, PETSc's default) then raises that instead. The warning printed since 0.5.3 is gone.
+- KSP, SNES and TS apply their constructor options once, at the first `setup!` or `solve!` (or `step!` for a TS): `options_at = :first_solve` is the default for all three. SNES and TS no longer re-read them at every solve, which could reset a preconditioner configured in code; pass `options_at = :each_solve` for that. KSP no longer reads them in the constructor: until the first `setup!` or `solve!` it has no type (`type_name` returns `nothing`), and an option overrides a setting made in code for the same thing before then. Code that needs the type earlier, such as `set_fieldsplit_is!` on a PC chosen by `pc_type`, calls `set_type!` itself or passes `options_at = :construction`.
+
 ## v0.5.5
 
 The last release before 0.6, which removes every shim and flips several defaults. Run your code on 0.5.5 with warnings on and fix what they report; "Coming in v0.6" lists the changes that print no warning.

@@ -493,7 +493,7 @@ end
 
 # ── Solve ─────────────────────────────────────────────────────────────────────
 @show Threads.nthreads()
-PETSc.solve!(x, snes; check = true)
+PETSc.solve!(x, snes)
 
 if MPI.Comm_rank(comm) == 0
     its = LibPETSc.SNESGetIterationNumber(petsclib, snes)

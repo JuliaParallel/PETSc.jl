@@ -71,12 +71,15 @@ MPI.Initialized() || MPI.Init()
 
     # Each solver is built with `pc_type = ilu` in its options, and the PC is set
     # to Jacobi in code before each of two solves. Which one is in effect after
-    # each solve shows when the options were applied.
+    # each solve shows when the options were applied. `:default` passes no
+    # `options_at`, which must behave as `:first_solve`.
     expected = Dict(
         :construction => (:jacobi, :jacobi),
         :each_solve => (:ilu, :ilu),
         :first_solve => (:ilu, :jacobi),
+        :default => (:ilu, :jacobi),
     )
+    at_keyword(at) = at === :default ? (;) : (; options_at = at)
 
     function pc_types_after_two_solves(solve, pc)
         types = Symbol[]
@@ -88,11 +91,11 @@ MPI.Initialized() || MPI.Init()
         return Tuple(types)
     end
 
-    @testset "KSP, options_at = :$at" for at in (:construction, :each_solve, :first_solve)
+    @testset "KSP, options_at = :$at" for at in (:default, :construction, :each_solve, :first_solve)
         A = PETSc.PetscMat(petsclib, M)
         b = PETSc.PetscVec(petsclib, PetscScalar[3, 3])
         x = PETSc.PetscVec(petsclib, zeros(PetscScalar, 2))
-        ksp = PETSc.KSP(A; options_at = at, pc_type = "ilu", ksp_rtol = 1e-12)
+        ksp = PETSc.KSP(A; at_keyword(at)..., pc_type = "ilu", ksp_rtol = 1e-12)
         @test pc_types_after_two_solves(() -> PETSc.solve!(x, ksp, b; check = true), PETSc.pc(ksp)) ==
             expected[at]
         @test x[:] ≈ PetscScalar[1, 1]
@@ -101,7 +104,7 @@ MPI.Initialized() || MPI.Init()
 
     # F(x) = M x − (3, 3), root (1, 1)
     function linear_snes(at)
-        snes = PETSc.SNES(petsclib, comm; options_at = at, pc_type = "ilu", snes_rtol = 1e-12)
+        snes = PETSc.SNES(petsclib, comm; at_keyword(at)..., pc_type = "ilu", snes_rtol = 1e-12)
         r = PETSc.PetscVec(petsclib, zeros(PetscScalar, 2))
         PETSc.set_function!(snes, r) do fx, _snes, x
             fx[1] = 4x[1] - x[2] - 3
@@ -112,7 +115,7 @@ MPI.Initialized() || MPI.Init()
         return snes, r, J
     end
 
-    @testset "SNES, options_at = :$at" for at in (:construction, :each_solve, :first_solve)
+    @testset "SNES, options_at = :$at" for at in (:default, :construction, :each_solve, :first_solve)
         snes, r, J = linear_snes(at)
         x = PETSc.PetscVec(petsclib, zeros(PetscScalar, 2))
         solve() = (fill!(x, 0); PETSc.solve!(x, snes; check = true))
@@ -124,7 +127,7 @@ MPI.Initialized() || MPI.Init()
     # du/dt = −M u by backward Euler, steps of 0.1. PETSc shifts the Jacobian in
     # place, so the callback fills it on every call.
     function linear_ts(at)
-        ts = PETSc.TS(petsclib, comm; options_at = at, pc_type = "ilu")
+        ts = PETSc.TS(petsclib, comm; at_keyword(at)..., pc_type = "ilu")
         PETSc.set_type!(ts, :beuler)
         PETSc.set_adapt_type!(ts, :none)
         PETSc.set_rhs_function!(ts) do F, _ts, _t, u
@@ -141,7 +144,7 @@ MPI.Initialized() || MPI.Init()
         return ts, J
     end
 
-    @testset "TS, options_at = :$at" for at in (:construction, :each_solve, :first_solve)
+    @testset "TS, options_at = :$at" for at in (:default, :construction, :each_solve, :first_solve)
         ts, J = linear_ts(at)
         u = PETSc.PetscVec(petsclib, PetscScalar[1, 1])
         t_end = Ref(0.0)
@@ -194,7 +197,7 @@ MPI.Initialized() || MPI.Init()
     end
 
     @testset "step! applies the options only under :first_solve" begin
-        for (at, pc_type) in ((:first_solve, :ilu), (:each_solve, :jacobi))
+        for (at, pc_type) in ((:default, :ilu), (:first_solve, :ilu), (:each_solve, :jacobi))
             ts, J = linear_ts(at)
             u = PETSc.PetscVec(petsclib, PetscScalar[1, 1])
             PETSc.set_solution!(ts, u)

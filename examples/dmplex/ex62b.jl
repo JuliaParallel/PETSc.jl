@@ -797,7 +797,7 @@ Run one SNES Newton solve on the current mesh/aux state. `snes` must already be
 set up with `setup!`. Returns the Newton iteration count.
 """
 function solve_step!(petsclib, snes, u)
-    PETSc.solve!(u, snes; check = true)
+    PETSc.solve!(u, snes)
     return LibPETSc.SNESGetIterationNumber(petsclib, snes)
 end
 
@@ -1301,7 +1301,7 @@ LibPETSc.VecNormalize(petsclib, null_vec)
 nullspace = GC.@preserve null_vec PETSc.mat_nullspace_create(petsclib, comm, (null_vec,))
 
 # ── SNES setup (one-time) ────────────────────────────────────────────────────
-snes = PETSc.SNES(petsclib, comm; options_at = :first_solve, opts...)
+snes = PETSc.SNES(petsclib, comm; opts...)
 PETSc.set_dm!(snes, dm)
 u = PETSc.global_vec(dm)
 PETSc.set_snes_local_fem!(dm)

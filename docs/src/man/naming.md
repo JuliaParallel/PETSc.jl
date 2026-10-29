@@ -659,7 +659,7 @@ Argument problems raise standard Julia exceptions. `@assert` is reserved for inv
 | Mismatched sizes or shapes | `DimensionMismatch` |
 | Library not initialized | `PetscNotInitialized` |
 | Error returned by PETSc itself | `PetscError` (existing) |
-| Solver stopped without converging, with `check = true` | `ConvergenceError` (from 0.5.3; the default in v0.6) |
+| Solver stopped without converging, unless `check = false` | `ConvergenceError` (from 0.5.3; the default from v0.6) |
 
 Every high-level constructor that creates a PETSc object (`PetscVec`, `PetscMat`, `PetscOptions`, `KSP`, `SNES`, `TS` and the DM types) checks that its library is initialized before calling PETSc, so a missing `initialize` is reported as `PetscNotInitialized` and not as the `PetscError` PETSc would raise. `test/core/errors.jl` checks each of them. `PetscOptions` is included although PETSc's `PetscOptionsCreate` works before `PetscInitialize`: the object records the library's current `age`, `initialize` advances it, so an options database created first would already be stale and `destroy!` would skip it.
 

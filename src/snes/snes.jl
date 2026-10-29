@@ -15,7 +15,7 @@ SNESState() = SNESState(
     nothing,
     nothing,
     nothing,
-    :each_solve,
+    :first_solve,
     false,
     true,
 )
@@ -65,17 +65,18 @@ function Base.show(io::IO, v::AbstractSNES{PetscLib}) where {PetscLib}
 end
 
 """
-    SNES(petsclib, comm::MPI.Comm; prefix = "", options_at = :each_solve, options...)
+    SNES(petsclib, comm::MPI.Comm; prefix = "", options_at = :first_solve, options...)
 
 Create a PETSc nonlinear solver (SNES) context on the communicator `comm`.
 
 `options_at` decides when the options are applied, through `SNESSetFromOptions`:
 
-- `:each_solve` (the default): at the start of every [`solve!`](@ref), once the DM
-  and the callbacks are attached. They override a setting made in code for the
-  same option.
-- `:first_solve`: once, at the first [`setup!`](@ref) or `solve!`. A setting
-  made in code after that overrides them.
+- `:first_solve` (the default): once, at the first [`setup!`](@ref) or `solve!`,
+  once the DM and the callbacks are attached. A setting made in code after that
+  overrides them.
+- `:each_solve`: at the start of every [`solve!`](@ref). They override a setting
+  made in code for the same option, including a preconditioner configured
+  between solves.
 - `:construction`: here, once. A DM or callback attached afterwards is not
   visible to them.
 
@@ -101,7 +102,7 @@ function SNES(
     petsclib::PetscLib,
     comm::MPI.Comm;
     prefix::AbstractString = "",
-    options_at::Symbol = :each_solve,
+    options_at::Symbol = :first_solve,
     options...,
 ) where {PetscLib <: LibPETSc.PetscLibType}
     check_initialized(getlib(PetscLib))
@@ -407,20 +408,18 @@ function set_user_ctx!(snes::AbstractSNES, ctx)
 end
 
 """
-    solve!(x::AbstractPetscVec, snes::SNES, b = nothing; check = nothing)
+    solve!(x::AbstractPetscVec, snes::SNES, b = nothing; check = true)
 
 Solve the nonlinear system of `snes` starting from `x`, which holds the solution on
 return, and return `x`. `b` is an optional right-hand side: the system solved is
-F(x) = b. The options passed to the [`SNES`](@ref) constructor are applied here
-by default; its `options_at` keyword says when.
+F(x) = b. The options passed to the [`SNES`](@ref) constructor are applied at the
+first `setup!` or `solve!` by default; its `options_at` keyword says when.
 
 PETSc does not report a failed solve: `x` holds the last iterate and
 [`converged_reason`](@ref) says why it stopped. `check` decides what happens then:
 
-- `check = true` throws a [`ConvergenceError`](@ref).
+- `check = true` (the default) throws a [`ConvergenceError`](@ref).
 - `check = false` returns normally, and the caller reads `converged_reason`.
-- Not passed, it returns normally and warns once per call site that from v0.6 a
-  failed solve throws.
 
 # External Links
 $(doc_external("SNES/SNESSolve"))
@@ -430,11 +429,11 @@ function solve!(
     x::AbstractPetscVec{PetscLib},
     snes::AbstractSNES{PetscLib},
     b::Union{Nothing, AbstractPetscVec{PetscLib}} = nothing;
-    check::Union{Nothing, Bool} = nothing,
+    check::Bool = true,
 ) where {PetscLib}
-    # Under the default `options_at = :each_solve`, SNESSetFromOptions runs here
-    # rather than in the constructor, so that it sees the DM hierarchy that
-    # multigrid needs and the callbacks.
+    # Under the default `options_at = :first_solve`, SNESSetFromOptions runs at the
+    # first solve rather than in the constructor, so that it sees the DM hierarchy
+    # that multigrid needs and the callbacks.
     with_solver_options(snes; solving = true) do
         with_convergence_check(snes, check) do
             capture_callback_errors() do
@@ -625,8 +624,9 @@ end
 Set the convergence tolerances of `snes`, named as [`tolerances`](@ref) returns them.
 A keyword left at `nothing` keeps the value `snes` has. Returns `snes`.
 
-Options given to the constructor are applied at every `solve!` by default
-(`options_at = :each_solve`), so `snes_rtol = …` there overrides `rtol` set here.
+An option for the same tolerance (`snes_rtol = 1e-8` to the constructor, or
+`-snes_rtol` on the command line) is applied when the constructor's `options_at`
+says, and overrides this setting if that comes later.
 
 # External Links
 $(doc_external("SNES/SNESSetTolerances"))

@@ -82,14 +82,16 @@ using Logging: Error
         @test y[1:10] ≈ x[1:10]
         PETSc.destroy!(x)
 
-        # do the same with backslash; at rtol = 1e-16 GMRES stops on a breakdown, which `\` warns about
-        x1 = @test_logs min_level = Error ksp \ b
+        # do the same through solve!; at rtol = 1e-16 GMRES stops on a breakdown (Float32), which `\` would throw
+        x1 = similar(b)
+        @test_logs min_level = Error PETSc.solve!(x1, ksp, b; check = false)
         @test y ≈ x1
         #PETSc.destroy!(x)
 
         # Create a KSP solver in a simpler way --
         ksp1 = PETSc.KSP(A; ksp_rtol = 1e-12, pc_type = "jacobi", ksp_monitor=false)
-        x2 = ksp1 \ b
+        x2 = similar(b)
+        PETSc.solve!(x2, ksp1, b; check = false)   # rtol = 1e-12 is out of reach in Float32
         @test y ≈ x2
         #PETSc.destroy!(ksp1)
         # ------------------------------

@@ -356,7 +356,7 @@ if bc == "dirichlet"
 end
 
 # ── Solve ─────────────────────────────────────────────────────────────────────
-PETSc.solve!(u, snes; check = true)
+PETSc.solve!(u, snes)
 
 if MPI.Comm_rank(comm) == 0
     its = LibPETSc.SNESGetIterationNumber(petsclib, snes)

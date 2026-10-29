@@ -93,13 +93,12 @@ ksp = PETSc.KSP(dm;
     ksp_type = "fgmres",
     ksp_monitor = true,
     ksp_converged_reason = true,
-    options_at = :first_solve,
     opts...)
 PETSc.set_operators!(ksp, A)
 PETSc.set_dm_active!(ksp, false)
 
 x = similar(b)
-PETSc.solve!(x, ksp, b; check = true)    # throws ConvergenceError if it diverges
+PETSc.solve!(x, ksp, b)    # throws ConvergenceError if it diverges
 
 # ── Optional: print solution on rank 0 ───────────────────────────────────────
 if MPI.Comm_rank(comm) == 0

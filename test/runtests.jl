@@ -74,6 +74,7 @@ if selected("solvers")
     include("solvers/ksp.jl")
     include("solvers/pc.jl")              # high-level PC
     include("solvers/snes.jl")
+    include("solvers/callback_contract.jl")  # callback return value ignored; PetscReal norms in a convergence test
     include("solvers/solver_api.jl")      # KSP/SNES/TS/PC readers, operators, prefixes, set_from_options!
     include("solvers/convergence.jl")     # ConvergenceError, solve!(…; check), the divergence warning
     include("solvers/options_timing.jl")  # options_at: when constructor options apply; with_options

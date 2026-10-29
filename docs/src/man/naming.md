@@ -1096,7 +1096,7 @@ The DMPlex pointwise functions (`@residual_fn` and the other macros) are exempt.
 
 - The callback is the setter's first argument ([§8.1](#8.1-Callbacks-come-first)).
 - A callback that fills an argument takes that argument first, then the object, then what it reads: `f!(F, snes, x)`, `updateJ!(J, P, snes, x)`, `apply!(y, pc, x)`, `f!(F, ts, t, u)`. A callback that only observes takes the object first: `monitor(ts, step, t, u)`, `test!(snes, it, xnorm, gnorm, fnorm)`.
-- A callback succeeds by returning and fails by throwing. Its return value is ignored, unless it carries a meaning its setter's docstring states, such as the convergence reason `test!` returns. In 0.5 a nonzero `Integer` return still fails the call, as the PETSc error code 0.5.0 read it as, and warns once; from v0.6 it is ignored like any other value. `return PetscInt(0)`, which 0.5.0 callbacks end in, keeps working throughout.
+- A callback succeeds by returning and fails by throwing. Its return value is ignored, unless it carries a meaning its setter's docstring states, such as the convergence reason `test!` returns. A nonzero `Integer` is ignored like any other value (0.5.x read it as a PETSc error code); `return PetscInt(0)`, which 0.5.0 callbacks end in, keeps working.
 - New callbacks take no trailing `user_ctx`: a closure captures what it needs. `SNES` and `TS` callbacks keep the optional trailing argument they have in 0.5.0, deprecated in 0.5.5 and removed in 0.6.
 
 ### 18.6 Public surface
@@ -1119,5 +1119,5 @@ Three rows change what working code observes, and the release notes list them as
 | Exception in a `TS` callback | logged, and `PetscError` | the original exception, rethrown by `solve!` or `step!` |
 | `LibPETSc.PC` | `Ptr{_n_PC}` | `PC{PetscLib}`, a handle like `KSP` |
 | `SNES`, `KSP` and `MatShell` trampolines | return a `PetscInt` | return a `PetscErrorCode` |
-| A callback's return value | an `Integer` is a PETSc error code | ignored; a nonzero `Integer` still fails and warns, until v0.6 |
+| A callback's return value | an `Integer` is a PETSc error code | ignored; a nonzero `Integer` no longer fails the call (v0.6) |
 | `set_*!`, `add_*!` and the other `!` functions | `nothing`, `0` (`set_function!`) or the `ksp` | the object they mutate ([§7](#7.-Mutation)) |

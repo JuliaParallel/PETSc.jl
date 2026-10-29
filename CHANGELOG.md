@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+### Breaking
+
+- A callback's return value is ignored. A nonzero `Integer` no longer fails the call as a PETSc error code; throw an exception to report a failure. `return PetscInt(0)` keeps working. The warning printed since 0.5.1 is gone.
+- `set_convergence_test!` passes the norms to the callback as `PetscReal`, not `Float64`. This matters only for a Float32 library with a callback whose arguments are annotated `Float64`.
+
 ## v0.5.5
 
 The last release before 0.6, which removes every shim and flips several defaults. Run your code on 0.5.5 with warnings on and fix what they report; "Coming in v0.6" lists the changes that print no warning.

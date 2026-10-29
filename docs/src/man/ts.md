@@ -96,7 +96,7 @@ A Jacobian callback is always handed both the Jacobian `A` and the preconditioni
 | [`PETSc.set_pre_step!`](@ref) | `f!(ts)` |
 | [`PETSc.set_post_step!`](@ref) | `f!(ts)` |
 
-A callback's return value is ignored; it reports a failure by throwing. Until v0.6, a nonzero `Integer` returned by one of the first five still fails the call, with a warning.
+A callback's return value is ignored; it reports a failure by throwing.
 
 An exception thrown in a callback never crosses into PETSc's C code. PETSc is told the callback failed, unwinds, and [`PETSc.solve!`](@ref) or [`PETSc.step!`](@ref) then rethrows the original exception.
 

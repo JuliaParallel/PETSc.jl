@@ -352,7 +352,8 @@ function (w::SNESSetConvergenceTestFn{PetscLib})(
     snes = unsafe_pointer_to_objref(snes_ptr)::SNESState
     actual_snes = SNES{PetscLib}(actual_snes_ptr, getlib(PetscLib).age; own = false)
     return run_callback("convergence test") do
-        reason = snes.convergence_test!(actual_snes, Int(it), Float64(xnorm), Float64(gnorm), Float64(fnorm))
+        PetscReal = getlib(PetscLib).PetscReal
+        reason = snes.convergence_test!(actual_snes, Int(it), PetscReal(xnorm), PetscReal(gnorm), PetscReal(fnorm))
         unsafe_store!(reason_ptr, eltype(reason_ptr)(Int(reason)))
         return nothing
     end

@@ -1,6 +1,7 @@
 using Test
 using PETSc
 using MPI
+using Logging
 MPI.Initialized() || MPI.Init()
 isdefined(Main, :PETScTestUtils) || include(joinpath(@__DIR__, "..", "testutils.jl"))
 using .PETScTestUtils: without_petsc_traceback
@@ -328,13 +329,12 @@ using .PETScTestUtils: without_petsc_traceback
         x7 = LibPETSc.VecCreateSeqWithArray(petsclib, comm, PetscInt(1), PetscInt(2), PetscScalar.([2, 3]))
         @test_throws DomainError without_petsc_traceback(() -> PETSc.solve!(x7, snes7), petsclib)
 
-        # a nonzero Integer return still fails the call, and warns
+        # a nonzero Integer return is ignored (test/solvers/callback_contract.jl): the zero residual converges
         PETSc.set_function!(snes7, r7) do fx, snes, x
             return 3
         end
-        @test_logs (:warn, r"returned 3") match_mode = :any begin
-            @test_throws LibPETSc.PetscError without_petsc_traceback(() -> PETSc.solve!(x7, snes7), petsclib)
-        end
+        @test_logs min_level = Logging.Warn PETSc.solve!(x7, snes7)
+        @test Int(PETSc.converged_reason(snes7)) > 0
         # ----------------------------------------------------------------
 
         # cleanup

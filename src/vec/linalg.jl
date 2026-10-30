@@ -161,7 +161,7 @@ Base.:*(x::AbstractPetscVec, α::Number) = rmul!(copy(x), α)
 # Through the broadcast rather than VecScale with 1/α, so each entry is divided
 # exactly as `x ./ α` would
 function Base.:/(x::AbstractPetscVec{PetscLib}, α::Number) where {PetscLib}
-    w = finalize_if_serial!(similar(x))
+    w = similar(x)
     w .= x ./ scalartype(PetscLib)(α)
     return w
 end
@@ -173,7 +173,7 @@ function waxpy(
     y::AbstractPetscVec{PetscLib},
 ) where {PetscLib}
     check_same_length(x, y)
-    w = finalize_if_serial!(similar(x))
+    w = similar(x)
     LibPETSc.VecWAXPY(PetscLib, w, α, x, y)
     return w
 end

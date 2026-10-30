@@ -34,10 +34,19 @@ const SELECTED = Tuple(filter(group -> !(group in EXCLUDED), isempty(INCLUDED) ?
 selected(group) = group in SELECTED
 
 # Runs `file` in a Julia process of its own, on `nranks` MPI ranks if given
-function run_separately(file; nranks = nothing)
+# A run that takes longer than `timeout` seconds is killed and counts as a failure, so a
+# hang (ranks waiting on each other in a collective call) fails the test instead of
+# holding the job until CI gives up.
+function run_separately(file; nranks = nothing, timeout = 1800)
     julia = `$(Base.julia_cmd()) --project=. $(joinpath(@__DIR__, file))`
     cmd = isnothing(nranks) ? julia : `$(mpiexec()) -n $nranks $julia`
-    return success(pipeline(cmd, stderr = stderr))
+    process = run(pipeline(cmd, stderr = stderr); wait = false)
+    if timedwait(() -> !process_running(process), timeout) !== :ok
+        @error "timed out after $timeout s, killing it" file
+        kill(process)
+        return false
+    end
+    return success(process)
 end
 
 if selected("core")

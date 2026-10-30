@@ -39,10 +39,14 @@ element type or a size it gives a Julia `Array`, as for any `AbstractArray`: eve
 vector of a library holds that library's scalar type, and a different size has no
 layout to copy.
 
+As from a constructor, the new vector has a finalizer only on a one-rank
+communicator; on more ranks call [`destroy!`](@ref) on it on every rank.
+
 # External Links
 $(doc_external("Vec/VecDuplicate"))
 """
-Base.similar(v::AbstractPetscVec{PetscLib}) where {PetscLib} =  LibPETSc.VecDuplicate(getlib(PetscLib), v)
+Base.similar(v::AbstractPetscVec{PetscLib}) where {PetscLib} =
+    finalize_if_serial!(LibPETSc.VecDuplicate(getlib(PetscLib), v))
 Base.similar(v::AbstractPetscVec{PetscLib, T}, ::Type{T}) where {PetscLib, T} = similar(v)
 
 function Base.getindex(v::AbstractPetscVec{PetscLib}, i::Integer) where {PetscLib}
@@ -131,7 +135,7 @@ end
 function Base.copy(bc::Broadcast.Broadcasted{PetscVecStyle})
     flat = Broadcast.flatten(bc)
     check_scalar_result(Broadcast.combine_eltypes(flat.f, flat.args))
-    w = finalize_if_serial!(similar(first_petscvec(flat.args)))
+    w = similar(first_petscvec(flat.args))
     try
         copyto!(w, bc)
     catch

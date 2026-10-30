@@ -126,7 +126,7 @@ end
    finalize(petsclib)
 
 Finalize the `petsclib`, if no `petsclib` is given then all `PETSc.petsclibs`
-will be finalized.
+will be finalized. A library that is not initialized is left alone.
 
 # External Links
 $(doc_external("Sys/PetscFinalize"))
@@ -137,7 +137,7 @@ function finalize()
 end
 
 function finalize(petsclib)
-    if !isfinalized(petsclib)
+    if isinitialized(petsclib)
         petsclib.age += 1
         LibPETSc.PetscFinalize(petsclib)
         drop_object_states!(typeof(petsclib))
@@ -179,8 +179,18 @@ function post_initialize(petsclib)
     # disable signal handler
     LibPETSc.PetscPopSignalHandler(petsclib)
     _reset_stale_register_flags(petsclib)
-    atexit(() -> finalize(petsclib))
+    register_finalize_at_exit(petsclib)
     apply_blas_num_threads(petsclib)
+    return nothing
+end
+
+# One `atexit` hook per library, however often it is initialized. The hook finds the
+# library in whatever state it is in, and `finalize` leaves one that is not initialized alone.
+const finalize_at_exit = Set{DataType}()
+function register_finalize_at_exit(petsclib)
+    typeof(petsclib) in finalize_at_exit && return nothing
+    push!(finalize_at_exit, typeof(petsclib))
+    atexit(() -> finalize(petsclib))
     return nothing
 end
 
@@ -192,12 +202,15 @@ end
 # pool is process-wide and is left as it is at `finalize`: it serves all Julia
 # code, not PETSc objects.
 function apply_blas_num_threads(petsclib)
+    # Collective, so every rank calls it before any test of its own environment or
+    # options: ranks that skipped it would leave the others waiting in it.
+    shared = ranks_on_node() > 1
     global_options = LibPETSc.PetscOptions{typeof(petsclib)}(C_NULL, petsclib.age; own = false)
     n, set = LibPETSc.PetscOptionsGetInt(petsclib, global_options, "", "-blas_num_threads")
     if Bool(set)
         n >= 1 || throw(ArgumentError("-blas_num_threads must be at least 1, got $n"))
         LinearAlgebra.BLAS.set_num_threads(Int(n))
-    elseif !any(v -> haskey(ENV, v), BLAS_THREAD_VARIABLES) && ranks_on_node() > 1
+    elseif shared && !any(v -> haskey(ENV, v), BLAS_THREAD_VARIABLES)
         LinearAlgebra.BLAS.set_num_threads(1)
         LibPETSc.PetscBLASSetNumThreads(petsclib, petsclib.PetscInt(1))
     end

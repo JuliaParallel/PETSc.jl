@@ -5,7 +5,8 @@ using PETSc
 
 isdefined(Main, :PETScTestUtils) || include(joinpath(@__DIR__, "..", "testutils.jl"))
 using .PETScTestUtils: without_petsc_traceback
-using LinearAlgebra: dot
+using LinearAlgebra: dot, I
+using SparseArrays: sparse
 
 # A PetscVec as an AbstractVector, on COMM_WORLD: generic Julia methods either reach a
 # PETSc override and give the global answer on every rank, or throw at the first
@@ -158,5 +159,46 @@ end
 
         PETSc.destroy!(x)
         PETSc.destroy!(y)
+    end
+end
+
+# On one rank a vector that `similar`, `copy`, a broadcast or `ksp \ b` returns has a finalizer,
+# so the garbage collector frees it. The check holds a second PETSc reference on the object,
+# drops the Julia handle and collects: the count is back to 1 only if the finalizer ran.
+@noinline function references_after_collection(make, petsclib, settle = () -> nothing)
+    LibPETSc = PETSc.LibPETSc
+    ptr = let w = make()
+        LibPETSc.PetscObjectReference(petsclib, w)
+        w.ptr
+    end
+    GC.gc()
+    GC.gc()
+    settle()
+    held = PETSc.PetscVec(petsclib, ptr; own = true)
+    refs = LibPETSc.PetscObjectGetReference(petsclib, held)
+    PETSc.destroy!(held)
+    return refs
+end
+
+@testset "vectors from similar, copy, a broadcast and ksp \\ b are freed by the GC" begin
+    if MPI.Comm_size(MPI.COMM_WORLD) == 1
+        petsclib = PETSc.petsclibs[1]
+        PETSc.initialize(petsclib)
+        PetscScalar = petsclib.PetscScalar
+        n = 10
+        x = PETSc.PetscVec(petsclib, PetscScalar[1:n;])
+        A = PETSc.PetscMat(petsclib, sparse(PetscScalar(2) * I, n, n))
+        ksp = PETSc.KSP(A; ksp_type = "preonly", pc_type = "jacobi")
+
+        @test references_after_collection(() -> similar(x), petsclib) == 1
+        @test references_after_collection(() -> similar(x, PetscScalar), petsclib) == 1
+        @test references_after_collection(() -> copy(x), petsclib) == 1
+        @test references_after_collection(() -> 2 .* x, petsclib) == 1
+        @test references_after_collection(() -> x / 2, petsclib) == 1
+        # a KSP keeps a reference to its last solution until the next solve
+        scratch = similar(x)
+        @test references_after_collection(() -> ksp \ x, petsclib, () -> PETSc.solve!(scratch, ksp, x)) == 1
+        PETSc.destroy!(scratch)
+        foreach(PETSc.destroy!, (ksp, A, x))
     end
 end

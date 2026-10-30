@@ -67,6 +67,27 @@ The array type (`CuArray` or `Vector`) is determined automatically from the `Pet
 For a residual callback, `with_local_arrays!(g_fx, l_x) do fx, lx … end` checks out the output and the input Vec as a pair and always hands the kernel arrays on the same side.
 With both on the device they wrap device memory; when one is on the host (coarser multigrid levels, PETSc's finite-difference coloring) it is copied to the device and, for the output, copied back on return. Without a GPU extension loaded both are host arrays. The device is synchronized before the arrays go back to PETSc, since the GPU packages launch kernels on their own streams.
 
+### Host code on device Vecs
+
+A common PETSc setup keeps the residual and Jacobian callbacks on the CPU and moves only the solve to the GPU, with `-vec_type hip -mat_type aijhipsparse` (or `cuda` and `aijcusparse`). `with_local_array!`, `with_local_arrays!` and `with_field_views!` give host arrays for device Vecs in two cases:
+
+- No GPU package is loaded. Then every checkout goes through `VecGetArray`, `VecGetArrayRead` or `VecGetArrayWrite`, which work for any Vec type.
+- The call passes `memtype = :host`. This lets one program run device kernels on some checkouts and host code on others, on the same Vecs. The default, `memtype = :native`, gives each Vec's own memory as described above, so its result follows the packages loaded in the session: a loop written for host arrays that works today breaks with a scalar-indexing error once another package loads CUDA.jl. Code that must stay on the host passes `memtype = :host`.
+
+```julia
+using PETSc, AMDGPU
+
+# host loops in the residual, while the Vecs and the solve live on the GPU
+c = corners(dm)
+with_field_views!(dm, x, r; fields = flow, write = (false, true), memtype = :host) do (Vx, Vy, P), (Rx, Ry, Rp)
+    for I in c.lower:c.upper
+        Rp[I] = Vx[I + CartesianIndex(1, 0)] - Vx[I] + Vy[I + CartesianIndex(0, 1)] - Vy[I]
+    end
+end
+```
+
+Each host checkout of a device Vec costs a copy. PETSc copies the local entries to the host when the current values are on the device only, unless the checkout is write-only (`read = false`). After a checkout that writes, the host copy is the current one, and PETSc copies it back to the device before the next operation there. `-log_view` counts these copies as `GpuToCpu` and `CpuToGpu`.
+
 ## Writing portable kernels with KernelAbstractions
 
 `using CUDA` is sufficient — loading it activates `PETScCUDAExt` automatically and no

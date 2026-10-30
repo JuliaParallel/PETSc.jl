@@ -328,6 +328,46 @@ end
     PETSc.finalize(petsclib)
 end
 
+# The device side runs in test/gpu/host_access.jl and test/gpu/device_arrays.jl
+@testset "memtype = :host" begin
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    PetscScalar = petsclib.PetscScalar
+    x = PETSc.PetscVec(petsclib, PetscScalar[1, 2, 3])
+    fx = PETSc.PetscVec(petsclib, 3)
+
+    # every access mode hands the array back: a Vec still checked out for
+    # reading could not be checked out for writing in the next round
+    for (r, w) in ((true, false), (false, true), (true, true))
+        PETSc.with_local_array!(fx; read = r, write = w, memtype = :host) do f
+            @test f isa Vector{PetscScalar}
+            w && (f .= 7)
+        end
+    end
+    @test fx[:] == PetscScalar[7, 7, 7]
+    PETSc.with_local_array!(fx, x; write = (true, false), memtype = :host) do f, a
+        f .= a .+ 1
+    end
+    @test fx[:] == PetscScalar[2, 3, 4]
+    @test PETSc.with_local_arrays!(fx, x; memtype = :host) do f, a
+        f .= 2 .* a
+        f isa Vector && a isa Vector
+    end
+    @test fx[:] == PetscScalar[2, 4, 6]
+    @test PETSc.with_local_array!(sum, Vector, x; memtype = :host) == 6
+
+    # a wrong value throws before any Vec is checked out
+    @test_throws "memtype must be :native or :host, got :device" PETSc.with_local_array!(
+        a -> nothing, fx, x; memtype = :device)
+    @test_throws "memtype must be :native or :host" PETSc.with_local_arrays!(
+        (f, a) -> nothing, fx, x; memtype = :device)
+    fx .= 0
+    @test fx[:] == zeros(PetscScalar, 3)
+
+    foreach(PETSc.destroy!, (fx, x))
+    PETSc.finalize(petsclib)
+end
+
 @testset "with_local_array! typed (Array)" begin
     for petsclib in PETSc.petsclibs
         PETSc.initialize(petsclib)

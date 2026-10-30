@@ -152,6 +152,64 @@ function Base.sum(A::AbstractPetscMat{PetscLib}) where {PetscLib}
 end
 
 """
+    mapreduce(f, op, A::AbstractPetscMat; [init])
+
+`mapreduce` over all entries of `A`, as for a sparse Julia matrix: `f` runs on the
+stored entries of the rows each rank owns, and `f(0)` stands in for every entry that
+is not stored. Collective, with the same answer on every rank. As for a
+`SparseMatrixCSC`, the order of the entries is not defined, so `op` should be
+associative and commutative. This is what `sum(f, A)`, `prod`, `maximum`, `minimum`,
+`extrema`, `reduce`, `count`, `any` and `all` call. The results must be `isbits`.
+Needs `MatGetRow`, so not for a `MatShell`.
+"""
+function Base.mapreduce(f, op, A::AbstractPetscMat{PetscLib}; dims::Colon = :, init = Base._InitialValue()) where {PetscLib}
+    T = eltype(A)
+    R = reduction_type(f, op, T)
+    partial, nstored = nothing, 0
+    for i in ownership_range(A)
+        p, k = with_row(A, inttype(PetscLib)(i - 1)) do _, vals
+            isempty(vals) ? (nothing, 0) : (convert(R, mapreduce(f, op, vals)), length(vals))
+        end
+        isnothing(p) && continue
+        partial = isnothing(partial) ? p : convert(R, op(partial, p))
+        nstored += k
+    end
+    c = comm(A)
+    parts = gather_partials(partial, R, c)
+    nzeros = prod(size(A)) - MPI.Allreduce(nstored, +, c)
+    r = if !isempty(parts)
+        reduce_zeros(f, op, T, nzeros, foldl(op, parts))
+    elseif nzeros > 0
+        reduce_zeros(f, op, T, nzeros - 1, f(zero(T)))
+    else
+        return reduce_empty_result(f, op, T, init)
+    end
+    return with_init(op, init, r)
+end
+
+# `v` combined with `f(0)` once for each of `k` entries that are not stored, as
+# SparseArrays does it: a sum or product in one step, any other `op` until the value
+# stops changing (`max`, `|` and the like stop after one step)
+function reduce_zeros(f, op, ::Type{T}, k, v) where {T}
+    z = f(zero(T))
+    for _ in 1:k
+        w = op(v, z)
+        isequal(w, v) && return w
+        v = w
+    end
+    return v
+end
+reduce_zeros(f, ::Union{typeof(+), typeof(Base.add_sum)}, ::Type{T}, k, v) where {T} =
+    k == 0 ? v : v + f(zero(T)) * k
+reduce_zeros(f, ::Union{typeof(*), typeof(Base.mul_prod)}, ::Type{T}, k, v) where {T} =
+    k == 0 ? v : v * f(zero(T))^k
+
+# Base's `any`, `all` and `count` on an array iterate it entry by entry
+Base.any(f::Function, A::AbstractPetscMat) = mapreduce(x -> f(x)::Bool, |, A)
+Base.all(f::Function, A::AbstractPetscMat) = mapreduce(x -> f(x)::Bool, &, A)
+Base.count(f, A::AbstractPetscMat; init = 0) = mapreduce(x -> f(x)::Bool, Base.add_sum, A; init)
+
+"""
     collect(A::AbstractPetscMat)
     Matrix(A::AbstractPetscMat)
     copyto!(dest::Matrix, A::AbstractPetscMat)

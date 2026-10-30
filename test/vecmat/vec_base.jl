@@ -91,6 +91,8 @@ end
             @test count(v -> real(v) < 0, x) == count(v -> real(v) < 0, xs)
             @test count(v -> real(v) < 0, x; init = 10) == 10 + count(v -> real(v) < 0, xs)
             @test sum(abs2, x) ≈ sum(abs2, xs)
+            @test sum(v -> real(v) > 0, x) == sum(v -> real(v) > 0, xs)   # Bool results sum to an Int
+            @test sum(abs, PETSc.PetscVec(petsclib, comm, 0)) == 0               # Base's neutral element
             @test mapreduce(abs, +, x) ≈ mapreduce(abs, +, xs)
             @test mapreduce(abs, +, x; init = 5) ≈ 5 + mapreduce(abs, +, xs)
             @test reduce(+, x) ≈ sum(xs)
@@ -103,7 +105,7 @@ end
                 @test minimum(x) == minimum(xs)
                 e = PETSc.PetscVec(petsclib, comm, 0)
                 @test_throws ArgumentError maximum(e)
-                @test_throws ArgumentError mapreduce(abs, +, e)
+                @test mapreduce(abs, +, e) == mapreduce(abs, +, PetscScalar[])   # as Base: zero
                 @test mapreduce(abs, +, e; init = 3) == 3
                 @test sum(e) == 0
                 PETSc.destroy!(e)

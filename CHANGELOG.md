@@ -23,6 +23,7 @@
 - `sum`, `maximum`, `minimum` on a PetscVec, through `VecSum`, `VecMax` and `VecMin`, and `any`, `all`, `count` and `mapreduce` (so `sum(f, v)`, `prod`, `extrema` and `reduce`) with a function. All are collective and give every rank the global answer; the function runs on the entries each rank owns, and the results of `mapreduce` combine in rank order. `similar(v, eltype(v))` returns a PetscVec, as `similar(v)` does.
 - `PETSc.equal(A, B)` and `PETSc.equal(v, w)`: PETSc's own `MatEqual` and `VecEqual`, faster than `==` but comparing what is stored (the pattern for a Mat, the bits for a Vec).
 - On a PetscMat: `isapprox` by Frobenius norm as for Julia matrices, `copyto!(B, A)` through `MatCopy`, `sum(A)` through `MatGetRowSum`, and `collect(A)`, `Matrix(A)` and `copyto!(::Matrix, A)` as a dense gather onto every rank. All collective.
+- `mapreduce` on a PetscMat, and through it `sum(f, A)`, `prod`, `maximum`, `minimum`, `extrema`, `count`, `any` and `all`: collective, and they read only the stored entries of each rank's rows, counting `f(0)` for the entries that are not stored, as SparseArrays does for a `SparseMatrixCSC`.
 - `collect(v)`, `Vector(v)` and `copyto!(::Vector, v)` on a PetscVec give every rank the whole vector (`VecScatterCreateToAll`); every rank must call them. On one rank they are `v[:]`.
 
 ## v0.5.5

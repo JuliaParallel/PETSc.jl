@@ -297,25 +297,41 @@ answer, also for an `op` that is not commutative. This is what `sum(f, v)`,
 `init` is applied once, to the combined result.
 """
 function Base.mapreduce(f, op, v::AbstractPetscVec; init = Base._InitialValue())
-    T = Base.promote_op(f, eltype(v))
-    isconcretetype(T) && isbitstype(T) || throw(ArgumentError(
-        "mapreduce over a PETSc vector needs f to return an isbits type, got $T"
-    ))
+    R = reduction_type(f, op, eltype(v))
     partial = with_local_array!(v; write = false) do a
-        isempty(a) ? (false, zero_of(T)) : (true, T(mapreduce(f, op, a)))
+        isempty(a) ? nothing : mapreduce(f, op, a)
     end
-    comm = comm_of(v)
-    flags = MPI.Allgather(Int[first(partial)], comm)
-    vals = MPI.Allgather(T[last(partial)], comm)
-    parts = vals[flags .== 1]
-    isempty(parts) && init isa Base._InitialValue &&
-        throw(ArgumentError("reducing over an empty collection is not allowed"))
-    r = isempty(parts) ? init : foldl(op, parts)
-    return init isa Base._InitialValue || isempty(parts) ? r : op(init, r)
+    parts = gather_partials(partial, R, comm_of(v))
+    isempty(parts) && return reduce_empty_result(f, op, eltype(v), init)
+    return with_init(op, init, foldl(op, parts))
 end
 
-# A placeholder for a rank that owns no entries; it is never used in the result
-zero_of(::Type{T}) where {T} = T <: Tuple ? map(zero_of, fieldtypes(T)) |> Tuple : zero(T)
+# The type `op` gives when it combines results of `f` on entries of type `T`. The
+# partial results are gathered over the ranks, so it must be a concrete isbits type.
+function reduction_type(f, op, ::Type{T}) where {T}
+    F = Base.promote_op(f, T)
+    R = Base.promote_op(op, F, F)
+    isconcretetype(R) && isbitstype(R) || throw(ArgumentError(
+        "mapreduce over a PETSc object needs results of an isbits type, got $R"
+    ))
+    return R
+end
+
+# The partial results of the ranks that have one (`nothing` for none), in rank order,
+# on every rank
+function gather_partials(partial, ::Type{R}, comm) where {R}
+    has = !isnothing(partial)
+    flags = MPI.Allgather(Int[has], comm)
+    vals = MPI.Allgather(R[has ? convert(R, partial) : only(Vector{R}(undef, 1))], comm)
+    return vals[flags .== 1]
+end
+
+# What Base gives for a reduction over no entries: `init` if given, else the neutral
+# element of `op`, or an error for an `op` without one, such as `max`
+reduce_empty_result(f, op, ::Type{T}, init) where {T} =
+    init isa Base._InitialValue ? Base.mapreduce_empty(f, op, T) : init
+
+with_init(op, init, r) = init isa Base._InitialValue ? r : op(init, r)
 
 """
     any(f, v::AbstractPetscVec)

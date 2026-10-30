@@ -3,6 +3,7 @@ using MPI
 MPI.Initialized() || MPI.Init()
 using PETSc
 using LinearAlgebra: mul!
+using SparseArrays: sparse
 
 # A PetscMat as an AbstractMatrix, on COMM_WORLD: equality, conversions and reductions
 # give the global answer on every rank.
@@ -104,6 +105,37 @@ dense(n, entries, T) = (D = zeros(T, n, n); foreach(((i, j, a),) -> D[i, j] = a,
             S = petsc_mat(petsclib, comm, n - 1, [])
             @test_throws DimensionMismatch copyto!(S, A)
             foreach(PETSc.destroy!, (W, S))
+        end
+
+        @testset "sparse reductions ($PetscScalar)" begin
+            # row 2 empty, and the explicitly stored zero at (n, n) kept, as `sparse` keeps it
+            es = filter(e -> e[1] != 2, entries)
+            S = sparse(first.(es), getindex.(es, 2), last.(es), n, n)
+            P = petsc_mat(petsclib, comm, n, es)
+            @test sum(abs2, P) ≈ sum(abs2, S)
+            @test sum(x -> real(x) > 0, P) == sum(x -> real(x) > 0, S)
+            @test prod(x -> 1 + real(x) / 1000, P) ≈ prod(x -> 1 + real(x) / 1000, S)
+            @test maximum(real, P) == maximum(real, S)
+            @test minimum(abs, P) == minimum(abs, S)
+            @test extrema(real, P) == extrema(real, S)
+            @test reduce(max, real.(collect(P))) == maximum(real, S)
+            @test mapreduce(abs, +, P; init = 5) ≈ 5 + mapreduce(abs, +, S)
+            @test count(x -> real(x) > 0, P) == count(x -> real(x) > 0, S)
+            @test count(iszero, P) == count(iszero, S)
+            @test any(x -> real(x) > 10n, P) == any(x -> real(x) > 10n, S)
+            @test any(iszero, P)
+            @test !all(x -> real(x) > 0, P)
+            @test all(x -> abs(x) < 100n, P)
+            if PetscScalar <: Real
+                @test maximum(P) == maximum(S)
+                @test minimum(P) == minimum(S)
+            end
+            # nothing stored: every entry is an implicit zero
+            Z = petsc_mat(petsclib, comm, n, [])
+            @test maximum(abs, Z) == 0
+            @test sum(x -> x + 1, Z) == n^2
+            @test count(iszero, Z) == n^2
+            foreach(PETSc.destroy!, (P, Z))
         end
 
         @testset "products ($PetscScalar)" begin

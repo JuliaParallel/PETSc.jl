@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.5.6
+
+### Changed
+
+- `PETSc_jll` is capped at the 3.25 series (`~3.25`). The wrappers are generated against 3.25, and the previous bound `3.25` also allowed 3.26.
+- The GPU page of the manual is rewritten: a CUDA and AMD summary, four setup steps, how to put data on the device, and one performance section.
+
 ## v0.5.5
 
 The last release before 0.6, which removes every shim and flips several defaults. Run your code on 0.5.5 with warnings on and fix what they report; "Coming in v0.6" lists the changes that print no warning.

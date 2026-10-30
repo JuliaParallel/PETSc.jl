@@ -223,7 +223,7 @@ using PETSc
     @testset "finalize before initialize" begin
         code = """
         using PETSc
-        PETSc.finalize(PETSc.petsclibs[2])      # never initialized
+        PETSc.finalize(last(PETSc.petsclibs))   # never initialized
         PETSc.initialize(PETSc.petsclibs[1])
         PETSc.finalize()                        # the other libraries were never initialized
         PETSc.finalize()                        # and a second call finds all of them finalized

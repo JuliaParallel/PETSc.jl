@@ -72,7 +72,7 @@ With both on the device they wrap device memory; when one is on the host (coarse
 A common PETSc setup keeps the residual and Jacobian callbacks on the CPU and moves only the solve to the GPU, with `-vec_type hip -mat_type aijhipsparse` (or `cuda` and `aijcusparse`). `with_local_array!`, `with_local_arrays!` and `with_field_views!` give host arrays for device Vecs in two cases:
 
 - No GPU package is loaded. Then every checkout goes through `VecGetArray`, `VecGetArrayRead` or `VecGetArrayWrite`, which work for any Vec type.
-- The call passes `memtype = :host`. This lets one program run device kernels on some checkouts and host code on others, on the same Vecs. The default, `memtype = :native`, gives each Vec's own memory as described above.
+- The call passes `memtype = :host`. This lets one program run device kernels on some checkouts and host code on others, on the same Vecs. The default, `memtype = :native`, gives each Vec's own memory as described above, so its result follows the packages loaded in the session: a loop written for host arrays that works today breaks with a scalar-indexing error once another package loads CUDA.jl. Code that must stay on the host passes `memtype = :host`.
 
 ```julia
 using PETSc, AMDGPU

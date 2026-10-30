@@ -289,13 +289,15 @@ as_petsc_vec(v::AbstractPetscVec) = LibPETSc.PetscVec(v)
 Query the `PetscMemType` of each Vec and return the corresponding array type.
 Errors if the Vecs are on heterogeneous devices (different `PetscMemType`
 values), since a single `with_local_array!` call cannot handle mixed backends.
-Returns `Vector` when all Vecs are host-resident.
+Returns `Vector` when all Vecs are host-resident, and also while no GPU extension is
+loaded, since [`with_local_array!`](@ref) then gives host arrays for every Vec.
 
 Extensions overload `array_type(::Val{MT})` for a `PetscMemType` enum value
 `MT` to register the corresponding array type (e.g. `PETSC_MEMTYPE_DEVICE` →
 `CuArray`).
 """
 function memtype(vecs::AbstractPetscVec...)
+    host_access(:native) && return Vector
     mtypes = map(vecs) do v
         PetscLib = typeof(v).parameters[1]
         pv = as_petsc_vec(v)
@@ -331,7 +333,8 @@ With `memtype = :native` each array is where its Vec keeps the data: a device
 array for a Vec on a GPU, with the GPU package loaded. `memtype = :host` gives
 host arrays for every Vec, so host code runs on device Vecs; each such checkout of
 a device Vec copies its data to the host. Without a GPU package loaded, `:native`
-gives host arrays too.
+gives host arrays too, so the type follows what is loaded in the session: code that
+must stay on the host whatever else is loaded passes `memtype = :host`.
 
 The optional `::Type{A}` second argument (after the do-block function) asserts
 that every array returned from `VecGetArray*AndMemType` is of type `A`.  Use

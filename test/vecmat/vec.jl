@@ -364,6 +364,24 @@ end
     fx .= 0
     @test fx[:] == zeros(PetscScalar, 3)
 
+    # `:native` follows the loaded GPU extensions: host getter while none is, device
+    # getter once one is. A fake memtype stands in for an extension.
+    @testset "getter follows the loaded extensions" begin
+        fake = PETSc.LibPETSc.PETSC_MEMTYPE_SYCL
+        saved = copy(PETSc.device_memtypes)
+        try
+            empty!(PETSc.device_memtypes)
+            @test PETSc.array_getter(:native) === PETSc.acquire_host_array
+            @test PETSc.memtype(x) === Vector
+            push!(PETSc.device_memtypes, fake)
+            @test PETSc.array_getter(:native) === PETSc.acquire_native_array
+            @test PETSc.array_getter(:host) === PETSc.acquire_host_array
+        finally
+            empty!(PETSc.device_memtypes)
+            union!(PETSc.device_memtypes, saved)
+        end
+    end
+
     foreach(PETSc.destroy!, (fx, x))
     PETSc.finalize(petsclib)
 end

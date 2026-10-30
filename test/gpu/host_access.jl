@@ -88,6 +88,7 @@ end
         LibPETSc.VecScale(petsclib, v, T(3))
         @test PETSc.with_local_array!(copy, v; write = false) ≈ 6x
         @test PETSc.with_local_array!(sum, v; memtype = :host) ≈ sum(6x)
+        @test PETSc.memtype(v) === Vector
         PETSc.with_local_array!(a -> fill!(a, 1), v; read = false)
         @test norm(v) ≈ sqrt(n)
         PETSc.destroy!(v)

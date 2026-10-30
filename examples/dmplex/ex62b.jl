@@ -1285,7 +1285,7 @@ PETSc.add_boundary!(dm, LibPETSc.DM_BC_ESSENTIAL, "wall", label, PetscInt[3], 0,
 # ── Propagate discretisation and null space constructor to coarser levels ─────
 let cdm = dm
     while convert(Ptr{Cvoid}, cdm) != C_NULL
-        PETSc.copy_disc!(dm, cdm)
+        PETSc.copy_disc!(cdm, dm)
         LibPETSc.DMSetNullSpaceConstructor(petsclib, cdm, PetscInt(1), pressure_nsp_ptr)
         cdm = PETSc.coarse_dm(cdm)
     end

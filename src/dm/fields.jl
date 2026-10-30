@@ -289,10 +289,11 @@ LibPETSc.@for_petsc function add_natural_boundary!(
 end
 
 """
-    copy_disc!(src::AbstractPetscDM, dst::AbstractPetscDM)
+    copy_disc!(dst::AbstractPetscDM, src::AbstractPetscDM)
 
-Copy the discretisation (fields, `PetscDS`, BCs) from `src` to `dst`.  Useful when
-propagating FEM setup to coarser levels of a multigrid hierarchy.
+Copy the discretisation (fields, `PetscDS`, BCs) from `src` to `dst`, as
+`copyto!(dest, src)` does, and return `dst`. Useful when propagating FEM setup
+to coarser levels of a multigrid hierarchy.
 
 # External Links
 $(doc_external("DM/DMCopyDisc"))
@@ -300,8 +301,8 @@ $(doc_external("DM/DMCopyDisc"))
 function copy_disc! end
 
 LibPETSc.@for_petsc function copy_disc!(
-    src::AbstractPetscDM{$PetscLib},
     dst::AbstractPetscDM{$PetscLib},
+    src::AbstractPetscDM{$PetscLib},
 )
     LibPETSc.DMCopyDisc(getlib($PetscLib), src, dst)
     return dst

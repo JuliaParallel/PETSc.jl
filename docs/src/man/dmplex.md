@@ -262,7 +262,7 @@ PETSc.compose_constant_nullspace!(petsclib, comm, fe_pres)
 # Propagate discretisation to coarser MG levels
 let cdm = dm
     while convert(Ptr{Cvoid}, cdm) != C_NULL
-        PETSc.copy_disc!(dm, cdm)
+        PETSc.copy_disc!(cdm, dm)
         cdm = PETSc.coarse_dm(cdm)
     end
 end

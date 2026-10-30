@@ -35,7 +35,7 @@ function VecNestGetSubVecsRead(petsclib::PetscLibType, X::AbstractPetscVec) end
 	)
 
 	N = N_[]
-	sx_[] == C_NULL && return N, PetscVec{$PetscLib}[]
+	sx_[] == C_NULL && return N, PetscVec{$PetscLib, $PetscScalar}[]
 	sx = [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, sx_[], N; own = false)]
 	return N, record_handle_array!(sx, sx_[])
 end

@@ -41,7 +41,7 @@ function MatCreateSubMatrices(petsclib::PetscLibType, mat::AbstractPetscMat, n::
 	)
 
 	reuse && return submat
-	submat_[] == C_NULL && return PetscMat{$PetscLib}[]
+	submat_[] == C_NULL && return PetscMat{$PetscLib, $PetscScalar}[]
 	submat = [PetscMat(p, petsclib) for p in unsafe_wrap(Array, submat_[], n; own = false)]
 	return record_handle_array!(submat, submat_[])
 end

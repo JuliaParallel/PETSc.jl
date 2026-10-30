@@ -171,7 +171,7 @@ MPI.Initialized() || MPI.Init()
         @test vg[4145] == PetscScalar(1.0)
 
         LibPETSc.DMStagVecSetValuesStencil(petsclib, dm,vg,PetscInt(2), [loc, loc2],[PetscScalar(1.0),PetscScalar(2.0)],PETSc.LibPETSc.INSERT_VALUES) 
-        @test extrema(PetscReal.(vg)) == (0.0,2.0)
+        @test extrema(real, vg) == (0.0,2.0)
 
         out = LibPETSc.DMStagVecGetValuesStencil(petsclib, dm,v, PetscInt(1), [loc])
         @test out == PetscScalar[0.0]
@@ -208,14 +208,14 @@ MPI.Initialized() || MPI.Init()
         array2D .= 1.0
         array2D[2,2] = 2.2
         LibPETSc.VecRestoreArray2d(petsclib, v1D, m, entriesEl, 0, 0, array2D)
-        @test extrema(PetscReal.(v1D)) == (PetscReal(1.0), PetscReal(2.2))
+        @test extrema(real, v1D) == (PetscReal(1.0), PetscReal(2.2))
 
         # Now lets use DMStagVecGetArray. Note that we had to do manual modifcations to that routine
         array2D_1 = LibPETSc.DMStagVecGetArray(petsclib, dm_1D, v1D) 
         array2D_1 .= 2.0
         array2D_1[2,2] = 4.2
         LibPETSc.DMStagVecRestoreArray(petsclib, dm_1D, v1D, array2D_1) 
-        @test extrema(PetscReal.(v1D)) == (PetscScalar(2.0), PetscScalar(4.2))
+        @test extrema(real, v1D) == (PetscScalar(2.0), PetscScalar(4.2))
         
         # Test product coordinates and friends 
         # Converted from old DMStagCreate3d interface to new unified DMStag constructor

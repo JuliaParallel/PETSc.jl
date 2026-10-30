@@ -147,11 +147,12 @@ These can't warn without firing on correct code, so check them now. The [release
 
 - **Options are applied once**, at the first `setup!` or `solve!` of a KSP, SNES or TS. This is the default in 0.6; pass `options_at = :first_solve` on 0.5.5 to get it there.
 - **Solves throw on divergence.** This is the default in 0.6; pass `check = true` to `solve!` on 0.5.5 to get it there, and `check = false` where the code reads `converged_reason` after a failed solve.
-- **`w = 2 .* x` returns a `PetscVec`**, not a `Vector`, and `size(v)` becomes `(n,)`. `2 * x` already returns a `PetscVec`.
+- **`w = 2 .* x` returns a `PetscVec`**, not a `Vector`, and works on a distributed vector. Destroy the result like any other Vec. A broadcast that gives `Bool` (`x .> 0`) throws; broadcast over `x[:]` for it. `2 * x` already returns a `PetscVec`.
 - **`set_convergence_test!` passes `PetscReal` norms**, not `Float64`. This matters only for a Float32 library with a callback whose arguments are annotated `Float64`.
 - **A callback's return value is ignored**, a nonzero `Integer` too. 0.5.5 warns once per callback that returns one; throw an exception to report a failure.
+- **`size(v)` is a tuple.** `size(v) == n` is `false` from 0.6 and raises no error; use `length(v) == n`. `length(v)` is an `Int`.
 - **`copy_disc!(dst, src)`** takes the destination first.
-- **`PetscVec <: AbstractVector` and `PetscMat <: AbstractMatrix`**, with `==` comparing values and `hash` throwing.
+- **`PetscVec <: AbstractVector`.** Generic Julia code accepts a PetscVec. `==` compares the entries (collective) and `hash` throws, on PetscVecs and PetscMats; `collect(v)` gives every rank the whole vector. **`PetscMat <: AbstractMatrix`** as well: `A == B` compares values, so a stored zero no longer makes two matrices unequal; `PETSc.equal(A, B)` is the old `MatEqual` test.
 
 ## 8. Looking up a name
 

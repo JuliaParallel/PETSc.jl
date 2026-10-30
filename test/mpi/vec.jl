@@ -52,6 +52,8 @@ using LinearAlgebra: norm
             PETSc.assemble!(petsc_x)
 
             @test length(petsc_x) == exact_length
+            @test size(petsc_x) === (Int(exact_length),)
+            @test length(petsc_x) isa Int
             
             # use this instead of norm(petsc_x), as it can deal with parallel vectors
             vec_norm1 = LibPETSc.VecNorm(petsclib,petsc_x, LibPETSc.NORM_2)
@@ -74,8 +76,17 @@ using LinearAlgebra: norm
                 @test y == 2 .* julia_x .+ 1
             end
             @test norm(petsc_y) ≈ norm(2 .* (0:ne) .+ 1)
-            # out of place would have to give a Vector of the whole vector
-            @test_throws ArgumentError 2 .* petsc_x
+            # out of place gives a PetscVec with the layout of petsc_x, also on several ranks
+            petsc_z = 2 .* petsc_x .+ 1
+            @test petsc_z isa PETSc.PetscVec
+            @test size(petsc_z) == size(petsc_x)
+            @test PETSc.ownership_range(petsc_z) == PETSc.ownership_range(petsc_x)
+            PETSc.with_local_array!(petsc_z) do z
+                @test z == 2 .* julia_x .+ 1
+            end
+            @test norm(petsc_z) ≈ norm(petsc_y)
+            @test_throws ArgumentError petsc_x .> 0
+            PETSc.destroy!(petsc_z)
             PETSc.destroy!(petsc_y)
 
             @test :mpi === PETSc.type_name(petsc_x)
@@ -137,6 +148,8 @@ end
 
             PETSc.assemble!(petsc_x)
             @test length(petsc_x) == exact_length
+            @test size(petsc_x) === (Int(exact_length),)
+            @test length(petsc_x) isa Int
 
             vec_norm = norm(petsc_x)
             @test exact_norm ≈ vec_norm

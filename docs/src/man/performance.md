@@ -20,7 +20,7 @@ for i in 1:length(x)
 end
 ```
 
-Broadcasting does the checkout for you, in both directions. `x .= 2 .* y` writes the entries this rank owns. `w = 2 .* x` gives a plain `Vector`, and since that only means something where one rank holds the whole vector, it throws on a distributed one: broadcast into a `PetscVec` of the same layout instead.
+Broadcasting does the checkout for you, in both directions. `x .= 2 .* y` writes the entries this rank owns. `w = 2 .* x` gives a new `PetscVec` with the layout of `x`, on any number of ranks; call `destroy!` on it when you are done (on more than one rank on every rank, as for `copy`). A broadcast whose entries are not numbers, such as `x .> 0`, throws: broadcast over `x[:]` for those.
 
 Every view a block hands you is indexed the way the DM numbers its points, so a view and [`stencil`](@ref) address the same entry, and the arrays stay concretely typed inside the block.
 

@@ -2,14 +2,11 @@
 # Multiple dispatch to make PetscVec behave like Julia Vector
 # =============================================================================
 
-# Treat PETSc vectors as 1-D array-like objects for broadcasting/indexing
-Base.ndims(::Type{<:AbstractPetscVec}) = 1
-Base.ndims(v::AbstractPetscVec) = ndims(typeof(v))
+# A PETSc vector is an `AbstractVector` of its library's scalar type. `v[i]` is one C call
+# and reaches only the entries this rank owns; PETSc raises an error for any other.
+# The reductions and conversions below cover what generic code would otherwise do
+# entry by entry.
 Base.IndexStyle(::Type{<:AbstractPetscVec}) = IndexLinear()
-Base.axes(v::AbstractPetscVec) = (Base.OneTo(length(v)),)
-# A Vec takes part in a broadcast as itself; the default would `collect` it
-# entry by entry, since it iterates but is not an AbstractArray
-Base.Broadcast.broadcastable(v::AbstractPetscVec) = v
 
 """
     PetscVecStyle
@@ -29,27 +26,24 @@ PetscVecStyle(::Val{N}) where {N} = Broadcast.DefaultArrayStyle{N}()
 petsclib_of(::AbstractPetscVec{PetscLib}) where {PetscLib} = getlib(PetscLib)
 
 # Array interface - size and length
-Base.size(v::AbstractPetscVec{PetscLib}) where {PetscLib} = LibPETSc.VecGetSize(PetscLib,v)
-Base.length(v::AbstractPetscVec{PetscLib}) where {PetscLib} = prod(size(v))
-Base.lastindex(v::AbstractPetscVec{PetscLib}) where {PetscLib} = length(v)
-
-# As for any vector: the global length along dimension 1, and 1 beyond it
-function Base.size(v::AbstractPetscVec, d::Integer)
-    d >= 1 || throw(ArgumentError("dimension must be ≥ 1, got $d"))
-    return d == 1 ? Int(length(v)) : 1
-end
+# Global length, as `Int` and as a tuple, like any `AbstractVector`
+Base.size(v::AbstractPetscVec{PetscLib}) where {PetscLib} = (Int(LibPETSc.VecGetSize(PetscLib, v)),)
+Base.length(v::AbstractPetscVec) = only(size(v))
 
 """
     similar(v::AbstractPetscVec)
 
 A new vector with the same layout as `v` (size, parallel distribution, type), its
-entries not set. There is no `similar(v, T)` or `similar(v, dims)`: every vector of a
-library holds that library's scalar type, and a different size has no layout to copy.
+entries not set. `similar(v, T)` with `T = eltype(v)` gives the same. With another
+element type or a size it gives a Julia `Array`, as for any `AbstractArray`: every
+vector of a library holds that library's scalar type, and a different size has no
+layout to copy.
 
 # External Links
 $(doc_external("Vec/VecDuplicate"))
 """
 Base.similar(v::AbstractPetscVec{PetscLib}) where {PetscLib} =  LibPETSc.VecDuplicate(getlib(PetscLib), v)
+Base.similar(v::AbstractPetscVec{PetscLib, T}, ::Type{T}) where {PetscLib, T} = similar(v)
 
 function Base.getindex(v::AbstractPetscVec{PetscLib}, i::Integer) where {PetscLib}
     PetscInt = inttype(PetscLib)
@@ -57,8 +51,8 @@ function Base.getindex(v::AbstractPetscVec{PetscLib}, i::Integer) where {PetscLi
     return val[1]
 end
 
-# Range indexing
-function Base.getindex(v::AbstractPetscVec{PetscLib}, r::AbstractRange) where {PetscLib}
+# Range or index-vector indexing
+function Base.getindex(v::AbstractPetscVec{PetscLib}, r::AbstractVector{<:Integer}) where {PetscLib}
     PetscInt = inttype(PetscLib)
     val = LibPETSc.VecGetValues(PetscLib, v, PetscInt(length(r)), PetscInt[i - 1 for i in r])
     return val
@@ -70,19 +64,6 @@ function Base.getindex(v::AbstractPetscVec{PetscLib}, ::Colon) where {PetscLib}
     return getindex(v, 1:n)
 end
 
-"""
-    isapprox(v::AbstractPetscVec, w::AbstractPetscVec; atol, rtol, nans)
-
-Whether every entry of `v` is approximately equal to the matching entry of `w`, with
-the keywords of `isapprox` for numbers applied entry by entry. Unlike `isapprox` on two
-Julia arrays, this does not compare the norm of the difference. It warns once: from v0.6 it
-compares norms, ‖v − w‖ ≤ max(atol, rtol·max(‖v‖, ‖w‖)), as for Julia arrays.
-"""
-function Base.isapprox(v::AbstractPetscVec{PetscLib}, w::AbstractPetscVec{PetscLib}; kwargs...) where {PetscLib}
-    @warn "isapprox on two PetscVecs compares entry by entry; from v0.6 it compares norms as for Julia arrays, ‖v - w‖ ≤ max(atol, rtol * max(‖v‖, ‖w‖))" maxlog = 1
-    return all(isapprox.(v[:], w[:]; kwargs...))
-end
-
 function Base.setindex!(v::AbstractPetscVec{PetscLib}, val, i::Integer) where {PetscLib}
     PetscInt = inttype(PetscLib)
     PetscScalar = scalartype(PetscLib)
@@ -91,7 +72,7 @@ function Base.setindex!(v::AbstractPetscVec{PetscLib}, val, i::Integer) where {P
     return v
 end
 
-function Base.setindex!(v::AbstractPetscVec{PetscLib}, vals, r::AbstractRange) where {PetscLib}
+function Base.setindex!(v::AbstractPetscVec{PetscLib}, vals, r::AbstractVector{<:Integer}) where {PetscLib}
     PetscInt = inttype(PetscLib)
     LibPETSc.VecSetValues(PetscLib, v, PetscInt(length(r)), PetscInt[i - 1 for i in r],
                           vals, PETSc.INSERT_VALUES)
@@ -128,8 +109,9 @@ end
 # `dest` and every `PetscVec` among the arguments are checked out, the broadcast runs
 # over the arrays, and all are handed back. So it is elementwise over the entries
 # this rank owns, which on one rank is every entry.
-# Other array arguments must have the local length.
-function Base.copyto!(dest::AbstractPetscVec, bc::Base.Broadcast.Broadcasted)
+# Other array arguments must have the local length. Base's `materialize!` gives the
+# broadcast `PetscVecStyle` from `dest`, unless an argument has more dimensions.
+function Base.copyto!(dest::AbstractPetscVec, bc::Broadcast.Broadcasted{PetscVecStyle})
     flat = Base.Broadcast.flatten(bc)
     arr, raw, backend = acquire_local_array(dest; read = true, write = true)
     try
@@ -142,32 +124,41 @@ function Base.copyto!(dest::AbstractPetscVec, bc::Base.Broadcast.Broadcasted)
     return dest
 end
 
-# Out-of-place broadcasting, `w = f.(args...)`, runs on the local arrays too and
-# gives a `Vector`, so `2 .* x` is what it was before, without the one C call per
-# entry. A `Vector` of the whole vector only means something where one rank holds
-# all of it, so a distributed vector throws instead.
+# Out-of-place broadcasting, `w = f.(args...)`, gives a new `PetscVec` with the layout
+# of the first `PetscVec` among the arguments, filled by the in-place broadcast above.
+# So it works on a distributed vector, and the caller owns the result: on more than
+# one rank it has no finalizer (as `copy(v)`), and `destroy!` must be called on every rank.
 function Base.copy(bc::Broadcast.Broadcasted{PetscVecStyle})
     flat = Broadcast.flatten(bc)
-    foreach(check_undistributed, flat.args)
-    return with_broadcast_arrays(nothing, nothing, flat.args) do args
-        copy(Broadcast.instantiate(Broadcast.Broadcasted(flat.f, args)))
+    check_scalar_result(Broadcast.combine_eltypes(flat.f, flat.args))
+    w = finalize_if_serial!(similar(first_petscvec(flat.args)))
+    try
+        copyto!(w, bc)
+    catch
+        destroy!(w)
+        rethrow()
     end
+    return w
 end
 
-check_undistributed(_) = nothing
-function check_undistributed(v::AbstractPetscVec{PetscLib}) where {PetscLib}
-    lib = getlib(PetscLib)
-    LibPETSc.VecGetLocalSize(lib, v) == LibPETSc.VecGetSize(lib, v) || throw(ArgumentError(
-        "a broadcast of a distributed Vec cannot give a Vector of the whole vector. " *
-        "Broadcast into a Vec of the same layout, or use with_local_array! for the " *
-        "entries this rank owns."
+first_petscvec(::Tuple{}) = throw(ArgumentError("a PetscVec broadcast needs a PetscVec argument"))
+first_petscvec(args::Tuple) = first_petscvec(first(args), Base.tail(args))
+first_petscvec(a::AbstractPetscVec, ::Tuple) = a
+first_petscvec(::Any, rest::Tuple) = first_petscvec(rest)
+
+# A PetscVec holds only its library's scalar type, so a broadcast whose entries are
+# not numbers (`x .> 0` gives `Bool`) has no PetscVec to land in. Converting a mask
+# to 0 and 1 silently would be a different result from Julia's, so it throws.
+function check_scalar_result(::Type{T}) where {T}
+    (T === Any || (T <: Number && !(T <: Bool))) && return nothing
+    throw(ArgumentError(
+        "the broadcast gives entries of type $T, which a PetscVec cannot hold. " *
+        "Broadcast over x[:] (or with_local_array!) for the entries as a Julia array."
     ))
-    return nothing
 end
 
 # Calls `f` with `args`, each `PetscVec` replaced by its local array: `dest_arr`
-# for `dest` itself, a read-only checkout for any other. `dest` is `nothing` when
-# the broadcast is out of place and nothing can alias.
+# for `dest` itself, a read-only checkout for any other.
 with_broadcast_arrays(f, dest, dest_arr, ::Tuple{}) = f(())
 function with_broadcast_arrays(f, dest, dest_arr, args::Tuple)
     a = first(args)
@@ -182,16 +173,9 @@ function with_broadcast_arrays(f, dest, dest_arr, args::Tuple)
     end
 end
 
-aliases_dest(::AbstractPetscVec, ::Nothing) = false
 aliases_dest(a::AbstractPetscVec, dest::AbstractPetscVec) = a.ptr == dest.ptr
 
-Base.materialize!(dest::AbstractPetscVec, bc::Base.Broadcast.Broadcasted) = (Base.copyto!(dest, bc); dest)
-
-# Iterator interface
-Base.iterate(v::AbstractPetscVec{PetscLib})  where {PetscLib} = iterate(v, 1)
-function Base.iterate(v::AbstractPetscVec{PetscLib}, state)  where {PetscLib}
-    if state > length(v)
-        return nothing
-    end
-    return (v[state], state + 1)
-end
+# `dest .= f.(args...)` takes its style from the arguments alone, so `x .= 1:n` would be
+# DefaultArrayStyle and run entry by entry. Run it as a PetscVecStyle broadcast.
+Base.materialize!(dest::AbstractPetscVec, bc::Broadcast.Broadcasted) =
+    (copyto!(dest, Broadcast.Broadcasted{PetscVecStyle}(bc.f, bc.args, bc.axes)); dest)

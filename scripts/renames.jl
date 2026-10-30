@@ -937,7 +937,23 @@ const INTERNAL = Set{Symbol}([
     :synchronize_device,
     :with_broadcast_arrays,
     :aliases_dest,
-    :check_undistributed,
+    :first_petscvec,
+    :check_scalar_result,
+    :default_rtol,
+    :entrywise_isapprox,
+    :comm_of,
+    :reduce_owned,
+    :compare_owned,
+    :check_nonempty,
+    :compare_rows,
+    :rows_match,
+    :with_row,
+    :sparse_rows_match,
+    :reduction_type,
+    :gather_partials,
+    :reduce_empty_result,
+    :with_init,
+    :reduce_zeros,
     :PetscVecStyle,
     :TransposedPetscMat,
     :seq_vec_with_array,
@@ -1136,6 +1152,7 @@ const UNCHANGED_PUBLIC = Symbol[
     :with_destroy,           # new in v0.5.3
     :track!,                 # new in v0.5.3
     :untrack!,               # new in v0.5.3
+    :equal,                  # new in v0.6.0
     :initialize,
     :finalize,
     :scalartype,

@@ -23,6 +23,11 @@ Is the argument an output? The manual page's `Input Parameters` / `Output Parame
 decide when they mention the argument; otherwise a pointer is guessed to be an output, with the
 original generator's heuristics restricting that guess.
 """
+# Type parameters of an empty `Vector` of this handle type inside a `@for_petsc` body: a Vec
+# and a Mat also carry the library's scalar type (see prologue.jl). The bare `PetscScalar`
+# becomes `$PetscScalar` when the body is assembled.
+handle_params(h) = h.julia in ("PetscVec", "PetscMat") ? "\$PetscLib, PetscScalar" : "\$PetscLib"
+
 function is_output(r::Rules, fn::String, name::String, typename::String, stars::Int, isarray::Bool, isconst::Bool, output_vars, input_vars)
     # a non-const `T *x` with scalar T is an output whatever the manual page says (PETSc docs
     # occasionally list one under Input Parameters, e.g. TSIRKGetNumStages), except in Restore*
@@ -228,7 +233,7 @@ function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
             wrap = "unsafe_wrap(Array, $name_ccall[], $(ov["size"]); own = false)"
             if ishandle                     # array of PETSc handles -> Vector of Julia handles
                 h = r.handles[elt0]
-                body = "$name = $name_ccall[] == C_NULL ? $(h.julia){\$PetscLib}[] : [$(h.julia)(p, petsclib$(own_kwarg(r, fn.name))) for p in $wrap]"
+                body = "$name = $name_ccall[] == C_NULL ? $(h.julia){$(handle_params(h))}[] : [$(h.julia)(p, petsclib$(own_kwarg(r, fn.name))) for p in $wrap]"
                 # an array of new references is the caller's: free it once the handles are copied
                 borrows(r, fn.name) || (body *= "\n\t$name_ccall[] == C_NULL || PetscFree(petsclib, $name_ccall[])")
                 typename = "Vector{$(h.julia)}"

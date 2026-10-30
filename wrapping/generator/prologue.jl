@@ -51,13 +51,17 @@ const ISColoring = Ptr{_n_ISColoring}
 
 # ----- Custom Julia struct for PETSc Vec -----
 const CVec = Ptr{Cvoid}
-abstract type AbstractPetscVec{T} end
-mutable struct PetscVec{PetscLib} <: AbstractPetscVec{PetscLib}
+# A Vec is an `AbstractVector` of its library's scalar type. That type is a second
+# parameter because a supertype can't be computed from `PetscLib`; the constructor
+# fills it in, so it always matches.
+abstract type AbstractPetscVec{PetscLib, T} <: AbstractVector{T} end
+mutable struct PetscVec{PetscLib, T} <: AbstractPetscVec{PetscLib, T}
     ptr::CVec
     age::Int
     own::Bool
 
-    PetscVec{PetscLib}(ptr::CVec = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
+    PetscVec{PetscLib}(ptr::CVec = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} =
+        new{PetscLib, scalartype(PetscLib)}(ptr, age, own)
 end
 
 # Convenience constructor from petsclib instance
@@ -69,13 +73,16 @@ Base.unsafe_convert(::Type{CVec}, v::AbstractPetscVec) = v.ptr
 
 # ----- Custom Julia struct for PETSc Mat -----
 const CMat = Ptr{Cvoid}
-abstract type AbstractPetscMat{T} end
-mutable struct PetscMat{PetscLib} <: AbstractPetscMat{PetscLib}
+# A Mat is an `AbstractMatrix` of its library's scalar type; the second parameter
+# is filled in by the constructor, as for a Vec
+abstract type AbstractPetscMat{PetscLib, T} <: AbstractMatrix{T} end
+mutable struct PetscMat{PetscLib, T} <: AbstractPetscMat{PetscLib, T}
     ptr::CMat
     age::Int
     own::Bool
 
-    PetscMat{PetscLib}(ptr::CMat = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
+    PetscMat{PetscLib}(ptr::CMat = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} =
+        new{PetscLib, scalartype(PetscLib)}(ptr, age, own)
 end
 
 # Convenience constructor from petsclib instance

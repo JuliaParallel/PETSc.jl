@@ -14,6 +14,15 @@ function Base.show(io::IO, v::AbstractPetscMat{PetscLib}) where {PetscLib}
     return nothing
 end
 
+# The REPL shows the handle, not the entries, which are one C call each
+Base.show(io::IO, ::MIME"text/plain", A::AbstractPetscMat) = show(io, A)
+
+# `==` on matrices compares entries, which can change
+Base.hash(::AbstractPetscMat, ::UInt) = throw(ArgumentError(
+    "a PETSc matrix has no hash: `==` compares its entries, which can change. " *
+    "Key a Dict by the handle with an IdDict instead."
+))
+
 """
     MatPtr(petsclib, ptr::CMat; own::Bool = false)
 
@@ -27,11 +36,14 @@ is a no-op, leaving the wrapper usable.
 Calling `MatPtr` is deprecated and goes in v0.6: wrap a raw handle with
 [`PetscMat(petsclib, ptr; own)`](@ref LibPETSc.PetscMat(::PetscLibType, ::CMat)).
 """
-mutable struct MatPtr{PetscLib} <:
-               AbstractPetscMat{PetscLib}
+mutable struct MatPtr{PetscLib, T} <:
+               AbstractPetscMat{PetscLib, T}
     ptr::CMat
     age::Int
     own::Bool
+
+    MatPtr{PetscLib}(ptr::CMat, age::Int, own::Bool) where {PetscLib} =
+        new{PetscLib, scalartype(PetscLib)}(ptr, age, own)
 end
 function MatPtr(petsclib::PetscLibType, ptr::CMat; own::Bool = false)
     @warn "MatPtr goes in v0.6: wrap a raw Mat with PetscMat(petsclib, ptr; own)" maxlog = 1
@@ -62,18 +74,8 @@ wrapper type that carries the ownership flag.
 LibPETSc.PetscMat(petsclib::PetscLibType, ptr::CMat; own::Bool = false) =
     mat_from_ptr(petsclib, ptr, own)
 
-Base.size(m::AbstractPetscMat{PetscLib}) where {PetscLib} = LibPETSc.MatGetSize(PetscLib,m)
-Base.length(m::AbstractPetscMat{PetscLib}) where {PetscLib} = prod(size(m))
-Base.ndims(::Type{<:AbstractPetscMat}) = 2
-Base.ndims(m::AbstractPetscMat) = ndims(typeof(m))
-
-# As for any matrix: the global size along dimensions 1 and 2, and 1 beyond them
-function Base.size(m::AbstractPetscMat, d::Integer)
-    d >= 1 || throw(ArgumentError("dimension must be ≥ 1, got $d"))
-    return d <= 2 ? Int(size(m)[d]) : 1
-end
-Base.axes(m::AbstractPetscMat) = map(Base.OneTo, size(m))
-Base.axes(m::AbstractPetscMat, d::Integer) = Base.OneTo(size(m, d))
+# Global size, as `Int`s, like any `AbstractMatrix`
+Base.size(m::AbstractPetscMat{PetscLib}) where {PetscLib} = map(Int, LibPETSc.MatGetSize(PetscLib, m))
 """
     type_name(A::AbstractPetscMat)
 

@@ -261,7 +261,7 @@ end
               )
 
 	n = n_[]
-	mat = mat_[] == C_NULL ? PetscMat{$PetscLib}[] : [PetscMat(p, petsclib; own = false) for p in unsafe_wrap(Array, mat_[], n; own = false)]
+	mat = mat_[] == C_NULL ? PetscMat{$PetscLib, $PetscScalar}[] : [PetscMat(p, petsclib; own = false) for p in unsafe_wrap(Array, mat_[], n; own = false)]
 
 	return n,mat
 end 
@@ -6841,7 +6841,7 @@ end
               )
 
 	n = n_[]
-	mat = mat_[] == C_NULL ? PetscMat{$PetscLib}[] : [PetscMat(p, petsclib; own = false) for p in unsafe_wrap(Array, mat_[], n; own = false)]
+	mat = mat_[] == C_NULL ? PetscMat{$PetscLib, $PetscScalar}[] : [PetscMat(p, petsclib; own = false) for p in unsafe_wrap(Array, mat_[], n; own = false)]
 
 	return n,mat
 end 
@@ -7346,7 +7346,7 @@ end
               )
 
 	num_levels = num_levels_[]
-	coarseOperators = coarseOperators_[] == C_NULL ? PetscMat{$PetscLib}[] : [PetscMat(p, petsclib) for p in unsafe_wrap(Array, coarseOperators_[], num_levels - 1; own = false)]
+	coarseOperators = coarseOperators_[] == C_NULL ? PetscMat{$PetscLib, $PetscScalar}[] : [PetscMat(p, petsclib) for p in unsafe_wrap(Array, coarseOperators_[], num_levels - 1; own = false)]
 	coarseOperators_[] == C_NULL || PetscFree(petsclib, coarseOperators_[])
 
 	return num_levels,coarseOperators
@@ -7503,7 +7503,7 @@ end
               )
 
 	num_levels = num_levels_[]
-	interpolations = interpolations_[] == C_NULL ? PetscMat{$PetscLib}[] : [PetscMat(p, petsclib) for p in unsafe_wrap(Array, interpolations_[], num_levels - 1; own = false)]
+	interpolations = interpolations_[] == C_NULL ? PetscMat{$PetscLib, $PetscScalar}[] : [PetscMat(p, petsclib) for p in unsafe_wrap(Array, interpolations_[], num_levels - 1; own = false)]
 	interpolations_[] == C_NULL || PetscFree(petsclib, interpolations_[])
 
 	return num_levels,interpolations

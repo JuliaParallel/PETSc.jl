@@ -499,6 +499,8 @@ Add methods to `Base` and `LinearAlgebra` wherever the PETSc operation satisfies
 Base.size, Base.length, Base.ndims, Base.eltype, Base.axes
 Base.similar, Base.copy, Base.fill!, Base.iterate, Base.copyto!
 Base.getindex, Base.setindex!, Base.show
+Base.:(==), Base.isequal, Base.sum, Base.maximum, Base.minimum,
+Base.any, Base.all, Base.count, Base.mapreduce, Base.collect, Base.isapprox
 Base.:+, Base.:-, Base.:*, Base.:/
 LinearAlgebra.norm, LinearAlgebra.mul!, LinearAlgebra.dot,
 LinearAlgebra.axpy!, LinearAlgebra.axpby!, LinearAlgebra.rmul!, LinearAlgebra.lmul!,
@@ -954,6 +956,7 @@ They are listed because the rename table is the register of what is public, not 
 | `check_initialized` | unchanged (internal, see [§14](#14.-Errors)) |
 | `tao_usable_after_reinitialize` | unchanged (a platform predicate, not a PETSc accessor) |
 | `isdestroyable` | unchanged (internal) |
+| — | `equal(A, B)`, new in 0.6.0: PETSc's `MatEqual` and `VecEqual`, since `==` compares values as for Julia arrays ([§11](#11.-Extending-Base-and-stdlib)) |
 | — | `with_destroy(f)`, `track!`, `untrack!`, new in 0.5.3: destroy a group of objects together, in reverse order, when a block ends ([§18.2](#18.2-Ownership)) |
 
 #### Internals

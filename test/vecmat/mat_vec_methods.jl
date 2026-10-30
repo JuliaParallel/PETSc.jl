@@ -169,18 +169,50 @@ MPI.Initialized() || MPI.Init()
         foreach(PETSc.destroy!, (w, v))
     end
 
+    @testset "isapprox compares norms, as for Julia arrays" begin
+        RealT = real(PetscScalar)
+        # Entry by entry 1e-9 is not ≈ 0, but the difference is small next to the norms
+        xs, ys = PetscScalar[1e-9, 1], PetscScalar[0, 1]
+        x, y = PETSc.PetscVec(petsclib, xs), PETSc.PetscVec(petsclib, ys)
+        @test @test_logs isapprox(x, y)
+        @test isapprox(x, y) == isapprox(xs, ys)
+        @test isapprox(x, y; rtol = 0) == isapprox(xs, ys; rtol = 0)
+        @test !isapprox(x, y; rtol = 0)
+        @test isapprox(x, y; atol = 1e-8, rtol = 0)
+        @test isapprox(x, y; norm = v -> norm(v, Inf), rtol = 2e-9)
+        @test !isapprox(x, y; norm = v -> norm(v, Inf), rtol = 0.5e-9)
+        @test x ≈ y
+        # Not finite: entry by entry, and nans decides whether NaN ≈ NaN
+        a = PETSc.PetscVec(petsclib, PetscScalar[NaN, 1])
+        b = PETSc.PetscVec(petsclib, PetscScalar[NaN, 1])
+        @test !isapprox(a, b)
+        @test isapprox(a, b; nans = true)
+        c = PETSc.PetscVec(petsclib, PetscScalar[Inf, 1])
+        @test isapprox(c, c)
+        @test !isapprox(c, b; nans = true)
+        @test_throws DimensionMismatch isapprox(x, PETSc.PetscVec(petsclib, PetscScalar[1, 2, 3]))
+        @test xs == x[:] && ys == y[:]        # the arguments are unchanged
+        foreach(PETSc.destroy!, (x, y, a, b, c))
+    end
+
     @testset "size, axes, ndims" begin
         v = PETSc.PetscVec(petsclib, PetscScalar[1, 2, 3])
+        @test eltype(v) === PetscScalar
+        @test eltype(typeof(v)) === PetscScalar
+        @test size(v) === (3,)
+        @test length(v) === 3
+        @test axes(v) === (Base.OneTo(3),)
+        @test lastindex(v) === 3
         @test size(v, 1) === 3
         @test size(v, 2) === 1
-        @test_throws ArgumentError size(v, 0)
+        @test_throws BoundsError size(v, 0)
         @test ndims(v) == 1
 
         A = PETSc.PetscMat(petsclib, sparse(PetscScalar[1 2 3; 4 5 6]))
         @test size(A, 1) === 2
         @test size(A, 2) === 3
         @test size(A, 3) === 1
-        @test_throws ArgumentError size(A, 0)
+        @test_throws BoundsError size(A, 0)
         @test axes(A) == (Base.OneTo(2), Base.OneTo(3))
         @test axes(A, 2) == Base.OneTo(3)
         @test ndims(A) == 2

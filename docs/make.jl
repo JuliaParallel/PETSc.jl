@@ -86,7 +86,7 @@ makedocs(;
         "Utilities" => "man/utilities.md",
         "Performance" => "man/performance.md",
         "Running on HPC Systems" => "man/hpc.md",
-        "GPU Support (CUDA)" => "man/gpu.md",
+        "GPU Support (CUDA and HIP)" => "man/gpu.md",
         "FAQ"  => "man/FAQ.md",
         "Naming Conventions" => "man/naming.md",
         "Contributing"  => "man/contributing.md",

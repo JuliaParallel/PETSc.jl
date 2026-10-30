@@ -205,7 +205,7 @@ MPI.Initialized() || MPI.Init()
         @test lastindex(v) === 3
         @test size(v, 1) === 3
         @test size(v, 2) === 1
-        @test_throws ArgumentError size(v, 0)
+        @test_throws BoundsError size(v, 0)
         @test ndims(v) == 1
 
         A = PETSc.PetscMat(petsclib, sparse(PetscScalar[1 2 3; 4 5 6]))

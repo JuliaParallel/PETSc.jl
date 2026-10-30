@@ -5963,10 +5963,10 @@ end
               )
 
 	n = n_[]
-	x = x_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, x_[], n; own = false)]
-	y = y_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, y_[], n; own = false)]
-	b = b_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, b_[], n; own = false)]
-	xl = xl_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, xl_[], n; own = false)]
+	x = x_[] == C_NULL ? PetscVec{$PetscLib, $PetscScalar}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, x_[], n; own = false)]
+	y = y_[] == C_NULL ? PetscVec{$PetscLib, $PetscScalar}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, y_[], n; own = false)]
+	b = b_[] == C_NULL ? PetscVec{$PetscLib, $PetscScalar}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, b_[], n; own = false)]
+	xl = xl_[] == C_NULL ? PetscVec{$PetscLib, $PetscScalar}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, xl_[], n; own = false)]
 
 	return n,x,y,b,xl
 end 

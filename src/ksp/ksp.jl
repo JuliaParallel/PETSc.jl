@@ -320,6 +320,10 @@ function Base.:\(ksp::AbstractKSP{PetscLib}, b::AbstractPetscVec{PetscLib}) wher
     return x
 end
 
+# A PETSc vector takes the PETSc path, not the Julia-array one below
+Base.:\(ksp::KSP{PetscLib}, b::AbstractPetscVec{PetscLib}) where {PetscLib} =
+    invoke(\, Tuple{AbstractKSP{PetscLib}, AbstractPetscVec{PetscLib}}, ksp, b)
+
 # Solves into a copy of `b` in the library's scalar type, so any vector works, 
 # and returns `x` with the axes of `b`
 function Base.:\(ksp::KSP{PetscLib}, b::AbstractVector) where {PetscLib}

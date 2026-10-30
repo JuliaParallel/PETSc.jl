@@ -499,6 +499,8 @@ Add methods to `Base` and `LinearAlgebra` wherever the PETSc operation satisfies
 Base.size, Base.length, Base.ndims, Base.eltype, Base.axes
 Base.similar, Base.copy, Base.fill!, Base.iterate, Base.copyto!
 Base.getindex, Base.setindex!, Base.show
+Base.:(==), Base.isequal, Base.sum, Base.maximum, Base.minimum,
+Base.any, Base.all, Base.count
 Base.:+, Base.:-, Base.:*, Base.:/
 LinearAlgebra.norm, LinearAlgebra.mul!, LinearAlgebra.dot,
 LinearAlgebra.axpy!, LinearAlgebra.axpby!, LinearAlgebra.rmul!, LinearAlgebra.lmul!,

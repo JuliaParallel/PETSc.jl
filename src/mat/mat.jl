@@ -14,6 +14,12 @@ function Base.show(io::IO, v::AbstractPetscMat{PetscLib}) where {PetscLib}
     return nothing
 end
 
+# `==` on matrices compares entries (`MatEqual`), which can change
+Base.hash(::AbstractPetscMat, ::UInt) = throw(ArgumentError(
+    "a PETSc matrix has no hash: `==` compares its entries, which can change. " *
+    "Key a Dict by the handle with an IdDict instead."
+))
+
 """
     MatPtr(petsclib, ptr::CMat; own::Bool = false)
 

@@ -254,6 +254,10 @@ _mul!(y, obj::Function, x) = obj(y, x)
 _mul!(y, obj, x) = LinearAlgebra.mul!(y, obj, x)
 
 
+# A PETSc vector takes the PETSc path, not the Julia-array one below
+Base.:*(M::MatShell{PetscLib}, x::AbstractPetscVec{PetscLib}) where {PetscLib} =
+    invoke(*, Tuple{AbstractPetscMat{PetscLib}, AbstractPetscVec{PetscLib}}, M, x)
+
 # Matrix-vector multiplication for MatShell with Julia arrays
 function Base.:*(M::MatShell{PetscLib}, x::AbstractVector) where {PetscLib}
     PetscScalar = scalartype(PetscLib)

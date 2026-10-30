@@ -4681,8 +4681,8 @@ end
               )
 
 	numcost = numcost_[]
-	lambda = lambda_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, lambda_[], numcost; own = false)]
-	mu = mu_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, mu_[], numcost; own = false)]
+	lambda = lambda_[] == C_NULL ? PetscVec{$PetscLib, $PetscScalar}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, lambda_[], numcost; own = false)]
+	mu = mu_[] == C_NULL ? PetscVec{$PetscLib, $PetscScalar}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, mu_[], numcost; own = false)]
 
 	return numcost,lambda,mu
 end 
@@ -4728,8 +4728,8 @@ end
 
 	numcost = numcost_[]
 	dir = PetscVec(dir_[], petsclib; own = false)
-	lambda2 = lambda2_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, lambda2_[], numcost; own = false)]
-	mu2 = mu2_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, mu2_[], numcost; own = false)]
+	lambda2 = lambda2_[] == C_NULL ? PetscVec{$PetscLib, $PetscScalar}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, lambda2_[], numcost; own = false)]
+	mu2 = mu2_[] == C_NULL ? PetscVec{$PetscLib, $PetscScalar}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, mu2_[], numcost; own = false)]
 
 	return numcost,lambda2,mu2,dir
 end 
@@ -4886,7 +4886,7 @@ end
 
 	nsol = nsol_[]
 	sol_times = sol_times_[] == C_NULL ? $PetscReal[] : unsafe_wrap(Array, sol_times_[], nsol; own = false)
-	Sols = Sols_[] == C_NULL ? PetscVec{$PetscLib}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, Sols_[], nsol; own = false)]
+	Sols = Sols_[] == C_NULL ? PetscVec{$PetscLib, $PetscScalar}[] : [PetscVec(p, petsclib; own = false) for p in unsafe_wrap(Array, Sols_[], nsol; own = false)]
 
 	return nsol,sol_times,Sols
 end 

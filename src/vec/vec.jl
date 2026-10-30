@@ -24,6 +24,9 @@ function Base.show(io::IO, v::AbstractPetscVec{PetscLib}) where {PetscLib}
     return nothing
 end
 
+# The REPL shows the handle, not the entries, which are one C call each
+Base.show(io::IO, ::MIME"text/plain", v::AbstractPetscVec) = show(io, v)
+
 """
     VecPtr(petsclib, ptr::CVec; own::Bool = false)
 
@@ -37,11 +40,14 @@ is a no-op, leaving the wrapper usable.
 Calling `VecPtr` is deprecated and goes in v0.6: wrap a raw handle with
 [`PetscVec(petsclib, ptr; own)`](@ref LibPETSc.PetscVec(::PetscLibType, ::CVec)).
 """
-mutable struct VecPtr{PetscLib} <:
-               AbstractPetscVec{PetscLib}
+mutable struct VecPtr{PetscLib, T} <:
+               AbstractPetscVec{PetscLib, T}
     ptr::CVec
     age::Int
     own::Bool
+
+    VecPtr{PetscLib}(ptr::CVec, age::Int, own::Bool) where {PetscLib} =
+        new{PetscLib, scalartype(PetscLib)}(ptr, age, own)
 end
 function VecPtr(petsclib::PetscLibType, ptr::CVec; own::Bool = false)
     @warn "VecPtr goes in v0.6: wrap a raw Vec with PetscVec(petsclib, ptr; own)" maxlog = 1

@@ -12,6 +12,14 @@
 - `eltype(v)` on a PetscVec is the library's scalar type (it was `Any`).
 - `isapprox(v, w)` on two PetscVecs compares norms as for Julia arrays, ‖v − w‖ ≤ max(atol, rtol·max(‖v‖, ‖w‖)), instead of entry by entry, and no longer warns. It is collective and works on a distributed vector, and takes Base's `norm` keyword. When ‖v − w‖ is not finite it compares entry by entry, as Base does. For the old test, write `all(isapprox.(v[:], w[:]))`.
 - `size(v)` on a PetscVec returns the tuple `(n,)` of `Int` and `length(v)` an `Int`, as for any `AbstractVector`. Before, both returned the scalar `PetscInt`, so `size(v) == n` is now `false` without any error: write `length(v) == n`, or `size(v, 1)`. `size(v)[1]` and `axes(v)` are unchanged.
+- `PetscVec <: AbstractVector{PetscScalar}`, so generic Julia methods accept a PetscVec. The type has a second parameter, `PetscVec{PetscLib, PetscScalar}`; `PetscVec{PetscLib}` still constructs one and still matches it in a method signature. `v[i]` stays one C call on an entry this rank owns, as before, and PETSc raises an error for any other entry. Generic methods that read entry by entry (`mapreduce`, `sum(f, v)`, `extrema`, `reduce`, `collect`) now have collective PETSc methods, below.
+- `v == w` on two PetscVecs compares the entries, as for Julia arrays (`NaN != NaN`, `0.0 == -0.0`), and is collective; before, it compared the handles. `isequal` likewise. Vectors of one length with a different parallel layout throw an `ArgumentError`. `hash` on a PetscVec or PetscMat throws, since `==` on either compares entries that can change: key a `Dict` of handles with an `IdDict`.
+- `size(v, 0)` on a PetscVec throws a `BoundsError`, as for any `AbstractArray`, instead of an `ArgumentError`.
+
+### Added
+
+- `sum`, `maximum`, `minimum` on a PetscVec, through `VecSum`, `VecMax` and `VecMin`, and `any`, `all`, `count` and `mapreduce` (so `sum(f, v)`, `prod`, `extrema` and `reduce`) with a function. All are collective and give every rank the global answer; the function runs on the entries each rank owns, and the results of `mapreduce` combine in rank order. `similar(v, eltype(v))` returns a PetscVec, as `similar(v)` does.
+- `collect(v)`, `Vector(v)` and `copyto!(::Vector, v)` on a PetscVec give every rank the whole vector (`VecScatterCreateToAll`); every rank must call them. On one rank they are `v[:]`.
 
 ## v0.5.5
 

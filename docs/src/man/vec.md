@@ -8,7 +8,7 @@ PETSc vectors support:
 - **Distributed parallel storage**: Split across MPI processes
 - **Sequential storage**: For serial computations
 - **Ghost points**: For communication in stencil operations
-- **Julia array interface**: Use familiar indexing and broadcasting syntax
+- **Julia array interface**: a `PetscVec` is an `AbstractVector`, with bulk indexing, broadcasting and reductions
 
 ## Creating Vectors
 
@@ -40,15 +40,26 @@ work in v0.5 and warn once.
 
 ## Julia Array Interface
 
-PETSc vectors implement the Julia array interface:
+A `PetscVec` is an `AbstractVector` of the library's scalar type, so `eltype`, `size`, `length`, `axes` and the generic `AbstractVector` methods work as for any vector:
 
 ```julia
-v[1] = 1.0           # Set single element
-v[1:10] .= 2.0       # Set range
-x = v[5]             # Get element
-length(v)            # Get length
-size(v)              # Get size tuple
+v[1:3] = [1.0, 2.0, 3.0]   # set a range (then assemble!)
+v[2]                       # one entry
+a = v[1:3]                 # a range, as a Vector
+length(v)                  # global length, an Int
+size(v)                    # (length(v),)
+collect(v)                 # every entry, as a Vector
 ```
+
+`v[i]` and `v[i] = x` are one C call each and reach only the entries **owned by this rank**; PETSc raises an error for any other. So on one rank a vector behaves like a `Vector`, and on several ranks code that touches only its own entries works. A loop over every entry is correct but slow, since each step is a C call: use [`with_local_array!`](@ref) for the entries each rank owns, which hands you a plain Julia array.
+
+```julia
+PETSc.with_local_array!(v) do a
+    a[1] = 1.0
+end
+```
+
+Reductions are collective and give every rank the global answer. `sum`, `maximum`, `minimum`, `dot`, `norm` and `isapprox` call PETSc directly. `any`, `all`, `count` and `mapreduce` (so `sum(f, v)`, `prod`, `extrema` and `reduce`) run the function on the entries each rank owns and combine the results. `collect(v)`, `Vector(v)` and `copyto!(::Vector, v)` give every rank the whole vector, so every rank must call them, and each needs memory for all `length(v)` entries. `v == w` compares the entries, also collectively. `hash(v)` throws, so key a `Dict` of vectors with an `IdDict`.
 
 ## Linear Algebra
 
@@ -72,8 +83,7 @@ z = x + y              # a new vector; so are x - y, -x, α * x and x / α
 After setting values, vectors must be assembled:
 
 ```julia
-v[1] = 1.0
-v[2] = 2.0
+v[1:2] = [1.0, 2.0]
 PETSc.assemble!(v)  # Finalize vector assembly
 ```
 

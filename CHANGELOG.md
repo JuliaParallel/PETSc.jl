@@ -32,6 +32,10 @@
 - `mapreduce` on a PetscMat, and through it `sum(f, A)`, `prod`, `maximum`, `minimum`, `extrema`, `count`, `any` and `all`: collective, and they read only the stored entries of each rank's rows, counting `f(0)` for the entries that are not stored, as SparseArrays does for a `SparseMatrixCSC`.
 - `collect(v)`, `Vector(v)` and `copyto!(::Vector, v)` on a PetscVec give every rank the whole vector (`VecScatterCreateToAll`); every rank must call them. On one rank they are `v[:]`.
 
+### Fixed
+
+- `similar(v)` on a PetscVec returned a vector with no finalizer, so its memory was never freed. That includes the vector `ksp \ b` returns and any Base code that calls `similar` on a PetscVec: 1500 calls on a 1.5 MiB vector grew the process by 2.2 GiB. The vector now has a finalizer on a one-rank communicator, as `copy(v)` does; on more ranks call `destroy!` on it on every rank.
+
 ## v0.5.5
 
 The last release before 0.6, which removes every shim and flips several defaults. Run your code on 0.5.5 with warnings on and fix what they report; "Coming in v0.6" lists the changes that print no warning.

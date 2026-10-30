@@ -51,6 +51,22 @@ MPI.Initialized() || MPI.Init()
         PETSc.destroy!(da)
     end
 
+    @testset "wrapping a raw handle" begin
+        PetscScalar = petsclib.PetscScalar
+        v = PETSc.PetscVec(petsclib, PetscScalar[1, 2, 3])
+        m = PETSc.PetscMat(petsclib, 3, 3, 1)
+        wv = PETSc.PetscVec(petsclib, v.ptr; own = false)
+        wm = PETSc.PetscMat(petsclib, m.ptr; own = false)
+        @test wv isa PETSc.PetscVec && wv.ptr == v.ptr && !PETSc.owns(wv)
+        @test wm isa PETSc.PetscMat && wm.ptr == m.ptr && !PETSc.owns(wm)
+        # borrowed is the default, and destroying a borrowed handle does nothing
+        @test !PETSc.owns(PETSc.PetscVec(petsclib, v.ptr))
+        @test PETSc.destroy!(wm) === nothing
+        @test LibPETSc.MatGetSize(petsclib, m) == (3, 3)
+        @test !isdefined(PETSc, :VecPtr) && !isdefined(PETSc, :MatPtr)
+        foreach(PETSc.destroy!, (v, m))
+    end
+
     @testset "readers hand back a borrowed PetscVec" begin
         PetscScalar = petsclib.PetscScalar
         A = PETSc.PetscMat(petsclib, PetscScalar[2 0; 0 2])

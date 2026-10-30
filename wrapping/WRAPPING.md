@@ -129,7 +129,7 @@ method per library. The stub's scalar types are loosened (`PetscScalar` -> `Numb
 whose arguments match no library method therefore fails loudly (the old stub returned `nothing`,
 which hid e.g. `Float64` literals passed to a `Float32` library in the tests).
 
-Input handle arguments always take the abstract type (`AbstractPetscVec`), so `VecPtr`, `MatShell`
+Input handle arguments always take the abstract type (`AbstractPetscVec`), so `MatShell`
 and the typed DM hierarchy pass; return positions use the concrete type (`PetscVec`).
 `test/lowlevel/wrapper_signatures.jl` enforces this.
 

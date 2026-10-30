@@ -83,8 +83,8 @@ function set_type! end
 # Abstract handle types: the type to annotate with, so that every wrapper of
 # that kind of object is accepted. The parameter is the library type.
 for (T, object, wrappers) in (
-    (:AbstractPetscVec, "vector (`Vec`)", "[`PetscVec`](@ref) and [`VecPtr`](@ref)"),
-    (:AbstractPetscMat, "matrix (`Mat`)", "[`PetscMat`](@ref), [`MatPtr`](@ref) and [`MatShell`](@ref)"),
+    (:AbstractPetscVec, "vector (`Vec`)", "[`PetscVec`](@ref)"),
+    (:AbstractPetscMat, "matrix (`Mat`)", "[`PetscMat`](@ref) and [`MatShell`](@ref)"),
     (:AbstractPetscDM, "DM", "[`DMDA`](@ref), [`DMStag`](@ref), [`DMPlex`](@ref) and [`PetscDM`](@ref)"),
     (:AbstractKSP, "linear solver (`KSP`)", "[`KSP`](@ref)"),
     (:AbstractPC, "preconditioner (`PC`)", "[`PC`](@ref)"),

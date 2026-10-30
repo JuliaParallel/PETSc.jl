@@ -346,7 +346,7 @@ SNESSetJacobianFn      # was Fn_SNESSetJacobian
 **Wrapper and alias types** keep bare PETSc names. [§5.2](#5.2-Prefixes) asks whether *this name* is too generic to export, not whether its class is: `Mat` needs the prefix, `MatShell` does not.
 
 ```julia
-MatShell  MatOp  MatPtr  VecPtr        # unchanged
+MatShell  MatOp                        # unchanged
 ```
 
 `MatAT` was a `Union{PetscMat, Transpose, Adjoint}` alias whose name did not say so. It had no uses, so v0.5 deletes it rather than renaming it to `MatOrTranspose`: an alias nothing refers to is not worth a shim.
@@ -924,7 +924,7 @@ They are listed because the rename table is the register of what is public, not 
 |---|---|
 | `VecSeq` | `PetscVec` constructor |
 | `MatCreateSeqAIJ`, `MatSeqAIJ`, `MatSeqDense`, `MatSeqAIJWithArrays`, `MatAIJ` | `PetscMat` constructor |
-| `VecPtr`, `MatPtr` | unchanged: they are the wrapper **types** for a handle PETSc owns ([§5.5](#5.5-Abstract,-callback-and-wrapper-types)), not spellings of a constructor |
+| `VecPtr`, `MatPtr` | removed in 0.6: `PetscVec(petsclib, ptr; own)` and `PetscMat(petsclib, ptr; own)` wrap a raw handle, borrowed by default |
 | `unsafe_localarray`, `wrap_localarray` | `unsafe_local_array`, `wrap_local_array` |
 | `acquire_petsc_local_array` | `acquire_local_array` |
 | `release_petsc_local_array` | `release_local_array` |
@@ -998,7 +998,7 @@ The exceptions keep their underscore, because there it separates an inner worker
 | `Fn_SNESSetFunction`, `Fn_SNESSetJacobian` | `SNESSetFunctionFn`, `SNESSetJacobianFn` |
 | `TSSetRHSFunctionFn`, `TSSetRHSJacobianFn`, `TSSetIFunctionFn`, `TSSetIJacobianFn`, `TSMonitorSetFn` | unchanged (new, already §5.5) |
 | `MatAT` | deleted (no uses; it would have been `MatOrTranspose`) |
-| `MatShell`, `MatOp`, `MatPtr`, `VecPtr` | unchanged |
+| `MatShell`, `MatOp` | unchanged |
 | `AbstractPetscDS`, `PetscDS` | unchanged |
 | `DMStagGetIndices` | removed (already deprecated in v0.4) |
 
@@ -1074,7 +1074,7 @@ This is [§3.3](#3.3-What-an-accessor-hands-back) enforced by the value for ever
 
 Objects passed to a callback are borrowed, and valid only for the duration of the call.
 
-`VecPtr` and `MatPtr` predate the field. They carried the ownership flag that `PetscVec` and `PetscMat` now carry themselves, and they stay for 0.5.
+`VecPtr` and `MatPtr` predate the field. They carried the ownership flag that `PetscVec` and `PetscMat` now carry themselves, and they are removed in 0.6.
 
 ### 18.3 Callback state lives with the PETSc object
 

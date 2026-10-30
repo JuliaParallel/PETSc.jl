@@ -324,8 +324,6 @@ const SHIMS = [
         PETSc.initialize(petsclib)
         v = PETSc.PetscVec(petsclib, 3)
         m = PETSc.PetscMat(petsclib, 3, 3, 1)
-        @test !warns(() -> PETSc.VecPtr(petsclib, v.ptr, false)).own
-        @test !warns(() -> PETSc.MatPtr(petsclib, m.ptr, false)).own
         @test !warns(() -> PETSc.PetscVec(petsclib, v.ptr, false)).own
         foreach(PETSc.destroy!, (m, v))
     end

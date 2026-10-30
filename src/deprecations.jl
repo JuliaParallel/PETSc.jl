@@ -375,16 +375,6 @@ end
 
 # positional own
 # §9: `own` has a default, so it is a keyword, as in `narrow(dm; own)`.
-function VecPtr(petsclib::LibPETSc.PetscLibType, ptr::CVec, own::Bool)
-    @warn "VecPtr(petsclib, ptr, own) is deprecated, use PetscVec(petsclib, ptr; own)" maxlog = 1
-    return LibPETSc.PetscVec(petsclib, ptr; own)
-end
-
-function MatPtr(petsclib::LibPETSc.PetscLibType, ptr::CMat, own::Bool)
-    @warn "MatPtr(petsclib, ptr, own) is deprecated, use PetscMat(petsclib, ptr; own)" maxlog = 1
-    return LibPETSc.PetscMat(petsclib, ptr; own)
-end
-
 function LibPETSc.PetscVec(petsclib::LibPETSc.PetscLibType, ptr::CVec, own::Bool)
     @warn "PetscVec(petsclib, ptr, own) is deprecated, use PetscVec(petsclib, ptr; own)" maxlog = 1
     return LibPETSc.PetscVec(petsclib, ptr; own)

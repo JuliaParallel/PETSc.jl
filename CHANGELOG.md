@@ -19,6 +19,7 @@
 - `A == B` on two PetscMats compares the entries as Julia matrices do, collectively: an entry stored in only one counts as zero, and `NaN != NaN`. Before, it was `MatEqual`, which also compares which entries are stored, so a matrix with an explicitly stored zero was not equal to the same matrix without it. `MatEqual` is still available as `PETSc.equal(A, B)`. Matrices of one size with a different row layout throw an `ArgumentError`.
 - `user_ctx`, `set_user_ctx!` and the SNES and TS callback forms that take a trailing context are removed, along with the `user_ctx` argument of the positional constructors `SNES{PetscLib}(ptr, age, f!, …)` and `TS{PetscLib}(ptr, age, rhs_function!, …)`. Every callback has one calling form; a closure carries the context. A callback with only the trailing-context method now throws a `MethodError` when called.
 - `vtk_merge_tensor` and `create_split_boundary_labels!` are removed. Copies are in `examples/dmplex/vtk_tensor.jl` and `examples/dmplex/ex69.jl`.
+- `VecPtr` and `MatPtr` are removed. `PetscVec(petsclib, ptr; own)` and `PetscMat(petsclib, ptr; own)` wrap a raw handle and return a `PetscVec` or `PetscMat`, borrowed unless `own = true`. Code that annotated `::VecPtr` or `::MatPtr` breaks: annotate `::PetscVec`, `::PetscMat` or the abstract types.
 
 ### Added
 

@@ -215,7 +215,7 @@ end
 synchronize_device(::Union{Nothing, AbstractPetscMemBackend}) = nothing
 
 # The auto-generated *AndMemType wrappers are typed `x::PetscVec`, but
-# `AbstractPetscVec` also includes `VecPtr`.  Convert transparently.
+# `AbstractPetscVec` covers every wrapper. Convert transparently.
 as_petsc_vec(v::LibPETSc.PetscVec) = v
 as_petsc_vec(v::AbstractPetscVec) = LibPETSc.PetscVec(v)
 

@@ -45,7 +45,7 @@ These change what working code does or remove a name. The ones marked "warns" pr
 - `set_convergence_test!` passes the norms to the callback as `PetscReal`, not `Float64`. This matters only for a Float32 library with a callback whose arguments are annotated `Float64`.
 - `star_fd_coloring` returns its index arrays as `Vector{Int}`, not `Vector{Int32}`.
 - The `…Fn` callback types (`SNESSetFunctionFn`, `TSSetRHSFunctionFn`, …) are no longer public.
-- `PetscVec <: AbstractVector` and `PetscMat <: AbstractMatrix`. Element-by-element fallbacks throw by default, so a generic method that would make one C call per entry fails instead. `==` on two PetscVecs compares values (`VecEqual`, collective) as it already does on PetscMats, and `hash` on either throws.
+- `PetscVec <: AbstractVector` and `PetscMat <: AbstractMatrix`, so generic Julia code accepts them, with collective reductions (`sum`, `mapreduce`, `collect`, …). `==` on two PetscVecs or two PetscMats compares the entries as for Julia arrays, collectively, and `hash` on either throws.
 
 ### Added
 

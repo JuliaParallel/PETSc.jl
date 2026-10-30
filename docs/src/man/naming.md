@@ -334,7 +334,7 @@ This renames `AbstractPetscKSP` and `AbstractPetscSNES`, matching `PetscKSP` bec
 It also fixes `AbstractPETScMemBackend`, the one type spelling the prefix `PETSc` where every other type spells it `Petsc`.
 That one is exported, so the inconsistency is user-visible.
 
-**Callback types** take a `Fn` suffix, following the autowrapped layer's existing `DMDATSRHSFunctionLocalFn`. The current `Fn_` prefix puts an underscore inside a PascalCase name, which no rule here permits:
+**Callback types** take a `Fn` suffix, following the autowrapped layer's existing `DMDATSRHSFunctionLocalFn`. The `Fn_` prefix of 0.4 put an underscore inside a PascalCase name, which no rule here permits:
 
 ```julia
 KSPComputeRHSFn        # was Fn_KSPComputeRHS
@@ -343,10 +343,12 @@ SNESSetFunctionFn      # was Fn_SNESSetFunction
 SNESSetJacobianFn      # was Fn_SNESSetJacobian
 ```
 
+These types are the trampolines the callback setters hand to `@cfunction`. They are internal from 0.6 (§18.6), and the `Fn_` spellings are gone.
+
 **Wrapper and alias types** keep bare PETSc names. [§5.2](#5.2-Prefixes) asks whether *this name* is too generic to export, not whether its class is: `Mat` needs the prefix, `MatShell` does not.
 
 ```julia
-MatShell  MatOp  MatPtr  VecPtr        # unchanged
+MatShell  MatOp                        # unchanged
 ```
 
 `MatAT` was a `Union{PetscMat, Transpose, Adjoint}` alias whose name did not say so. It had no uses, so v0.5 deletes it rather than renaming it to `MatOrTranspose`: an alias nothing refers to is not worth a shim.
@@ -404,7 +406,7 @@ The exceptions:
 - A function whose first argument is a `do` block returns the block's result, like `open(f, file)` and `lock(f, l)`: `with_local_array!`, `with_destroy`.
 - A function that files an object away for later returns that object, like `get!`, so it can wrap a constructor: `track!(list, obj)` and `untrack!(list, obj)` return `obj`, not `list`.
 
-A function that writes a file and mutates no argument takes no `!`, like `write`, `serialize` and FileIO's `save`: `save_vtk`, `vtk_merge_tensor`. From 0.5.1; before it, most setters returned `nothing`.
+A function that writes a file and mutates no argument takes no `!`, like `write`, `serialize` and FileIO's `save`: `save_vtk`. From 0.5.1; before it, most setters returned `nothing`.
 
 ## 8. Argument order
 
@@ -851,7 +853,7 @@ Each pair collapses to one name, so two shims point at each replacement.
 | `mat_null_space_destroy!` | `destroy!` |
 | `fe_create_default`, `fe_create_lagrange` | unchanged (free functions) |
 | `vtk_save!`, `vtk_save_fields!` | `save_vtk!` (drops `petsclib`, see [§8](#8.-Argument-order)); `save_vtk` from 0.5.1 ([§7](#7.-Mutation)) |
-| `vtk_merge_tensor!` | unchanged (free function, no PETSc object); `vtk_merge_tensor` from 0.5.1 ([§7](#7.-Mutation)) |
+| `vtk_merge_tensor!` | unchanged (free function, no PETSc object); `vtk_merge_tensor` from 0.5.1 ([§7](#7.-Mutation)); deprecated in 0.5.5, removed in 0.6 (a copy is in examples/dmplex/vtk_tensor.jl) |
 | `setfield!` | `set_field!` (resolves the `Base.setfield!` shadow) |
 | `dmclone` | `clone` |
 | `plex_set_snes_local_fem!` | `set_snes_local_fem!` |
@@ -880,7 +882,7 @@ Each pair collapses to one name, so two shims point at each replacement.
 | `setfunction!` | `set_function!` |
 | `setjacobian!` | `set_snes_jacobian!` (see note) |
 | `setconvergencetest!` | `set_convergence_test!` (callback first, [§8.1](#8.1-Callbacks-come-first)) |
-| `Fn_SNESSetConvergenceTest` | `SNESSetConvergenceTestFn` ([§5.5](#5.5-Abstract,-callback-and-wrapper-types)) |
+| `Fn_SNESSetConvergenceTest` | `SNESSetConvergenceTestFn` ([§5.5](#5.5-Abstract,-callback-and-wrapper-types)); internal and without the old spelling from 0.6 |
 | — | `narrow`, new ([§5.4](#5.4-DMs-of-unknown-provenance)) |
 | — | `set_type!(obj, ::Symbol)` for Vec, Mat, KSP, SNES and DM, new: v0.4 had it on TS only ([§3.1](#3.1-What-accessors-return-and-setters-take)) |
 
@@ -924,7 +926,7 @@ They are listed because the rename table is the register of what is public, not 
 |---|---|
 | `VecSeq` | `PetscVec` constructor |
 | `MatCreateSeqAIJ`, `MatSeqAIJ`, `MatSeqDense`, `MatSeqAIJWithArrays`, `MatAIJ` | `PetscMat` constructor |
-| `VecPtr`, `MatPtr` | unchanged: they are the wrapper **types** for a handle PETSc owns ([§5.5](#5.5-Abstract,-callback-and-wrapper-types)), not spellings of a constructor |
+| `VecPtr`, `MatPtr` | removed in 0.6: `PetscVec(petsclib, ptr; own)` and `PetscMat(petsclib, ptr; own)` wrap a raw handle, borrowed by default |
 | `unsafe_localarray`, `wrap_localarray` | `unsafe_local_array`, `wrap_local_array` |
 | `acquire_petsc_local_array` | `acquire_local_array` |
 | `release_petsc_local_array` | `release_local_array` |
@@ -968,7 +970,7 @@ They drop the `_` prefix, which was standing in for "internal" and is not how Ju
 |---|---|
 | `_petsc_link` | `petsc_link` |
 | `_petsc_subst` | `petsc_subst` |
-| `_vtk_merge_one_tensor!` | `vtk_merge_one_tensor` |
+| `_vtk_merge_one_tensor!` | `vtk_merge_one_tensor`; removed in 0.6 with `vtk_merge_tensor` |
 | `_build_petsc_options` | `build_petsc_options` |
 | `_ensure_library_handle` | `ensure_library_handle` |
 | `_ensure_mpi_initialized` | `ensure_mpi_initialized` |
@@ -994,11 +996,11 @@ The exceptions keep their underscore, because there it separates an inner worker
 |---|---|
 | `AbstractPetscKSP`, `AbstractPetscSNES` | `AbstractKSP`, `AbstractSNES` |
 | `AbstractPETScMemBackend` | `AbstractPetscMemBackend` |
-| `Fn_KSPComputeRHS`, `Fn_KSPComputeOperators` | `KSPComputeRHSFn`, `KSPComputeOperatorsFn` |
-| `Fn_SNESSetFunction`, `Fn_SNESSetJacobian` | `SNESSetFunctionFn`, `SNESSetJacobianFn` |
-| `TSSetRHSFunctionFn`, `TSSetRHSJacobianFn`, `TSSetIFunctionFn`, `TSSetIJacobianFn`, `TSMonitorSetFn` | unchanged (new, already §5.5) |
+| `Fn_KSPComputeRHS`, `Fn_KSPComputeOperators` | `KSPComputeRHSFn`, `KSPComputeOperatorsFn`; internal and without the old spellings from 0.6 |
+| `Fn_SNESSetFunction`, `Fn_SNESSetJacobian` | `SNESSetFunctionFn`, `SNESSetJacobianFn`; internal and without the old spellings from 0.6 |
+| `TSSetRHSFunctionFn`, `TSSetRHSJacobianFn`, `TSSetIFunctionFn`, `TSSetIJacobianFn`, `TSMonitorSetFn` | unchanged (new, already §5.5); internal from 0.6 |
 | `MatAT` | deleted (no uses; it would have been `MatOrTranspose`) |
-| `MatShell`, `MatOp`, `MatPtr`, `VecPtr` | unchanged |
+| `MatShell`, `MatOp` | unchanged |
 | `AbstractPetscDS`, `PetscDS` | unchanged |
 | `DMStagGetIndices` | removed (already deprecated in v0.4) |
 
@@ -1074,7 +1076,7 @@ This is [§3.3](#3.3-What-an-accessor-hands-back) enforced by the value for ever
 
 Objects passed to a callback are borrowed, and valid only for the duration of the call.
 
-`VecPtr` and `MatPtr` predate the field. They carried the ownership flag that `PetscVec` and `PetscMat` now carry themselves, and they stay for 0.5.
+`VecPtr` and `MatPtr` predate the field. They carried the ownership flag that `PetscVec` and `PetscMat` now carry themselves, and they are removed in 0.6.
 
 ### 18.3 Callback state lives with the PETSc object
 
@@ -1085,7 +1087,7 @@ Each PETSc object that Julia calls back from has one state box, held by a `Petsc
 - `finalize` drops the boxes of its library, since none of its objects can call back afterwards.
 - The context pointer PETSc passes to a trampoline is the box, never a wrapper.
 
-The box is internal. The user context has accessors, `user_ctx(obj)` and `set_user_ctx!(obj, ctx)`, on every object whose callbacks can receive it, `SNES` and `TS`. Assigning `obj.user_ctx` keeps working in 0.5 and forwards to the setter.
+The box is internal, and there is no separate user context: a callback's closure captures what it needs. The `user_ctx` and `set_user_ctx!` accessors that `SNES` and `TS` had in 0.5 are removed in 0.6.
 
 ### 18.4 Exceptions in callbacks
 
@@ -1100,11 +1102,11 @@ The DMPlex pointwise functions (`@residual_fn` and the other macros) are exempt.
 - The callback is the setter's first argument ([§8.1](#8.1-Callbacks-come-first)).
 - A callback that fills an argument takes that argument first, then the object, then what it reads: `f!(F, snes, x)`, `updateJ!(J, P, snes, x)`, `apply!(y, pc, x)`, `f!(F, ts, t, u)`. A callback that only observes takes the object first: `monitor(ts, step, t, u)`, `test!(snes, it, xnorm, gnorm, fnorm)`.
 - A callback succeeds by returning and fails by throwing. Its return value is ignored, unless it carries a meaning its setter's docstring states, such as the convergence reason `test!` returns. A nonzero `Integer` is ignored like any other value (0.5.x read it as a PETSc error code); `return PetscInt(0)`, which 0.5.0 callbacks end in, keeps working.
-- New callbacks take no trailing `user_ctx`: a closure captures what it needs. `SNES` and `TS` callbacks keep the optional trailing argument they have in 0.5.0, deprecated in 0.5.5 and removed in 0.6.
+- Callbacks take no trailing `user_ctx`: a closure captures what it needs. The optional trailing argument `SNES` and `TS` callbacks had in 0.5 is removed in 0.6, so each callback has one calling form.
 
 ### 18.6 Public surface
 
-A name is public when users write it. Trampoline types (the `…Fn` callables handed to `@cfunction`), state boxes and their helpers are internal, and registered as such in `scripts/renames.jl`. The `Fn` types that are public in 0.5.0 (`SNESSetFunctionFn`, `KSPComputeRHSFn`, the `TS…Fn` family and the rest) stay public in 0.5; whether v0.6 makes them internal is decided with its other removals.
+A name is public when users write it. Trampoline types (the `…Fn` callables handed to `@cfunction`), state boxes and their helpers are internal, and registered as such in `scripts/renames.jl`. The `Fn` types that were public in 0.5 (`SNESSetFunctionFn`, `KSPComputeRHSFn`, the `TS…Fn` family and the rest) are internal from 0.6: they are not in the `public` list and the documentation does not cover them. They stay reachable as `PETSc.SNESSetFunctionFn`, without a stability promise.
 
 ### 18.7 What 0.5.1 changes
 

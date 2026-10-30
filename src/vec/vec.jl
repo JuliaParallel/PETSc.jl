@@ -27,35 +27,8 @@ end
 # The REPL shows the handle, not the entries, which are one C call each
 Base.show(io::IO, ::MIME"text/plain", v::AbstractPetscVec) = show(io, v)
 
-"""
-    VecPtr(petsclib, ptr::CVec; own::Bool = false)
-
-Container type for a PETSc Vec that is just a raw pointer.
-
-If `own` is `true` a finalizer is set on the vector, but only on a serial
-communicator, since `VecDestroy` is collective and a GC finalizer runs at an
-arbitrary point. If `own` is `false`, the default, the handle belongs to PETSc and `destroy!`
-is a no-op, leaving the wrapper usable.
-
-Calling `VecPtr` is deprecated and goes in v0.6: wrap a raw handle with
-[`PetscVec(petsclib, ptr; own)`](@ref LibPETSc.PetscVec(::PetscLibType, ::CVec)).
-"""
-mutable struct VecPtr{PetscLib, T} <:
-               AbstractPetscVec{PetscLib, T}
-    ptr::CVec
-    age::Int
-    own::Bool
-
-    VecPtr{PetscLib}(ptr::CVec, age::Int, own::Bool) where {PetscLib} =
-        new{PetscLib, scalartype(PetscLib)}(ptr, age, own)
-end
-function VecPtr(petsclib::PetscLibType, ptr::CVec; own::Bool = false)
-    @warn "VecPtr goes in v0.6: wrap a raw Vec with PetscVec(petsclib, ptr; own)" maxlog = 1
-    return vec_from_ptr(petsclib, ptr, own)
-end
-
 function vec_from_ptr(petsclib::PetscLib, ptr::CVec, own::Bool) where {PetscLib <: PetscLibType}
-    v = VecPtr{PetscLib}(ptr, petsclib.age, own)
+    v = LibPETSc.PetscVec{PetscLib}(ptr, petsclib.age; own)
     # Short-circuits on a borrowed handle, which is the hot path: callbacks wrap
     # PETSc-owned vectors on every invocation and never need the communicator.
     if own && MPI.Comm_size(LibPETSc.PetscObjectGetComm(getlib(PetscLib), v)) == 1
@@ -63,18 +36,16 @@ function vec_from_ptr(petsclib::PetscLib, ptr::CVec, own::Bool) where {PetscLib 
     end
     return v
 end
-VecPtr(::Type{PetscLib}, x...; kwargs...) where {PetscLib <: PetscLibType} =
-    VecPtr(getlib(PetscLib), x...; kwargs...)
-
 
 """
     PetscVec(petsclib, ptr::CVec; own::Bool = false)
 
 Wrap a raw PETSc `Vec` handle.
 
-`own = false` is the borrowed case of docs/src/man/naming.md §3.3: no finalizer
-is attached and `destroy!` is a no-op. The result is a [`VecPtr`](@ref), the
-wrapper type that carries the ownership flag.
+`own = false`, the default, is the borrowed case of docs/src/man/naming.md §3.3: no
+finalizer is attached and `destroy!` is a no-op. With `own = true` a finalizer
+is attached, but only on a serial communicator, since `VecDestroy` is collective
+and a GC finalizer runs at an arbitrary point.
 """
 LibPETSc.PetscVec(petsclib::PetscLibType, ptr::CVec; own::Bool = false) =
     vec_from_ptr(petsclib, ptr, own)
@@ -86,7 +57,7 @@ The plain `PetscVec` handle behind any high-level vector wrapper, borrowed from
 `v`: `destroy!` on it does nothing (see [`owns`](@ref)).
 
 The autowrapped `*AndMemType` routines are typed `x::PetscVec`, while
-`AbstractPetscVec` also covers [`VecPtr`](@ref); this converts transparently.
+`AbstractPetscVec` covers every wrapper; this converts transparently.
 """
 LibPETSc.PetscVec(v::AbstractPetscVec{PetscLib}) where {PetscLib} =
     LibPETSc.PetscVec{PetscLib}(v.ptr, v.age; own = false)

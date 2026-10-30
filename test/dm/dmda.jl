@@ -634,6 +634,13 @@ nothing
         da = dmda((9, 8), :star)
         c = PETSc.star_fd_coloring(da)
         @test c.n_colors > 1
+        # 1-based Julia indices are Int; the COO arrays keep PETSc's PetscInt
+        @test c.perturb_cols_1b isa Vector{Vector{Int}}
+        @test c.coo_idxs_1b isa Vector{Vector{Int}}
+        @test c.local_rows_1b isa Vector{Vector{Int}}
+        @test c.row_coo_local_0b isa Vector{petsclib.PetscInt}
+        @test sort!(reduce(vcat, c.perturb_cols_1b)) == 1:c.n_local_dofs
+        @test sort!(reduce(vcat, c.coo_idxs_1b)) == 1:c.nnz_coo
         g = PETSc.global_vec(da)
         @test c.n_local_dofs == length(PETSc.ownership_range(g))
         foreach(PETSc.destroy!, (g, da))

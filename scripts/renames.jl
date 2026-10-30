@@ -78,7 +78,6 @@ const RENAMES = Pair{Symbol, Symbol}[
     :vtk_save! => :save_vtk,
     :vtk_save_fields! => :save_vtk,
     :save_vtk! => :save_vtk,       # v0.5.1: it writes a file and mutates no argument (§7)
-    :vtk_merge_tensor! => :vtk_merge_tensor,   # v0.5.1: likewise
     :setfield! => :set_field!,
     :dmclone => :clone,
     :plex_set_snes_local_fem! => :set_snes_local_fem!,
@@ -134,22 +133,12 @@ const RENAMES = Pair{Symbol, Symbol}[
     :audit_petsc_file => :audit_file,
 
     # types (§5.5): a `const` alias, no warning
-    :Fn_KSPComputeRHS => :KSPComputeRHSFn,
-    :Fn_KSPComputeOperators => :KSPComputeOperatorsFn,
-    :Fn_SNESSetFunction => :SNESSetFunctionFn,
-    :Fn_SNESSetJacobian => :SNESSetJacobianFn,
-    :Fn_SNESSetConvergenceTest => :SNESSetConvergenceTestFn,
     :AbstractPETScMemBackend => :AbstractPetscMemBackend,
 ]
 
 # Old names that name a type: the shim is a `const` alias rather than a forwarding
 # method, so no warning is emitted and `x isa Fn_SNESSetFunction` keeps working.
 const TYPE_RENAMES = Set{Symbol}([
-    :Fn_KSPComputeRHS,
-    :Fn_KSPComputeOperators,
-    :Fn_SNESSetFunction,
-    :Fn_SNESSetJacobian,
-    :Fn_SNESSetConvergenceTest,
     :AbstractPETScMemBackend,
 ])
 
@@ -610,16 +599,6 @@ const EXTRA_SHIMS = NamedTuple{(:name, :code, :test), Tuple{String, String, Stri
         name = "positional own",
         code = """
         # §9: `own` has a default, so it is a keyword, as in `narrow(dm; own)`.
-        function VecPtr(petsclib::LibPETSc.PetscLibType, ptr::CVec, own::Bool)
-            @warn "VecPtr(petsclib, ptr, own) is deprecated, use PetscVec(petsclib, ptr; own)" maxlog = 1
-            return LibPETSc.PetscVec(petsclib, ptr; own)
-        end
-
-        function MatPtr(petsclib::LibPETSc.PetscLibType, ptr::CMat, own::Bool)
-            @warn "MatPtr(petsclib, ptr, own) is deprecated, use PetscMat(petsclib, ptr; own)" maxlog = 1
-            return LibPETSc.PetscMat(petsclib, ptr; own)
-        end
-
         function LibPETSc.PetscVec(petsclib::LibPETSc.PetscLibType, ptr::CVec, own::Bool)
             @warn "PetscVec(petsclib, ptr, own) is deprecated, use PetscVec(petsclib, ptr; own)" maxlog = 1
             return LibPETSc.PetscVec(petsclib, ptr; own)
@@ -631,8 +610,6 @@ const EXTRA_SHIMS = NamedTuple{(:name, :code, :test), Tuple{String, String, Stri
             PETSc.initialize(petsclib)
             v = PETSc.PetscVec(petsclib, 3)
             m = PETSc.PetscMat(petsclib, 3, 3, 1)
-            @test !warns(() -> PETSc.VecPtr(petsclib, v.ptr, false)).own
-            @test !warns(() -> PETSc.MatPtr(petsclib, m.ptr, false)).own
             @test !warns(() -> PETSc.PetscVec(petsclib, v.ptr, false)).own
             foreach(PETSc.destroy!, (m, v))
         end
@@ -742,61 +719,6 @@ const EXTRA_SHIMS = NamedTuple{(:name, :code, :test), Tuple{String, String, Stri
         """,
     ),
     (
-        name = "vtk_merge_tensor and create_split_boundary_labels!",
-        code = """
-        # Both warn in src/dm/label.jl and src/sys/viewer.jl and leave PETSc.jl in v0.6: copies live in
-        # examples/dmplex/vtk_tensor.jl and examples/dmplex/ex69.jl.
-        """,
-        test = """
-        @testset "vtk_merge_tensor and create_split_boundary_labels!" begin
-            petsclib = PETSc.petsclibs[1]
-            PETSc.initialize(petsclib)
-            # A missing file is left alone, so only the warning is checked
-            @test warns(() -> PETSc.vtk_merge_tensor(tempname(), "stress")) === nothing
-            dm = PETSc.DMPlex(petsclib, PETSc.MPI.COMM_SELF, 2, false, [2, 2])
-            @test warns(() -> PETSc.create_split_boundary_labels!(dm)) === dm
-            @test PETSc.label(dm, "markerLeft") !== nothing
-            PETSc.destroy!(dm)
-        end
-        """,
-    ),
-    (
-        name = "user_ctx and callbacks with a trailing context",
-        code = """
-        # Both setters and readers warn in src/snes/snes.jl and src/ts/ts.jl, as does a
-        # callback called with a context set. Closures carry the data instead.
-        """,
-        test = """
-        @testset "user_ctx and callbacks with a trailing context" begin
-            petsclib = PETSc.petsclibs[1]
-            PETSc.initialize(petsclib)
-            T = petsclib.PetscScalar
-            comm = PETSc.MPI.COMM_SELF
-            snes = PETSc.SNES(petsclib, comm; pc_type = "none")
-            @test warns(() -> PETSc.set_user_ctx!(snes, 3)) === snes
-            @test warns(() -> PETSc.user_ctx(snes)) == 3
-            PETSc.destroy!(snes)
-
-            ts = PETSc.TS(petsclib, comm)
-            PETSc.set_type!(ts, :beuler)
-            PETSc.set_adapt_type!(ts, :none)
-            @test warns(() -> PETSc.set_user_ctx!(ts, (rate = 2.0,))) === ts
-            @test warns(() -> PETSc.user_ctx(ts)).rate == 2.0
-            PETSc.set_rhs_function!(ts) do F, _ts, _t, x, ctx
-                F[1] = -ctx.rate * x[1]
-                return 0
-            end
-            u = PETSc.PetscVec(petsclib, T[1])
-            PETSc.set_time!(ts, 0.0)
-            PETSc.set_timestep!(ts, 0.1)
-            PETSc.set_max_time!(ts, 0.5)
-            warns(() -> PETSc.solve!(u, ts))
-            @test u[1] ≈ 1 / (1 + 0.2)^5 rtol = 1e-6
-            foreach(PETSc.destroy!, (ts, u))
-        end
-        """,
-    ),
-    (
         name = "pointwise macros without a library",
         code = """
         # Warns in src/dm/dt/pointwise.jl: the one-argument-shorter forms of @simple_fn,
@@ -844,7 +766,6 @@ const INTERNAL = Set{Symbol}([
     # leading underscore dropped (naming.md "Internals")
     :petsc_link,
     :petsc_subst,
-    :vtk_merge_one_tensor,
     :build_petsc_options,
     :ensure_library_handle,
     :ensure_mpi_initialized,
@@ -871,6 +792,17 @@ const INTERNAL = Set{Symbol}([
     :call_with_views,
     :field_views,
     :TSStepHookFn,
+    # callback trampolines, internal from v0.6
+    :KSPComputeRHSFn,
+    :KSPComputeOperatorsFn,
+    :SNESSetFunctionFn,
+    :SNESSetJacobianFn,
+    :SNESSetConvergenceTestFn,
+    :TSSetRHSFunctionFn,
+    :TSSetRHSJacobianFn,
+    :TSSetIFunctionFn,
+    :TSSetIJacobianFn,
+    :TSMonitorSetFn,
     :apply_blas_num_threads,
     :BLAS_THREAD_VARIABLES,
     :ranks_on_node,
@@ -1001,7 +933,6 @@ const INTERNAL = Set{Symbol}([
     :waxpy,
     :scaled_copy,
     :add_scaled,
-    :warn_user_ctx,
     :vec_from_ptr,
     :mat_from_ptr,
 ])
@@ -1032,7 +963,6 @@ const UNCHANGED_PUBLIC = Symbol[
     :AbstractPetscDS,
     :add_boundary!,
     :add_natural_boundary!,
-    :create_split_boundary_labels!,
     :fe_create_default,
     :fe_create_lagrange,
     :set_constants!,
@@ -1060,8 +990,6 @@ const UNCHANGED_PUBLIC = Symbol[
     :PF,
     :Tao,
     # vec.jl / mat.jl
-    :VecPtr,
-    :MatPtr,
     :MatShell,
     :MatOp,
     :assemble!,
@@ -1094,7 +1022,6 @@ const UNCHANGED_PUBLIC = Symbol[
     :set_max_time!,
     :set_max_steps!,
     :set_tolerances!,
-    :set_user_ctx!,
     :set_from_options!,
     :set_rhs_function!,
     :set_rhs_jacobian!,
@@ -1102,7 +1029,6 @@ const UNCHANGED_PUBLIC = Symbol[
     :set_ijacobian!,
     :set_monitor!,
     :tolerances,
-    :user_ctx,
     :current_time,
     :timestep,
     :max_time,
@@ -1138,11 +1064,6 @@ const UNCHANGED_PUBLIC = Symbol[
     :set_error_if_step_fails!,  # new in v0.5.2
     :set_pre_step!,          # new in v0.5.2
     :set_post_step!,         # new in v0.5.2
-    :TSSetRHSFunctionFn,
-    :TSSetRHSJacobianFn,
-    :TSSetIFunctionFn,
-    :TSSetIJacobianFn,
-    :TSMonitorSetFn,
     # init.jl / options.jl
     :PetscNotInitialized,
     :ConvergenceError,       # new in v0.5.3

@@ -601,11 +601,15 @@ for petsclib in PETSc.petsclibs
         PETSc.set_exact_solution!(ds_src, 0, _dm_exact_ptr)
 
         dm_dst = PETSc.clone(dm_src)
-        @test_nowarn PETSc.copy_disc!(dm_src, dm_dst)
+        @test LibPETSc.DMGetNumFields(petsclib, dm_dst) == 0
+        # The destination comes first, as for `copyto!`, and is returned
+        @test PETSc.copy_disc!(dm_dst, dm_src) === dm_dst
 
-        # After copy_disc, the destination should also have a DS
+        # After copy_disc, the destination has the field and a DS
+        @test LibPETSc.DMGetNumFields(petsclib, dm_dst) == 1
         ds_dst = PETSc.ds(dm_dst)
         @test ds_dst isa PETSc.PetscDS
+        @test LibPETSc.DMGetNumFields(petsclib, dm_src) == 1
 
         PETSc.destroy!(dm_dst)
         PETSc.destroy!(dm_src)

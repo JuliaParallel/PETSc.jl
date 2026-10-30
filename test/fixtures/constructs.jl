@@ -53,7 +53,7 @@ fin_m = PETSc.PetscMat(petsclib, 10, 10, 3)
 finalizer(m -> (destroy!(m); data), fin_m)
 
 # borrowed pointer: the caller does not own it
-borrowed = PETSc.VecPtr(petsclib, some_ptr; own = false)
+borrowed = PETSc.PetscVec(petsclib, some_ptr; own = false)
 
 # let block, global binding, and a non-ASCII name
 let

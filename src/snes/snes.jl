@@ -3,7 +3,6 @@ mutable struct SNESState <: ObjectState
     f!::Any
     updateJ!::Any
     convergence_test!::Any
-    user_ctx::Any
     opts::Any
     options_at::Symbol
     options_applied::Bool
@@ -14,14 +13,13 @@ SNESState() = SNESState(
     x -> error("function not defined"),
     nothing,
     nothing,
-    nothing,
     :first_solve,
     false,
     true,
 )
 state_type(::Type{<:SNES}) = SNESState
 
-# `snes.f!`, `snes.user_ctx`, `snes.opts` and the rest reach the state
+# `snes.f!`, `snes.opts` and the rest reach the state
 @inline Base.getproperty(snes::SNES, name::Symbol) =
     (name === :ptr || name === :age || name === :own) ? getfield(snes, name) :
     forward_getproperty(snes, name)
@@ -39,19 +37,17 @@ function LibPETSc.SNES{PetscLib}(
     age::Int,
     f!::Function,
     updateJ!::Function = x -> error("function not defined"),
-    user_ctx = nothing,
     opts = nothing,
 ) where {PetscLib}
     ptr == C_NULL && throw(ArgumentError("callbacks need a PETSc object; got a null pointer"))
     snes = SNES{PetscLib}(ptr, age)
     snes.f! = f!
     snes.updateJ! = updateJ!
-    snes.user_ctx = user_ctx
     snes.opts = opts
     return snes
 end
-LibPETSc.SNES(ptr::Ptr, lib::PetscLib, f!::Function, updateJ!::Function, user_ctx = nothing, age::Int = lib.age) where {PetscLib} =
-    SNES{PetscLib}(ptr, age, f!, updateJ!, user_ctx)
+LibPETSc.SNES(ptr::Ptr, lib::PetscLib, f!::Function, updateJ!::Function, age::Int = lib.age) where {PetscLib} =
+    SNES{PetscLib}(ptr, age, f!, updateJ!)
 
 # Custom display for REPL
 function Base.show(io::IO, v::AbstractSNES{PetscLib}) where {PetscLib}
@@ -191,12 +187,7 @@ function (w::SNESSetFunctionFn{PetscLib})(
     fx = PetscVec{PetscLib}(r_fx, getlib(PetscLib).age; own = false)
 
     return run_callback("residual f!") do
-        if Base.applicable(snes.f!, fx, actual_snes, x, snes.user_ctx)
-            warn_user_ctx(snes.user_ctx)
-            snes.f!(fx, actual_snes, x, snes.user_ctx)
-        else
-            snes.f!(fx, actual_snes, x)
-        end
+        snes.f!(fx, actual_snes, x)
     end
 end
 
@@ -237,11 +228,6 @@ PETSc Jacobian (approximation).
 If `J ≠ P` then a call to `updateJ!(J, P, snes, x)` should set the elements of
 the PETSc Jacobian (approximation) and preconditioning matrix `P`.
 
-Deprecated: if a user context is set with [`set_user_ctx!`](@ref), `updateJ!` may
-accept it as an additional last argument (`updateJ!(J, snes, x, user_ctx)` when
-`J == P`, `updateJ!(J, P, snes, x, user_ctx)` when `J ≠ P`). Capture the context
-in a closure instead; the trailing form goes in v0.6.
-
 $(doc_callback())
 
 # External Links
@@ -272,19 +258,9 @@ function (w::SNESSetJacobianFn{PetscLib})(
 
     return run_callback("Jacobian updateJ!") do
         if same_mat
-            if Base.applicable(snes.updateJ!, A, actual_snes, x, snes.user_ctx)
-                warn_user_ctx(snes.user_ctx)
-                snes.updateJ!(A, actual_snes, x, snes.user_ctx)
-            else
-                snes.updateJ!(A, actual_snes, x)
-            end
+            snes.updateJ!(A, actual_snes, x)
         else
-            if Base.applicable(snes.updateJ!, A, P, actual_snes, x, snes.user_ctx)
-                warn_user_ctx(snes.user_ctx)
-                snes.updateJ!(A, P, actual_snes, x, snes.user_ctx)
-            else
-                snes.updateJ!(A, P, actual_snes, x)
-            end
+            snes.updateJ!(A, P, actual_snes, x)
         end
     end
 end
@@ -324,8 +300,7 @@ during `FormFunction`, not `‖F‖₂`) should ignore these and read whatever s
 cached during the residual evaluation via its own closure captures.
 
 The closure is kept alive by `snes` until `snes` is destroyed or a new test is
-installed. `snes.user_ctx` is left alone, so the residual and Jacobian callbacks
-keep receiving it.
+installed.
 
 $(doc_callback("its return value is the `SNESConvergedReason` it decides"))
 
@@ -374,37 +349,6 @@ LibPETSc.@for_petsc function set_convergence_test!(
         (CSNES, $PetscInt, $PetscReal, $PetscReal, $PetscReal, Ptr{Cint}, Ptr{Cvoid})
     )
     LibPETSc.SNESSetConvergenceTest($PetscLib, snes, fptr, ctx, C_NULL)
-    return snes
-end
-
-"""
-    user_ctx(snes::AbstractSNES)
-
-Whatever was stored with [`set_user_ctx!`](@ref), or `nothing`.
-
-Deprecated: a closure carries the context without this extra argument, and the
-callbacks then have one calling form. `user_ctx` and the trailing-context
-callback forms go in v0.6.
-"""
-function user_ctx(snes::AbstractSNES)
-    @warn "user_ctx is deprecated and goes in v0.6: capture the context in a closure" maxlog = 1
-    return snes.user_ctx
-end
-
-"""
-    set_user_ctx!(snes::AbstractSNES, ctx)
-
-Attach `ctx` to `snes`, to be handed back as the last argument of the residual
-and Jacobian callbacks that have a method accepting it. It is kept with the
-PETSc object, so a borrowed handle such as `snes(ts)` sees it too. Returns `snes`.
-
-Deprecated: a closure carries the context without this extra argument, and the
-callbacks then have one calling form. `user_ctx` and the trailing-context
-callback forms go in v0.6.
-"""
-function set_user_ctx!(snes::AbstractSNES, ctx)
-    @warn "set_user_ctx! is deprecated and goes in v0.6: capture the context in a closure" maxlog = 1
-    snes.user_ctx = ctx
     return snes
 end
 

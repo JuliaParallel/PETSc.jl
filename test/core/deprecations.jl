@@ -91,7 +91,6 @@ const SHIMS = [
     :vtk_save! => :save_vtk,
     :vtk_save_fields! => :save_vtk,
     :save_vtk! => :save_vtk,
-    :vtk_merge_tensor! => :vtk_merge_tensor,
     :setfield! => :set_field!,
     :dmclone => :clone,
     :plex_set_snes_local_fem! => :set_snes_local_fem!,
@@ -147,11 +146,6 @@ const SHIMS = [
     end
 
     @testset "renamed types are aliases" begin
-        @test PETSc.Fn_KSPComputeRHS === PETSc.KSPComputeRHSFn
-        @test PETSc.Fn_KSPComputeOperators === PETSc.KSPComputeOperatorsFn
-        @test PETSc.Fn_SNESSetFunction === PETSc.SNESSetFunctionFn
-        @test PETSc.Fn_SNESSetJacobian === PETSc.SNESSetJacobianFn
-        @test PETSc.Fn_SNESSetConvergenceTest === PETSc.SNESSetConvergenceTestFn
         @test PETSc.AbstractPETScMemBackend === PETSc.AbstractPetscMemBackend
     end
 
@@ -325,8 +319,6 @@ const SHIMS = [
         PETSc.initialize(petsclib)
         v = PETSc.PetscVec(petsclib, 3)
         m = PETSc.PetscMat(petsclib, 3, 3, 1)
-        @test !warns(() -> PETSc.VecPtr(petsclib, v.ptr, false)).own
-        @test !warns(() -> PETSc.MatPtr(petsclib, m.ptr, false)).own
         @test !warns(() -> PETSc.PetscVec(petsclib, v.ptr, false)).own
         foreach(PETSc.destroy!, (m, v))
     end
@@ -378,45 +370,6 @@ const SHIMS = [
         # a copy: nothing is left checked out of the coordinate vector
         PETSc.destroy!(da)
         @test coord[1, 3] ≈ 1
-    end
-
-    @testset "vtk_merge_tensor and create_split_boundary_labels!" begin
-        petsclib = PETSc.petsclibs[1]
-        PETSc.initialize(petsclib)
-        # A missing file is left alone, so only the warning is checked
-        @test warns(() -> PETSc.vtk_merge_tensor(tempname(), "stress")) === nothing
-        dm = PETSc.DMPlex(petsclib, PETSc.MPI.COMM_SELF, 2, false, [2, 2])
-        @test warns(() -> PETSc.create_split_boundary_labels!(dm)) === dm
-        @test PETSc.label(dm, "markerLeft") !== nothing
-        PETSc.destroy!(dm)
-    end
-
-    @testset "user_ctx and callbacks with a trailing context" begin
-        petsclib = PETSc.petsclibs[1]
-        PETSc.initialize(petsclib)
-        T = petsclib.PetscScalar
-        comm = PETSc.MPI.COMM_SELF
-        snes = PETSc.SNES(petsclib, comm; pc_type = "none")
-        @test warns(() -> PETSc.set_user_ctx!(snes, 3)) === snes
-        @test warns(() -> PETSc.user_ctx(snes)) == 3
-        PETSc.destroy!(snes)
-
-        ts = PETSc.TS(petsclib, comm)
-        PETSc.set_type!(ts, :beuler)
-        PETSc.set_adapt_type!(ts, :none)
-        @test warns(() -> PETSc.set_user_ctx!(ts, (rate = 2.0,))) === ts
-        @test warns(() -> PETSc.user_ctx(ts)).rate == 2.0
-        PETSc.set_rhs_function!(ts) do F, _ts, _t, x, ctx
-            F[1] = -ctx.rate * x[1]
-            return 0
-        end
-        u = PETSc.PetscVec(petsclib, T[1])
-        PETSc.set_time!(ts, 0.0)
-        PETSc.set_timestep!(ts, 0.1)
-        PETSc.set_max_time!(ts, 0.5)
-        warns(() -> PETSc.solve!(u, ts))
-        @test u[1] ≈ 1 / (1 + 0.2)^5 rtol = 1e-6
-        foreach(PETSc.destroy!, (ts, u))
     end
 
     @testset "pointwise macros without a library" begin

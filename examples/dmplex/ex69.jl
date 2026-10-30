@@ -422,7 +422,7 @@ end
 # Propagate discretisation and pressure null space constructor to coarser levels
 let cdm = dm
     while convert(Ptr{Cvoid}, cdm) != C_NULL
-        PETSc.copy_disc!(dm, cdm)
+        PETSc.copy_disc!(cdm, dm)
         LibPETSc.DMSetNullSpaceConstructor(petsclib, cdm, PetscInt(1), pressure_nsp_ptr)
         cdm = PETSc.coarse_dm(cdm)
     end

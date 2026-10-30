@@ -446,7 +446,7 @@ end
 # ── Propagate disc + near-null space to coarser DMs (for GMG / GAMG hierarchy) ──
 let cdm = PETSc.coarse_dm(dm)
     while convert(Ptr{Cvoid}, cdm) != C_NULL
-        PETSc.copy_disc!(dm, cdm)
+        PETSc.copy_disc!(cdm, dm)
         if use_near_nullspace
             LibPETSc.DMSetNearNullSpaceConstructor(
                 petsclib, cdm, PetscInt(0), elasticity_nsp_ptr)

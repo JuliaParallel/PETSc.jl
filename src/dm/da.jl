@@ -250,6 +250,9 @@ index Julia arrays and are 1-based.
 - `local_rows_1b`    — `local_rows_1b[c]`: corresponding 1-based owned-local
                        residual-row indices; used to read `(f1-f0)/h`.
 
+The three `_1b` fields are `Vector{Vector{Int}}`, like any Julia index. A GPU
+kernel that wants narrower indices converts them itself.
+
 !!! note "2-D DMDA STAR stencil only"
     Neighbor enumeration covers only `±x` and `±y` directions.  The ghost-local
     flat-index formula is `d + ix*dof + iy*dof*nx_g`.  For a 3-D DMDA:
@@ -366,7 +369,7 @@ function star_fd_coloring(da::DMDA{PetscLib, N}) where {PetscLib, N}
     # owned DOFs re-indexed 1..n_local_dofs.  We convert owned-local → ghost-local
     # before looking up the color.
     hint_cols = max(1, n_local_dofs ÷ n_colors)
-    perturb_cols_1b = [sizehint!(Int32[], hint_cols) for _ in 1:n_colors]
+    perturb_cols_1b = [sizehint!(Int[], hint_cols) for _ in 1:n_colors]
     for p_local in 1:n_local_dofs
         p0      = p_local - 1
         d       = p0 % dof_per_node
@@ -375,16 +378,16 @@ function star_fd_coloring(da::DMDA{PetscLib, N}) where {PetscLib, N}
         k_ghost = d + (x_owned + ox_coo) * dof_per_node +
                       (y_owned + oy_coo) * dof_per_node * nx_g_da + 1
         c = Int(col_colors_local[k_ghost]) + 1
-        push!(perturb_cols_1b[c], Int32(p_local))
+        push!(perturb_cols_1b[c], p_local)
     end
 
     hint_coo = max(1, nnz_coo ÷ n_colors)
-    coo_idxs_1b   = [sizehint!(Int32[], hint_coo) for _ in 1:n_colors]
-    local_rows_1b = [sizehint!(Int32[], hint_coo) for _ in 1:n_colors]
+    coo_idxs_1b   = [sizehint!(Int[], hint_coo) for _ in 1:n_colors]
+    local_rows_1b = [sizehint!(Int[], hint_coo) for _ in 1:n_colors]
     for k in 1:nnz_coo
         c = Int(color_per_coo[k]) + 1
-        push!(coo_idxs_1b[c],   Int32(k))
-        push!(local_rows_1b[c], Int32(local_row_per_coo[k] + 1))
+        push!(coo_idxs_1b[c],   k)
+        push!(local_rows_1b[c], Int(local_row_per_coo[k]) + 1)
     end
 
     return (;

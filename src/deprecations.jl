@@ -118,7 +118,6 @@ function vtk_save_fields!(args...; kwargs...)
 end
 
 @renamed save_vtk! save_vtk
-@renamed vtk_merge_tensor! vtk_merge_tensor
 @renamed setfield! set_field!
 @renamed dmclone clone
 function plex_set_snes_local_fem!(args...; kwargs...)
@@ -376,16 +375,6 @@ end
 
 # positional own
 # §9: `own` has a default, so it is a keyword, as in `narrow(dm; own)`.
-function VecPtr(petsclib::LibPETSc.PetscLibType, ptr::CVec, own::Bool)
-    @warn "VecPtr(petsclib, ptr, own) is deprecated, use PetscVec(petsclib, ptr; own)" maxlog = 1
-    return LibPETSc.PetscVec(petsclib, ptr; own)
-end
-
-function MatPtr(petsclib::LibPETSc.PetscLibType, ptr::CMat, own::Bool)
-    @warn "MatPtr(petsclib, ptr, own) is deprecated, use PetscMat(petsclib, ptr; own)" maxlog = 1
-    return LibPETSc.PetscMat(petsclib, ptr; own)
-end
-
 function LibPETSc.PetscVec(petsclib::LibPETSc.PetscLibType, ptr::CVec, own::Bool)
     @warn "PetscVec(petsclib, ptr, own) is deprecated, use PetscVec(petsclib, ptr; own)" maxlog = 1
     return LibPETSc.PetscVec(petsclib, ptr; own)
@@ -432,14 +421,6 @@ end
 # Warns in src/dm/dm.jl and returns a copy; `with_local_coordinate_array` hands
 # the array back when its block returns.
 
-# vtk_merge_tensor and create_split_boundary_labels!
-# Both warn in src/dm/label.jl and src/sys/viewer.jl and leave PETSc.jl in v0.6: copies live in
-# examples/dmplex/vtk_tensor.jl and examples/dmplex/ex69.jl.
-
-# user_ctx and callbacks with a trailing context
-# Both setters and readers warn in src/snes/snes.jl and src/ts/ts.jl, as does a
-# callback called with a context set. Closures carry the data instead.
-
 # pointwise macros without a library
 # Warns in src/dm/dt/pointwise.jl: the one-argument-shorter forms of @simple_fn,
 # @residual_fn, @jacobian_fn and @bd_fn take PetscInt, PetscScalar and
@@ -448,9 +429,4 @@ end
 
 # Renamed types: a `const` alias, so `isa` and dispatch keep working
 
-const Fn_KSPComputeRHS = KSPComputeRHSFn
-const Fn_KSPComputeOperators = KSPComputeOperatorsFn
-const Fn_SNESSetFunction = SNESSetFunctionFn
-const Fn_SNESSetJacobian = SNESSetJacobianFn
-const Fn_SNESSetConvergenceTest = SNESSetConvergenceTestFn
 # `AbstractPETScMemBackend` is aliased where `AbstractPetscMemBackend` is defined.

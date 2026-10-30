@@ -52,7 +52,6 @@ if selected("core")
     include("core/lifetimes.jl")        # arrays a Vec or Mat wraps live as long as it does
     include("core/with_destroy.jl")      # with_destroy destroys what it tracks, also after an exception
     include("core/deprecations.jl")     # the v0.4 names still work and warn (the only file calling them)
-    include("core/announce_v06.jl")     # calls that change in v0.6 warn once
     include("core/performance.jl")      # allocations per call, flat in the problem size
     include("core/api_surface.jl")      # scripts/api_surface.jl --check: the register covers the surface
     @testset "method ambiguities do not grow" begin

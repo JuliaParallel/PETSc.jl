@@ -199,7 +199,7 @@ PETSc.add_boundary!(dm,
     exact_vel_ptr)
 ```
 
-To give each wall of a box mesh its own boundary label, split the `"marker"` label with `DMCreateLabel`, `DMGetStratumIS` and `DMLabelInsertIS`, as `split_boundary_labels!` in examples/dmplex/ex69.jl does. `PETSc.create_split_boundary_labels!` did this and is deprecated.
+To give each wall of a box mesh its own boundary label, split the `"marker"` label with `DMCreateLabel`, `DMGetStratumIS` and `DMLabelInsertIS`, as `split_boundary_labels!` in examples/dmplex/ex69.jl does.
 
 ---
 
@@ -262,7 +262,7 @@ PETSc.compose_constant_nullspace!(petsclib, comm, fe_pres)
 # Propagate discretisation to coarser MG levels
 let cdm = dm
     while convert(Ptr{Cvoid}, cdm) != C_NULL
-        PETSc.copy_disc!(dm, cdm)
+        PETSc.copy_disc!(cdm, dm)
         cdm = PETSc.coarse_dm(cdm)
     end
 end
@@ -285,7 +285,7 @@ vtk_merge_tensor(fname, "strainrate", "tau")
 ```
 
 `save_vtk` calls `PetscViewerVTKOpen` + `DMView` / `VecView` internally and works in parallel (each rank writes its own piece; PETSc merges the XML).
-`vtk_merge_tensor` post-processes the XML header to annotate multiple tensor fields so ParaView's tensor glyph filter recognises them. It lives in the examples: `PETSc.vtk_merge_tensor` is deprecated and goes in v0.6.
+`vtk_merge_tensor` post-processes the XML header to annotate multiple tensor fields so ParaView's tensor glyph filter recognises them. It lives in the examples, not in PETSc.jl.
 
 ### Writing a ParaView PVD animation file
 

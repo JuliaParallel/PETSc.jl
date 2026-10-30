@@ -66,9 +66,8 @@ const CONSTRUCTS = joinpath(dirname(@__DIR__), "fixtures", "constructs.jl")
 
     @testset "borrowed pointers are not creations" begin
         mktemp() do path, io
-            # VecPtr/MatPtr and PetscVec/PetscMat(petsclib, ptr; own) wrap a handle the caller may not own, so they must
+            # PetscVec/PetscMat(petsclib, ptr; own) wrap a handle the caller may not own, so they must
             # not be reported as objects needing a destroy
-            write(io, "f = PETSc.VecPtr(petsclib, f_ptr; own = false)\n")
             write(io, "g = PETSc.PetscVec(petsclib, g_ptr; own = false)\n")
             write(io, "h = PETSc.PetscMat(petsclib, h_ptr; own = false)\n")
             close(io)
@@ -119,8 +118,6 @@ const CONSTRUCTS = joinpath(dirname(@__DIR__), "fixtures", "constructs.jl")
         @test PETSc.audit_destroyer(:destroy!)
         @test PETSc.audit_destroyer(:VecDestroy)
         @test PETSc.audit_destroyer(:finalizer)
-        @test PETSc.audit_creator(:VecPtr) === nothing
-        @test PETSc.audit_creator(:MatPtr) === nothing
         @test !PETSc.audit_destroyer(:Destroy)
         @test !PETSc.audit_destroyer(:assemble!)
 

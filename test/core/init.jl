@@ -218,6 +218,34 @@ using PETSc
         PETSc.finalize(petsclib)
     end
 
+    # `finalize` on a library that was never initialized does nothing; before, PETSc raised
+    # an error. It runs in a process of its own, since it finalizes every library.
+    @testset "finalize before initialize" begin
+        code = """
+        using PETSc
+        PETSc.finalize(PETSc.petsclibs[2])      # never initialized
+        PETSc.initialize(PETSc.petsclibs[1])
+        PETSc.finalize()                        # the other libraries were never initialized
+        PETSc.finalize()                        # and a second call finds all of them finalized
+        @assert all(!PETSc.isinitialized, PETSc.petsclibs)
+        """
+        cmd = `$(Base.julia_cmd()) --project=$(Base.active_project()) --startup-file=no -e $code`
+        @test success(pipeline(cmd, stderr = stderr))
+    end
+
+    # One `atexit` hook per library, however often it is initialized
+    @testset "initialize registers one atexit hook per library" begin
+        petsclib = PETSc.petsclibs[1]
+        PETSc.initialize(petsclib)       # the hook exists from the first initialize
+        PETSc.finalize(petsclib)
+        hooks = length(Base.atexit_hooks)
+        for _ in 1:3
+            PETSc.initialize(petsclib)
+            PETSc.finalize(petsclib)
+        end
+        @test length(Base.atexit_hooks) == hooks
+    end
+
     # naming.md §14: user input raises `ArgumentError`, not a bare `error`.
     @testset "ArgumentError on user input" begin
         @test_throws ArgumentError PETSc.set_library!(

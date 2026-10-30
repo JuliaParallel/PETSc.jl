@@ -804,6 +804,8 @@ const INTERNAL = Set{Symbol}([
     :TSSetIJacobianFn,
     :TSMonitorSetFn,
     :apply_blas_num_threads,
+    :finalize_at_exit,
+    :register_finalize_at_exit,
     :BLAS_THREAD_VARIABLES,
     :ranks_on_node,
     :_unsafe_local_array,

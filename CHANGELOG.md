@@ -35,6 +35,9 @@
 ### Fixed
 
 - `similar(v)` on a PetscVec returned a vector with no finalizer, so its memory was never freed. That includes the vector `ksp \ b` returns and any Base code that calls `similar` on a PetscVec: 1500 calls on a 1.5 MiB vector grew the process by 2.2 GiB. The vector now has a finalizer on a one-rank communicator, as `copy(v)` does; on more ranks call `destroy!` on it on every rank.
+- `PETSc.finalize()` after initializing only some libraries threw `PetscError(73) from PetscFinalize`, and so did `finalize(petsclib)` on a library that was never initialized. A library that is not initialized is now left alone.
+- `initialize` hung on more than one rank when the ranks differed in `OMP_NUM_THREADS` or `OPENBLAS_NUM_THREADS`, for instance one set on rank 0 only. It decided whether to make a collective call from its own environment.
+- `initialize` registered one `atexit` hook for every call; it now registers one per library.
 
 ## v0.5.5
 

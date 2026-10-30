@@ -17,6 +17,8 @@
 - `size(v, 0)` on a PetscVec throws a `BoundsError`, as for any `AbstractArray`, instead of an `ArgumentError`.
 - `PetscMat <: AbstractMatrix{PetscScalar}`, and `MatShell` too. The types take the scalar type as a parameter, `PetscMat{PetscLib, PetscScalar}` and `MatShell{PetscLib, PetscScalar, OType}`; `PetscMat{PetscLib}` still constructs one and still matches it in a method signature. `size(A)` returns `Int`s, and `size(A, 0)` throws a `BoundsError` instead of an `ArgumentError`.
 - `A == B` on two PetscMats compares the entries as Julia matrices do, collectively: an entry stored in only one counts as zero, and `NaN != NaN`. Before, it was `MatEqual`, which also compares which entries are stored, so a matrix with an explicitly stored zero was not equal to the same matrix without it. `MatEqual` is still available as `PETSc.equal(A, B)`. Matrices of one size with a different row layout throw an `ArgumentError`.
+- `user_ctx`, `set_user_ctx!` and the SNES and TS callback forms that take a trailing context are removed, along with the `user_ctx` argument of the positional constructors `SNES{PetscLib}(ptr, age, f!, …)` and `TS{PetscLib}(ptr, age, rhs_function!, …)`. Every callback has one calling form; a closure carries the context. A callback with only the trailing-context method now throws a `MethodError` when called.
+- `vtk_merge_tensor` and `create_split_boundary_labels!` are removed. Copies are in `examples/dmplex/vtk_tensor.jl` and `examples/dmplex/ex69.jl`.
 
 ### Added
 

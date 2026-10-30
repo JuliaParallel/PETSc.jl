@@ -1,11 +1,15 @@
 # test/solvers/callback_contract.jl
 # What a callback hands to PETSc.jl and gets back: its return value is ignored,
-# and the norms given to a convergence test have the library's PetscReal type.
+# the norms given to a convergence test have the library's PetscReal type, and
+# each callback has one calling form, with no trailing context.
 
 using Test
 using PETSc
 using MPI
 using Logging
+
+isdefined(Main, :PETScTestUtils) || include(joinpath(@__DIR__, "..", "testutils.jl"))
+using .PETScTestUtils: without_petsc_traceback
 
 MPI.Initialized() || MPI.Init()
 
@@ -65,5 +69,20 @@ end
             @test types == Set([PetscReal])
             foreach(PETSc.destroy!, (snes, x, r, J))
         end
+
+        @testset "a callback takes no trailing context, $PetscScalar" begin
+            snes, r, J = square_snes(petsclib, comm, nothing, nothing)
+            # one calling form: a residual that wants a fourth argument is not called
+            # with one
+            PETSc.set_function!(snes, r) do fx, _snes, x, ctx
+                fx[1] = x[1]^2 - ctx
+            end
+            x = PETSc.PetscVec(petsclib, PetscScalar[3])
+            @test_throws MethodError without_petsc_traceback(() -> PETSc.solve!(x, snes), petsclib)
+            foreach(PETSc.destroy!, (snes, x, r, J))
+        end
     end
+
+    @test !isdefined(PETSc, :user_ctx)
+    @test !isdefined(PETSc, :set_user_ctx!)
 end

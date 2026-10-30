@@ -199,13 +199,3 @@ function rethrow_callback_error((e, bt, name))
     @debug "PETSc.jl: the $name callback threw; its frames:" exception = (e, bt)
     throw(e)
 end
-
-# A callback is handed the object's `user_ctx` only while one is set. The context
-# is deprecated: a closure carries it without a per-call `applicable` check.
-function warn_user_ctx(ctx)
-    ctx === nothing && return nothing
-    # TODO: remove in v0.6 with the other 0.5 deprecations.
-    @warn "user_ctx and callbacks taking a trailing context are deprecated and go in v0.6: " *
-          "capture the context in the callback's closure" maxlog = 1
-    return nothing
-end

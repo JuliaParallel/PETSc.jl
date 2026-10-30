@@ -20,7 +20,9 @@ concurrency:
   
 jobs:
   test:
-    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ github.event_name }}
+    # The examples (23 scripts, each in its own Julia process) take about as long as the rest of the
+    # suite, so they run as a job of their own, in parallel with it.
+    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ github.event_name }}${{ matrix.group == 'examples' && ' - examples' || '' }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 75
     strategy:
@@ -32,10 +34,17 @@ jobs:
           - ubuntu-latest
           - windows-latest        # PETSc_jll >= 3.25.4 ships MPI-enabled (MicrosoftMPI) Windows binaries
           - macOS-latest          # Apple Silicon; the default architecture of each runner is used
+        group:
+          - '-examples'           # every test group but the examples
+          - 'examples'
         include:
           # PETSc_jll >= 3.25 requires Julia 1.12, so 'min' resolves to the oldest supported 1.12.x
           - os: ubuntu-latest
             version: 'min'
+            group: '-examples'
+          - os: ubuntu-latest
+            version: 'min'
+            group: 'examples'
     steps:
       - uses: actions/checkout@v7
       - uses: julia-actions/setup-julia@v3
@@ -49,7 +58,7 @@ jobs:
           # The v0.5 shims warn through `@warn` rather than `Base.depwarn`, but
           # anything still on `Base.@deprecate` is silent without this.
           depwarn: yes
-        
+          test_args: ${{ matrix.group }}
 
   # The suite against PETSc built from source and loaded through set_library!,
   # the path a cluster or GPU installation takes.

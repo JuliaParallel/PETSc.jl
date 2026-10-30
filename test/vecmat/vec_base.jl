@@ -2,6 +2,9 @@ using Test
 using MPI
 MPI.Initialized() || MPI.Init()
 using PETSc
+
+isdefined(Main, :PETScTestUtils) || include(joinpath(@__DIR__, "..", "testutils.jl"))
+using .PETScTestUtils: without_petsc_traceback
 using LinearAlgebra: dot
 
 # A PetscVec as an AbstractVector, on COMM_WORLD: generic Julia methods either reach a
@@ -53,7 +56,7 @@ end
             @test x[[i, last(r)]] == xs[[i, last(r)]]
             if nranks > 1
                 foreign = first(PETSc.ownership_range(x)) == 1 ? n : 1
-                @test_throws LibPETSc.PetscError x[foreign]
+                @test_throws LibPETSc.PetscError without_petsc_traceback(() -> x[foreign], petsclib)
             end
         end
 

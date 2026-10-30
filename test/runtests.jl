@@ -21,12 +21,16 @@ end
 include("testutils.jl")     # helpers the test files share; each includes it when run alone
 
 # The test groups, one folder each, in the order they run. `Pkg.test(test_args = ["dm"])`
-# runs only the named groups; without arguments every group runs.
+# runs only the named groups; without arguments every group runs. A name with a leading
+# `-` leaves that group out: `["-examples"]` runs every group but `examples`.
 const GROUPS = ("core", "vecmat", "solvers", "dm", "lowlevel", "regression", "examples", "mpi")
-const SELECTED = isempty(ARGS) ? GROUPS : Tuple(ARGS)
-for group in SELECTED
-    group in GROUPS || error("unknown test group \"$group\"; the groups are $(join(GROUPS, ", "))")
+const NAMES = [startswith(arg, "-") ? arg[2:end] : arg for arg in ARGS]
+for name in NAMES
+    name in GROUPS || error("unknown test group \"$name\"; the groups are $(join(GROUPS, ", "))")
 end
+const INCLUDED = [arg for arg in ARGS if !startswith(arg, "-")]
+const EXCLUDED = [arg[2:end] for arg in ARGS if startswith(arg, "-")]
+const SELECTED = Tuple(filter(group -> !(group in EXCLUDED), isempty(INCLUDED) ? collect(GROUPS) : INCLUDED))
 selected(group) = group in SELECTED
 
 # Runs `file` in a Julia process of its own, on `nranks` MPI ranks if given

@@ -1,6 +1,9 @@
 using Test
 using PETSc
 
+isdefined(Main, :PETScTestUtils) || include(joinpath(@__DIR__, "..", "testutils.jl"))
+using .PETScTestUtils: without_petsc_traceback
+
 @testset "options" begin
     kw_opts = (
         ksp_monitor = nothing,
@@ -145,7 +148,7 @@ end
         "-petscspace_degree" => () -> PETSc.fe_create_default(petsclib, comm, 2, 1, false; degree = -3),
     ]
     for (key, construct) in cases
-        @test_throws PETSc.LibPETSc.PetscError construct()
+        @test_throws PETSc.LibPETSc.PetscError without_petsc_traceback(construct, petsclib)
         @test isempty(PETSc.options_stack(PetscLib))
         @test !visible(key)
     end

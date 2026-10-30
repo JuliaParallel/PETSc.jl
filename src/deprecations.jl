@@ -429,9 +429,4 @@ end
 
 # Renamed types: a `const` alias, so `isa` and dispatch keep working
 
-const Fn_KSPComputeRHS = KSPComputeRHSFn
-const Fn_KSPComputeOperators = KSPComputeOperatorsFn
-const Fn_SNESSetFunction = SNESSetFunctionFn
-const Fn_SNESSetJacobian = SNESSetJacobianFn
-const Fn_SNESSetConvergenceTest = SNESSetConvergenceTestFn
 # `AbstractPETScMemBackend` is aliased where `AbstractPetscMemBackend` is defined.

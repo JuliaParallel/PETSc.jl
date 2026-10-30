@@ -334,7 +334,7 @@ This renames `AbstractPetscKSP` and `AbstractPetscSNES`, matching `PetscKSP` bec
 It also fixes `AbstractPETScMemBackend`, the one type spelling the prefix `PETSc` where every other type spells it `Petsc`.
 That one is exported, so the inconsistency is user-visible.
 
-**Callback types** take a `Fn` suffix, following the autowrapped layer's existing `DMDATSRHSFunctionLocalFn`. The current `Fn_` prefix puts an underscore inside a PascalCase name, which no rule here permits:
+**Callback types** take a `Fn` suffix, following the autowrapped layer's existing `DMDATSRHSFunctionLocalFn`. The `Fn_` prefix of 0.4 put an underscore inside a PascalCase name, which no rule here permits:
 
 ```julia
 KSPComputeRHSFn        # was Fn_KSPComputeRHS
@@ -342,6 +342,8 @@ KSPComputeOperatorsFn  # was Fn_KSPComputeOperators
 SNESSetFunctionFn      # was Fn_SNESSetFunction
 SNESSetJacobianFn      # was Fn_SNESSetJacobian
 ```
+
+These types are the trampolines the callback setters hand to `@cfunction`. They are internal from 0.6 (§18.6), and the `Fn_` spellings are gone.
 
 **Wrapper and alias types** keep bare PETSc names. [§5.2](#5.2-Prefixes) asks whether *this name* is too generic to export, not whether its class is: `Mat` needs the prefix, `MatShell` does not.
 
@@ -880,7 +882,7 @@ Each pair collapses to one name, so two shims point at each replacement.
 | `setfunction!` | `set_function!` |
 | `setjacobian!` | `set_snes_jacobian!` (see note) |
 | `setconvergencetest!` | `set_convergence_test!` (callback first, [§8.1](#8.1-Callbacks-come-first)) |
-| `Fn_SNESSetConvergenceTest` | `SNESSetConvergenceTestFn` ([§5.5](#5.5-Abstract,-callback-and-wrapper-types)) |
+| `Fn_SNESSetConvergenceTest` | `SNESSetConvergenceTestFn` ([§5.5](#5.5-Abstract,-callback-and-wrapper-types)); internal and without the old spelling from 0.6 |
 | — | `narrow`, new ([§5.4](#5.4-DMs-of-unknown-provenance)) |
 | — | `set_type!(obj, ::Symbol)` for Vec, Mat, KSP, SNES and DM, new: v0.4 had it on TS only ([§3.1](#3.1-What-accessors-return-and-setters-take)) |
 
@@ -994,9 +996,9 @@ The exceptions keep their underscore, because there it separates an inner worker
 |---|---|
 | `AbstractPetscKSP`, `AbstractPetscSNES` | `AbstractKSP`, `AbstractSNES` |
 | `AbstractPETScMemBackend` | `AbstractPetscMemBackend` |
-| `Fn_KSPComputeRHS`, `Fn_KSPComputeOperators` | `KSPComputeRHSFn`, `KSPComputeOperatorsFn` |
-| `Fn_SNESSetFunction`, `Fn_SNESSetJacobian` | `SNESSetFunctionFn`, `SNESSetJacobianFn` |
-| `TSSetRHSFunctionFn`, `TSSetRHSJacobianFn`, `TSSetIFunctionFn`, `TSSetIJacobianFn`, `TSMonitorSetFn` | unchanged (new, already §5.5) |
+| `Fn_KSPComputeRHS`, `Fn_KSPComputeOperators` | `KSPComputeRHSFn`, `KSPComputeOperatorsFn`; internal and without the old spellings from 0.6 |
+| `Fn_SNESSetFunction`, `Fn_SNESSetJacobian` | `SNESSetFunctionFn`, `SNESSetJacobianFn`; internal and without the old spellings from 0.6 |
+| `TSSetRHSFunctionFn`, `TSSetRHSJacobianFn`, `TSSetIFunctionFn`, `TSSetIJacobianFn`, `TSMonitorSetFn` | unchanged (new, already §5.5); internal from 0.6 |
 | `MatAT` | deleted (no uses; it would have been `MatOrTranspose`) |
 | `MatShell`, `MatOp` | unchanged |
 | `AbstractPetscDS`, `PetscDS` | unchanged |
@@ -1104,7 +1106,7 @@ The DMPlex pointwise functions (`@residual_fn` and the other macros) are exempt.
 
 ### 18.6 Public surface
 
-A name is public when users write it. Trampoline types (the `…Fn` callables handed to `@cfunction`), state boxes and their helpers are internal, and registered as such in `scripts/renames.jl`. The `Fn` types that are public in 0.5.0 (`SNESSetFunctionFn`, `KSPComputeRHSFn`, the `TS…Fn` family and the rest) stay public in 0.5; whether v0.6 makes them internal is decided with its other removals.
+A name is public when users write it. Trampoline types (the `…Fn` callables handed to `@cfunction`), state boxes and their helpers are internal, and registered as such in `scripts/renames.jl`. The `Fn` types that were public in 0.5 (`SNESSetFunctionFn`, `KSPComputeRHSFn`, the `TS…Fn` family and the rest) are internal from 0.6: they are not in the `public` list and the documentation does not cover them. They stay reachable as `PETSc.SNESSetFunctionFn`, without a stability promise.
 
 ### 18.7 What 0.5.1 changes
 

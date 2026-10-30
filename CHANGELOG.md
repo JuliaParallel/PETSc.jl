@@ -22,6 +22,7 @@
 - `VecPtr` and `MatPtr` are removed. `PetscVec(petsclib, ptr; own)` and `PetscMat(petsclib, ptr; own)` wrap a raw handle and return a `PetscVec` or `PetscMat`, borrowed unless `own = true`. Code that annotated `::VecPtr` or `::MatPtr` breaks: annotate `::PetscVec`, `::PetscMat` or the abstract types.
 - `copy_disc!(dst, src)` takes the destination first, as `copyto!` does; the order was `(src, dst)`. Both arguments are DMs, so a call in the old order runs without a warning and copies the wrong way: swap the arguments.
 - `star_fd_coloring` returns `perturb_cols_1b`, `coo_idxs_1b` and `local_rows_1b` as `Vector{Vector{Int}}`, not `Vector{Vector{Int32}}`. They are 1-based indices into Julia arrays. Code that copies them to a GPU and wants 32-bit indices converts them there.
+- The callback trampoline types (`SNESSetFunctionFn`, `SNESSetJacobianFn`, `SNESSetConvergenceTestFn`, `KSPComputeRHSFn`, `KSPComputeOperatorsFn`, `TSSetRHSFunctionFn`, `TSSetRHSJacobianFn`, `TSSetIFunctionFn`, `TSSetIJacobianFn`, `TSMonitorSetFn`) are internal: they leave the `public` list. The 0.4 spellings `Fn_SNESSetFunction`, `Fn_SNESSetJacobian`, `Fn_SNESSetConvergenceTest`, `Fn_KSPComputeRHS` and `Fn_KSPComputeOperators` are removed. Callbacks are set through `set_function!`, `set_rhs_function!` and the other setters, which never needed the types.
 
 ### Added
 

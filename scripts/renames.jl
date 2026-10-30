@@ -133,22 +133,12 @@ const RENAMES = Pair{Symbol, Symbol}[
     :audit_petsc_file => :audit_file,
 
     # types (§5.5): a `const` alias, no warning
-    :Fn_KSPComputeRHS => :KSPComputeRHSFn,
-    :Fn_KSPComputeOperators => :KSPComputeOperatorsFn,
-    :Fn_SNESSetFunction => :SNESSetFunctionFn,
-    :Fn_SNESSetJacobian => :SNESSetJacobianFn,
-    :Fn_SNESSetConvergenceTest => :SNESSetConvergenceTestFn,
     :AbstractPETScMemBackend => :AbstractPetscMemBackend,
 ]
 
 # Old names that name a type: the shim is a `const` alias rather than a forwarding
 # method, so no warning is emitted and `x isa Fn_SNESSetFunction` keeps working.
 const TYPE_RENAMES = Set{Symbol}([
-    :Fn_KSPComputeRHS,
-    :Fn_KSPComputeOperators,
-    :Fn_SNESSetFunction,
-    :Fn_SNESSetJacobian,
-    :Fn_SNESSetConvergenceTest,
     :AbstractPETScMemBackend,
 ])
 
@@ -802,6 +792,17 @@ const INTERNAL = Set{Symbol}([
     :call_with_views,
     :field_views,
     :TSStepHookFn,
+    # callback trampolines, internal from v0.6
+    :KSPComputeRHSFn,
+    :KSPComputeOperatorsFn,
+    :SNESSetFunctionFn,
+    :SNESSetJacobianFn,
+    :SNESSetConvergenceTestFn,
+    :TSSetRHSFunctionFn,
+    :TSSetRHSJacobianFn,
+    :TSSetIFunctionFn,
+    :TSSetIJacobianFn,
+    :TSMonitorSetFn,
     :apply_blas_num_threads,
     :BLAS_THREAD_VARIABLES,
     :ranks_on_node,
@@ -1063,11 +1064,6 @@ const UNCHANGED_PUBLIC = Symbol[
     :set_error_if_step_fails!,  # new in v0.5.2
     :set_pre_step!,          # new in v0.5.2
     :set_post_step!,         # new in v0.5.2
-    :TSSetRHSFunctionFn,
-    :TSSetRHSJacobianFn,
-    :TSSetIFunctionFn,
-    :TSSetIJacobianFn,
-    :TSMonitorSetFn,
     # init.jl / options.jl
     :PetscNotInitialized,
     :ConvergenceError,       # new in v0.5.3

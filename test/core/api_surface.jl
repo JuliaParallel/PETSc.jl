@@ -42,3 +42,20 @@ end
     @test PETSc.realtype(petsclib) === real(PETSc.scalartype(petsclib))
     @test PETSc.inttype(typeof(petsclib)) === petsclib.PetscInt
 end
+
+@testset "callback trampoline types are internal" begin
+    trampolines = (
+        :KSPComputeRHSFn, :KSPComputeOperatorsFn, :SNESSetFunctionFn, :SNESSetJacobianFn,
+        :SNESSetConvergenceTestFn, :TSSetRHSFunctionFn, :TSSetRHSJacobianFn,
+        :TSSetIFunctionFn, :TSSetIJacobianFn, :TSMonitorSetFn,
+    )
+    for name in trampolines
+        @test isdefined(PETSc, name)
+        @test !Base.ispublic(PETSc, name)
+    end
+    # the 0.4 spellings are gone
+    for name in (:Fn_KSPComputeRHS, :Fn_KSPComputeOperators, :Fn_SNESSetFunction,
+                 :Fn_SNESSetJacobian, :Fn_SNESSetConvergenceTest)
+        @test !isdefined(PETSc, name)
+    end
+end

@@ -146,11 +146,6 @@ const SHIMS = [
     end
 
     @testset "renamed types are aliases" begin
-        @test PETSc.Fn_KSPComputeRHS === PETSc.KSPComputeRHSFn
-        @test PETSc.Fn_KSPComputeOperators === PETSc.KSPComputeOperatorsFn
-        @test PETSc.Fn_SNESSetFunction === PETSc.SNESSetFunctionFn
-        @test PETSc.Fn_SNESSetJacobian === PETSc.SNESSetJacobianFn
-        @test PETSc.Fn_SNESSetConvergenceTest === PETSc.SNESSetConvergenceTestFn
         @test PETSc.AbstractPETScMemBackend === PETSc.AbstractPetscMemBackend
     end
 

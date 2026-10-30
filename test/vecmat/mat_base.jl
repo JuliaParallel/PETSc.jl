@@ -2,6 +2,9 @@ using Test
 using MPI
 MPI.Initialized() || MPI.Init()
 using PETSc
+
+isdefined(Main, :PETScTestUtils) || include(joinpath(@__DIR__, "..", "testutils.jl"))
+using .PETScTestUtils: without_petsc_traceback
 using LinearAlgebra: mul!
 using SparseArrays: sparse
 
@@ -53,7 +56,7 @@ dense(n, entries, T) = (D = zeros(T, n, n); foreach(((i, j, a),) -> D[i, j] = a,
             @test A[r, 1:n] == ref[r, :]
             if nranks > 1
                 foreign = first(r) == 1 ? n : 1
-                @test_throws LibPETSc.PetscError A[foreign, foreign]
+                @test_throws LibPETSc.PetscError without_petsc_traceback(() -> A[foreign, foreign], petsclib)
             end
         end
 

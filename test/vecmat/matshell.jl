@@ -4,6 +4,9 @@ using MPI
 using LinearAlgebra: diag
 using SparseArrays: sparse
 
+isdefined(Main, :PETScTestUtils) || include(joinpath(@__DIR__, "..", "testutils.jl"))
+using .PETScTestUtils: without_petsc_traceback
+
 @testset "MatShell" begin
     for petsclib in PETSc.petsclibs
         petsclib = PETSc.petsclibs[1]
@@ -95,13 +98,13 @@ end
 
         # An operation left out fails when PETSc needs it
         bare = PETSc.MatShell(apply!(Ad), petsclib, comm, n, n)
-        @test_throws LibPETSc.PetscError transpose(bare) * x
-        @test_throws LibPETSc.PetscError PETSc.diagonal!(d, bare)
+        @test_throws LibPETSc.PetscError without_petsc_traceback(() -> transpose(bare) * x, petsclib)
+        @test_throws LibPETSc.PetscError without_petsc_traceback(() -> PETSc.diagonal!(d, bare), petsclib)
 
         # An exception in an operation reaches the caller
         failing = PETSc.MatShell(apply!(Ad), petsclib, comm, n, n;
                                  mult_transpose = (y, x) -> error("transpose failed"))
-        @test_throws "transpose failed" transpose(failing) * x
+        @test_throws "transpose failed" without_petsc_traceback(() -> transpose(failing) * x, petsclib)
 
         foreach(PETSc.destroy!, (ksp_shell, ksp_mat, A, B, bare, failing,
                                  x, y, d, w, b, u_shell, u_mat))

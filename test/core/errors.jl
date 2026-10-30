@@ -2,6 +2,9 @@ using Test
 using PETSc, MPI
 using SparseArrays: sparse
 
+isdefined(Main, :PETScTestUtils) || include(joinpath(@__DIR__, "..", "testutils.jl"))
+using .PETScTestUtils: without_petsc_traceback
+
 MPI.Initialized() || MPI.Init()
 
 @testset "argument validation" begin
@@ -102,7 +105,7 @@ end
 
     v = PETSc.PetscVec(petsclib, 3)
     err = try
-        LibPETSc.VecSetSizes(petsclib, v, PetscInt(4), PetscInt(4))
+        without_petsc_traceback(() -> LibPETSc.VecSetSizes(petsclib, v, PetscInt(4), PetscInt(4)), petsclib)
     catch e
         e
     end
@@ -114,7 +117,9 @@ end
 
     # An error raised deep inside PETSc is named after the call Julia made
     err = try
-        PETSc.DMDA(petsclib, MPI.COMM_SELF, (PETSc.DM_BOUNDARY_NONE,), (10,), 1; stencil_width = 1, da_refine = "abc")
+        without_petsc_traceback(petsclib) do
+            PETSc.DMDA(petsclib, MPI.COMM_SELF, (PETSc.DM_BOUNDARY_NONE,), (10,), 1; stencil_width = 1, da_refine = "abc")
+        end
     catch e
         e
     end

@@ -212,7 +212,7 @@ MPI.Initialized() || MPI.Init()
         @test size(A, 1) === 2
         @test size(A, 2) === 3
         @test size(A, 3) === 1
-        @test_throws ArgumentError size(A, 0)
+        @test_throws BoundsError size(A, 0)
         @test axes(A) == (Base.OneTo(2), Base.OneTo(3))
         @test axes(A, 2) == Base.OneTo(3)
         @test ndims(A) == 2

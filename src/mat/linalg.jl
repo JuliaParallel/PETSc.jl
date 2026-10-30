@@ -1,8 +1,182 @@
-function Base.:(==)(
+"""
+    ==(A::AbstractPetscMat, B::AbstractPetscMat)
+    isequal(A::AbstractPetscMat, B::AbstractPetscMat)
+
+Whether `A` and `B` have the same size and the same entries, compared as Julia matrices
+compare them: an entry stored in only one of them is compared with zero, so an
+explicitly stored zero makes no difference, and `NaN != NaN` under `==`. Collective:
+every rank compares the rows it owns and gets the combined answer. Matrices of the same
+size with a different row layout throw an `ArgumentError`. Needs `MatGetRow`, so a
+`MatShell` can't be compared.
+
+[`equal`](@ref) is PETSc's own test, `MatEqual`, which compares what is stored.
+"""
+Base.:(==)(A::AbstractPetscMat{PetscLib}, B::AbstractPetscMat{PetscLib}) where {PetscLib} =
+    compare_rows(==, A, B)
+Base.isequal(A::AbstractPetscMat{PetscLib}, B::AbstractPetscMat{PetscLib}) where {PetscLib} =
+    compare_rows(isequal, A, B)
+
+# `cmp` over the rows each rank owns, the same answer on every rank. The layout check
+# goes through the reduction so that every rank throws, not only some.
+function compare_rows(cmp, A::AbstractPetscMat, B::AbstractPetscMat)
+    size(A) == size(B) || return false
+    rows = ownership_range(A)
+    r = rows == ownership_range(B) ? Int(all(i -> rows_match(cmp, A, B, i), rows)) : -1
+    r = MPI.Allreduce(r, min, comm(A))
+    r < 0 && throw(ArgumentError("the matrices have the same size but different row layouts"))
+    return r == 1
+end
+
+# Row `i` (1-based) of `A` and `B` compared entry by entry. PETSc allows one row of a
+# matrix out at a time, so a matrix compared with itself is read once.
+function rows_match(cmp, A::AbstractPetscMat{PetscLib}, B::AbstractPetscMat{PetscLib}, i) where {PetscLib}
+    row = inttype(PetscLib)(i - 1)
+    with_row(A, row) do ca, va
+        A.ptr == B.ptr && return sparse_rows_match(cmp, ca, va, ca, va)
+        with_row(B, row) do cb, vb
+            sparse_rows_match(cmp, ca, va, cb, vb)
+        end
+    end
+end
+
+# `f(cols, vals)` with row `row` (0-based) of `A`, handed back afterwards
+function with_row(f, A::AbstractPetscMat{PetscLib}, row) where {PetscLib}
+    n, cols, vals = LibPETSc.MatGetRow(PetscLib, A, row)
+    try
+        return f(cols, vals)
+    finally
+        LibPETSc.MatRestoreRow(PetscLib, A, row, n, cols, vals)
+    end
+end
+
+# Two sparse rows, each given by its sorted column indices and values; a column present
+# in only one row is compared with zero
+function sparse_rows_match(cmp, ca, va, cb, vb)
+    z = zero(eltype(va))
+    i, j = firstindex(ca), firstindex(cb)
+    while i <= lastindex(ca) || j <= lastindex(cb)
+        if j > lastindex(cb) || (i <= lastindex(ca) && ca[i] < cb[j])
+            cmp(va[i], z) || return false
+            i += 1
+        elseif i > lastindex(ca) || cb[j] < ca[i]
+            cmp(z, vb[j]) || return false
+            j += 1
+        else
+            cmp(va[i], vb[j]) || return false
+            i += 1
+            j += 1
+        end
+    end
+    return true
+end
+
+"""
+    equal(A::AbstractPetscMat, B::AbstractPetscMat)
+    equal(v::AbstractPetscVec, w::AbstractPetscVec)
+
+PETSc's own equality test, `MatEqual` or `VecEqual`: whether `A` and `B` have the same
+size and the same stored entries. Collective and faster than `==`, but a different
+test. `MatEqual` also compares which entries are stored, so a matrix with an explicitly
+stored zero is not `equal` to the same matrix without it, and `VecEqual` compares the
+bits of the entries, so `NaN` equals `NaN` and `-0.0` does not equal `0.0`. Use `==`
+for the comparison Julia arrays make.
+
+# External Links
+$(doc_external("Mat/MatEqual"))
+$(doc_external("Vec/VecEqual"))
+"""
+equal(A::AbstractPetscMat{PetscLib}, B::AbstractPetscMat{PetscLib}) where {PetscLib} =
+    LibPETSc.MatEqual(PetscLib, A, B) == LibPETSc.PETSC_TRUE
+equal(v::AbstractPetscVec{PetscLib}, w::AbstractPetscVec{PetscLib}) where {PetscLib} =
+    LibPETSc.VecEqual(PetscLib, v, w) == LibPETSc.PETSC_TRUE
+
+"""
+    isapprox(A::PetscMat, B::PetscMat; atol = 0, rtol, nans = false)
+
+Whether `A ≈ B` as for Julia matrices: ‖A − B‖ ≤ max(atol, rtol·max(‖A‖, ‖B‖)) in the
+Frobenius norm, where `rtol` defaults to `√eps` of the real type when `atol` is zero.
+Collective. If ‖A − B‖ is not finite, the entries are compared one by one, as Base
+does, with an entry stored in only one matrix compared with zero.
+"""
+function Base.isapprox(
     A::PetscMat{PetscLib},
-    B::PetscMat{PetscLib},
+    B::PetscMat{PetscLib};
+    atol::Real = 0,
+    rtol::Real = default_rtol(real(scalartype(PetscLib)), atol),
+    nans::Bool = false,
 ) where {PetscLib}
-    return LibPETSc.MatEqual(PetscLib, A, B)
+    D = A - B
+    d = try
+        norm(D)
+    finally
+        destroy!(D)
+    end
+    isfinite(d) && return d <= max(atol, rtol * max(norm(A), norm(B)))
+    return compare_rows((a, b) -> isapprox(a, b; atol, rtol, nans), A, B)
+end
+
+"""
+    copyto!(dst::AbstractPetscMat, src::AbstractPetscMat)
+
+Copy the entries of `src` into `dst` and return `dst`. The two must have the same size,
+which throws a `DimensionMismatch` otherwise; `dst` takes the nonzero pattern of `src`.
+Collective.
+
+# External Links
+$(doc_external("Mat/MatCopy"))
+"""
+function Base.copyto!(dst::AbstractPetscMat{PetscLib}, src::AbstractPetscMat{PetscLib}) where {PetscLib}
+    size(dst) == size(src) || throw(DimensionMismatch(
+        "destination has size $(size(dst)), source has size $(size(src))"))
+    LibPETSc.MatCopy(PetscLib, src, dst, LibPETSc.DIFFERENT_NONZERO_PATTERN)
+    return dst
+end
+
+"""
+    sum(A::AbstractPetscMat)
+
+The sum of all entries of `A`, from `MatGetRowSum`. Collective.
+
+# External Links
+$(doc_external("Mat/MatGetRowSum"))
+"""
+function Base.sum(A::AbstractPetscMat{PetscLib}) where {PetscLib}
+    right, left = LibPETSc.MatCreateVecs(getlib(PetscLib), A)
+    try
+        LibPETSc.MatGetRowSum(PetscLib, A, left)
+        return sum(left)
+    finally
+        destroy!(right)
+        destroy!(left)
+    end
+end
+
+"""
+    collect(A::AbstractPetscMat)
+    Matrix(A::AbstractPetscMat)
+    copyto!(dest::Matrix, A::AbstractPetscMat)
+
+Every entry of `A` as a dense Julia `Matrix`. Collective on a communicator of more than
+one rank: each rank reads the rows it owns and receives everyone else's, so every rank
+must make the call and needs memory for all `size(A, 1) * size(A, 2)` entries. On one
+rank this is `A[:, :]`.
+"""
+function Base.collect(A::AbstractPetscMat{PetscLib}) where {PetscLib}
+    m, n = size(A)
+    block = A[ownership_range(A), 1:n]
+    c = comm(A)
+    MPI.Comm_size(c) == 1 && return block
+    # Each rank's rows are contiguous in the transposed (column-major) layout
+    counts = MPI.Allgather(Int[length(block)], c)
+    recv = Matrix{scalartype(PetscLib)}(undef, n, m)
+    MPI.Allgatherv!(permutedims(block), MPI.VBuffer(recv, counts), c)
+    return permutedims(recv)
+end
+
+function Base.copyto!(dest::Matrix, src::AbstractPetscMat)
+    size(dest) == size(src) || throw(DimensionMismatch(
+        "destination has size $(size(dest)), source has size $(size(src))"))
+    return copyto!(dest, collect(src))
 end
 
 """

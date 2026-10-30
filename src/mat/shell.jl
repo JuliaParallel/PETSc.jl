@@ -100,11 +100,14 @@ $(doc_external("Mat/MatMultTranspose"))
 $(doc_external("Mat/MatGetDiagonal"))
 $(doc_external("Mat/MatMultAdd"))
 """
-mutable struct MatShell{PetscLib, OType} <: AbstractPetscMat{PetscLib}
+mutable struct MatShell{PetscLib, T, OType} <: AbstractPetscMat{PetscLib, T}
     ptr::CMat
     obj::OType
     age
     own::Bool
+
+    MatShell{PetscLib}(ptr::CMat, obj::OType, age, own::Bool) where {PetscLib, OType} =
+        new{PetscLib, scalartype(PetscLib), OType}(ptr, obj, age, own)
 end
 
 # The Julia side of a MatShell, kept with the PETSc object.
@@ -151,7 +154,7 @@ LibPETSc.@for_petsc function create_matshell(
     diagonal,
     mult_add,
 ) where {OType}
-    mat = MatShell{$PetscLib, OType}(C_NULL, obj, petsclib.age, true)
+    mat = MatShell{$PetscLib}(C_NULL, obj, petsclib.age, true)
 
 #=
     ccall(

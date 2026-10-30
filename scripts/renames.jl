@@ -945,6 +945,10 @@ const INTERNAL = Set{Symbol}([
     :reduce_owned,
     :compare_owned,
     :check_nonempty,
+    :compare_rows,
+    :rows_match,
+    :with_row,
+    :sparse_rows_match,
     :zero_of,
     :PetscVecStyle,
     :TransposedPetscMat,
@@ -1144,6 +1148,7 @@ const UNCHANGED_PUBLIC = Symbol[
     :with_destroy,           # new in v0.5.3
     :track!,                 # new in v0.5.3
     :untrack!,               # new in v0.5.3
+    :equal,                  # new in v0.6.0
     :initialize,
     :finalize,
     :scalartype,

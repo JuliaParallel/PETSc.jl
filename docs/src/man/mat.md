@@ -98,7 +98,11 @@ PETSc.setup!(A)            # Complete matrix setup
 PETSc.destroy!(A)          # Release it
 ```
 
-An assembled `PetscMat` supports `copy(A)`, `A + B`, `A - B`, `-A` and `α * A`. Each returns a new matrix and is collective; `A ± B` has the union of the two nonzero patterns. On more than one rank the result has no finalizer, so call `destroy!` on it on every rank.
+A `PetscMat` (and a `MatShell`) is an `AbstractMatrix` of the library's scalar type. `A[i, j]` is one C call and reaches only the rows this rank owns; PETSc raises an error for any other row.
+
+`A == B` compares the entries as Julia matrices do: an entry stored in only one of the two counts as zero, so an explicitly stored zero makes no difference, and `NaN != NaN`. It is collective. [`PETSc.equal(A, B)`](@ref PETSc.equal) is PETSc's own `MatEqual`, which is faster but also compares which entries are stored. `A ≈ B` compares Frobenius norms, as for Julia matrices. `collect(A)` and `Matrix(A)` give every rank the whole matrix as a dense `Matrix`, so every rank must call them and each needs memory for all entries. `sum(A)` uses `MatGetRowSum`. `hash(A)` throws, so key a `Dict` of matrices with an `IdDict`. Other generic reductions (`maximum`, `sum(f, A)`) still read the matrix entry by entry: correct on one rank but slow, and on several ranks they stop at the first row another rank owns.
+
+An assembled `PetscMat` supports `copy(A)`, `copyto!(B, A)`, `A + B`, `A - B`, `-A` and `α * A`. Each returns a new matrix and is collective; `A ± B` has the union of the two nonzero patterns. On more than one rank the result has no finalizer, so call `destroy!` on it on every rank.
 
 `ownership_range(A)` is 1-based and takes no second argument. v0.4's
 `ownershiprange(A, false)` still works and warns; it is a `MethodError` in v0.6

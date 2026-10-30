@@ -15,10 +15,14 @@
 - `PetscVec <: AbstractVector{PetscScalar}`, so generic Julia methods accept a PetscVec. The type has a second parameter, `PetscVec{PetscLib, PetscScalar}`; `PetscVec{PetscLib}` still constructs one and still matches it in a method signature. `v[i]` stays one C call on an entry this rank owns, as before, and PETSc raises an error for any other entry. Generic methods that read entry by entry (`mapreduce`, `sum(f, v)`, `extrema`, `reduce`, `collect`) now have collective PETSc methods, below.
 - `v == w` on two PetscVecs compares the entries, as for Julia arrays (`NaN != NaN`, `0.0 == -0.0`), and is collective; before, it compared the handles. `isequal` likewise. Vectors of one length with a different parallel layout throw an `ArgumentError`. `hash` on a PetscVec or PetscMat throws, since `==` on either compares entries that can change: key a `Dict` of handles with an `IdDict`.
 - `size(v, 0)` on a PetscVec throws a `BoundsError`, as for any `AbstractArray`, instead of an `ArgumentError`.
+- `PetscMat <: AbstractMatrix{PetscScalar}`, and `MatShell` too. The types take the scalar type as a parameter, `PetscMat{PetscLib, PetscScalar}` and `MatShell{PetscLib, PetscScalar, OType}`; `PetscMat{PetscLib}` still constructs one and still matches it in a method signature. `size(A)` returns `Int`s, and `size(A, 0)` throws a `BoundsError` instead of an `ArgumentError`.
+- `A == B` on two PetscMats compares the entries as Julia matrices do, collectively: an entry stored in only one counts as zero, and `NaN != NaN`. Before, it was `MatEqual`, which also compares which entries are stored, so a matrix with an explicitly stored zero was not equal to the same matrix without it. `MatEqual` is still available as `PETSc.equal(A, B)`. Matrices of one size with a different row layout throw an `ArgumentError`.
 
 ### Added
 
 - `sum`, `maximum`, `minimum` on a PetscVec, through `VecSum`, `VecMax` and `VecMin`, and `any`, `all`, `count` and `mapreduce` (so `sum(f, v)`, `prod`, `extrema` and `reduce`) with a function. All are collective and give every rank the global answer; the function runs on the entries each rank owns, and the results of `mapreduce` combine in rank order. `similar(v, eltype(v))` returns a PetscVec, as `similar(v)` does.
+- `PETSc.equal(A, B)` and `PETSc.equal(v, w)`: PETSc's own `MatEqual` and `VecEqual`, faster than `==` but comparing what is stored (the pattern for a Mat, the bits for a Vec).
+- On a PetscMat: `isapprox` by Frobenius norm as for Julia matrices, `copyto!(B, A)` through `MatCopy`, `sum(A)` through `MatGetRowSum`, and `collect(A)`, `Matrix(A)` and `copyto!(::Matrix, A)` as a dense gather onto every rank. All collective.
 - `collect(v)`, `Vector(v)` and `copyto!(::Vector, v)` on a PetscVec give every rank the whole vector (`VecScatterCreateToAll`); every rank must call them. On one rank they are `v[:]`.
 
 ## v0.5.5

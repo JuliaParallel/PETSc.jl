@@ -220,15 +220,13 @@ is_namedtuple_type(T) = T isa Type && T !== Union{} && T <: NamedTuple
 """
     namedtuple_returns() -> Vector{Symbol}
 
-Sweep 2 (§12): the v0.5 functions that return a `NamedTuple`. The deprecated
-spellings forward to them and the internal helpers are not API, so neither is
-counted.
+Sweep 2 (§12): the functions that return a `NamedTuple`. The internal helpers
+are not API, so they are not counted.
 """
 function namedtuple_returns()
-    deprecated = Set(first.(RENAMES))
     hits = Symbol[]
     for name in surface()
-        (name in deprecated || name in INTERNAL) && continue
+        name in INTERNAL && continue
         f = getproperty(PETSc, name)
         (f isa Function || f isa Type) || continue
         any(T -> mentions(T, is_namedtuple_type), return_types_of(f)) &&
@@ -293,19 +291,17 @@ end
 
 Sweep 4 (§3.3): readers (names without a trailing `!`, and not creators) that
 hand back a PETSc object without a `doc_borrowed` note in their docstring. The
-deprecated spellings and the internal helpers are not part of the documented
-API and are skipped.
+internal helpers are not part of the documented API and are skipped.
 """
 function borrowed_sweep()
     creators = Set(keys(AUDIT_TYPE_CREATORS))
     union!(creators, keys(AUDIT_NAMED_CREATORS))
-    deprecated = Set(first.(RENAMES))
     documented = borrowed_documented()
     hits = Symbol[]
     for name in surface()
         str = String(name)
         (endswith(str, "!") || startswith(str, "@")) && continue
-        (name in creators || name in deprecated || name in INTERNAL) && continue
+        (name in creators || name in INTERNAL) && continue
         name in documented && continue
         f = getproperty(PETSc, name)
         f isa Function || continue
@@ -317,7 +313,7 @@ end
 
 # The `!` functions §7 lets return `nothing`: releases and package-state setters.
 const RETURNS_NOTHING = Set([
-    :destroy!, :restore_local_arrays!, :set_library!, :unset_library!, :set_petscint!,
+    :destroy!, :set_library!, :unset_library!, :set_petscint!,
 ])
 
 """
@@ -328,11 +324,10 @@ than the releases and package-state setters §7 exempts. A method inference
 cannot see through (arguments typed `Any`) is not reported.
 """
 function bang_returns_sweep()
-    deprecated = Set(first.(RENAMES))
     hits = Symbol[]
     for name in surface()
         endswith(String(name), "!") || continue
-        (name in deprecated || name in INTERNAL || name in RETURNS_NOTHING) && continue
+        (name in INTERNAL || name in RETURNS_NOTHING) && continue
         f = getproperty(PETSc, name)
         f isa Function || continue
         any(T -> mentions(T, ==(Nothing)), return_types_of(f)) && push!(hits, name)

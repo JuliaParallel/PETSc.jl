@@ -71,3 +71,37 @@ end
         @test Base.ispublic(PETSc, name)
     end
 end
+
+@testset "the 0.5 deprecations are removed" begin
+    # No v0.4 name is a binding of PETSc's own; `setfield!` and the like resolve to Base.
+    for (old, _) in APISurface.RENAMES
+        owned = isdefined(PETSc, old) &&
+                (startswith(String(old), "@") || parentmodule(getfield(PETSc, old)) === PETSc)
+        @test !owned
+    end
+    for name in (:local_arrays, :restore_local_arrays!, :local_coordinate_array,
+                 :AbstractPETScMemBackend, :PetscKSP, :PetscSNES)
+        @test !isdefined(PETSc, name)
+        @test !Base.ispublic(PETSc, name)
+    end
+    @test !isdefined(PETSc.LibPETSc, :PetscKSP)
+
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    PetscScalar = PETSc.scalartype(petsclib)
+    comm = PETSc.MPI.COMM_SELF
+    v = PETSc.PetscVec(petsclib, 4)
+    # The pre-0.5.4 DM keywords throw rather than become unread PETSc options
+    for kw in (:setfromoptions, :dmsetfromoptions, :dmsetup)
+        @test_throws "is called" PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (5,), 1;
+                                            NamedTuple{(kw,)}((false,))...)
+    end
+    # Old argument forms have no method
+    @test_throws MethodError PETSc.set_type!(v, "standard")
+    @test_throws MethodError PETSc.ownership_range(v, false)
+    @test_throws MethodError PETSc.ghost_update!(v, PETSc.INSERT_VALUES)
+    @test_throws MethodError PETSc.PetscMat(petsclib, Int[0, 1], Int[0], PetscScalar[1]; comm)
+    @test_throws MethodError macroexpand(@__MODULE__, :(PETSc.@simple_fn(f)))
+    PETSc.destroy!(v)
+    PETSc.finalize(petsclib)
+end

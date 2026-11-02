@@ -4,6 +4,7 @@
 
 ### Breaking
 
+- Every 0.5 deprecation is removed: the 0.4 names (`getcorners`, `setfunction!`, `VecSeq`, `PetscKSP`, `@petsc_residual_fn` and the rest of the rename table), the argument orders and positional options 0.5.4 replaced, `local_arrays` with `restore_local_arrays!`, `local_coordinate_array`, the pointwise macros without a library, `set_type!(obj, ::String)`, `ownership_range(A, base_one)`, the DM constructor keywords `setfromoptions`, `dmsetup` and `dmsetfromoptions`, and the `comm` keyword of the CSR `PetscMat`. A call that warned on 0.5.5 is an `UndefVarError` or `MethodError` now, so run on 0.5.5 first and fix the warnings (see the upgrading guide).
 - A callback's return value is ignored. A nonzero `Integer` no longer fails the call as a PETSc error code; throw an exception to report a failure. `return PetscInt(0)` keeps working. The warning printed since 0.5.1 is gone.
 - `set_convergence_test!` passes the norms to the callback as `PetscReal`, not `Float64`. This matters only for a Float32 library with a callback whose arguments are annotated `Float64`.
 - `solve!` (KSP, SNES, TS) and `step!` throw a `ConvergenceError` when the solver stops without converging. Pass `check = false` to return normally and read `converged_reason`; a TS that raises a `PetscError` on a failed step (`set_error_if_step_fails!`, PETSc's default) then raises that instead. The warning printed since 0.5.3 is gone.

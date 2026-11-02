@@ -116,9 +116,9 @@ function finish_dm!(
     set_from_options::Bool,
     setup::Bool,
 ) where {PetscLib}
-    options, set_from_options, setup = take_renamed_dm_keywords(options, set_from_options, setup)
     petsclib = getlib(PetscLib)
     try
+        check_renamed_dm_keywords(options)
         isempty(prefix) || LibPETSc.DMSetOptionsPrefix(petsclib, dm, String(prefix))
         if set_from_options
             opts = PetscOptions(petsclib; options...)
@@ -134,25 +134,20 @@ function finish_dm!(
     return own_dm!(dm, comm)
 end
 
-# The DM constructors' keywords before they were renamed. Left in `options...`
-# they would become PETSc options (`-dmsetup`) and do nothing, so they are taken
-# out, warned about and honoured.
-# TODO: remove in v0.6 with the other 0.5 deprecations.
+# The DM constructor keywords before 0.5.4. Left in `options...` they would become
+# PETSc options (`-dmsetup`) that nothing reads, so they throw.
 const RENAMED_DM_KEYWORDS = (
     setfromoptions = :set_from_options,
     dmsetfromoptions = :set_from_options,
     dmsetup = :setup,
 )
 
-function take_renamed_dm_keywords(options, set_from_options, setup)
+function check_renamed_dm_keywords(options)
     for (old, new) in pairs(RENAMED_DM_KEYWORDS)
-        haskey(options, old) || continue
-        @warn "the DM constructor keyword `$old` is deprecated, use `$new`" maxlog = 1 _id = old
-        value = options[old]::Bool
-        new === :setup ? (setup = value) : (set_from_options = value)
+        haskey(options, old) &&
+            throw(ArgumentError("the DM constructor keyword `$old` is called `$new`"))
     end
-    rest = Base.structdiff(values(options), RENAMED_DM_KEYWORDS)
-    return rest, set_from_options, setup
+    return nothing
 end
 
 """
@@ -487,29 +482,6 @@ function with_local_coordinate_array(
         f(reshape_local_array(a, dm, dim))
     end
 end
-
-"""
-    local_coordinate_array(da::Union{DMDA, DMStag})
-
-Return coordinate arrays for the local portion of the domain, as `OffsetArray`s
-addressed with global indices, ghost points included.
-
-Deprecated: use [`with_local_coordinate_array`](@ref). The arrays are a copy,
-so writing to them does not change the coordinates.
-
-# External Links
-$(doc_external("DM/DMGetCoordinatesLocal"))
-"""
-function local_coordinate_array(
-    da::Union{DMDA{PetscLib}, DMStag{PetscLib}},
-) where {PetscLib}
-    # TODO: remove in v0.6 with the other 0.5 deprecations.
-    @warn "local_coordinate_array is deprecated, use with_local_coordinate_array(f, dm)" maxlog = 1
-    # A copy: an array restored by a finalizer can run after `da` and its
-    # coordinate vector are destroyed, and restoring a freed Vec crashes.
-    return with_local_coordinate_array(copy, da)
-end
-
 
 """
     type_name(dm::AbstractPetscDM)

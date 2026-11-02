@@ -93,8 +93,7 @@ PETSc.destroy!(ksp)
 `destroy!` on it is a no-op ([naming conventions](naming.md), §3.3).
 
 Type names are `Symbol` at the Julia API: `PETSc.set_type!(ksp, :cg)` and
-`PETSc.type_name(ksp) === :cg`. The `String` spelling warns in v0.5 and is a
-`MethodError` in v0.6 (§3.1).
+`PETSc.type_name(ksp) === :cg` (§3.1).
 
 ## A nested solver
 

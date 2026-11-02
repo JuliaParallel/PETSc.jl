@@ -13,7 +13,6 @@ Host memory is represented by `nothing`, not a subtype of this.
 GPU extensions define their own concrete subtype (e.g. `CUDAMemBackend`).
 """
 abstract type AbstractPetscMemBackend end
-const AbstractPETScMemBackend = AbstractPetscMemBackend   # deprecated spelling, remove in v0.6
 
 """
     memtype_backend(mtype::PetscMemType) → Nothing | AbstractPetscMemBackend
@@ -349,21 +348,6 @@ function with_local_arrays!(
     end
 end
 
-"""
-    local_arrays(petsclib, g_fx, l_x) -> (fx, lx, fx_arr, lx_arr, fx_bounce)
-
-Check out the arrays of `g_fx` (read-write) and `l_x` (read-only) for a compute
-kernel; [`restore_local_arrays!`](@ref) must hand them back.
-
-Deprecated: use [`with_local_arrays!`](@ref), which restores the arrays also
-when the kernel throws.
-"""
-function local_arrays(petsclib, g_fx, l_x)
-    # TODO: remove in v0.6 with the other 0.5 deprecations.
-    @warn "local_arrays is deprecated, use with_local_arrays!(f!, g_fx, l_x)" maxlog = 1
-    return checkout_local_arrays(petsclib, g_fx, l_x)
-end
-
 # Checks out both arrays and picks where they live: `VecGetArrayAndMemType` gives
 # each Vec's memory type, and `_local_arrays` dispatches on the pair of backends.
 # The base package handles host × host; GPU extensions add the other cases and a
@@ -400,20 +384,6 @@ function _local_arrays(
     petsclib, g_fx, l_x, ::Type, fx_arr, lx_arr, ::Nothing, ::Nothing,
 )
     return fx_arr, lx_arr, nothing, nothing, nothing
-end
-
-"""
-    restore_local_arrays!(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
-
-Hand back the arrays [`local_arrays`](@ref) checked out.
-
-Deprecated: use [`with_local_arrays!`](@ref).
-"""
-function restore_local_arrays!(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
-    # TODO: remove in v0.6 with the other 0.5 deprecations.
-    @warn "restore_local_arrays! is deprecated, use with_local_arrays!(f!, g_fx, l_x)" maxlog = 1
-    _restore_local_arrays!(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
-    return nothing
 end
 
 # CPU base case: call VecRestore directly (no finalizers).

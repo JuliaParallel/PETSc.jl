@@ -386,17 +386,9 @@ function LibPETSc.PetscMat(
     rowptr::AbstractVector{<:Integer},
     colval::AbstractVector{<:Integer},
     nzval::AbstractVector;
-    comm = nothing,
     kwargs...,
 )
-    # TODO: remove the `comm` keyword in v0.6 with the other 0.5 deprecations.
-    if comm === nothing
-        comm = MPI.COMM_SELF
-    else
-        @warn "PetscMat(petsclib, rowptr, colval, nzval; comm) is deprecated, " *
-              "use PetscMat(petsclib, comm, rowptr, colval, nzval)" maxlog = 1
-    end
-    return LibPETSc.PetscMat(petsclib, comm, rowptr, colval, nzval; kwargs...)
+    return LibPETSc.PetscMat(petsclib, MPI.COMM_SELF, rowptr, colval, nzval; kwargs...)
 end
 
 function LibPETSc.PetscMat(
@@ -436,8 +428,8 @@ end
 """
     mat_seqaij_with_arrays(petsclib, comm, A::SparseMatrixCSC)
 
-The v0.4 `MatSeqAIJWithArrays` body, kept for its deprecation shim: converts
-`A` to CSR and hands the arrays to the `PetscMat` constructor.
+Convert `A` to CSR and hand the arrays to the CSR `PetscMat` constructor, which
+borrows them. The body of `PetscMat(petsclib, comm, A; with_arrays = true)`.
 """
 function mat_seqaij_with_arrays(petsclib::PetscLibType, comm, A::SparseMatrixCSC)
     rowptr, colval, nzval = csr_from_csc(petsclib, A)

@@ -77,10 +77,8 @@ import .LibPETSc: AbstractSNES, CSNES, SNES
 import .LibPETSc: AbstractTS, CTS, TS
 
 # Only types, construction entry points and `petsclibs` are exported (§13); every
-# verb and accessor stays qualified. The v0.4 list exported twelve functions and
-# no types at all; those names are still reachable qualified (`PETSc.set_library!`)
-# and, where they were renamed, through the shims in src/deprecations.jl. The rest
-# of the API is marked with `public` in src/public_names.jl (§13.1).
+# verb and accessor stays qualified (`PETSc.set_library!`). The rest of the API is
+# marked with `public` in src/public_names.jl (§13.1).
 export LibPETSc
 export DMDA, DMStag, DMPlex
 export PetscVec, PetscMat, PetscOptions
@@ -152,7 +150,6 @@ include("core/convergence.jl")    # ConvergenceError and the `check` keyword of 
 include("audit_names.jl")   # generated from scripts/renames.jl
 include("audit.jl")
 
-include("deprecations.jl")  # generated from scripts/renames.jl
 include("public_names.jl")  # generated from scripts/renames.jl
 
 end

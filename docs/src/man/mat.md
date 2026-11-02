@@ -12,8 +12,7 @@ PETSc matrices support:
 
 `PetscMat` is the one constructor: it replaces v0.4's `MatSeqAIJ`,
 `MatSeqDense`, `MatCreateSeqAIJ`, `MatSeqAIJWithArrays` and `MatAIJ`
-([naming conventions](naming.md), §6). The old spellings still work in v0.5 and
-warn once.
+([naming conventions](naming.md), §6).
 
 ## Creating Matrices
 
@@ -104,8 +103,7 @@ A `PetscMat` (and a `MatShell`) is an `AbstractMatrix` of the library's scalar t
 
 An assembled `PetscMat` supports `copy(A)`, `copyto!(B, A)`, `A + B`, `A - B`, `-A` and `α * A`. Each returns a new matrix and is collective; `A ± B` has the union of the two nonzero patterns. On more than one rank the result has no finalizer, so call `destroy!` on it on every rank.
 
-`ownership_range(A)` is 1-based and takes no second argument. v0.4's
-`ownershiprange(A, false)` still works and warns; it is a `MethodError` in v0.6
+`ownership_range(A)` is 1-based and takes no second argument
 ([naming conventions](naming.md), §12.1).
 
 ## Functions

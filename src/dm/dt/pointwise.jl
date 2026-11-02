@@ -33,13 +33,6 @@ function pointwise_types(mod::Module, lib)
     return LibPETSc.inttype(L), LibPETSc.scalartype(L), LibPETSc.realtype(L)
 end
 
-# Old form: the types are the globals PetscInt, PetscScalar and PetscReal of `mod`.
-# TODO: remove in v0.6 with the other 0.5 deprecations.
-function pointwise_types_from_scope(mod::Module, name::Symbol, f)
-    @warn "$name without a library is deprecated, use $name(petsclib, $f, …)" maxlog = 1 _id = name
-    return Core.eval(mod, :PetscInt), Core.eval(mod, :PetscScalar), Core.eval(mod, :PetscReal)
-end
-
 # Helper: substitute gensymmed param names into an output-size expression.
 petsc_subst(ex, m) =
     ex isa Symbol ? get(m, ex, ex) :
@@ -62,10 +55,6 @@ the macro call: it sets the C types of the arguments.
 """
 macro simple_fn(lib, f)
     return simple_fn_expr(f, pointwise_types(__module__, lib)...)
-end
-
-macro simple_fn(f)
-    return simple_fn_expr(f, pointwise_types_from_scope(__module__, Symbol("@simple_fn"), f)...)
 end
 
 function simple_fn_expr(f, PI, PS, PR)
@@ -107,10 +96,6 @@ f(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
 """
 macro residual_fn(lib, f, outsz)
     return residual_fn_expr(f, outsz, pointwise_types(__module__, lib)...)
-end
-
-macro residual_fn(f, outsz)
-    return residual_fn_expr(f, outsz, pointwise_types_from_scope(__module__, Symbol("@residual_fn"), f)...)
 end
 
 function residual_fn_expr(f, outsz, PI, PS, PR)
@@ -172,10 +157,6 @@ macro jacobian_fn(lib, f, outsz)
     return jacobian_fn_expr(f, outsz, pointwise_types(__module__, lib)...)
 end
 
-macro jacobian_fn(f, outsz)
-    return jacobian_fn_expr(f, outsz, pointwise_types_from_scope(__module__, Symbol("@jacobian_fn"), f)...)
-end
-
 function jacobian_fn_expr(f, outsz, PI, PS, PR)
     cfn = Symbol(f, :__cfn__)
     gdim = gensym("dim"); gNf = gensym("Nf"); gNfAux = gensym("NfAux"); gnC = gensym("nC")
@@ -235,10 +216,6 @@ f(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
 """
 macro bd_fn(lib, f, outsz)
     return bd_fn_expr(f, outsz, pointwise_types(__module__, lib)...)
-end
-
-macro bd_fn(f, outsz)
-    return bd_fn_expr(f, outsz, pointwise_types_from_scope(__module__, Symbol("@bd_fn"), f)...)
 end
 
 function bd_fn_expr(f, outsz, PI, PS, PR)

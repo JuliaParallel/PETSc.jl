@@ -35,8 +35,7 @@ lvec = PETSc.local_vec(dm)
 ```
 
 `PetscVec` replaces v0.4's `VecSeq` and `as_petsc_vec`: construction goes
-through the type ([naming conventions](naming.md), §6). The old spellings still
-work in v0.5 and warn once.
+through the type ([naming conventions](naming.md), §6).
 
 ## Julia Array Interface
 

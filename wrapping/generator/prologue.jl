@@ -385,14 +385,6 @@ for T in (:PetscVec, :PetscMat, :KSP, :PC, :SNES, :PetscDM, :TS, :PetscOptions, 
 end
 # ------------------------------------------------------
 
-# ------------------------------------------------------
-# Deprecated names (v0.4), kept as aliases for one minor cycle: remove in v0.6
-const PetscKSP = KSP
-const PetscSNES = SNES
-const AbstractPetscKSP = AbstractKSP
-const AbstractPetscSNES = AbstractSNES
-# ------------------------------------------------------
-
 # Stuff that I don't really want to define by hand, but seem to not be part of the petsc python interface?
 mutable struct _p_PetscSF end
 const PetscSF = Ptr{_p_PetscSF}

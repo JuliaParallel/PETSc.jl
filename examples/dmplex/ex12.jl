@@ -312,7 +312,7 @@ function fas_coarsen_hook(fine_ptr::Ptr{Cvoid}, coarse_ptr::Ptr{Cvoid}, ::Ptr{Cv
     end
     PETSc.set_exact_solution!(cds, 0, quadratic_u_ptr)
     c_label = PETSc.label(cdm, "marker")
-    if c_label != Ptr{Cvoid}(C_NULL)
+    if !isnothing(c_label)
         if bc == "dirichlet"
             PETSc.add_boundary!(cdm, LibPETSc.DM_BC_ESSENTIAL, "wall", c_label, PetscInt[1], 0, PetscInt[], quadratic_u_ptr)
         else

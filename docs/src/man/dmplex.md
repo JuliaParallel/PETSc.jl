@@ -75,7 +75,7 @@ end
 fe_p1 = PETSc.fe_create_lagrange(petsclib, MPI.COMM_SELF, dim, dim, simplex, 1)
 
 # Copy quadrature rule from velocity to pressure for consistency
-PETSc.copy_quadrature!(petsclib, fe_vel, fe_pres)
+PETSc.copy_quadrature!(fe_pres, fe_vel)
 ```
 
 ### Attaching FE spaces to the DM
@@ -90,7 +90,7 @@ PETSc.create_ds!(dm)               # finalise the PetscDS
 
 ```julia
 LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_vel), "velocity")
-PETSc.set_name!(petsclib, dm, "stokes")
+PETSc.set_name!(dm, "stokes")
 ```
 
 ---
@@ -223,7 +223,7 @@ aux_vec = PETSc.global_vec(dm_aux)
 
 # Attach aux_vec so callbacks see it via `a`
 LibPETSc.DMSetAuxiliaryVec(petsclib, dm,
-    LibPETSc.DMLabel(C_NULL), PetscInt(0), PetscInt(0), aux_vec)
+    LibPETSc.DMLabel(petsclib), PetscInt(0), PetscInt(0), aux_vec)
 ```
 
 ---
@@ -257,7 +257,7 @@ nullspace = GC.@preserve null_vec PETSc.mat_nullspace_create(petsclib, comm, (nu
 PETSc.set_jacobian_nullspace!(snes, nullspace)
 
 # Attach constant null space directly to the pressure FE
-PETSc.compose_constant_nullspace!(petsclib, comm, fe_pres)
+PETSc.compose_constant_nullspace!(fe_pres)
 
 # Propagate discretisation to coarser MG levels
 let cdm = dm
@@ -268,7 +268,7 @@ let cdm = dm
 end
 
 # Cleanup
-PETSc.destroy!(petsclib, nullspace)
+PETSc.destroy!(nullspace)
 ```
 
 ---

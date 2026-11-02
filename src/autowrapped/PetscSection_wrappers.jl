@@ -448,7 +448,7 @@ end
 end 
 
 """
-	gsection::PetscSection = PetscSectionCreateGlobalSectionLabel(petsclib::PetscLibType, s::PetscSection, sf::PetscSF, includeConstraints::PetscBool, label::DMLabel, labelValue::PetscInt) 
+	gsection::PetscSection = PetscSectionCreateGlobalSectionLabel(petsclib::PetscLibType, s::PetscSection, sf::PetscSF, includeConstraints::PetscBool, label::AbstractDMLabel, labelValue::PetscInt) 
 Create a section describing the global field layout using
 the local section and an `PetscSF` describing the section point overlap.
 
@@ -471,17 +471,17 @@ See also: `DMLabel`, `DM`, `PetscSectionCreate()`
 # External Links
 $(_doc_external("DMLabel/PetscSectionCreateGlobalSectionLabel"))
 """
-function PetscSectionCreateGlobalSectionLabel(petsclib::PetscLibType, s::PetscSection, sf::PetscSF, includeConstraints::PetscBool, label::DMLabel, labelValue::Integer)
+function PetscSectionCreateGlobalSectionLabel(petsclib::PetscLibType, s::PetscSection, sf::PetscSF, includeConstraints::PetscBool, label::AbstractDMLabel, labelValue::Integer)
     throw(MethodError(PetscSectionCreateGlobalSectionLabel, (petsclib, s, sf, includeConstraints, label, labelValue)))
 end
 
-@for_petsc function PetscSectionCreateGlobalSectionLabel(petsclib::$UnionPetscLib, s::PetscSection, sf::PetscSF, includeConstraints::PetscBool, label::DMLabel, labelValue::$PetscInt )
+@for_petsc function PetscSectionCreateGlobalSectionLabel(petsclib::$UnionPetscLib, s::PetscSection, sf::PetscSF, includeConstraints::PetscBool, label::AbstractDMLabel, labelValue::$PetscInt )
 	gsection_ = Ref{PetscSection}()
 
     @chk ccall(
                (:PetscSectionCreateGlobalSectionLabel, $petsc_library),
                PetscErrorCode,
-               (PetscSection, PetscSF, PetscBool, DMLabel, $PetscInt, Ptr{PetscSection}),
+               (PetscSection, PetscSF, PetscBool, CDMLabel, $PetscInt, Ptr{PetscSection}),
                s, sf, includeConstraints, label, labelValue, gsection_,
               )
 
@@ -3242,7 +3242,7 @@ end
 end 
 
 """
-	sym::PetscSectionSym = PetscSectionSymCreateLabel(petsclib::PetscLibType, comm::MPI_Comm, label::DMLabel) 
+	sym::PetscSectionSym = PetscSectionSymCreateLabel(petsclib::PetscLibType, comm::MPI_Comm, label::AbstractDMLabel) 
 Create a section symmetry that assigns one symmetry to each stratum of a label
 
 Collective
@@ -3261,17 +3261,17 @@ See also: `DMLabel`, `DM`, `PetscSectionSymCreate()`, `PetscSectionSetSym()`, `P
 # External Links
 $(_doc_external("DMLabel/PetscSectionSymCreateLabel"))
 """
-function PetscSectionSymCreateLabel(petsclib::PetscLibType, comm::MPI_Comm, label::DMLabel)
+function PetscSectionSymCreateLabel(petsclib::PetscLibType, comm::MPI_Comm, label::AbstractDMLabel)
     throw(MethodError(PetscSectionSymCreateLabel, (petsclib, comm, label)))
 end
 
-@for_petsc function PetscSectionSymCreateLabel(petsclib::$UnionPetscLib, comm::MPI_Comm, label::DMLabel )
+@for_petsc function PetscSectionSymCreateLabel(petsclib::$UnionPetscLib, comm::MPI_Comm, label::AbstractDMLabel )
 	sym_ = Ref{PetscSectionSym}()
 
     @chk ccall(
                (:PetscSectionSymCreateLabel, $petsc_library),
                PetscErrorCode,
-               (MPI_Comm, DMLabel, Ptr{PetscSectionSym}),
+               (MPI_Comm, CDMLabel, Ptr{PetscSectionSym}),
                comm, label, sym_,
               )
 
@@ -3443,7 +3443,7 @@ end
 end 
 
 """
-	PetscSectionSymLabelSetLabel(petsclib::PetscLibType, sym::PetscSectionSym, label::DMLabel) 
+	PetscSectionSymLabelSetLabel(petsclib::PetscLibType, sym::PetscSectionSym, label::AbstractDMLabel) 
 set the label whose strata will define the points that receive symmetries
 
 Logically
@@ -3459,16 +3459,16 @@ See also: `DMLabel`, `DM`, `PetscSectionSymLabelSetStratum()`, `PetscSectionSymC
 # External Links
 $(_doc_external("DMLabel/PetscSectionSymLabelSetLabel"))
 """
-function PetscSectionSymLabelSetLabel(petsclib::PetscLibType, sym::PetscSectionSym, label::DMLabel)
+function PetscSectionSymLabelSetLabel(petsclib::PetscLibType, sym::PetscSectionSym, label::AbstractDMLabel)
     throw(MethodError(PetscSectionSymLabelSetLabel, (petsclib, sym, label)))
 end
 
-@for_petsc function PetscSectionSymLabelSetLabel(petsclib::$UnionPetscLib, sym::PetscSectionSym, label::DMLabel )
+@for_petsc function PetscSectionSymLabelSetLabel(petsclib::$UnionPetscLib, sym::PetscSectionSym, label::AbstractDMLabel )
 
     @chk ccall(
                (:PetscSectionSymLabelSetLabel, $petsc_library),
                PetscErrorCode,
-               (PetscSectionSym, DMLabel),
+               (PetscSectionSym, CDMLabel),
                sym, label,
               )
 

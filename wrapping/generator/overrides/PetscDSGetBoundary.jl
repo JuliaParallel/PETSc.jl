@@ -38,7 +38,7 @@ function PetscDSGetBoundary(petsclib::PetscLibType, ds::PetscDS, bd::PetscInt) e
 	wf_ref    = Ref{PetscWeakForm}(C_NULL)
 	type_ref  = Ref{DMBoundaryConditionType}()
 	name_ref  = Ref{Ptr{Cchar}}(C_NULL)
-	label_ref = Ref{DMLabel}(C_NULL)
+	label_ref = Ref{CDMLabel}(C_NULL)
 	Nv_ref    = Ref{$PetscInt}(0)
 	values_ref = Ref{Ptr{$PetscInt}}(C_NULL)
 	field_ref = Ref{$PetscInt}(0)
@@ -52,7 +52,7 @@ function PetscDSGetBoundary(petsclib::PetscLibType, ds::PetscDS, bd::PetscInt) e
                (:PetscDSGetBoundary, $petsc_library),
                PetscErrorCode,
                (PetscDS, $PetscInt,
-                Ptr{PetscWeakForm}, Ptr{DMBoundaryConditionType}, Ptr{Ptr{Cchar}}, Ptr{DMLabel},
+                Ptr{PetscWeakForm}, Ptr{DMBoundaryConditionType}, Ptr{Ptr{Cchar}}, Ptr{CDMLabel},
                 Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}},
                 Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
                ds, bd,
@@ -67,7 +67,7 @@ function PetscDSGetBoundary(petsclib::PetscLibType, ds::PetscDS, bd::PetscInt) e
 	comps = Nc > 0 ? unsafe_wrap(Array, comps_ref[], Nc; own = false) : $PetscInt[]
 
 	return (wf = wf_ref[], type = type_ref[], name = name_ref[] == C_NULL ? "" : unsafe_string(name_ref[]),
-	        label = label_ref[], Nv = Nv, values = values, field = field_ref[],
+	        label = DMLabel(label_ref[], petsclib; own = false), Nv = Nv, values = values, field = field_ref[],
 	        Nc = Nc, comps = comps, func = func_ref[], func_t = func_t_ref[], ctx = ctx_ref[])
 end
 

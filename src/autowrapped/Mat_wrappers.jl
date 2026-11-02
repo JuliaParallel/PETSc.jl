@@ -10118,16 +10118,16 @@ function MatGetNearNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatGetNearNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
-	nullsp_ = Ref{MatNullSpace}()
+	nullsp_ = Ref{CMatNullSpace}()
 
     @chk ccall(
                (:MatGetNearNullSpace, $petsc_library),
                PetscErrorCode,
-               (CMat, Ptr{MatNullSpace}),
+               (CMat, Ptr{CMatNullSpace}),
                mat, nullsp_,
               )
 
-	nullsp = nullsp_[]
+	nullsp = MatNullSpace(nullsp_[], petsclib; own = false)
 
 	return nullsp
 end 
@@ -10172,7 +10172,7 @@ end
 end 
 
 """
-	MatGetNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::MatNullSpace) 
+	MatGetNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::AbstractMatNullSpace) 
 retrieves the null space of a matrix.
 
 Logically Collective
@@ -10188,19 +10188,21 @@ See also: `Mat`, `MatCreate()`, `MatNullSpaceCreate()`, `MatSetNearNullSpace()`,
 # External Links
 $(_doc_external("Mat/MatGetNullSpace"))
 """
-function MatGetNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::MatNullSpace)
+function MatGetNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::AbstractMatNullSpace)
     throw(MethodError(MatGetNullSpace, (petsclib, mat, nullsp)))
 end
 
-@for_petsc function MatGetNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::MatNullSpace )
+@for_petsc function MatGetNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::AbstractMatNullSpace )
+	nullsp_ = Ref(nullsp.ptr)
 
     @chk ccall(
                (:MatGetNullSpace, $petsc_library),
                PetscErrorCode,
-               (CMat, Ptr{MatNullSpace}),
-               mat, nullsp,
+               (CMat, Ptr{CMatNullSpace}),
+               mat, nullsp_,
               )
 
+	nullsp.ptr = nullsp_[]
 
 	return nothing
 end 
@@ -10231,16 +10233,16 @@ function MatGetNullSpaces(petsclib::PetscLibType, n::Integer, mat::Vector{<:Abst
 end
 
 @for_petsc function MatGetNullSpaces(petsclib::$UnionPetscLib, n::$PetscInt, mat::Vector{<:AbstractPetscMat} )
-	nullsp_ = Ref{Ptr{MatNullSpace}}()
+	nullsp_ = Ref{Ptr{CMatNullSpace}}()
 
     @chk ccall(
                (:MatGetNullSpaces, $petsc_library),
                PetscErrorCode,
-               ($PetscInt, Ptr{CMat}, Ptr{Ptr{MatNullSpace}}),
+               ($PetscInt, Ptr{CMat}, Ptr{Ptr{CMatNullSpace}}),
                n, mat, nullsp_,
               )
 
-	nullsp = nullsp_[] == C_NULL ? MatNullSpace[] : unsafe_wrap(Array, nullsp_[], 3 * n; own = false)
+	nullsp = nullsp_[] == C_NULL ? MatNullSpace{$PetscLib}[] : [MatNullSpace(p, petsclib; own = false) for p in unsafe_wrap(Array, nullsp_[], 3 * n; own = false)]
 
 	return nullsp
 end 
@@ -11242,7 +11244,7 @@ end
 end 
 
 """
-	MatGetTransposeNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::MatNullSpace) 
+	MatGetTransposeNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::AbstractMatNullSpace) 
 retrieves the null space of the transpose of a matrix.
 
 Logically Collective
@@ -11258,19 +11260,21 @@ See also: `Mat`, `MatNullSpace`, `MatCreate()`, `MatNullSpaceCreate()`, `MatSetN
 # External Links
 $(_doc_external("Mat/MatGetTransposeNullSpace"))
 """
-function MatGetTransposeNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::MatNullSpace)
+function MatGetTransposeNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::AbstractMatNullSpace)
     throw(MethodError(MatGetTransposeNullSpace, (petsclib, mat, nullsp)))
 end
 
-@for_petsc function MatGetTransposeNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::MatNullSpace )
+@for_petsc function MatGetTransposeNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::AbstractMatNullSpace )
+	nullsp_ = Ref(nullsp.ptr)
 
     @chk ccall(
                (:MatGetTransposeNullSpace, $petsc_library),
                PetscErrorCode,
-               (CMat, Ptr{MatNullSpace}),
-               mat, nullsp,
+               (CMat, Ptr{CMatNullSpace}),
+               mat, nullsp_,
               )
 
+	nullsp.ptr = nullsp_[]
 
 	return nothing
 end 
@@ -19871,7 +19875,7 @@ end
 end 
 
 """
-	MatRestoreNullSpaces(petsclib::PetscLibType, n::PetscInt, mat::Vector{<:AbstractPetscMat}, nullsp::Union{Ptr, AbstractArray{MatNullSpace}}) 
+	MatRestoreNullSpaces(petsclib::PetscLibType, n::PetscInt, mat::Vector{<:AbstractPetscMat}, nullsp::Ptr) 
 sets the null spaces, transpose null spaces, and near null spaces obtained with `MatGetNullSpaces()` for an array of matrices
 
 Logically Collective
@@ -19889,17 +19893,17 @@ See also: `Mat`, `MatCreate()`, `MatNullSpaceCreate()`, `MatSetNearNullSpace()`,
 # External Links
 $(_doc_external("Mat/MatRestoreNullSpaces"))
 """
-function MatRestoreNullSpaces(petsclib::PetscLibType, n::Integer, mat::Vector{<:AbstractPetscMat}, nullsp::Union{Ptr, AbstractArray{MatNullSpace}})
+function MatRestoreNullSpaces(petsclib::PetscLibType, n::Integer, mat::Vector{<:AbstractPetscMat}, nullsp::Ptr)
     throw(MethodError(MatRestoreNullSpaces, (petsclib, n, mat, nullsp)))
 end
 
-@for_petsc function MatRestoreNullSpaces(petsclib::$UnionPetscLib, n::$PetscInt, mat::Vector{<:AbstractPetscMat}, nullsp::Union{Ptr, AbstractArray{MatNullSpace}} )
-	nullsp_ = Ref{Ptr{MatNullSpace}}(nullsp isa Ptr ? nullsp : pointer(nullsp))
+@for_petsc function MatRestoreNullSpaces(petsclib::$UnionPetscLib, n::$PetscInt, mat::Vector{<:AbstractPetscMat}, nullsp::Ptr )
+	nullsp_ = Ref{Ptr{CMatNullSpace}}(nullsp)
 
     @chk ccall(
                (:MatRestoreNullSpaces, $petsc_library),
                PetscErrorCode,
-               ($PetscInt, Ptr{CMat}, Ptr{Ptr{MatNullSpace}}),
+               ($PetscInt, Ptr{CMat}, Ptr{Ptr{CMatNullSpace}}),
                n, mat, nullsp_,
               )
 
@@ -23832,7 +23836,7 @@ end
 end 
 
 """
-	MatSetNearNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::MatNullSpace) 
+	MatSetNearNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::AbstractMatNullSpace) 
 attaches a null space to a matrix, which is often the null space (rigid body modes) of the operator without boundary conditions
 This null space will be used to provide near null space vectors to a multigrid preconditioner built from this matrix.
 
@@ -23849,16 +23853,16 @@ See also: `Mat`, `MatNullSpace`, `MatCreate()`, `MatNullSpaceCreate()`, `MatSetN
 # External Links
 $(_doc_external("Mat/MatSetNearNullSpace"))
 """
-function MatSetNearNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::MatNullSpace)
+function MatSetNearNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::AbstractMatNullSpace)
     throw(MethodError(MatSetNearNullSpace, (petsclib, mat, nullsp)))
 end
 
-@for_petsc function MatSetNearNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::MatNullSpace )
+@for_petsc function MatSetNearNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::AbstractMatNullSpace )
 
     @chk ccall(
                (:MatSetNearNullSpace, $petsc_library),
                PetscErrorCode,
-               (CMat, MatNullSpace),
+               (CMat, CMatNullSpace),
                mat, nullsp,
               )
 
@@ -23867,7 +23871,7 @@ end
 end 
 
 """
-	MatSetNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::MatNullSpace) 
+	MatSetNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::AbstractMatNullSpace) 
 attaches a null space to a matrix.
 
 Logically Collective
@@ -23884,16 +23888,16 @@ See also: `Mat`, `MatCreate()`, `MatNullSpaceCreate()`, `MatSetNearNullSpace()`,
 # External Links
 $(_doc_external("Mat/MatSetNullSpace"))
 """
-function MatSetNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::MatNullSpace)
+function MatSetNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::AbstractMatNullSpace)
     throw(MethodError(MatSetNullSpace, (petsclib, mat, nullsp)))
 end
 
-@for_petsc function MatSetNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::MatNullSpace )
+@for_petsc function MatSetNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::AbstractMatNullSpace )
 
     @chk ccall(
                (:MatSetNullSpace, $petsc_library),
                PetscErrorCode,
-               (CMat, MatNullSpace),
+               (CMat, CMatNullSpace),
                mat, nullsp,
               )
 
@@ -24275,7 +24279,7 @@ end
 end 
 
 """
-	MatSetTransposeNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::MatNullSpace) 
+	MatSetTransposeNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::AbstractMatNullSpace) 
 attaches the null space of a transpose of a matrix to the matrix
 
 Logically Collective
@@ -24291,16 +24295,16 @@ See also: `Mat`, `MatNullSpace`, `MatCreate()`, `MatNullSpaceCreate()`, `MatSetN
 # External Links
 $(_doc_external("Mat/MatSetTransposeNullSpace"))
 """
-function MatSetTransposeNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::MatNullSpace)
+function MatSetTransposeNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::AbstractMatNullSpace)
     throw(MethodError(MatSetTransposeNullSpace, (petsclib, mat, nullsp)))
 end
 
-@for_petsc function MatSetTransposeNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::MatNullSpace )
+@for_petsc function MatSetTransposeNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::AbstractMatNullSpace )
 
     @chk ccall(
                (:MatSetTransposeNullSpace, $petsc_library),
                PetscErrorCode,
-               (CMat, MatNullSpace),
+               (CMat, CMatNullSpace),
                mat, nullsp,
               )
 

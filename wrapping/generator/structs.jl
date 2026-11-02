@@ -52,14 +52,14 @@ struct PetscDrawViewPorts
 end 
 
 struct PetscFormKey
-    label::DMLabel
+    label::CDMLabel
     value::PetscInt
     field::PetscInt
     part::PetscInt
 
     PetscFormKey() = new()
 
-    PetscFormKey(label,value,field,part) = new(label::DMLabel,value::PetscInt,field::PetscInt,part::PetscInt)
+    PetscFormKey(label,value,field,part) = new(convert(CDMLabel, label),value::PetscInt,field::PetscInt,part::PetscInt)
 
 end 
 

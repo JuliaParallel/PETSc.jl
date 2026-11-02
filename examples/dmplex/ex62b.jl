@@ -945,10 +945,10 @@ function save_solution_vtk(petsclib, comm, fname::AbstractString, dm, u, aux_vec
     PETSc.set_field!(dm_out, 7, fe_out_phase)
     PETSc.create_ds!(dm_out)
     LibPETSc.DMSetAuxiliaryVec(petsclib, dm_out,
-        LibPETSc.DMLabel(C_NULL), PetscInt(0), PetscInt(0), aux_vec)
+        LibPETSc.DMLabel(petsclib), PetscInt(0), PetscInt(0), aux_vec)
 
     out_vec = PETSc.global_vec(dm_out)
-    PETSc.set_name!(petsclib, out_vec, "")
+    PETSc.set_name!(out_vec, "")
 
     PETSc.project_field!(out_vec, dm_out, 0.0, u, [copy_vel_ptr, copy_pres_ptr, compute_strainrate_3x3_ptr,
          compute_tau_3x3_ptr, compute_eps_II_ptr, compute_tau_II_ptr,
@@ -1060,7 +1060,7 @@ exact_pres_ptr = sol_type == "quadratic" ? quadratic_pres_ptr :
 # ── Pressure null space constructor ───────────────────────────────────────────
 function pressure_nsp_constructor(
     dm_ptr::Ptr{Cvoid}, ::PetscInt, ::PetscInt,
-    nsp_pp::Ptr{LibPETSc.MatNullSpace},
+    nsp_pp::Ptr{LibPETSc.CMatNullSpace},
 )::PetscInt
     PL   = typeof(petsclib)
     dm_w = LibPETSc.PetscDM{PL}(dm_ptr)
@@ -1069,13 +1069,14 @@ function pressure_nsp_constructor(
     LibPETSc.VecNormalize(petsclib, nvec)
     GC.@preserve nvec begin
         nsp = PETSc.mat_nullspace_create(petsclib, MPI.COMM_WORLD, (nvec,))
-        unsafe_store!(nsp_pp, nsp)
+        nsp.own = false   # PETSc owns the null space it is handed
+        unsafe_store!(nsp_pp, nsp.ptr)
     end
     PETSc.destroy!(nvec)
     return PetscInt(0)
 end
 const pressure_nsp_ptr = Base.@cfunction(pressure_nsp_constructor, PetscInt,
-    (Ptr{Cvoid}, PetscInt, PetscInt, Ptr{LibPETSc.MatNullSpace}))
+    (Ptr{Cvoid}, PetscInt, PetscInt, Ptr{LibPETSc.CMatNullSpace}))
 
 # ── Gmsh mesh generation ─────────────────────────────────────────────────────
 """
@@ -1178,7 +1179,7 @@ end
 LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_pres), "pressure")
 
 # Copy quadrature from velocity to pressure for consistent integration
-PETSc.copy_quadrature!(petsclib, fe_vel, fe_pres)
+PETSc.copy_quadrature!(fe_pres, fe_vel)
 
 PETSc.set_field!(dm, 0, fe_vel)
 PETSc.set_field!(dm, 1, fe_pres)
@@ -1240,8 +1241,8 @@ fe_phase_aux = make_dg0_aux("phaseaux_", 1)
 fe_tau_aux = make_dg0_aux("tauaux_", dim * dim)
 LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_phase_aux), "phase_aux")
 LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_tau_aux), "tau_old_aux")
-PETSc.copy_quadrature!(petsclib, fe_vel, fe_phase_aux)
-PETSc.copy_quadrature!(petsclib, fe_vel, fe_tau_aux)
+PETSc.copy_quadrature!(fe_phase_aux, fe_vel)
+PETSc.copy_quadrature!(fe_tau_aux, fe_vel)
 PETSc.set_field!(dm_aux, 0, fe_phase_aux)
 PETSc.set_field!(dm_aux, 1, fe_tau_aux)
 PETSc.create_ds!(dm_aux)
@@ -1252,7 +1253,7 @@ aux_vec = PETSc.global_vec(dm_aux)   # tau_old field is zero-initialised
 # that outputs dim×dim zeros easily via the scalar interface.
 PETSc.project_function!(aux_vec, dm_aux, 0.0, [phase_fn_ptr, C_NULL]; mode = LibPETSc.INSERT_VALUES)
 LibPETSc.DMSetAuxiliaryVec(petsclib, dm,
-    LibPETSc.DMLabel(C_NULL), PetscInt(0), PetscInt(0), aux_vec)
+    LibPETSc.DMLabel(petsclib), PetscInt(0), PetscInt(0), aux_vec)
 
 # ── Deviatoric stress history (viscoelasticity) ───────────────────────────────
 # dm_tau: DG-P0 field with dim×dim components per cell storing σ_dev^n.
@@ -1267,14 +1268,14 @@ fe_tau = let opts = PETSc.PetscOptions(petsclib; tau_petscdualspace_lagrange_con
     fe
 end
 LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_tau), "tau_old")
-PETSc.copy_quadrature!(petsclib, fe_vel, fe_tau)
+PETSc.copy_quadrature!(fe_tau, fe_vel)
 PETSc.set_field!(dm_tau, 0, fe_tau)
 PETSc.create_ds!(dm_tau)
 tau_vec = PETSc.global_vec(dm_tau)   # PETSc zero-initialises global vecs
 # Attach aux_vec (phase + tau_old) to dm_tau so the compute_tau kernel
 # can read a[1] (phase) and a[2..dim²+1] (tau_old) during update_tau!.
 LibPETSc.DMSetAuxiliaryVec(petsclib, dm_tau,
-    LibPETSc.DMLabel(C_NULL), PetscInt(0), PetscInt(0), aux_vec)
+    LibPETSc.DMLabel(petsclib), PetscInt(0), PetscInt(0), aux_vec)
 
 # ── Boundary condition: Dirichlet on outer box walls ─────────────────────────
 # Gmsh physical group 3 ("boundary") → PETSc "Face Sets" label, value 3.
@@ -1292,7 +1293,7 @@ let cdm = dm
 end
 
 # Attach constant null space to the pressure FE for the fieldsplit preconditioner
-PETSc.compose_constant_nullspace!(petsclib, comm, fe_pres)
+PETSc.compose_constant_nullspace!(fe_pres)
 
 # ── Pressure null space (normalized constant-pressure mode) ───────────────────
 null_vec = PETSc.global_vec(dm)
@@ -1327,7 +1328,7 @@ let make_dg0 = (prefix) -> begin
         end
         PETSc.create_ds!(dm_i)
         LibPETSc.DMSetAuxiliaryVec(petsclib, dm_i,
-            LibPETSc.DMLabel(C_NULL), PetscInt(0), PetscInt(0), aux_vec)
+            LibPETSc.DMLabel(petsclib), PetscInt(0), PetscInt(0), aux_vec)
         dm_i
     end
     global dm_eII = make_dg0("epsiiavg_")
@@ -1338,11 +1339,11 @@ end
 
 let dm_p1_ = PETSc.clone(dm)
     fe_p1 = PETSc.fe_create_lagrange(petsclib, MPI.COMM_SELF, dim, dim, simplex, 1)
-    PETSc.set_name!(petsclib, fe_p1, "vel_p1")
+    PETSc.set_name!(fe_p1, "vel_p1")
     PETSc.set_field!(dm_p1_, 0, fe_p1)
     PETSc.create_ds!(dm_p1_)
     LibPETSc.DMSetAuxiliaryVec(petsclib, dm_p1_,
-        LibPETSc.DMLabel(C_NULL), PetscInt(0), PetscInt(0), aux_vec)
+        LibPETSc.DMLabel(petsclib), PetscInt(0), PetscInt(0), aux_vec)
     global dm_p1  = dm_p1_
     global vel_p1 = PETSc.global_vec(dm_p1_)
 end
@@ -1422,7 +1423,7 @@ end
 # ── Cleanup ───────────────────────────────────────────────────────────────────
 GC.gc(true)
 MPI.Barrier(comm)
-PETSc.destroy!(petsclib, nullspace)
+PETSc.destroy!(nullspace)
 foreach(PETSc.destroy!, (snes, u, null_vec, v_eII, v_tII, dm_eII, dm_tII, vel_p1, dm_p1,
                          aux_vec, dm_aux, tau_vec, dm_tau, dm))
 

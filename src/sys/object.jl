@@ -25,18 +25,30 @@ end
 
 
 """
-    set_name!(petsclib, obj, name)
+    set_name!(obj, name)
 
-Set the name of any PETSc object (DM, Vec, FE, …) to `name`.
-`obj` can be any pointer type that is convertible to `Ptr{Cvoid}`.
-
-Thin wrapper around `PetscObjectSetName` that avoids needing an explicit
-`convert(Ptr{Cvoid}, obj)` at the call site.
+Set the name of the PETSc object `obj` (a Vec, Mat, DM, FE, solver, …) to `name`,
+and return `obj`.
 
 # External Links
 $(doc_external("Sys/PetscObjectSetName"))
 """
-function set_name!(petsclib::LibPETSc.PetscLibType, obj, name::AbstractString)
-    LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, obj), String(name))
+function set_name!(
+    obj::Union{
+        AbstractPetscVec{PetscLib},
+        AbstractPetscMat{PetscLib},
+        AbstractKSP{PetscLib},
+        AbstractSNES{PetscLib},
+        LibPETSc.AbstractTS{PetscLib},
+        AbstractPetscDM{PetscLib},
+        LibPETSc.AbstractPC{PetscLib},
+        LibPETSc.AbstractIS{PetscLib},
+        LibPETSc.AbstractPetscFE{PetscLib},
+        LibPETSc.AbstractDMLabel{PetscLib},
+        LibPETSc.AbstractMatNullSpace{PetscLib},
+    },
+    name::AbstractString,
+) where {PetscLib}
+    LibPETSc.PetscObjectSetName(PetscLib, convert(Ptr{Cvoid}, obj), String(name))
     return obj
 end

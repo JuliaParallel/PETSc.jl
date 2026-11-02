@@ -1,5 +1,5 @@
 """
-	bd::PetscInt = PetscDSAddBoundary(petsclib::PetscLibType, ds::PetscDS, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::PetscInt, values::Vector{PetscInt}, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	bd::PetscInt = PetscDSAddBoundary(petsclib::PetscLibType, ds::PetscDS, type::DMBoundaryConditionType, name::String, label::AbstractDMLabel, Nv::PetscInt, values::Vector{PetscInt}, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Add a boundary condition to the model.
 
 Collective
@@ -32,17 +32,17 @@ See also: `PetscDS`, `PetscWeakForm`, `DMLabel`, `DMBoundaryConditionType`, `Pet
 # External Links
 $(_doc_external("DT/PetscDSAddBoundary"))
 """
-function PetscDSAddBoundary(petsclib::PetscLibType, ds::PetscDS, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::Integer, values::AbstractVector{<:Number}, field::Integer, Nc::Integer, comps::AbstractVector{<:Number}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+function PetscDSAddBoundary(petsclib::PetscLibType, ds::PetscDS, type::DMBoundaryConditionType, name::String, label::AbstractDMLabel, Nv::Integer, values::AbstractVector{<:Number}, field::Integer, Nc::Integer, comps::AbstractVector{<:Number}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid})
     throw(MethodError(PetscDSAddBoundary, (petsclib, ds, type, name, label, Nv, values, field, Nc, comps, bcFunc, bcFunc_t, ctx)))
 end
 
-@for_petsc function PetscDSAddBoundary(petsclib::$UnionPetscLib, ds::PetscDS, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::$PetscInt, values::Vector{$PetscInt}, field::$PetscInt, Nc::$PetscInt, comps::Vector{$PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+@for_petsc function PetscDSAddBoundary(petsclib::$UnionPetscLib, ds::PetscDS, type::DMBoundaryConditionType, name::String, label::AbstractDMLabel, Nv::$PetscInt, values::Vector{$PetscInt}, field::$PetscInt, Nc::$PetscInt, comps::Vector{$PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 	bd_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscDSAddBoundary, $petsc_library),
                PetscErrorCode,
-               (PetscDS, DMBoundaryConditionType, Ptr{Cchar}, DMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{$PetscInt}),
+               (PetscDS, DMBoundaryConditionType, Ptr{Cchar}, CDMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{$PetscInt}),
                ds, type, name, label, Nv, values, field, Nc, comps, bcFunc, bcFunc_t, ctx, bd_,
               )
 
@@ -703,7 +703,7 @@ function PetscDSGetBoundary(petsclib::PetscLibType, ds::PetscDS, bd::PetscInt) e
 	wf_ref    = Ref{PetscWeakForm}(C_NULL)
 	type_ref  = Ref{DMBoundaryConditionType}()
 	name_ref  = Ref{Ptr{Cchar}}(C_NULL)
-	label_ref = Ref{DMLabel}(C_NULL)
+	label_ref = Ref{CDMLabel}(C_NULL)
 	Nv_ref    = Ref{$PetscInt}(0)
 	values_ref = Ref{Ptr{$PetscInt}}(C_NULL)
 	field_ref = Ref{$PetscInt}(0)
@@ -717,7 +717,7 @@ function PetscDSGetBoundary(petsclib::PetscLibType, ds::PetscDS, bd::PetscInt) e
                (:PetscDSGetBoundary, $petsc_library),
                PetscErrorCode,
                (PetscDS, $PetscInt,
-                Ptr{PetscWeakForm}, Ptr{DMBoundaryConditionType}, Ptr{Ptr{Cchar}}, Ptr{DMLabel},
+                Ptr{PetscWeakForm}, Ptr{DMBoundaryConditionType}, Ptr{Ptr{Cchar}}, Ptr{CDMLabel},
                 Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}},
                 Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
                ds, bd,
@@ -732,7 +732,7 @@ function PetscDSGetBoundary(petsclib::PetscLibType, ds::PetscDS, bd::PetscInt) e
 	comps = Nc > 0 ? unsafe_wrap(Array, comps_ref[], Nc; own = false) : $PetscInt[]
 
 	return (wf = wf_ref[], type = type_ref[], name = name_ref[] == C_NULL ? "" : unsafe_string(name_ref[]),
-	        label = label_ref[], Nv = Nv, values = values, field = field_ref[],
+	        label = DMLabel(label_ref[], petsclib; own = false), Nv = Nv, values = values, field = field_ref[],
 	        Nc = Nc, comps = comps, func = func_ref[], func_t = func_t_ref[], ctx = ctx_ref[])
 end
 
@@ -4030,7 +4030,7 @@ end
 end 
 
 """
-	PetscDSUpdateBoundary(petsclib::PetscLibType, ds::PetscDS, bd::PetscInt, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::PetscInt, values::Vector{PetscInt}, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	PetscDSUpdateBoundary(petsclib::PetscLibType, ds::PetscDS, bd::PetscInt, type::DMBoundaryConditionType, name::String, label::AbstractDMLabel, Nv::PetscInt, values::Vector{PetscInt}, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Change a boundary condition for the model.
 
 Input Parameters:
@@ -4055,16 +4055,16 @@ See also: `PetscDS`, `PetscWeakForm`, `DMBoundaryConditionType`, `PetscDSAddBoun
 # External Links
 $(_doc_external("DT/PetscDSUpdateBoundary"))
 """
-function PetscDSUpdateBoundary(petsclib::PetscLibType, ds::PetscDS, bd::Integer, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::Integer, values::AbstractVector{<:Number}, field::Integer, Nc::Integer, comps::AbstractVector{<:Number}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+function PetscDSUpdateBoundary(petsclib::PetscLibType, ds::PetscDS, bd::Integer, type::DMBoundaryConditionType, name::String, label::AbstractDMLabel, Nv::Integer, values::AbstractVector{<:Number}, field::Integer, Nc::Integer, comps::AbstractVector{<:Number}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid})
     throw(MethodError(PetscDSUpdateBoundary, (petsclib, ds, bd, type, name, label, Nv, values, field, Nc, comps, bcFunc, bcFunc_t, ctx)))
 end
 
-@for_petsc function PetscDSUpdateBoundary(petsclib::$UnionPetscLib, ds::PetscDS, bd::$PetscInt, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::$PetscInt, values::Vector{$PetscInt}, field::$PetscInt, Nc::$PetscInt, comps::Vector{$PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+@for_petsc function PetscDSUpdateBoundary(petsclib::$UnionPetscLib, ds::PetscDS, bd::$PetscInt, type::DMBoundaryConditionType, name::String, label::AbstractDMLabel, Nv::$PetscInt, values::Vector{$PetscInt}, field::$PetscInt, Nc::$PetscInt, comps::Vector{$PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscDSUpdateBoundary, $petsc_library),
                PetscErrorCode,
-               (PetscDS, $PetscInt, DMBoundaryConditionType, Ptr{Cchar}, DMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}),
+               (PetscDS, $PetscInt, DMBoundaryConditionType, Ptr{Cchar}, CDMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}),
                ds, bd, type, name, label, Nv, values, field, Nc, comps, bcFunc, bcFunc_t, ctx,
               )
 

@@ -312,9 +312,75 @@ Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractAO) = live_ptr(v)
 # ------------------------------------------------------
 
 # ------------------------------------------------------
+# PetscFE
+const CPetscFE = Ptr{Cvoid} 
+abstract type AbstractPetscFE{T} end
+
+mutable struct PetscFE{PetscLib} <: AbstractPetscFE{PetscLib}
+    ptr::Ptr{Cvoid}
+    age::Int
+    own::Bool
+
+    PetscFE{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
+end
+
+# Convenience constructors
+PetscFE(lib::PetscLib) where {PetscLib} = PetscFE{PetscLib}(C_NULL, lib.age)
+PetscFE(ptr::Ptr{Cvoid}, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = PetscFE{PetscLib}(ptr, age; own)
+
+# Conversion methods
+Base.convert(::Type{Ptr{Cvoid}}, v::AbstractPetscFE) = live_ptr(v)
+Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractPetscFE) = live_ptr(v)
+# ------------------------------------------------------
+
+# ------------------------------------------------------
+# DMLabel
+const CDMLabel = Ptr{Cvoid} 
+abstract type AbstractDMLabel{T} end
+
+mutable struct DMLabel{PetscLib} <: AbstractDMLabel{PetscLib}
+    ptr::Ptr{Cvoid}
+    age::Int
+    own::Bool
+
+    DMLabel{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
+end
+
+# Convenience constructors
+DMLabel(lib::PetscLib) where {PetscLib} = DMLabel{PetscLib}(C_NULL, lib.age)
+DMLabel(ptr::Ptr{Cvoid}, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = DMLabel{PetscLib}(ptr, age; own)
+
+# Conversion methods
+Base.convert(::Type{Ptr{Cvoid}}, v::AbstractDMLabel) = live_ptr(v)
+Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractDMLabel) = live_ptr(v)
+# ------------------------------------------------------
+
+# ------------------------------------------------------
+# MatNullSpace
+const CMatNullSpace = Ptr{Cvoid} 
+abstract type AbstractMatNullSpace{T} end
+
+mutable struct MatNullSpace{PetscLib} <: AbstractMatNullSpace{PetscLib}
+    ptr::Ptr{Cvoid}
+    age::Int
+    own::Bool
+
+    MatNullSpace{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
+end
+
+# Convenience constructors
+MatNullSpace(lib::PetscLib) where {PetscLib} = MatNullSpace{PetscLib}(C_NULL, lib.age)
+MatNullSpace(ptr::Ptr{Cvoid}, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = MatNullSpace{PetscLib}(ptr, age; own)
+
+# Conversion methods
+Base.convert(::Type{Ptr{Cvoid}}, v::AbstractMatNullSpace) = live_ptr(v)
+Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractMatNullSpace) = live_ptr(v)
+# ------------------------------------------------------
+
+# ------------------------------------------------------
 # Constructors taking the library *type* (wrappers are called with either the petsclib instance
 # or its type, see @for_petsc): look the instance up to get the current age.
-for T in (:PetscVec, :PetscMat, :KSP, :PC, :SNES, :PetscDM, :TS, :PetscOptions, :IS, :PF, :Tao, :AO)
+for T in (:PetscVec, :PetscMat, :KSP, :PC, :SNES, :PetscDM, :TS, :PetscOptions, :IS, :PF, :Tao, :AO, :PetscFE, :DMLabel, :MatNullSpace)
     @eval $T(ptr::Ptr{Cvoid}, ::Type{PetscLib}; own::Bool = true) where {PetscLib} = $T(ptr, getlib(PetscLib); own)
 end
 # ------------------------------------------------------
@@ -338,7 +404,6 @@ const char = Cchar
 
 # PetscDraw and TSMonitorLGCtx are opaque pointer handles declared by the generator (opaque_types.jl);
 # the former `mutable struct PetscDraw end` placeholders made `Ref{PetscDraw}()` an undefined reference.
-const DMLabel = Ptr{Cvoid}  # C typedef struct _n_DMLabel *DMLabel (pointer type)
 mutable struct PetscCtxDestroyFn end
 mutable struct PetscErrorCodeFn end
 

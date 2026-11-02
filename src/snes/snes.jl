@@ -611,7 +611,7 @@ function set_jacobian_nullspace! end
 
 LibPETSc.@for_petsc function set_jacobian_nullspace!(
     snes::LibPETSc.SNES{$PetscLib},
-    nullsp::LibPETSc.MatNullSpace,
+    nullsp::LibPETSc.AbstractMatNullSpace{$PetscLib},
 )
     petsclib = getlib($PetscLib)
     J = LibPETSc.SNESGetJacobianMat(petsclib, snes)

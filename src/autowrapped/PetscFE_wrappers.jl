@@ -1,5 +1,5 @@
 """
-	numSubelements::PetscInt,v0::Ptr{PetscReal},jac::Ptr{PetscReal},invjac::Ptr{PetscReal} = PetscFECompositeGetMapping(petsclib::PetscLibType, fem::PetscFE) 
+	numSubelements::PetscInt,v0::Ptr{PetscReal},jac::Ptr{PetscReal},invjac::Ptr{PetscReal} = PetscFECompositeGetMapping(petsclib::PetscLibType, fem::AbstractPetscFE) 
 Returns the mappings from the reference element to each subelement
 
 Not Collective
@@ -20,11 +20,11 @@ See also: `PetscFE`, `PetscFECreate()`
 # External Links
 $(_doc_external("FE/PetscFECompositeGetMapping"))
 """
-function PetscFECompositeGetMapping(petsclib::PetscLibType, fem::PetscFE)
+function PetscFECompositeGetMapping(petsclib::PetscLibType, fem::AbstractPetscFE)
     throw(MethodError(PetscFECompositeGetMapping, (petsclib, fem)))
 end
 
-@for_petsc function PetscFECompositeGetMapping(petsclib::$UnionPetscLib, fem::PetscFE )
+@for_petsc function PetscFECompositeGetMapping(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
 	numSubelements_ = Ref{$PetscInt}()
 	v0_ = Ref{Ptr{$PetscReal}}()
 	jac_ = Ref{Ptr{$PetscReal}}()
@@ -33,7 +33,7 @@ end
     @chk ccall(
                (:PetscFECompositeGetMapping, $petsc_library),
                PetscErrorCode,
-               (PetscFE, Ptr{$PetscInt}, Ptr{Ptr{$PetscReal}}, Ptr{Ptr{$PetscReal}}, Ptr{Ptr{$PetscReal}}),
+               (CPetscFE, Ptr{$PetscInt}, Ptr{Ptr{$PetscReal}}, Ptr{Ptr{$PetscReal}}, Ptr{Ptr{$PetscReal}}),
                fem, numSubelements_, v0_, jac_, invjac_,
               )
 
@@ -46,7 +46,7 @@ end
 end 
 
 """
-	PetscFEComputeTabulation(petsclib::PetscLibType, fem::PetscFE, npoints::PetscInt, points::Vector{PetscReal}, K::PetscInt, T::PetscTabulation) 
+	PetscFEComputeTabulation(petsclib::PetscLibType, fem::AbstractPetscFE, npoints::PetscInt, points::Vector{PetscReal}, K::PetscInt, T::PetscTabulation) 
 Tabulates the basis functions, and perhaps derivatives, at the points provided.
 
 Not Collective
@@ -68,16 +68,16 @@ See also: `PetscTabulation`, `PetscFEGetCellTabulation()`, `PetscTabulationDestr
 # External Links
 $(_doc_external("FE/PetscFEComputeTabulation"))
 """
-function PetscFEComputeTabulation(petsclib::PetscLibType, fem::PetscFE, npoints::Integer, points::AbstractVector{<:Number}, K::Integer, T::PetscTabulation)
+function PetscFEComputeTabulation(petsclib::PetscLibType, fem::AbstractPetscFE, npoints::Integer, points::AbstractVector{<:Number}, K::Integer, T::PetscTabulation)
     throw(MethodError(PetscFEComputeTabulation, (petsclib, fem, npoints, points, K, T)))
 end
 
-@for_petsc function PetscFEComputeTabulation(petsclib::$UnionPetscLib, fem::PetscFE, npoints::$PetscInt, points::Vector{$PetscReal}, K::$PetscInt, T::PetscTabulation )
+@for_petsc function PetscFEComputeTabulation(petsclib::$UnionPetscLib, fem::AbstractPetscFE, npoints::$PetscInt, points::Vector{$PetscReal}, K::$PetscInt, T::PetscTabulation )
 
     @chk ccall(
                (:PetscFEComputeTabulation, $petsc_library),
                PetscErrorCode,
-               (PetscFE, $PetscInt, Ptr{$PetscReal}, $PetscInt, PetscTabulation),
+               (CPetscFE, $PetscInt, Ptr{$PetscReal}, $PetscInt, PetscTabulation),
                fem, npoints, points, K, T,
               )
 
@@ -86,7 +86,7 @@ end
 end 
 
 """
-	PetscFECopyQuadrature(petsclib::PetscLibType, sfe::PetscFE, tfe::PetscFE) 
+	PetscFECopyQuadrature(petsclib::PetscLibType, sfe::AbstractPetscFE, tfe::AbstractPetscFE) 
 Copy both volumetric and surface quadrature to a new `PetscFE`
 
 Not Collective
@@ -102,16 +102,16 @@ See also: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscQuadrature`, `PetscFE
 # External Links
 $(_doc_external("FE/PetscFECopyQuadrature"))
 """
-function PetscFECopyQuadrature(petsclib::PetscLibType, sfe::PetscFE, tfe::PetscFE)
+function PetscFECopyQuadrature(petsclib::PetscLibType, sfe::AbstractPetscFE, tfe::AbstractPetscFE)
     throw(MethodError(PetscFECopyQuadrature, (petsclib, sfe, tfe)))
 end
 
-@for_petsc function PetscFECopyQuadrature(petsclib::$UnionPetscLib, sfe::PetscFE, tfe::PetscFE )
+@for_petsc function PetscFECopyQuadrature(petsclib::$UnionPetscLib, sfe::AbstractPetscFE, tfe::AbstractPetscFE )
 
     @chk ccall(
                (:PetscFECopyQuadrature, $petsc_library),
                PetscErrorCode,
-               (PetscFE, PetscFE),
+               (CPetscFE, CPetscFE),
                sfe, tfe,
               )
 
@@ -143,22 +143,22 @@ function PetscFECreate(petsclib::PetscLibType, comm::MPI_Comm)
 end
 
 @for_petsc function PetscFECreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
-	fem_ = Ref{PetscFE}()
+	fem_ = Ref{CPetscFE}()
 
     @chk ccall(
                (:PetscFECreate, $petsc_library),
                PetscErrorCode,
-               (MPI_Comm, Ptr{PetscFE}),
+               (MPI_Comm, Ptr{CPetscFE}),
                comm, fem_,
               )
 
-	fem = fem_[]
+	fem = PetscFE(fem_[], petsclib)
 
 	return fem
 end 
 
 """
-	dgfe::PetscFE = PetscFECreateBrokenElement(petsclib::PetscLibType, cgfe::PetscFE) 
+	dgfe::PetscFE = PetscFECreateBrokenElement(petsclib::PetscLibType, cgfe::AbstractPetscFE) 
 Create a discontinuous version of the input `PetscFE`
 
 Collective
@@ -176,21 +176,21 @@ See also: `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`, `Pe
 # External Links
 $(_doc_external("FE/PetscFECreateBrokenElement"))
 """
-function PetscFECreateBrokenElement(petsclib::PetscLibType, cgfe::PetscFE)
+function PetscFECreateBrokenElement(petsclib::PetscLibType, cgfe::AbstractPetscFE)
     throw(MethodError(PetscFECreateBrokenElement, (petsclib, cgfe)))
 end
 
-@for_petsc function PetscFECreateBrokenElement(petsclib::$UnionPetscLib, cgfe::PetscFE )
-	dgfe_ = Ref{PetscFE}()
+@for_petsc function PetscFECreateBrokenElement(petsclib::$UnionPetscLib, cgfe::AbstractPetscFE )
+	dgfe_ = Ref{CPetscFE}()
 
     @chk ccall(
                (:PetscFECreateBrokenElement, $petsc_library),
                PetscErrorCode,
-               (PetscFE, Ptr{PetscFE}),
+               (CPetscFE, Ptr{CPetscFE}),
                cgfe, dgfe_,
               )
 
-	dgfe = dgfe_[]
+	dgfe = PetscFE(dgfe_[], petsclib)
 
 	return dgfe
 end 
@@ -225,22 +225,22 @@ function PetscFECreateByCell(petsclib::PetscLibType, comm::MPI_Comm, dim::Intege
 end
 
 @for_petsc function PetscFECreateByCell(petsclib::$UnionPetscLib, comm::MPI_Comm, dim::$PetscInt, Nc::$PetscInt, ct::DMPolytopeType, prefix::String, qorder::$PetscInt )
-	fem_ = Ref{PetscFE}()
+	fem_ = Ref{CPetscFE}()
 
     @chk ccall(
                (:PetscFECreateByCell, $petsc_library),
                PetscErrorCode,
-               (MPI_Comm, $PetscInt, $PetscInt, DMPolytopeType, Ptr{Cchar}, $PetscInt, Ptr{PetscFE}),
+               (MPI_Comm, $PetscInt, $PetscInt, DMPolytopeType, Ptr{Cchar}, $PetscInt, Ptr{CPetscFE}),
                comm, dim, Nc, ct, prefix, qorder, fem_,
               )
 
-	fem = fem_[]
+	fem = PetscFE(fem_[], petsclib)
 
 	return fem
 end 
 
 """
-	cgeom::PetscFEGeom = PetscFECreateCellGeometry(petsclib::PetscLibType, fe::PetscFE, quad::PetscQuadrature) 
+	cgeom::PetscFEGeom = PetscFECreateCellGeometry(petsclib::PetscLibType, fe::AbstractPetscFE, quad::PetscQuadrature) 
 Populates the arrays in a `PetscFEGeom` for a single reference cell of a `PetscFE`.
 
 Not Collective
@@ -259,17 +259,17 @@ See also: `PetscFE`, `PetscFEGeom`, `PetscFEDestroyCellGeometry()`, `PetscFEGetQ
 # External Links
 $(_doc_external("FE/PetscFECreateCellGeometry"))
 """
-function PetscFECreateCellGeometry(petsclib::PetscLibType, fe::PetscFE, quad::PetscQuadrature)
+function PetscFECreateCellGeometry(petsclib::PetscLibType, fe::AbstractPetscFE, quad::PetscQuadrature)
     throw(MethodError(PetscFECreateCellGeometry, (petsclib, fe, quad)))
 end
 
-@for_petsc function PetscFECreateCellGeometry(petsclib::$UnionPetscLib, fe::PetscFE, quad::PetscQuadrature )
+@for_petsc function PetscFECreateCellGeometry(petsclib::$UnionPetscLib, fe::AbstractPetscFE, quad::PetscQuadrature )
 	cgeom_ = Ref{PetscFEGeom}()
 
     @chk ccall(
                (:PetscFECreateCellGeometry, $petsc_library),
                PetscErrorCode,
-               (PetscFE, PetscQuadrature, Ptr{PetscFEGeom}),
+               (CPetscFE, PetscQuadrature, Ptr{PetscFEGeom}),
                fe, quad, cgeom_,
               )
 
@@ -308,16 +308,16 @@ function PetscFECreateDefault(petsclib::PetscLibType, comm::MPI_Comm, dim::Integ
 end
 
 @for_petsc function PetscFECreateDefault(petsclib::$UnionPetscLib, comm::MPI_Comm, dim::$PetscInt, Nc::$PetscInt, isSimplex::PetscBool, prefix::String, qorder::$PetscInt )
-	fem_ = Ref{PetscFE}()
+	fem_ = Ref{CPetscFE}()
 
     @chk ccall(
                (:PetscFECreateDefault, $petsc_library),
                PetscErrorCode,
-               (MPI_Comm, $PetscInt, $PetscInt, PetscBool, Ptr{Cchar}, $PetscInt, Ptr{PetscFE}),
+               (MPI_Comm, $PetscInt, $PetscInt, PetscBool, Ptr{Cchar}, $PetscInt, Ptr{CPetscFE}),
                comm, dim, Nc, isSimplex, prefix, qorder, fem_,
               )
 
-	fem = fem_[]
+	fem = PetscFE(fem_[], petsclib)
 
 	return fem
 end 
@@ -350,22 +350,22 @@ function PetscFECreateFromSpaces(petsclib::PetscLibType, P::PetscSpace, Q::Petsc
 end
 
 @for_petsc function PetscFECreateFromSpaces(petsclib::$UnionPetscLib, P::PetscSpace, Q::PetscDualSpace, M_q::PetscQuadrature, fq::PetscQuadrature )
-	fem_ = Ref{PetscFE}()
+	fem_ = Ref{CPetscFE}()
 
     @chk ccall(
                (:PetscFECreateFromSpaces, $petsc_library),
                PetscErrorCode,
-               (PetscSpace, PetscDualSpace, PetscQuadrature, PetscQuadrature, Ptr{PetscFE}),
+               (PetscSpace, PetscDualSpace, PetscQuadrature, PetscQuadrature, Ptr{CPetscFE}),
                P, Q, M_q, fq, fem_,
               )
 
-	fem = fem_[]
+	fem = PetscFE(fem_[], petsclib)
 
 	return fem
 end 
 
 """
-	trFE::PetscFE = PetscFECreateHeightTrace(petsclib::PetscLibType, fe::PetscFE, height::PetscInt) 
+	trFE::PetscFE = PetscFECreateHeightTrace(petsclib::PetscLibType, fe::AbstractPetscFE, height::PetscInt) 
 Create the trace `PetscFE` for the first mesh point of the given height stratum.
 
 Not Collective
@@ -384,21 +384,21 @@ See also: `PetscFE`, `PetscFECreatePointTrace()`, `PetscFEGetHeightSubspace()`, 
 # External Links
 $(_doc_external("FE/PetscFECreateHeightTrace"))
 """
-function PetscFECreateHeightTrace(petsclib::PetscLibType, fe::PetscFE, height::Integer)
+function PetscFECreateHeightTrace(petsclib::PetscLibType, fe::AbstractPetscFE, height::Integer)
     throw(MethodError(PetscFECreateHeightTrace, (petsclib, fe, height)))
 end
 
-@for_petsc function PetscFECreateHeightTrace(petsclib::$UnionPetscLib, fe::PetscFE, height::$PetscInt )
-	trFE_ = Ref{PetscFE}()
+@for_petsc function PetscFECreateHeightTrace(petsclib::$UnionPetscLib, fe::AbstractPetscFE, height::$PetscInt )
+	trFE_ = Ref{CPetscFE}()
 
     @chk ccall(
                (:PetscFECreateHeightTrace, $petsc_library),
                PetscErrorCode,
-               (PetscFE, $PetscInt, Ptr{PetscFE}),
+               (CPetscFE, $PetscInt, Ptr{CPetscFE}),
                fe, height, trFE_,
               )
 
-	trFE = trFE_[]
+	trFE = PetscFE(trFE_[], petsclib)
 
 	return trFE
 end 
@@ -432,16 +432,16 @@ function PetscFECreateLagrange(petsclib::PetscLibType, comm::MPI_Comm, dim::Inte
 end
 
 @for_petsc function PetscFECreateLagrange(petsclib::$UnionPetscLib, comm::MPI_Comm, dim::$PetscInt, Nc::$PetscInt, isSimplex::PetscBool, k::$PetscInt, qorder::$PetscInt )
-	fem_ = Ref{PetscFE}()
+	fem_ = Ref{CPetscFE}()
 
     @chk ccall(
                (:PetscFECreateLagrange, $petsc_library),
                PetscErrorCode,
-               (MPI_Comm, $PetscInt, $PetscInt, PetscBool, $PetscInt, $PetscInt, Ptr{PetscFE}),
+               (MPI_Comm, $PetscInt, $PetscInt, PetscBool, $PetscInt, $PetscInt, Ptr{CPetscFE}),
                comm, dim, Nc, isSimplex, k, qorder, fem_,
               )
 
-	fem = fem_[]
+	fem = PetscFE(fem_[], petsclib)
 
 	return fem
 end 
@@ -476,22 +476,22 @@ function PetscFECreateLagrangeByCell(petsclib::PetscLibType, comm::MPI_Comm, dim
 end
 
 @for_petsc function PetscFECreateLagrangeByCell(petsclib::$UnionPetscLib, comm::MPI_Comm, dim::$PetscInt, Nc::$PetscInt, ct::DMPolytopeType, k::$PetscInt, qorder::$PetscInt )
-	fem_ = Ref{PetscFE}()
+	fem_ = Ref{CPetscFE}()
 
     @chk ccall(
                (:PetscFECreateLagrangeByCell, $petsc_library),
                PetscErrorCode,
-               (MPI_Comm, $PetscInt, $PetscInt, DMPolytopeType, $PetscInt, $PetscInt, Ptr{PetscFE}),
+               (MPI_Comm, $PetscInt, $PetscInt, DMPolytopeType, $PetscInt, $PetscInt, Ptr{CPetscFE}),
                comm, dim, Nc, ct, k, qorder, fem_,
               )
 
-	fem = fem_[]
+	fem = PetscFE(fem_[], petsclib)
 
 	return fem
 end 
 
 """
-	T::PetscTabulation = PetscFECreateTabulation(petsclib::PetscLibType, fem::PetscFE, nrepl::PetscInt, npoints::PetscInt, points::Vector{PetscReal}, K::PetscInt) 
+	T::PetscTabulation = PetscFECreateTabulation(petsclib::PetscLibType, fem::AbstractPetscFE, nrepl::PetscInt, npoints::PetscInt, points::Vector{PetscReal}, K::PetscInt) 
 Creates a `PetscTabulation` object to hold the basis functions, and perhaps derivatives, at the points provided.
 
 Not Collective
@@ -513,17 +513,17 @@ See also: `PetscTabulation`, `PetscFEGetCellTabulation()`, `PetscTabulationDestr
 # External Links
 $(_doc_external("FE/PetscFECreateTabulation"))
 """
-function PetscFECreateTabulation(petsclib::PetscLibType, fem::PetscFE, nrepl::Integer, npoints::Integer, points::AbstractVector{<:Number}, K::Integer)
+function PetscFECreateTabulation(petsclib::PetscLibType, fem::AbstractPetscFE, nrepl::Integer, npoints::Integer, points::AbstractVector{<:Number}, K::Integer)
     throw(MethodError(PetscFECreateTabulation, (petsclib, fem, nrepl, npoints, points, K)))
 end
 
-@for_petsc function PetscFECreateTabulation(petsclib::$UnionPetscLib, fem::PetscFE, nrepl::$PetscInt, npoints::$PetscInt, points::Vector{$PetscReal}, K::$PetscInt )
+@for_petsc function PetscFECreateTabulation(petsclib::$UnionPetscLib, fem::AbstractPetscFE, nrepl::$PetscInt, npoints::$PetscInt, points::Vector{$PetscReal}, K::$PetscInt )
 	T_ = Ref{PetscTabulation}()
 
     @chk ccall(
                (:PetscFECreateTabulation, $petsc_library),
                PetscErrorCode,
-               (PetscFE, $PetscInt, $PetscInt, Ptr{$PetscReal}, $PetscInt, Ptr{PetscTabulation}),
+               (CPetscFE, $PetscInt, $PetscInt, Ptr{$PetscReal}, $PetscInt, Ptr{PetscTabulation}),
                fem, nrepl, npoints, points, K, T_,
               )
 
@@ -533,7 +533,7 @@ end
 end 
 
 """
-	vector_fe::PetscFE = PetscFECreateVector(petsclib::PetscLibType, scalar_fe::PetscFE, num_copies::PetscInt, interleave_basis::PetscBool, interleave_components::PetscBool) 
+	vector_fe::PetscFE = PetscFECreateVector(petsclib::PetscLibType, scalar_fe::AbstractPetscFE, num_copies::PetscInt, interleave_basis::PetscBool, interleave_components::PetscBool) 
 Create a vector-valued `PetscFE` from multiple copies of an underlying
 `PetscFE`.
 
@@ -565,27 +565,27 @@ See also: `PetscFE`, `PetscFEType`, `PetscFECreate()`, `PetscFESetType()`, `PETS
 # External Links
 $(_doc_external("FE/PetscFECreateVector"))
 """
-function PetscFECreateVector(petsclib::PetscLibType, scalar_fe::PetscFE, num_copies::Integer, interleave_basis::PetscBool, interleave_components::PetscBool)
+function PetscFECreateVector(petsclib::PetscLibType, scalar_fe::AbstractPetscFE, num_copies::Integer, interleave_basis::PetscBool, interleave_components::PetscBool)
     throw(MethodError(PetscFECreateVector, (petsclib, scalar_fe, num_copies, interleave_basis, interleave_components)))
 end
 
-@for_petsc function PetscFECreateVector(petsclib::$UnionPetscLib, scalar_fe::PetscFE, num_copies::$PetscInt, interleave_basis::PetscBool, interleave_components::PetscBool )
-	vector_fe_ = Ref{PetscFE}()
+@for_petsc function PetscFECreateVector(petsclib::$UnionPetscLib, scalar_fe::AbstractPetscFE, num_copies::$PetscInt, interleave_basis::PetscBool, interleave_components::PetscBool )
+	vector_fe_ = Ref{CPetscFE}()
 
     @chk ccall(
                (:PetscFECreateVector, $petsc_library),
                PetscErrorCode,
-               (PetscFE, $PetscInt, PetscBool, PetscBool, Ptr{PetscFE}),
+               (CPetscFE, $PetscInt, PetscBool, PetscBool, Ptr{CPetscFE}),
                scalar_fe, num_copies, interleave_basis, interleave_components, vector_fe_,
               )
 
-	vector_fe = vector_fe_[]
+	vector_fe = PetscFE(vector_fe_[], petsclib)
 
 	return vector_fe
 end 
 
 """
-	PetscFEDestroy(petsclib::PetscLibType, fem::Union{PetscFE, Ref{PetscFE}}) 
+	PetscFEDestroy(petsclib::PetscLibType, fem::AbstractPetscFE) 
 Destroys a `PetscFE` object
 
 Collective
@@ -600,26 +600,27 @@ See also: `PetscFE`, `PetscFEView()`
 # External Links
 $(_doc_external("FE/PetscFEDestroy"))
 """
-function PetscFEDestroy(petsclib::PetscLibType, fem::Union{PetscFE, Ref{PetscFE}})
+function PetscFEDestroy(petsclib::PetscLibType, fem::AbstractPetscFE)
     throw(MethodError(PetscFEDestroy, (petsclib, fem)))
 end
 
-@for_petsc function PetscFEDestroy(petsclib::$UnionPetscLib, fem::Union{PetscFE, Ref{PetscFE}} )
-	fem_ = fem isa Base.RefValue ? fem : Ref{PetscFE}(fem)
+@for_petsc function PetscFEDestroy(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
+	fem_ = Ref(fem.ptr)
 
     @chk ccall(
                (:PetscFEDestroy, $petsc_library),
                PetscErrorCode,
-               (Ptr{PetscFE},),
+               (Ptr{CPetscFE},),
                fem_,
               )
 
+	fem.ptr = C_NULL
 
 	return nothing
 end 
 
 """
-	PetscFEDestroyCellGeometry(petsclib::PetscLibType, fe::PetscFE, cgeom::Vector{PetscFEGeom}) 
+	PetscFEDestroyCellGeometry(petsclib::PetscLibType, fe::AbstractPetscFE, cgeom::Vector{PetscFEGeom}) 
 Free the arrays inside a `PetscFEGeom` allocated by `PetscFECreateCellGeometry()`.
 
 Not Collective
@@ -635,16 +636,16 @@ See also: `PetscFE`, `PetscFEGeom`, `PetscFECreateCellGeometry()`
 # External Links
 $(_doc_external("FE/PetscFEDestroyCellGeometry"))
 """
-function PetscFEDestroyCellGeometry(petsclib::PetscLibType, fe::PetscFE, cgeom::Vector{PetscFEGeom})
+function PetscFEDestroyCellGeometry(petsclib::PetscLibType, fe::AbstractPetscFE, cgeom::Vector{PetscFEGeom})
     throw(MethodError(PetscFEDestroyCellGeometry, (petsclib, fe, cgeom)))
 end
 
-@for_petsc function PetscFEDestroyCellGeometry(petsclib::$UnionPetscLib, fe::PetscFE, cgeom::Vector{PetscFEGeom} )
+@for_petsc function PetscFEDestroyCellGeometry(petsclib::$UnionPetscLib, fe::AbstractPetscFE, cgeom::Vector{PetscFEGeom} )
 
     @chk ccall(
                (:PetscFEDestroyCellGeometry, $petsc_library),
                PetscErrorCode,
-               (PetscFE, Ptr{PetscFEGeom}),
+               (CPetscFE, Ptr{PetscFEGeom}),
                fe, cgeom,
               )
 
@@ -653,7 +654,7 @@ end
 end 
 
 """
-	efq::PetscQuadrature = PetscFEExpandFaceQuadrature(petsclib::PetscLibType, fe::PetscFE, fq::PetscQuadrature) 
+	efq::PetscQuadrature = PetscFEExpandFaceQuadrature(petsclib::PetscLibType, fe::AbstractPetscFE, fq::PetscQuadrature) 
 Expand a face quadrature into a cell quadrature by mapping the face
 quadrature points and weights through each face of the cell reference geometry.
 
@@ -673,17 +674,17 @@ See also: `PetscFE`, `PetscQuadrature`, `PetscFECreateFaceQuadrature()`, `PetscF
 # External Links
 $(_doc_external("FE/PetscFEExpandFaceQuadrature"))
 """
-function PetscFEExpandFaceQuadrature(petsclib::PetscLibType, fe::PetscFE, fq::PetscQuadrature)
+function PetscFEExpandFaceQuadrature(petsclib::PetscLibType, fe::AbstractPetscFE, fq::PetscQuadrature)
     throw(MethodError(PetscFEExpandFaceQuadrature, (petsclib, fe, fq)))
 end
 
-@for_petsc function PetscFEExpandFaceQuadrature(petsclib::$UnionPetscLib, fe::PetscFE, fq::PetscQuadrature )
+@for_petsc function PetscFEExpandFaceQuadrature(petsclib::$UnionPetscLib, fe::AbstractPetscFE, fq::PetscQuadrature )
 	efq_ = Ref{PetscQuadrature}()
 
     @chk ccall(
                (:PetscFEExpandFaceQuadrature, $petsc_library),
                PetscErrorCode,
-               (PetscFE, PetscQuadrature, Ptr{PetscQuadrature}),
+               (CPetscFE, PetscQuadrature, Ptr{PetscQuadrature}),
                fe, fq, efq_,
               )
 
@@ -971,7 +972,7 @@ end
 end 
 
 """
-	sp::PetscSpace = PetscFEGetBasisSpace(petsclib::PetscLibType, fem::PetscFE) 
+	sp::PetscSpace = PetscFEGetBasisSpace(petsclib::PetscLibType, fem::AbstractPetscFE) 
 Returns the `PetscSpace` used for the approximation of the solution for the `PetscFE`
 
 Not Collective
@@ -989,17 +990,17 @@ See also: `PetscFE`, `PetscSpace`, `PetscFECreate()`
 # External Links
 $(_doc_external("FE/PetscFEGetBasisSpace"))
 """
-function PetscFEGetBasisSpace(petsclib::PetscLibType, fem::PetscFE)
+function PetscFEGetBasisSpace(petsclib::PetscLibType, fem::AbstractPetscFE)
     throw(MethodError(PetscFEGetBasisSpace, (petsclib, fem)))
 end
 
-@for_petsc function PetscFEGetBasisSpace(petsclib::$UnionPetscLib, fem::PetscFE )
+@for_petsc function PetscFEGetBasisSpace(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
 	sp_ = Ref{PetscSpace}()
 
     @chk ccall(
                (:PetscFEGetBasisSpace, $petsc_library),
                PetscErrorCode,
-               (PetscFE, Ptr{PetscSpace}),
+               (CPetscFE, Ptr{PetscSpace}),
                fem, sp_,
               )
 
@@ -1009,7 +1010,7 @@ end
 end 
 
 """
-	T::PetscTabulation = PetscFEGetCellTabulation(petsclib::PetscLibType, fem::PetscFE, k::PetscInt) 
+	T::PetscTabulation = PetscFEGetCellTabulation(petsclib::PetscLibType, fem::AbstractPetscFE, k::PetscInt) 
 Returns the tabulation of the basis functions at the quadrature points on the reference cell
 
 Not Collective
@@ -1028,17 +1029,17 @@ See also: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscTabulation`, `PetscFE
 # External Links
 $(_doc_external("FE/PetscFEGetCellTabulation"))
 """
-function PetscFEGetCellTabulation(petsclib::PetscLibType, fem::PetscFE, k::Integer)
+function PetscFEGetCellTabulation(petsclib::PetscLibType, fem::AbstractPetscFE, k::Integer)
     throw(MethodError(PetscFEGetCellTabulation, (petsclib, fem, k)))
 end
 
-@for_petsc function PetscFEGetCellTabulation(petsclib::$UnionPetscLib, fem::PetscFE, k::$PetscInt )
+@for_petsc function PetscFEGetCellTabulation(petsclib::$UnionPetscLib, fem::AbstractPetscFE, k::$PetscInt )
 	T_ = Ref{PetscTabulation}()
 
     @chk ccall(
                (:PetscFEGetCellTabulation, $petsc_library),
                PetscErrorCode,
-               (PetscFE, $PetscInt, Ptr{PetscTabulation}),
+               (CPetscFE, $PetscInt, Ptr{PetscTabulation}),
                fem, k, T_,
               )
 
@@ -1048,7 +1049,7 @@ end
 end 
 
 """
-	dim::PetscInt = PetscFEGetDimension(petsclib::PetscLibType, fem::PetscFE) 
+	dim::PetscInt = PetscFEGetDimension(petsclib::PetscLibType, fem::AbstractPetscFE) 
 Get the dimension of the finite element space on a cell
 
 Not Collective
@@ -1066,17 +1067,17 @@ See also: `PetscFE`, `PetscFECreate()`, `PetscSpaceGetDimension()`, `PetscDualSp
 # External Links
 $(_doc_external("FE/PetscFEGetDimension"))
 """
-function PetscFEGetDimension(petsclib::PetscLibType, fem::PetscFE)
+function PetscFEGetDimension(petsclib::PetscLibType, fem::AbstractPetscFE)
     throw(MethodError(PetscFEGetDimension, (petsclib, fem)))
 end
 
-@for_petsc function PetscFEGetDimension(petsclib::$UnionPetscLib, fem::PetscFE )
+@for_petsc function PetscFEGetDimension(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
 	dim_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscFEGetDimension, $petsc_library),
                PetscErrorCode,
-               (PetscFE, Ptr{$PetscInt}),
+               (CPetscFE, Ptr{$PetscInt}),
                fem, dim_,
               )
 
@@ -1086,7 +1087,7 @@ end
 end 
 
 """
-	sp::PetscDualSpace = PetscFEGetDualSpace(petsclib::PetscLibType, fem::PetscFE) 
+	sp::PetscDualSpace = PetscFEGetDualSpace(petsclib::PetscLibType, fem::AbstractPetscFE) 
 Returns the `PetscDualSpace` used to define the inner product for a `PetscFE`
 
 Not Collective
@@ -1104,17 +1105,17 @@ See also: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscFECreate()`
 # External Links
 $(_doc_external("FE/PetscFEGetDualSpace"))
 """
-function PetscFEGetDualSpace(petsclib::PetscLibType, fem::PetscFE)
+function PetscFEGetDualSpace(petsclib::PetscLibType, fem::AbstractPetscFE)
     throw(MethodError(PetscFEGetDualSpace, (petsclib, fem)))
 end
 
-@for_petsc function PetscFEGetDualSpace(petsclib::$UnionPetscLib, fem::PetscFE )
+@for_petsc function PetscFEGetDualSpace(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
 	sp_ = Ref{PetscDualSpace}()
 
     @chk ccall(
                (:PetscFEGetDualSpace, $petsc_library),
                PetscErrorCode,
-               (PetscFE, Ptr{PetscDualSpace}),
+               (CPetscFE, Ptr{PetscDualSpace}),
                fem, sp_,
               )
 
@@ -1124,7 +1125,7 @@ end
 end 
 
 """
-	Tc::PetscTabulation = PetscFEGetFaceCentroidTabulation(petsclib::PetscLibType, fem::PetscFE) 
+	Tc::PetscTabulation = PetscFEGetFaceCentroidTabulation(petsclib::PetscLibType, fem::AbstractPetscFE) 
 Returns the tabulation of the basis functions at the face centroid points
 
 Not Collective
@@ -1142,17 +1143,17 @@ See also: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscTabulation`, `PetscFE
 # External Links
 $(_doc_external("FE/PetscFEGetFaceCentroidTabulation"))
 """
-function PetscFEGetFaceCentroidTabulation(petsclib::PetscLibType, fem::PetscFE)
+function PetscFEGetFaceCentroidTabulation(petsclib::PetscLibType, fem::AbstractPetscFE)
     throw(MethodError(PetscFEGetFaceCentroidTabulation, (petsclib, fem)))
 end
 
-@for_petsc function PetscFEGetFaceCentroidTabulation(petsclib::$UnionPetscLib, fem::PetscFE )
+@for_petsc function PetscFEGetFaceCentroidTabulation(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
 	Tc_ = Ref{PetscTabulation}()
 
     @chk ccall(
                (:PetscFEGetFaceCentroidTabulation, $petsc_library),
                PetscErrorCode,
-               (PetscFE, Ptr{PetscTabulation}),
+               (CPetscFE, Ptr{PetscTabulation}),
                fem, Tc_,
               )
 
@@ -1162,7 +1163,7 @@ end
 end 
 
 """
-	q::PetscQuadrature = PetscFEGetFaceQuadrature(petsclib::PetscLibType, fem::PetscFE) 
+	q::PetscQuadrature = PetscFEGetFaceQuadrature(petsclib::PetscLibType, fem::AbstractPetscFE) 
 Returns the `PetscQuadrature` used to calculate inner products on faces
 
 Not Collective
@@ -1180,17 +1181,17 @@ See also: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscQuadrature`, `PetscFE
 # External Links
 $(_doc_external("FE/PetscFEGetFaceQuadrature"))
 """
-function PetscFEGetFaceQuadrature(petsclib::PetscLibType, fem::PetscFE)
+function PetscFEGetFaceQuadrature(petsclib::PetscLibType, fem::AbstractPetscFE)
     throw(MethodError(PetscFEGetFaceQuadrature, (petsclib, fem)))
 end
 
-@for_petsc function PetscFEGetFaceQuadrature(petsclib::$UnionPetscLib, fem::PetscFE )
+@for_petsc function PetscFEGetFaceQuadrature(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
 	q_ = Ref{PetscQuadrature}()
 
     @chk ccall(
                (:PetscFEGetFaceQuadrature, $petsc_library),
                PetscErrorCode,
-               (PetscFE, Ptr{PetscQuadrature}),
+               (CPetscFE, Ptr{PetscQuadrature}),
                fem, q_,
               )
 
@@ -1200,7 +1201,7 @@ end
 end 
 
 """
-	Tf::PetscTabulation = PetscFEGetFaceTabulation(petsclib::PetscLibType, fem::PetscFE, k::PetscInt) 
+	Tf::PetscTabulation = PetscFEGetFaceTabulation(petsclib::PetscLibType, fem::AbstractPetscFE, k::PetscInt) 
 Returns the tabulation of the basis functions at the face quadrature points for each face of the reference cell
 
 Not Collective
@@ -1219,17 +1220,17 @@ See also: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscTabulation`, `PetscFE
 # External Links
 $(_doc_external("FE/PetscFEGetFaceTabulation"))
 """
-function PetscFEGetFaceTabulation(petsclib::PetscLibType, fem::PetscFE, k::Integer)
+function PetscFEGetFaceTabulation(petsclib::PetscLibType, fem::AbstractPetscFE, k::Integer)
     throw(MethodError(PetscFEGetFaceTabulation, (petsclib, fem, k)))
 end
 
-@for_petsc function PetscFEGetFaceTabulation(petsclib::$UnionPetscLib, fem::PetscFE, k::$PetscInt )
+@for_petsc function PetscFEGetFaceTabulation(petsclib::$UnionPetscLib, fem::AbstractPetscFE, k::$PetscInt )
 	Tf_ = Ref{PetscTabulation}()
 
     @chk ccall(
                (:PetscFEGetFaceTabulation, $petsc_library),
                PetscErrorCode,
-               (PetscFE, $PetscInt, Ptr{PetscTabulation}),
+               (CPetscFE, $PetscInt, Ptr{PetscTabulation}),
                fem, k, Tf_,
               )
 
@@ -1239,7 +1240,7 @@ end
 end 
 
 """
-	subfe::PetscFE = PetscFEGetHeightSubspace(petsclib::PetscLibType, fe::PetscFE, height::PetscInt) 
+	subfe::PetscFE = PetscFEGetHeightSubspace(petsclib::PetscLibType, fe::AbstractPetscFE, height::PetscInt) 
 Get the subspace of this space for a mesh point of a given height
 
 Input Parameters:
@@ -1256,27 +1257,27 @@ See also: `PetscFECreateDefault()`
 # External Links
 $(_doc_external("FE/PetscFEGetHeightSubspace"))
 """
-function PetscFEGetHeightSubspace(petsclib::PetscLibType, fe::PetscFE, height::Integer)
+function PetscFEGetHeightSubspace(petsclib::PetscLibType, fe::AbstractPetscFE, height::Integer)
     throw(MethodError(PetscFEGetHeightSubspace, (petsclib, fe, height)))
 end
 
-@for_petsc function PetscFEGetHeightSubspace(petsclib::$UnionPetscLib, fe::PetscFE, height::$PetscInt )
-	subfe_ = Ref{PetscFE}()
+@for_petsc function PetscFEGetHeightSubspace(petsclib::$UnionPetscLib, fe::AbstractPetscFE, height::$PetscInt )
+	subfe_ = Ref{CPetscFE}()
 
     @chk ccall(
                (:PetscFEGetHeightSubspace, $petsc_library),
                PetscErrorCode,
-               (PetscFE, $PetscInt, Ptr{PetscFE}),
+               (CPetscFE, $PetscInt, Ptr{CPetscFE}),
                fe, height, subfe_,
               )
 
-	subfe = subfe_[]
+	subfe = PetscFE(subfe_[], petsclib; own = false)
 
 	return subfe
 end 
 
 """
-	comp::PetscInt = PetscFEGetNumComponents(petsclib::PetscLibType, fem::PetscFE) 
+	comp::PetscInt = PetscFEGetNumComponents(petsclib::PetscLibType, fem::AbstractPetscFE) 
 Returns the number of components in the element
 
 Not Collective
@@ -1294,17 +1295,17 @@ See also: `PetscFE`, `PetscFECreate()`, `PetscFEGetSpatialDimension()`
 # External Links
 $(_doc_external("FE/PetscFEGetNumComponents"))
 """
-function PetscFEGetNumComponents(petsclib::PetscLibType, fem::PetscFE)
+function PetscFEGetNumComponents(petsclib::PetscLibType, fem::AbstractPetscFE)
     throw(MethodError(PetscFEGetNumComponents, (petsclib, fem)))
 end
 
-@for_petsc function PetscFEGetNumComponents(petsclib::$UnionPetscLib, fem::PetscFE )
+@for_petsc function PetscFEGetNumComponents(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
 	comp_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscFEGetNumComponents, $petsc_library),
                PetscErrorCode,
-               (PetscFE, Ptr{$PetscInt}),
+               (CPetscFE, Ptr{$PetscInt}),
                fem, comp_,
               )
 
@@ -1314,7 +1315,7 @@ end
 end 
 
 """
-	numDof::Vector{PetscInt} = PetscFEGetNumDof(petsclib::PetscLibType, fem::PetscFE) 
+	numDof::Vector{PetscInt} = PetscFEGetNumDof(petsclib::PetscLibType, fem::AbstractPetscFE) 
 Returns the number of dofs (dual basis vectors) associated to mesh points on the reference cell of a given dimension
 
 Not Collective
@@ -1332,17 +1333,17 @@ See also: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscFECreate()`
 # External Links
 $(_doc_external("FE/PetscFEGetNumDof"))
 """
-function PetscFEGetNumDof(petsclib::PetscLibType, fem::PetscFE)
+function PetscFEGetNumDof(petsclib::PetscLibType, fem::AbstractPetscFE)
     throw(MethodError(PetscFEGetNumDof, (petsclib, fem)))
 end
 
-@for_petsc function PetscFEGetNumDof(petsclib::$UnionPetscLib, fem::PetscFE )
+@for_petsc function PetscFEGetNumDof(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
 	numDof_ = Ref{Ptr{$PetscInt}}()
 
     @chk ccall(
                (:PetscFEGetNumDof, $petsc_library),
                PetscErrorCode,
-               (PetscFE, Ptr{Ptr{$PetscInt}}),
+               (CPetscFE, Ptr{Ptr{$PetscInt}}),
                fem, numDof_,
               )
 
@@ -1353,7 +1354,7 @@ end
 end 
 
 """
-	q::PetscQuadrature = PetscFEGetQuadrature(petsclib::PetscLibType, fem::PetscFE) 
+	q::PetscQuadrature = PetscFEGetQuadrature(petsclib::PetscLibType, fem::AbstractPetscFE) 
 Returns the `PetscQuadrature` used to calculate inner products
 
 Not Collective
@@ -1371,17 +1372,17 @@ See also: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscQuadrature`, `PetscFE
 # External Links
 $(_doc_external("FE/PetscFEGetQuadrature"))
 """
-function PetscFEGetQuadrature(petsclib::PetscLibType, fem::PetscFE)
+function PetscFEGetQuadrature(petsclib::PetscLibType, fem::AbstractPetscFE)
     throw(MethodError(PetscFEGetQuadrature, (petsclib, fem)))
 end
 
-@for_petsc function PetscFEGetQuadrature(petsclib::$UnionPetscLib, fem::PetscFE )
+@for_petsc function PetscFEGetQuadrature(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
 	q_ = Ref{PetscQuadrature}()
 
     @chk ccall(
                (:PetscFEGetQuadrature, $petsc_library),
                PetscErrorCode,
-               (PetscFE, Ptr{PetscQuadrature}),
+               (CPetscFE, Ptr{PetscQuadrature}),
                fem, q_,
               )
 
@@ -1391,7 +1392,7 @@ end
 end 
 
 """
-	dim::PetscInt = PetscFEGetSpatialDimension(petsclib::PetscLibType, fem::PetscFE) 
+	dim::PetscInt = PetscFEGetSpatialDimension(petsclib::PetscLibType, fem::AbstractPetscFE) 
 Returns the spatial dimension of the element
 
 Not Collective
@@ -1409,17 +1410,17 @@ See also: `PetscFE`, `PetscFECreate()`
 # External Links
 $(_doc_external("FE/PetscFEGetSpatialDimension"))
 """
-function PetscFEGetSpatialDimension(petsclib::PetscLibType, fem::PetscFE)
+function PetscFEGetSpatialDimension(petsclib::PetscLibType, fem::AbstractPetscFE)
     throw(MethodError(PetscFEGetSpatialDimension, (petsclib, fem)))
 end
 
-@for_petsc function PetscFEGetSpatialDimension(petsclib::$UnionPetscLib, fem::PetscFE )
+@for_petsc function PetscFEGetSpatialDimension(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
 	dim_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscFEGetSpatialDimension, $petsc_library),
                PetscErrorCode,
-               (PetscFE, Ptr{$PetscInt}),
+               (CPetscFE, Ptr{$PetscInt}),
                fem, dim_,
               )
 
@@ -1429,7 +1430,7 @@ end
 end 
 
 """
-	blockSize::PetscInt,numBlocks::PetscInt,batchSize::PetscInt,numBatches::PetscInt = PetscFEGetTileSizes(petsclib::PetscLibType, fem::PetscFE) 
+	blockSize::PetscInt,numBlocks::PetscInt,batchSize::PetscInt,numBatches::PetscInt = PetscFEGetTileSizes(petsclib::PetscLibType, fem::AbstractPetscFE) 
 Returns the tile sizes for evaluation
 
 Not Collective
@@ -1450,11 +1451,11 @@ See also: `PetscFE`, `PetscFECreate()`, `PetscFESetTileSizes()`
 # External Links
 $(_doc_external("FE/PetscFEGetTileSizes"))
 """
-function PetscFEGetTileSizes(petsclib::PetscLibType, fem::PetscFE)
+function PetscFEGetTileSizes(petsclib::PetscLibType, fem::AbstractPetscFE)
     throw(MethodError(PetscFEGetTileSizes, (petsclib, fem)))
 end
 
-@for_petsc function PetscFEGetTileSizes(petsclib::$UnionPetscLib, fem::PetscFE )
+@for_petsc function PetscFEGetTileSizes(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
 	blockSize_ = Ref{$PetscInt}()
 	numBlocks_ = Ref{$PetscInt}()
 	batchSize_ = Ref{$PetscInt}()
@@ -1463,7 +1464,7 @@ end
     @chk ccall(
                (:PetscFEGetTileSizes, $petsc_library),
                PetscErrorCode,
-               (PetscFE, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}),
+               (CPetscFE, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}),
                fem, blockSize_, numBlocks_, batchSize_, numBatches_,
               )
 
@@ -1476,7 +1477,7 @@ end
 end 
 
 """
-	name::String = PetscFEGetType(petsclib::PetscLibType, fem::PetscFE) 
+	name::String = PetscFEGetType(petsclib::PetscLibType, fem::AbstractPetscFE) 
 Gets the `PetscFEType` (as a string) from the `PetscFE` object.
 
 Not Collective
@@ -1494,17 +1495,17 @@ See also: `PetscFEType`, `PetscFE`, `PetscFESetType()`, `PetscFECreate()`
 # External Links
 $(_doc_external("FE/PetscFEGetType"))
 """
-function PetscFEGetType(petsclib::PetscLibType, fem::PetscFE)
+function PetscFEGetType(petsclib::PetscLibType, fem::AbstractPetscFE)
     throw(MethodError(PetscFEGetType, (petsclib, fem)))
 end
 
-@for_petsc function PetscFEGetType(petsclib::$UnionPetscLib, fem::PetscFE )
+@for_petsc function PetscFEGetType(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
 	name_ = Ref{PetscFEType}()
 
     @chk ccall(
                (:PetscFEGetType, $petsc_library),
                PetscErrorCode,
-               (PetscFE, Ptr{PetscFEType}),
+               (CPetscFE, Ptr{PetscFEType}),
                fem, name_,
               )
 
@@ -1907,7 +1908,7 @@ end
 end 
 
 """
-	newfe::PetscFE = PetscFELimitDegree(petsclib::PetscLibType, fe::PetscFE, minDegree::PetscInt, maxDegree::PetscInt) 
+	newfe::PetscFE = PetscFELimitDegree(petsclib::PetscLibType, fe::AbstractPetscFE, minDegree::PetscInt, maxDegree::PetscInt) 
 Copy a `PetscFE` but limit the degree to be in the given range
 
 Collective
@@ -1927,27 +1928,27 @@ See also: `PetscFECreateLagrange()`, `PetscFECreateDefault()`, `PetscFECreateByC
 # External Links
 $(_doc_external("FE/PetscFELimitDegree"))
 """
-function PetscFELimitDegree(petsclib::PetscLibType, fe::PetscFE, minDegree::Integer, maxDegree::Integer)
+function PetscFELimitDegree(petsclib::PetscLibType, fe::AbstractPetscFE, minDegree::Integer, maxDegree::Integer)
     throw(MethodError(PetscFELimitDegree, (petsclib, fe, minDegree, maxDegree)))
 end
 
-@for_petsc function PetscFELimitDegree(petsclib::$UnionPetscLib, fe::PetscFE, minDegree::$PetscInt, maxDegree::$PetscInt )
-	newfe_ = Ref{PetscFE}()
+@for_petsc function PetscFELimitDegree(petsclib::$UnionPetscLib, fe::AbstractPetscFE, minDegree::$PetscInt, maxDegree::$PetscInt )
+	newfe_ = Ref{CPetscFE}()
 
     @chk ccall(
                (:PetscFELimitDegree, $petsc_library),
                PetscErrorCode,
-               (PetscFE, $PetscInt, $PetscInt, Ptr{PetscFE}),
+               (CPetscFE, $PetscInt, $PetscInt, Ptr{CPetscFE}),
                fe, minDegree, maxDegree, newfe_,
               )
 
-	newfe = newfe_[]
+	newfe = PetscFE(newfe_[], petsclib)
 
 	return newfe
 end 
 
 """
-	realType::PetscDataType = PetscFEOpenCLGetRealType(petsclib::PetscLibType, fem::PetscFE) 
+	realType::PetscDataType = PetscFEOpenCLGetRealType(petsclib::PetscLibType, fem::AbstractPetscFE) 
 Get the scalar type for running on the OpenCL accelerator
 
 Input Parameter:
@@ -1963,17 +1964,17 @@ See also: `PetscFE`, `PetscFEOpenCLSetRealType()`
 # External Links
 $(_doc_external("FE/PetscFEOpenCLGetRealType"))
 """
-function PetscFEOpenCLGetRealType(petsclib::PetscLibType, fem::PetscFE)
+function PetscFEOpenCLGetRealType(petsclib::PetscLibType, fem::AbstractPetscFE)
     throw(MethodError(PetscFEOpenCLGetRealType, (petsclib, fem)))
 end
 
-@for_petsc function PetscFEOpenCLGetRealType(petsclib::$UnionPetscLib, fem::PetscFE )
+@for_petsc function PetscFEOpenCLGetRealType(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
 	realType_ = Ref{PetscDataType}()
 
     @chk ccall(
                (:PetscFEOpenCLGetRealType, $petsc_library),
                PetscErrorCode,
-               (PetscFE, Ptr{PetscDataType}),
+               (CPetscFE, Ptr{PetscDataType}),
                fem, realType_,
               )
 
@@ -1983,7 +1984,7 @@ end
 end 
 
 """
-	PetscFEOpenCLSetRealType(petsclib::PetscLibType, fem::PetscFE, realType::PetscDataType) 
+	PetscFEOpenCLSetRealType(petsclib::PetscLibType, fem::AbstractPetscFE, realType::PetscDataType) 
 Set the scalar type for running on the OpenCL accelerator
 
 Input Parameters:
@@ -1997,16 +1998,16 @@ See also: `PetscFE`, `PetscFEOpenCLGetRealType()`
 # External Links
 $(_doc_external("FE/PetscFEOpenCLSetRealType"))
 """
-function PetscFEOpenCLSetRealType(petsclib::PetscLibType, fem::PetscFE, realType::PetscDataType)
+function PetscFEOpenCLSetRealType(petsclib::PetscLibType, fem::AbstractPetscFE, realType::PetscDataType)
     throw(MethodError(PetscFEOpenCLSetRealType, (petsclib, fem, realType)))
 end
 
-@for_petsc function PetscFEOpenCLSetRealType(petsclib::$UnionPetscLib, fem::PetscFE, realType::PetscDataType )
+@for_petsc function PetscFEOpenCLSetRealType(petsclib::$UnionPetscLib, fem::AbstractPetscFE, realType::PetscDataType )
 
     @chk ccall(
                (:PetscFEOpenCLSetRealType, $petsc_library),
                PetscErrorCode,
-               (PetscFE, PetscDataType),
+               (CPetscFE, PetscDataType),
                fem, realType,
               )
 
@@ -2015,7 +2016,7 @@ end
 end 
 
 """
-	PetscFEPushforward(petsclib::PetscLibType, fe::PetscFE, fegeom::Vector{PetscFEGeom}, Nv::PetscInt, vals::Vector{PetscScalar}) 
+	PetscFEPushforward(petsclib::PetscLibType, fe::AbstractPetscFE, fegeom::Vector{PetscFEGeom}, Nv::PetscInt, vals::Vector{PetscScalar}) 
 Map the reference element function to real space
 
 Input Parameters:
@@ -2034,16 +2035,16 @@ See also: `PetscFE`, `PetscFEGeom`, `PetscDualSpace`, `PetscDualSpacePushforward
 # External Links
 $(_doc_external("FE/PetscFEPushforward"))
 """
-function PetscFEPushforward(petsclib::PetscLibType, fe::PetscFE, fegeom::Vector{PetscFEGeom}, Nv::Integer, vals::AbstractVector{<:Number})
+function PetscFEPushforward(petsclib::PetscLibType, fe::AbstractPetscFE, fegeom::Vector{PetscFEGeom}, Nv::Integer, vals::AbstractVector{<:Number})
     throw(MethodError(PetscFEPushforward, (petsclib, fe, fegeom, Nv, vals)))
 end
 
-@for_petsc function PetscFEPushforward(petsclib::$UnionPetscLib, fe::PetscFE, fegeom::Vector{PetscFEGeom}, Nv::$PetscInt, vals::Vector{$PetscScalar} )
+@for_petsc function PetscFEPushforward(petsclib::$UnionPetscLib, fe::AbstractPetscFE, fegeom::Vector{PetscFEGeom}, Nv::$PetscInt, vals::Vector{$PetscScalar} )
 
     @chk ccall(
                (:PetscFEPushforward, $petsc_library),
                PetscErrorCode,
-               (PetscFE, Ptr{PetscFEGeom}, $PetscInt, Ptr{$PetscScalar}),
+               (CPetscFE, Ptr{PetscFEGeom}, $PetscInt, Ptr{$PetscScalar}),
                fe, fegeom, Nv, vals,
               )
 
@@ -2052,7 +2053,7 @@ end
 end 
 
 """
-	PetscFEPushforwardGradient(petsclib::PetscLibType, fe::PetscFE, fegeom::Vector{PetscFEGeom}, Nv::PetscInt, vals::Vector{PetscScalar}) 
+	PetscFEPushforwardGradient(petsclib::PetscLibType, fe::AbstractPetscFE, fegeom::Vector{PetscFEGeom}, Nv::PetscInt, vals::Vector{PetscScalar}) 
 Map the reference element function gradient to real space
 
 Input Parameters:
@@ -2071,16 +2072,16 @@ See also: `PetscFE`, `PetscFEGeom`, `PetscDualSpace`, `PetscFEPushforward()`, `P
 # External Links
 $(_doc_external("FE/PetscFEPushforwardGradient"))
 """
-function PetscFEPushforwardGradient(petsclib::PetscLibType, fe::PetscFE, fegeom::Vector{PetscFEGeom}, Nv::Integer, vals::AbstractVector{<:Number})
+function PetscFEPushforwardGradient(petsclib::PetscLibType, fe::AbstractPetscFE, fegeom::Vector{PetscFEGeom}, Nv::Integer, vals::AbstractVector{<:Number})
     throw(MethodError(PetscFEPushforwardGradient, (petsclib, fe, fegeom, Nv, vals)))
 end
 
-@for_petsc function PetscFEPushforwardGradient(petsclib::$UnionPetscLib, fe::PetscFE, fegeom::Vector{PetscFEGeom}, Nv::$PetscInt, vals::Vector{$PetscScalar} )
+@for_petsc function PetscFEPushforwardGradient(petsclib::$UnionPetscLib, fe::AbstractPetscFE, fegeom::Vector{PetscFEGeom}, Nv::$PetscInt, vals::Vector{$PetscScalar} )
 
     @chk ccall(
                (:PetscFEPushforwardGradient, $petsc_library),
                PetscErrorCode,
-               (PetscFE, Ptr{PetscFEGeom}, $PetscInt, Ptr{$PetscScalar}),
+               (CPetscFE, Ptr{PetscFEGeom}, $PetscInt, Ptr{$PetscScalar}),
                fe, fegeom, Nv, vals,
               )
 
@@ -2089,7 +2090,7 @@ end
 end 
 
 """
-	PetscFEPushforwardHessian(petsclib::PetscLibType, fe::PetscFE, fegeom::Vector{PetscFEGeom}, Nv::PetscInt, vals::Vector{PetscScalar}) 
+	PetscFEPushforwardHessian(petsclib::PetscLibType, fe::AbstractPetscFE, fegeom::Vector{PetscFEGeom}, Nv::PetscInt, vals::Vector{PetscScalar}) 
 Map the reference element function Hessian to real space
 
 Input Parameters:
@@ -2108,16 +2109,16 @@ See also: `PetscFE`, `PetscFEGeom`, `PetscDualSpace`, `PetscFEPushforward()`, `P
 # External Links
 $(_doc_external("FE/PetscFEPushforwardHessian"))
 """
-function PetscFEPushforwardHessian(petsclib::PetscLibType, fe::PetscFE, fegeom::Vector{PetscFEGeom}, Nv::Integer, vals::AbstractVector{<:Number})
+function PetscFEPushforwardHessian(petsclib::PetscLibType, fe::AbstractPetscFE, fegeom::Vector{PetscFEGeom}, Nv::Integer, vals::AbstractVector{<:Number})
     throw(MethodError(PetscFEPushforwardHessian, (petsclib, fe, fegeom, Nv, vals)))
 end
 
-@for_petsc function PetscFEPushforwardHessian(petsclib::$UnionPetscLib, fe::PetscFE, fegeom::Vector{PetscFEGeom}, Nv::$PetscInt, vals::Vector{$PetscScalar} )
+@for_petsc function PetscFEPushforwardHessian(petsclib::$UnionPetscLib, fe::AbstractPetscFE, fegeom::Vector{PetscFEGeom}, Nv::$PetscInt, vals::Vector{$PetscScalar} )
 
     @chk ccall(
                (:PetscFEPushforwardHessian, $petsc_library),
                PetscErrorCode,
-               (PetscFE, Ptr{PetscFEGeom}, $PetscInt, Ptr{$PetscScalar}),
+               (CPetscFE, Ptr{PetscFEGeom}, $PetscInt, Ptr{$PetscScalar}),
                fe, fegeom, Nv, vals,
               )
 
@@ -2126,7 +2127,7 @@ end
 end 
 
 """
-	feRef::PetscFE = PetscFERefine(petsclib::PetscLibType, fe::PetscFE) 
+	feRef::PetscFE = PetscFERefine(petsclib::PetscLibType, fe::AbstractPetscFE) 
 Create a "refined" `PetscFE` object that refines the reference cell into
 smaller copies.
 
@@ -2145,21 +2146,21 @@ See also: `PetscFEType`, `PetscFECreate()`, `PetscFESetType()`
 # External Links
 $(_doc_external("FE/PetscFERefine"))
 """
-function PetscFERefine(petsclib::PetscLibType, fe::PetscFE)
+function PetscFERefine(petsclib::PetscLibType, fe::AbstractPetscFE)
     throw(MethodError(PetscFERefine, (petsclib, fe)))
 end
 
-@for_petsc function PetscFERefine(petsclib::$UnionPetscLib, fe::PetscFE )
-	feRef_ = Ref{PetscFE}()
+@for_petsc function PetscFERefine(petsclib::$UnionPetscLib, fe::AbstractPetscFE )
+	feRef_ = Ref{CPetscFE}()
 
     @chk ccall(
                (:PetscFERefine, $petsc_library),
                PetscErrorCode,
-               (PetscFE, Ptr{PetscFE}),
+               (CPetscFE, Ptr{CPetscFE}),
                fe, feRef_,
               )
 
-	feRef = feRef_[]
+	feRef = PetscFE(feRef_[], petsclib)
 
 	return feRef
 end 
@@ -2197,7 +2198,7 @@ end
 end 
 
 """
-	PetscFESetBasisSpace(petsclib::PetscLibType, fem::PetscFE, sp::PetscSpace) 
+	PetscFESetBasisSpace(petsclib::PetscLibType, fem::AbstractPetscFE, sp::PetscSpace) 
 Sets the `PetscSpace` used for the approximation of the solution
 
 Not Collective
@@ -2213,16 +2214,16 @@ See also: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscFECreate()`, `PetscFE
 # External Links
 $(_doc_external("FE/PetscFESetBasisSpace"))
 """
-function PetscFESetBasisSpace(petsclib::PetscLibType, fem::PetscFE, sp::PetscSpace)
+function PetscFESetBasisSpace(petsclib::PetscLibType, fem::AbstractPetscFE, sp::PetscSpace)
     throw(MethodError(PetscFESetBasisSpace, (petsclib, fem, sp)))
 end
 
-@for_petsc function PetscFESetBasisSpace(petsclib::$UnionPetscLib, fem::PetscFE, sp::PetscSpace )
+@for_petsc function PetscFESetBasisSpace(petsclib::$UnionPetscLib, fem::AbstractPetscFE, sp::PetscSpace )
 
     @chk ccall(
                (:PetscFESetBasisSpace, $petsc_library),
                PetscErrorCode,
-               (PetscFE, PetscSpace),
+               (CPetscFE, PetscSpace),
                fem, sp,
               )
 
@@ -2231,7 +2232,7 @@ end
 end 
 
 """
-	PetscFESetDualSpace(petsclib::PetscLibType, fem::PetscFE, sp::PetscDualSpace) 
+	PetscFESetDualSpace(petsclib::PetscLibType, fem::AbstractPetscFE, sp::PetscDualSpace) 
 Sets the `PetscDualSpace` used to define the inner product
 
 Not Collective
@@ -2247,16 +2248,16 @@ See also: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscFECreate()`, `PetscFE
 # External Links
 $(_doc_external("FE/PetscFESetDualSpace"))
 """
-function PetscFESetDualSpace(petsclib::PetscLibType, fem::PetscFE, sp::PetscDualSpace)
+function PetscFESetDualSpace(petsclib::PetscLibType, fem::AbstractPetscFE, sp::PetscDualSpace)
     throw(MethodError(PetscFESetDualSpace, (petsclib, fem, sp)))
 end
 
-@for_petsc function PetscFESetDualSpace(petsclib::$UnionPetscLib, fem::PetscFE, sp::PetscDualSpace )
+@for_petsc function PetscFESetDualSpace(petsclib::$UnionPetscLib, fem::AbstractPetscFE, sp::PetscDualSpace )
 
     @chk ccall(
                (:PetscFESetDualSpace, $petsc_library),
                PetscErrorCode,
-               (PetscFE, PetscDualSpace),
+               (CPetscFE, PetscDualSpace),
                fem, sp,
               )
 
@@ -2265,7 +2266,7 @@ end
 end 
 
 """
-	PetscFESetFaceQuadrature(petsclib::PetscLibType, fem::PetscFE, q::PetscQuadrature) 
+	PetscFESetFaceQuadrature(petsclib::PetscLibType, fem::AbstractPetscFE, q::PetscQuadrature) 
 Sets the `PetscQuadrature` used to calculate inner products on faces
 
 Not Collective
@@ -2281,16 +2282,16 @@ See also: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscQuadrature`, `PetscFE
 # External Links
 $(_doc_external("FE/PetscFESetFaceQuadrature"))
 """
-function PetscFESetFaceQuadrature(petsclib::PetscLibType, fem::PetscFE, q::PetscQuadrature)
+function PetscFESetFaceQuadrature(petsclib::PetscLibType, fem::AbstractPetscFE, q::PetscQuadrature)
     throw(MethodError(PetscFESetFaceQuadrature, (petsclib, fem, q)))
 end
 
-@for_petsc function PetscFESetFaceQuadrature(petsclib::$UnionPetscLib, fem::PetscFE, q::PetscQuadrature )
+@for_petsc function PetscFESetFaceQuadrature(petsclib::$UnionPetscLib, fem::AbstractPetscFE, q::PetscQuadrature )
 
     @chk ccall(
                (:PetscFESetFaceQuadrature, $petsc_library),
                PetscErrorCode,
-               (PetscFE, PetscQuadrature),
+               (CPetscFE, PetscQuadrature),
                fem, q,
               )
 
@@ -2299,7 +2300,7 @@ end
 end 
 
 """
-	PetscFESetFromOptions(petsclib::PetscLibType, fem::PetscFE) 
+	PetscFESetFromOptions(petsclib::PetscLibType, fem::AbstractPetscFE) 
 sets parameters in a `PetscFE` from the options database
 
 Collective
@@ -2318,16 +2319,16 @@ See also: `PetscFE`, `PetscFEView()`
 # External Links
 $(_doc_external("FE/PetscFESetFromOptions"))
 """
-function PetscFESetFromOptions(petsclib::PetscLibType, fem::PetscFE)
+function PetscFESetFromOptions(petsclib::PetscLibType, fem::AbstractPetscFE)
     throw(MethodError(PetscFESetFromOptions, (petsclib, fem)))
 end
 
-@for_petsc function PetscFESetFromOptions(petsclib::$UnionPetscLib, fem::PetscFE )
+@for_petsc function PetscFESetFromOptions(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
 
     @chk ccall(
                (:PetscFESetFromOptions, $petsc_library),
                PetscErrorCode,
-               (PetscFE,),
+               (CPetscFE,),
                fem,
               )
 
@@ -2336,7 +2337,7 @@ end
 end 
 
 """
-	PetscFESetName(petsclib::PetscLibType, fe::PetscFE, name::String) 
+	PetscFESetName(petsclib::PetscLibType, fe::AbstractPetscFE, name::String) 
 Names the `PetscFE` and its subobjects
 
 Not Collective
@@ -2352,16 +2353,16 @@ See also: `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`
 # External Links
 $(_doc_external("FE/PetscFESetName"))
 """
-function PetscFESetName(petsclib::PetscLibType, fe::PetscFE, name::String)
+function PetscFESetName(petsclib::PetscLibType, fe::AbstractPetscFE, name::String)
     throw(MethodError(PetscFESetName, (petsclib, fe, name)))
 end
 
-@for_petsc function PetscFESetName(petsclib::$UnionPetscLib, fe::PetscFE, name::String )
+@for_petsc function PetscFESetName(petsclib::$UnionPetscLib, fe::AbstractPetscFE, name::String )
 
     @chk ccall(
                (:PetscFESetName, $petsc_library),
                PetscErrorCode,
-               (PetscFE, Ptr{Cchar}),
+               (CPetscFE, Ptr{Cchar}),
                fe, name,
               )
 
@@ -2370,7 +2371,7 @@ end
 end 
 
 """
-	PetscFESetNumComponents(petsclib::PetscLibType, fem::PetscFE, comp::PetscInt) 
+	PetscFESetNumComponents(petsclib::PetscLibType, fem::AbstractPetscFE, comp::PetscInt) 
 Sets the number of field components in the element
 
 Not Collective
@@ -2386,16 +2387,16 @@ See also: `PetscFE`, `PetscFECreate()`, `PetscFEGetSpatialDimension()`, `PetscFE
 # External Links
 $(_doc_external("FE/PetscFESetNumComponents"))
 """
-function PetscFESetNumComponents(petsclib::PetscLibType, fem::PetscFE, comp::Integer)
+function PetscFESetNumComponents(petsclib::PetscLibType, fem::AbstractPetscFE, comp::Integer)
     throw(MethodError(PetscFESetNumComponents, (petsclib, fem, comp)))
 end
 
-@for_petsc function PetscFESetNumComponents(petsclib::$UnionPetscLib, fem::PetscFE, comp::$PetscInt )
+@for_petsc function PetscFESetNumComponents(petsclib::$UnionPetscLib, fem::AbstractPetscFE, comp::$PetscInt )
 
     @chk ccall(
                (:PetscFESetNumComponents, $petsc_library),
                PetscErrorCode,
-               (PetscFE, $PetscInt),
+               (CPetscFE, $PetscInt),
                fem, comp,
               )
 
@@ -2404,7 +2405,7 @@ end
 end 
 
 """
-	PetscFESetQuadrature(petsclib::PetscLibType, fem::PetscFE, q::PetscQuadrature) 
+	PetscFESetQuadrature(petsclib::PetscLibType, fem::AbstractPetscFE, q::PetscQuadrature) 
 Sets the `PetscQuadrature` used to calculate inner products
 
 Not Collective
@@ -2420,16 +2421,16 @@ See also: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscQuadrature`, `PetscFE
 # External Links
 $(_doc_external("FE/PetscFESetQuadrature"))
 """
-function PetscFESetQuadrature(petsclib::PetscLibType, fem::PetscFE, q::PetscQuadrature)
+function PetscFESetQuadrature(petsclib::PetscLibType, fem::AbstractPetscFE, q::PetscQuadrature)
     throw(MethodError(PetscFESetQuadrature, (petsclib, fem, q)))
 end
 
-@for_petsc function PetscFESetQuadrature(petsclib::$UnionPetscLib, fem::PetscFE, q::PetscQuadrature )
+@for_petsc function PetscFESetQuadrature(petsclib::$UnionPetscLib, fem::AbstractPetscFE, q::PetscQuadrature )
 
     @chk ccall(
                (:PetscFESetQuadrature, $petsc_library),
                PetscErrorCode,
-               (PetscFE, PetscQuadrature),
+               (CPetscFE, PetscQuadrature),
                fem, q,
               )
 
@@ -2438,7 +2439,7 @@ end
 end 
 
 """
-	PetscFESetTileSizes(petsclib::PetscLibType, fem::PetscFE, blockSize::PetscInt, numBlocks::PetscInt, batchSize::PetscInt, numBatches::PetscInt) 
+	PetscFESetTileSizes(petsclib::PetscLibType, fem::AbstractPetscFE, blockSize::PetscInt, numBlocks::PetscInt, batchSize::PetscInt, numBatches::PetscInt) 
 Sets the tile sizes for evaluation
 
 Not Collective
@@ -2457,16 +2458,16 @@ See also: `PetscFE`, `PetscFECreate()`, `PetscFEGetTileSizes()`
 # External Links
 $(_doc_external("FE/PetscFESetTileSizes"))
 """
-function PetscFESetTileSizes(petsclib::PetscLibType, fem::PetscFE, blockSize::Integer, numBlocks::Integer, batchSize::Integer, numBatches::Integer)
+function PetscFESetTileSizes(petsclib::PetscLibType, fem::AbstractPetscFE, blockSize::Integer, numBlocks::Integer, batchSize::Integer, numBatches::Integer)
     throw(MethodError(PetscFESetTileSizes, (petsclib, fem, blockSize, numBlocks, batchSize, numBatches)))
 end
 
-@for_petsc function PetscFESetTileSizes(petsclib::$UnionPetscLib, fem::PetscFE, blockSize::$PetscInt, numBlocks::$PetscInt, batchSize::$PetscInt, numBatches::$PetscInt )
+@for_petsc function PetscFESetTileSizes(petsclib::$UnionPetscLib, fem::AbstractPetscFE, blockSize::$PetscInt, numBlocks::$PetscInt, batchSize::$PetscInt, numBatches::$PetscInt )
 
     @chk ccall(
                (:PetscFESetTileSizes, $petsc_library),
                PetscErrorCode,
-               (PetscFE, $PetscInt, $PetscInt, $PetscInt, $PetscInt),
+               (CPetscFE, $PetscInt, $PetscInt, $PetscInt, $PetscInt),
                fem, blockSize, numBlocks, batchSize, numBatches,
               )
 
@@ -2475,7 +2476,7 @@ end
 end 
 
 """
-	PetscFESetType(petsclib::PetscLibType, fem::PetscFE, name::String) 
+	PetscFESetType(petsclib::PetscLibType, fem::AbstractPetscFE, name::String) 
 Builds a particular `PetscFE`
 
 Collective
@@ -2494,16 +2495,16 @@ See also: `PetscFEType`, `PetscFE`, `PetscFEGetType()`, `PetscFECreate()`
 # External Links
 $(_doc_external("FE/PetscFESetType"))
 """
-function PetscFESetType(petsclib::PetscLibType, fem::PetscFE, name::String)
+function PetscFESetType(petsclib::PetscLibType, fem::AbstractPetscFE, name::String)
     throw(MethodError(PetscFESetType, (petsclib, fem, name)))
 end
 
-@for_petsc function PetscFESetType(petsclib::$UnionPetscLib, fem::PetscFE, name::String )
+@for_petsc function PetscFESetType(petsclib::$UnionPetscLib, fem::AbstractPetscFE, name::String )
 
     @chk ccall(
                (:PetscFESetType, $petsc_library),
                PetscErrorCode,
-               (PetscFE, PetscFEType),
+               (CPetscFE, PetscFEType),
                fem, name,
               )
 
@@ -2512,7 +2513,7 @@ end
 end 
 
 """
-	PetscFESetUp(petsclib::PetscLibType, fem::PetscFE) 
+	PetscFESetUp(petsclib::PetscLibType, fem::AbstractPetscFE) 
 Construct data structures for the `PetscFE` after the `PetscFEType` has been set
 
 Collective
@@ -2527,16 +2528,16 @@ See also: `PetscFE`, `PetscFEView()`, `PetscFEDestroy()`
 # External Links
 $(_doc_external("FE/PetscFESetUp"))
 """
-function PetscFESetUp(petsclib::PetscLibType, fem::PetscFE)
+function PetscFESetUp(petsclib::PetscLibType, fem::AbstractPetscFE)
     throw(MethodError(PetscFESetUp, (petsclib, fem)))
 end
 
-@for_petsc function PetscFESetUp(petsclib::$UnionPetscLib, fem::PetscFE )
+@for_petsc function PetscFESetUp(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
 
     @chk ccall(
                (:PetscFESetUp, $petsc_library),
                PetscErrorCode,
-               (PetscFE,),
+               (CPetscFE,),
                fem,
               )
 
@@ -2545,7 +2546,7 @@ end
 end 
 
 """
-	PetscFEView(petsclib::PetscLibType, fem::PetscFE, viewer::PetscViewer) 
+	PetscFEView(petsclib::PetscLibType, fem::AbstractPetscFE, viewer::PetscViewer) 
 Views a `PetscFE`
 
 Collective
@@ -2561,16 +2562,16 @@ See also: `PetscFE`, `PetscViewer`, `PetscFEDestroy()`, `PetscFEViewFromOptions(
 # External Links
 $(_doc_external("FE/PetscFEView"))
 """
-function PetscFEView(petsclib::PetscLibType, fem::PetscFE, viewer::PetscViewer)
+function PetscFEView(petsclib::PetscLibType, fem::AbstractPetscFE, viewer::PetscViewer)
     throw(MethodError(PetscFEView, (petsclib, fem, viewer)))
 end
 
-@for_petsc function PetscFEView(petsclib::$UnionPetscLib, fem::PetscFE, viewer::PetscViewer )
+@for_petsc function PetscFEView(petsclib::$UnionPetscLib, fem::AbstractPetscFE, viewer::PetscViewer )
 
     @chk ccall(
                (:PetscFEView, $petsc_library),
                PetscErrorCode,
-               (PetscFE, PetscViewer),
+               (CPetscFE, PetscViewer),
                fem, viewer,
               )
 
@@ -2579,7 +2580,7 @@ end
 end 
 
 """
-	PetscFEViewFromOptions(petsclib::PetscLibType, A::PetscFE, obj, name::String) 
+	PetscFEViewFromOptions(petsclib::PetscLibType, A::AbstractPetscFE, obj, name::String) 
 View a `PetscFE` based on values in the options database
 
 Collective
@@ -2599,16 +2600,16 @@ See also: `PetscFE`, `PetscFEView()`, `PetscObjectViewFromOptions()`, `PetscFECr
 # External Links
 $(_doc_external("FE/PetscFEViewFromOptions"))
 """
-function PetscFEViewFromOptions(petsclib::PetscLibType, A::PetscFE, obj, name::String)
+function PetscFEViewFromOptions(petsclib::PetscLibType, A::AbstractPetscFE, obj, name::String)
     throw(MethodError(PetscFEViewFromOptions, (petsclib, A, obj, name)))
 end
 
-@for_petsc function PetscFEViewFromOptions(petsclib::$UnionPetscLib, A::PetscFE, obj, name::String )
+@for_petsc function PetscFEViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPetscFE, obj, name::String )
 
     @chk ccall(
                (:PetscFEViewFromOptions, $petsc_library),
                PetscErrorCode,
-               (PetscFE, PetscObject, Ptr{Cchar}),
+               (CPetscFE, PetscObject, Ptr{Cchar}),
                A, obj, name,
               )
 
@@ -3262,7 +3263,7 @@ end
 end 
 
 """
-	PetscWeakFormAddBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
+	PetscWeakFormAddBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
 Append boundary Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` to the lists for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -3286,16 +3287,16 @@ See also: `PetscWeakForm`, `PetscWeakFormSetBdJacobian()`, `PetscWeakFormGetBdJa
 # External Links
 $(_doc_external("DT/PetscWeakFormAddBdJacobian"))
 """
-function PetscWeakFormAddBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, g0::external, g1::external, g2::external, g3::external)
+function PetscWeakFormAddBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, g::Integer, part::Integer, g0::external, g1::external, g2::external, g3::external)
     throw(MethodError(PetscWeakFormAddBdJacobian, (petsclib, wf, label, val, f, g, part, g0, g1, g2, g3)))
 end
 
-@for_petsc function PetscWeakFormAddBdJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, g0::external, g1::external, g2::external, g3::external )
+@for_petsc function PetscWeakFormAddBdJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, g0::external, g1::external, g2::external, g3::external )
 
     @chk ccall(
                (:PetscWeakFormAddBdJacobian, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external, external, external, external),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external, external, external, external),
                wf, label, val, f, g, part, g0, g1, g2, g3,
               )
 
@@ -3304,7 +3305,7 @@ end
 end 
 
 """
-	PetscWeakFormAddBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
+	PetscWeakFormAddBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
 Append boundary Jacobian preconditioner pointwise functions `g0`, `g1`, `g2`, and `g3` to the lists for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -3328,16 +3329,16 @@ See also: `PetscWeakForm`, `PetscWeakFormSetBdJacobianPreconditioner()`, `PetscW
 # External Links
 $(_doc_external("DT/PetscWeakFormAddBdJacobianPreconditioner"))
 """
-function PetscWeakFormAddBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, g0::external, g1::external, g2::external, g3::external)
+function PetscWeakFormAddBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, g::Integer, part::Integer, g0::external, g1::external, g2::external, g3::external)
     throw(MethodError(PetscWeakFormAddBdJacobianPreconditioner, (petsclib, wf, label, val, f, g, part, g0, g1, g2, g3)))
 end
 
-@for_petsc function PetscWeakFormAddBdJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, g0::external, g1::external, g2::external, g3::external )
+@for_petsc function PetscWeakFormAddBdJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, g0::external, g1::external, g2::external, g3::external )
 
     @chk ccall(
                (:PetscWeakFormAddBdJacobianPreconditioner, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external, external, external, external),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external, external, external, external),
                wf, label, val, f, g, part, g0, g1, g2, g3,
               )
 
@@ -3346,7 +3347,7 @@ end
 end 
 
 """
-	PetscWeakFormAddBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, f0::external, f1::external) 
+	PetscWeakFormAddBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, part::PetscInt, f0::external, f1::external) 
 Append boundary residual pointwise functions `f0` and `f1` to the lists for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -3367,16 +3368,16 @@ See also: `PetscWeakForm`, `PetscWeakFormSetBdResidual()`, `PetscWeakFormGetBdRe
 # External Links
 $(_doc_external("DT/PetscWeakFormAddBdResidual"))
 """
-function PetscWeakFormAddBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, f0::external, f1::external)
+function PetscWeakFormAddBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, part::Integer, f0::external, f1::external)
     throw(MethodError(PetscWeakFormAddBdResidual, (petsclib, wf, label, val, f, part, f0, f1)))
 end
 
-@for_petsc function PetscWeakFormAddBdResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, f0::external, f1::external )
+@for_petsc function PetscWeakFormAddBdResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, f0::external, f1::external )
 
     @chk ccall(
                (:PetscWeakFormAddBdResidual, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, external, external),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, external, external),
                wf, label, val, f, part, f0, f1,
               )
 
@@ -3385,7 +3386,7 @@ end
 end 
 
 """
-	PetscWeakFormAddDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
+	PetscWeakFormAddDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
 Append dynamic Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` to the lists for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -3409,16 +3410,16 @@ See also: `PetscWeakForm`, `PetscWeakFormSetDynamicJacobian()`, `PetscWeakFormGe
 # External Links
 $(_doc_external("DT/PetscWeakFormAddDynamicJacobian"))
 """
-function PetscWeakFormAddDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, g0::external, g1::external, g2::external, g3::external)
+function PetscWeakFormAddDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, g::Integer, part::Integer, g0::external, g1::external, g2::external, g3::external)
     throw(MethodError(PetscWeakFormAddDynamicJacobian, (petsclib, wf, label, val, f, g, part, g0, g1, g2, g3)))
 end
 
-@for_petsc function PetscWeakFormAddDynamicJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, g0::external, g1::external, g2::external, g3::external )
+@for_petsc function PetscWeakFormAddDynamicJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, g0::external, g1::external, g2::external, g3::external )
 
     @chk ccall(
                (:PetscWeakFormAddDynamicJacobian, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external, external, external, external),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external, external, external, external),
                wf, label, val, f, g, part, g0, g1, g2, g3,
               )
 
@@ -3427,7 +3428,7 @@ end
 end 
 
 """
-	PetscWeakFormAddJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
+	PetscWeakFormAddJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
 Append Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` to the lists for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -3451,16 +3452,16 @@ See also: `PetscWeakForm`, `PetscWeakFormSetJacobian()`, `PetscWeakFormGetJacobi
 # External Links
 $(_doc_external("DT/PetscWeakFormAddJacobian"))
 """
-function PetscWeakFormAddJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, g0::external, g1::external, g2::external, g3::external)
+function PetscWeakFormAddJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, g::Integer, part::Integer, g0::external, g1::external, g2::external, g3::external)
     throw(MethodError(PetscWeakFormAddJacobian, (petsclib, wf, label, val, f, g, part, g0, g1, g2, g3)))
 end
 
-@for_petsc function PetscWeakFormAddJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, g0::external, g1::external, g2::external, g3::external )
+@for_petsc function PetscWeakFormAddJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, g0::external, g1::external, g2::external, g3::external )
 
     @chk ccall(
                (:PetscWeakFormAddJacobian, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external, external, external, external),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external, external, external, external),
                wf, label, val, f, g, part, g0, g1, g2, g3,
               )
 
@@ -3469,7 +3470,7 @@ end
 end 
 
 """
-	PetscWeakFormAddJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
+	PetscWeakFormAddJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
 Append Jacobian preconditioner pointwise functions `g0`, `g1`, `g2`, and `g3` to the lists for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -3493,16 +3494,16 @@ See also: `PetscWeakForm`, `PetscWeakFormSetJacobianPreconditioner()`, `PetscWea
 # External Links
 $(_doc_external("DT/PetscWeakFormAddJacobianPreconditioner"))
 """
-function PetscWeakFormAddJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, g0::external, g1::external, g2::external, g3::external)
+function PetscWeakFormAddJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, g::Integer, part::Integer, g0::external, g1::external, g2::external, g3::external)
     throw(MethodError(PetscWeakFormAddJacobianPreconditioner, (petsclib, wf, label, val, f, g, part, g0, g1, g2, g3)))
 end
 
-@for_petsc function PetscWeakFormAddJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, g0::external, g1::external, g2::external, g3::external )
+@for_petsc function PetscWeakFormAddJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, g0::external, g1::external, g2::external, g3::external )
 
     @chk ccall(
                (:PetscWeakFormAddJacobianPreconditioner, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external, external, external, external),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external, external, external, external),
                wf, label, val, f, g, part, g0, g1, g2, g3,
               )
 
@@ -3511,7 +3512,7 @@ end
 end 
 
 """
-	PetscWeakFormAddObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, obj::external) 
+	PetscWeakFormAddObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, part::PetscInt, obj::external) 
 Append an objective pointwise function to the list for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -3531,16 +3532,16 @@ See also: `PetscWeakForm`, `PetscWeakFormSetObjective()`, `PetscWeakFormGetObjec
 # External Links
 $(_doc_external("DT/PetscWeakFormAddObjective"))
 """
-function PetscWeakFormAddObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, obj::external)
+function PetscWeakFormAddObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, part::Integer, obj::external)
     throw(MethodError(PetscWeakFormAddObjective, (petsclib, wf, label, val, f, part, obj)))
 end
 
-@for_petsc function PetscWeakFormAddObjective(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, obj::external )
+@for_petsc function PetscWeakFormAddObjective(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, obj::external )
 
     @chk ccall(
                (:PetscWeakFormAddObjective, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, external),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, external),
                wf, label, val, f, part, obj,
               )
 
@@ -3549,7 +3550,7 @@ end
 end 
 
 """
-	PetscWeakFormAddResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, f0::external, f1::external) 
+	PetscWeakFormAddResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, part::PetscInt, f0::external, f1::external) 
 Append residual pointwise functions `f0` and `f1` to the lists for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -3570,16 +3571,16 @@ See also: `PetscWeakForm`, `PetscWeakFormSetResidual()`, `PetscWeakFormGetResidu
 # External Links
 $(_doc_external("DT/PetscWeakFormAddResidual"))
 """
-function PetscWeakFormAddResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, f0::external, f1::external)
+function PetscWeakFormAddResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, part::Integer, f0::external, f1::external)
     throw(MethodError(PetscWeakFormAddResidual, (petsclib, wf, label, val, f, part, f0, f1)))
 end
 
-@for_petsc function PetscWeakFormAddResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, f0::external, f1::external )
+@for_petsc function PetscWeakFormAddResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, f0::external, f1::external )
 
     @chk ccall(
                (:PetscWeakFormAddResidual, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, external, external),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, external, external),
                wf, label, val, f, part, f0, f1,
               )
 
@@ -3621,7 +3622,7 @@ end
 end 
 
 """
-	PetscWeakFormClearIndex(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, kind::PetscWeakFormKind, ind::PetscInt) 
+	PetscWeakFormClearIndex(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, part::PetscInt, kind::PetscWeakFormKind, ind::PetscInt) 
 Clear the pointwise function at a given index for the given key from a `PetscWeakForm`
 
 Not Collective
@@ -3642,16 +3643,16 @@ See also: `PetscWeakForm`, `PetscWeakFormKind`, `PetscWeakFormCreate()`
 # External Links
 $(_doc_external("DT/PetscWeakFormClearIndex"))
 """
-function PetscWeakFormClearIndex(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, kind::PetscWeakFormKind, ind::Integer)
+function PetscWeakFormClearIndex(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, part::Integer, kind::PetscWeakFormKind, ind::Integer)
     throw(MethodError(PetscWeakFormClearIndex, (petsclib, wf, label, val, f, part, kind, ind)))
 end
 
-@for_petsc function PetscWeakFormClearIndex(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, kind::PetscWeakFormKind, ind::$PetscInt )
+@for_petsc function PetscWeakFormClearIndex(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, kind::PetscWeakFormKind, ind::$PetscInt )
 
     @chk ccall(
                (:PetscWeakFormClearIndex, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, PetscWeakFormKind, $PetscInt),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, PetscWeakFormKind, $PetscInt),
                wf, label, val, f, part, kind, ind,
               )
 
@@ -3768,7 +3769,7 @@ end
 end 
 
 """
-	n0::PetscInt = PetscWeakFormGetBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+	n0::PetscInt = PetscWeakFormGetBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
 Retrieve the lists of boundary Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key from a `PetscWeakForm`
 
 Not Collective
@@ -3798,17 +3799,17 @@ See also: `PetscWeakForm`, `PetscWeakFormSetBdJacobian()`, `PetscWeakFormAddBdJa
 # External Links
 $(_doc_external("DT/PetscWeakFormGetBdJacobian"))
 """
-function PetscWeakFormGetBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, noname::Ptr{Cvoid})
+function PetscWeakFormGetBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, g::Integer, part::Integer, noname::Ptr{Cvoid})
     throw(MethodError(PetscWeakFormGetBdJacobian, (petsclib, wf, label, val, f, g, part, noname)))
 end
 
-@for_petsc function PetscWeakFormGetBdJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormGetBdJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
 	n0_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscWeakFormGetBdJacobian, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
                wf, label, val, f, g, part, n0_, noname,
               )
 
@@ -3818,7 +3819,7 @@ end
 end 
 
 """
-	n0::PetscInt = PetscWeakFormGetBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+	n0::PetscInt = PetscWeakFormGetBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
 Retrieve the lists of boundary Jacobian preconditioner pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key from a `PetscWeakForm`
 
 Not Collective
@@ -3848,17 +3849,17 @@ See also: `PetscWeakForm`, `PetscWeakFormSetBdJacobianPreconditioner()`, `PetscW
 # External Links
 $(_doc_external("DT/PetscWeakFormGetBdJacobianPreconditioner"))
 """
-function PetscWeakFormGetBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, noname::Ptr{Cvoid})
+function PetscWeakFormGetBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, g::Integer, part::Integer, noname::Ptr{Cvoid})
     throw(MethodError(PetscWeakFormGetBdJacobianPreconditioner, (petsclib, wf, label, val, f, g, part, noname)))
 end
 
-@for_petsc function PetscWeakFormGetBdJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormGetBdJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
 	n0_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscWeakFormGetBdJacobianPreconditioner, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
                wf, label, val, f, g, part, n0_, noname,
               )
 
@@ -3868,7 +3869,7 @@ end
 end 
 
 """
-	n0::PetscInt = PetscWeakFormGetBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+	n0::PetscInt = PetscWeakFormGetBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
 Retrieve the lists of boundary residual pointwise functions `f0` and `f1` for a given key from a `PetscWeakForm`
 
 Not Collective
@@ -3893,17 +3894,17 @@ See also: `PetscWeakForm`, `PetscWeakFormSetBdResidual()`, `PetscWeakFormAddBdRe
 # External Links
 $(_doc_external("DT/PetscWeakFormGetBdResidual"))
 """
-function PetscWeakFormGetBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, noname::Ptr{Cvoid})
+function PetscWeakFormGetBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, part::Integer, noname::Ptr{Cvoid})
     throw(MethodError(PetscWeakFormGetBdResidual, (petsclib, wf, label, val, f, part, noname)))
 end
 
-@for_petsc function PetscWeakFormGetBdResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormGetBdResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
 	n0_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscWeakFormGetBdResidual, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
                wf, label, val, f, part, n0_, noname,
               )
 
@@ -3913,7 +3914,7 @@ end
 end 
 
 """
-	n0::PetscInt = PetscWeakFormGetDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+	n0::PetscInt = PetscWeakFormGetDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
 Retrieve the lists of dynamic Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key from a `PetscWeakForm`
 
 Not Collective
@@ -3943,17 +3944,17 @@ See also: `PetscWeakForm`, `PetscWeakFormSetDynamicJacobian()`, `PetscWeakFormAd
 # External Links
 $(_doc_external("DT/PetscWeakFormGetDynamicJacobian"))
 """
-function PetscWeakFormGetDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, noname::Ptr{Cvoid})
+function PetscWeakFormGetDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, g::Integer, part::Integer, noname::Ptr{Cvoid})
     throw(MethodError(PetscWeakFormGetDynamicJacobian, (petsclib, wf, label, val, f, g, part, noname)))
 end
 
-@for_petsc function PetscWeakFormGetDynamicJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormGetDynamicJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
 	n0_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscWeakFormGetDynamicJacobian, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
                wf, label, val, f, g, part, n0_, noname,
               )
 
@@ -3963,7 +3964,7 @@ end
 end 
 
 """
-	PetscWeakFormGetIndexObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, ind::PetscInt, noname::Ptr{Cvoid}) 
+	PetscWeakFormGetIndexObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, part::PetscInt, ind::PetscInt, noname::Ptr{Cvoid}) 
 Retrieve a single objective pointwise function at the given index for a given key from a `PetscWeakForm`
 
 Not Collective
@@ -3986,16 +3987,16 @@ See also: `PetscWeakForm`, `PetscWeakFormSetIndexObjective()`, `PetscWeakFormGet
 # External Links
 $(_doc_external("DT/PetscWeakFormGetIndexObjective"))
 """
-function PetscWeakFormGetIndexObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, ind::Integer, noname::Ptr{Cvoid})
+function PetscWeakFormGetIndexObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, part::Integer, ind::Integer, noname::Ptr{Cvoid})
     throw(MethodError(PetscWeakFormGetIndexObjective, (petsclib, wf, label, val, f, part, ind, noname)))
 end
 
-@for_petsc function PetscWeakFormGetIndexObjective(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, ind::$PetscInt, noname::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormGetIndexObjective(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, ind::$PetscInt, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscWeakFormGetIndexObjective, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
                wf, label, val, f, part, ind, noname,
               )
 
@@ -4004,7 +4005,7 @@ end
 end 
 
 """
-	n0::PetscInt = PetscWeakFormGetJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+	n0::PetscInt = PetscWeakFormGetJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
 Retrieve the lists of Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key from a `PetscWeakForm`
 
 Not Collective
@@ -4034,17 +4035,17 @@ See also: `PetscWeakForm`, `PetscWeakFormSetJacobian()`, `PetscWeakFormAddJacobi
 # External Links
 $(_doc_external("DT/PetscWeakFormGetJacobian"))
 """
-function PetscWeakFormGetJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, noname::Ptr{Cvoid})
+function PetscWeakFormGetJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, g::Integer, part::Integer, noname::Ptr{Cvoid})
     throw(MethodError(PetscWeakFormGetJacobian, (petsclib, wf, label, val, f, g, part, noname)))
 end
 
-@for_petsc function PetscWeakFormGetJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormGetJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
 	n0_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscWeakFormGetJacobian, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
                wf, label, val, f, g, part, n0_, noname,
               )
 
@@ -4054,7 +4055,7 @@ end
 end 
 
 """
-	n0::PetscInt = PetscWeakFormGetJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+	n0::PetscInt = PetscWeakFormGetJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
 Retrieve the lists of Jacobian preconditioner pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key from a `PetscWeakForm`
 
 Not Collective
@@ -4084,17 +4085,17 @@ See also: `PetscWeakForm`, `PetscWeakFormSetJacobianPreconditioner()`, `PetscWea
 # External Links
 $(_doc_external("DT/PetscWeakFormGetJacobianPreconditioner"))
 """
-function PetscWeakFormGetJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, noname::Ptr{Cvoid})
+function PetscWeakFormGetJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, g::Integer, part::Integer, noname::Ptr{Cvoid})
     throw(MethodError(PetscWeakFormGetJacobianPreconditioner, (petsclib, wf, label, val, f, g, part, noname)))
 end
 
-@for_petsc function PetscWeakFormGetJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormGetJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
 	n0_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscWeakFormGetJacobianPreconditioner, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
                wf, label, val, f, g, part, n0_, noname,
               )
 
@@ -4142,7 +4143,7 @@ end
 end 
 
 """
-	n::PetscInt = PetscWeakFormGetObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+	n::PetscInt = PetscWeakFormGetObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
 Retrieve the list of objective pointwise functions for a given key from a `PetscWeakForm`
 
 Not Collective
@@ -4165,17 +4166,17 @@ See also: `PetscWeakForm`, `PetscWeakFormSetObjective()`, `PetscWeakFormAddObjec
 # External Links
 $(_doc_external("DT/PetscWeakFormGetObjective"))
 """
-function PetscWeakFormGetObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, noname::Ptr{Cvoid})
+function PetscWeakFormGetObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, part::Integer, noname::Ptr{Cvoid})
     throw(MethodError(PetscWeakFormGetObjective, (petsclib, wf, label, val, f, part, noname)))
 end
 
-@for_petsc function PetscWeakFormGetObjective(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormGetObjective(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
 	n_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscWeakFormGetObjective, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
                wf, label, val, f, part, n_, noname,
               )
 
@@ -4185,7 +4186,7 @@ end
 end 
 
 """
-	n0::PetscInt = PetscWeakFormGetResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+	n0::PetscInt = PetscWeakFormGetResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
 Retrieve the lists of residual pointwise functions `f0` and `f1` for a given key from a `PetscWeakForm`
 
 Not Collective
@@ -4210,17 +4211,17 @@ See also: `PetscWeakForm`, `PetscWeakFormSetResidual()`, `PetscWeakFormAddResidu
 # External Links
 $(_doc_external("DT/PetscWeakFormGetResidual"))
 """
-function PetscWeakFormGetResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, noname::Ptr{Cvoid})
+function PetscWeakFormGetResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, part::Integer, noname::Ptr{Cvoid})
     throw(MethodError(PetscWeakFormGetResidual, (petsclib, wf, label, val, f, part, noname)))
 end
 
-@for_petsc function PetscWeakFormGetResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormGetResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
 	n0_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscWeakFormGetResidual, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
                wf, label, val, f, part, n0_, noname,
               )
 
@@ -4230,7 +4231,7 @@ end
 end 
 
 """
-	n::PetscInt = PetscWeakFormGetRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
+	n::PetscInt = PetscWeakFormGetRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, part::PetscInt, noname::Ptr{Cvoid}) 
 Retrieve the list of Riemann solver pointwise functions for a given key from a `PetscWeakForm`
 
 Not Collective
@@ -4253,17 +4254,17 @@ See also: `PetscWeakForm`, `PetscWeakFormSetRiemannSolver()`, `PetscWeakFormSetI
 # External Links
 $(_doc_external("DT/PetscWeakFormGetRiemannSolver"))
 """
-function PetscWeakFormGetRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, noname::Ptr{Cvoid})
+function PetscWeakFormGetRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, part::Integer, noname::Ptr{Cvoid})
     throw(MethodError(PetscWeakFormGetRiemannSolver, (petsclib, wf, label, val, f, part, noname)))
 end
 
-@for_petsc function PetscWeakFormGetRiemannSolver(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormGetRiemannSolver(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, noname::Ptr{Cvoid} )
 	n_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscWeakFormGetRiemannSolver, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
                wf, label, val, f, part, n_, noname,
               )
 
@@ -4463,7 +4464,7 @@ end
 end 
 
 """
-	PetscWeakFormReplaceLabel(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel) 
+	PetscWeakFormReplaceLabel(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel) 
 Change any key on a label of the same name to use the new label
 
 Not Collective
@@ -4479,16 +4480,16 @@ See also: `PetscWeakForm`, `DMLabel`, `PetscWeakFormRewriteKeys()`, `PetscWeakFo
 # External Links
 $(_doc_external("DT/PetscWeakFormReplaceLabel"))
 """
-function PetscWeakFormReplaceLabel(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel)
+function PetscWeakFormReplaceLabel(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel)
     throw(MethodError(PetscWeakFormReplaceLabel, (petsclib, wf, label)))
 end
 
-@for_petsc function PetscWeakFormReplaceLabel(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel )
+@for_petsc function PetscWeakFormReplaceLabel(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel )
 
     @chk ccall(
                (:PetscWeakFormReplaceLabel, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel),
+               (PetscWeakForm, CDMLabel),
                wf, label,
               )
 
@@ -4497,7 +4498,7 @@ end
 end 
 
 """
-	PetscWeakFormRewriteKeys(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, Nv::PetscInt, values::Vector{PetscInt}) 
+	PetscWeakFormRewriteKeys(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, Nv::PetscInt, values::Vector{PetscInt}) 
 Change any key on the given label to use the new set of label values
 
 Not Collective
@@ -4515,16 +4516,16 @@ See also: `PetscWeakForm`, `DMLabel`, `PetscWeakFormReplaceLabel()`, `PetscWeakF
 # External Links
 $(_doc_external("DT/PetscWeakFormRewriteKeys"))
 """
-function PetscWeakFormRewriteKeys(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, Nv::Integer, values::AbstractVector{<:Number})
+function PetscWeakFormRewriteKeys(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, Nv::Integer, values::AbstractVector{<:Number})
     throw(MethodError(PetscWeakFormRewriteKeys, (petsclib, wf, label, Nv, values)))
 end
 
-@for_petsc function PetscWeakFormRewriteKeys(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, Nv::$PetscInt, values::Vector{$PetscInt} )
+@for_petsc function PetscWeakFormRewriteKeys(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, Nv::$PetscInt, values::Vector{$PetscInt} )
 
     @chk ccall(
                (:PetscWeakFormRewriteKeys, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, Ptr{$PetscInt}),
+               (PetscWeakForm, CDMLabel, $PetscInt, Ptr{$PetscInt}),
                wf, label, Nv, values,
               )
 
@@ -4533,7 +4534,7 @@ end
 end 
 
 """
-	PetscWeakFormSetBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
+	PetscWeakFormSetBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
 Set the lists of boundary Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -4561,16 +4562,16 @@ See also: `PetscWeakForm`, `PetscWeakFormGetBdJacobian()`, `PetscWeakFormAddBdJa
 # External Links
 $(_doc_external("DT/PetscWeakFormSetBdJacobian"))
 """
-function PetscWeakFormSetBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, n0::Integer, noname::Ptr{Cvoid})
+function PetscWeakFormSetBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, g::Integer, part::Integer, n0::Integer, noname::Ptr{Cvoid})
     throw(MethodError(PetscWeakFormSetBdJacobian, (petsclib, wf, label, val, f, g, part, n0, noname)))
 end
 
-@for_petsc function PetscWeakFormSetBdJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, n0::$PetscInt, noname::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormSetBdJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, n0::$PetscInt, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscWeakFormSetBdJacobian, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
                wf, label, val, f, g, part, n0, noname,
               )
 
@@ -4579,7 +4580,7 @@ end
 end 
 
 """
-	PetscWeakFormSetBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
+	PetscWeakFormSetBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
 Set the lists of boundary Jacobian preconditioner pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -4607,16 +4608,16 @@ See also: `PetscWeakForm`, `PetscWeakFormGetBdJacobianPreconditioner()`, `PetscW
 # External Links
 $(_doc_external("DT/PetscWeakFormSetBdJacobianPreconditioner"))
 """
-function PetscWeakFormSetBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, n0::Integer, noname::Ptr{Cvoid})
+function PetscWeakFormSetBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, g::Integer, part::Integer, n0::Integer, noname::Ptr{Cvoid})
     throw(MethodError(PetscWeakFormSetBdJacobianPreconditioner, (petsclib, wf, label, val, f, g, part, n0, noname)))
 end
 
-@for_petsc function PetscWeakFormSetBdJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, n0::$PetscInt, noname::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormSetBdJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, n0::$PetscInt, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscWeakFormSetBdJacobianPreconditioner, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
                wf, label, val, f, g, part, n0, noname,
               )
 
@@ -4625,7 +4626,7 @@ end
 end 
 
 """
-	PetscWeakFormSetBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
+	PetscWeakFormSetBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
 Set the lists of boundary residual pointwise functions `f0` and `f1` for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -4648,16 +4649,16 @@ See also: `PetscWeakForm`, `PetscWeakFormGetBdResidual()`, `PetscWeakFormAddBdRe
 # External Links
 $(_doc_external("DT/PetscWeakFormSetBdResidual"))
 """
-function PetscWeakFormSetBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, n0::Integer, noname::Ptr{Cvoid})
+function PetscWeakFormSetBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, part::Integer, n0::Integer, noname::Ptr{Cvoid})
     throw(MethodError(PetscWeakFormSetBdResidual, (petsclib, wf, label, val, f, part, n0, noname)))
 end
 
-@for_petsc function PetscWeakFormSetBdResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, n0::$PetscInt, noname::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormSetBdResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, n0::$PetscInt, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscWeakFormSetBdResidual, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
                wf, label, val, f, part, n0, noname,
               )
 
@@ -4666,7 +4667,7 @@ end
 end 
 
 """
-	PetscWeakFormSetDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
+	PetscWeakFormSetDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
 Set the lists of dynamic Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -4694,16 +4695,16 @@ See also: `PetscWeakForm`, `PetscWeakFormGetDynamicJacobian()`, `PetscWeakFormAd
 # External Links
 $(_doc_external("DT/PetscWeakFormSetDynamicJacobian"))
 """
-function PetscWeakFormSetDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, n0::Integer, noname::Ptr{Cvoid})
+function PetscWeakFormSetDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, g::Integer, part::Integer, n0::Integer, noname::Ptr{Cvoid})
     throw(MethodError(PetscWeakFormSetDynamicJacobian, (petsclib, wf, label, val, f, g, part, n0, noname)))
 end
 
-@for_petsc function PetscWeakFormSetDynamicJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, n0::$PetscInt, noname::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormSetDynamicJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, n0::$PetscInt, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscWeakFormSetDynamicJacobian, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
                wf, label, val, f, g, part, n0, noname,
               )
 
@@ -4712,7 +4713,7 @@ end
 end 
 
 """
-	PetscWeakFormSetIndexBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
+	PetscWeakFormSetIndexBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
 Set the boundary Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` at the given indices for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -4740,16 +4741,16 @@ See also: `PetscWeakForm`, `PetscWeakFormSetBdJacobian()`, `PetscWeakFormAddBdJa
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexBdJacobian"))
 """
-function PetscWeakFormSetIndexBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, i0::Integer, g0::external, i1::Integer, g1::external, i2::Integer, g2::external, i3::Integer, g3::external)
+function PetscWeakFormSetIndexBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, g::Integer, part::Integer, i0::Integer, g0::external, i1::Integer, g1::external, i2::Integer, g2::external, i3::Integer, g3::external)
     throw(MethodError(PetscWeakFormSetIndexBdJacobian, (petsclib, wf, label, val, f, g, part, i0, g0, i1, g1, i2, g2, i3, g3)))
 end
 
-@for_petsc function PetscWeakFormSetIndexBdJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, i0::$PetscInt, g0::external, i1::$PetscInt, g1::external, i2::$PetscInt, g2::external, i3::$PetscInt, g3::external )
+@for_petsc function PetscWeakFormSetIndexBdJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, i0::$PetscInt, g0::external, i1::$PetscInt, g1::external, i2::$PetscInt, g2::external, i3::$PetscInt, g3::external )
 
     @chk ccall(
                (:PetscWeakFormSetIndexBdJacobian, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external, $PetscInt, external, $PetscInt, external, $PetscInt, external),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external, $PetscInt, external, $PetscInt, external, $PetscInt, external),
                wf, label, val, f, g, part, i0, g0, i1, g1, i2, g2, i3, g3,
               )
 
@@ -4758,7 +4759,7 @@ end
 end 
 
 """
-	PetscWeakFormSetIndexBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
+	PetscWeakFormSetIndexBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
 Set the boundary Jacobian preconditioner pointwise functions `g0`, `g1`, `g2`, and `g3` at the given indices for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -4786,16 +4787,16 @@ See also: `PetscWeakForm`, `PetscWeakFormSetBdJacobianPreconditioner()`, `PetscW
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexBdJacobianPreconditioner"))
 """
-function PetscWeakFormSetIndexBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, i0::Integer, g0::external, i1::Integer, g1::external, i2::Integer, g2::external, i3::Integer, g3::external)
+function PetscWeakFormSetIndexBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, g::Integer, part::Integer, i0::Integer, g0::external, i1::Integer, g1::external, i2::Integer, g2::external, i3::Integer, g3::external)
     throw(MethodError(PetscWeakFormSetIndexBdJacobianPreconditioner, (petsclib, wf, label, val, f, g, part, i0, g0, i1, g1, i2, g2, i3, g3)))
 end
 
-@for_petsc function PetscWeakFormSetIndexBdJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, i0::$PetscInt, g0::external, i1::$PetscInt, g1::external, i2::$PetscInt, g2::external, i3::$PetscInt, g3::external )
+@for_petsc function PetscWeakFormSetIndexBdJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, i0::$PetscInt, g0::external, i1::$PetscInt, g1::external, i2::$PetscInt, g2::external, i3::$PetscInt, g3::external )
 
     @chk ccall(
                (:PetscWeakFormSetIndexBdJacobianPreconditioner, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external, $PetscInt, external, $PetscInt, external, $PetscInt, external),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external, $PetscInt, external, $PetscInt, external, $PetscInt, external),
                wf, label, val, f, g, part, i0, g0, i1, g1, i2, g2, i3, g3,
               )
 
@@ -4804,7 +4805,7 @@ end
 end 
 
 """
-	PetscWeakFormSetIndexBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, i0::PetscInt, f0::external, i1::PetscInt, f1::external) 
+	PetscWeakFormSetIndexBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, part::PetscInt, i0::PetscInt, f0::external, i1::PetscInt, f1::external) 
 Set the boundary residual pointwise functions `f0` and `f1` at the given indices for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -4827,16 +4828,16 @@ See also: `PetscWeakForm`, `PetscWeakFormSetBdResidual()`, `PetscWeakFormAddBdRe
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexBdResidual"))
 """
-function PetscWeakFormSetIndexBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, i0::Integer, f0::external, i1::Integer, f1::external)
+function PetscWeakFormSetIndexBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, part::Integer, i0::Integer, f0::external, i1::Integer, f1::external)
     throw(MethodError(PetscWeakFormSetIndexBdResidual, (petsclib, wf, label, val, f, part, i0, f0, i1, f1)))
 end
 
-@for_petsc function PetscWeakFormSetIndexBdResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, i0::$PetscInt, f0::external, i1::$PetscInt, f1::external )
+@for_petsc function PetscWeakFormSetIndexBdResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, i0::$PetscInt, f0::external, i1::$PetscInt, f1::external )
 
     @chk ccall(
                (:PetscWeakFormSetIndexBdResidual, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external, $PetscInt, external),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external, $PetscInt, external),
                wf, label, val, f, part, i0, f0, i1, f1,
               )
 
@@ -4845,7 +4846,7 @@ end
 end 
 
 """
-	PetscWeakFormSetIndexDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
+	PetscWeakFormSetIndexDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
 Set the dynamic Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` at the given indices for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -4873,16 +4874,16 @@ See also: `PetscWeakForm`, `PetscWeakFormSetDynamicJacobian()`, `PetscWeakFormAd
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexDynamicJacobian"))
 """
-function PetscWeakFormSetIndexDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, i0::Integer, g0::external, i1::Integer, g1::external, i2::Integer, g2::external, i3::Integer, g3::external)
+function PetscWeakFormSetIndexDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, g::Integer, part::Integer, i0::Integer, g0::external, i1::Integer, g1::external, i2::Integer, g2::external, i3::Integer, g3::external)
     throw(MethodError(PetscWeakFormSetIndexDynamicJacobian, (petsclib, wf, label, val, f, g, part, i0, g0, i1, g1, i2, g2, i3, g3)))
 end
 
-@for_petsc function PetscWeakFormSetIndexDynamicJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, i0::$PetscInt, g0::external, i1::$PetscInt, g1::external, i2::$PetscInt, g2::external, i3::$PetscInt, g3::external )
+@for_petsc function PetscWeakFormSetIndexDynamicJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, i0::$PetscInt, g0::external, i1::$PetscInt, g1::external, i2::$PetscInt, g2::external, i3::$PetscInt, g3::external )
 
     @chk ccall(
                (:PetscWeakFormSetIndexDynamicJacobian, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external, $PetscInt, external, $PetscInt, external, $PetscInt, external),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external, $PetscInt, external, $PetscInt, external, $PetscInt, external),
                wf, label, val, f, g, part, i0, g0, i1, g1, i2, g2, i3, g3,
               )
 
@@ -4891,7 +4892,7 @@ end
 end 
 
 """
-	PetscWeakFormSetIndexJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
+	PetscWeakFormSetIndexJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
 Set the Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` at the given indices for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -4919,16 +4920,16 @@ See also: `PetscWeakForm`, `PetscWeakFormSetJacobian()`, `PetscWeakFormAddJacobi
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexJacobian"))
 """
-function PetscWeakFormSetIndexJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, i0::Integer, g0::external, i1::Integer, g1::external, i2::Integer, g2::external, i3::Integer, g3::external)
+function PetscWeakFormSetIndexJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, g::Integer, part::Integer, i0::Integer, g0::external, i1::Integer, g1::external, i2::Integer, g2::external, i3::Integer, g3::external)
     throw(MethodError(PetscWeakFormSetIndexJacobian, (petsclib, wf, label, val, f, g, part, i0, g0, i1, g1, i2, g2, i3, g3)))
 end
 
-@for_petsc function PetscWeakFormSetIndexJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, i0::$PetscInt, g0::external, i1::$PetscInt, g1::external, i2::$PetscInt, g2::external, i3::$PetscInt, g3::external )
+@for_petsc function PetscWeakFormSetIndexJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, i0::$PetscInt, g0::external, i1::$PetscInt, g1::external, i2::$PetscInt, g2::external, i3::$PetscInt, g3::external )
 
     @chk ccall(
                (:PetscWeakFormSetIndexJacobian, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external, $PetscInt, external, $PetscInt, external, $PetscInt, external),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external, $PetscInt, external, $PetscInt, external, $PetscInt, external),
                wf, label, val, f, g, part, i0, g0, i1, g1, i2, g2, i3, g3,
               )
 
@@ -4937,7 +4938,7 @@ end
 end 
 
 """
-	PetscWeakFormSetIndexJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
+	PetscWeakFormSetIndexJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
 Set the Jacobian preconditioner pointwise functions `g0`, `g1`, `g2`, and `g3` at the given indices for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -4965,16 +4966,16 @@ See also: `PetscWeakForm`, `PetscWeakFormSetJacobianPreconditioner()`, `PetscWea
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexJacobianPreconditioner"))
 """
-function PetscWeakFormSetIndexJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, i0::Integer, g0::external, i1::Integer, g1::external, i2::Integer, g2::external, i3::Integer, g3::external)
+function PetscWeakFormSetIndexJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, g::Integer, part::Integer, i0::Integer, g0::external, i1::Integer, g1::external, i2::Integer, g2::external, i3::Integer, g3::external)
     throw(MethodError(PetscWeakFormSetIndexJacobianPreconditioner, (petsclib, wf, label, val, f, g, part, i0, g0, i1, g1, i2, g2, i3, g3)))
 end
 
-@for_petsc function PetscWeakFormSetIndexJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, i0::$PetscInt, g0::external, i1::$PetscInt, g1::external, i2::$PetscInt, g2::external, i3::$PetscInt, g3::external )
+@for_petsc function PetscWeakFormSetIndexJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, i0::$PetscInt, g0::external, i1::$PetscInt, g1::external, i2::$PetscInt, g2::external, i3::$PetscInt, g3::external )
 
     @chk ccall(
                (:PetscWeakFormSetIndexJacobianPreconditioner, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external, $PetscInt, external, $PetscInt, external, $PetscInt, external),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external, $PetscInt, external, $PetscInt, external, $PetscInt, external),
                wf, label, val, f, g, part, i0, g0, i1, g1, i2, g2, i3, g3,
               )
 
@@ -4983,7 +4984,7 @@ end
 end 
 
 """
-	PetscWeakFormSetIndexObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, ind::PetscInt, obj::external) 
+	PetscWeakFormSetIndexObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, part::PetscInt, ind::PetscInt, obj::external) 
 Set a single objective pointwise function at the given index for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -5004,16 +5005,16 @@ See also: `PetscWeakForm`, `PetscWeakFormGetIndexObjective()`, `PetscWeakFormSet
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexObjective"))
 """
-function PetscWeakFormSetIndexObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, ind::Integer, obj::external)
+function PetscWeakFormSetIndexObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, part::Integer, ind::Integer, obj::external)
     throw(MethodError(PetscWeakFormSetIndexObjective, (petsclib, wf, label, val, f, part, ind, obj)))
 end
 
-@for_petsc function PetscWeakFormSetIndexObjective(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, ind::$PetscInt, obj::external )
+@for_petsc function PetscWeakFormSetIndexObjective(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, ind::$PetscInt, obj::external )
 
     @chk ccall(
                (:PetscWeakFormSetIndexObjective, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external),
                wf, label, val, f, part, ind, obj,
               )
 
@@ -5022,7 +5023,7 @@ end
 end 
 
 """
-	PetscWeakFormSetIndexResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, i0::PetscInt, f0::external, i1::PetscInt, f1::external) 
+	PetscWeakFormSetIndexResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, part::PetscInt, i0::PetscInt, f0::external, i1::PetscInt, f1::external) 
 Set the residual pointwise functions `f0` and `f1` at the given indices for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -5045,16 +5046,16 @@ See also: `PetscWeakForm`, `PetscWeakFormSetResidual()`, `PetscWeakFormAddResidu
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexResidual"))
 """
-function PetscWeakFormSetIndexResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, i0::Integer, f0::external, i1::Integer, f1::external)
+function PetscWeakFormSetIndexResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, part::Integer, i0::Integer, f0::external, i1::Integer, f1::external)
     throw(MethodError(PetscWeakFormSetIndexResidual, (petsclib, wf, label, val, f, part, i0, f0, i1, f1)))
 end
 
-@for_petsc function PetscWeakFormSetIndexResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, i0::$PetscInt, f0::external, i1::$PetscInt, f1::external )
+@for_petsc function PetscWeakFormSetIndexResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, i0::$PetscInt, f0::external, i1::$PetscInt, f1::external )
 
     @chk ccall(
                (:PetscWeakFormSetIndexResidual, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external, $PetscInt, external),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external, $PetscInt, external),
                wf, label, val, f, part, i0, f0, i1, f1,
               )
 
@@ -5063,7 +5064,7 @@ end
 end 
 
 """
-	PetscWeakFormSetIndexRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, i::PetscInt, r::external) 
+	PetscWeakFormSetIndexRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, part::PetscInt, i::PetscInt, r::external) 
 Set a single Riemann solver pointwise function at the given index for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -5084,16 +5085,16 @@ See also: `PetscWeakForm`, `PetscWeakFormSetRiemannSolver()`, `PetscWeakFormGetR
 # External Links
 $(_doc_external("DT/PetscWeakFormSetIndexRiemannSolver"))
 """
-function PetscWeakFormSetIndexRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, i::Integer, r::external)
+function PetscWeakFormSetIndexRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, part::Integer, i::Integer, r::external)
     throw(MethodError(PetscWeakFormSetIndexRiemannSolver, (petsclib, wf, label, val, f, part, i, r)))
 end
 
-@for_petsc function PetscWeakFormSetIndexRiemannSolver(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, i::$PetscInt, r::external )
+@for_petsc function PetscWeakFormSetIndexRiemannSolver(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, i::$PetscInt, r::external )
 
     @chk ccall(
                (:PetscWeakFormSetIndexRiemannSolver, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, external),
                wf, label, val, f, part, i, r,
               )
 
@@ -5102,7 +5103,7 @@ end
 end 
 
 """
-	PetscWeakFormSetJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
+	PetscWeakFormSetJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
 Set the lists of Jacobian pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -5130,16 +5131,16 @@ See also: `PetscWeakForm`, `PetscWeakFormGetJacobian()`, `PetscWeakFormAddJacobi
 # External Links
 $(_doc_external("DT/PetscWeakFormSetJacobian"))
 """
-function PetscWeakFormSetJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, n0::Integer, noname::Ptr{Cvoid})
+function PetscWeakFormSetJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, g::Integer, part::Integer, n0::Integer, noname::Ptr{Cvoid})
     throw(MethodError(PetscWeakFormSetJacobian, (petsclib, wf, label, val, f, g, part, n0, noname)))
 end
 
-@for_petsc function PetscWeakFormSetJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, n0::$PetscInt, noname::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormSetJacobian(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, n0::$PetscInt, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscWeakFormSetJacobian, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
                wf, label, val, f, g, part, n0, noname,
               )
 
@@ -5148,7 +5149,7 @@ end
 end 
 
 """
-	PetscWeakFormSetJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
+	PetscWeakFormSetJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
 Set the lists of Jacobian preconditioner pointwise functions `g0`, `g1`, `g2`, and `g3` for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -5176,16 +5177,16 @@ See also: `PetscWeakForm`, `PetscWeakFormGetJacobianPreconditioner()`, `PetscWea
 # External Links
 $(_doc_external("DT/PetscWeakFormSetJacobianPreconditioner"))
 """
-function PetscWeakFormSetJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, g::Integer, part::Integer, n0::Integer, noname::Ptr{Cvoid})
+function PetscWeakFormSetJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, g::Integer, part::Integer, n0::Integer, noname::Ptr{Cvoid})
     throw(MethodError(PetscWeakFormSetJacobianPreconditioner, (petsclib, wf, label, val, f, g, part, n0, noname)))
 end
 
-@for_petsc function PetscWeakFormSetJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, n0::$PetscInt, noname::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormSetJacobianPreconditioner(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, g::$PetscInt, part::$PetscInt, n0::$PetscInt, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscWeakFormSetJacobianPreconditioner, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
                wf, label, val, f, g, part, n0, noname,
               )
 
@@ -5228,7 +5229,7 @@ end
 end 
 
 """
-	PetscWeakFormSetObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n::PetscInt, noname::Ptr{Cvoid}) 
+	PetscWeakFormSetObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n::PetscInt, noname::Ptr{Cvoid}) 
 Set the list of objective pointwise functions for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -5249,16 +5250,16 @@ See also: `PetscWeakForm`, `PetscWeakFormGetObjective()`, `PetscWeakFormAddObjec
 # External Links
 $(_doc_external("DT/PetscWeakFormSetObjective"))
 """
-function PetscWeakFormSetObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, n::Integer, noname::Ptr{Cvoid})
+function PetscWeakFormSetObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, part::Integer, n::Integer, noname::Ptr{Cvoid})
     throw(MethodError(PetscWeakFormSetObjective, (petsclib, wf, label, val, f, part, n, noname)))
 end
 
-@for_petsc function PetscWeakFormSetObjective(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, n::$PetscInt, noname::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormSetObjective(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, n::$PetscInt, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscWeakFormSetObjective, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
                wf, label, val, f, part, n, noname,
               )
 
@@ -5267,7 +5268,7 @@ end
 end 
 
 """
-	PetscWeakFormSetResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
+	PetscWeakFormSetResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n0::PetscInt, noname::Ptr{Cvoid}) 
 Set the lists of residual pointwise functions `f0` and `f1` for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -5290,16 +5291,16 @@ See also: `PetscWeakForm`, `PetscWeakFormGetResidual()`, `PetscWeakFormAddResidu
 # External Links
 $(_doc_external("DT/PetscWeakFormSetResidual"))
 """
-function PetscWeakFormSetResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, n0::Integer, noname::Ptr{Cvoid})
+function PetscWeakFormSetResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, part::Integer, n0::Integer, noname::Ptr{Cvoid})
     throw(MethodError(PetscWeakFormSetResidual, (petsclib, wf, label, val, f, part, n0, noname)))
 end
 
-@for_petsc function PetscWeakFormSetResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, n0::$PetscInt, noname::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormSetResidual(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, n0::$PetscInt, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscWeakFormSetResidual, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
                wf, label, val, f, part, n0, noname,
               )
 
@@ -5308,7 +5309,7 @@ end
 end 
 
 """
-	PetscWeakFormSetRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n::PetscInt, noname::Ptr{Cvoid}) 
+	PetscWeakFormSetRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n::PetscInt, noname::Ptr{Cvoid}) 
 Set the list of Riemann solver pointwise functions for a given key in a `PetscWeakForm`
 
 Not Collective
@@ -5329,16 +5330,16 @@ See also: `PetscWeakForm`, `PetscWeakFormGetRiemannSolver()`, `PetscWeakFormSetI
 # External Links
 $(_doc_external("DT/PetscWeakFormSetRiemannSolver"))
 """
-function PetscWeakFormSetRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::Integer, f::Integer, part::Integer, n::Integer, noname::Ptr{Cvoid})
+function PetscWeakFormSetRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::AbstractDMLabel, val::Integer, f::Integer, part::Integer, n::Integer, noname::Ptr{Cvoid})
     throw(MethodError(PetscWeakFormSetRiemannSolver, (petsclib, wf, label, val, f, part, n, noname)))
 end
 
-@for_petsc function PetscWeakFormSetRiemannSolver(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::DMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, n::$PetscInt, noname::Ptr{Cvoid} )
+@for_petsc function PetscWeakFormSetRiemannSolver(petsclib::$UnionPetscLib, wf::PetscWeakForm, label::AbstractDMLabel, val::$PetscInt, f::$PetscInt, part::$PetscInt, n::$PetscInt, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscWeakFormSetRiemannSolver, $petsc_library),
                PetscErrorCode,
-               (PetscWeakForm, DMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
+               (PetscWeakForm, CDMLabel, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}),
                wf, label, val, f, part, n, noname,
               )
 

@@ -139,7 +139,7 @@ The hook runs at every setup, so `velocity_multigrid!` returns early once the sp
 In a closed box only pressure differences are determined. A constant null space composed on the pressure index set is handed by the fieldsplit to the Schur solve, which removes the mean:
 
 ```julia
-PETSc.compose_constant_nullspace!(petsclib, comm, pressure)
+PETSc.compose_constant_nullspace!(pressure)
 ```
 
 On this problem it changes little: without it the iteration counts are the same and the mean pressure is 10⁻¹² instead of 10⁻¹⁷. It makes the pressure well defined.

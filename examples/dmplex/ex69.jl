@@ -318,7 +318,7 @@ exact_pres_ptr = sol_type == "solkx" ? exact_pres_kx_ptr : exact_pres_cx_ptr
 # Signature: (DM, orig_field, field, MatNullSpace*) → PetscErrorCode
 function pressure_nsp_constructor(
     dm_ptr::Ptr{Cvoid}, ::PetscInt, ::PetscInt,
-    nsp_pp::Ptr{LibPETSc.MatNullSpace},
+    nsp_pp::Ptr{LibPETSc.CMatNullSpace},
 )::PetscInt
     PL   = typeof(petsclib)
     dm_w = LibPETSc.PetscDM{PL}(dm_ptr)
@@ -329,13 +329,14 @@ function pressure_nsp_constructor(
     # Build MatNullSpace from the normalized vector
     GC.@preserve nvec begin
         nsp = PETSc.mat_nullspace_create(petsclib, MPI.COMM_WORLD, (nvec,))
-        unsafe_store!(nsp_pp, nsp)
+        nsp.own = false   # PETSc owns the null space it is handed
+        unsafe_store!(nsp_pp, nsp.ptr)
     end
     PETSc.destroy!(nvec)
     return PetscInt(0)
 end
 const pressure_nsp_ptr = Base.@cfunction(pressure_nsp_constructor, PetscInt,
-    (Ptr{Cvoid}, PetscInt, PetscInt, Ptr{LibPETSc.MatNullSpace}))
+    (Ptr{Cvoid}, PetscInt, PetscInt, Ptr{LibPETSc.CMatNullSpace}))
 
 # ── Mesh ──────────────────────────────────────────────────────────────────────
 dm = PETSc.DMPlex(petsclib, comm; opts...)
@@ -376,7 +377,7 @@ fe_pres = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, 1, simplex;
 LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_pres), "pressure")
 
 # Copy quadrature from velocity to pressure for consistent integration
-PETSc.copy_quadrature!(petsclib, fe_vel, fe_pres)
+PETSc.copy_quadrature!(fe_pres, fe_vel)
 
 PETSc.set_field!(dm, 0, fe_vel)
 PETSc.set_field!(dm, 1, fe_pres)
@@ -431,7 +432,7 @@ end
 # Attach a constant (trivial) null space to the pressure FE object.
 # This informs the fieldsplit preconditioner that the pressure block has a
 # constant null space, enabling proper Schur complement approximations.
-PETSc.compose_constant_nullspace!(petsclib, comm, fe_pres)
+PETSc.compose_constant_nullspace!(fe_pres)
 
 # ── Pressure null space (normalized constant-pressure mode) ──────────────────
 null_vec = PETSc.global_vec(dm)
@@ -477,7 +478,7 @@ end
 # ── Cleanup ───────────────────────────────────────────────────────────────────
 GC.gc(true)
 MPI.Barrier(comm)
-PETSc.destroy!(petsclib, nullspace)
+PETSc.destroy!(nullspace)
 PETSc.destroy!(snes)
 PETSc.destroy!(u)
 PETSc.destroy!(null_vec)

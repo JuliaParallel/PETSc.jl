@@ -65,9 +65,6 @@ const MatColoring = Ptr{_n_MatColoring}
 mutable struct _n_MatFDColoring end
 const MatFDColoring = Ptr{_n_MatFDColoring}
 
-mutable struct _n_MatNullSpace end
-const MatNullSpace = Ptr{_n_MatNullSpace}
-
 mutable struct _n_MatPartitioning end
 const MatPartitioning = Ptr{_n_MatPartitioning}
 
@@ -130,9 +127,6 @@ const PetscDrawSP = Ptr{_n_PetscDrawSP}
 
 mutable struct _n_PetscDualSpace end
 const PetscDualSpace = Ptr{_n_PetscDualSpace}
-
-mutable struct _n_PetscFE end
-const PetscFE = Ptr{_n_PetscFE}
 
 mutable struct _n_PetscFV end
 const PetscFV = Ptr{_n_PetscFV}

@@ -28,10 +28,11 @@ function create_ds!(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
 end
 
 """
-    set_field!(dm::AbstractPetscDM, field::Integer, fe; label = C_NULL)
+    set_field!(dm::AbstractPetscDM, field::Integer, fe; label = nothing)
 
-Attach a `PetscFE` (or other discretization object) as the `field`-th field of
-`dm` (0-based field index, matching PETSc).
+Attach `fe`, a `PetscFE` (or another discretization object), as the `field`-th
+field of `dm` (0-based field index, matching PETSc). `label` restricts the field
+to the points of a `DMLabel`; the default puts it on the whole mesh.
 
 # External Links
 $(doc_external("DM/DMSetField"))
@@ -41,10 +42,13 @@ function set_field! end
 LibPETSc.@for_petsc function set_field!(
     dm::AbstractPetscDM{$PetscLib},
     field::Integer,
-    fe::Ptr;
-    label::Ptr{Cvoid} = C_NULL,
+    fe::LibPETSc.AbstractPetscFE{$PetscLib};
+    label::Union{Nothing, LibPETSc.AbstractDMLabel{$PetscLib}} = nothing,
 )
-    LibPETSc.DMSetField(getlib($PetscLib), dm, $PetscInt(field), label, Ptr{Cvoid}(fe))
+    petsclib = getlib($PetscLib)
+    # a null handle means "the whole mesh"
+    label = isnothing(label) ? LibPETSc.DMLabel(petsclib) : label
+    LibPETSc.DMSetField(petsclib, dm, $PetscInt(field), label, convert(Ptr{Cvoid}, fe))
     return dm
 end
 
@@ -53,7 +57,7 @@ end
                   bcfunc_ptr, bcfunc_t_ptr = C_NULL, ctx = C_NULL)
 
 Attach a boundary condition to `dm`, and return `dm`. `LibPETSc.DMAddBoundary`
-also returns the number PETSc gives the boundary.  `label` is a `Ptr{Cvoid}` from
+also returns the number PETSc gives the boundary.  `label` is a `DMLabel` from
 [`label`](@ref).  `bcfunc_ptr` / `bcfunc_t_ptr` are `@cfunction(...)` results
 matching PETSc's boundary callback signature.
 
@@ -72,7 +76,7 @@ LibPETSc.@for_petsc function add_boundary!(
     dm::AbstractPetscDM{$PetscLib},
     bctype::LibPETSc.DMBoundaryConditionType,
     name::AbstractString,
-    label::Ptr{Cvoid},
+    label::LibPETSc.AbstractDMLabel{$PetscLib},
     values::AbstractVector{<:Integer},
     field::Integer,
     comps::AbstractVector{<:Integer},
@@ -267,7 +271,7 @@ LibPETSc.@for_petsc function add_natural_boundary!(
     dm::AbstractPetscDM{$PetscLib},
     ds::PetscDS{$PetscLib},
     name::AbstractString,
-    label::Ptr{Cvoid},
+    label::LibPETSc.AbstractDMLabel{$PetscLib},
     label_value::Integer,
     field::Integer,
     f0_ptr::Ptr{Cvoid},

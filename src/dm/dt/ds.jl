@@ -1,10 +1,16 @@
 abstract type AbstractPetscDS{T} end
 
+# A PetscDS belongs to its DM, so a handle is borrowed (`own = false`) unless said otherwise
 mutable struct PetscDS{PetscLib} <: AbstractPetscDS{PetscLib}
     ptr::LibPETSc.PetscDS   # Ptr{_n_PetscDS}
+    age::Int
+    own::Bool
+
+    PetscDS{PetscLib}(ptr::LibPETSc.PetscDS, age::Int = getlib(PetscLib).age; own::Bool = false) where {PetscLib} =
+        new{PetscLib}(ptr, age, own)
 end
 
-Base.unsafe_convert(::Type{LibPETSc.PetscDS}, v::PetscDS) = v.ptr
+Base.unsafe_convert(::Type{LibPETSc.PetscDS}, v::PetscDS) = LibPETSc.live_ptr(v)
 
 
 # ── PetscDS point-function setters ──────────────────────────────────────────

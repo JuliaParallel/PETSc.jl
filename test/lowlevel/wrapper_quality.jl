@@ -20,6 +20,8 @@ const HANDLE_CONCRETE = Dict(
     LibPETSc.AbstractSNES => LibPETSc.SNES, LibPETSc.AbstractPetscOptions => LibPETSc.PetscOptions,
     LibPETSc.AbstractIS => LibPETSc.IS, LibPETSc.AbstractPF => LibPETSc.PF, LibPETSc.AbstractTS => LibPETSc.TS,
     LibPETSc.AbstractAO => LibPETSc.AO, LibPETSc.AbstractTao => LibPETSc.Tao,
+    LibPETSc.AbstractPetscFE => LibPETSc.PetscFE, LibPETSc.AbstractDMLabel => LibPETSc.DMLabel,
+    LibPETSc.AbstractMatNullSpace => LibPETSc.MatNullSpace,
 )
 
 # concrete argument type for inference, given the library type

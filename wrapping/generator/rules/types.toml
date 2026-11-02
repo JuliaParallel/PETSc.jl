@@ -137,6 +137,24 @@ julia = "Tao"
 abstract = "AbstractTao"
 c = "CTao"
 
+[[handles]]
+c_name = "PetscFE"
+julia = "PetscFE"
+abstract = "AbstractPetscFE"
+c = "CPetscFE"
+
+[[handles]]
+c_name = "DMLabel"
+julia = "DMLabel"
+abstract = "AbstractDMLabel"
+c = "CDMLabel"
+
+[[handles]]
+c_name = "MatNullSpace"
+julia = "MatNullSpace"
+abstract = "AbstractMatNullSpace"
+c = "CMatNullSpace"
+
 # Types the generator would try to declare as opaque pointers but which are defined
 # elsewhere (prologue, support files, Julia Base) or must keep a hand-written definition.
 [predeclared]

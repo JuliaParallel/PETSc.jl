@@ -40,7 +40,6 @@ public @bd_fn, @jacobian_fn, @residual_fn, @simple_fn, AO, AbstractAO, AbstractI
        setup!, snes, snes_failures, snes_iterations, solution, solve!, solve_time,
        star_fd_coloring, stencil, step!, step_number, step_rejections,
        tao_usable_after_reinitialize, timestep, tolerances, track!, type_name,
-       unsafe_local_array, unset_library!, untrack!, vertex_location, with_destroy,
-       with_field_views!, with_local_array!, with_local_arrays!,
-       with_local_coordinate_array, with_options, with_product_coordinates,
-       wrap_local_array, zero_rows!, zero_rows_local!
+       unset_library!, untrack!, vertex_location, with_destroy, with_field_views!,
+       with_local_array!, with_local_arrays!, with_local_coordinate_array, with_options,
+       with_product_coordinates, zero_rows!, zero_rows_local!

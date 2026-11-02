@@ -59,3 +59,15 @@ end
         @test !isdefined(PETSc, name)
     end
 end
+
+@testset "wrap_local_array and unsafe_local_array are removed" begin
+    for name in (:wrap_local_array, :wrap_localarray, :_unsafe_local_array,
+                 :unsafe_local_array, :unsafe_localarray)
+        @test !isdefined(PETSc, name)
+        @test !Base.ispublic(PETSc, name)
+    end
+    # the scoped and the explicit checkouts that replace them
+    for name in (:with_local_array!, :acquire_local_array, :release_local_array)
+        @test Base.ispublic(PETSc, name)
+    end
+end

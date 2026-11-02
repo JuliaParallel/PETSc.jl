@@ -180,8 +180,7 @@ LibPETSc.VecCopy(petsclib,g_x,g_xold)       # initialize Pe and Phi of last time
 l_xold = PETSc.local_vec(da)
 PETSc.global_to_local!(l_xold, da, g_xold; mode = PETSc.INSERT_VALUES)
 
-# Keep `x_old` as a plain Julia vector (avoid `unsafe_local_array` finalizers
-# interacting with PETSc object lifetimes).
+# Keep `x_old` as a plain Julia vector that outlives the checkout.
 x_old = zeros(PetscScalar, length(l_xold))
 PETSc.with_local_array!(l_xold; read = true, write = false) do x_arr
     copyto!(x_old, x_arr)

@@ -49,6 +49,14 @@ PetscReal = Float64
 mutable struct _n_ISColoring end
 const ISColoring = Ptr{_n_ISColoring}
 
+# `destroy!` sets `age = -1`. Handing a destroyed handle to C would pass PETSc a
+# null pointer, and the shipped PETSc has no debug checks, so that crashes with
+# signal 11. A null handle that was never destroyed (`age >= 0`) is still a valid
+# argument meaning "no object".
+@noinline throw_destroyed(v) =
+    throw(ArgumentError("this $(nameof(typeof(v))) was destroyed; it cannot be passed to PETSc"))
+@inline live_ptr(v) = v.age < 0 ? throw_destroyed(v) : v.ptr
+
 # ----- Custom Julia struct for PETSc Vec -----
 const CVec = Ptr{Cvoid}
 # A Vec is an `AbstractVector` of its library's scalar type. That type is a second
@@ -67,8 +75,8 @@ end
 # Convenience constructor from petsclib instance
 PetscVec(lib::PetscLib) where {PetscLib} = PetscVec{PetscLib}(C_NULL, lib.age)
 PetscVec(ptr::CVec, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = PetscVec{PetscLib}(ptr, age; own)
-Base.convert(::Type{CVec}, v::AbstractPetscVec) = v.ptr
-Base.unsafe_convert(::Type{CVec}, v::AbstractPetscVec) = v.ptr
+Base.convert(::Type{CVec}, v::AbstractPetscVec) = live_ptr(v)
+Base.unsafe_convert(::Type{CVec}, v::AbstractPetscVec) = live_ptr(v)
 # ------------------------------------------------------
 
 # ----- Custom Julia struct for PETSc Mat -----
@@ -88,8 +96,8 @@ end
 # Convenience constructor from petsclib instance
 PetscMat(lib::PetscLib) where {PetscLib} = PetscMat{PetscLib}(C_NULL, lib.age)
 PetscMat(ptr::CMat, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = PetscMat{PetscLib}(ptr, age; own)
-Base.convert(::Type{CMat}, v::AbstractPetscMat) = v.ptr
-Base.unsafe_convert(::Type{CMat}, v::AbstractPetscMat) = v.ptr
+Base.convert(::Type{CMat}, v::AbstractPetscMat) = live_ptr(v)
+Base.unsafe_convert(::Type{CMat}, v::AbstractPetscMat) = live_ptr(v)
 # ------------------------------------------------------
 
 # ----- Custom Julia struct for PETSc KSP -----
@@ -108,8 +116,8 @@ end
 # Convenience constructor from petsclib instance
 KSP(lib::PetscLib) where {PetscLib} = KSP{PetscLib}(C_NULL, lib.age)
 KSP(ptr::CKSP, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = KSP{PetscLib}(ptr, age; own)
-Base.convert(::Type{CKSP}, v::AbstractKSP) = v.ptr
-Base.unsafe_convert(::Type{CKSP}, v::AbstractKSP) = v.ptr
+Base.convert(::Type{CKSP}, v::AbstractKSP) = live_ptr(v)
+Base.unsafe_convert(::Type{CKSP}, v::AbstractKSP) = live_ptr(v)
 # ------------------------------------------------------
 
 # ----- Custom Julia struct for PETSc PC -----
@@ -125,8 +133,8 @@ end
 
 PC(lib::PetscLib) where {PetscLib} = PC{PetscLib}(C_NULL, lib.age)
 PC(ptr::CPC, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = PC{PetscLib}(ptr, age; own)
-Base.convert(::Type{CPC}, v::AbstractPC) = v.ptr
-Base.unsafe_convert(::Type{CPC}, v::AbstractPC) = v.ptr
+Base.convert(::Type{CPC}, v::AbstractPC) = live_ptr(v)
+Base.unsafe_convert(::Type{CPC}, v::AbstractPC) = live_ptr(v)
 # ------------------------------------------------------
 
 # ----- Custom Julia struct for PETSc SNES -----
@@ -143,8 +151,8 @@ end
 # Convenience constructor from petsclib instance
 SNES(lib::PetscLib) where {PetscLib} = SNES{PetscLib}(C_NULL, lib.age)
 SNES(ptr::Ptr, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = SNES{PetscLib}(ptr, age; own)
-Base.convert(::Type{CSNES}, v::AbstractSNES) = v.ptr
-Base.unsafe_convert(::Type{CSNES}, v::AbstractSNES) = v.ptr
+Base.convert(::Type{CSNES}, v::AbstractSNES) = live_ptr(v)
+Base.unsafe_convert(::Type{CSNES}, v::AbstractSNES) = live_ptr(v)
 # ------------------------------------------------------
 
 # ----- Custom Julia struct for PETSc DM -----
@@ -161,8 +169,8 @@ end
 # Convenience constructor from petsclib instance
 PetscDM(lib::PetscLib) where {PetscLib} = PetscDM{PetscLib}(C_NULL, lib.age)
 PetscDM(ptr::CDM, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = PetscDM{PetscLib}(ptr, age; own)
-Base.convert(::Type{CDM}, v::AbstractPetscDM) = v.ptr
-Base.unsafe_convert(::Type{CDM}, v::AbstractPetscDM) = v.ptr
+Base.convert(::Type{CDM}, v::AbstractPetscDM) = live_ptr(v)
+Base.unsafe_convert(::Type{CDM}, v::AbstractPetscDM) = live_ptr(v)
 # ------------------------------------------------------
 
 # ------------------------------------------------------
@@ -183,8 +191,8 @@ PetscOptions(lib::PetscLib) where {PetscLib} = PetscOptions{PetscLib}(C_NULL, li
 PetscOptions(ptr::Ptr{Cvoid}, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = PetscOptions{PetscLib}(ptr, age; own)
 
 # Conversion methods
-Base.convert(::Type{Ptr{Cvoid}}, v::AbstractPetscOptions) = v.ptr
-Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractPetscOptions) = v.ptr
+Base.convert(::Type{Ptr{Cvoid}}, v::AbstractPetscOptions) = live_ptr(v)
+Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractPetscOptions) = live_ptr(v)
 # ------------------------------------------------------
 
 # ------------------------------------------------------
@@ -205,8 +213,8 @@ IS(lib::PetscLib) where {PetscLib} = IS{PetscLib}(C_NULL, lib.age)
 IS(ptr::Ptr{Cvoid}, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = IS{PetscLib}(ptr, age; own)
 
 # Conversion methods
-Base.convert(::Type{Ptr{Cvoid}}, v::AbstractIS) = v.ptr
-Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractIS) = v.ptr
+Base.convert(::Type{Ptr{Cvoid}}, v::AbstractIS) = live_ptr(v)
+Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractIS) = live_ptr(v)
 # Allows a mutable IS to be passed as Ptr{CIS} (= Ptr{Ptr{Cvoid}}) to C
 # functions that write the IS handle into the pointed-to slot, e.g.
 # DMGetStratumIS. Julia passes pointer_from_objref(v), which is the address of
@@ -232,8 +240,8 @@ PF(lib::PetscLib) where {PetscLib} = PF{PetscLib}(C_NULL, lib.age)
 PF(ptr::Ptr{Cvoid}, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = PF{PetscLib}(ptr, age; own)
 
 # Conversion methods
-Base.convert(::Type{Ptr{Cvoid}}, v::AbstractPF) = v.ptr
-Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractPF) = v.ptr
+Base.convert(::Type{Ptr{Cvoid}}, v::AbstractPF) = live_ptr(v)
+Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractPF) = live_ptr(v)
 # ------------------------------------------------------
 
 # ------------------------------------------------------
@@ -255,8 +263,8 @@ TS(ptr::CTS, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLi
     TS{PetscLib}(ptr, age; own)
 
 # Conversion methods
-Base.convert(::Type{Ptr{Cvoid}}, v::AbstractTS) = v.ptr
-Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractTS) = v.ptr
+Base.convert(::Type{Ptr{Cvoid}}, v::AbstractTS) = live_ptr(v)
+Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractTS) = live_ptr(v)
 # ------------------------------------------------------
 
 # ------------------------------------------------------
@@ -277,8 +285,8 @@ Tao(lib::PetscLib) where {PetscLib} = Tao{PetscLib}(C_NULL, lib.age)
 Tao(ptr::Ptr{Cvoid}, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = Tao{PetscLib}(ptr, age; own)
 
 # Conversion methods
-Base.convert(::Type{Ptr{Cvoid}}, v::AbstractTao) = v.ptr
-Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractTao) = v.ptr
+Base.convert(::Type{Ptr{Cvoid}}, v::AbstractTao) = live_ptr(v)
+Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractTao) = live_ptr(v)
 # ------------------------------------------------------
 
 # ------------------------------------------------------
@@ -299,8 +307,8 @@ AO(lib::PetscLib) where {PetscLib} = AO{PetscLib}(C_NULL, lib.age)
 AO(ptr::Ptr{Cvoid}, lib::PetscLib, age::Int = lib.age; own::Bool = true) where {PetscLib} = AO{PetscLib}(ptr, age; own)
 
 # Conversion methods
-Base.convert(::Type{Ptr{Cvoid}}, v::AbstractAO) = v.ptr
-Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractAO) = v.ptr
+Base.convert(::Type{Ptr{Cvoid}}, v::AbstractAO) = live_ptr(v)
+Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractAO) = live_ptr(v)
 # ------------------------------------------------------
 
 # ------------------------------------------------------

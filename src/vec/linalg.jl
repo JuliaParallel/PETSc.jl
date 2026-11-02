@@ -32,7 +32,7 @@ function finalize_if_serial!(
     obj::Union{AbstractPetscVec{PetscLib}, LibPETSc.AbstractPetscMat{PetscLib}},
 ) where {PetscLib}
     if MPI.Comm_size(LibPETSc.PetscObjectGetComm(getlib(PetscLib), obj)) == 1
-        finalizer(destroy!, obj)
+        destroy_at_gc!(obj)
     end
     return obj
 end

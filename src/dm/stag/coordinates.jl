@@ -34,18 +34,6 @@ function set_uniform_coordinates!(
     zmin = (s > 2) ? PetscScalar(xyzmin[3]) : PetscScalar(0)
     zmax = (s > 2) ? PetscScalar(xyzmax[3]) : PetscScalar(0)
     
-    #=
-    LibPETSc.DMStagSetUniformCoordinatesProduct(
-        getlib(PetscLib),
-        dm,
-        xmin,
-        xmax,
-        ymin,
-        ymax,
-        zmin,
-        zmax,
-    )
-    =#
     petsclib=getlib(PetscLib)
     LibPETSc.DMStagSetUniformCoordinatesProduct(petsclib, dm, xmin, xmax, ymin, ymax, zmin, zmax)
 

@@ -78,7 +78,7 @@ $(doc_external("Sys/PetscOptionsCreate"))
 function LibPETSc.PetscOptions(petsclib::PetscLibType; kwargs...)
     check_initialized(petsclib)
     opts = LibPETSc.PetscOptionsCreate(petsclib)
-    finalizer(destroy!, opts)
+    destroy_at_gc!(opts)
     for (k, v) in kwargs
         opts[k] = v
     end
@@ -186,6 +186,14 @@ function Base.pop!(opts::AbstractPetscOptions{PetscLib}) where {PetscLib}
     return nothing
 end
 
+# The constructor options of a KSP, SNES or TS go with the solver
+function destroy_options!(solver)
+    isnothing(solver.opts) && return nothing
+    destroy!(solver.opts)
+    solver.opts = nothing
+    return nothing
+end
+
 """
     with_options(f, opts::PetscOptions)
 
@@ -196,14 +204,6 @@ options from `opts`, and pop it again even if `f` throws. Returns the result of
 # External Links
 $(doc_external("Sys/PetscOptionsPush"))
 """
-# The constructor options of a KSP, SNES or TS go with the solver
-function destroy_options!(solver)
-    isnothing(solver.opts) && return nothing
-    destroy!(solver.opts)
-    solver.opts = nothing
-    return nothing
-end
-
 function with_options(f, opts::AbstractPetscOptions{PetscLib}) where {PetscLib}
     stack = options_stack(PetscLib)
     !isempty(stack) && last(stack) == opts.ptr && return f()

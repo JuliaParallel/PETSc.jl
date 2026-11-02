@@ -155,66 +155,15 @@ LibPETSc.@for_petsc function create_matshell(
     mult_add,
 ) where {OType}
     mat = MatShell{$PetscLib}(C_NULL, obj, petsclib.age, true)
-
-#=
-    ccall(
-        (:MatCreateShell, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (
-            LibPETSc.MPI_Comm,
-            $PetscInt,
-            $PetscInt,
-            $PetscInt,
-            $PetscInt,
-            Ptr{Cvoid},
-            Ptr{CMat},
-        ),
-        comm,
-        local_rows,
-        local_cols,
-        global_rows,
-        global_cols,
-        pointer_from_objref(mat),
-        A_,
-    )
-=#
-    A_ = Ref{CMat}()
-    ccall(
-               (:MatCreateShell, $petsc_library),
-               LibPETSc.PetscErrorCode,
-               (LibPETSc.MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}, Ptr{CMat}),
-               comm, local_rows, local_cols, global_rows, global_cols, C_NULL, A_,
-              )
-
-    mat.ptr = A_[]
+    # the MatShell takes over the handle of the plain PetscMat PETSc returns
+    mat.ptr = LibPETSc.MatCreateShell(
+        petsclib, comm, $PetscInt(local_rows), $PetscInt(local_cols),
+        $PetscInt(global_rows), $PetscInt(global_cols), C_NULL,
+    ).ptr
     state = object_state!(mat)
     state.obj = obj
     LibPETSc.MatShellSetContext(petsclib, mat, pointer_from_objref(state))
 
-    #=
-     LibPETSc.MatCreateShell(
-        petsclib,
-        comm,
-        local_rows,
-        local_cols,
-        global_rows,
-        global_cols,
-        pointer_from_objref(mat),
-        mat,
-    )
-
-
-    mat = LibPETSc.MatCreateShell(
-        petsclib,
-        comm,
-        local_rows,
-        local_cols,
-        global_rows,
-        global_cols,
-        pointer_from_objref(mat),
-    )
-    =#
-  
     mulptr = @cfunction(
         MatOp{$PetscLib, LibPETSc.MATOP_MULT}(),
         LibPETSc.PetscErrorCode,
@@ -245,7 +194,7 @@ LibPETSc.@for_petsc function create_matshell(
 
     # The garbage collector can only destroy it when no other rank takes part
     if MPI.Comm_size(comm) == 1
-        finalizer(destroy!, mat)
+        destroy_at_gc!(mat)
     end
 
     return mat
@@ -273,13 +222,10 @@ function Base.:*(M::MatShell{PetscLib}, x::AbstractVector) where {PetscLib}
     petsclib = getlib(PetscLib)
     # PETSc works on this copy of `x` in place, so it must outlive the product
     x_copy = PetscScalar.(x)
-    return GC.@preserve x_copy begin
-        petsc_x = seq_vec_with_array(petsclib, MPI.COMM_SELF, PetscInt(1), PetscInt(n), x_copy)
-        petsc_y = LibPETSc.VecCreateSeq(petsclib, MPI.COMM_SELF, PetscInt(m))
+    return GC.@preserve x_copy with_destroy() do list
+        petsc_x = track!(list, seq_vec_with_array(petsclib, MPI.COMM_SELF, PetscInt(1), PetscInt(n), x_copy))
+        petsc_y = track!(list, LibPETSc.VecCreateSeq(petsclib, MPI.COMM_SELF, PetscInt(m)))
         mul!(petsc_y, M, petsc_x)
-        result = petsc_y[:]
-        destroy!(petsc_x)
-        destroy!(petsc_y)
-        result
+        petsc_y[:]
     end
 end

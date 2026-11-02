@@ -32,7 +32,7 @@ function vec_from_ptr(petsclib::PetscLib, ptr::CVec, own::Bool) where {PetscLib 
     # Short-circuits on a borrowed handle, which is the hot path: callbacks wrap
     # PETSc-owned vectors on every invocation and never need the communicator.
     if own && MPI.Comm_size(LibPETSc.PetscObjectGetComm(getlib(PetscLib), v)) == 1
-        finalizer(destroy!, v)
+        destroy_at_gc!(v)
     end
     return v
 end
@@ -79,7 +79,7 @@ function LibPETSc.PetscVec(petsclib::PetscLib, n::Integer) where {PetscLib <: Pe
     check_initialized(petsclib)
     PetscInt = petsclib.PetscInt
     v = LibPETSc.VecCreateSeq(petsclib, comm, PetscInt(n))
-    finalizer(destroy!, v)
+    destroy_at_gc!(v)
     return v
 end
 
@@ -105,7 +105,7 @@ function LibPETSc.PetscVec(
     PetscInt = petsclib.PetscInt
     v = LibPETSc.VecCreateMPI(petsclib, comm, PetscInt(local_size), PetscInt(n))
     if MPI.Comm_size(comm) == 1
-        finalizer(destroy!, v)
+        destroy_at_gc!(v)
     end
     return v
 end
@@ -146,7 +146,7 @@ function LibPETSc.PetscVec(
     PetscInt = petsclib.PetscInt
     v = seq_vec_with_array(petsclib, comm, PetscInt(blocksize), PetscInt(length(array)), array)
     keep_alive!(v, array)
-    finalizer(destroy!, v)
+    destroy_at_gc!(v)
     return v
 end
 
@@ -236,7 +236,7 @@ function LibPETSc.PetscVec(petsclib::PetscLib, comm, x::Vector) where {PetscLib 
 
     v = seq_vec_with_array(petsclib, comm, PetscInt(1), PetscInt(length(x)), x)
     keep_alive!(v, x)
-    finalizer(destroy!, v)
+    destroy_at_gc!(v)
 
     return v
 end

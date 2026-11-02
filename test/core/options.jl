@@ -155,3 +155,9 @@ end
     PETSc.destroy!(base)
     PETSc.finalize(petsclib)
 end
+
+@testset "with_options has its docstring" begin
+    # the method for `opts` has a docstring of its own, next to the one for `obj`
+    docs = Base.Docs.meta(PETSc)[Base.Docs.Binding(PETSc, :with_options)].docs
+    @test any(sig -> occursin("AbstractPetscOptions", string(sig)), keys(docs))
+end

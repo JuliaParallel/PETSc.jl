@@ -63,10 +63,10 @@ end
         @test PETSc.with_local_array!(sum, DeviceArray, v) ≈ sum(2x)
         @test_throws "expected array of type Vector" PETSc.with_local_array!(sum, Vector, v)
         # plain VecGetArray: PETSc copies to the host
-        a = PETSc.unsafe_local_array(v; write = false)
+        a, cpu_arr, backend = PETSc.acquire_local_array(v; read = true, write = false, memtype = :host)
         @test a isa Vector{T}
         @test a ≈ 2x
-        finalize(a)
+        PETSc.release_local_array(cpu_arr, backend, v; read = true, write = false)
         PETSc.destroy!(v)
     end
 

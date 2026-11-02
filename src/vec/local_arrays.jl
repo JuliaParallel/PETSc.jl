@@ -1,56 +1,3 @@
-"""
-    unsafe_local_array(vec::AbstractVec; read=true, write=true)
-
-Return an `Array{PetscScalar}` containing local portion of the PETSc `vec`
-
-Use `read=false` if the array is write-only; `write=false` if read-only.
-
-The caller hands the array back: `vec` stays checked out, and the next
-`VecGetArray` or assembly on it fails, until `Base.finalize` runs on the array
-(or the garbage collector gets to it). Prefer [`with_local_array!`](@ref), which
-hands it back when its block returns or throws; [`acquire_local_array`](@ref) and
-[`release_local_array`](@ref) are the explicit pair with no finalizer.
-
-# External Links
-$(doc_external("Vec/VecGetArray"))
-$(doc_external("Vec/VecGetArrayWrite"))
-$(doc_external("Vec/VecGetArrayRead"))
-$(doc_external("Vec/VecRestoreArray"))
-$(doc_external("Vec/VecRestoreArrayWrite"))
-$(doc_external("Vec/VecRestoreArrayRead"))
-"""
-function unsafe_local_array(
-    vec::AbstractPetscVec{PetscLib};
-    read::Bool = true,
-    write::Bool = true,
-) where {PetscLib}
-    if write && read
-        v = LibPETSc.VecGetArray(PetscLib, vec)
-    elseif write
-        v = LibPETSc.VecGetArrayWrite(PetscLib, vec)
-    elseif read
-        v = LibPETSc.VecGetArrayRead(PetscLib, vec)
-    else
-        error("either read or write should be true")
-    end
-    
-    restore = write && read ? LibPETSc.VecRestoreArray :
-              write ? LibPETSc.VecRestoreArrayWrite : LibPETSc.VecRestoreArrayRead
-    # The finalizer may run after the library was finalized/re-initialized or after the
-    # vector's owner destroyed it (borrowed handles): then there is nothing to restore.
-    finalizer(v) do v
-        (vec.ptr == C_NULL || !isdestroyable(vec, PetscLib)) && return nothing
-        try
-            restore(PetscLib, vec, v)
-        catch err
-            err isa LibPETSc.PetscError || rethrow()
-        end
-        return nothing
-    end
-    return v
-end
-
-
 # ── Memory backend type hierarchy ─────────────────────────────────────────────
 #
 # `memtype_backend` maps a `PetscMemType` to a dispatch tag.
@@ -84,74 +31,9 @@ memtype_backend(::Val{MT}) where {MT} =
 memtype_backend(mt::LibPETSc.PetscMemType) =
     mt === LibPETSc.PETSC_MEMTYPE_HOST ? nothing : memtype_backend(Val(mt))
 
-# ── Device-aware local array access ───────────────────────────────────────────
-#
-# `_unsafe_local_array` is the unified entry point: it calls
-# `VecGetArray*AndMemType`, converts the returned `PetscMemType` to a backend
-# singleton via `memtype_backend`, and dispatches to `wrap_local_array`.
-# GPU extensions add `wrap_local_array` methods for their own backend types.
-#
-# The typed overload `_unsafe_local_array(::Type{A}, vec; ...)` additionally
-# asserts that the returned array is of type `A`, giving a clear error when a
-# Vec is on an unexpected device.
-
-function _unsafe_local_array(
-    vec::AbstractPetscVec{PetscLib};
-    read::Bool = true,
-    write::Bool = true,
-) where {PetscLib}
-    pv = as_petsc_vec(vec)
-    if write && read
-        cpu_arr, mtype = LibPETSc.VecGetArrayAndMemType(PetscLib, pv)
-    elseif write
-        cpu_arr, mtype = LibPETSc.VecGetArrayWriteAndMemType(PetscLib, pv)
-    else
-        cpu_arr, mtype = LibPETSc.VecGetArrayReadAndMemType(PetscLib, pv)
-    end
-    return wrap_local_array(cpu_arr, memtype_backend(mtype), vec; read, write)
-end
-
-function _unsafe_local_array(
-    ::Type{A},
-    vec::AbstractPetscVec;
-    read::Bool = true,
-    write::Bool = true,
-) where {A <: AbstractArray}
-    arr = _unsafe_local_array(vec; read, write)
-    arr isa A && return arr
-    Base.finalize(arr)   # release the PETSc handle before throwing
-    throw(ArgumentError(
-        "expected array of type $A but Vec returned $(typeof(arr)). " *
-        "Check that the Vec lives on the expected device."
-    ))
-end
-
-function wrap_local_array(
-    cpu_arr, ::Nothing, vec::AbstractPetscVec{PetscLib};
-    read::Bool, write::Bool,
-) where {PetscLib}
-    finalizer(cpu_arr) do a
-        if write && read
-            LibPETSc.VecRestoreArrayAndMemType(PetscLib, vec, a)
-        elseif write
-            LibPETSc.VecRestoreArrayWriteAndMemType(PetscLib, vec, a)
-        else
-            LibPETSc.VecRestoreArrayReadAndMemType(PetscLib, vec, a)
-        end
-        return nothing
-    end
-    return cpu_arr
-end
-
-# Fallback: no backend loaded for this PetscMemType.
-function wrap_local_array(cpu_arr, b::AbstractPetscMemBackend, vec; kw...)
-    error("wrap_local_array not implemented for backend $(typeof(b)) — " *
-          "load the corresponding GPU package (e.g. CUDA.jl)")
-end
-
 # ── No-finalizer acquire/release ─────────────────────────────────────────────
 #
-# `with_local_array!` uses these instead of the finalizer-based `unsafe_local_array`
+# `with_local_array!` uses these instead of a finalizer
 # to avoid a documented Julia pitfall: after `Base.finalize(x)` is called, if
 # `x` later becomes unreachable GC may invoke the finalizer *again*, leading to
 # a double VecRestore call on an already-freed Vec (→ SIGSEGV).
@@ -186,9 +68,14 @@ function acquire_native_array(vec::AbstractPetscVec{PLib}; read::Bool, write::Bo
     else
         LibPETSc.VecGetArrayReadAndMemType(PLib, pv)
     end
-    backend = memtype_backend(mtype)
-    arr = make_local_array(cpu_arr, backend)
-    return arr, cpu_arr, backend
+    # with no backend for `mtype`, hand the array back before throwing
+    try
+        backend = memtype_backend(mtype)
+        return make_local_array(cpu_arr, backend), cpu_arr, backend
+    catch
+        release_local_array(cpu_arr, nothing, vec; read, write)
+        rethrow()
+    end
 end
 
 # CPU: the raw PETSc array is already a Vector — return it directly.
@@ -386,9 +273,7 @@ flags(b::NTuple{N, Bool}, ::Val{N}) where {N} = b
 function checkout_arrays(
     f!, A, vecs::NTuple{N, AbstractPetscVec}, read, write, acquire::G,
 ) where {N, G}
-    acquired = map(vecs, read, write) do v, r, w
-        acquire(v; read = r, write = w)
-    end
+    acquired = acquire_each(vecs, read, write, acquire)
     try
         # inside the try, so an array of the wrong type is still handed back
         arrays = map(a -> checked_array(a[1], A), acquired)
@@ -398,6 +283,21 @@ function checkout_arrays(
             release_local_array(cpu_arr, backend, v; read = r, write = w)
         end
     end
+end
+
+# Check out the Vecs in order. When one checkout throws, the Vecs checked out
+# before it are handed back, so none stays checked out.
+acquire_each(::Tuple{}, read, write, acquire) = ()
+function acquire_each(vecs::Tuple, read, write, acquire::G) where {G}
+    v, r, w = first(vecs), first(read), first(write)
+    a = acquire(v; read = r, write = w)
+    rest = try
+        acquire_each(Base.tail(vecs), Base.tail(read), Base.tail(write), acquire)
+    catch
+        release_local_array(a[2], a[3], v; read = r, write = w)
+        rethrow()
+    end
+    return (a, rest...)
 end
 
 checked_array(arr, ::Nothing) = arr
@@ -475,12 +375,23 @@ end
 #         (needed for restore); fx_bounce is a scratch device array or nothing.
 function checkout_local_arrays(petsclib, g_fx, l_x)
     T = petsclib.PetscScalar
+    # a throw after a checkout hands back what was checked out, so no Vec stays locked
     fx_arr, fx_mtype = LibPETSc.VecGetArrayAndMemType(petsclib, as_petsc_vec(g_fx))
-    lx_arr, lx_mtype = LibPETSc.VecGetArrayReadAndMemType(petsclib, as_petsc_vec(l_x))
-    return _local_arrays(
-        petsclib, g_fx, l_x, T, fx_arr, lx_arr,
-        memtype_backend(fx_mtype), memtype_backend(lx_mtype),
-    )
+    try
+        lx_arr, lx_mtype = LibPETSc.VecGetArrayReadAndMemType(petsclib, as_petsc_vec(l_x))
+        try
+            return _local_arrays(
+                petsclib, g_fx, l_x, T, fx_arr, lx_arr,
+                memtype_backend(fx_mtype), memtype_backend(lx_mtype),
+            )
+        catch
+            LibPETSc.VecRestoreArrayReadAndMemType(petsclib, as_petsc_vec(l_x), lx_arr)
+            rethrow()
+        end
+    catch
+        LibPETSc.VecRestoreArrayAndMemType(petsclib, as_petsc_vec(g_fx), fx_arr)
+        rethrow()
+    end
 end
 
 # CPU base case: the PETSc arrays themselves, restored explicitly (no finalizers,

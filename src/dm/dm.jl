@@ -99,14 +99,15 @@ axis_names(::Val{3}) = (:x, :y, :z)
 # collective and a GC finalizer runs at an arbitrary point.
 function own_dm!(dm::TypedPetscDM{PetscLib}, comm) where {PetscLib}
     if MPI.Comm_size(comm) == 1
-        finalizer(destroy!, dm)
+        destroy_at_gc!(dm)
     end
     return dm
 end
 
 # What every DM constructor does once PETSc has created the DM: set the options
 # prefix, apply `set_from_options!` with the constructor's leftover keywords as
-# the options database, call `setup!`, and take ownership.
+# the options database, call `setup!`, and take ownership. If any of that throws,
+# the DM is destroyed before the exception goes on.
 function finish_dm!(
     dm::TypedPetscDM{PetscLib},
     comm,
@@ -117,14 +118,19 @@ function finish_dm!(
 ) where {PetscLib}
     options, set_from_options, setup = take_renamed_dm_keywords(options, set_from_options, setup)
     petsclib = getlib(PetscLib)
-    isempty(prefix) || LibPETSc.DMSetOptionsPrefix(petsclib, dm, String(prefix))
-    if set_from_options
-        opts = PetscOptions(petsclib; options...)
-        with_options(opts) do
-            LibPETSc.DMSetFromOptions(petsclib, dm)
+    try
+        isempty(prefix) || LibPETSc.DMSetOptionsPrefix(petsclib, dm, String(prefix))
+        if set_from_options
+            opts = PetscOptions(petsclib; options...)
+            with_options(opts) do
+                LibPETSc.DMSetFromOptions(petsclib, dm)
+            end
         end
+        setup && setup!(dm)
+    catch
+        destroy!(dm)
+        rethrow()
     end
-    setup && setup!(dm)
     return own_dm!(dm, comm)
 end
 

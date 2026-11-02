@@ -98,22 +98,11 @@ function KSP(
 
     petsclib = getlib(PetscLib)
     c = comm(A)
-    ksp = LibPETSc.KSPCreate(petsclib, c)
-    
-    LibPETSc.KSPSetOperators(petsclib, ksp, A, P)
-    
-    if !isempty(prefix)
-        LibPETSc.KSPSetOptionsPrefix(petsclib, ksp, String(prefix))
+    return own_solver!(LibPETSc.KSPCreate(petsclib, c), c) do ksp
+        LibPETSc.KSPSetOperators(petsclib, ksp, A, P)
+        isempty(prefix) || LibPETSc.KSPSetOptionsPrefix(petsclib, ksp, String(prefix))
+        store_options!(ksp, petsclib, options_at, options)
     end
-    
-    store_options!(ksp, petsclib, options_at, options)
-
-    # The garbage collector can only destroy it when no other rank takes part
-    if MPI.Comm_size(c) == 1
-        finalizer(destroy!, ksp)
-    end
-
-    return ksp
 end
 
 """
@@ -156,22 +145,11 @@ function KSP(dm::AbstractPetscDM{PetscLib};
     check_initialized(getlib(PetscLib))
     petsclib = getlib(PetscLib)
     c = comm(dm)
-    ksp = LibPETSc.KSPCreate(petsclib, c)
-    
-    if !isempty(prefix)
-        LibPETSc.KSPSetOptionsPrefix(petsclib, ksp, String(prefix))
+    return own_solver!(LibPETSc.KSPCreate(petsclib, c), c) do ksp
+        isempty(prefix) || LibPETSc.KSPSetOptionsPrefix(petsclib, ksp, String(prefix))
+        LibPETSc.KSPSetDM(petsclib, ksp, dm)
+        store_options!(ksp, petsclib, options_at, options)
     end
-    
-    LibPETSc.KSPSetDM(petsclib, ksp, dm)
-
-    store_options!(ksp, petsclib, options_at, options)
-
-    # The garbage collector can only destroy it when no other rank takes part
-    if MPI.Comm_size(c) == 1
-        finalizer(destroy!, ksp)
-    end
-
-    return ksp
 end
 
 
@@ -339,16 +317,11 @@ function Base.:\(ksp::KSP{PetscLib}, b::AbstractVector) where {PetscLib}
 
     # PETSc works on this copy of `b` in place, so it must outlive the solve
     b_copy = copyto!(Vector{PetscScalar}(undef, length(b)), b)
-    x = GC.@preserve b_copy begin
-        petsc_b = seq_vec_with_array(getlib(PetscLib), c, PetscInt(1), PetscInt(length(b)), b_copy)
-        petsc_x = ksp \ petsc_b
-        x = copyto!(similar(b, PetscScalar), petsc_x[:])
-        destroy!(petsc_b)
-        destroy!(petsc_x)
-        x
+    return GC.@preserve b_copy with_destroy() do list
+        petsc_b = track!(list, seq_vec_with_array(getlib(PetscLib), c, PetscInt(1), PetscInt(length(b)), b_copy))
+        petsc_x = track!(list, ksp \ petsc_b)
+        copyto!(similar(b, PetscScalar), petsc_x[:])
     end
-
-    return x
 end
 
 
@@ -390,10 +363,10 @@ function (w::KSPComputeRHSFn{PetscLib, PetscInt})(
     cb::CVec,
     ksp_ptr::Ptr{Cvoid},
 ) where {PetscLib, PetscInt}
-    new_ksp = KSP{PetscLib}(new_ksp_ptr, getlib(PetscLib).age; own = false)
-    b = PetscVec{PetscLib}(cb, getlib(PetscLib).age; own = false)
-    ksp = unsafe_pointer_to_objref(ksp_ptr)::KSPState
     return run_callback("right-hand side rhs!") do
+        new_ksp = KSP{PetscLib}(new_ksp_ptr, getlib(PetscLib).age; own = false)
+        b = PetscVec{PetscLib}(cb, getlib(PetscLib).age; own = false)
+        ksp = unsafe_pointer_to_objref(ksp_ptr)::KSPState
         ksp.computerhs!(b, new_ksp)
     end
 end
@@ -442,11 +415,11 @@ function (w::KSPComputeOperatorsFn{PetscLib, PetscInt})(
     cP::CMat,
     ksp_ptr::Ptr{Cvoid},
 ) where {PetscLib, PetscInt}
-    new_ksp = KSP{PetscLib}(new_ksp_ptr, getlib(PetscLib).age; own = false)
-    A = PetscMat{PetscLib}(cA, getlib(PetscLib).age; own = false)
-    P = PetscMat{PetscLib}(cP, getlib(PetscLib).age; own = false)
-    ksp = unsafe_pointer_to_objref(ksp_ptr)::KSPState
     return run_callback("operators ops!") do
+        new_ksp = KSP{PetscLib}(new_ksp_ptr, getlib(PetscLib).age; own = false)
+        A = PetscMat{PetscLib}(cA, getlib(PetscLib).age; own = false)
+        P = PetscMat{PetscLib}(cP, getlib(PetscLib).age; own = false)
+        ksp = unsafe_pointer_to_objref(ksp_ptr)::KSPState
         ksp.computeops!(A, P, new_ksp)
     end
 end

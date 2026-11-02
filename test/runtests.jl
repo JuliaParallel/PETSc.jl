@@ -151,7 +151,7 @@ if selected("mpi")
     @testset "MPI Tests" begin
         for file in ("mpi/vec.jl", "mpi/mat.jl", "vecmat/linear_algebra.jl", "vecmat/vec_base.jl", "vecmat/mat_base.jl", "solvers/ksp.jl", "dm/dmstag.jl",
                      "mpi/dmstag_halos.jl", "mpi/blas_threads.jl",
-                     "core/with_destroy.jl")
+                     "core/with_destroy.jl", "mpi/ts.jl")
             @test run_separately(file; nranks = 4)
         end
     end

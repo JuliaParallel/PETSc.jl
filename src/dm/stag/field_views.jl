@@ -3,7 +3,7 @@
 # ============================================================================
 
 """
-    with_field_views!(f, dm::DMStag, vecs::AbstractPetscVec...; fields = nothing, read = true, write = true)
+    with_field_views!(f, dm::DMStag, vecs::AbstractPetscVec...; fields = nothing, read = true, write = true, memtype = :native)
 
 Check out the local vectors `vecs` of `dm`, call `f` with one argument per vector,
 hand the vectors back when `f` returns or throws, and return what `f` returns.
@@ -22,7 +22,9 @@ throws an `ArgumentError` before any vector is checked out.
 
 Vectors on a GPU, with its extension loaded, give views of device arrays, for use in
 a kernel. Broadcast over `parent(view)`: an `OffsetArray` broadcasts element by
-element on the host whatever its parent.
+element on the host whatever its parent. `memtype = :host` gives views of host
+arrays instead, as `memtype` in [`with_local_array!`](@ref), so host code runs on
+device vectors; that is also what they give while no GPU extension is loaded.
 
 ```julia
 flow = (face_location(dm, 1) => 0, face_location(dm, 2) => 0, element_location(dm) => 0)
@@ -67,8 +69,11 @@ function with_field_views!(
     fields = nothing,
     read::Union{Bool, NTuple{M, Bool}} = true,
     write::Union{Bool, NTuple{M, Bool}} = true,
+    memtype::Symbol = :native,
 ) where {PetscLib, N, M}
-    return with_field_views!(f, dm, vecs, fields, flags(read, Val(M)), flags(write, Val(M)))
+    return with_field_views!(
+        f, dm, vecs, fields, flags(read, Val(M)), flags(write, Val(M)), array_getter(memtype),
+    )
 end
 
 function with_field_views!(
@@ -78,7 +83,8 @@ function with_field_views!(
     fields,
     read::NTuple{M, Bool},
     write::NTuple{M, Bool},
-) where {PetscLib, N, M}
+    acquire::G,
+) where {PetscLib, N, M, G}
     lib = getlib(PetscLib)
     gc = ghost_corners(dm)
     q = Int(LibPETSc.DMStagGetEntriesPerElement(lib, dm))
@@ -91,7 +97,7 @@ function with_field_views!(
         )
     end
     acquired = map(vecs, read, write) do v, r, w
-        acquire_local_array(v; read = r, write = w)
+        acquire(v; read = r, write = w)
     end
     try
         return call_with_views(f, map(first, acquired), dims, offsets, slots)

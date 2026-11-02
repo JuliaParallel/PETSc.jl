@@ -1,7 +1,8 @@
 # test/gpu/device_arrays.jl
 # PETScCUDAExt and PETScAMDGPUExt: Vecs in device memory come out of
 # with_local_array! and with_local_arrays! as CuArrays or ROCArrays, DMStag
-# field views wrap them, and what a kernel writes reaches PETSc.
+# field views wrap them, and what a kernel writes reaches PETSc. With
+# memtype = :host the same Vecs give host arrays.
 #
 # Not part of runtests.jl: it needs a GPU and a PETSc built with CUDA or HIP.
 # Run it in an environment with PETSc.jl (dev'd), MPI.jl, KernelAbstractions.jl
@@ -88,7 +89,7 @@ end
     # with_field_views! on a DMStag with device Vecs, against the same steps on the host
     @testset "DMStag field views on the device" begin
         none = ntuple(_ -> LibPETSc.DM_BOUNDARY_NONE, 2)
-        function stag_result(vec_type)
+        function stag_result(vec_type; memtype = :native)
             dm = PETSc.DMStag(petsclib, MPI.COMM_SELF, none, (8, 6), (0, 1, 1); dm_vec_type = vec_type)
             x = PETSc.local_vec(dm)
             r = PETSc.local_vec(dm)
@@ -101,15 +102,17 @@ end
             lo = c.lower - CartesianIndex(1, 1)
             # OffsetArray broadcasts element by element whatever its parent, so
             # whole-view broadcasts go through `parent`; kernels take the views as they are
-            PETSc.with_field_views!(dm, x, r; fields = flow, write = (false, true)) do (Vx, Vy, P), (Rx, Ry, Rp)
-                vec_type == dm_vec_type && @test parent(parent(Rp)) isa DeviceArray{T}
+            PETSc.with_field_views!(dm, x, r; fields = flow, write = (false, true), memtype) do (Vx, Vy, P), (Rx, Ry, Rp)
+                if vec_type == dm_vec_type
+                    @test parent(parent(Rp)) isa (memtype === :host ? Array{T} : DeviceArray{T})
+                end
                 backend = get_backend(Rp)
                 parent(Rx) .= 3
                 divergence!(backend, 64)(Rp, Vx, Vy, lo; ndrange = Tuple(c.upper - c.lower) .+ 1)
                 KernelAbstractions.synchronize(backend)
             end
             # the whole array, indexed [I..., slot]
-            PETSc.with_field_views!(dm, r) do R
+            PETSc.with_field_views!(dm, r; memtype) do R
                 parent(R) .*= 2
             end
             result = r[1:m]
@@ -120,7 +123,32 @@ end
         end
         host = stag_result("standard")
         @test stag_result(dm_vec_type) == host
+        @test stag_result(dm_vec_type; memtype = :host) == host
         @test count(!iszero, host) > 0
+    end
+
+    @testset "memtype = :host on device Vecs" begin
+        x = rand(T, n)
+        v = vec_of_type(seq_type, x)
+        PETSc.with_local_array!(v; memtype = :host) do a
+            @test a isa Vector{T}
+            a .= 2 .* a
+        end
+        # host and device writes in turn: each checkout sees the last one
+        PETSc.with_local_array!(v) do a
+            @test a isa DeviceArray{T}
+            a .+= 1
+        end
+        @test PETSc.with_local_array!(copy, v; write = false, memtype = :host) ≈ 2x .+ 1
+        g = vec_of_type(seq_type, ones(T, n))
+        PETSc.with_local_arrays!(g, v; memtype = :host) do fx, lx
+            @test fx isa Vector{T}
+            @test lx isa Vector{T}
+            fx .+= lx
+        end
+        @test g[1:n] ≈ 2x .+ 2
+        PETSc.destroy!(g)
+        PETSc.destroy!(v)
     end
 
     @testset "host Vecs stay on the host" begin

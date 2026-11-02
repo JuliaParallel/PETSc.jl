@@ -127,6 +127,9 @@ MPI.Initialized() || MPI.Init()
         @test_throws ErrorException PETSc.with_field_views!(A -> error("inside"), dm, l)
         # a vector still checked out could not be checked out for writing again
         @test PETSc.with_field_views!(A -> (A[1, 1, 1] = 1.0; true), dm, l)
+        @test_throws "memtype must be :native or :host" PETSc.with_field_views!(
+            A -> nothing, dm, l; memtype = :device)
+        @test PETSc.with_field_views!(A -> A[1, 1, 1], dm, l; memtype = :host, write = false) == 1
 
         dm2 = stag((3, 3), (0, 0, 1))
         @test_throws ArgumentError PETSc.with_field_views!(A -> nothing, dm, l, g)

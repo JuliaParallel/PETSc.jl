@@ -14,6 +14,7 @@
 using Test
 using PETSc
 using MPI
+using LinearAlgebra
 
 MPI.Initialized() || MPI.Init()
 
@@ -76,6 +77,51 @@ for petsclib in PETSc.petsclibs
             PETSc.destroy!(o)
             @test o.ptr == C_NULL
             @test PETSc.destroy!(o) === nothing
+
+            PETSc.finalize(petsclib)
+        end
+
+        # ── use after destroy! ───────────────────────────────────────────────
+        # The shipped PETSc has no debug checks, so a null handle reaching C is
+        # signal 11. `destroy!` marks the wrapper and the conversion to the C
+        # pointer throws instead.
+        @testset "use after destroy!" begin
+            PETSc.initialize(petsclib)
+            comm = MPI.COMM_SELF
+            LibPETSc = PETSc.LibPETSc
+
+            v = PETSc.PetscVec(petsclib, PetscScalar[1, 2, 3, 4])
+            m = PETSc.PetscMat(petsclib, 4, 4, 1)
+            dm = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (8,), 1; stencil_width = 1)
+            ksp = PETSc.KSP(PETSc.PetscMat(petsclib, 4, 4, 1))
+            snes = PETSc.SNES(petsclib, comm)
+            ts = PETSc.TS(petsclib, comm)
+
+            used = (
+                v => () -> LibPETSc.VecGetSize(petsclib, v),
+                m => () -> LibPETSc.MatGetSize(petsclib, m),
+                dm => () -> LibPETSc.DMGetDimension(petsclib, dm),
+                ksp => () -> LibPETSc.KSPGetTolerances(petsclib, ksp),
+                snes => () -> LibPETSc.SNESGetTolerances(petsclib, snes),
+                ts => () -> LibPETSc.TSGetTime(petsclib, ts),
+            )
+            for (obj, use) in used
+                use()   # fine while alive
+                PETSc.destroy!(obj)
+                @test_throws "was destroyed" use()
+                @test PETSc.destroy!(obj) === nothing
+            end
+            @test_throws "was destroyed" LinearAlgebra.norm(v)
+
+            # A wrapper that never held an object is still a valid argument
+            # meaning "no object"; so is a borrowed one after its owner's destroy!.
+            @test PETSc.LibPETSc.VecDestroy(petsclib, PETSc.PetscVec(petsclib)) === nothing
+
+            v2 = PETSc.PetscVec(petsclib, PetscScalar[1, 2, 3, 4])
+            borrowed = PETSc.PetscVec(petsclib, v2.ptr; own = false)
+            PETSc.destroy!(borrowed)
+            @test LibPETSc.VecGetSize(petsclib, borrowed) == 4
+            PETSc.destroy!(v2)
 
             PETSc.finalize(petsclib)
         end

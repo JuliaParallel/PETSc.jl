@@ -39,11 +39,13 @@ owns(obj) = obj.own
 
 # What every `destroy!` does: release the PETSc object with `destroy_fn` (the
 # class's `XDestroy`) if `obj` owns it and it belongs to the current
-# initialize/finalize cycle, then null the handle. A borrowed handle is left as is.
+# initialize/finalize cycle, then null the handle and set `age = -1`, which makes
+# `LibPETSc.live_ptr` refuse it from then on. A borrowed handle is left as is.
 function destroy_handle!(destroy_fn, obj, ::Type{PetscLib}) where {PetscLib}
     owns(obj) || return nothing
     isdestroyable(obj, PetscLib) && destroy_fn(PetscLib, obj)
     obj.ptr = C_NULL
+    obj.age = -1
     return nothing
 end
 

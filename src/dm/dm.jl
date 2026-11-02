@@ -99,7 +99,7 @@ axis_names(::Val{3}) = (:x, :y, :z)
 # collective and a GC finalizer runs at an arbitrary point.
 function own_dm!(dm::TypedPetscDM{PetscLib}, comm) where {PetscLib}
     if MPI.Comm_size(comm) == 1
-        finalizer(destroy!, dm)
+        destroy_at_gc!(dm)
     end
     return dm
 end

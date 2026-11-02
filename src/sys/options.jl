@@ -78,7 +78,7 @@ $(doc_external("Sys/PetscOptionsCreate"))
 function LibPETSc.PetscOptions(petsclib::PetscLibType; kwargs...)
     check_initialized(petsclib)
     opts = LibPETSc.PetscOptionsCreate(petsclib)
-    finalizer(destroy!, opts)
+    destroy_at_gc!(opts)
     for (k, v) in kwargs
         opts[k] = v
     end

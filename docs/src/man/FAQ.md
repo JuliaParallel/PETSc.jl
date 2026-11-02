@@ -41,6 +41,8 @@ Using the GC in combination with MPI code is a tricky business. The users are th
 2. The julia function `PETSc.audit_file("path/to/your/file.jl")` which scans your julia file and tries to guess whether objects are destroyed.
 3. You can initialize the PETSc library with `log_view=true`. At the end of the code, it will give an  
 
+Objects on a one-rank communicator also have a finalizer, so the garbage collector frees them if you forget. The finalizer does not call PETSc: Julia runs it on whichever thread triggered the collection, and PETSc is not thread safe, so a destroy there could overlap a PETSc call of another thread. It queues the object instead, and the next PETSc.jl call that creates or destroys an object, or `PETSc.finalize`, destroys what has piled up, on that thread. A program that creates many serial objects and then stays away from PETSc for a long time keeps them until its next such call.
+
 ## 4. Is it compatible with GPUs?
 The precompiled `PETSc_jll` binaries are currently not compatible with GPUs. You can, however, use your own PETSc compilation and things should be fine. 
 

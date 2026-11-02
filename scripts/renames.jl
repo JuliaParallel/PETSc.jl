@@ -755,6 +755,13 @@ const INTERNAL = Set{Symbol}([
     :checkout_local_arrays,
     # the per-library body of the MatShell constructor
     :create_matshell,
+    # the finalizer queue behind objects the garbage collector destroys
+    :destroy_queue,
+    :destroy_queue_lock,
+    :destroy_queue_length,
+    :queue_for_destroy!,
+    :destroy_at_gc!,
+    :drain_destroy_queue!,
     # exception-safe setup of a new solver, and the one-at-a-time Vec checkout
     :own_solver!,
     :acquire_each,
@@ -1156,4 +1163,4 @@ const AUDIT_NAMED_CREATORS = Dict{Symbol, String}(
 
 # Releases. `finalizer` hands the release to the garbage collector, which still
 # accounts for the object.
-const AUDIT_DESTROYERS = Symbol[:destroy!, :destroy, :finalizer]
+const AUDIT_DESTROYERS = Symbol[:destroy!, :destroy, :finalizer, :destroy_at_gc!]

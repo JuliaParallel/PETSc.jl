@@ -138,6 +138,7 @@ end
 
 function finalize(petsclib)
     if isinitialized(petsclib)
+        drain_destroy_queue!()
         petsclib.age += 1
         LibPETSc.PetscFinalize(petsclib)
         drop_object_states!(typeof(petsclib))

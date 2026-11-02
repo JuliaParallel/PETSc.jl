@@ -194,7 +194,7 @@ LibPETSc.@for_petsc function create_matshell(
 
     # The garbage collector can only destroy it when no other rank takes part
     if MPI.Comm_size(comm) == 1
-        finalizer(destroy!, mat)
+        destroy_at_gc!(mat)
     end
 
     return mat

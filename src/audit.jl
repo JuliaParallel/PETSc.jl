@@ -60,7 +60,7 @@ Whether `name` releases a PETSc object. Covers the names in
 [`AUDIT_DESTROYER_NAMES`](@ref) and the low-level `VecDestroy`, `MatDestroy`,
 `DMDestroy` and friends, which the previous text-matching version treated as leaks.
 
-`finalizer` counts too. `finalizer(destroy!, v)` hands the release to the garbage
+`finalizer` and `destroy_at_gc!` count too. `destroy_at_gc!(v)` hands the release to the garbage
 collector rather than performing it, but the object is accounted for and must not
 read as a leak. The package uses that idiom for sequential objects.
 """

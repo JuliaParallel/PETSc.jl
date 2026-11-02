@@ -37,12 +37,63 @@ the caller destroys the result), and the objects a callback receives.
 """
 owns(obj) = obj.own
 
+# Objects on a one-rank communicator are destroyed by the garbage collector, which
+# runs a finalizer on whichever thread triggered the collection. The shipped PETSc
+# is not thread safe, so a `XDestroy` there could overlap a PETSc call of another
+# thread (heap corruption, lost log counts). The finalizer therefore only queues
+# the handle, and the thread that makes the next PETSc.jl call to create or destroy
+# an object, or to finalize the library, destroys what has piled up.
+const destroy_queue = Any[]
+const destroy_queue_lock = Threads.SpinLock()
+const destroy_queue_length = Threads.Atomic{Int}(0)
+
+# The finalizer: nothing here calls PETSc
+function queue_for_destroy!(obj)
+    @lock destroy_queue_lock push!(destroy_queue, obj)
+    Threads.atomic_add!(destroy_queue_length, 1)
+    return nothing
+end
+
+"""
+    destroy_at_gc!(obj)
+
+Have the garbage collector release `obj`, a handle on a one-rank communicator.
+The destroy happens at the next PETSc.jl call that creates or destroys an object,
+or at `finalize`, on the calling thread. See `drain_destroy_queue!`.
+"""
+function destroy_at_gc!(obj)
+    drain_destroy_queue!()
+    finalizer(queue_for_destroy!, obj)
+    return obj
+end
+
+"""
+    drain_destroy_queue!()
+
+Destroy the handles the garbage collector has released since the last call.
+Called by every constructor, by `destroy!` and by `finalize`, so the destroys run
+on a thread that is making PETSc calls anyway. It can also be called by hand after
+a section that creates garbage and then leaves PETSc alone.
+"""
+function drain_destroy_queue!()
+    destroy_queue_length[] == 0 && return nothing
+    pending = @lock destroy_queue_lock begin
+        batch = copy(destroy_queue)
+        empty!(destroy_queue)
+        batch
+    end
+    Threads.atomic_sub!(destroy_queue_length, length(pending))
+    foreach(destroy!, pending)
+    return nothing
+end
+
 # What every `destroy!` does: release the PETSc object with `destroy_fn` (the
 # class's `XDestroy`) if `obj` owns it and it belongs to the current
 # initialize/finalize cycle, then null the handle and set `age = -1`, which makes
 # `LibPETSc.live_ptr` refuse it from then on. A borrowed handle is left as is.
 function destroy_handle!(destroy_fn, obj, ::Type{PetscLib}) where {PetscLib}
     owns(obj) || return nothing
+    drain_destroy_queue!()
     isdestroyable(obj, PetscLib) && destroy_fn(PetscLib, obj)
     obj.ptr = C_NULL
     obj.age = -1
@@ -60,7 +111,7 @@ function own_solver!(configure!, obj, comm)
         destroy!(obj)
         rethrow()
     end
-    MPI.Comm_size(comm) == 1 && finalizer(destroy!, obj)
+    MPI.Comm_size(comm) == 1 && destroy_at_gc!(obj)
     return obj
 end
 

@@ -54,4 +54,4 @@ const AUDIT_NAMED_CREATORS = Dict{Symbol, String}(
 Names that release a PETSc object. `finalizer` counts: it hands the release to
 the garbage collector rather than performing it, but the object is accounted for.
 """
-const AUDIT_DESTROYER_NAMES = Set{Symbol}([:destroy!, :destroy, :finalizer])
+const AUDIT_DESTROYER_NAMES = Set{Symbol}([:destroy!, :destroy, :finalizer, :destroy_at_gc!])

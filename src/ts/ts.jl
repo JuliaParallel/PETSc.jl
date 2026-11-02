@@ -280,21 +280,11 @@ function TS(
     check_initialized(getlib(PetscLib))
 
     petsclib = getlib(PetscLib)
-    ts = LibPETSc.TSCreate(petsclib, comm)
-
-    if !isempty(prefix)
-        LibPETSc.TSSetOptionsPrefix(petsclib, ts, String(prefix))
+    return own_solver!(LibPETSc.TSCreate(petsclib, comm), comm) do ts
+        isempty(prefix) || LibPETSc.TSSetOptionsPrefix(petsclib, ts, String(prefix))
+        LibPETSc.TSSetExactFinalTime(petsclib, ts, exact_final_time)
+        store_options!(ts, petsclib, options_at, options)
     end
-
-    LibPETSc.TSSetExactFinalTime(petsclib, ts, exact_final_time)
-
-    store_options!(ts, petsclib, options_at, options)
-
-    if MPI.Comm_size(comm) == 1
-        finalizer(destroy!, ts)
-    end
-
-    return ts
 end
 
 """

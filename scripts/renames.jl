@@ -756,6 +756,9 @@ const INTERNAL = Set{Symbol}([
     :checkout_local_arrays,
     # the per-library body of the MatShell constructor
     :create_matshell,
+    # exception-safe setup of a new solver, and the one-at-a-time Vec checkout
+    :own_solver!,
+    :acquire_each,
     # the expansions behind the pointwise macros and their type lookup
     :simple_fn_expr,
     :residual_fn_expr,

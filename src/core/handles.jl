@@ -49,6 +49,21 @@ function destroy_handle!(destroy_fn, obj, ::Type{PetscLib}) where {PetscLib}
     return nothing
 end
 
+# Run `configure!(obj)` on a solver PETSc has just created, then take ownership:
+# a finalizer on a one-rank communicator, where no other rank takes part in the
+# destroy. If `configure!` throws, for example on a bad option value with
+# `options_at = :construction`, `obj` is destroyed before the exception goes on.
+function own_solver!(configure!, obj, comm)
+    try
+        configure!(obj)
+    catch
+        destroy!(obj)
+        rethrow()
+    end
+    MPI.Comm_size(comm) == 1 && finalizer(destroy!, obj)
+    return obj
+end
+
 # ----------------------------------------------------------------------------
 # Type names (docs/src/man/naming.md §3.1)
 #

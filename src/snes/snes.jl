@@ -104,21 +104,10 @@ function SNES(
     check_initialized(getlib(PetscLib))
 
     petsclib = getlib(PetscLib)
-    snes = LibPETSc.SNESCreate(petsclib, comm)
-
-    if !isempty(prefix)
-        LibPETSc.SNESSetOptionsPrefix(petsclib, snes, String(prefix))
+    return own_solver!(LibPETSc.SNESCreate(petsclib, comm), comm) do snes
+        isempty(prefix) || LibPETSc.SNESSetOptionsPrefix(petsclib, snes, String(prefix))
+        store_options!(snes, petsclib, options_at, options)
     end
-    
-    store_options!(snes, petsclib, options_at, options)
-
-    # We can only let the garbage collect finalize when we do not need to
-    # worry about MPI (since garbage collection is asyncronous)
-    if MPI.Comm_size(comm) == 1
-        finalizer(destroy!, snes)
-    end
-
-    return snes
 end
 
 

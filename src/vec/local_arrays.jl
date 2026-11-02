@@ -186,9 +186,14 @@ function acquire_native_array(vec::AbstractPetscVec{PLib}; read::Bool, write::Bo
     else
         LibPETSc.VecGetArrayReadAndMemType(PLib, pv)
     end
-    backend = memtype_backend(mtype)
-    arr = make_local_array(cpu_arr, backend)
-    return arr, cpu_arr, backend
+    # with no backend for `mtype`, hand the array back before throwing
+    try
+        backend = memtype_backend(mtype)
+        return make_local_array(cpu_arr, backend), cpu_arr, backend
+    catch
+        release_local_array(cpu_arr, nothing, vec; read, write)
+        rethrow()
+    end
 end
 
 # CPU: the raw PETSc array is already a Vector — return it directly.
@@ -386,9 +391,7 @@ flags(b::NTuple{N, Bool}, ::Val{N}) where {N} = b
 function checkout_arrays(
     f!, A, vecs::NTuple{N, AbstractPetscVec}, read, write, acquire::G,
 ) where {N, G}
-    acquired = map(vecs, read, write) do v, r, w
-        acquire(v; read = r, write = w)
-    end
+    acquired = acquire_each(vecs, read, write, acquire)
     try
         # inside the try, so an array of the wrong type is still handed back
         arrays = map(a -> checked_array(a[1], A), acquired)
@@ -398,6 +401,21 @@ function checkout_arrays(
             release_local_array(cpu_arr, backend, v; read = r, write = w)
         end
     end
+end
+
+# Check out the Vecs in order. When one checkout throws, the Vecs checked out
+# before it are handed back, so none stays checked out.
+acquire_each(::Tuple{}, read, write, acquire) = ()
+function acquire_each(vecs::Tuple, read, write, acquire::G) where {G}
+    v, r, w = first(vecs), first(read), first(write)
+    a = acquire(v; read = r, write = w)
+    rest = try
+        acquire_each(Base.tail(vecs), Base.tail(read), Base.tail(write), acquire)
+    catch
+        release_local_array(a[2], a[3], v; read = r, write = w)
+        rethrow()
+    end
+    return (a, rest...)
 end
 
 checked_array(arr, ::Nothing) = arr
@@ -475,12 +493,23 @@ end
 #         (needed for restore); fx_bounce is a scratch device array or nothing.
 function checkout_local_arrays(petsclib, g_fx, l_x)
     T = petsclib.PetscScalar
+    # a throw after a checkout hands back what was checked out, so no Vec stays locked
     fx_arr, fx_mtype = LibPETSc.VecGetArrayAndMemType(petsclib, as_petsc_vec(g_fx))
-    lx_arr, lx_mtype = LibPETSc.VecGetArrayReadAndMemType(petsclib, as_petsc_vec(l_x))
-    return _local_arrays(
-        petsclib, g_fx, l_x, T, fx_arr, lx_arr,
-        memtype_backend(fx_mtype), memtype_backend(lx_mtype),
-    )
+    try
+        lx_arr, lx_mtype = LibPETSc.VecGetArrayReadAndMemType(petsclib, as_petsc_vec(l_x))
+        try
+            return _local_arrays(
+                petsclib, g_fx, l_x, T, fx_arr, lx_arr,
+                memtype_backend(fx_mtype), memtype_backend(lx_mtype),
+            )
+        catch
+            LibPETSc.VecRestoreArrayReadAndMemType(petsclib, as_petsc_vec(l_x), lx_arr)
+            rethrow()
+        end
+    catch
+        LibPETSc.VecRestoreArrayAndMemType(petsclib, as_petsc_vec(g_fx), fx_arr)
+        rethrow()
+    end
 end
 
 # CPU base case: the PETSc arrays themselves, restored explicitly (no finalizers,

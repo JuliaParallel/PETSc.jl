@@ -273,13 +273,10 @@ function Base.:*(M::MatShell{PetscLib}, x::AbstractVector) where {PetscLib}
     petsclib = getlib(PetscLib)
     # PETSc works on this copy of `x` in place, so it must outlive the product
     x_copy = PetscScalar.(x)
-    return GC.@preserve x_copy begin
-        petsc_x = seq_vec_with_array(petsclib, MPI.COMM_SELF, PetscInt(1), PetscInt(n), x_copy)
-        petsc_y = LibPETSc.VecCreateSeq(petsclib, MPI.COMM_SELF, PetscInt(m))
+    return GC.@preserve x_copy with_destroy() do list
+        petsc_x = track!(list, seq_vec_with_array(petsclib, MPI.COMM_SELF, PetscInt(1), PetscInt(n), x_copy))
+        petsc_y = track!(list, LibPETSc.VecCreateSeq(petsclib, MPI.COMM_SELF, PetscInt(m)))
         mul!(petsc_y, M, petsc_x)
-        result = petsc_y[:]
-        destroy!(petsc_x)
-        destroy!(petsc_y)
-        result
+        petsc_y[:]
     end
 end

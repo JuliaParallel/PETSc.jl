@@ -60,6 +60,7 @@ if selected("core")
     include("core/smoke.jl")            # Vec, Mat and KSP end to end
     include("core/petscbool.jl")        # PetscBool is one byte (PETSc >= 3.24)
     include("core/destroy.jl")          # destroy! guards: stale cycle, double destroy
+    include("core/exception_safety.jl") # a throw mid-checkout or mid-constructor hands back what it took
     include("core/handles.jl")          # destroy! on IS, AO, PF, Tao; ISColoringGetIS ownership
     include("core/handle_arrays.jl")    # C arrays of handles go back to their release function
     include("core/lifetimes.jl")        # arrays a Vec or Mat wraps live as long as it does

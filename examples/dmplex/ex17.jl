@@ -338,17 +338,18 @@ const f0_elas_axial_disp_bd_ptr = PETSc.@bd_fn(petsclib, f0_elas_axial_disp_bd, 
 # Registers rigid body modes (translations + rotations) as the near-null space.
 function elasticity_nsp_constructor(
     dm_ptr::Ptr{Cvoid}, ::PetscInt, ::PetscInt,
-    nsp_pp::Ptr{LibPETSc.MatNullSpace},
+    nsp_pp::Ptr{LibPETSc.CMatNullSpace},
 )::PetscInt
     PL   = typeof(petsclib)
     dm_w = LibPETSc.PetscDM{PL}(dm_ptr)
     nsp  = LibPETSc.DMPlexCreateRigidBody(LibPETSc.getlib(PL), dm_w, PetscInt(0))
-    unsafe_store!(nsp_pp, nsp)
+    nsp.own = false   # PETSc owns the null space it is handed
+    unsafe_store!(nsp_pp, nsp.ptr)
     return PetscInt(0)
 end
 const elasticity_nsp_ptr = Base.@cfunction(
     elasticity_nsp_constructor, PetscInt,
-    (Ptr{Cvoid}, PetscInt, PetscInt, Ptr{LibPETSc.MatNullSpace}))
+    (Ptr{Cvoid}, PetscInt, PetscInt, Ptr{LibPETSc.CMatNullSpace}))
 
 # ── Build mesh ─────────────────────────────────────────────────────────────────
 # DMCreate + DMSetType(DMPLEX) + DMSetFromOptions — all mesh parameters
@@ -361,7 +362,7 @@ dm = PETSc.DMPlex(petsclib, comm; opts...)
 # the polynomial degree (default 1 = Q1/P1).
 fe = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, dim, simplex;
                               prefix = "displacement")
-PETSc.set_name!(petsclib, fe, "displacement")
+PETSc.set_name!(fe, "displacement")
 PETSc.set_field!(dm, 0, fe)
 PETSc.create_ds!(dm)
 
@@ -506,11 +507,11 @@ let _vtk = get(NamedTuple(pairs(opts)), :vtk_output, nothing)
 
         fe_disp = PETSc.fe_create_default(petsclib, MPI.COMM_SELF,
                       dim, dim, simplex; prefix = "displacement")
-        PETSc.set_name!(petsclib, fe_disp, "displacement")
+        PETSc.set_name!(fe_disp, "displacement")
 
         fe_stress = PETSc.fe_create_default(petsclib, MPI.COMM_SELF,
                         dim, 9, simplex; prefix = "stress")
-        PETSc.set_name!(petsclib, fe_stress, "stress")
+        PETSc.set_name!(fe_stress, "stress")
 
         PETSc.set_field!(dm_out, 0, fe_disp)
         PETSc.set_field!(dm_out, 1, fe_stress)
@@ -518,7 +519,7 @@ let _vtk = get(NamedTuple(pairs(opts)), :vtk_output, nothing)
 
         out_vec = PETSc.global_vec(dm_out)
         # Empty vector name: VTK array names come purely from the FE names above.
-        PETSc.set_name!(petsclib, out_vec, "")
+        PETSc.set_name!(out_vec, "")
 
         # DMProjectField projects functions of the displacement solution (u, 1 field)
         # into both output fields simultaneously.

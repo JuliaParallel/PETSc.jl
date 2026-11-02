@@ -103,6 +103,8 @@ The `LibPETSc` wrappers are regenerated for PETSc 3.25 and follow a new calling 
 - **Functions PETSc defines only in its headers are gone.** About 95 macros and inline functions with no symbol in the library (`VecSetValue`, `MatSetValue`, `PetscStrcmp`, `PetscTime`, …) are no longer wrapped. Use the array versions (`VecSetValues`, `MatSetValues`) or plain Julia.
 - **`PetscBool` is one byte**, as it is in PETSc since 3.24. Code that uses `LibPETSc.PetscBool` needs no change. Code that writes a PETSc boolean as `Cint` or `Int32` in its own `ccall` or `unsafe_store!` must use `LibPETSc.PetscBool` instead.
 
+- **`PetscFE`, `DMLabel` and `MatNullSpace` are handle types** (0.6), as `PC` became one in 0.5: `PetscFE{PetscLib}` and the others carry `ptr`, `age` and `own`, and the wrappers take them where they took a `Ptr`. Code that passes a raw `Ptr` to these wrappers, or uses what `LibPETSc.DMGetLabel` and the `Create` functions return as a `Ptr`, gets a `MethodError`. To wrap a pointer, write `LibPETSc.PetscFE(ptr, petsclib; own)`.
+
 The [Release notes](release_notes.md) list the remaining changes, and [`wrapping/DEVIATIONS.md`](https://github.com/JuliaParallel/PETSc.jl/blob/main/wrapping/DEVIATIONS.md) lists every category of changed wrapper.
 
 ## 6. Within 0.5: the 0.5.4 spellings
@@ -152,6 +154,7 @@ These can't warn without firing on correct code, so check them now. The [release
 - **A callback's return value is ignored**, a nonzero `Integer` too. 0.5.5 warns once per callback that returns one; throw an exception to report a failure.
 - **`size(v)` is a tuple.** `size(v) == n` is `false` from 0.6 and raises no error; use `length(v) == n`. `length(v)` is an `Int`.
 - **`copy_disc!(dst, src)`** takes the destination first.
+- **FE, label and null-space functions lose `petsclib`.** The handles carry the library, so `set_name!(obj, name)`, `copy_quadrature!(dst_fe, src_fe)` (destination first, it was `(petsclib, src, dst)`), `compose_constant_nullspace!(fe)` and `destroy!(nullspace)` take no `petsclib` or communicator. `label(dm, name)` returns a `DMLabel`, or `nothing` where it returned `C_NULL`: `c_label != C_NULL` is now always true without an error, so test `isnothing(c_label)`. `set_field!`, `add_boundary!` and `add_natural_boundary!` take a `PetscFE` and a `DMLabel` where they took `Ptr`s; `set_field!(dm, i, fe; label = C_NULL)` is `label = nothing` (the default).
 - **`wrap_local_array` and `unsafe_local_array` are removed.** They handed out a local array that went back to PETSc when the array's finalizer ran, so the Vec stayed checked out until the garbage collector got to it, on whichever thread that was. Use `with_local_array!(f!, v)` (`memtype = :host` for a host array on a device Vec), or `acquire_local_array(v; read, write)` with `release_local_array(cpu_arr, backend, v; read, write)` for an explicit pair.
 - **`PetscVec <: AbstractVector`.** Generic Julia code accepts a PetscVec. `==` compares the entries (collective) and `hash` throws, on PetscVecs and PetscMats; `collect(v)` gives every rank the whole vector. **`PetscMat <: AbstractMatrix`** as well: `A == B` compares values, so a stored zero no longer makes two matrices unequal; `PETSc.equal(A, B)` is the old `MatEqual` test.
 

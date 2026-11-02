@@ -2554,16 +2554,16 @@ function MatNullSpaceCreate(petsclib::PetscLibType, comm::MPI_Comm, has_cnst::Pe
 end
 
 @for_petsc function MatNullSpaceCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, has_cnst::PetscBool, n::$PetscInt, vecs::Vector{<:AbstractPetscVec} )
-	SP_ = Ref{MatNullSpace}()
+	SP_ = Ref{CMatNullSpace}()
 
     @chk ccall(
                (:MatNullSpaceCreate, $petsc_library),
                PetscErrorCode,
-               (MPI_Comm, PetscBool, $PetscInt, Ptr{CVec}, Ptr{MatNullSpace}),
+               (MPI_Comm, PetscBool, $PetscInt, Ptr{CVec}, Ptr{CMatNullSpace}),
                comm, has_cnst, n, vecs, SP_,
               )
 
-	SP = SP_[]
+	SP = MatNullSpace(SP_[], petsclib)
 
 	return SP
 end 
@@ -2592,22 +2592,22 @@ function MatNullSpaceCreateRigidBody(petsclib::PetscLibType, coords::AbstractPet
 end
 
 @for_petsc function MatNullSpaceCreateRigidBody(petsclib::$UnionPetscLib, coords::AbstractPetscVec )
-	sp_ = Ref{MatNullSpace}()
+	sp_ = Ref{CMatNullSpace}()
 
     @chk ccall(
                (:MatNullSpaceCreateRigidBody, $petsc_library),
                PetscErrorCode,
-               (CVec, Ptr{MatNullSpace}),
+               (CVec, Ptr{CMatNullSpace}),
                coords, sp_,
               )
 
-	sp = sp_[]
+	sp = MatNullSpace(sp_[], petsclib)
 
 	return sp
 end 
 
 """
-	MatNullSpaceDestroy(petsclib::PetscLibType, sp::Union{MatNullSpace, Ref{MatNullSpace}}) 
+	MatNullSpaceDestroy(petsclib::PetscLibType, sp::AbstractMatNullSpace) 
 Destroys a data structure used to project vectors out of null spaces.
 
 Collective
@@ -2622,26 +2622,27 @@ See also: `Mat`, `MatNullSpace`, `MatNullSpaceCreate()`, `MatNullSpaceRemove()`,
 # External Links
 $(_doc_external("Mat/MatNullSpaceDestroy"))
 """
-function MatNullSpaceDestroy(petsclib::PetscLibType, sp::Union{MatNullSpace, Ref{MatNullSpace}})
+function MatNullSpaceDestroy(petsclib::PetscLibType, sp::AbstractMatNullSpace)
     throw(MethodError(MatNullSpaceDestroy, (petsclib, sp)))
 end
 
-@for_petsc function MatNullSpaceDestroy(petsclib::$UnionPetscLib, sp::Union{MatNullSpace, Ref{MatNullSpace}} )
-	sp_ = sp isa Base.RefValue ? sp : Ref{MatNullSpace}(sp)
+@for_petsc function MatNullSpaceDestroy(petsclib::$UnionPetscLib, sp::AbstractMatNullSpace )
+	sp_ = Ref(sp.ptr)
 
     @chk ccall(
                (:MatNullSpaceDestroy, $petsc_library),
                PetscErrorCode,
-               (Ptr{MatNullSpace},),
+               (Ptr{CMatNullSpace},),
                sp_,
               )
 
+	sp.ptr = C_NULL
 
 	return nothing
 end 
 
 """
-	has_const::PetscBool,n::PetscInt,vecs::Vector{PetscVec} = MatNullSpaceGetVecs(petsclib::PetscLibType, sp::MatNullSpace) 
+	has_const::PetscBool,n::PetscInt,vecs::Vector{PetscVec} = MatNullSpaceGetVecs(petsclib::PetscLibType, sp::AbstractMatNullSpace) 
 get the vectors defining the null space
 
 Not Collective
@@ -2661,11 +2662,11 @@ See also: `Mat`, `MatNullSpace`, `MatNullSpaceCreate()`, `MatGetNullSpace()`, `M
 # External Links
 $(_doc_external("Mat/MatNullSpaceGetVecs"))
 """
-function MatNullSpaceGetVecs(petsclib::PetscLibType, sp::MatNullSpace)
+function MatNullSpaceGetVecs(petsclib::PetscLibType, sp::AbstractMatNullSpace)
     throw(MethodError(MatNullSpaceGetVecs, (petsclib, sp)))
 end
 
-@for_petsc function MatNullSpaceGetVecs(petsclib::$UnionPetscLib, sp::MatNullSpace )
+@for_petsc function MatNullSpaceGetVecs(petsclib::$UnionPetscLib, sp::AbstractMatNullSpace )
 	has_const_ = Ref{PetscBool}()
 	n_ = Ref{$PetscInt}()
 	vecs_ = Ref{Ptr{CVec}}()
@@ -2673,7 +2674,7 @@ end
     @chk ccall(
                (:MatNullSpaceGetVecs, $petsc_library),
                PetscErrorCode,
-               (MatNullSpace, Ptr{PetscBool}, Ptr{$PetscInt}, Ptr{Ptr{CVec}}),
+               (CMatNullSpace, Ptr{PetscBool}, Ptr{$PetscInt}, Ptr{Ptr{CVec}}),
                sp, has_const_, n_, vecs_,
               )
 
@@ -2685,7 +2686,7 @@ end
 end 
 
 """
-	MatNullSpaceRemove(petsclib::PetscLibType, sp::MatNullSpace, vec::AbstractPetscVec) 
+	MatNullSpaceRemove(petsclib::PetscLibType, sp::AbstractMatNullSpace, vec::AbstractPetscVec) 
 Removes all the components of a null space from a vector.
 
 Collective
@@ -2701,16 +2702,16 @@ See also: `Mat`, `MatNullSpace`, `MatNullSpaceCreate()`, `MatNullSpaceDestroy()`
 # External Links
 $(_doc_external("Mat/MatNullSpaceRemove"))
 """
-function MatNullSpaceRemove(petsclib::PetscLibType, sp::MatNullSpace, vec::AbstractPetscVec)
+function MatNullSpaceRemove(petsclib::PetscLibType, sp::AbstractMatNullSpace, vec::AbstractPetscVec)
     throw(MethodError(MatNullSpaceRemove, (petsclib, sp, vec)))
 end
 
-@for_petsc function MatNullSpaceRemove(petsclib::$UnionPetscLib, sp::MatNullSpace, vec::AbstractPetscVec )
+@for_petsc function MatNullSpaceRemove(petsclib::$UnionPetscLib, sp::AbstractMatNullSpace, vec::AbstractPetscVec )
 
     @chk ccall(
                (:MatNullSpaceRemove, $petsc_library),
                PetscErrorCode,
-               (MatNullSpace, CVec),
+               (CMatNullSpace, CVec),
                sp, vec,
               )
 
@@ -2719,7 +2720,7 @@ end
 end 
 
 """
-	MatNullSpaceSetFunction(petsclib::PetscLibType, sp::MatNullSpace, rem::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	MatNullSpaceSetFunction(petsclib::PetscLibType, sp::AbstractMatNullSpace, rem::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 set a function that removes a null space from a vector
 out of null spaces.
 
@@ -2737,16 +2738,16 @@ See also: `Mat`, `MatNullSpace`, `MatNullSpaceDestroy()`, `MatNullSpaceRemove()`
 # External Links
 $(_doc_external("Mat/MatNullSpaceSetFunction"))
 """
-function MatNullSpaceSetFunction(petsclib::PetscLibType, sp::MatNullSpace, rem::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+function MatNullSpaceSetFunction(petsclib::PetscLibType, sp::AbstractMatNullSpace, rem::Ptr{Cvoid}, ctx::Ptr{Cvoid})
     throw(MethodError(MatNullSpaceSetFunction, (petsclib, sp, rem, ctx)))
 end
 
-@for_petsc function MatNullSpaceSetFunction(petsclib::$UnionPetscLib, sp::MatNullSpace, rem::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+@for_petsc function MatNullSpaceSetFunction(petsclib::$UnionPetscLib, sp::AbstractMatNullSpace, rem::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:MatNullSpaceSetFunction, $petsc_library),
                PetscErrorCode,
-               (MatNullSpace, Ptr{Cvoid}, Ptr{Cvoid}),
+               (CMatNullSpace, Ptr{Cvoid}, Ptr{Cvoid}),
                sp, rem, ctx,
               )
 
@@ -2755,7 +2756,7 @@ end
 end 
 
 """
-	isNull::PetscBool = MatNullSpaceTest(petsclib::PetscLibType, sp::MatNullSpace, mat::AbstractPetscMat) 
+	isNull::PetscBool = MatNullSpaceTest(petsclib::PetscLibType, sp::AbstractMatNullSpace, mat::AbstractPetscMat) 
 Tests if the claimed null space is really a null space of a matrix
 
 Collective
@@ -2774,17 +2775,17 @@ See also: `Mat`, `MatNullSpace`, `MatNullSpaceCreate()`, `MatNullSpaceDestroy()`
 # External Links
 $(_doc_external("Mat/MatNullSpaceTest"))
 """
-function MatNullSpaceTest(petsclib::PetscLibType, sp::MatNullSpace, mat::AbstractPetscMat)
+function MatNullSpaceTest(petsclib::PetscLibType, sp::AbstractMatNullSpace, mat::AbstractPetscMat)
     throw(MethodError(MatNullSpaceTest, (petsclib, sp, mat)))
 end
 
-@for_petsc function MatNullSpaceTest(petsclib::$UnionPetscLib, sp::MatNullSpace, mat::AbstractPetscMat )
+@for_petsc function MatNullSpaceTest(petsclib::$UnionPetscLib, sp::AbstractMatNullSpace, mat::AbstractPetscMat )
 	isNull_ = Ref{PetscBool}()
 
     @chk ccall(
                (:MatNullSpaceTest, $petsc_library),
                PetscErrorCode,
-               (MatNullSpace, CMat, Ptr{PetscBool}),
+               (CMatNullSpace, CMat, Ptr{PetscBool}),
                sp, mat, isNull_,
               )
 
@@ -2794,7 +2795,7 @@ end
 end 
 
 """
-	MatNullSpaceView(petsclib::PetscLibType, sp::MatNullSpace, viewer::PetscViewer) 
+	MatNullSpaceView(petsclib::PetscLibType, sp::AbstractMatNullSpace, viewer::PetscViewer) 
 Visualizes a null space object.
 
 Collective
@@ -2810,16 +2811,16 @@ See also: `Mat`, `MatNullSpace`, `PetscViewer`, `MatNullSpaceCreate()`, `PetscVi
 # External Links
 $(_doc_external("Mat/MatNullSpaceView"))
 """
-function MatNullSpaceView(petsclib::PetscLibType, sp::MatNullSpace, viewer::PetscViewer)
+function MatNullSpaceView(petsclib::PetscLibType, sp::AbstractMatNullSpace, viewer::PetscViewer)
     throw(MethodError(MatNullSpaceView, (petsclib, sp, viewer)))
 end
 
-@for_petsc function MatNullSpaceView(petsclib::$UnionPetscLib, sp::MatNullSpace, viewer::PetscViewer )
+@for_petsc function MatNullSpaceView(petsclib::$UnionPetscLib, sp::AbstractMatNullSpace, viewer::PetscViewer )
 
     @chk ccall(
                (:MatNullSpaceView, $petsc_library),
                PetscErrorCode,
-               (MatNullSpace, PetscViewer),
+               (CMatNullSpace, PetscViewer),
                sp, viewer,
               )
 

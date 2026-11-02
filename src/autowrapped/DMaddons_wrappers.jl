@@ -2450,7 +2450,7 @@ end
 end 
 
 """
-	DMLabelAddStrata(petsclib::PetscLibType, label::DMLabel, numStrata::PetscInt, stratumValues::Vector{PetscInt}) 
+	DMLabelAddStrata(petsclib::PetscLibType, label::AbstractDMLabel, numStrata::PetscInt, stratumValues::Vector{PetscInt}) 
 Adds new stratum values in a `DMLabel`
 
 Not Collective
@@ -2467,16 +2467,16 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelDestroy()`
 # External Links
 $(_doc_external("DMLabel/DMLabelAddStrata"))
 """
-function DMLabelAddStrata(petsclib::PetscLibType, label::DMLabel, numStrata::Integer, stratumValues::AbstractVector{<:Number})
+function DMLabelAddStrata(petsclib::PetscLibType, label::AbstractDMLabel, numStrata::Integer, stratumValues::AbstractVector{<:Number})
     throw(MethodError(DMLabelAddStrata, (petsclib, label, numStrata, stratumValues)))
 end
 
-@for_petsc function DMLabelAddStrata(petsclib::$UnionPetscLib, label::DMLabel, numStrata::$PetscInt, stratumValues::Vector{$PetscInt} )
+@for_petsc function DMLabelAddStrata(petsclib::$UnionPetscLib, label::AbstractDMLabel, numStrata::$PetscInt, stratumValues::Vector{$PetscInt} )
 
     @chk ccall(
                (:DMLabelAddStrata, $petsc_library),
                PetscErrorCode,
-               (DMLabel, $PetscInt, Ptr{$PetscInt}),
+               (CDMLabel, $PetscInt, Ptr{$PetscInt}),
                label, numStrata, stratumValues,
               )
 
@@ -2485,7 +2485,7 @@ end
 end 
 
 """
-	DMLabelAddStrataIS(petsclib::PetscLibType, label::DMLabel, valueIS::AbstractIS) 
+	DMLabelAddStrataIS(petsclib::PetscLibType, label::AbstractDMLabel, valueIS::AbstractIS) 
 Adds new stratum values in a `DMLabel`
 
 Not Collective
@@ -2501,16 +2501,16 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelDestroy()`
 # External Links
 $(_doc_external("DMLabel/DMLabelAddStrataIS"))
 """
-function DMLabelAddStrataIS(petsclib::PetscLibType, label::DMLabel, valueIS::AbstractIS)
+function DMLabelAddStrataIS(petsclib::PetscLibType, label::AbstractDMLabel, valueIS::AbstractIS)
     throw(MethodError(DMLabelAddStrataIS, (petsclib, label, valueIS)))
 end
 
-@for_petsc function DMLabelAddStrataIS(petsclib::$UnionPetscLib, label::DMLabel, valueIS::AbstractIS )
+@for_petsc function DMLabelAddStrataIS(petsclib::$UnionPetscLib, label::AbstractDMLabel, valueIS::AbstractIS )
 
     @chk ccall(
                (:DMLabelAddStrataIS, $petsc_library),
                PetscErrorCode,
-               (DMLabel, CIS),
+               (CDMLabel, CIS),
                label, valueIS,
               )
 
@@ -2519,7 +2519,7 @@ end
 end 
 
 """
-	DMLabelAddStratum(petsclib::PetscLibType, label::DMLabel, value::PetscInt) 
+	DMLabelAddStratum(petsclib::PetscLibType, label::AbstractDMLabel, value::PetscInt) 
 Adds a new stratum value in a `DMLabel`
 
 Input Parameters:
@@ -2533,16 +2533,16 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelDestroy()`
 # External Links
 $(_doc_external("DMLabel/DMLabelAddStratum"))
 """
-function DMLabelAddStratum(petsclib::PetscLibType, label::DMLabel, value::Integer)
+function DMLabelAddStratum(petsclib::PetscLibType, label::AbstractDMLabel, value::Integer)
     throw(MethodError(DMLabelAddStratum, (petsclib, label, value)))
 end
 
-@for_petsc function DMLabelAddStratum(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt )
+@for_petsc function DMLabelAddStratum(petsclib::$UnionPetscLib, label::AbstractDMLabel, value::$PetscInt )
 
     @chk ccall(
                (:DMLabelAddStratum, $petsc_library),
                PetscErrorCode,
-               (DMLabel, $PetscInt),
+               (CDMLabel, $PetscInt),
                label, value,
               )
 
@@ -2551,7 +2551,7 @@ end
 end 
 
 """
-	DMLabelClearStratum(petsclib::PetscLibType, label::DMLabel, value::PetscInt) 
+	DMLabelClearStratum(petsclib::PetscLibType, label::AbstractDMLabel, value::PetscInt) 
 Remove a stratum
 
 Not Collective
@@ -2567,16 +2567,16 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetVa
 # External Links
 $(_doc_external("DMLabel/DMLabelClearStratum"))
 """
-function DMLabelClearStratum(petsclib::PetscLibType, label::DMLabel, value::Integer)
+function DMLabelClearStratum(petsclib::PetscLibType, label::AbstractDMLabel, value::Integer)
     throw(MethodError(DMLabelClearStratum, (petsclib, label, value)))
 end
 
-@for_petsc function DMLabelClearStratum(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt )
+@for_petsc function DMLabelClearStratum(petsclib::$UnionPetscLib, label::AbstractDMLabel, value::$PetscInt )
 
     @chk ccall(
                (:DMLabelClearStratum, $petsc_library),
                PetscErrorCode,
-               (DMLabel, $PetscInt),
+               (CDMLabel, $PetscInt),
                label, value,
               )
 
@@ -2585,7 +2585,7 @@ end
 end 
 
 """
-	DMLabelClearValue(petsclib::PetscLibType, label::DMLabel, point::PetscInt, value::PetscInt) 
+	DMLabelClearValue(petsclib::PetscLibType, label::AbstractDMLabel, point::PetscInt, value::PetscInt) 
 Clear the value a label assigns to a point
 
 Not Collective
@@ -2602,16 +2602,16 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetVa
 # External Links
 $(_doc_external("DMLabel/DMLabelClearValue"))
 """
-function DMLabelClearValue(petsclib::PetscLibType, label::DMLabel, point::Integer, value::Integer)
+function DMLabelClearValue(petsclib::PetscLibType, label::AbstractDMLabel, point::Integer, value::Integer)
     throw(MethodError(DMLabelClearValue, (petsclib, label, point, value)))
 end
 
-@for_petsc function DMLabelClearValue(petsclib::$UnionPetscLib, label::DMLabel, point::$PetscInt, value::$PetscInt )
+@for_petsc function DMLabelClearValue(petsclib::$UnionPetscLib, label::AbstractDMLabel, point::$PetscInt, value::$PetscInt )
 
     @chk ccall(
                (:DMLabelClearValue, $petsc_library),
                PetscErrorCode,
-               (DMLabel, $PetscInt, $PetscInt),
+               (CDMLabel, $PetscInt, $PetscInt),
                label, point, value,
               )
 
@@ -2620,7 +2620,7 @@ end
 end 
 
 """
-	equal::PetscBool,message::String = DMLabelCompare(petsclib::PetscLibType, comm::MPI_Comm, l0::DMLabel, l1::DMLabel) 
+	equal::PetscBool,message::String = DMLabelCompare(petsclib::PetscLibType, comm::MPI_Comm, l0::AbstractDMLabel, l1::AbstractDMLabel) 
 Compare two `DMLabel` objects
 
 Collective; No Fortran Support
@@ -2641,18 +2641,18 @@ See also: `DMLabel`, `DM`, `DMCompareLabels()`, `DMLabelGetNumValues()`, `DMLabe
 # External Links
 $(_doc_external("DMLabel/DMLabelCompare"))
 """
-function DMLabelCompare(petsclib::PetscLibType, comm::MPI_Comm, l0::DMLabel, l1::DMLabel)
+function DMLabelCompare(petsclib::PetscLibType, comm::MPI_Comm, l0::AbstractDMLabel, l1::AbstractDMLabel)
     throw(MethodError(DMLabelCompare, (petsclib, comm, l0, l1)))
 end
 
-@for_petsc function DMLabelCompare(petsclib::$UnionPetscLib, comm::MPI_Comm, l0::DMLabel, l1::DMLabel )
+@for_petsc function DMLabelCompare(petsclib::$UnionPetscLib, comm::MPI_Comm, l0::AbstractDMLabel, l1::AbstractDMLabel )
 	equal_ = Ref{PetscBool}()
 	message_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
                (:DMLabelCompare, $petsc_library),
                PetscErrorCode,
-               (MPI_Comm, DMLabel, DMLabel, Ptr{PetscBool}, Ptr{Ptr{Cchar}}),
+               (MPI_Comm, CDMLabel, CDMLabel, Ptr{PetscBool}, Ptr{Ptr{Cchar}}),
                comm, l0, l1, equal_, message_,
               )
 
@@ -2663,7 +2663,7 @@ end
 end 
 
 """
-	DMLabelComputeIndex(petsclib::PetscLibType, label::DMLabel) 
+	DMLabelComputeIndex(petsclib::PetscLibType, label::AbstractDMLabel) 
 Create an index structure for membership determination, automatically determining the bounds
 
 Not Collective
@@ -2678,16 +2678,16 @@ See also: `DMLabel`, `DM`, `DMLabelHasPoint()`, `DMLabelCreateIndex()`, `DMLabel
 # External Links
 $(_doc_external("DMLabel/DMLabelComputeIndex"))
 """
-function DMLabelComputeIndex(petsclib::PetscLibType, label::DMLabel)
+function DMLabelComputeIndex(petsclib::PetscLibType, label::AbstractDMLabel)
     throw(MethodError(DMLabelComputeIndex, (petsclib, label)))
 end
 
-@for_petsc function DMLabelComputeIndex(petsclib::$UnionPetscLib, label::DMLabel )
+@for_petsc function DMLabelComputeIndex(petsclib::$UnionPetscLib, label::AbstractDMLabel )
 
     @chk ccall(
                (:DMLabelComputeIndex, $petsc_library),
                PetscErrorCode,
-               (DMLabel,),
+               (CDMLabel,),
                label,
               )
 
@@ -2696,7 +2696,7 @@ end
 end 
 
 """
-	section::PetscSection,is::IS = DMLabelConvertToSection(petsclib::PetscLibType, label::DMLabel) 
+	section::PetscSection,is::IS = DMLabelConvertToSection(petsclib::PetscLibType, label::AbstractDMLabel) 
 Make a `PetscSection`/`IS` pair that encodes the label
 
 Not Collective
@@ -2715,18 +2715,18 @@ See also: `DMLabel`, `DM`, `DMLabelDistribute()`
 # External Links
 $(_doc_external("DMLabel/DMLabelConvertToSection"))
 """
-function DMLabelConvertToSection(petsclib::PetscLibType, label::DMLabel)
+function DMLabelConvertToSection(petsclib::PetscLibType, label::AbstractDMLabel)
     throw(MethodError(DMLabelConvertToSection, (petsclib, label)))
 end
 
-@for_petsc function DMLabelConvertToSection(petsclib::$UnionPetscLib, label::DMLabel )
+@for_petsc function DMLabelConvertToSection(petsclib::$UnionPetscLib, label::AbstractDMLabel )
 	section_ = Ref{PetscSection}()
 	is_ = Ref{CIS}()
 
     @chk ccall(
                (:DMLabelConvertToSection, $petsc_library),
                PetscErrorCode,
-               (DMLabel, Ptr{PetscSection}, Ptr{CIS}),
+               (CDMLabel, Ptr{PetscSection}, Ptr{CIS}),
                label, section_, is_,
               )
 
@@ -2761,22 +2761,22 @@ function DMLabelCreate(petsclib::PetscLibType, comm::MPI_Comm, name::String)
 end
 
 @for_petsc function DMLabelCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, name::String )
-	label_ = Ref{DMLabel}()
+	label_ = Ref{CDMLabel}()
 
     @chk ccall(
                (:DMLabelCreate, $petsc_library),
                PetscErrorCode,
-               (MPI_Comm, Ptr{Cchar}, Ptr{DMLabel}),
+               (MPI_Comm, Ptr{Cchar}, Ptr{CDMLabel}),
                comm, name, label_,
               )
 
-	label = label_[]
+	label = DMLabel(label_[], petsclib)
 
 	return label
 end 
 
 """
-	DMLabelCreateIndex(petsclib::PetscLibType, label::DMLabel, pStart::PetscInt, pEnd::PetscInt) 
+	DMLabelCreateIndex(petsclib::PetscLibType, label::AbstractDMLabel, pStart::PetscInt, pEnd::PetscInt) 
 Create an index structure for membership determination
 
 Not Collective
@@ -2793,16 +2793,16 @@ See also: `DMLabel`, `DM`, `DMLabelHasPoint()`, `DMLabelComputeIndex()`, `DMLabe
 # External Links
 $(_doc_external("DMLabel/DMLabelCreateIndex"))
 """
-function DMLabelCreateIndex(petsclib::PetscLibType, label::DMLabel, pStart::Integer, pEnd::Integer)
+function DMLabelCreateIndex(petsclib::PetscLibType, label::AbstractDMLabel, pStart::Integer, pEnd::Integer)
     throw(MethodError(DMLabelCreateIndex, (petsclib, label, pStart, pEnd)))
 end
 
-@for_petsc function DMLabelCreateIndex(petsclib::$UnionPetscLib, label::DMLabel, pStart::$PetscInt, pEnd::$PetscInt )
+@for_petsc function DMLabelCreateIndex(petsclib::$UnionPetscLib, label::AbstractDMLabel, pStart::$PetscInt, pEnd::$PetscInt )
 
     @chk ccall(
                (:DMLabelCreateIndex, $petsc_library),
                PetscErrorCode,
-               (DMLabel, $PetscInt, $PetscInt),
+               (CDMLabel, $PetscInt, $PetscInt),
                label, pStart, pEnd,
               )
 
@@ -2811,7 +2811,7 @@ end
 end 
 
 """
-	DMLabelDestroy(petsclib::PetscLibType, label::Union{DMLabel, Ref{DMLabel}}) 
+	DMLabelDestroy(petsclib::PetscLibType, label::AbstractDMLabel) 
 Destroys a `DMLabel`
 
 Collective
@@ -2826,26 +2826,27 @@ See also: `DMLabel`, `DM`, `DMLabelReset()`, `DMLabelCreate()`
 # External Links
 $(_doc_external("DMLabel/DMLabelDestroy"))
 """
-function DMLabelDestroy(petsclib::PetscLibType, label::Union{DMLabel, Ref{DMLabel}})
+function DMLabelDestroy(petsclib::PetscLibType, label::AbstractDMLabel)
     throw(MethodError(DMLabelDestroy, (petsclib, label)))
 end
 
-@for_petsc function DMLabelDestroy(petsclib::$UnionPetscLib, label::Union{DMLabel, Ref{DMLabel}} )
-	label_ = label isa Base.RefValue ? label : Ref{DMLabel}(label)
+@for_petsc function DMLabelDestroy(petsclib::$UnionPetscLib, label::AbstractDMLabel )
+	label_ = Ref(label.ptr)
 
     @chk ccall(
                (:DMLabelDestroy, $petsc_library),
                PetscErrorCode,
-               (Ptr{DMLabel},),
+               (Ptr{CDMLabel},),
                label_,
               )
 
+	label.ptr = C_NULL
 
 	return nothing
 end 
 
 """
-	DMLabelDestroyIndex(petsclib::PetscLibType, label::DMLabel) 
+	DMLabelDestroyIndex(petsclib::PetscLibType, label::AbstractDMLabel) 
 Destroy the index structure
 
 Not Collective
@@ -2860,16 +2861,16 @@ See also: `DMLabel`, `DM`, `DMLabelHasPoint()`, `DMLabelCreateIndex()`, `DMLabel
 # External Links
 $(_doc_external("DMLabel/DMLabelDestroyIndex"))
 """
-function DMLabelDestroyIndex(petsclib::PetscLibType, label::DMLabel)
+function DMLabelDestroyIndex(petsclib::PetscLibType, label::AbstractDMLabel)
     throw(MethodError(DMLabelDestroyIndex, (petsclib, label)))
 end
 
-@for_petsc function DMLabelDestroyIndex(petsclib::$UnionPetscLib, label::DMLabel )
+@for_petsc function DMLabelDestroyIndex(petsclib::$UnionPetscLib, label::AbstractDMLabel )
 
     @chk ccall(
                (:DMLabelDestroyIndex, $petsc_library),
                PetscErrorCode,
-               (DMLabel,),
+               (CDMLabel,),
                label,
               )
 
@@ -2878,7 +2879,7 @@ end
 end 
 
 """
-	labelNew::DMLabel = DMLabelDistribute(petsclib::PetscLibType, label::DMLabel, sf::PetscSF) 
+	labelNew::DMLabel = DMLabelDistribute(petsclib::PetscLibType, label::AbstractDMLabel, sf::PetscSF) 
 Create a new label pushed forward over the `PetscSF`
 
 Collective
@@ -2897,27 +2898,27 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetVa
 # External Links
 $(_doc_external("DMLabel/DMLabelDistribute"))
 """
-function DMLabelDistribute(petsclib::PetscLibType, label::DMLabel, sf::PetscSF)
+function DMLabelDistribute(petsclib::PetscLibType, label::AbstractDMLabel, sf::PetscSF)
     throw(MethodError(DMLabelDistribute, (petsclib, label, sf)))
 end
 
-@for_petsc function DMLabelDistribute(petsclib::$UnionPetscLib, label::DMLabel, sf::PetscSF )
-	labelNew_ = Ref{DMLabel}()
+@for_petsc function DMLabelDistribute(petsclib::$UnionPetscLib, label::AbstractDMLabel, sf::PetscSF )
+	labelNew_ = Ref{CDMLabel}()
 
     @chk ccall(
                (:DMLabelDistribute, $petsc_library),
                PetscErrorCode,
-               (DMLabel, PetscSF, Ptr{DMLabel}),
+               (CDMLabel, PetscSF, Ptr{CDMLabel}),
                label, sf, labelNew_,
               )
 
-	labelNew = labelNew_[]
+	labelNew = DMLabel(labelNew_[], petsclib)
 
 	return labelNew
 end 
 
 """
-	labelnew::DMLabel = DMLabelDuplicate(petsclib::PetscLibType, label::DMLabel) 
+	labelnew::DMLabel = DMLabelDuplicate(petsclib::PetscLibType, label::AbstractDMLabel) 
 Duplicates a `DMLabel`
 
 Collective
@@ -2935,27 +2936,27 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelDestroy()`
 # External Links
 $(_doc_external("DMLabel/DMLabelDuplicate"))
 """
-function DMLabelDuplicate(petsclib::PetscLibType, label::DMLabel)
+function DMLabelDuplicate(petsclib::PetscLibType, label::AbstractDMLabel)
     throw(MethodError(DMLabelDuplicate, (petsclib, label)))
 end
 
-@for_petsc function DMLabelDuplicate(petsclib::$UnionPetscLib, label::DMLabel )
-	labelnew_ = Ref{DMLabel}()
+@for_petsc function DMLabelDuplicate(petsclib::$UnionPetscLib, label::AbstractDMLabel )
+	labelnew_ = Ref{CDMLabel}()
 
     @chk ccall(
                (:DMLabelDuplicate, $petsc_library),
                PetscErrorCode,
-               (DMLabel, Ptr{DMLabel}),
+               (CDMLabel, Ptr{CDMLabel}),
                label, labelnew_,
               )
 
-	labelnew = labelnew_[]
+	labelnew = DMLabel(labelnew_[], petsclib)
 
 	return labelnew
 end 
 
 """
-	olabel::DMLabel = DMLabelEphemeralGetLabel(petsclib::PetscLibType, label::DMLabel) 
+	olabel::DMLabel = DMLabelEphemeralGetLabel(petsclib::PetscLibType, label::AbstractDMLabel) 
 Get the base label for this ephemeral label
 
 Not Collective
@@ -2973,27 +2974,27 @@ See also: `DMLabelEphemeralSetLabel()`, `DMLabelEphemeralGetTransform()`, `DMLab
 # External Links
 $(_doc_external("DMLabel/DMLabelEphemeralGetLabel"))
 """
-function DMLabelEphemeralGetLabel(petsclib::PetscLibType, label::DMLabel)
+function DMLabelEphemeralGetLabel(petsclib::PetscLibType, label::AbstractDMLabel)
     throw(MethodError(DMLabelEphemeralGetLabel, (petsclib, label)))
 end
 
-@for_petsc function DMLabelEphemeralGetLabel(petsclib::$UnionPetscLib, label::DMLabel )
-	olabel_ = Ref{DMLabel}()
+@for_petsc function DMLabelEphemeralGetLabel(petsclib::$UnionPetscLib, label::AbstractDMLabel )
+	olabel_ = Ref{CDMLabel}()
 
     @chk ccall(
                (:DMLabelEphemeralGetLabel, $petsc_library),
                PetscErrorCode,
-               (DMLabel, Ptr{DMLabel}),
+               (CDMLabel, Ptr{CDMLabel}),
                label, olabel_,
               )
 
-	olabel = olabel_[]
+	olabel = DMLabel(olabel_[], petsclib; own = false)
 
 	return olabel
 end 
 
 """
-	tr::DMPlexTransform = DMLabelEphemeralGetTransform(petsclib::PetscLibType, label::DMLabel) 
+	tr::DMPlexTransform = DMLabelEphemeralGetTransform(petsclib::PetscLibType, label::AbstractDMLabel) 
 Get the transform for this ephemeral label
 
 Not Collective
@@ -3011,17 +3012,17 @@ See also: `DMLabelEphemeralSetTransform()`, `DMLabelEphemeralGetLabel()`, `DMLab
 # External Links
 $(_doc_external("DMLabel/DMLabelEphemeralGetTransform"))
 """
-function DMLabelEphemeralGetTransform(petsclib::PetscLibType, label::DMLabel)
+function DMLabelEphemeralGetTransform(petsclib::PetscLibType, label::AbstractDMLabel)
     throw(MethodError(DMLabelEphemeralGetTransform, (petsclib, label)))
 end
 
-@for_petsc function DMLabelEphemeralGetTransform(petsclib::$UnionPetscLib, label::DMLabel )
+@for_petsc function DMLabelEphemeralGetTransform(petsclib::$UnionPetscLib, label::AbstractDMLabel )
 	tr_ = Ref{DMPlexTransform}()
 
     @chk ccall(
                (:DMLabelEphemeralGetTransform, $petsc_library),
                PetscErrorCode,
-               (DMLabel, Ptr{DMPlexTransform}),
+               (CDMLabel, Ptr{DMPlexTransform}),
                label, tr_,
               )
 
@@ -3031,7 +3032,7 @@ end
 end 
 
 """
-	DMLabelEphemeralSetLabel(petsclib::PetscLibType, label::DMLabel, olabel::DMLabel) 
+	DMLabelEphemeralSetLabel(petsclib::PetscLibType, label::AbstractDMLabel, olabel::AbstractDMLabel) 
 Set the base label for this ephemeral label
 
 Not Collective
@@ -3047,16 +3048,16 @@ See also: `DMLabelEphemeralGetLabel()`, `DMLabelEphemeralSetTransform()`, `DMLab
 # External Links
 $(_doc_external("DMLabel/DMLabelEphemeralSetLabel"))
 """
-function DMLabelEphemeralSetLabel(petsclib::PetscLibType, label::DMLabel, olabel::DMLabel)
+function DMLabelEphemeralSetLabel(petsclib::PetscLibType, label::AbstractDMLabel, olabel::AbstractDMLabel)
     throw(MethodError(DMLabelEphemeralSetLabel, (petsclib, label, olabel)))
 end
 
-@for_petsc function DMLabelEphemeralSetLabel(petsclib::$UnionPetscLib, label::DMLabel, olabel::DMLabel )
+@for_petsc function DMLabelEphemeralSetLabel(petsclib::$UnionPetscLib, label::AbstractDMLabel, olabel::AbstractDMLabel )
 
     @chk ccall(
                (:DMLabelEphemeralSetLabel, $petsc_library),
                PetscErrorCode,
-               (DMLabel, DMLabel),
+               (CDMLabel, CDMLabel),
                label, olabel,
               )
 
@@ -3065,7 +3066,7 @@ end
 end 
 
 """
-	DMLabelEphemeralSetTransform(petsclib::PetscLibType, label::DMLabel, tr::DMPlexTransform) 
+	DMLabelEphemeralSetTransform(petsclib::PetscLibType, label::AbstractDMLabel, tr::DMPlexTransform) 
 Set the transform for this ephemeral label
 
 Not Collective
@@ -3081,16 +3082,16 @@ See also: `DMLabelEphemeralGetTransform()`, `DMLabelEphemeralSetLabel()`, `DMLab
 # External Links
 $(_doc_external("DMLabel/DMLabelEphemeralSetTransform"))
 """
-function DMLabelEphemeralSetTransform(petsclib::PetscLibType, label::DMLabel, tr::DMPlexTransform)
+function DMLabelEphemeralSetTransform(petsclib::PetscLibType, label::AbstractDMLabel, tr::DMPlexTransform)
     throw(MethodError(DMLabelEphemeralSetTransform, (petsclib, label, tr)))
 end
 
-@for_petsc function DMLabelEphemeralSetTransform(petsclib::$UnionPetscLib, label::DMLabel, tr::DMPlexTransform )
+@for_petsc function DMLabelEphemeralSetTransform(petsclib::$UnionPetscLib, label::AbstractDMLabel, tr::DMPlexTransform )
 
     @chk ccall(
                (:DMLabelEphemeralSetTransform, $petsc_library),
                PetscErrorCode,
-               (DMLabel, DMPlexTransform),
+               (CDMLabel, DMPlexTransform),
                label, tr,
               )
 
@@ -3099,7 +3100,7 @@ end
 end 
 
 """
-	DMLabelFilter(petsclib::PetscLibType, label::DMLabel, start::PetscInt, end_::PetscInt) 
+	DMLabelFilter(petsclib::PetscLibType, label::AbstractDMLabel, start::PetscInt, end_::PetscInt) 
 Remove all points outside of [`start`, `end`)
 
 Not Collective
@@ -3116,16 +3117,16 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetVa
 # External Links
 $(_doc_external("DMLabel/DMLabelFilter"))
 """
-function DMLabelFilter(petsclib::PetscLibType, label::DMLabel, start::Integer, end_::Integer)
+function DMLabelFilter(petsclib::PetscLibType, label::AbstractDMLabel, start::Integer, end_::Integer)
     throw(MethodError(DMLabelFilter, (petsclib, label, start, end_)))
 end
 
-@for_petsc function DMLabelFilter(petsclib::$UnionPetscLib, label::DMLabel, start::$PetscInt, end_::$PetscInt )
+@for_petsc function DMLabelFilter(petsclib::$UnionPetscLib, label::AbstractDMLabel, start::$PetscInt, end_::$PetscInt )
 
     @chk ccall(
                (:DMLabelFilter, $petsc_library),
                PetscErrorCode,
-               (DMLabel, $PetscInt, $PetscInt),
+               (CDMLabel, $PetscInt, $PetscInt),
                label, start, end_,
               )
 
@@ -3134,7 +3135,7 @@ end
 end 
 
 """
-	labelNew::DMLabel = DMLabelGather(petsclib::PetscLibType, label::DMLabel, sf::PetscSF) 
+	labelNew::DMLabel = DMLabelGather(petsclib::PetscLibType, label::AbstractDMLabel, sf::PetscSF) 
 Gather all label values from leafs into roots
 
 Collective
@@ -3153,27 +3154,27 @@ See also: `DMLabel`, `DM`, `DMLabelDistribute()`
 # External Links
 $(_doc_external("DMLabel/DMLabelGather"))
 """
-function DMLabelGather(petsclib::PetscLibType, label::DMLabel, sf::PetscSF)
+function DMLabelGather(petsclib::PetscLibType, label::AbstractDMLabel, sf::PetscSF)
     throw(MethodError(DMLabelGather, (petsclib, label, sf)))
 end
 
-@for_petsc function DMLabelGather(petsclib::$UnionPetscLib, label::DMLabel, sf::PetscSF )
-	labelNew_ = Ref{DMLabel}()
+@for_petsc function DMLabelGather(petsclib::$UnionPetscLib, label::AbstractDMLabel, sf::PetscSF )
+	labelNew_ = Ref{CDMLabel}()
 
     @chk ccall(
                (:DMLabelGather, $petsc_library),
                PetscErrorCode,
-               (DMLabel, PetscSF, Ptr{DMLabel}),
+               (CDMLabel, PetscSF, Ptr{CDMLabel}),
                label, sf, labelNew_,
               )
 
-	labelNew = labelNew_[]
+	labelNew = DMLabel(labelNew_[], petsclib)
 
 	return labelNew
 end 
 
 """
-	pStart::PetscInt,pEnd::PetscInt = DMLabelGetBounds(petsclib::PetscLibType, label::DMLabel) 
+	pStart::PetscInt,pEnd::PetscInt = DMLabelGetBounds(petsclib::PetscLibType, label::AbstractDMLabel) 
 Return the smallest and largest point in the label
 
 Not Collective
@@ -3192,18 +3193,18 @@ See also: `DMLabel`, `DM`, `DMLabelHasPoint()`, `DMLabelCreateIndex()`, `DMLabel
 # External Links
 $(_doc_external("DMLabel/DMLabelGetBounds"))
 """
-function DMLabelGetBounds(petsclib::PetscLibType, label::DMLabel)
+function DMLabelGetBounds(petsclib::PetscLibType, label::AbstractDMLabel)
     throw(MethodError(DMLabelGetBounds, (petsclib, label)))
 end
 
-@for_petsc function DMLabelGetBounds(petsclib::$UnionPetscLib, label::DMLabel )
+@for_petsc function DMLabelGetBounds(petsclib::$UnionPetscLib, label::AbstractDMLabel )
 	pStart_ = Ref{$PetscInt}()
 	pEnd_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:DMLabelGetBounds, $petsc_library),
                PetscErrorCode,
-               (DMLabel, Ptr{$PetscInt}, Ptr{$PetscInt}),
+               (CDMLabel, Ptr{$PetscInt}, Ptr{$PetscInt}),
                label, pStart_, pEnd_,
               )
 
@@ -3214,7 +3215,7 @@ end
 end 
 
 """
-	defaultValue::PetscInt = DMLabelGetDefaultValue(petsclib::PetscLibType, label::DMLabel) 
+	defaultValue::PetscInt = DMLabelGetDefaultValue(petsclib::PetscLibType, label::AbstractDMLabel) 
 Get the default value returned by `DMLabelGetValue()` if a point has not been explicitly given a value.
 When a label is created, it is initialized to -1.
 
@@ -3233,17 +3234,17 @@ See also: `DMLabel`, `DM`, `DMLabelSetDefaultValue()`, `DMLabelGetValue()`, `DML
 # External Links
 $(_doc_external("DMLabel/DMLabelGetDefaultValue"))
 """
-function DMLabelGetDefaultValue(petsclib::PetscLibType, label::DMLabel)
+function DMLabelGetDefaultValue(petsclib::PetscLibType, label::AbstractDMLabel)
     throw(MethodError(DMLabelGetDefaultValue, (petsclib, label)))
 end
 
-@for_petsc function DMLabelGetDefaultValue(petsclib::$UnionPetscLib, label::DMLabel )
+@for_petsc function DMLabelGetDefaultValue(petsclib::$UnionPetscLib, label::AbstractDMLabel )
 	defaultValue_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:DMLabelGetDefaultValue, $petsc_library),
                PetscErrorCode,
-               (DMLabel, Ptr{$PetscInt}),
+               (CDMLabel, Ptr{$PetscInt}),
                label, defaultValue_,
               )
 
@@ -3253,7 +3254,7 @@ end
 end 
 
 """
-	values::IS = DMLabelGetNonEmptyStratumValuesIS(petsclib::PetscLibType, label::DMLabel) 
+	values::IS = DMLabelGetNonEmptyStratumValuesIS(petsclib::PetscLibType, label::AbstractDMLabel) 
 Get an `IS` of all values that the `DMlabel` takes
 
 Not Collective
@@ -3271,17 +3272,17 @@ See also: `DMLabel`, `DM`, `DMLabelGetValueIS()`, `DMLabelGetValueISGlobal()`, `
 # External Links
 $(_doc_external("DMLabel/DMLabelGetNonEmptyStratumValuesIS"))
 """
-function DMLabelGetNonEmptyStratumValuesIS(petsclib::PetscLibType, label::DMLabel)
+function DMLabelGetNonEmptyStratumValuesIS(petsclib::PetscLibType, label::AbstractDMLabel)
     throw(MethodError(DMLabelGetNonEmptyStratumValuesIS, (petsclib, label)))
 end
 
-@for_petsc function DMLabelGetNonEmptyStratumValuesIS(petsclib::$UnionPetscLib, label::DMLabel )
+@for_petsc function DMLabelGetNonEmptyStratumValuesIS(petsclib::$UnionPetscLib, label::AbstractDMLabel )
 	values_ = Ref{CIS}()
 
     @chk ccall(
                (:DMLabelGetNonEmptyStratumValuesIS, $petsc_library),
                PetscErrorCode,
-               (DMLabel, Ptr{CIS}),
+               (CDMLabel, Ptr{CIS}),
                label, values_,
               )
 
@@ -3291,7 +3292,7 @@ end
 end 
 
 """
-	numValues::PetscInt = DMLabelGetNumValues(petsclib::PetscLibType, label::DMLabel) 
+	numValues::PetscInt = DMLabelGetNumValues(petsclib::PetscLibType, label::AbstractDMLabel) 
 Get the number of values that the `DMLabel` takes
 
 Not Collective
@@ -3309,17 +3310,17 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetVa
 # External Links
 $(_doc_external("DMLabel/DMLabelGetNumValues"))
 """
-function DMLabelGetNumValues(petsclib::PetscLibType, label::DMLabel)
+function DMLabelGetNumValues(petsclib::PetscLibType, label::AbstractDMLabel)
     throw(MethodError(DMLabelGetNumValues, (petsclib, label)))
 end
 
-@for_petsc function DMLabelGetNumValues(petsclib::$UnionPetscLib, label::DMLabel )
+@for_petsc function DMLabelGetNumValues(petsclib::$UnionPetscLib, label::AbstractDMLabel )
 	numValues_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:DMLabelGetNumValues, $petsc_library),
                PetscErrorCode,
-               (DMLabel, Ptr{$PetscInt}),
+               (CDMLabel, Ptr{$PetscInt}),
                label, numValues_,
               )
 
@@ -3329,7 +3330,7 @@ end
 end 
 
 """
-	start::PetscInt,end_::PetscInt = DMLabelGetStratumBounds(petsclib::PetscLibType, label::DMLabel, value::PetscInt) 
+	start::PetscInt,end_::PetscInt = DMLabelGetStratumBounds(petsclib::PetscLibType, label::AbstractDMLabel, value::PetscInt) 
 Get the largest and smallest point of a stratum
 
 Not Collective
@@ -3349,18 +3350,18 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetVa
 # External Links
 $(_doc_external("DMLabel/DMLabelGetStratumBounds"))
 """
-function DMLabelGetStratumBounds(petsclib::PetscLibType, label::DMLabel, value::Integer)
+function DMLabelGetStratumBounds(petsclib::PetscLibType, label::AbstractDMLabel, value::Integer)
     throw(MethodError(DMLabelGetStratumBounds, (petsclib, label, value)))
 end
 
-@for_petsc function DMLabelGetStratumBounds(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt )
+@for_petsc function DMLabelGetStratumBounds(petsclib::$UnionPetscLib, label::AbstractDMLabel, value::$PetscInt )
 	start_ = Ref{$PetscInt}()
 	end__ = Ref{$PetscInt}()
 
     @chk ccall(
                (:DMLabelGetStratumBounds, $petsc_library),
                PetscErrorCode,
-               (DMLabel, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}),
+               (CDMLabel, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}),
                label, value, start_, end__,
               )
 
@@ -3371,7 +3372,7 @@ end
 end 
 
 """
-	points::IS = DMLabelGetStratumIS(petsclib::PetscLibType, label::DMLabel, value::PetscInt) 
+	points::IS = DMLabelGetStratumIS(petsclib::PetscLibType, label::AbstractDMLabel, value::PetscInt) 
 Get an `IS` with the stratum points
 
 Not Collective
@@ -3390,17 +3391,17 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetVa
 # External Links
 $(_doc_external("DMLabel/DMLabelGetStratumIS"))
 """
-function DMLabelGetStratumIS(petsclib::PetscLibType, label::DMLabel, value::Integer)
+function DMLabelGetStratumIS(petsclib::PetscLibType, label::AbstractDMLabel, value::Integer)
     throw(MethodError(DMLabelGetStratumIS, (petsclib, label, value)))
 end
 
-@for_petsc function DMLabelGetStratumIS(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt )
+@for_petsc function DMLabelGetStratumIS(petsclib::$UnionPetscLib, label::AbstractDMLabel, value::$PetscInt )
 	points_ = Ref{CIS}()
 
     @chk ccall(
                (:DMLabelGetStratumIS, $petsc_library),
                PetscErrorCode,
-               (DMLabel, $PetscInt, Ptr{CIS}),
+               (CDMLabel, $PetscInt, Ptr{CIS}),
                label, value, points_,
               )
 
@@ -3410,7 +3411,7 @@ end
 end 
 
 """
-	index::PetscInt = DMLabelGetStratumPointIndex(petsclib::PetscLibType, label::DMLabel, value::PetscInt, p::PetscInt) 
+	index::PetscInt = DMLabelGetStratumPointIndex(petsclib::PetscLibType, label::AbstractDMLabel, value::PetscInt, p::PetscInt) 
 Get the index of a point in a given stratum
 
 Not Collective
@@ -3430,17 +3431,17 @@ See also: `DMLabel`, `DM`, `DMLabelGetValueIndex()`, `DMLabelGetStratumIS()`, `D
 # External Links
 $(_doc_external("DMLabel/DMLabelGetStratumPointIndex"))
 """
-function DMLabelGetStratumPointIndex(petsclib::PetscLibType, label::DMLabel, value::Integer, p::Integer)
+function DMLabelGetStratumPointIndex(petsclib::PetscLibType, label::AbstractDMLabel, value::Integer, p::Integer)
     throw(MethodError(DMLabelGetStratumPointIndex, (petsclib, label, value, p)))
 end
 
-@for_petsc function DMLabelGetStratumPointIndex(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt, p::$PetscInt )
+@for_petsc function DMLabelGetStratumPointIndex(petsclib::$UnionPetscLib, label::AbstractDMLabel, value::$PetscInt, p::$PetscInt )
 	index_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:DMLabelGetStratumPointIndex, $petsc_library),
                PetscErrorCode,
-               (DMLabel, $PetscInt, $PetscInt, Ptr{$PetscInt}),
+               (CDMLabel, $PetscInt, $PetscInt, Ptr{$PetscInt}),
                label, value, p, index_,
               )
 
@@ -3450,7 +3451,7 @@ end
 end 
 
 """
-	size::PetscInt = DMLabelGetStratumSize(petsclib::PetscLibType, label::DMLabel, value::PetscInt) 
+	size::PetscInt = DMLabelGetStratumSize(petsclib::PetscLibType, label::AbstractDMLabel, value::PetscInt) 
 Get the size of a stratum
 
 Not Collective
@@ -3469,17 +3470,17 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetVa
 # External Links
 $(_doc_external("DMLabel/DMLabelGetStratumSize"))
 """
-function DMLabelGetStratumSize(petsclib::PetscLibType, label::DMLabel, value::Integer)
+function DMLabelGetStratumSize(petsclib::PetscLibType, label::AbstractDMLabel, value::Integer)
     throw(MethodError(DMLabelGetStratumSize, (petsclib, label, value)))
 end
 
-@for_petsc function DMLabelGetStratumSize(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt )
+@for_petsc function DMLabelGetStratumSize(petsclib::$UnionPetscLib, label::AbstractDMLabel, value::$PetscInt )
 	size_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:DMLabelGetStratumSize, $petsc_library),
                PetscErrorCode,
-               (DMLabel, $PetscInt, Ptr{$PetscInt}),
+               (CDMLabel, $PetscInt, Ptr{$PetscInt}),
                label, value, size_,
               )
 
@@ -3489,7 +3490,7 @@ end
 end 
 
 """
-	type::String = DMLabelGetType(petsclib::PetscLibType, label::DMLabel) 
+	type::String = DMLabelGetType(petsclib::PetscLibType, label::AbstractDMLabel) 
 Gets the type name (as a string) from the label.
 
 Not Collective
@@ -3507,17 +3508,17 @@ See also: `DMLabel`, `DM`, `DMLabelSetType()`, `DMLabelCreate()`
 # External Links
 $(_doc_external("DMLabel/DMLabelGetType"))
 """
-function DMLabelGetType(petsclib::PetscLibType, label::DMLabel)
+function DMLabelGetType(petsclib::PetscLibType, label::AbstractDMLabel)
     throw(MethodError(DMLabelGetType, (petsclib, label)))
 end
 
-@for_petsc function DMLabelGetType(petsclib::$UnionPetscLib, label::DMLabel )
+@for_petsc function DMLabelGetType(petsclib::$UnionPetscLib, label::AbstractDMLabel )
 	type_ = Ref{DMLabelType}()
 
     @chk ccall(
                (:DMLabelGetType, $petsc_library),
                PetscErrorCode,
-               (DMLabel, Ptr{DMLabelType}),
+               (CDMLabel, Ptr{DMLabelType}),
                label, type_,
               )
 
@@ -3527,7 +3528,7 @@ end
 end 
 
 """
-	value::PetscInt = DMLabelGetValue(petsclib::PetscLibType, label::DMLabel, point::PetscInt) 
+	value::PetscInt = DMLabelGetValue(petsclib::PetscLibType, label::AbstractDMLabel, point::PetscInt) 
 Return the value a label assigns to a point, or the label's default value (which is initially -1, and can be changed with
 `DMLabelSetDefaultValue()`)
 
@@ -3547,17 +3548,17 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelSetValue()`, `DMLabelClear
 # External Links
 $(_doc_external("DMLabel/DMLabelGetValue"))
 """
-function DMLabelGetValue(petsclib::PetscLibType, label::DMLabel, point::Integer)
+function DMLabelGetValue(petsclib::PetscLibType, label::AbstractDMLabel, point::Integer)
     throw(MethodError(DMLabelGetValue, (petsclib, label, point)))
 end
 
-@for_petsc function DMLabelGetValue(petsclib::$UnionPetscLib, label::DMLabel, point::$PetscInt )
+@for_petsc function DMLabelGetValue(petsclib::$UnionPetscLib, label::AbstractDMLabel, point::$PetscInt )
 	value_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:DMLabelGetValue, $petsc_library),
                PetscErrorCode,
-               (DMLabel, $PetscInt, Ptr{$PetscInt}),
+               (CDMLabel, $PetscInt, Ptr{$PetscInt}),
                label, point, value_,
               )
 
@@ -3567,7 +3568,7 @@ end
 end 
 
 """
-	minValue::PetscInt,maxValue::PetscInt = DMLabelGetValueBounds(petsclib::PetscLibType, label::DMLabel) 
+	minValue::PetscInt,maxValue::PetscInt = DMLabelGetValueBounds(petsclib::PetscLibType, label::AbstractDMLabel) 
 Return the smallest and largest value in the label
 
 Not Collective
@@ -3586,18 +3587,18 @@ See also: `DMLabel`, `DM`, `DMLabelGetBounds()`, `DMLabelGetValue()`, `DMLabelSe
 # External Links
 $(_doc_external("DMLabel/DMLabelGetValueBounds"))
 """
-function DMLabelGetValueBounds(petsclib::PetscLibType, label::DMLabel)
+function DMLabelGetValueBounds(petsclib::PetscLibType, label::AbstractDMLabel)
     throw(MethodError(DMLabelGetValueBounds, (petsclib, label)))
 end
 
-@for_petsc function DMLabelGetValueBounds(petsclib::$UnionPetscLib, label::DMLabel )
+@for_petsc function DMLabelGetValueBounds(petsclib::$UnionPetscLib, label::AbstractDMLabel )
 	minValue_ = Ref{$PetscInt}()
 	maxValue_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:DMLabelGetValueBounds, $petsc_library),
                PetscErrorCode,
-               (DMLabel, Ptr{$PetscInt}, Ptr{$PetscInt}),
+               (CDMLabel, Ptr{$PetscInt}, Ptr{$PetscInt}),
                label, minValue_, maxValue_,
               )
 
@@ -3608,7 +3609,7 @@ end
 end 
 
 """
-	values::IS = DMLabelGetValueIS(petsclib::PetscLibType, label::DMLabel) 
+	values::IS = DMLabelGetValueIS(petsclib::PetscLibType, label::AbstractDMLabel) 
 Get an `IS` of all values that the `DMlabel` takes
 
 Not Collective
@@ -3626,17 +3627,17 @@ See also: `DMLabel`, `DM`, `DMLabelGetNonEmptyStratumValuesIS()`, `DMLabelGetVal
 # External Links
 $(_doc_external("DMLabel/DMLabelGetValueIS"))
 """
-function DMLabelGetValueIS(petsclib::PetscLibType, label::DMLabel)
+function DMLabelGetValueIS(petsclib::PetscLibType, label::AbstractDMLabel)
     throw(MethodError(DMLabelGetValueIS, (petsclib, label)))
 end
 
-@for_petsc function DMLabelGetValueIS(petsclib::$UnionPetscLib, label::DMLabel )
+@for_petsc function DMLabelGetValueIS(petsclib::$UnionPetscLib, label::AbstractDMLabel )
 	values_ = Ref{CIS}()
 
     @chk ccall(
                (:DMLabelGetValueIS, $petsc_library),
                PetscErrorCode,
-               (DMLabel, Ptr{CIS}),
+               (CDMLabel, Ptr{CIS}),
                label, values_,
               )
 
@@ -3646,7 +3647,7 @@ end
 end 
 
 """
-	values::IS = DMLabelGetValueISGlobal(petsclib::PetscLibType, comm::MPI_Comm, label::DMLabel, get_nonempty::PetscBool) 
+	values::IS = DMLabelGetValueISGlobal(petsclib::PetscLibType, comm::MPI_Comm, label::AbstractDMLabel, get_nonempty::PetscBool) 
 Get an `IS` of all values that the `DMlabel` takes across all ranks
 
 Collective
@@ -3666,17 +3667,17 @@ See also: `DMLabel`, `DM`, `DMLabelGetValueIS()`, `DMLabelGetNonEmptyStratumValu
 # External Links
 $(_doc_external("DMLabel/DMLabelGetValueISGlobal"))
 """
-function DMLabelGetValueISGlobal(petsclib::PetscLibType, comm::MPI_Comm, label::DMLabel, get_nonempty::PetscBool)
+function DMLabelGetValueISGlobal(petsclib::PetscLibType, comm::MPI_Comm, label::AbstractDMLabel, get_nonempty::PetscBool)
     throw(MethodError(DMLabelGetValueISGlobal, (petsclib, comm, label, get_nonempty)))
 end
 
-@for_petsc function DMLabelGetValueISGlobal(petsclib::$UnionPetscLib, comm::MPI_Comm, label::DMLabel, get_nonempty::PetscBool )
+@for_petsc function DMLabelGetValueISGlobal(petsclib::$UnionPetscLib, comm::MPI_Comm, label::AbstractDMLabel, get_nonempty::PetscBool )
 	values_ = Ref{CIS}()
 
     @chk ccall(
                (:DMLabelGetValueISGlobal, $petsc_library),
                PetscErrorCode,
-               (MPI_Comm, DMLabel, PetscBool, Ptr{CIS}),
+               (MPI_Comm, CDMLabel, PetscBool, Ptr{CIS}),
                comm, label, get_nonempty, values_,
               )
 
@@ -3686,7 +3687,7 @@ end
 end 
 
 """
-	index::PetscInt = DMLabelGetValueIndex(petsclib::PetscLibType, label::DMLabel, value::PetscInt) 
+	index::PetscInt = DMLabelGetValueIndex(petsclib::PetscLibType, label::AbstractDMLabel, value::PetscInt) 
 Get the index of a given value in the list of values for the `DMlabel`, or -1 if it is not present
 
 Not Collective
@@ -3705,17 +3706,17 @@ See also: `DMLabel`, `DM`, `DMLabelGetValueIS()`, `DMLabelCreate()`, `DMLabelGet
 # External Links
 $(_doc_external("DMLabel/DMLabelGetValueIndex"))
 """
-function DMLabelGetValueIndex(petsclib::PetscLibType, label::DMLabel, value::Integer)
+function DMLabelGetValueIndex(petsclib::PetscLibType, label::AbstractDMLabel, value::Integer)
     throw(MethodError(DMLabelGetValueIndex, (petsclib, label, value)))
 end
 
-@for_petsc function DMLabelGetValueIndex(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt )
+@for_petsc function DMLabelGetValueIndex(petsclib::$UnionPetscLib, label::AbstractDMLabel, value::$PetscInt )
 	index_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:DMLabelGetValueIndex, $petsc_library),
                PetscErrorCode,
-               (DMLabel, $PetscInt, Ptr{$PetscInt}),
+               (CDMLabel, $PetscInt, Ptr{$PetscInt}),
                label, value, index_,
               )
 
@@ -3725,7 +3726,7 @@ end
 end 
 
 """
-	contains::PetscBool = DMLabelHasPoint(petsclib::PetscLibType, label::DMLabel, point::PetscInt) 
+	contains::PetscBool = DMLabelHasPoint(petsclib::PetscLibType, label::AbstractDMLabel, point::PetscInt) 
 Determine whether a label assigns a value to a point
 
 Not Collective
@@ -3744,17 +3745,17 @@ See also: `DMLabel`, `DM`, `DMLabelCreateIndex()`, `DMLabelGetValue()`, `DMLabel
 # External Links
 $(_doc_external("DMLabel/DMLabelHasPoint"))
 """
-function DMLabelHasPoint(petsclib::PetscLibType, label::DMLabel, point::Integer)
+function DMLabelHasPoint(petsclib::PetscLibType, label::AbstractDMLabel, point::Integer)
     throw(MethodError(DMLabelHasPoint, (petsclib, label, point)))
 end
 
-@for_petsc function DMLabelHasPoint(petsclib::$UnionPetscLib, label::DMLabel, point::$PetscInt )
+@for_petsc function DMLabelHasPoint(petsclib::$UnionPetscLib, label::AbstractDMLabel, point::$PetscInt )
 	contains_ = Ref{PetscBool}()
 
     @chk ccall(
                (:DMLabelHasPoint, $petsc_library),
                PetscErrorCode,
-               (DMLabel, $PetscInt, Ptr{PetscBool}),
+               (CDMLabel, $PetscInt, Ptr{PetscBool}),
                label, point, contains_,
               )
 
@@ -3764,7 +3765,7 @@ end
 end 
 
 """
-	exists::PetscBool = DMLabelHasStratum(petsclib::PetscLibType, label::DMLabel, value::PetscInt) 
+	exists::PetscBool = DMLabelHasStratum(petsclib::PetscLibType, label::AbstractDMLabel, value::PetscInt) 
 Determine whether points exist with the given value
 
 Not Collective
@@ -3783,17 +3784,17 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetVa
 # External Links
 $(_doc_external("DMLabel/DMLabelHasStratum"))
 """
-function DMLabelHasStratum(petsclib::PetscLibType, label::DMLabel, value::Integer)
+function DMLabelHasStratum(petsclib::PetscLibType, label::AbstractDMLabel, value::Integer)
     throw(MethodError(DMLabelHasStratum, (petsclib, label, value)))
 end
 
-@for_petsc function DMLabelHasStratum(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt )
+@for_petsc function DMLabelHasStratum(petsclib::$UnionPetscLib, label::AbstractDMLabel, value::$PetscInt )
 	exists_ = Ref{PetscBool}()
 
     @chk ccall(
                (:DMLabelHasStratum, $petsc_library),
                PetscErrorCode,
-               (DMLabel, $PetscInt, Ptr{PetscBool}),
+               (CDMLabel, $PetscInt, Ptr{PetscBool}),
                label, value, exists_,
               )
 
@@ -3803,7 +3804,7 @@ end
 end 
 
 """
-	contains::PetscBool = DMLabelHasValue(petsclib::PetscLibType, label::DMLabel, value::PetscInt) 
+	contains::PetscBool = DMLabelHasValue(petsclib::PetscLibType, label::AbstractDMLabel, value::PetscInt) 
 Determine whether a label assigns the value to any point
 
 Not Collective
@@ -3822,17 +3823,17 @@ See also: `DMLabel`, `DM`, `DMLabelHasPoint()`, `DMLabelGetValue()`, `DMLabelSet
 # External Links
 $(_doc_external("DMLabel/DMLabelHasValue"))
 """
-function DMLabelHasValue(petsclib::PetscLibType, label::DMLabel, value::Integer)
+function DMLabelHasValue(petsclib::PetscLibType, label::AbstractDMLabel, value::Integer)
     throw(MethodError(DMLabelHasValue, (petsclib, label, value)))
 end
 
-@for_petsc function DMLabelHasValue(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt )
+@for_petsc function DMLabelHasValue(petsclib::$UnionPetscLib, label::AbstractDMLabel, value::$PetscInt )
 	contains_ = Ref{PetscBool}()
 
     @chk ccall(
                (:DMLabelHasValue, $petsc_library),
                PetscErrorCode,
-               (DMLabel, $PetscInt, Ptr{PetscBool}),
+               (CDMLabel, $PetscInt, Ptr{PetscBool}),
                label, value, contains_,
               )
 
@@ -3842,7 +3843,7 @@ end
 end 
 
 """
-	DMLabelInsertIS(petsclib::PetscLibType, label::DMLabel, is::AbstractIS, value::PetscInt) 
+	DMLabelInsertIS(petsclib::PetscLibType, label::AbstractDMLabel, is::AbstractIS, value::PetscInt) 
 Set all points in the `IS` to a value
 
 Not Collective
@@ -3859,16 +3860,16 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetVa
 # External Links
 $(_doc_external("DMLabel/DMLabelInsertIS"))
 """
-function DMLabelInsertIS(petsclib::PetscLibType, label::DMLabel, is::AbstractIS, value::Integer)
+function DMLabelInsertIS(petsclib::PetscLibType, label::AbstractDMLabel, is::AbstractIS, value::Integer)
     throw(MethodError(DMLabelInsertIS, (petsclib, label, is, value)))
 end
 
-@for_petsc function DMLabelInsertIS(petsclib::$UnionPetscLib, label::DMLabel, is::AbstractIS, value::$PetscInt )
+@for_petsc function DMLabelInsertIS(petsclib::$UnionPetscLib, label::AbstractDMLabel, is::AbstractIS, value::$PetscInt )
 
     @chk ccall(
                (:DMLabelInsertIS, $petsc_library),
                PetscErrorCode,
-               (DMLabel, CIS, $PetscInt),
+               (CDMLabel, CIS, $PetscInt),
                label, is, value,
               )
 
@@ -3877,7 +3878,7 @@ end
 end 
 
 """
-	labelNew::DMLabel = DMLabelPermute(petsclib::PetscLibType, label::DMLabel, permutation::AbstractIS) 
+	labelNew::DMLabel = DMLabelPermute(petsclib::PetscLibType, label::AbstractDMLabel, permutation::AbstractIS) 
 Create a new label with permuted points
 
 Not Collective
@@ -3896,27 +3897,27 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetVa
 # External Links
 $(_doc_external("DMLabel/DMLabelPermute"))
 """
-function DMLabelPermute(petsclib::PetscLibType, label::DMLabel, permutation::AbstractIS)
+function DMLabelPermute(petsclib::PetscLibType, label::AbstractDMLabel, permutation::AbstractIS)
     throw(MethodError(DMLabelPermute, (petsclib, label, permutation)))
 end
 
-@for_petsc function DMLabelPermute(petsclib::$UnionPetscLib, label::DMLabel, permutation::AbstractIS )
-	labelNew_ = Ref{DMLabel}()
+@for_petsc function DMLabelPermute(petsclib::$UnionPetscLib, label::AbstractDMLabel, permutation::AbstractIS )
+	labelNew_ = Ref{CDMLabel}()
 
     @chk ccall(
                (:DMLabelPermute, $petsc_library),
                PetscErrorCode,
-               (DMLabel, CIS, Ptr{DMLabel}),
+               (CDMLabel, CIS, Ptr{CDMLabel}),
                label, permutation, labelNew_,
               )
 
-	labelNew = labelNew_[]
+	labelNew = DMLabel(labelNew_[], petsclib)
 
 	return labelNew
 end 
 
 """
-	DMLabelPermuteValues(petsclib::PetscLibType, label::DMLabel, permutation::AbstractIS) 
+	DMLabelPermuteValues(petsclib::PetscLibType, label::AbstractDMLabel, permutation::AbstractIS) 
 Permute the values in a label
 
 Not collective
@@ -3933,16 +3934,16 @@ See also: `DMLabelRewriteValues()`, `DMLabel`, `DM`, `DMLabelPermute()`, `DMLabe
 # External Links
 $(_doc_external("DMLabel/DMLabelPermuteValues"))
 """
-function DMLabelPermuteValues(petsclib::PetscLibType, label::DMLabel, permutation::AbstractIS)
+function DMLabelPermuteValues(petsclib::PetscLibType, label::AbstractDMLabel, permutation::AbstractIS)
     throw(MethodError(DMLabelPermuteValues, (petsclib, label, permutation)))
 end
 
-@for_petsc function DMLabelPermuteValues(petsclib::$UnionPetscLib, label::DMLabel, permutation::AbstractIS )
+@for_petsc function DMLabelPermuteValues(petsclib::$UnionPetscLib, label::AbstractDMLabel, permutation::AbstractIS )
 
     @chk ccall(
                (:DMLabelPermuteValues, $petsc_library),
                PetscErrorCode,
-               (DMLabel, CIS),
+               (CDMLabel, CIS),
                label, permutation,
               )
 
@@ -3951,7 +3952,7 @@ end
 end 
 
 """
-	DMLabelPropagateBegin(petsclib::PetscLibType, label::DMLabel, sf::PetscSF) 
+	DMLabelPropagateBegin(petsclib::PetscLibType, label::AbstractDMLabel, sf::PetscSF) 
 Setup a cycle of label propagation
 
 Collective
@@ -3967,16 +3968,16 @@ See also: `DMLabel`, `DM`, `DMLabelPropagateEnd()`, `DMLabelPropagatePush()`
 # External Links
 $(_doc_external("DMLabel/DMLabelPropagateBegin"))
 """
-function DMLabelPropagateBegin(petsclib::PetscLibType, label::DMLabel, sf::PetscSF)
+function DMLabelPropagateBegin(petsclib::PetscLibType, label::AbstractDMLabel, sf::PetscSF)
     throw(MethodError(DMLabelPropagateBegin, (petsclib, label, sf)))
 end
 
-@for_petsc function DMLabelPropagateBegin(petsclib::$UnionPetscLib, label::DMLabel, sf::PetscSF )
+@for_petsc function DMLabelPropagateBegin(petsclib::$UnionPetscLib, label::AbstractDMLabel, sf::PetscSF )
 
     @chk ccall(
                (:DMLabelPropagateBegin, $petsc_library),
                PetscErrorCode,
-               (DMLabel, PetscSF),
+               (CDMLabel, PetscSF),
                label, sf,
               )
 
@@ -3985,7 +3986,7 @@ end
 end 
 
 """
-	DMLabelPropagateEnd(petsclib::PetscLibType, label::DMLabel, pointSF::PetscSF) 
+	DMLabelPropagateEnd(petsclib::PetscLibType, label::AbstractDMLabel, pointSF::PetscSF) 
 Tear down a cycle of label propagation
 
 Collective
@@ -4001,16 +4002,16 @@ See also: `DMLabel`, `DM`, `DMLabelPropagateBegin()`, `DMLabelPropagatePush()`
 # External Links
 $(_doc_external("DMLabel/DMLabelPropagateEnd"))
 """
-function DMLabelPropagateEnd(petsclib::PetscLibType, label::DMLabel, pointSF::PetscSF)
+function DMLabelPropagateEnd(petsclib::PetscLibType, label::AbstractDMLabel, pointSF::PetscSF)
     throw(MethodError(DMLabelPropagateEnd, (petsclib, label, pointSF)))
 end
 
-@for_petsc function DMLabelPropagateEnd(petsclib::$UnionPetscLib, label::DMLabel, pointSF::PetscSF )
+@for_petsc function DMLabelPropagateEnd(petsclib::$UnionPetscLib, label::AbstractDMLabel, pointSF::PetscSF )
 
     @chk ccall(
                (:DMLabelPropagateEnd, $petsc_library),
                PetscErrorCode,
-               (DMLabel, PetscSF),
+               (CDMLabel, PetscSF),
                label, pointSF,
               )
 
@@ -4019,7 +4020,7 @@ end
 end 
 
 """
-	DMLabelPropagatePush(petsclib::PetscLibType, label::DMLabel, pointSF::PetscSF, markPoint::external, ctx::Ptr{Cvoid}) 
+	DMLabelPropagatePush(petsclib::PetscLibType, label::AbstractDMLabel, pointSF::PetscSF, markPoint::external, ctx::Ptr{Cvoid}) 
 Tear down a cycle of label propagation
 
 Collective
@@ -4043,16 +4044,16 @@ See also: `DMLabel`, `DM`, `DMLabelPropagateBegin()`, `DMLabelPropagateEnd()`
 # External Links
 $(_doc_external("DMLabel/DMLabelPropagatePush"))
 """
-function DMLabelPropagatePush(petsclib::PetscLibType, label::DMLabel, pointSF::PetscSF, markPoint::external, ctx::Ptr{Cvoid})
+function DMLabelPropagatePush(petsclib::PetscLibType, label::AbstractDMLabel, pointSF::PetscSF, markPoint::external, ctx::Ptr{Cvoid})
     throw(MethodError(DMLabelPropagatePush, (petsclib, label, pointSF, markPoint, ctx)))
 end
 
-@for_petsc function DMLabelPropagatePush(petsclib::$UnionPetscLib, label::DMLabel, pointSF::PetscSF, markPoint::external, ctx::Ptr{Cvoid} )
+@for_petsc function DMLabelPropagatePush(petsclib::$UnionPetscLib, label::AbstractDMLabel, pointSF::PetscSF, markPoint::external, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMLabelPropagatePush, $petsc_library),
                PetscErrorCode,
-               (DMLabel, PetscSF, external, Ptr{Cvoid}),
+               (CDMLabel, PetscSF, external, Ptr{Cvoid}),
                label, pointSF, markPoint, ctx,
               )
 
@@ -4149,7 +4150,7 @@ end
 end 
 
 """
-	DMLabelReset(petsclib::PetscLibType, label::DMLabel) 
+	DMLabelReset(petsclib::PetscLibType, label::AbstractDMLabel) 
 Destroys internal data structures in a `DMLabel`
 
 Not Collective
@@ -4164,16 +4165,16 @@ See also: `DMLabel`, `DM`, `DMLabelDestroy()`, `DMLabelCreate()`
 # External Links
 $(_doc_external("DMLabel/DMLabelReset"))
 """
-function DMLabelReset(petsclib::PetscLibType, label::DMLabel)
+function DMLabelReset(petsclib::PetscLibType, label::AbstractDMLabel)
     throw(MethodError(DMLabelReset, (petsclib, label)))
 end
 
-@for_petsc function DMLabelReset(petsclib::$UnionPetscLib, label::DMLabel )
+@for_petsc function DMLabelReset(petsclib::$UnionPetscLib, label::AbstractDMLabel )
 
     @chk ccall(
                (:DMLabelReset, $petsc_library),
                PetscErrorCode,
-               (DMLabel,),
+               (CDMLabel,),
                label,
               )
 
@@ -4182,7 +4183,7 @@ end
 end 
 
 """
-	DMLabelRewriteValues(petsclib::PetscLibType, label::DMLabel, permutation::AbstractIS) 
+	DMLabelRewriteValues(petsclib::PetscLibType, label::AbstractDMLabel, permutation::AbstractIS) 
 Permute the values in a label, but some may be omitted
 
 Not collective
@@ -4199,16 +4200,16 @@ See also: `DMLabelPermuteValues()`, `DMLabel`, `DM`, `DMLabelPermute()`, `DMLabe
 # External Links
 $(_doc_external("DMLabel/DMLabelRewriteValues"))
 """
-function DMLabelRewriteValues(petsclib::PetscLibType, label::DMLabel, permutation::AbstractIS)
+function DMLabelRewriteValues(petsclib::PetscLibType, label::AbstractDMLabel, permutation::AbstractIS)
     throw(MethodError(DMLabelRewriteValues, (petsclib, label, permutation)))
 end
 
-@for_petsc function DMLabelRewriteValues(petsclib::$UnionPetscLib, label::DMLabel, permutation::AbstractIS )
+@for_petsc function DMLabelRewriteValues(petsclib::$UnionPetscLib, label::AbstractDMLabel, permutation::AbstractIS )
 
     @chk ccall(
                (:DMLabelRewriteValues, $petsc_library),
                PetscErrorCode,
-               (DMLabel, CIS),
+               (CDMLabel, CIS),
                label, permutation,
               )
 
@@ -4217,7 +4218,7 @@ end
 end 
 
 """
-	DMLabelSetDefaultValue(petsclib::PetscLibType, label::DMLabel, defaultValue::PetscInt) 
+	DMLabelSetDefaultValue(petsclib::PetscLibType, label::AbstractDMLabel, defaultValue::PetscInt) 
 Set the default value returned by `DMLabelGetValue()` if a point has not been explicitly given a value.
 When a label is created, it is initialized to -1.
 
@@ -4236,16 +4237,16 @@ See also: `DMLabel`, `DM`, `DMLabelGetDefaultValue()`, `DMLabelGetValue()`, `DML
 # External Links
 $(_doc_external("DMLabel/DMLabelSetDefaultValue"))
 """
-function DMLabelSetDefaultValue(petsclib::PetscLibType, label::DMLabel, defaultValue::Integer)
+function DMLabelSetDefaultValue(petsclib::PetscLibType, label::AbstractDMLabel, defaultValue::Integer)
     throw(MethodError(DMLabelSetDefaultValue, (petsclib, label, defaultValue)))
 end
 
-@for_petsc function DMLabelSetDefaultValue(petsclib::$UnionPetscLib, label::DMLabel, defaultValue::$PetscInt )
+@for_petsc function DMLabelSetDefaultValue(petsclib::$UnionPetscLib, label::AbstractDMLabel, defaultValue::$PetscInt )
 
     @chk ccall(
                (:DMLabelSetDefaultValue, $petsc_library),
                PetscErrorCode,
-               (DMLabel, $PetscInt),
+               (CDMLabel, $PetscInt),
                label, defaultValue,
               )
 
@@ -4254,7 +4255,7 @@ end
 end 
 
 """
-	DMLabelSetStratumBounds(petsclib::PetscLibType, label::DMLabel, value::PetscInt, pStart::PetscInt, pEnd::PetscInt) 
+	DMLabelSetStratumBounds(petsclib::PetscLibType, label::AbstractDMLabel, value::PetscInt, pStart::PetscInt, pEnd::PetscInt) 
 Efficiently give a contiguous set of points a given label value
 
 Not Collective
@@ -4272,16 +4273,16 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelSetStratumIS()`, `DMLabelG
 # External Links
 $(_doc_external("DMLabel/DMLabelSetStratumBounds"))
 """
-function DMLabelSetStratumBounds(petsclib::PetscLibType, label::DMLabel, value::Integer, pStart::Integer, pEnd::Integer)
+function DMLabelSetStratumBounds(petsclib::PetscLibType, label::AbstractDMLabel, value::Integer, pStart::Integer, pEnd::Integer)
     throw(MethodError(DMLabelSetStratumBounds, (petsclib, label, value, pStart, pEnd)))
 end
 
-@for_petsc function DMLabelSetStratumBounds(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt, pStart::$PetscInt, pEnd::$PetscInt )
+@for_petsc function DMLabelSetStratumBounds(petsclib::$UnionPetscLib, label::AbstractDMLabel, value::$PetscInt, pStart::$PetscInt, pEnd::$PetscInt )
 
     @chk ccall(
                (:DMLabelSetStratumBounds, $petsc_library),
                PetscErrorCode,
-               (DMLabel, $PetscInt, $PetscInt, $PetscInt),
+               (CDMLabel, $PetscInt, $PetscInt, $PetscInt),
                label, value, pStart, pEnd,
               )
 
@@ -4290,7 +4291,7 @@ end
 end 
 
 """
-	DMLabelSetStratumIS(petsclib::PetscLibType, label::DMLabel, value::PetscInt, is::AbstractIS) 
+	DMLabelSetStratumIS(petsclib::PetscLibType, label::AbstractDMLabel, value::PetscInt, is::AbstractIS) 
 Set the stratum points using an `IS`
 
 Not Collective
@@ -4307,16 +4308,16 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelSetVa
 # External Links
 $(_doc_external("DMLabel/DMLabelSetStratumIS"))
 """
-function DMLabelSetStratumIS(petsclib::PetscLibType, label::DMLabel, value::Integer, is::AbstractIS)
+function DMLabelSetStratumIS(petsclib::PetscLibType, label::AbstractDMLabel, value::Integer, is::AbstractIS)
     throw(MethodError(DMLabelSetStratumIS, (petsclib, label, value, is)))
 end
 
-@for_petsc function DMLabelSetStratumIS(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt, is::AbstractIS )
+@for_petsc function DMLabelSetStratumIS(petsclib::$UnionPetscLib, label::AbstractDMLabel, value::$PetscInt, is::AbstractIS )
 
     @chk ccall(
                (:DMLabelSetStratumIS, $petsc_library),
                PetscErrorCode,
-               (DMLabel, $PetscInt, CIS),
+               (CDMLabel, $PetscInt, CIS),
                label, value, is,
               )
 
@@ -4325,7 +4326,7 @@ end
 end 
 
 """
-	DMLabelSetType(petsclib::PetscLibType, label::DMLabel, method::String) 
+	DMLabelSetType(petsclib::PetscLibType, label::AbstractDMLabel, method::String) 
 Sets the particular implementation for a label.
 
 Collective
@@ -4344,16 +4345,16 @@ See also: `DMLabel`, `DM`, `DMLabelGetType()`, `DMLabelCreate()`, `DMLabelType`
 # External Links
 $(_doc_external("DMLabel/DMLabelSetType"))
 """
-function DMLabelSetType(petsclib::PetscLibType, label::DMLabel, method::String)
+function DMLabelSetType(petsclib::PetscLibType, label::AbstractDMLabel, method::String)
     throw(MethodError(DMLabelSetType, (petsclib, label, method)))
 end
 
-@for_petsc function DMLabelSetType(petsclib::$UnionPetscLib, label::DMLabel, method::String )
+@for_petsc function DMLabelSetType(petsclib::$UnionPetscLib, label::AbstractDMLabel, method::String )
 
     @chk ccall(
                (:DMLabelSetType, $petsc_library),
                PetscErrorCode,
-               (DMLabel, DMLabelType),
+               (CDMLabel, DMLabelType),
                label, method,
               )
 
@@ -4362,7 +4363,7 @@ end
 end 
 
 """
-	DMLabelSetUp(petsclib::PetscLibType, label::DMLabel) 
+	DMLabelSetUp(petsclib::PetscLibType, label::AbstractDMLabel) 
 SetUp a `DMLabel` object
 
 Collective
@@ -4377,16 +4378,16 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelDestroy()`
 # External Links
 $(_doc_external("DMLabel/DMLabelSetUp"))
 """
-function DMLabelSetUp(petsclib::PetscLibType, label::DMLabel)
+function DMLabelSetUp(petsclib::PetscLibType, label::AbstractDMLabel)
     throw(MethodError(DMLabelSetUp, (petsclib, label)))
 end
 
-@for_petsc function DMLabelSetUp(petsclib::$UnionPetscLib, label::DMLabel )
+@for_petsc function DMLabelSetUp(petsclib::$UnionPetscLib, label::AbstractDMLabel )
 
     @chk ccall(
                (:DMLabelSetUp, $petsc_library),
                PetscErrorCode,
-               (DMLabel,),
+               (CDMLabel,),
                label,
               )
 
@@ -4395,7 +4396,7 @@ end
 end 
 
 """
-	DMLabelSetValue(petsclib::PetscLibType, label::DMLabel, point::PetscInt, value::PetscInt) 
+	DMLabelSetValue(petsclib::PetscLibType, label::AbstractDMLabel, point::PetscInt, value::PetscInt) 
 Set the value a label assigns to a point.  If the value is the same as the label's default value (which is initially -1, and can
 be changed with `DMLabelSetDefaultValue()` to something different), then this function will do nothing.
 
@@ -4413,16 +4414,16 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelGetValue()`, `DMLabelClear
 # External Links
 $(_doc_external("DMLabel/DMLabelSetValue"))
 """
-function DMLabelSetValue(petsclib::PetscLibType, label::DMLabel, point::Integer, value::Integer)
+function DMLabelSetValue(petsclib::PetscLibType, label::AbstractDMLabel, point::Integer, value::Integer)
     throw(MethodError(DMLabelSetValue, (petsclib, label, point, value)))
 end
 
-@for_petsc function DMLabelSetValue(petsclib::$UnionPetscLib, label::DMLabel, point::$PetscInt, value::$PetscInt )
+@for_petsc function DMLabelSetValue(petsclib::$UnionPetscLib, label::AbstractDMLabel, point::$PetscInt, value::$PetscInt )
 
     @chk ccall(
                (:DMLabelSetValue, $petsc_library),
                PetscErrorCode,
-               (DMLabel, $PetscInt, $PetscInt),
+               (CDMLabel, $PetscInt, $PetscInt),
                label, point, value,
               )
 
@@ -4431,7 +4432,7 @@ end
 end 
 
 """
-	contains::PetscBool = DMLabelStratumHasPoint(petsclib::PetscLibType, label::DMLabel, value::PetscInt, point::PetscInt) 
+	contains::PetscBool = DMLabelStratumHasPoint(petsclib::PetscLibType, label::AbstractDMLabel, value::PetscInt, point::PetscInt) 
 Return true if the stratum contains a point
 
 Not Collective
@@ -4451,17 +4452,17 @@ See also: `DMLabel`, `DM`, `DMLabelCreate()`, `DMLabelSetValue()`, `DMLabelClear
 # External Links
 $(_doc_external("DMLabel/DMLabelStratumHasPoint"))
 """
-function DMLabelStratumHasPoint(petsclib::PetscLibType, label::DMLabel, value::Integer, point::Integer)
+function DMLabelStratumHasPoint(petsclib::PetscLibType, label::AbstractDMLabel, value::Integer, point::Integer)
     throw(MethodError(DMLabelStratumHasPoint, (petsclib, label, value, point)))
 end
 
-@for_petsc function DMLabelStratumHasPoint(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt, point::$PetscInt )
+@for_petsc function DMLabelStratumHasPoint(petsclib::$UnionPetscLib, label::AbstractDMLabel, value::$PetscInt, point::$PetscInt )
 	contains_ = Ref{PetscBool}()
 
     @chk ccall(
                (:DMLabelStratumHasPoint, $petsc_library),
                PetscErrorCode,
-               (DMLabel, $PetscInt, $PetscInt, Ptr{PetscBool}),
+               (CDMLabel, $PetscInt, $PetscInt, Ptr{PetscBool}),
                label, value, point, contains_,
               )
 
@@ -4471,7 +4472,7 @@ end
 end 
 
 """
-	DMLabelView(petsclib::PetscLibType, label::DMLabel, viewer::PetscViewer) 
+	DMLabelView(petsclib::PetscLibType, label::AbstractDMLabel, viewer::PetscViewer) 
 View the label
 
 Collective
@@ -4487,16 +4488,16 @@ See also: `DMLabel`, `PetscViewer`, `DM`, `DMLabelCreate()`, `DMLabelDestroy()`
 # External Links
 $(_doc_external("DMLabel/DMLabelView"))
 """
-function DMLabelView(petsclib::PetscLibType, label::DMLabel, viewer::PetscViewer)
+function DMLabelView(petsclib::PetscLibType, label::AbstractDMLabel, viewer::PetscViewer)
     throw(MethodError(DMLabelView, (petsclib, label, viewer)))
 end
 
-@for_petsc function DMLabelView(petsclib::$UnionPetscLib, label::DMLabel, viewer::PetscViewer )
+@for_petsc function DMLabelView(petsclib::$UnionPetscLib, label::AbstractDMLabel, viewer::PetscViewer )
 
     @chk ccall(
                (:DMLabelView, $petsc_library),
                PetscErrorCode,
-               (DMLabel, PetscViewer),
+               (CDMLabel, PetscViewer),
                label, viewer,
               )
 
@@ -4505,7 +4506,7 @@ end
 end 
 
 """
-	DMLabelViewFromOptions(petsclib::PetscLibType, label::DMLabel, obj, name::String) 
+	DMLabelViewFromOptions(petsclib::PetscLibType, label::AbstractDMLabel, obj, name::String) 
 View a `DMLabel` in a particular way based on a request in the options database
 
 Collective
@@ -4525,16 +4526,16 @@ See also: `DMLabel`, `DMLabelView()`, `PetscObjectViewFromOptions()`, `DMLabelCr
 # External Links
 $(_doc_external("DMLabel/DMLabelViewFromOptions"))
 """
-function DMLabelViewFromOptions(petsclib::PetscLibType, label::DMLabel, obj, name::String)
+function DMLabelViewFromOptions(petsclib::PetscLibType, label::AbstractDMLabel, obj, name::String)
     throw(MethodError(DMLabelViewFromOptions, (petsclib, label, obj, name)))
 end
 
-@for_petsc function DMLabelViewFromOptions(petsclib::$UnionPetscLib, label::DMLabel, obj, name::String )
+@for_petsc function DMLabelViewFromOptions(petsclib::$UnionPetscLib, label::AbstractDMLabel, obj, name::String )
 
     @chk ccall(
                (:DMLabelViewFromOptions, $petsc_library),
                PetscErrorCode,
-               (DMLabel, PetscObject, Ptr{Cchar}),
+               (CDMLabel, PetscObject, Ptr{Cchar}),
                label, obj, name,
               )
 
@@ -5017,7 +5018,7 @@ end
 end 
 
 """
-	rdm::PetscDM = DMPlexTransformAdaptLabel(petsclib::PetscLibType, dm::AbstractPetscDM, metric::AbstractPetscVec, adaptLabel::DMLabel, rgLabel::DMLabel) 
+	rdm::PetscDM = DMPlexTransformAdaptLabel(petsclib::PetscLibType, dm::AbstractPetscDM, metric::AbstractPetscVec, adaptLabel::AbstractDMLabel, rgLabel::AbstractDMLabel) 
 Adapt a `DMPLEX` using a `DMPlexTransform` driven by a `DMLabel` marking cells to be refined or coarsened.
 
 Collective
@@ -5038,17 +5039,17 @@ See also: `DMPLEX`, `DMPlexTransform`, `DMAdaptLabel()`, `DMPlexTransformApply()
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformAdaptLabel"))
 """
-function DMPlexTransformAdaptLabel(petsclib::PetscLibType, dm::AbstractPetscDM, metric::AbstractPetscVec, adaptLabel::DMLabel, rgLabel::DMLabel)
+function DMPlexTransformAdaptLabel(petsclib::PetscLibType, dm::AbstractPetscDM, metric::AbstractPetscVec, adaptLabel::AbstractDMLabel, rgLabel::AbstractDMLabel)
     throw(MethodError(DMPlexTransformAdaptLabel, (petsclib, dm, metric, adaptLabel, rgLabel)))
 end
 
-@for_petsc function DMPlexTransformAdaptLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, metric::AbstractPetscVec, adaptLabel::DMLabel, rgLabel::DMLabel )
+@for_petsc function DMPlexTransformAdaptLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, metric::AbstractPetscVec, adaptLabel::AbstractDMLabel, rgLabel::AbstractDMLabel )
 	rdm_ = Ref{CDM}()
 
     @chk ccall(
                (:DMPlexTransformAdaptLabel, $petsc_library),
                PetscErrorCode,
-               (CDM, CVec, DMLabel, DMLabel, Ptr{CDM}),
+               (CDM, CVec, CDMLabel, CDMLabel, Ptr{CDM}),
                dm, metric, adaptLabel, rgLabel, rdm_,
               )
 
@@ -5269,16 +5270,16 @@ function DMPlexTransformCohesiveExtrudeGetUnsplit(petsclib::PetscLibType, tr::DM
 end
 
 @for_petsc function DMPlexTransformCohesiveExtrudeGetUnsplit(petsclib::$UnionPetscLib, tr::DMPlexTransform )
-	unsplit_ = Ref{DMLabel}()
+	unsplit_ = Ref{CDMLabel}()
 
     @chk ccall(
                (:DMPlexTransformCohesiveExtrudeGetUnsplit, $petsc_library),
                PetscErrorCode,
-               (DMPlexTransform, Ptr{DMLabel}),
+               (DMPlexTransform, Ptr{CDMLabel}),
                tr, unsplit_,
               )
 
-	unsplit = unsplit_[]
+	unsplit = DMLabel(unsplit_[], petsclib; own = false)
 
 	return unsplit
 end 
@@ -6008,16 +6009,16 @@ function DMPlexTransformGetActive(petsclib::PetscLibType, tr::DMPlexTransform)
 end
 
 @for_petsc function DMPlexTransformGetActive(petsclib::$UnionPetscLib, tr::DMPlexTransform )
-	active_ = Ref{DMLabel}()
+	active_ = Ref{CDMLabel}()
 
     @chk ccall(
                (:DMPlexTransformGetActive, $petsc_library),
                PetscErrorCode,
-               (DMPlexTransform, Ptr{DMLabel}),
+               (DMPlexTransform, Ptr{CDMLabel}),
                tr, active_,
               )
 
-	active = active_[]
+	active = DMLabel(active_[], petsclib; own = false)
 
 	return active
 end 
@@ -6707,16 +6708,16 @@ function DMPlexTransformGetTransformTypes(petsclib::PetscLibType, tr::DMPlexTran
 end
 
 @for_petsc function DMPlexTransformGetTransformTypes(petsclib::$UnionPetscLib, tr::DMPlexTransform )
-	trType_ = Ref{DMLabel}()
+	trType_ = Ref{CDMLabel}()
 
     @chk ccall(
                (:DMPlexTransformGetTransformTypes, $petsc_library),
                PetscErrorCode,
-               (DMPlexTransform, Ptr{DMLabel}),
+               (DMPlexTransform, Ptr{CDMLabel}),
                tr, trType_,
               )
 
-	trType = trType_[]
+	trType = DMLabel(trType_[], petsclib; own = false)
 
 	return trType
 end 
@@ -6931,7 +6932,7 @@ end
 end 
 
 """
-	DMPlexTransformSetActive(petsclib::PetscLibType, tr::DMPlexTransform, active::DMLabel) 
+	DMPlexTransformSetActive(petsclib::PetscLibType, tr::DMPlexTransform, active::AbstractDMLabel) 
 Set the `DMLabel` marking the active points for the transform
 
 Input Parameters:
@@ -6945,16 +6946,16 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetActive()`, `DMPl
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformSetActive"))
 """
-function DMPlexTransformSetActive(petsclib::PetscLibType, tr::DMPlexTransform, active::DMLabel)
+function DMPlexTransformSetActive(petsclib::PetscLibType, tr::DMPlexTransform, active::AbstractDMLabel)
     throw(MethodError(DMPlexTransformSetActive, (petsclib, tr, active)))
 end
 
-@for_petsc function DMPlexTransformSetActive(petsclib::$UnionPetscLib, tr::DMPlexTransform, active::DMLabel )
+@for_petsc function DMPlexTransformSetActive(petsclib::$UnionPetscLib, tr::DMPlexTransform, active::AbstractDMLabel )
 
     @chk ccall(
                (:DMPlexTransformSetActive, $petsc_library),
                PetscErrorCode,
-               (DMPlexTransform, DMLabel),
+               (DMPlexTransform, CDMLabel),
                tr, active,
               )
 
@@ -7104,7 +7105,7 @@ end
 end 
 
 """
-	DMPlexTransformSetTransformTypes(petsclib::PetscLibType, tr::DMPlexTransform, trType::DMLabel) 
+	DMPlexTransformSetTransformTypes(petsclib::PetscLibType, tr::DMPlexTransform, trType::AbstractDMLabel) 
 Set the `DMLabel` marking the transform type of each point for the transform
 
 Input Parameters:
@@ -7118,16 +7119,16 @@ See also: `DM`, `DMPLEX`, `DMPlexTransform`, `DMPlexTransformGetTransformTypes()
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformSetTransformTypes"))
 """
-function DMPlexTransformSetTransformTypes(petsclib::PetscLibType, tr::DMPlexTransform, trType::DMLabel)
+function DMPlexTransformSetTransformTypes(petsclib::PetscLibType, tr::DMPlexTransform, trType::AbstractDMLabel)
     throw(MethodError(DMPlexTransformSetTransformTypes, (petsclib, tr, trType)))
 end
 
-@for_petsc function DMPlexTransformSetTransformTypes(petsclib::$UnionPetscLib, tr::DMPlexTransform, trType::DMLabel )
+@for_petsc function DMPlexTransformSetTransformTypes(petsclib::$UnionPetscLib, tr::DMPlexTransform, trType::AbstractDMLabel )
 
     @chk ccall(
                (:DMPlexTransformSetTransformTypes, $petsc_library),
                PetscErrorCode,
-               (DMPlexTransform, DMLabel),
+               (DMPlexTransform, CDMLabel),
                tr, trType,
               )
 

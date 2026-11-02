@@ -100,6 +100,13 @@ function destroy_handle!(destroy_fn, obj, ::Type{PetscLib}) where {PetscLib}
     return nothing
 end
 
+# Take ownership of an object PETSc has just created: on a one-rank communicator the
+# garbage collector may destroy it, otherwise `destroy!` is the caller's job.
+function own_serial!(obj, comm)
+    MPI.Comm_size(comm) == 1 && destroy_at_gc!(obj)
+    return obj
+end
+
 # Run `configure!(obj)` on a solver PETSc has just created, then take ownership:
 # a finalizer on a one-rank communicator, where no other rank takes part in the
 # destroy. If `configure!` throws, for example on a bad option value with

@@ -46,7 +46,7 @@ end
 end 
 
 """
-	dmAdapt::PetscDM = DMAdaptLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
+	dmAdapt::PetscDM = DMAdaptLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel) 
 Adapt a `DM` based on a `DMLabel` with values interpreted as coarsening and refining flags.  Specific implementations of `DM` maybe have
 specialized flags, but all implementations should accept flag values `DM_ADAPT_DETERMINE`, `DM_ADAPT_KEEP`, `DM_ADAPT_REFINE`, and,
 `DM_ADAPT_COARSEN`.
@@ -67,17 +67,17 @@ See also: `DM`, `DMAdaptMetric()`, `DMCoarsen()`, `DMRefine()`
 # External Links
 $(_doc_external("DM/DMAdaptLabel"))
 """
-function DMAdaptLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+function DMAdaptLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel)
     throw(MethodError(DMAdaptLabel, (petsclib, dm, label)))
 end
 
-@for_petsc function DMAdaptLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
+@for_petsc function DMAdaptLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::AbstractDMLabel )
 	dmAdapt_ = Ref{CDM}()
 
     @chk ccall(
                (:DMAdaptLabel, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel, Ptr{CDM}),
+               (CDM, CDMLabel, Ptr{CDM}),
                dm, label, dmAdapt_,
               )
 
@@ -87,7 +87,7 @@ end
 end 
 
 """
-	dmAdapt::PetscDM = DMAdaptMetric(petsclib::PetscLibType, dm::AbstractPetscDM, metric::AbstractPetscVec, bdLabel::DMLabel, rgLabel::DMLabel) 
+	dmAdapt::PetscDM = DMAdaptMetric(petsclib::PetscLibType, dm::AbstractPetscDM, metric::AbstractPetscVec, bdLabel::AbstractDMLabel, rgLabel::AbstractDMLabel) 
 Generates a mesh adapted to the specified metric field.
 
 Input Parameters:
@@ -104,17 +104,17 @@ See also: `DMAdaptLabel()`, `DMCoarsen()`, `DMRefine()`
 # External Links
 $(_doc_external("DM/DMAdaptMetric"))
 """
-function DMAdaptMetric(petsclib::PetscLibType, dm::AbstractPetscDM, metric::AbstractPetscVec, bdLabel::DMLabel, rgLabel::DMLabel)
+function DMAdaptMetric(petsclib::PetscLibType, dm::AbstractPetscDM, metric::AbstractPetscVec, bdLabel::AbstractDMLabel, rgLabel::AbstractDMLabel)
     throw(MethodError(DMAdaptMetric, (petsclib, dm, metric, bdLabel, rgLabel)))
 end
 
-@for_petsc function DMAdaptMetric(petsclib::$UnionPetscLib, dm::AbstractPetscDM, metric::AbstractPetscVec, bdLabel::DMLabel, rgLabel::DMLabel )
+@for_petsc function DMAdaptMetric(petsclib::$UnionPetscLib, dm::AbstractPetscDM, metric::AbstractPetscVec, bdLabel::AbstractDMLabel, rgLabel::AbstractDMLabel )
 	dmAdapt_ = Ref{CDM}()
 
     @chk ccall(
                (:DMAdaptMetric, $petsc_library),
                PetscErrorCode,
-               (CDM, CVec, DMLabel, DMLabel, Ptr{CDM}),
+               (CDM, CVec, CDMLabel, CDMLabel, Ptr{CDM}),
                dm, metric, bdLabel, rgLabel, dmAdapt_,
               )
 
@@ -124,7 +124,7 @@ end
 end 
 
 """
-	bd::PetscInt = DMAddBoundary(petsclib::PetscLibType, dm::AbstractPetscDM, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::PetscInt, values::Vector{PetscInt}, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
+	bd::PetscInt = DMAddBoundary(petsclib::PetscLibType, dm::AbstractPetscDM, type::DMBoundaryConditionType, name::String, label::AbstractDMLabel, Nv::PetscInt, values::Vector{PetscInt}, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid}) 
 Add a boundary condition, for a single field, to a model represented by a `DM`
 
 Collective
@@ -157,17 +157,17 @@ See also: `DM`, `DSGetBoundary()`, `PetscDSAddBoundary()`
 # External Links
 $(_doc_external("DM/DMAddBoundary"))
 """
-function DMAddBoundary(petsclib::PetscLibType, dm::AbstractPetscDM, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::Integer, values::AbstractVector{<:Number}, field::Integer, Nc::Integer, comps::AbstractVector{<:Number}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+function DMAddBoundary(petsclib::PetscLibType, dm::AbstractPetscDM, type::DMBoundaryConditionType, name::String, label::AbstractDMLabel, Nv::Integer, values::AbstractVector{<:Number}, field::Integer, Nc::Integer, comps::AbstractVector{<:Number}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid})
     throw(MethodError(DMAddBoundary, (petsclib, dm, type, name, label, Nv, values, field, Nc, comps, bcFunc, bcFunc_t, ctx)))
 end
 
-@for_petsc function DMAddBoundary(petsclib::$UnionPetscLib, dm::AbstractPetscDM, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::$PetscInt, values::Vector{$PetscInt}, field::$PetscInt, Nc::$PetscInt, comps::Vector{$PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+@for_petsc function DMAddBoundary(petsclib::$UnionPetscLib, dm::AbstractPetscDM, type::DMBoundaryConditionType, name::String, label::AbstractDMLabel, Nv::$PetscInt, values::Vector{$PetscInt}, field::$PetscInt, Nc::$PetscInt, comps::Vector{$PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 	bd_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:DMAddBoundary, $petsc_library),
                PetscErrorCode,
-               (CDM, DMBoundaryConditionType, Ptr{Cchar}, DMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{$PetscInt}),
+               (CDM, DMBoundaryConditionType, Ptr{Cchar}, CDMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{$PetscInt}),
                dm, type, name, label, Nv, values, field, Nc, comps, bcFunc, bcFunc_t, ctx, bd_,
               )
 
@@ -177,7 +177,7 @@ end
 end 
 
 """
-	DMAddField(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, disc) 
+	DMAddField(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel, disc) 
 Add a field to a `DM` object. A field is a function space defined by of a set of discretization points (geometric entities)
 and a discretization object that defines the function space associated with those points.
 
@@ -195,16 +195,16 @@ See also: `DM`, `DMSetLabel()`, `DMSetField()`, `DMGetField()`, `PetscFE`
 # External Links
 $(_doc_external("DM/DMAddField"))
 """
-function DMAddField(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, disc)
+function DMAddField(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel, disc)
     throw(MethodError(DMAddField, (petsclib, dm, label, disc)))
 end
 
-@for_petsc function DMAddField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel, disc )
+@for_petsc function DMAddField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::AbstractDMLabel, disc )
 
     @chk ccall(
                (:DMAddField, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel, PetscObject),
+               (CDM, CDMLabel, PetscObject),
                dm, label, disc,
               )
 
@@ -213,7 +213,7 @@ end
 end 
 
 """
-	DMAddLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
+	DMAddLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel) 
 Add the label to this `DM`
 
 Not Collective
@@ -229,16 +229,16 @@ See also: `DM`, `DMLabel`, `DMCreateLabel()`, `DMHasLabel()`, `DMGetLabelValue()
 # External Links
 $(_doc_external("DM/DMAddLabel"))
 """
-function DMAddLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+function DMAddLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel)
     throw(MethodError(DMAddLabel, (petsclib, dm, label)))
 end
 
-@for_petsc function DMAddLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
+@for_petsc function DMAddLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::AbstractDMLabel )
 
     @chk ccall(
                (:DMAddLabel, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel),
+               (CDM, CDMLabel),
                dm, label,
               )
 
@@ -2240,16 +2240,16 @@ function DMCreateFEDefault(petsclib::PetscLibType, dm::AbstractPetscDM, Nc::Inte
 end
 
 @for_petsc function DMCreateFEDefault(petsclib::$UnionPetscLib, dm::AbstractPetscDM, Nc::$PetscInt, prefix::String, qorder::$PetscInt )
-	fem_ = Ref{PetscFE}()
+	fem_ = Ref{CPetscFE}()
 
     @chk ccall(
                (:DMCreateFEDefault, $petsc_library),
                PetscErrorCode,
-               (CDM, $PetscInt, Ptr{Cchar}, $PetscInt, Ptr{PetscFE}),
+               (CDM, $PetscInt, Ptr{Cchar}, $PetscInt, Ptr{CPetscFE}),
                dm, Nc, prefix, qorder, fem_,
               )
 
-	fem = fem_[]
+	fem = PetscFE(fem_[], petsclib)
 
 	return fem
 end 
@@ -7797,16 +7797,16 @@ function DMForestGetAdaptivityLabel(petsclib::PetscLibType, dm::AbstractPetscDM)
 end
 
 @for_petsc function DMForestGetAdaptivityLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
-	adaptLabel_ = Ref{DMLabel}()
+	adaptLabel_ = Ref{CDMLabel}()
 
     @chk ccall(
                (:DMForestGetAdaptivityLabel, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{DMLabel}),
+               (CDM, Ptr{CDMLabel}),
                dm, adaptLabel_,
               )
 
-	adaptLabel = adaptLabel_[]
+	adaptLabel = DMLabel(adaptLabel_[], petsclib; own = false)
 
 	return adaptLabel
 end 
@@ -8673,7 +8673,7 @@ end
 end 
 
 """
-	DMForestSetAdaptivityLabel(petsclib::PetscLibType, dm::AbstractPetscDM, adaptLabel::DMLabel) 
+	DMForestSetAdaptivityLabel(petsclib::PetscLibType, dm::AbstractPetscDM, adaptLabel::AbstractDMLabel) 
 During the pre-setup phase, set the label of the pre-adaptation forest (see
 `DMForestGetAdaptivityForest()`) that holds the adaptation flags (refinement, coarsening, or some combination).
 
@@ -8690,16 +8690,16 @@ See also: `DM`, `DMFOREST`, `DMForestGetAdaptivityLabel()`
 # External Links
 $(_doc_external("DMForest/DMForestSetAdaptivityLabel"))
 """
-function DMForestSetAdaptivityLabel(petsclib::PetscLibType, dm::AbstractPetscDM, adaptLabel::DMLabel)
+function DMForestSetAdaptivityLabel(petsclib::PetscLibType, dm::AbstractPetscDM, adaptLabel::AbstractDMLabel)
     throw(MethodError(DMForestSetAdaptivityLabel, (petsclib, dm, adaptLabel)))
 end
 
-@for_petsc function DMForestSetAdaptivityLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, adaptLabel::DMLabel )
+@for_petsc function DMForestSetAdaptivityLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, adaptLabel::AbstractDMLabel )
 
     @chk ccall(
                (:DMForestSetAdaptivityLabel, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel),
+               (CDM, CDMLabel),
                dm, adaptLabel,
               )
 
@@ -9661,7 +9661,7 @@ end
 end 
 
 """
-	DMGetAuxiliaryLabels(petsclib::PetscLibType, dm::AbstractPetscDM, labels::Vector{DMLabel}, values::Vector{PetscInt}, parts::Vector{PetscInt}) 
+	DMGetAuxiliaryLabels(petsclib::PetscLibType, dm::AbstractPetscDM, labels::Vector{<:AbstractDMLabel}, values::Vector{PetscInt}, parts::Vector{PetscInt}) 
 Get the labels, values, and parts for all auxiliary vectors in this `DM`
 
 Not Collective
@@ -9681,16 +9681,16 @@ See also: `DM`, `DMClearAuxiliaryVec()`, `DMGetNumAuxiliaryVec()`, `DMGetAuxilia
 # External Links
 $(_doc_external("DM/DMGetAuxiliaryLabels"))
 """
-function DMGetAuxiliaryLabels(petsclib::PetscLibType, dm::AbstractPetscDM, labels::Vector{DMLabel}, values::AbstractVector{<:Number}, parts::AbstractVector{<:Number})
+function DMGetAuxiliaryLabels(petsclib::PetscLibType, dm::AbstractPetscDM, labels::Vector{<:AbstractDMLabel}, values::AbstractVector{<:Number}, parts::AbstractVector{<:Number})
     throw(MethodError(DMGetAuxiliaryLabels, (petsclib, dm, labels, values, parts)))
 end
 
-@for_petsc function DMGetAuxiliaryLabels(petsclib::$UnionPetscLib, dm::AbstractPetscDM, labels::Vector{DMLabel}, values::Vector{$PetscInt}, parts::Vector{$PetscInt} )
+@for_petsc function DMGetAuxiliaryLabels(petsclib::$UnionPetscLib, dm::AbstractPetscDM, labels::Vector{<:AbstractDMLabel}, values::Vector{$PetscInt}, parts::Vector{$PetscInt} )
 
     @chk ccall(
                (:DMGetAuxiliaryLabels, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{DMLabel}, Ptr{$PetscInt}, Ptr{$PetscInt}),
+               (CDM, Ptr{CDMLabel}, Ptr{$PetscInt}, Ptr{$PetscInt}),
                dm, labels, values, parts,
               )
 
@@ -9699,7 +9699,7 @@ end
 end 
 
 """
-	aux::PetscVec = DMGetAuxiliaryVec(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, value::PetscInt, part::PetscInt) 
+	aux::PetscVec = DMGetAuxiliaryVec(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel, value::PetscInt, part::PetscInt) 
 Get the auxiliary vector for region specified by the given label and value, and equation part
 
 Not Collective
@@ -9720,17 +9720,17 @@ See also: `DM`, `DMClearAuxiliaryVec()`, `DMSetAuxiliaryVec()`, `DMGetNumAuxilia
 # External Links
 $(_doc_external("DM/DMGetAuxiliaryVec"))
 """
-function DMGetAuxiliaryVec(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, value::Integer, part::Integer)
+function DMGetAuxiliaryVec(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel, value::Integer, part::Integer)
     throw(MethodError(DMGetAuxiliaryVec, (petsclib, dm, label, value, part)))
 end
 
-@for_petsc function DMGetAuxiliaryVec(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel, value::$PetscInt, part::$PetscInt )
+@for_petsc function DMGetAuxiliaryVec(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::AbstractDMLabel, value::$PetscInt, part::$PetscInt )
 	aux_ = Ref{CVec}()
 
     @chk ccall(
                (:DMGetAuxiliaryVec, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel, $PetscInt, $PetscInt, Ptr{CVec}),
+               (CDM, CDMLabel, $PetscInt, $PetscInt, Ptr{CVec}),
                dm, label, value, part, aux_,
               )
 
@@ -10958,17 +10958,17 @@ function DMGetField(petsclib::PetscLibType, dm::AbstractPetscDM, f::Integer)
 end
 
 @for_petsc function DMGetField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::$PetscInt )
-	label_ = Ref{DMLabel}()
+	label_ = Ref{CDMLabel}()
 	disc_ = Ref{PetscObject}()
 
     @chk ccall(
                (:DMGetField, $petsc_library),
                PetscErrorCode,
-               (CDM, $PetscInt, Ptr{DMLabel}, Ptr{PetscObject}),
+               (CDM, $PetscInt, Ptr{CDMLabel}, Ptr{PetscObject}),
                dm, f, label_, disc_,
               )
 
-	label = label_[]
+	label = DMLabel(label_[], petsclib; own = false)
 	disc = disc_[]
 
 	return label,disc
@@ -11050,7 +11050,7 @@ end
 end 
 
 """
-	point::PetscInt,ds::PetscDS = DMGetFirstLabeledPoint(petsclib::PetscLibType, dm::AbstractPetscDM, odm::AbstractPetscDM, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, height::PetscInt) 
+	point::PetscInt,ds::PetscDS = DMGetFirstLabeledPoint(petsclib::PetscLibType, dm::AbstractPetscDM, odm::AbstractPetscDM, label::AbstractDMLabel, numIds::PetscInt, ids::Vector{PetscInt}, height::PetscInt) 
 Find first labeled `point` in `odm` such that the corresponding point in `dm` has the specified `height`. Return `point` and the corresponding `ds`.
 
 Input Parameters:
@@ -11072,18 +11072,18 @@ See also: `DM`, `DMPLEX`, `DMPlexSetActivePoint()`, `DMLabel`, `PetscDS`
 # External Links
 $(_doc_external("DMPlex/DMGetFirstLabeledPoint"))
 """
-function DMGetFirstLabeledPoint(petsclib::PetscLibType, dm::AbstractPetscDM, odm::AbstractPetscDM, label::DMLabel, numIds::Integer, ids::AbstractVector{<:Number}, height::Integer)
+function DMGetFirstLabeledPoint(petsclib::PetscLibType, dm::AbstractPetscDM, odm::AbstractPetscDM, label::AbstractDMLabel, numIds::Integer, ids::AbstractVector{<:Number}, height::Integer)
     throw(MethodError(DMGetFirstLabeledPoint, (petsclib, dm, odm, label, numIds, ids, height)))
 end
 
-@for_petsc function DMGetFirstLabeledPoint(petsclib::$UnionPetscLib, dm::AbstractPetscDM, odm::AbstractPetscDM, label::DMLabel, numIds::$PetscInt, ids::Vector{$PetscInt}, height::$PetscInt )
+@for_petsc function DMGetFirstLabeledPoint(petsclib::$UnionPetscLib, dm::AbstractPetscDM, odm::AbstractPetscDM, label::AbstractDMLabel, numIds::$PetscInt, ids::Vector{$PetscInt}, height::$PetscInt )
 	point_ = Ref{$PetscInt}()
 	ds_ = Ref{PetscDS}()
 
     @chk ccall(
                (:DMGetFirstLabeledPoint, $petsc_library),
                PetscErrorCode,
-               (CDM, CDM, DMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{PetscDS}),
+               (CDM, CDM, CDMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{PetscDS}),
                dm, odm, label, numIds, ids, height, point_, ds_,
               )
 
@@ -11244,16 +11244,16 @@ function DMGetLabel(petsclib::PetscLibType, dm::AbstractPetscDM, name::String)
 end
 
 @for_petsc function DMGetLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String )
-	label_ = Ref{DMLabel}()
+	label_ = Ref{CDMLabel}()
 
     @chk ccall(
                (:DMGetLabel, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{Cchar}, Ptr{DMLabel}),
+               (CDM, Ptr{Cchar}, Ptr{CDMLabel}),
                dm, name, label_,
               )
 
-	label = label_[]
+	label = DMLabel(label_[], petsclib; own = false)
 
 	return label
 end 
@@ -11283,16 +11283,16 @@ function DMGetLabelByNum(petsclib::PetscLibType, dm::AbstractPetscDM, n::Integer
 end
 
 @for_petsc function DMGetLabelByNum(petsclib::$UnionPetscLib, dm::AbstractPetscDM, n::$PetscInt )
-	label_ = Ref{DMLabel}()
+	label_ = Ref{CDMLabel}()
 
     @chk ccall(
                (:DMGetLabelByNum, $petsc_library),
                PetscErrorCode,
-               (CDM, $PetscInt, Ptr{DMLabel}),
+               (CDM, $PetscInt, Ptr{CDMLabel}),
                dm, n, label_,
               )
 
-	label = label_[]
+	label = DMLabel(label_[], petsclib; own = false)
 
 	return label
 end 
@@ -12356,7 +12356,7 @@ end
 end 
 
 """
-	fields::IS,ds::PetscDS,dsIn::PetscDS = DMGetRegionDS(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
+	fields::IS,ds::PetscDS,dsIn::PetscDS = DMGetRegionDS(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel) 
 Get the `PetscDS` for a given mesh region, defined by a `DMLabel`
 
 Not Collective
@@ -12377,11 +12377,11 @@ See also: `DM`, `DMGetRegionNumDS()`, `DMSetRegionDS()`, `DMGetDS()`, `DMGetCell
 # External Links
 $(_doc_external("DM/DMGetRegionDS"))
 """
-function DMGetRegionDS(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+function DMGetRegionDS(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel)
     throw(MethodError(DMGetRegionDS, (petsclib, dm, label)))
 end
 
-@for_petsc function DMGetRegionDS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
+@for_petsc function DMGetRegionDS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::AbstractDMLabel )
 	fields_ = Ref{CIS}()
 	ds_ = Ref{PetscDS}()
 	dsIn_ = Ref{PetscDS}()
@@ -12389,7 +12389,7 @@ end
     @chk ccall(
                (:DMGetRegionDS, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel, Ptr{CIS}, Ptr{PetscDS}, Ptr{PetscDS}),
+               (CDM, CDMLabel, Ptr{CIS}, Ptr{PetscDS}, Ptr{PetscDS}),
                dm, label, fields_, ds_, dsIn_,
               )
 
@@ -12428,7 +12428,7 @@ function DMGetRegionNumDS(petsclib::PetscLibType, dm::AbstractPetscDM, num::Inte
 end
 
 @for_petsc function DMGetRegionNumDS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, num::$PetscInt )
-	label_ = Ref{DMLabel}()
+	label_ = Ref{CDMLabel}()
 	fields_ = Ref{CIS}()
 	ds_ = Ref{PetscDS}()
 	dsIn_ = Ref{PetscDS}()
@@ -12436,11 +12436,11 @@ end
     @chk ccall(
                (:DMGetRegionNumDS, $petsc_library),
                PetscErrorCode,
-               (CDM, $PetscInt, Ptr{DMLabel}, Ptr{CIS}, Ptr{PetscDS}, Ptr{PetscDS}),
+               (CDM, $PetscInt, Ptr{CDMLabel}, Ptr{CIS}, Ptr{PetscDS}, Ptr{PetscDS}),
                dm, num, label_, fields_, ds_, dsIn_,
               )
 
-	label = label_[]
+	label = DMLabel(label_[], petsclib; own = false)
 	fields = IS(fields_[], petsclib; own = false)
 	ds = ds_[]
 	dsIn = dsIn_[]
@@ -18910,7 +18910,7 @@ end
 end 
 
 """
-	DMPlexComputeBdIntegral(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, label::DMLabel, numVals::PetscInt, vals::Vector{PetscInt}, noname::Ptr{Cvoid}) 
+	DMPlexComputeBdIntegral(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, label::AbstractDMLabel, numVals::PetscInt, vals::Vector{PetscInt}, noname::Ptr{Cvoid}) 
 Form the integral over the specified boundary from the global input X using pointwise functions specified by the user
 
 Input Parameters:
@@ -18932,16 +18932,16 @@ See also: `DM`, `DMPLEX`, `DMPlexComputeIntegralFEM()`, `DMPlexComputeBdResidual
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeBdIntegral"))
 """
-function DMPlexComputeBdIntegral(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, label::DMLabel, numVals::Integer, vals::AbstractVector{<:Number}, noname::Ptr{Cvoid})
+function DMPlexComputeBdIntegral(petsclib::PetscLibType, dm::AbstractPetscDM, X::AbstractPetscVec, label::AbstractDMLabel, numVals::Integer, vals::AbstractVector{<:Number}, noname::Ptr{Cvoid})
     throw(MethodError(DMPlexComputeBdIntegral, (petsclib, dm, X, label, numVals, vals, noname)))
 end
 
-@for_petsc function DMPlexComputeBdIntegral(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, label::DMLabel, numVals::$PetscInt, vals::Vector{$PetscInt}, noname::Ptr{Cvoid} )
+@for_petsc function DMPlexComputeBdIntegral(petsclib::$UnionPetscLib, dm::AbstractPetscDM, X::AbstractPetscVec, label::AbstractDMLabel, numVals::$PetscInt, vals::Vector{$PetscInt}, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexComputeBdIntegral, $petsc_library),
                PetscErrorCode,
-               (CDM, CVec, DMLabel, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
+               (CDM, CVec, CDMLabel, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
                dm, X, label, numVals, vals, noname,
               )
 
@@ -18950,7 +18950,7 @@ end
 end 
 
 """
-	DMPlexComputeBdJacobianSingle(petsclib::PetscLibType, dm::AbstractPetscDM, wf::PetscWeakForm, label::DMLabel, numValues::PetscInt, values::Vector{PetscInt}, fieldI::PetscInt, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, X_tShift::PetscReal, Jac::AbstractPetscMat, JacP::AbstractPetscMat) 
+	DMPlexComputeBdJacobianSingle(petsclib::PetscLibType, dm::AbstractPetscDM, wf::PetscWeakForm, label::AbstractDMLabel, numValues::PetscInt, values::Vector{PetscInt}, fieldI::PetscInt, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, X_tShift::PetscReal, Jac::AbstractPetscMat, JacP::AbstractPetscMat) 
 Compute the local boundary Jacobian
 
 Not collective
@@ -18978,16 +18978,16 @@ See also: `DMPlexComputeBdJacobianSingleByLabel()`, `DMPlexComputeJacobianByKey(
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeBdJacobianSingle"))
 """
-function DMPlexComputeBdJacobianSingle(petsclib::PetscLibType, dm::AbstractPetscDM, wf::PetscWeakForm, label::DMLabel, numValues::Integer, values::AbstractVector{<:Number}, fieldI::Integer, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::Real, X_tShift::Real, Jac::AbstractPetscMat, JacP::AbstractPetscMat)
+function DMPlexComputeBdJacobianSingle(petsclib::PetscLibType, dm::AbstractPetscDM, wf::PetscWeakForm, label::AbstractDMLabel, numValues::Integer, values::AbstractVector{<:Number}, fieldI::Integer, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::Real, X_tShift::Real, Jac::AbstractPetscMat, JacP::AbstractPetscMat)
     throw(MethodError(DMPlexComputeBdJacobianSingle, (petsclib, dm, wf, label, numValues, values, fieldI, locX, locX_t, t, X_tShift, Jac, JacP)))
 end
 
-@for_petsc function DMPlexComputeBdJacobianSingle(petsclib::$UnionPetscLib, dm::AbstractPetscDM, wf::PetscWeakForm, label::DMLabel, numValues::$PetscInt, values::Vector{$PetscInt}, fieldI::$PetscInt, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::$PetscReal, X_tShift::$PetscReal, Jac::AbstractPetscMat, JacP::AbstractPetscMat )
+@for_petsc function DMPlexComputeBdJacobianSingle(petsclib::$UnionPetscLib, dm::AbstractPetscDM, wf::PetscWeakForm, label::AbstractDMLabel, numValues::$PetscInt, values::Vector{$PetscInt}, fieldI::$PetscInt, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::$PetscReal, X_tShift::$PetscReal, Jac::AbstractPetscMat, JacP::AbstractPetscMat )
 
     @chk ccall(
                (:DMPlexComputeBdJacobianSingle, $petsc_library),
                PetscErrorCode,
-               (CDM, PetscWeakForm, DMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, CVec, CVec, $PetscReal, $PetscReal, CMat, CMat),
+               (CDM, PetscWeakForm, CDMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, CVec, CVec, $PetscReal, $PetscReal, CMat, CMat),
                dm, wf, label, numValues, values, fieldI, locX, locX_t, t, X_tShift, Jac, JacP,
               )
 
@@ -18996,7 +18996,7 @@ end
 end 
 
 """
-	DMPlexComputeBdJacobianSingleByLabel(petsclib::PetscLibType, dm::AbstractPetscDM, wf::PetscWeakForm, label::DMLabel, numValues::PetscInt, values::Vector{PetscInt}, fieldI::PetscInt, facetIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, coordField::DMField, X_tShift::PetscReal, Jac::AbstractPetscMat, JacP::AbstractPetscMat) 
+	DMPlexComputeBdJacobianSingleByLabel(petsclib::PetscLibType, dm::AbstractPetscDM, wf::PetscWeakForm, label::AbstractDMLabel, numValues::PetscInt, values::Vector{PetscInt}, fieldI::PetscInt, facetIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::PetscReal, coordField::DMField, X_tShift::PetscReal, Jac::AbstractPetscMat, JacP::AbstractPetscMat) 
 Compute the local boundary Jacobian for terms matching the input label
 
 Not collective
@@ -19026,16 +19026,16 @@ See also: `DMPlexComputeBdJacobianSingle()`, `DMPlexComputeJacobianByKey()`, `DM
 # External Links
 $(_doc_external("DMPlex/DMPlexComputeBdJacobianSingleByLabel"))
 """
-function DMPlexComputeBdJacobianSingleByLabel(petsclib::PetscLibType, dm::AbstractPetscDM, wf::PetscWeakForm, label::DMLabel, numValues::Integer, values::AbstractVector{<:Number}, fieldI::Integer, facetIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::Real, coordField::DMField, X_tShift::Real, Jac::AbstractPetscMat, JacP::AbstractPetscMat)
+function DMPlexComputeBdJacobianSingleByLabel(petsclib::PetscLibType, dm::AbstractPetscDM, wf::PetscWeakForm, label::AbstractDMLabel, numValues::Integer, values::AbstractVector{<:Number}, fieldI::Integer, facetIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::Real, coordField::DMField, X_tShift::Real, Jac::AbstractPetscMat, JacP::AbstractPetscMat)
     throw(MethodError(DMPlexComputeBdJacobianSingleByLabel, (petsclib, dm, wf, label, numValues, values, fieldI, facetIS, locX, locX_t, t, coordField, X_tShift, Jac, JacP)))
 end
 
-@for_petsc function DMPlexComputeBdJacobianSingleByLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, wf::PetscWeakForm, label::DMLabel, numValues::$PetscInt, values::Vector{$PetscInt}, fieldI::$PetscInt, facetIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::$PetscReal, coordField::DMField, X_tShift::$PetscReal, Jac::AbstractPetscMat, JacP::AbstractPetscMat )
+@for_petsc function DMPlexComputeBdJacobianSingleByLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, wf::PetscWeakForm, label::AbstractDMLabel, numValues::$PetscInt, values::Vector{$PetscInt}, fieldI::$PetscInt, facetIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, t::$PetscReal, coordField::DMField, X_tShift::$PetscReal, Jac::AbstractPetscMat, JacP::AbstractPetscMat )
 
     @chk ccall(
                (:DMPlexComputeBdJacobianSingleByLabel, $petsc_library),
                PetscErrorCode,
-               (CDM, PetscWeakForm, DMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, CIS, CVec, CVec, $PetscReal, DMField, $PetscReal, CMat, CMat),
+               (CDM, PetscWeakForm, CDMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, CIS, CVec, CVec, $PetscReal, DMField, $PetscReal, CMat, CMat),
                dm, wf, label, numValues, values, fieldI, facetIS, locX, locX_t, t, coordField, X_tShift, Jac, JacP,
               )
 
@@ -20148,17 +20148,17 @@ end
 
 @for_petsc function DMPlexComputeOrthogonalQuality(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fv::PetscFV, atol::$PetscReal )
 	OrthQual_ = Ref{CVec}()
-	OrthQualLabel_ = Ref{DMLabel}()
+	OrthQualLabel_ = Ref{CDMLabel}()
 
     @chk ccall(
                (:DMPlexComputeOrthogonalQuality, $petsc_library),
                PetscErrorCode,
-               (CDM, PetscFV, $PetscReal, Ptr{CVec}, Ptr{DMLabel}),
+               (CDM, PetscFV, $PetscReal, Ptr{CVec}, Ptr{CDMLabel}),
                dm, fv, atol, OrthQual_, OrthQualLabel_,
               )
 
 	OrthQual = PetscVec(OrthQual_[], petsclib)
-	OrthQualLabel = OrthQualLabel_[]
+	OrthQualLabel = DMLabel(OrthQualLabel_[], petsclib)
 
 	return OrthQual,OrthQualLabel
 end 
@@ -20363,7 +20363,7 @@ end
 end 
 
 """
-	dmSplit::PetscDM = DMPlexConstructCohesiveCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, splitLabel::DMLabel) 
+	dmSplit::PetscDM = DMPlexConstructCohesiveCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel, splitLabel::AbstractDMLabel) 
 Construct cohesive cells which split the face along an internal interface
 
 Collective
@@ -20383,17 +20383,17 @@ See also: `DM`, `DMPLEX`, `DMCreate()`, `DMPlexLabelCohesiveComplete()`
 # External Links
 $(_doc_external("DMPlex/DMPlexConstructCohesiveCells"))
 """
-function DMPlexConstructCohesiveCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, splitLabel::DMLabel)
+function DMPlexConstructCohesiveCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel, splitLabel::AbstractDMLabel)
     throw(MethodError(DMPlexConstructCohesiveCells, (petsclib, dm, label, splitLabel)))
 end
 
-@for_petsc function DMPlexConstructCohesiveCells(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel, splitLabel::DMLabel )
+@for_petsc function DMPlexConstructCohesiveCells(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::AbstractDMLabel, splitLabel::AbstractDMLabel )
 	dmSplit_ = Ref{CDM}()
 
     @chk ccall(
                (:DMPlexConstructCohesiveCells, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel, DMLabel, Ptr{CDM}),
+               (CDM, CDMLabel, CDMLabel, Ptr{CDM}),
                dm, label, splitLabel, dmSplit_,
               )
 
@@ -21866,7 +21866,7 @@ end
 end 
 
 """
-	hybridLabel::DMLabel,splitLabel::DMLabel,dmInterface::PetscDM,dmHybrid::PetscDM = DMPlexCreateHybridMesh(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, bdlabel::DMLabel, bdvalue::PetscInt) 
+	hybridLabel::DMLabel,splitLabel::DMLabel,dmInterface::PetscDM,dmHybrid::PetscDM = DMPlexCreateHybridMesh(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel, bdlabel::AbstractDMLabel, bdvalue::PetscInt) 
 Create a mesh with hybrid cells along an internal interface
 
 Collective
@@ -21890,25 +21890,25 @@ See also: `DM`, `DMPLEX`, `DMPlexConstructCohesiveCells()`, `DMPlexLabelCohesive
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateHybridMesh"))
 """
-function DMPlexCreateHybridMesh(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, bdlabel::DMLabel, bdvalue::Integer)
+function DMPlexCreateHybridMesh(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel, bdlabel::AbstractDMLabel, bdvalue::Integer)
     throw(MethodError(DMPlexCreateHybridMesh, (petsclib, dm, label, bdlabel, bdvalue)))
 end
 
-@for_petsc function DMPlexCreateHybridMesh(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel, bdlabel::DMLabel, bdvalue::$PetscInt )
-	hybridLabel_ = Ref{DMLabel}()
-	splitLabel_ = Ref{DMLabel}()
+@for_petsc function DMPlexCreateHybridMesh(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::AbstractDMLabel, bdlabel::AbstractDMLabel, bdvalue::$PetscInt )
+	hybridLabel_ = Ref{CDMLabel}()
+	splitLabel_ = Ref{CDMLabel}()
 	dmInterface_ = Ref{CDM}()
 	dmHybrid_ = Ref{CDM}()
 
     @chk ccall(
                (:DMPlexCreateHybridMesh, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel, DMLabel, $PetscInt, Ptr{DMLabel}, Ptr{DMLabel}, Ptr{CDM}, Ptr{CDM}),
+               (CDM, CDMLabel, CDMLabel, $PetscInt, Ptr{CDMLabel}, Ptr{CDMLabel}, Ptr{CDM}, Ptr{CDM}),
                dm, label, bdlabel, bdvalue, hybridLabel_, splitLabel_, dmInterface_, dmHybrid_,
               )
 
-	hybridLabel = hybridLabel_[]
-	splitLabel = splitLabel_[]
+	hybridLabel = DMLabel(hybridLabel_[], petsclib)
+	splitLabel = DMLabel(splitLabel_[], petsclib)
 	dmInterface = PetscDM(dmInterface_[], petsclib)
 	dmHybrid = PetscDM(dmHybrid_[], petsclib)
 
@@ -21959,7 +21959,7 @@ end
 end 
 
 """
-	val::PetscVec = DMPlexCreateLabelField(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
+	val::PetscVec = DMPlexCreateLabelField(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel) 
 Create a field whose value is the label value for that point
 
 Input Parameters:
@@ -21979,17 +21979,17 @@ See also: `DM`, `DMPLEX`, `DMView()`
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateLabelField"))
 """
-function DMPlexCreateLabelField(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+function DMPlexCreateLabelField(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel)
     throw(MethodError(DMPlexCreateLabelField, (petsclib, dm, label)))
 end
 
-@for_petsc function DMPlexCreateLabelField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
+@for_petsc function DMPlexCreateLabelField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::AbstractDMLabel )
 	val_ = Ref{CVec}()
 
     @chk ccall(
                (:DMPlexCreateLabelField, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel, Ptr{CVec}),
+               (CDM, CDMLabel, Ptr{CVec}),
                dm, label, val_,
               )
 
@@ -22110,22 +22110,22 @@ function DMPlexCreateOverlapLabel(petsclib::PetscLibType, dm::AbstractPetscDM, l
 end
 
 @for_petsc function DMPlexCreateOverlapLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, levels::$PetscInt, rootSection::PetscSection, rootrank::AbstractIS, leafSection::PetscSection, leafrank::AbstractIS )
-	ovLabel_ = Ref{DMLabel}()
+	ovLabel_ = Ref{CDMLabel}()
 
     @chk ccall(
                (:DMPlexCreateOverlapLabel, $petsc_library),
                PetscErrorCode,
-               (CDM, $PetscInt, PetscSection, CIS, PetscSection, CIS, Ptr{DMLabel}),
+               (CDM, $PetscInt, PetscSection, CIS, PetscSection, CIS, Ptr{CDMLabel}),
                dm, levels, rootSection, rootrank, leafSection, leafrank, ovLabel_,
               )
 
-	ovLabel = ovLabel_[]
+	ovLabel = DMLabel(ovLabel_[], petsclib)
 
 	return ovLabel
 end 
 
 """
-	ovLabel::DMLabel = DMPlexCreateOverlapLabelFromLabels(petsclib::PetscLibType, dm::AbstractPetscDM, numLabels::PetscInt, label::Vector{DMLabel}, value::Vector{PetscInt}, numExLabels::PetscInt, exLabel::Vector{DMLabel}, exValue::Vector{PetscInt}, rootSection::PetscSection, rootrank::AbstractIS, leafSection::PetscSection, leafrank::AbstractIS) 
+	ovLabel::DMLabel = DMPlexCreateOverlapLabelFromLabels(petsclib::PetscLibType, dm::AbstractPetscDM, numLabels::PetscInt, label::Vector{<:AbstractDMLabel}, value::Vector{PetscInt}, numExLabels::PetscInt, exLabel::Vector{<:AbstractDMLabel}, exValue::Vector{PetscInt}, rootSection::PetscSection, rootrank::AbstractIS, leafSection::PetscSection, leafrank::AbstractIS) 
 Compute a label indicating what overlap points should be sent to new processes
 
 Collective
@@ -22153,21 +22153,21 @@ See also: `DMPLEX`, `DMPlexCreateOverlapLabel()`, `DMPlexGetAdjacency()`, `DMPle
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateOverlapLabelFromLabels"))
 """
-function DMPlexCreateOverlapLabelFromLabels(petsclib::PetscLibType, dm::AbstractPetscDM, numLabels::Integer, label::Vector{DMLabel}, value::AbstractVector{<:Number}, numExLabels::Integer, exLabel::Vector{DMLabel}, exValue::AbstractVector{<:Number}, rootSection::PetscSection, rootrank::AbstractIS, leafSection::PetscSection, leafrank::AbstractIS)
+function DMPlexCreateOverlapLabelFromLabels(petsclib::PetscLibType, dm::AbstractPetscDM, numLabels::Integer, label::Vector{<:AbstractDMLabel}, value::AbstractVector{<:Number}, numExLabels::Integer, exLabel::Vector{<:AbstractDMLabel}, exValue::AbstractVector{<:Number}, rootSection::PetscSection, rootrank::AbstractIS, leafSection::PetscSection, leafrank::AbstractIS)
     throw(MethodError(DMPlexCreateOverlapLabelFromLabels, (petsclib, dm, numLabels, label, value, numExLabels, exLabel, exValue, rootSection, rootrank, leafSection, leafrank)))
 end
 
-@for_petsc function DMPlexCreateOverlapLabelFromLabels(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numLabels::$PetscInt, label::Vector{DMLabel}, value::Vector{$PetscInt}, numExLabels::$PetscInt, exLabel::Vector{DMLabel}, exValue::Vector{$PetscInt}, rootSection::PetscSection, rootrank::AbstractIS, leafSection::PetscSection, leafrank::AbstractIS )
-	ovLabel_ = Ref{DMLabel}()
+@for_petsc function DMPlexCreateOverlapLabelFromLabels(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numLabels::$PetscInt, label::Vector{<:AbstractDMLabel}, value::Vector{$PetscInt}, numExLabels::$PetscInt, exLabel::Vector{<:AbstractDMLabel}, exValue::Vector{$PetscInt}, rootSection::PetscSection, rootrank::AbstractIS, leafSection::PetscSection, leafrank::AbstractIS )
+	ovLabel_ = Ref{CDMLabel}()
 
     @chk ccall(
                (:DMPlexCreateOverlapLabelFromLabels, $petsc_library),
                PetscErrorCode,
-               (CDM, $PetscInt, Ptr{DMLabel}, Ptr{$PetscInt}, $PetscInt, Ptr{DMLabel}, Ptr{$PetscInt}, PetscSection, CIS, PetscSection, CIS, Ptr{DMLabel}),
+               (CDM, $PetscInt, Ptr{CDMLabel}, Ptr{$PetscInt}, $PetscInt, Ptr{CDMLabel}, Ptr{$PetscInt}, PetscSection, CIS, PetscSection, CIS, Ptr{CDMLabel}),
                dm, numLabels, label, value, numExLabels, exLabel, exValue, rootSection, rootrank, leafSection, leafrank, ovLabel_,
               )
 
-	ovLabel = ovLabel_[]
+	ovLabel = DMLabel(ovLabel_[], petsclib)
 
 	return ovLabel
 end 
@@ -22497,7 +22497,7 @@ end
 end 
 
 """
-	sp::MatNullSpace = DMPlexCreateRigidBodies(petsclib::PetscLibType, dm::AbstractPetscDM, nb::PetscInt, label::DMLabel, nids::Vector{PetscInt}, ids::Vector{PetscInt}) 
+	sp::MatNullSpace = DMPlexCreateRigidBodies(petsclib::PetscLibType, dm::AbstractPetscDM, nb::PetscInt, label::AbstractDMLabel, nids::Vector{PetscInt}, ids::Vector{PetscInt}) 
 For the default global section, create rigid body modes by function space interpolation
 
 Collective
@@ -22519,21 +22519,21 @@ See also: `DM`, `DMPLEX`, `MatNullSpaceCreate()`
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateRigidBodies"))
 """
-function DMPlexCreateRigidBodies(petsclib::PetscLibType, dm::AbstractPetscDM, nb::Integer, label::DMLabel, nids::AbstractVector{<:Number}, ids::AbstractVector{<:Number})
+function DMPlexCreateRigidBodies(petsclib::PetscLibType, dm::AbstractPetscDM, nb::Integer, label::AbstractDMLabel, nids::AbstractVector{<:Number}, ids::AbstractVector{<:Number})
     throw(MethodError(DMPlexCreateRigidBodies, (petsclib, dm, nb, label, nids, ids)))
 end
 
-@for_petsc function DMPlexCreateRigidBodies(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nb::$PetscInt, label::DMLabel, nids::Vector{$PetscInt}, ids::Vector{$PetscInt} )
-	sp_ = Ref{MatNullSpace}()
+@for_petsc function DMPlexCreateRigidBodies(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nb::$PetscInt, label::AbstractDMLabel, nids::Vector{$PetscInt}, ids::Vector{$PetscInt} )
+	sp_ = Ref{CMatNullSpace}()
 
     @chk ccall(
                (:DMPlexCreateRigidBodies, $petsc_library),
                PetscErrorCode,
-               (CDM, $PetscInt, DMLabel, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{MatNullSpace}),
+               (CDM, $PetscInt, CDMLabel, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{CMatNullSpace}),
                dm, nb, label, nids, ids, sp_,
               )
 
-	sp = sp_[]
+	sp = MatNullSpace(sp_[], petsclib)
 
 	return sp
 end 
@@ -22563,22 +22563,22 @@ function DMPlexCreateRigidBody(petsclib::PetscLibType, dm::AbstractPetscDM, fiel
 end
 
 @for_petsc function DMPlexCreateRigidBody(petsclib::$UnionPetscLib, dm::AbstractPetscDM, field::$PetscInt )
-	sp_ = Ref{MatNullSpace}()
+	sp_ = Ref{CMatNullSpace}()
 
     @chk ccall(
                (:DMPlexCreateRigidBody, $petsc_library),
                PetscErrorCode,
-               (CDM, $PetscInt, Ptr{MatNullSpace}),
+               (CDM, $PetscInt, Ptr{CMatNullSpace}),
                dm, field, sp_,
               )
 
-	sp = sp_[]
+	sp = MatNullSpace(sp_[], petsclib)
 
 	return sp
 end 
 
 """
-	section::PetscSection = DMPlexCreateSection(petsclib::PetscLibType, dm::AbstractPetscDM, label::Vector{DMLabel}, numComp::Vector{PetscInt}, numDof::Vector{PetscInt}, numBC::PetscInt, bcField::Vector{PetscInt}, bcComps::Vector{<:AbstractIS}, bcPoints::Vector{<:AbstractIS}, perm::AbstractIS) 
+	section::PetscSection = DMPlexCreateSection(petsclib::PetscLibType, dm::AbstractPetscDM, label::Vector{<:AbstractDMLabel}, numComp::Vector{PetscInt}, numDof::Vector{PetscInt}, numBC::PetscInt, bcField::Vector{PetscInt}, bcComps::Vector{<:AbstractIS}, bcPoints::Vector{<:AbstractIS}, perm::AbstractIS) 
 Create a `PetscSection` based upon the dof layout specification provided.
 
 Not Collective
@@ -22604,17 +22604,17 @@ See also: `DM`, `DMPLEX`, `DMPlexCreate()`, `PetscSectionCreate()`, `PetscSectio
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateSection"))
 """
-function DMPlexCreateSection(petsclib::PetscLibType, dm::AbstractPetscDM, label::Vector{DMLabel}, numComp::AbstractVector{<:Number}, numDof::AbstractVector{<:Number}, numBC::Integer, bcField::AbstractVector{<:Number}, bcComps::Vector{<:AbstractIS}, bcPoints::Vector{<:AbstractIS}, perm::AbstractIS)
+function DMPlexCreateSection(petsclib::PetscLibType, dm::AbstractPetscDM, label::Vector{<:AbstractDMLabel}, numComp::AbstractVector{<:Number}, numDof::AbstractVector{<:Number}, numBC::Integer, bcField::AbstractVector{<:Number}, bcComps::Vector{<:AbstractIS}, bcPoints::Vector{<:AbstractIS}, perm::AbstractIS)
     throw(MethodError(DMPlexCreateSection, (petsclib, dm, label, numComp, numDof, numBC, bcField, bcComps, bcPoints, perm)))
 end
 
-@for_petsc function DMPlexCreateSection(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::Vector{DMLabel}, numComp::Vector{$PetscInt}, numDof::Vector{$PetscInt}, numBC::$PetscInt, bcField::Vector{$PetscInt}, bcComps::Vector{<:AbstractIS}, bcPoints::Vector{<:AbstractIS}, perm::AbstractIS )
+@for_petsc function DMPlexCreateSection(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::Vector{<:AbstractDMLabel}, numComp::Vector{$PetscInt}, numDof::Vector{$PetscInt}, numBC::$PetscInt, bcField::Vector{$PetscInt}, bcComps::Vector{<:AbstractIS}, bcPoints::Vector{<:AbstractIS}, perm::AbstractIS )
 	section_ = Ref{PetscSection}()
 
     @chk ccall(
                (:DMPlexCreateSection, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{DMLabel}, Ptr{$PetscInt}, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{CIS}, Ptr{CIS}, CIS, Ptr{PetscSection}),
+               (CDM, Ptr{CDMLabel}, Ptr{$PetscInt}, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{CIS}, Ptr{CIS}, CIS, Ptr{PetscSection}),
                dm, label, numComp, numDof, numBC, bcField, bcComps, bcPoints, perm, section_,
               )
 
@@ -22665,7 +22665,7 @@ end
 end 
 
 """
-	subdm::PetscDM = DMPlexCreateSubmesh(petsclib::PetscLibType, dm::AbstractPetscDM, vertexLabel::DMLabel, value::PetscInt, markedFaces::PetscBool) 
+	subdm::PetscDM = DMPlexCreateSubmesh(petsclib::PetscLibType, dm::AbstractPetscDM, vertexLabel::AbstractDMLabel, value::PetscInt, markedFaces::PetscBool) 
 Extract a hypersurface from the mesh using vertices defined by a label
 
 Input Parameters:
@@ -22684,17 +22684,17 @@ See also: `DM`, `DMPLEX`, `DMPlexGetSubpointMap()`, `DMGetLabel()`, `DMLabelSetV
 # External Links
 $(_doc_external("DMPlex/DMPlexCreateSubmesh"))
 """
-function DMPlexCreateSubmesh(petsclib::PetscLibType, dm::AbstractPetscDM, vertexLabel::DMLabel, value::Integer, markedFaces::PetscBool)
+function DMPlexCreateSubmesh(petsclib::PetscLibType, dm::AbstractPetscDM, vertexLabel::AbstractDMLabel, value::Integer, markedFaces::PetscBool)
     throw(MethodError(DMPlexCreateSubmesh, (petsclib, dm, vertexLabel, value, markedFaces)))
 end
 
-@for_petsc function DMPlexCreateSubmesh(petsclib::$UnionPetscLib, dm::AbstractPetscDM, vertexLabel::DMLabel, value::$PetscInt, markedFaces::PetscBool )
+@for_petsc function DMPlexCreateSubmesh(petsclib::$UnionPetscLib, dm::AbstractPetscDM, vertexLabel::AbstractDMLabel, value::$PetscInt, markedFaces::PetscBool )
 	subdm_ = Ref{CDM}()
 
     @chk ccall(
                (:DMPlexCreateSubmesh, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel, $PetscInt, PetscBool, Ptr{CDM}),
+               (CDM, CDMLabel, $PetscInt, PetscBool, Ptr{CDM}),
                dm, vertexLabel, value, markedFaces, subdm_,
               )
 
@@ -23273,7 +23273,7 @@ end
 end 
 
 """
-	edm::PetscDM = DMPlexExtrude(petsclib::PetscLibType, dm::AbstractPetscDM, layers::PetscInt, thickness::PetscReal, tensor::PetscBool, symmetric::PetscBool, periodic::PetscBool, normal::Vector{PetscReal}, thicknesses::Vector{PetscReal}, activeLabel::DMLabel) 
+	edm::PetscDM = DMPlexExtrude(petsclib::PetscLibType, dm::AbstractPetscDM, layers::PetscInt, thickness::PetscReal, tensor::PetscBool, symmetric::PetscBool, periodic::PetscBool, normal::Vector{PetscReal}, thicknesses::Vector{PetscReal}, activeLabel::AbstractDMLabel) 
 Extrude a volumetric mesh from the input surface mesh
 
 Input Parameters:
@@ -23305,17 +23305,17 @@ See also: `DM`, `DMPLEX`, `DMExtrude()`, `DMPlexTransform`, `DMPlexTransformExtr
 # External Links
 $(_doc_external("DMPlex/DMPlexExtrude"))
 """
-function DMPlexExtrude(petsclib::PetscLibType, dm::AbstractPetscDM, layers::Integer, thickness::Real, tensor::PetscBool, symmetric::PetscBool, periodic::PetscBool, normal::AbstractVector{<:Number}, thicknesses::AbstractVector{<:Number}, activeLabel::DMLabel)
+function DMPlexExtrude(petsclib::PetscLibType, dm::AbstractPetscDM, layers::Integer, thickness::Real, tensor::PetscBool, symmetric::PetscBool, periodic::PetscBool, normal::AbstractVector{<:Number}, thicknesses::AbstractVector{<:Number}, activeLabel::AbstractDMLabel)
     throw(MethodError(DMPlexExtrude, (petsclib, dm, layers, thickness, tensor, symmetric, periodic, normal, thicknesses, activeLabel)))
 end
 
-@for_petsc function DMPlexExtrude(petsclib::$UnionPetscLib, dm::AbstractPetscDM, layers::$PetscInt, thickness::$PetscReal, tensor::PetscBool, symmetric::PetscBool, periodic::PetscBool, normal::Vector{$PetscReal}, thicknesses::Vector{$PetscReal}, activeLabel::DMLabel )
+@for_petsc function DMPlexExtrude(petsclib::$UnionPetscLib, dm::AbstractPetscDM, layers::$PetscInt, thickness::$PetscReal, tensor::PetscBool, symmetric::PetscBool, periodic::PetscBool, normal::Vector{$PetscReal}, thicknesses::Vector{$PetscReal}, activeLabel::AbstractDMLabel )
 	edm_ = Ref{CDM}()
 
     @chk ccall(
                (:DMPlexExtrude, $petsc_library),
                PetscErrorCode,
-               (CDM, $PetscInt, $PetscReal, PetscBool, PetscBool, PetscBool, Ptr{$PetscReal}, Ptr{$PetscReal}, DMLabel, Ptr{CDM}),
+               (CDM, $PetscInt, $PetscReal, PetscBool, PetscBool, PetscBool, Ptr{$PetscReal}, Ptr{$PetscReal}, CDMLabel, Ptr{CDM}),
                dm, layers, thickness, tensor, symmetric, periodic, normal, thicknesses, activeLabel, edm_,
               )
 
@@ -23325,7 +23325,7 @@ end
 end 
 
 """
-	ownershipTransferSF::PetscSF,subdm::PetscDM = DMPlexFilter(petsclib::PetscLibType, dm::AbstractPetscDM, cellLabel::DMLabel, value::PetscInt, ignoreLabelHalo::PetscBool, sanitizeSubmesh::PetscBool, comm::MPI_Comm) 
+	ownershipTransferSF::PetscSF,subdm::PetscDM = DMPlexFilter(petsclib::PetscLibType, dm::AbstractPetscDM, cellLabel::AbstractDMLabel, value::PetscInt, ignoreLabelHalo::PetscBool, sanitizeSubmesh::PetscBool, comm::MPI_Comm) 
 Extract a subset of mesh cells defined by a label as a separate mesh
 
 Input Parameters:
@@ -23347,18 +23347,18 @@ See also: `DM`, `DMPLEX`, `DMPlexGetSubpointMap()`, `DMGetLabel()`, `DMLabelSetV
 # External Links
 $(_doc_external("DMPlex/DMPlexFilter"))
 """
-function DMPlexFilter(petsclib::PetscLibType, dm::AbstractPetscDM, cellLabel::DMLabel, value::Integer, ignoreLabelHalo::PetscBool, sanitizeSubmesh::PetscBool, comm::MPI_Comm)
+function DMPlexFilter(petsclib::PetscLibType, dm::AbstractPetscDM, cellLabel::AbstractDMLabel, value::Integer, ignoreLabelHalo::PetscBool, sanitizeSubmesh::PetscBool, comm::MPI_Comm)
     throw(MethodError(DMPlexFilter, (petsclib, dm, cellLabel, value, ignoreLabelHalo, sanitizeSubmesh, comm)))
 end
 
-@for_petsc function DMPlexFilter(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cellLabel::DMLabel, value::$PetscInt, ignoreLabelHalo::PetscBool, sanitizeSubmesh::PetscBool, comm::MPI_Comm )
+@for_petsc function DMPlexFilter(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cellLabel::AbstractDMLabel, value::$PetscInt, ignoreLabelHalo::PetscBool, sanitizeSubmesh::PetscBool, comm::MPI_Comm )
 	ownershipTransferSF_ = Ref{PetscSF}()
 	subdm_ = Ref{CDM}()
 
     @chk ccall(
                (:DMPlexFilter, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel, $PetscInt, PetscBool, PetscBool, MPI_Comm, Ptr{PetscSF}, Ptr{CDM}),
+               (CDM, CDMLabel, $PetscInt, PetscBool, PetscBool, MPI_Comm, Ptr{PetscSF}, Ptr{CDM}),
                dm, cellLabel, value, ignoreLabelHalo, sanitizeSubmesh, comm, ownershipTransferSF_, subdm_,
               )
 
@@ -23917,16 +23917,16 @@ function DMPlexGetCellTypeLabel(petsclib::PetscLibType, dm::AbstractPetscDM)
 end
 
 @for_petsc function DMPlexGetCellTypeLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
-	celltypeLabel_ = Ref{DMLabel}()
+	celltypeLabel_ = Ref{CDMLabel}()
 
     @chk ccall(
                (:DMPlexGetCellTypeLabel, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{DMLabel}),
+               (CDM, Ptr{CDMLabel}),
                dm, celltypeLabel_,
               )
 
-	celltypeLabel = celltypeLabel_[]
+	celltypeLabel = DMLabel(celltypeLabel_[], petsclib; own = false)
 
 	return celltypeLabel
 end 
@@ -24625,16 +24625,16 @@ function DMPlexGetDepthLabel(petsclib::PetscLibType, dm::AbstractPetscDM)
 end
 
 @for_petsc function DMPlexGetDepthLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
-	depthLabel_ = Ref{DMLabel}()
+	depthLabel_ = Ref{CDMLabel}()
 
     @chk ccall(
                (:DMPlexGetDepthLabel, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{DMLabel}),
+               (CDM, Ptr{CDMLabel}),
                dm, depthLabel_,
               )
 
-	depthLabel = depthLabel_[]
+	depthLabel = DMLabel(depthLabel_[], petsclib; own = false)
 
 	return depthLabel
 end 
@@ -25987,7 +25987,7 @@ end
 end 
 
 """
-	num_cells::PetscInt,cell_size::PetscInt,num_comp::PetscInt,l_size::PetscInt,offsets::Vector{PetscInt} = DMPlexGetLocalOffsets(petsclib::PetscLibType, dm::AbstractPetscDM, domain_label::DMLabel, label_value::PetscInt, height::PetscInt, dm_field::PetscInt) 
+	num_cells::PetscInt,cell_size::PetscInt,num_comp::PetscInt,l_size::PetscInt,offsets::Vector{PetscInt} = DMPlexGetLocalOffsets(petsclib::PetscLibType, dm::AbstractPetscDM, domain_label::AbstractDMLabel, label_value::PetscInt, height::PetscInt, dm_field::PetscInt) 
 Allocate and populate array of local offsets for each cell closure.
 
 Not collective
@@ -26013,11 +26013,11 @@ See also: `DMPlexGetLocalOffsetsSupport()`, `DM`, `DMPLEX`, `DMLabel`, `DMPlexGe
 # External Links
 $(_doc_external("DMPlex/DMPlexGetLocalOffsets"))
 """
-function DMPlexGetLocalOffsets(petsclib::PetscLibType, dm::AbstractPetscDM, domain_label::DMLabel, label_value::Integer, height::Integer, dm_field::Integer)
+function DMPlexGetLocalOffsets(petsclib::PetscLibType, dm::AbstractPetscDM, domain_label::AbstractDMLabel, label_value::Integer, height::Integer, dm_field::Integer)
     throw(MethodError(DMPlexGetLocalOffsets, (petsclib, dm, domain_label, label_value, height, dm_field)))
 end
 
-@for_petsc function DMPlexGetLocalOffsets(petsclib::$UnionPetscLib, dm::AbstractPetscDM, domain_label::DMLabel, label_value::$PetscInt, height::$PetscInt, dm_field::$PetscInt )
+@for_petsc function DMPlexGetLocalOffsets(petsclib::$UnionPetscLib, dm::AbstractPetscDM, domain_label::AbstractDMLabel, label_value::$PetscInt, height::$PetscInt, dm_field::$PetscInt )
 	num_cells_ = Ref{$PetscInt}()
 	cell_size_ = Ref{$PetscInt}()
 	num_comp_ = Ref{$PetscInt}()
@@ -26027,7 +26027,7 @@ end
     @chk ccall(
                (:DMPlexGetLocalOffsets, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}),
+               (CDM, CDMLabel, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}),
                dm, domain_label, label_value, height, dm_field, num_cells_, cell_size_, num_comp_, l_size_, offsets_,
               )
 
@@ -26041,7 +26041,7 @@ end
 end 
 
 """
-	num_faces::PetscInt,num_comp::PetscInt,l_size::PetscInt,offsetsNeg::Ptr{PetscInt},offsetsPos::Ptr{PetscInt} = DMPlexGetLocalOffsetsSupport(petsclib::PetscLibType, dm::AbstractPetscDM, domain_label::DMLabel, label_value::PetscInt) 
+	num_faces::PetscInt,num_comp::PetscInt,l_size::PetscInt,offsetsNeg::Ptr{PetscInt},offsetsPos::Ptr{PetscInt} = DMPlexGetLocalOffsetsSupport(petsclib::PetscLibType, dm::AbstractPetscDM, domain_label::AbstractDMLabel, label_value::PetscInt) 
 Allocate and populate arrays of local offsets for each face support.
 
 Not collective
@@ -26065,11 +26065,11 @@ See also: `DMPlexGetLocalOffsets()`, `DM`, `DMPLEX`, `DMLabel`, `DMPlexGetClosur
 # External Links
 $(_doc_external("DMPlex/DMPlexGetLocalOffsetsSupport"))
 """
-function DMPlexGetLocalOffsetsSupport(petsclib::PetscLibType, dm::AbstractPetscDM, domain_label::DMLabel, label_value::Integer)
+function DMPlexGetLocalOffsetsSupport(petsclib::PetscLibType, dm::AbstractPetscDM, domain_label::AbstractDMLabel, label_value::Integer)
     throw(MethodError(DMPlexGetLocalOffsetsSupport, (petsclib, dm, domain_label, label_value)))
 end
 
-@for_petsc function DMPlexGetLocalOffsetsSupport(petsclib::$UnionPetscLib, dm::AbstractPetscDM, domain_label::DMLabel, label_value::$PetscInt )
+@for_petsc function DMPlexGetLocalOffsetsSupport(petsclib::$UnionPetscLib, dm::AbstractPetscDM, domain_label::AbstractDMLabel, label_value::$PetscInt )
 	num_faces_ = Ref{$PetscInt}()
 	num_comp_ = Ref{$PetscInt}()
 	l_size_ = Ref{$PetscInt}()
@@ -26079,7 +26079,7 @@ end
     @chk ccall(
                (:DMPlexGetLocalOffsetsSupport, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}, Ptr{Ptr{$PetscInt}}),
+               (CDM, CDMLabel, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}, Ptr{Ptr{$PetscInt}}),
                dm, domain_label, label_value, num_faces_, num_comp_, l_size_, offsetsNeg_, offsetsPos_,
               )
 
@@ -26331,7 +26331,7 @@ end
 end 
 
 """
-	perm::IS = DMPlexGetOrdering(petsclib::PetscLibType, dm::AbstractPetscDM, otype::String, label::DMLabel) 
+	perm::IS = DMPlexGetOrdering(petsclib::PetscLibType, dm::AbstractPetscDM, otype::String, label::AbstractDMLabel) 
 Calculate a reordering of the mesh
 
 Collective
@@ -26351,17 +26351,17 @@ See also: `DMPLEX`, `DMPlexPermute()`, `MatOrderingType`, `MatGetOrdering()`
 # External Links
 $(_doc_external("DMPlex/DMPlexGetOrdering"))
 """
-function DMPlexGetOrdering(petsclib::PetscLibType, dm::AbstractPetscDM, otype::String, label::DMLabel)
+function DMPlexGetOrdering(petsclib::PetscLibType, dm::AbstractPetscDM, otype::String, label::AbstractDMLabel)
     throw(MethodError(DMPlexGetOrdering, (petsclib, dm, otype, label)))
 end
 
-@for_petsc function DMPlexGetOrdering(petsclib::$UnionPetscLib, dm::AbstractPetscDM, otype::String, label::DMLabel )
+@for_petsc function DMPlexGetOrdering(petsclib::$UnionPetscLib, dm::AbstractPetscDM, otype::String, label::AbstractDMLabel )
 	perm_ = Ref{CIS}()
 
     @chk ccall(
                (:DMPlexGetOrdering, $petsc_library),
                PetscErrorCode,
-               (CDM, MatOrderingType, DMLabel, Ptr{CIS}),
+               (CDM, MatOrderingType, CDMLabel, Ptr{CIS}),
                dm, otype, label, perm_,
               )
 
@@ -27297,16 +27297,16 @@ function DMPlexGetSubpointMap(petsclib::PetscLibType, dm::AbstractPetscDM)
 end
 
 @for_petsc function DMPlexGetSubpointMap(petsclib::$UnionPetscLib, dm::AbstractPetscDM )
-	subpointMap_ = Ref{DMLabel}()
+	subpointMap_ = Ref{CDMLabel}()
 
     @chk ccall(
                (:DMPlexGetSubpointMap, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{DMLabel}),
+               (CDM, Ptr{CDMLabel}),
                dm, subpointMap_,
               )
 
-	subpointMap = subpointMap_[]
+	subpointMap = DMLabel(subpointMap_[], petsclib; own = false)
 
 	return subpointMap
 end 
@@ -28119,7 +28119,7 @@ end
 end 
 
 """
-	DMPlexInsertBoundaryValuesEssential(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, label::DMLabel, numids::PetscInt, ids::Vector{PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec) 
+	DMPlexInsertBoundaryValuesEssential(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, label::AbstractDMLabel, numids::PetscInt, ids::Vector{PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec) 
 Insert boundary values into a local vector using a function of the coordinates
 
 Input Parameters:
@@ -28144,16 +28144,16 @@ See also: `DM`, `DMPLEX`, `DMLabel`, `DMPlexInsertBoundaryValuesEssentialField()
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertBoundaryValuesEssential"))
 """
-function DMPlexInsertBoundaryValuesEssential(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, field::Integer, Nc::Integer, comps::AbstractVector{<:Number}, label::DMLabel, numids::Integer, ids::AbstractVector{<:Number}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec)
+function DMPlexInsertBoundaryValuesEssential(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, field::Integer, Nc::Integer, comps::AbstractVector{<:Number}, label::AbstractDMLabel, numids::Integer, ids::AbstractVector{<:Number}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec)
     throw(MethodError(DMPlexInsertBoundaryValuesEssential, (petsclib, dm, time, field, Nc, comps, label, numids, ids, func, ctx, locX)))
 end
 
-@for_petsc function DMPlexInsertBoundaryValuesEssential(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, field::$PetscInt, Nc::$PetscInt, comps::Vector{$PetscInt}, label::DMLabel, numids::$PetscInt, ids::Vector{$PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec )
+@for_petsc function DMPlexInsertBoundaryValuesEssential(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, field::$PetscInt, Nc::$PetscInt, comps::Vector{$PetscInt}, label::AbstractDMLabel, numids::$PetscInt, ids::Vector{$PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec )
 
     @chk ccall(
                (:DMPlexInsertBoundaryValuesEssential, $petsc_library),
                PetscErrorCode,
-               (CDM, $PetscReal, $PetscInt, $PetscInt, Ptr{$PetscInt}, DMLabel, $PetscInt, Ptr{$PetscInt}, external, Ptr{Cvoid}, CVec),
+               (CDM, $PetscReal, $PetscInt, $PetscInt, Ptr{$PetscInt}, CDMLabel, $PetscInt, Ptr{$PetscInt}, external, Ptr{Cvoid}, CVec),
                dm, time, field, Nc, comps, label, numids, ids, func, ctx, locX,
               )
 
@@ -28162,7 +28162,7 @@ end
 end 
 
 """
-	DMPlexInsertBoundaryValuesEssentialBdField(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, locU::AbstractPetscVec, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, label::DMLabel, numids::PetscInt, ids::Vector{PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec) 
+	DMPlexInsertBoundaryValuesEssentialBdField(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, locU::AbstractPetscVec, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, label::AbstractDMLabel, numids::PetscInt, ids::Vector{PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec) 
 Insert boundary values into a local vector using a function of the coordinates and boundary field data
 
 Collective
@@ -28190,16 +28190,16 @@ See also: `DM`, `DMPLEX`, `DMProjectBdFieldLabelLocal()`, `DMPlexInsertBoundaryV
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertBoundaryValuesEssentialBdField"))
 """
-function DMPlexInsertBoundaryValuesEssentialBdField(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, locU::AbstractPetscVec, field::Integer, Nc::Integer, comps::AbstractVector{<:Number}, label::DMLabel, numids::Integer, ids::AbstractVector{<:Number}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec)
+function DMPlexInsertBoundaryValuesEssentialBdField(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, locU::AbstractPetscVec, field::Integer, Nc::Integer, comps::AbstractVector{<:Number}, label::AbstractDMLabel, numids::Integer, ids::AbstractVector{<:Number}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec)
     throw(MethodError(DMPlexInsertBoundaryValuesEssentialBdField, (petsclib, dm, time, locU, field, Nc, comps, label, numids, ids, func, ctx, locX)))
 end
 
-@for_petsc function DMPlexInsertBoundaryValuesEssentialBdField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, locU::AbstractPetscVec, field::$PetscInt, Nc::$PetscInt, comps::Vector{$PetscInt}, label::DMLabel, numids::$PetscInt, ids::Vector{$PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec )
+@for_petsc function DMPlexInsertBoundaryValuesEssentialBdField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, locU::AbstractPetscVec, field::$PetscInt, Nc::$PetscInt, comps::Vector{$PetscInt}, label::AbstractDMLabel, numids::$PetscInt, ids::Vector{$PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec )
 
     @chk ccall(
                (:DMPlexInsertBoundaryValuesEssentialBdField, $petsc_library),
                PetscErrorCode,
-               (CDM, $PetscReal, CVec, $PetscInt, $PetscInt, Ptr{$PetscInt}, DMLabel, $PetscInt, Ptr{$PetscInt}, external, Ptr{Cvoid}, CVec),
+               (CDM, $PetscReal, CVec, $PetscInt, $PetscInt, Ptr{$PetscInt}, CDMLabel, $PetscInt, Ptr{$PetscInt}, external, Ptr{Cvoid}, CVec),
                dm, time, locU, field, Nc, comps, label, numids, ids, func, ctx, locX,
               )
 
@@ -28208,7 +28208,7 @@ end
 end 
 
 """
-	DMPlexInsertBoundaryValuesEssentialField(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, locU::AbstractPetscVec, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, label::DMLabel, numids::PetscInt, ids::Vector{PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec) 
+	DMPlexInsertBoundaryValuesEssentialField(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, locU::AbstractPetscVec, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, label::AbstractDMLabel, numids::PetscInt, ids::Vector{PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec) 
 Insert boundary values into a local vector using a function of the coordinates and field data
 
 Input Parameters:
@@ -28234,16 +28234,16 @@ See also: `DM`, `DMPLEX`, `DMPlexInsertBoundaryValuesEssential()`, `DMPlexInsert
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertBoundaryValuesEssentialField"))
 """
-function DMPlexInsertBoundaryValuesEssentialField(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, locU::AbstractPetscVec, field::Integer, Nc::Integer, comps::AbstractVector{<:Number}, label::DMLabel, numids::Integer, ids::AbstractVector{<:Number}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec)
+function DMPlexInsertBoundaryValuesEssentialField(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, locU::AbstractPetscVec, field::Integer, Nc::Integer, comps::AbstractVector{<:Number}, label::AbstractDMLabel, numids::Integer, ids::AbstractVector{<:Number}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec)
     throw(MethodError(DMPlexInsertBoundaryValuesEssentialField, (petsclib, dm, time, locU, field, Nc, comps, label, numids, ids, func, ctx, locX)))
 end
 
-@for_petsc function DMPlexInsertBoundaryValuesEssentialField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, locU::AbstractPetscVec, field::$PetscInt, Nc::$PetscInt, comps::Vector{$PetscInt}, label::DMLabel, numids::$PetscInt, ids::Vector{$PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec )
+@for_petsc function DMPlexInsertBoundaryValuesEssentialField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, locU::AbstractPetscVec, field::$PetscInt, Nc::$PetscInt, comps::Vector{$PetscInt}, label::AbstractDMLabel, numids::$PetscInt, ids::Vector{$PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec )
 
     @chk ccall(
                (:DMPlexInsertBoundaryValuesEssentialField, $petsc_library),
                PetscErrorCode,
-               (CDM, $PetscReal, CVec, $PetscInt, $PetscInt, Ptr{$PetscInt}, DMLabel, $PetscInt, Ptr{$PetscInt}, external, Ptr{Cvoid}, CVec),
+               (CDM, $PetscReal, CVec, $PetscInt, $PetscInt, Ptr{$PetscInt}, CDMLabel, $PetscInt, Ptr{$PetscInt}, external, Ptr{Cvoid}, CVec),
                dm, time, locU, field, Nc, comps, label, numids, ids, func, ctx, locX,
               )
 
@@ -28294,7 +28294,7 @@ end
 end 
 
 """
-	DMPlexInsertBoundaryValuesRiemann(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, Grad::AbstractPetscVec, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, label::DMLabel, numids::PetscInt, ids::Vector{PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec) 
+	DMPlexInsertBoundaryValuesRiemann(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, Grad::AbstractPetscVec, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, label::AbstractDMLabel, numids::PetscInt, ids::Vector{PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec) 
 Insert boundary values into a local vector
 
 Input Parameters:
@@ -28322,16 +28322,16 @@ See also: `DM`, `DMPLEX`, `DMPlexInsertBoundaryValuesEssential()`, `DMPlexInsert
 # External Links
 $(_doc_external("DMPlex/DMPlexInsertBoundaryValuesRiemann"))
 """
-function DMPlexInsertBoundaryValuesRiemann(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, Grad::AbstractPetscVec, field::Integer, Nc::Integer, comps::AbstractVector{<:Number}, label::DMLabel, numids::Integer, ids::AbstractVector{<:Number}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec)
+function DMPlexInsertBoundaryValuesRiemann(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, Grad::AbstractPetscVec, field::Integer, Nc::Integer, comps::AbstractVector{<:Number}, label::AbstractDMLabel, numids::Integer, ids::AbstractVector{<:Number}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec)
     throw(MethodError(DMPlexInsertBoundaryValuesRiemann, (petsclib, dm, time, faceGeometry, cellGeometry, Grad, field, Nc, comps, label, numids, ids, func, ctx, locX)))
 end
 
-@for_petsc function DMPlexInsertBoundaryValuesRiemann(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, Grad::AbstractPetscVec, field::$PetscInt, Nc::$PetscInt, comps::Vector{$PetscInt}, label::DMLabel, numids::$PetscInt, ids::Vector{$PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec )
+@for_petsc function DMPlexInsertBoundaryValuesRiemann(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, Grad::AbstractPetscVec, field::$PetscInt, Nc::$PetscInt, comps::Vector{$PetscInt}, label::AbstractDMLabel, numids::$PetscInt, ids::Vector{$PetscInt}, func::external, ctx::Ptr{Cvoid}, locX::AbstractPetscVec )
 
     @chk ccall(
                (:DMPlexInsertBoundaryValuesRiemann, $petsc_library),
                PetscErrorCode,
-               (CDM, $PetscReal, CVec, CVec, CVec, $PetscInt, $PetscInt, Ptr{$PetscInt}, DMLabel, $PetscInt, Ptr{$PetscInt}, external, Ptr{Cvoid}, CVec),
+               (CDM, $PetscReal, CVec, CVec, CVec, $PetscInt, $PetscInt, Ptr{$PetscInt}, CDMLabel, $PetscInt, Ptr{$PetscInt}, external, Ptr{Cvoid}, CVec),
                dm, time, faceGeometry, cellGeometry, Grad, field, Nc, comps, label, numids, ids, func, ctx, locX,
               )
 
@@ -28782,7 +28782,7 @@ end
 end 
 
 """
-	DMPlexLabelAddCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
+	DMPlexLabelAddCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel) 
 Starting with a label marking points on a surface, we add a cell for each point
 
 Input Parameters:
@@ -28799,16 +28799,16 @@ See also: `DM`, `DMPLEX`, `DMPlexLabelAddFaceCells()`, `DMPlexLabelComplete()`, 
 # External Links
 $(_doc_external("DMPlex/DMPlexLabelAddCells"))
 """
-function DMPlexLabelAddCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+function DMPlexLabelAddCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel)
     throw(MethodError(DMPlexLabelAddCells, (petsclib, dm, label)))
 end
 
-@for_petsc function DMPlexLabelAddCells(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
+@for_petsc function DMPlexLabelAddCells(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::AbstractDMLabel )
 
     @chk ccall(
                (:DMPlexLabelAddCells, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel),
+               (CDM, CDMLabel),
                dm, label,
               )
 
@@ -28817,7 +28817,7 @@ end
 end 
 
 """
-	DMPlexLabelAddFaceCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
+	DMPlexLabelAddFaceCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel) 
 Starting with a label marking faces on a surface, we add a cell for each face
 
 Input Parameters:
@@ -28834,16 +28834,16 @@ See also: `DM`, `DMPLEX`, `DMPlexLabelAddCells()`, `DMPlexLabelComplete()`, `DMP
 # External Links
 $(_doc_external("DMPlex/DMPlexLabelAddFaceCells"))
 """
-function DMPlexLabelAddFaceCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+function DMPlexLabelAddFaceCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel)
     throw(MethodError(DMPlexLabelAddFaceCells, (petsclib, dm, label)))
 end
 
-@for_petsc function DMPlexLabelAddFaceCells(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
+@for_petsc function DMPlexLabelAddFaceCells(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::AbstractDMLabel )
 
     @chk ccall(
                (:DMPlexLabelAddFaceCells, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel),
+               (CDM, CDMLabel),
                dm, label,
               )
 
@@ -28852,7 +28852,7 @@ end
 end 
 
 """
-	DMPlexLabelClearCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
+	DMPlexLabelClearCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel) 
 Remove cells from a label
 
 Input Parameters:
@@ -28869,16 +28869,16 @@ See also: `DM`, `DMPLEX`, `DMPlexLabelComplete()`, `DMPlexLabelCohesiveComplete(
 # External Links
 $(_doc_external("DMPlex/DMPlexLabelClearCells"))
 """
-function DMPlexLabelClearCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+function DMPlexLabelClearCells(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel)
     throw(MethodError(DMPlexLabelClearCells, (petsclib, dm, label)))
 end
 
-@for_petsc function DMPlexLabelClearCells(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
+@for_petsc function DMPlexLabelClearCells(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::AbstractDMLabel )
 
     @chk ccall(
                (:DMPlexLabelClearCells, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel),
+               (CDM, CDMLabel),
                dm, label,
               )
 
@@ -28887,7 +28887,7 @@ end
 end 
 
 """
-	DMPlexLabelCohesiveComplete(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, blabel::DMLabel, bvalue::PetscInt, flip::PetscBool, split::PetscBool, subdm::AbstractPetscDM) 
+	DMPlexLabelCohesiveComplete(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel, blabel::AbstractDMLabel, bvalue::PetscInt, flip::PetscBool, split::PetscBool, subdm::AbstractPetscDM) 
 Starting with a label marking points on an internal surface, we add all other mesh pieces
 to complete the surface
 
@@ -28910,16 +28910,16 @@ See also: `DM`, `DMPLEX`, `DMPlexConstructCohesiveCells()`, `DMPlexLabelComplete
 # External Links
 $(_doc_external("DMPlex/DMPlexLabelCohesiveComplete"))
 """
-function DMPlexLabelCohesiveComplete(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, blabel::DMLabel, bvalue::Integer, flip::PetscBool, split::PetscBool, subdm::AbstractPetscDM)
+function DMPlexLabelCohesiveComplete(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel, blabel::AbstractDMLabel, bvalue::Integer, flip::PetscBool, split::PetscBool, subdm::AbstractPetscDM)
     throw(MethodError(DMPlexLabelCohesiveComplete, (petsclib, dm, label, blabel, bvalue, flip, split, subdm)))
 end
 
-@for_petsc function DMPlexLabelCohesiveComplete(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel, blabel::DMLabel, bvalue::$PetscInt, flip::PetscBool, split::PetscBool, subdm::AbstractPetscDM )
+@for_petsc function DMPlexLabelCohesiveComplete(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::AbstractDMLabel, blabel::AbstractDMLabel, bvalue::$PetscInt, flip::PetscBool, split::PetscBool, subdm::AbstractPetscDM )
 
     @chk ccall(
                (:DMPlexLabelCohesiveComplete, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel, DMLabel, $PetscInt, PetscBool, PetscBool, CDM),
+               (CDM, CDMLabel, CDMLabel, $PetscInt, PetscBool, PetscBool, CDM),
                dm, label, blabel, bvalue, flip, split, subdm,
               )
 
@@ -28928,7 +28928,7 @@ end
 end 
 
 """
-	DMPlexLabelComplete(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
+	DMPlexLabelComplete(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel) 
 Starting with a label marking points, we add their transitive closure
 
 Input Parameters:
@@ -28945,16 +28945,16 @@ See also: `DM`, `DMPLEX`, `DMPlexLabelCohesiveComplete()`
 # External Links
 $(_doc_external("DMPlex/DMPlexLabelComplete"))
 """
-function DMPlexLabelComplete(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+function DMPlexLabelComplete(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel)
     throw(MethodError(DMPlexLabelComplete, (petsclib, dm, label)))
 end
 
-@for_petsc function DMPlexLabelComplete(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
+@for_petsc function DMPlexLabelComplete(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::AbstractDMLabel )
 
     @chk ccall(
                (:DMPlexLabelComplete, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel),
+               (CDM, CDMLabel),
                dm, label,
               )
 
@@ -29459,7 +29459,7 @@ end
 end 
 
 """
-	DMPlexMarkBoundaryFaces(petsclib::PetscLibType, dm::AbstractPetscDM, val::PetscInt, label::DMLabel) 
+	DMPlexMarkBoundaryFaces(petsclib::PetscLibType, dm::AbstractPetscDM, val::PetscInt, label::AbstractDMLabel) 
 Mark all faces on the boundary
 
 Collective
@@ -29478,16 +29478,16 @@ See also: `DM`, `DMPLEX`, `DMLabelCreate()`, `DMCreateLabel()`
 # External Links
 $(_doc_external("DMPlex/DMPlexMarkBoundaryFaces"))
 """
-function DMPlexMarkBoundaryFaces(petsclib::PetscLibType, dm::AbstractPetscDM, val::Integer, label::DMLabel)
+function DMPlexMarkBoundaryFaces(petsclib::PetscLibType, dm::AbstractPetscDM, val::Integer, label::AbstractDMLabel)
     throw(MethodError(DMPlexMarkBoundaryFaces, (petsclib, dm, val, label)))
 end
 
-@for_petsc function DMPlexMarkBoundaryFaces(petsclib::$UnionPetscLib, dm::AbstractPetscDM, val::$PetscInt, label::DMLabel )
+@for_petsc function DMPlexMarkBoundaryFaces(petsclib::$UnionPetscLib, dm::AbstractPetscDM, val::$PetscInt, label::AbstractDMLabel )
 
     @chk ccall(
                (:DMPlexMarkBoundaryFaces, $petsc_library),
                PetscErrorCode,
-               (CDM, $PetscInt, DMLabel),
+               (CDM, $PetscInt, CDMLabel),
                dm, val, label,
               )
 
@@ -31549,7 +31549,7 @@ end
 end 
 
 """
-	DMPlexOrientLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
+	DMPlexOrientLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel) 
 Give a consistent orientation to the hypersurface marked by the `DMLabel` in the input mesh
 
 Collective on dm
@@ -31563,16 +31563,16 @@ See also: `DM`, `DMPLEX`, `DMCreate()`, `DMPlexOrient()`
 # External Links
 $(_doc_external("DMPlex/DMPlexOrientLabel"))
 """
-function DMPlexOrientLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+function DMPlexOrientLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel)
     throw(MethodError(DMPlexOrientLabel, (petsclib, dm, label)))
 end
 
-@for_petsc function DMPlexOrientLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
+@for_petsc function DMPlexOrientLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::AbstractDMLabel )
 
     @chk ccall(
                (:DMPlexOrientLabel, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel),
+               (CDM, CDMLabel),
                dm, label,
               )
 
@@ -31616,7 +31616,7 @@ end
 end 
 
 """
-	DMPlexPartitionLabelAdjacency(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
+	DMPlexPartitionLabelAdjacency(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel) 
 Add one level of adjacent points to the partition label
 
 Input Parameters:
@@ -31630,16 +31630,16 @@ See also: `DM`, `DMPLEX`, `DMLabel`, `DMPlexPartitionLabelCreateSF()`, `DMPlexDi
 # External Links
 $(_doc_external("DMPlex/DMPlexPartitionLabelAdjacency"))
 """
-function DMPlexPartitionLabelAdjacency(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+function DMPlexPartitionLabelAdjacency(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel)
     throw(MethodError(DMPlexPartitionLabelAdjacency, (petsclib, dm, label)))
 end
 
-@for_petsc function DMPlexPartitionLabelAdjacency(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
+@for_petsc function DMPlexPartitionLabelAdjacency(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::AbstractDMLabel )
 
     @chk ccall(
                (:DMPlexPartitionLabelAdjacency, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel),
+               (CDM, CDMLabel),
                dm, label,
               )
 
@@ -31648,7 +31648,7 @@ end
 end 
 
 """
-	DMPlexPartitionLabelClosure(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
+	DMPlexPartitionLabelClosure(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel) 
 Add the closure of all points to the partition label
 
 Input Parameters:
@@ -31662,16 +31662,16 @@ See also: `DM`, `DMPLEX`, `DMLabel`, `DMPlexPartitionLabelCreateSF()`, `DMPlexDi
 # External Links
 $(_doc_external("DMPlex/DMPlexPartitionLabelClosure"))
 """
-function DMPlexPartitionLabelClosure(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+function DMPlexPartitionLabelClosure(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel)
     throw(MethodError(DMPlexPartitionLabelClosure, (petsclib, dm, label)))
 end
 
-@for_petsc function DMPlexPartitionLabelClosure(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
+@for_petsc function DMPlexPartitionLabelClosure(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::AbstractDMLabel )
 
     @chk ccall(
                (:DMPlexPartitionLabelClosure, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel),
+               (CDM, CDMLabel),
                dm, label,
               )
 
@@ -31680,7 +31680,7 @@ end
 end 
 
 """
-	sf::PetscSF = DMPlexPartitionLabelCreateSF(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, sortRanks::PetscBool) 
+	sf::PetscSF = DMPlexPartitionLabelCreateSF(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel, sortRanks::PetscBool) 
 Create a star forest from a label that assigns ranks to points
 
 Input Parameters:
@@ -31698,17 +31698,17 @@ See also: `DM`, `DMPLEX`, `DMLabel`, `PetscSF`, `DMPlexDistribute()`
 # External Links
 $(_doc_external("DMPlex/DMPlexPartitionLabelCreateSF"))
 """
-function DMPlexPartitionLabelCreateSF(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, sortRanks::PetscBool)
+function DMPlexPartitionLabelCreateSF(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel, sortRanks::PetscBool)
     throw(MethodError(DMPlexPartitionLabelCreateSF, (petsclib, dm, label, sortRanks)))
 end
 
-@for_petsc function DMPlexPartitionLabelCreateSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel, sortRanks::PetscBool )
+@for_petsc function DMPlexPartitionLabelCreateSF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::AbstractDMLabel, sortRanks::PetscBool )
 	sf_ = Ref{PetscSF}()
 
     @chk ccall(
                (:DMPlexPartitionLabelCreateSF, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel, PetscBool, Ptr{PetscSF}),
+               (CDM, CDMLabel, PetscBool, Ptr{PetscSF}),
                dm, label, sortRanks, sf_,
               )
 
@@ -31718,7 +31718,7 @@ end
 end 
 
 """
-	DMPlexPartitionLabelInvert(petsclib::PetscLibType, dm::AbstractPetscDM, rootLabel::DMLabel, processSF::PetscSF, leafLabel::DMLabel) 
+	DMPlexPartitionLabelInvert(petsclib::PetscLibType, dm::AbstractPetscDM, rootLabel::AbstractDMLabel, processSF::PetscSF, leafLabel::AbstractDMLabel) 
 Create a partition label of remote roots from a local root label
 
 Input Parameters:
@@ -31736,16 +31736,16 @@ See also: `DM`, `DMPLEX`, `DMPlexPartitionLabelCreateSF()`, `DMPlexDistribute()`
 # External Links
 $(_doc_external("DMPlex/DMPlexPartitionLabelInvert"))
 """
-function DMPlexPartitionLabelInvert(petsclib::PetscLibType, dm::AbstractPetscDM, rootLabel::DMLabel, processSF::PetscSF, leafLabel::DMLabel)
+function DMPlexPartitionLabelInvert(petsclib::PetscLibType, dm::AbstractPetscDM, rootLabel::AbstractDMLabel, processSF::PetscSF, leafLabel::AbstractDMLabel)
     throw(MethodError(DMPlexPartitionLabelInvert, (petsclib, dm, rootLabel, processSF, leafLabel)))
 end
 
-@for_petsc function DMPlexPartitionLabelInvert(petsclib::$UnionPetscLib, dm::AbstractPetscDM, rootLabel::DMLabel, processSF::PetscSF, leafLabel::DMLabel )
+@for_petsc function DMPlexPartitionLabelInvert(petsclib::$UnionPetscLib, dm::AbstractPetscDM, rootLabel::AbstractDMLabel, processSF::PetscSF, leafLabel::AbstractDMLabel )
 
     @chk ccall(
                (:DMPlexPartitionLabelInvert, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel, PetscSF, DMLabel),
+               (CDM, CDMLabel, PetscSF, CDMLabel),
                dm, rootLabel, processSF, leafLabel,
               )
 
@@ -31754,7 +31754,7 @@ end
 end 
 
 """
-	DMPlexPartitionLabelPropagate(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
+	DMPlexPartitionLabelPropagate(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel) 
 Propagate points in a partition label over the point `PetscSF`
 
 Input Parameters:
@@ -31768,16 +31768,16 @@ See also: `DM`, `DMPLEX`, `DMLabel`, `DMPlexPartitionLabelCreateSF()`, `DMPlexDi
 # External Links
 $(_doc_external("DMPlex/DMPlexPartitionLabelPropagate"))
 """
-function DMPlexPartitionLabelPropagate(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+function DMPlexPartitionLabelPropagate(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel)
     throw(MethodError(DMPlexPartitionLabelPropagate, (petsclib, dm, label)))
 end
 
-@for_petsc function DMPlexPartitionLabelPropagate(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
+@for_petsc function DMPlexPartitionLabelPropagate(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::AbstractDMLabel )
 
     @chk ccall(
                (:DMPlexPartitionLabelPropagate, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel),
+               (CDM, CDMLabel),
                dm, label,
               )
 
@@ -34730,7 +34730,7 @@ end
 end 
 
 """
-	DMPlexSetSubpointMap(petsclib::PetscLibType, dm::AbstractPetscDM, subpointMap::DMLabel) 
+	DMPlexSetSubpointMap(petsclib::PetscLibType, dm::AbstractPetscDM, subpointMap::AbstractDMLabel) 
 Sets the `DMLabel` with point dimension as values
 
 Input Parameters:
@@ -34744,16 +34744,16 @@ See also: `DM`, `DMPLEX`, `DMPlexCreateSubmesh()`, `DMPlexGetSubpointIS()`
 # External Links
 $(_doc_external("DMPlex/DMPlexSetSubpointMap"))
 """
-function DMPlexSetSubpointMap(petsclib::PetscLibType, dm::AbstractPetscDM, subpointMap::DMLabel)
+function DMPlexSetSubpointMap(petsclib::PetscLibType, dm::AbstractPetscDM, subpointMap::AbstractDMLabel)
     throw(MethodError(DMPlexSetSubpointMap, (petsclib, dm, subpointMap)))
 end
 
-@for_petsc function DMPlexSetSubpointMap(petsclib::$UnionPetscLib, dm::AbstractPetscDM, subpointMap::DMLabel )
+@for_petsc function DMPlexSetSubpointMap(petsclib::$UnionPetscLib, dm::AbstractPetscDM, subpointMap::AbstractDMLabel )
 
     @chk ccall(
                (:DMPlexSetSubpointMap, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel),
+               (CDM, CDMLabel),
                dm, subpointMap,
               )
 
@@ -36469,7 +36469,7 @@ end
 end 
 
 """
-	DMProjectBdFieldLabelLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, localU::AbstractPetscVec, noname::Ptr{Cvoid}) 
+	DMProjectBdFieldLabelLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, label::AbstractDMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, localU::AbstractPetscVec, noname::Ptr{Cvoid}) 
 This projects the given function of the input fields into the function space provided, putting the coefficients in a local vector, calculating only over the portion of the domain boundary specified by the label.
 
 Not Collective
@@ -36517,16 +36517,16 @@ See also: `DM`, `DMProjectField()`, `DMProjectFieldLabelLocal()`, `DMProjectFunc
 # External Links
 $(_doc_external("DM/DMProjectBdFieldLabelLocal"))
 """
-function DMProjectBdFieldLabelLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, label::DMLabel, numIds::Integer, ids::AbstractVector{<:Number}, Nc::Integer, comps::AbstractVector{<:Number}, localU::AbstractPetscVec, noname::Ptr{Cvoid})
+function DMProjectBdFieldLabelLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, label::AbstractDMLabel, numIds::Integer, ids::AbstractVector{<:Number}, Nc::Integer, comps::AbstractVector{<:Number}, localU::AbstractPetscVec, noname::Ptr{Cvoid})
     throw(MethodError(DMProjectBdFieldLabelLocal, (petsclib, dm, time, label, numIds, ids, Nc, comps, localU, noname)))
 end
 
-@for_petsc function DMProjectBdFieldLabelLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, label::DMLabel, numIds::$PetscInt, ids::Vector{$PetscInt}, Nc::$PetscInt, comps::Vector{$PetscInt}, localU::AbstractPetscVec, noname::Ptr{Cvoid} )
+@for_petsc function DMProjectBdFieldLabelLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, label::AbstractDMLabel, numIds::$PetscInt, ids::Vector{$PetscInt}, Nc::$PetscInt, comps::Vector{$PetscInt}, localU::AbstractPetscVec, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMProjectBdFieldLabelLocal, $petsc_library),
                PetscErrorCode,
-               (CDM, $PetscReal, DMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, CVec, Ptr{Cvoid}),
+               (CDM, $PetscReal, CDMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, CVec, Ptr{Cvoid}),
                dm, time, label, numIds, ids, Nc, comps, localU, noname,
               )
 
@@ -36575,7 +36575,7 @@ end
 end 
 
 """
-	DMProjectFieldLabel(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, U::AbstractPetscVec, noname::Ptr{Cvoid}) 
+	DMProjectFieldLabel(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, label::AbstractDMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, U::AbstractPetscVec, noname::Ptr{Cvoid}) 
 This projects the given function of the input fields into the function space provided, putting the coefficients in a global vector, calculating only over the portion of the domain specified by the label.
 
 Not Collective
@@ -36622,16 +36622,16 @@ See also: `DM`, `DMProjectField()`, `DMProjectFieldLabelLocal()`, `DMProjectFunc
 # External Links
 $(_doc_external("DM/DMProjectFieldLabel"))
 """
-function DMProjectFieldLabel(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, label::DMLabel, numIds::Integer, ids::AbstractVector{<:Number}, Nc::Integer, comps::AbstractVector{<:Number}, U::AbstractPetscVec, noname::Ptr{Cvoid})
+function DMProjectFieldLabel(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, label::AbstractDMLabel, numIds::Integer, ids::AbstractVector{<:Number}, Nc::Integer, comps::AbstractVector{<:Number}, U::AbstractPetscVec, noname::Ptr{Cvoid})
     throw(MethodError(DMProjectFieldLabel, (petsclib, dm, time, label, numIds, ids, Nc, comps, U, noname)))
 end
 
-@for_petsc function DMProjectFieldLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, label::DMLabel, numIds::$PetscInt, ids::Vector{$PetscInt}, Nc::$PetscInt, comps::Vector{$PetscInt}, U::AbstractPetscVec, noname::Ptr{Cvoid} )
+@for_petsc function DMProjectFieldLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, label::AbstractDMLabel, numIds::$PetscInt, ids::Vector{$PetscInt}, Nc::$PetscInt, comps::Vector{$PetscInt}, U::AbstractPetscVec, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMProjectFieldLabel, $petsc_library),
                PetscErrorCode,
-               (CDM, $PetscReal, DMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, CVec, Ptr{Cvoid}),
+               (CDM, $PetscReal, CDMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, CVec, Ptr{Cvoid}),
                dm, time, label, numIds, ids, Nc, comps, U, noname,
               )
 
@@ -36640,7 +36640,7 @@ end
 end 
 
 """
-	DMProjectFieldLabelLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, localU::AbstractPetscVec, noname::Ptr{Cvoid}) 
+	DMProjectFieldLabelLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, label::AbstractDMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, localU::AbstractPetscVec, noname::Ptr{Cvoid}) 
 This projects the given function of the input fields into the function space provided, putting the coefficients in a local vector, calculating only over the portion of the domain specified by the label.
 
 Not Collective
@@ -36687,16 +36687,16 @@ See also: `DM`, `DMProjectField()`, `DMProjectFieldLabel()`, `DMProjectFunction(
 # External Links
 $(_doc_external("DM/DMProjectFieldLabelLocal"))
 """
-function DMProjectFieldLabelLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, label::DMLabel, numIds::Integer, ids::AbstractVector{<:Number}, Nc::Integer, comps::AbstractVector{<:Number}, localU::AbstractPetscVec, noname::Ptr{Cvoid})
+function DMProjectFieldLabelLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, label::AbstractDMLabel, numIds::Integer, ids::AbstractVector{<:Number}, Nc::Integer, comps::AbstractVector{<:Number}, localU::AbstractPetscVec, noname::Ptr{Cvoid})
     throw(MethodError(DMProjectFieldLabelLocal, (petsclib, dm, time, label, numIds, ids, Nc, comps, localU, noname)))
 end
 
-@for_petsc function DMProjectFieldLabelLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, label::DMLabel, numIds::$PetscInt, ids::Vector{$PetscInt}, Nc::$PetscInt, comps::Vector{$PetscInt}, localU::AbstractPetscVec, noname::Ptr{Cvoid} )
+@for_petsc function DMProjectFieldLabelLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, label::AbstractDMLabel, numIds::$PetscInt, ids::Vector{$PetscInt}, Nc::$PetscInt, comps::Vector{$PetscInt}, localU::AbstractPetscVec, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMProjectFieldLabelLocal, $petsc_library),
                PetscErrorCode,
-               (CDM, $PetscReal, DMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, CVec, Ptr{Cvoid}),
+               (CDM, $PetscReal, CDMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, CVec, Ptr{Cvoid}),
                dm, time, label, numIds, ids, Nc, comps, localU, noname,
               )
 
@@ -36791,7 +36791,7 @@ function DMProjectFunction(petsclib::PetscLibType, dm::AbstractPetscDM, time::Re
 end
 
 """
-	DMProjectFunctionLabel(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, noname::Ptr{Cvoid}) 
+	DMProjectFunctionLabel(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, label::AbstractDMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, noname::Ptr{Cvoid}) 
 This projects the given function into the function space provided by the `DM`, putting the coefficients in a global vector, setting values only for points in the given label.
 
 Collective
@@ -36826,16 +36826,16 @@ See also: `DM`, `DMProjectFunction()`, `DMProjectFunctionLocal()`, `DMProjectFun
 # External Links
 $(_doc_external("DM/DMProjectFunctionLabel"))
 """
-function DMProjectFunctionLabel(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, label::DMLabel, numIds::Integer, ids::AbstractVector{<:Number}, Nc::Integer, comps::AbstractVector{<:Number}, noname::Ptr{Cvoid})
+function DMProjectFunctionLabel(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, label::AbstractDMLabel, numIds::Integer, ids::AbstractVector{<:Number}, Nc::Integer, comps::AbstractVector{<:Number}, noname::Ptr{Cvoid})
     throw(MethodError(DMProjectFunctionLabel, (petsclib, dm, time, label, numIds, ids, Nc, comps, noname)))
 end
 
-@for_petsc function DMProjectFunctionLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, label::DMLabel, numIds::$PetscInt, ids::Vector{$PetscInt}, Nc::$PetscInt, comps::Vector{$PetscInt}, noname::Ptr{Cvoid} )
+@for_petsc function DMProjectFunctionLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, label::AbstractDMLabel, numIds::$PetscInt, ids::Vector{$PetscInt}, Nc::$PetscInt, comps::Vector{$PetscInt}, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMProjectFunctionLabel, $petsc_library),
                PetscErrorCode,
-               (CDM, $PetscReal, DMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
+               (CDM, $PetscReal, CDMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
                dm, time, label, numIds, ids, Nc, comps, noname,
               )
 
@@ -36844,7 +36844,7 @@ end
 end 
 
 """
-	DMProjectFunctionLabelLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, label::DMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, noname::Ptr{Cvoid}) 
+	DMProjectFunctionLabelLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::PetscReal, label::AbstractDMLabel, numIds::PetscInt, ids::Vector{PetscInt}, Nc::PetscInt, comps::Vector{PetscInt}, noname::Ptr{Cvoid}) 
 This projects the given function into the function space provided by the `DM`, putting the coefficients in a local vector, setting values only for points in the given label.
 
 Not Collective
@@ -36879,16 +36879,16 @@ See also: `DM`, `DMProjectFunction()`, `DMProjectFunctionLocal()`, `DMProjectFun
 # External Links
 $(_doc_external("DM/DMProjectFunctionLabelLocal"))
 """
-function DMProjectFunctionLabelLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, label::DMLabel, numIds::Integer, ids::AbstractVector{<:Number}, Nc::Integer, comps::AbstractVector{<:Number}, noname::Ptr{Cvoid})
+function DMProjectFunctionLabelLocal(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real, label::AbstractDMLabel, numIds::Integer, ids::AbstractVector{<:Number}, Nc::Integer, comps::AbstractVector{<:Number}, noname::Ptr{Cvoid})
     throw(MethodError(DMProjectFunctionLabelLocal, (petsclib, dm, time, label, numIds, ids, Nc, comps, noname)))
 end
 
-@for_petsc function DMProjectFunctionLabelLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, label::DMLabel, numIds::$PetscInt, ids::Vector{$PetscInt}, Nc::$PetscInt, comps::Vector{$PetscInt}, noname::Ptr{Cvoid} )
+@for_petsc function DMProjectFunctionLabelLocal(petsclib::$UnionPetscLib, dm::AbstractPetscDM, time::$PetscReal, label::AbstractDMLabel, numIds::$PetscInt, ids::Vector{$PetscInt}, Nc::$PetscInt, comps::Vector{$PetscInt}, noname::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMProjectFunctionLabelLocal, $petsc_library),
                PetscErrorCode,
-               (CDM, $PetscReal, DMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
+               (CDM, $PetscReal, CDMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}),
                dm, time, label, numIds, ids, Nc, comps, noname,
               )
 
@@ -37298,22 +37298,22 @@ function DMRemoveLabel(petsclib::PetscLibType, dm::AbstractPetscDM, name::String
 end
 
 @for_petsc function DMRemoveLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, name::String )
-	label_ = Ref{DMLabel}()
+	label_ = Ref{CDMLabel}()
 
     @chk ccall(
                (:DMRemoveLabel, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{Cchar}, Ptr{DMLabel}),
+               (CDM, Ptr{Cchar}, Ptr{CDMLabel}),
                dm, name, label_,
               )
 
-	label = label_[]
+	label = DMLabel(label_[], petsclib)
 
 	return label
 end 
 
 """
-	DMRemoveLabelBySelf(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, failNotFound::PetscBool) 
+	DMRemoveLabelBySelf(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel, failNotFound::PetscBool) 
 Remove the label from this `DM`
 
 Not Collective
@@ -37330,19 +37330,21 @@ See also: `DM`, `DMLabel`, `DMCreateLabel()`, `DMHasLabel()`, `DMGetLabel()`, `D
 # External Links
 $(_doc_external("DM/DMRemoveLabelBySelf"))
 """
-function DMRemoveLabelBySelf(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, failNotFound::PetscBool)
+function DMRemoveLabelBySelf(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel, failNotFound::PetscBool)
     throw(MethodError(DMRemoveLabelBySelf, (petsclib, dm, label, failNotFound)))
 end
 
-@for_petsc function DMRemoveLabelBySelf(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel, failNotFound::PetscBool )
+@for_petsc function DMRemoveLabelBySelf(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::AbstractDMLabel, failNotFound::PetscBool )
+	label_ = Ref(label.ptr)
 
     @chk ccall(
                (:DMRemoveLabelBySelf, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{DMLabel}, PetscBool),
-               dm, label, failNotFound,
+               (CDM, Ptr{CDMLabel}, PetscBool),
+               dm, label_, failNotFound,
               )
 
+	label.ptr = label_[]
 
 	return nothing
 end 
@@ -38839,7 +38841,7 @@ end
 end 
 
 """
-	DMSetAuxiliaryVec(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, value::PetscInt, part::PetscInt, aux::AbstractPetscVec) 
+	DMSetAuxiliaryVec(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel, value::PetscInt, part::PetscInt, aux::AbstractPetscVec) 
 Set an auxiliary vector for region specified by the given label and value, and equation part
 
 Not Collective because auxiliary vectors are not parallel
@@ -38858,16 +38860,16 @@ See also: `DM`, `DMClearAuxiliaryVec()`, `DMGetAuxiliaryVec()`, `DMGetAuxiliaryL
 # External Links
 $(_doc_external("DM/DMSetAuxiliaryVec"))
 """
-function DMSetAuxiliaryVec(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, value::Integer, part::Integer, aux::AbstractPetscVec)
+function DMSetAuxiliaryVec(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel, value::Integer, part::Integer, aux::AbstractPetscVec)
     throw(MethodError(DMSetAuxiliaryVec, (petsclib, dm, label, value, part, aux)))
 end
 
-@for_petsc function DMSetAuxiliaryVec(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel, value::$PetscInt, part::$PetscInt, aux::AbstractPetscVec )
+@for_petsc function DMSetAuxiliaryVec(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::AbstractDMLabel, value::$PetscInt, part::$PetscInt, aux::AbstractPetscVec )
 
     @chk ccall(
                (:DMSetAuxiliaryVec, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel, $PetscInt, $PetscInt, CVec),
+               (CDM, CDMLabel, $PetscInt, $PetscInt, CVec),
                dm, label, value, part, aux,
               )
 
@@ -39255,7 +39257,7 @@ end
 end 
 
 """
-	DMSetCoordinateDisc(petsclib::PetscLibType, dm::AbstractPetscDM, disc::PetscFE, localized::PetscBool, project::PetscBool) 
+	DMSetCoordinateDisc(petsclib::PetscLibType, dm::AbstractPetscDM, disc::AbstractPetscFE, localized::PetscBool, project::PetscBool) 
 Set a coordinate space
 
 Input Parameters:
@@ -39271,16 +39273,16 @@ See also: `DM`, `PetscFE`, `DMGetCoordinateField()`
 # External Links
 $(_doc_external("DM/DMSetCoordinateDisc"))
 """
-function DMSetCoordinateDisc(petsclib::PetscLibType, dm::AbstractPetscDM, disc::PetscFE, localized::PetscBool, project::PetscBool)
+function DMSetCoordinateDisc(petsclib::PetscLibType, dm::AbstractPetscDM, disc::AbstractPetscFE, localized::PetscBool, project::PetscBool)
     throw(MethodError(DMSetCoordinateDisc, (petsclib, dm, disc, localized, project)))
 end
 
-@for_petsc function DMSetCoordinateDisc(petsclib::$UnionPetscLib, dm::AbstractPetscDM, disc::PetscFE, localized::PetscBool, project::PetscBool )
+@for_petsc function DMSetCoordinateDisc(petsclib::$UnionPetscLib, dm::AbstractPetscDM, disc::AbstractPetscFE, localized::PetscBool, project::PetscBool )
 
     @chk ccall(
                (:DMSetCoordinateDisc, $petsc_library),
                PetscErrorCode,
-               (CDM, PetscFE, PetscBool, PetscBool),
+               (CDM, CPetscFE, PetscBool, PetscBool),
                dm, disc, localized, project,
               )
 
@@ -39496,7 +39498,7 @@ end
 end 
 
 """
-	DMSetField(petsclib::PetscLibType, dm::AbstractPetscDM, f::PetscInt, label::DMLabel, disc) 
+	DMSetField(petsclib::PetscLibType, dm::AbstractPetscDM, f::PetscInt, label::AbstractDMLabel, disc) 
 Set the discretization object for a given `DM` field. Usually one would call `DMAddField()` which automatically handles
 the field numbering.
 
@@ -39515,16 +39517,16 @@ See also: `DM`, `DMAddField()`, `DMGetField()`
 # External Links
 $(_doc_external("DM/DMSetField"))
 """
-function DMSetField(petsclib::PetscLibType, dm::AbstractPetscDM, f::Integer, label::DMLabel, disc)
+function DMSetField(petsclib::PetscLibType, dm::AbstractPetscDM, f::Integer, label::AbstractDMLabel, disc)
     throw(MethodError(DMSetField, (petsclib, dm, f, label, disc)))
 end
 
-@for_petsc function DMSetField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::$PetscInt, label::DMLabel, disc )
+@for_petsc function DMSetField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::$PetscInt, label::AbstractDMLabel, disc )
 
     @chk ccall(
                (:DMSetField, $petsc_library),
                PetscErrorCode,
-               (CDM, $PetscInt, DMLabel, PetscObject),
+               (CDM, $PetscInt, CDMLabel, PetscObject),
                dm, f, label, disc,
               )
 
@@ -39762,7 +39764,7 @@ end
 end 
 
 """
-	DMSetLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel) 
+	DMSetLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel) 
 Replaces the label of a given name, or ignores it if the name is not present
 
 Not Collective
@@ -39786,16 +39788,16 @@ See also: `DM`, `DMLabel`, `DMCreateLabel()`, `DMHasLabel()`, `DMPlexGetDepthLab
 # External Links
 $(_doc_external("DM/DMSetLabel"))
 """
-function DMSetLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel)
+function DMSetLabel(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel)
     throw(MethodError(DMSetLabel, (petsclib, dm, label)))
 end
 
-@for_petsc function DMSetLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel )
+@for_petsc function DMSetLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::AbstractDMLabel )
 
     @chk ccall(
                (:DMSetLabel, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel),
+               (CDM, CDMLabel),
                dm, label,
               )
 
@@ -40376,7 +40378,7 @@ end
 end 
 
 """
-	DMSetRegionDS(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, fields::AbstractIS, ds::PetscDS, dsIn::PetscDS) 
+	DMSetRegionDS(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel, fields::AbstractIS, ds::PetscDS, dsIn::PetscDS) 
 Set the `PetscDS` for a given mesh region, defined by a `DMLabel`
 
 Collective
@@ -40395,16 +40397,16 @@ See also: `DM`, `DMGetRegionDS()`, `DMSetRegionNumDS()`, `DMGetDS()`, `DMGetCell
 # External Links
 $(_doc_external("DM/DMSetRegionDS"))
 """
-function DMSetRegionDS(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, fields::AbstractIS, ds::PetscDS, dsIn::PetscDS)
+function DMSetRegionDS(petsclib::PetscLibType, dm::AbstractPetscDM, label::AbstractDMLabel, fields::AbstractIS, ds::PetscDS, dsIn::PetscDS)
     throw(MethodError(DMSetRegionDS, (petsclib, dm, label, fields, ds, dsIn)))
 end
 
-@for_petsc function DMSetRegionDS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel, fields::AbstractIS, ds::PetscDS, dsIn::PetscDS )
+@for_petsc function DMSetRegionDS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::AbstractDMLabel, fields::AbstractIS, ds::PetscDS, dsIn::PetscDS )
 
     @chk ccall(
                (:DMSetRegionDS, $petsc_library),
                PetscErrorCode,
-               (CDM, DMLabel, CIS, PetscDS, PetscDS),
+               (CDM, CDMLabel, CIS, PetscDS, PetscDS),
                dm, label, fields, ds, dsIn,
               )
 
@@ -40413,7 +40415,7 @@ end
 end 
 
 """
-	DMSetRegionNumDS(petsclib::PetscLibType, dm::AbstractPetscDM, num::PetscInt, label::DMLabel, fields::AbstractIS, ds::PetscDS, dsIn::PetscDS) 
+	DMSetRegionNumDS(petsclib::PetscLibType, dm::AbstractPetscDM, num::PetscInt, label::AbstractDMLabel, fields::AbstractIS, ds::PetscDS, dsIn::PetscDS) 
 Set the `PetscDS` for a given mesh region, defined by the region number
 
 Not Collective
@@ -40433,16 +40435,16 @@ See also: `DM`, `DMGetRegionDS()`, `DMSetRegionDS()`, `DMGetDS()`, `DMGetCellDS(
 # External Links
 $(_doc_external("DM/DMSetRegionNumDS"))
 """
-function DMSetRegionNumDS(petsclib::PetscLibType, dm::AbstractPetscDM, num::Integer, label::DMLabel, fields::AbstractIS, ds::PetscDS, dsIn::PetscDS)
+function DMSetRegionNumDS(petsclib::PetscLibType, dm::AbstractPetscDM, num::Integer, label::AbstractDMLabel, fields::AbstractIS, ds::PetscDS, dsIn::PetscDS)
     throw(MethodError(DMSetRegionNumDS, (petsclib, dm, num, label, fields, ds, dsIn)))
 end
 
-@for_petsc function DMSetRegionNumDS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, num::$PetscInt, label::DMLabel, fields::AbstractIS, ds::PetscDS, dsIn::PetscDS )
+@for_petsc function DMSetRegionNumDS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, num::$PetscInt, label::AbstractDMLabel, fields::AbstractIS, ds::PetscDS, dsIn::PetscDS )
 
     @chk ccall(
                (:DMSetRegionNumDS, $petsc_library),
                PetscErrorCode,
-               (CDM, $PetscInt, DMLabel, CIS, PetscDS, PetscDS),
+               (CDM, $PetscInt, CDMLabel, CIS, PetscDS, PetscDS),
                dm, num, label, fields, ds, dsIn,
               )
 

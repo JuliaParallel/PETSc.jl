@@ -27,7 +27,7 @@ function fe_create_default(
     # picks up the correct space even when no command-line option is given.
     opt_key = isempty(prefix) ? "petscspace_degree" : "$(prefix)petscspace_degree"
     opts = PetscOptions(petsclib; Symbol(opt_key) => degree)
-    return with_options(opts) do
+    fe = with_options(opts) do
         LibPETSc.PetscFECreateDefault(
             petsclib, comm,
             PetscInt(dim), PetscInt(Nc),
@@ -36,6 +36,7 @@ function fe_create_default(
             PetscInt(qorder),
         )
     end
+    return own_serial!(fe, comm)
 end
 
 """
@@ -59,43 +60,64 @@ function fe_create_lagrange(
     qorder::Integer = -1,
 ) where {PetscLib}
     PetscInt = inttype(PetscLib)
-    return LibPETSc.PetscFECreateLagrange(
+    fe = LibPETSc.PetscFECreateLagrange(
         petsclib, comm,
         PetscInt(dim), PetscInt(Nc),
         LibPETSc.PetscBool(simplex),
         PetscInt(degree),
         PetscInt(qorder),
     )
+    return own_serial!(fe, comm)
 end
 
 """
-    copy_quadrature!(petsclib, src_fe, dst_fe)
+    copy_quadrature!(dst_fe, src_fe)
 
 Copy the quadrature rule from `src_fe` to `dst_fe` so both fields share
-the same integration points.
+the same integration points, and return `dst_fe`.
+
+# External Links
+$(doc_external("FE/PetscFECopyQuadrature"))
 """
-function copy_quadrature!(petsclib, src_fe, dst_fe)
-    LibPETSc.PetscFECopyQuadrature(petsclib, src_fe, dst_fe)
+function copy_quadrature!(
+    dst_fe::LibPETSc.AbstractPetscFE{PetscLib},
+    src_fe::LibPETSc.AbstractPetscFE{PetscLib},
+) where {PetscLib}
+    LibPETSc.PetscFECopyQuadrature(getlib(PetscLib), src_fe, dst_fe)
     return dst_fe
 end
 
 """
-    compose_constant_nullspace!(petsclib, comm, fe)
+    compose_constant_nullspace!(obj)
 
-Create a trivial (constant) `MatNullSpace` and attach it to the FE object `fe`
-under the key `"nullspace"` via `PetscObjectCompose`.  This signals to the
-fieldsplit preconditioner that the field has a constant null space.
+Create a trivial (constant) `MatNullSpace` and attach it to `obj`, a `PetscFE` or
+an index set, under the key `"nullspace"` via `PetscObjectCompose`.  This signals to
+the fieldsplit preconditioner that the field or split has a constant null space.
+Returns `obj`.
 """
-function compose_constant_nullspace! end
+function compose_constant_nullspace!(
+    obj::Union{LibPETSc.AbstractPetscFE{PetscLib}, LibPETSc.AbstractIS{PetscLib}},
+) where {PetscLib}
+    petsclib = getlib(PetscLib)
+    nsp = mat_nullspace_create(petsclib, LibPETSc.PetscObjectGetComm(petsclib, obj); has_const = true)
+    try
+        LibPETSc.PetscObjectCompose(petsclib,
+            convert(Ptr{Cvoid}, obj), "nullspace", convert(Ptr{Cvoid}, nsp))
+    finally
+        destroy!(nsp)   # `obj` keeps its own reference
+    end
+    return obj
+end
 
-LibPETSc.@for_petsc function compose_constant_nullspace!(
-    petsclib::$UnionPetscLib,
-    comm,
-    fe,
-)
-    nsp = mat_nullspace_create(petsclib, comm; has_const = true)
-    LibPETSc.PetscObjectCompose(petsclib,
-        convert(Ptr{Cvoid}, fe), "nullspace", convert(Ptr{Cvoid}, nsp))
-    destroy!(petsclib, nsp)
-    return fe
+"""
+    destroy!(fe::PetscFE)
+
+Destroy a `PetscFE` created by [`fe_create_default`](@ref) or
+[`fe_create_lagrange`](@ref). Does nothing on a borrowed handle.
+
+# External Links
+$(doc_external("FE/PetscFEDestroy"))
+"""
+function destroy!(fe::LibPETSc.AbstractPetscFE{PetscLib}) where {PetscLib}
+    return destroy_handle!(LibPETSc.PetscFEDestroy, fe, PetscLib)
 end

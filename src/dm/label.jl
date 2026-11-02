@@ -1,8 +1,10 @@
 """
-    label(dm::AbstractPetscDM, name::AbstractString) -> Ptr{Cvoid}
+    label(dm::AbstractPetscDM, name::AbstractString) -> DMLabel or nothing
 
-Look up a `DMLabel` on `dm` by name and return its raw pointer (`Ptr{Cvoid}`).
-Returns `C_NULL` if no label with that name exists.
+Look up the `DMLabel` named `name` on `dm`. Returns `nothing` if `dm` has no
+label with that name.
+
+$(doc_borrowed())
 
 # External Links
 $(doc_external("DM/DMGetLabel"))
@@ -13,5 +15,19 @@ LibPETSc.@for_petsc function label(
     dm::AbstractPetscDM{$PetscLib},
     name::AbstractString,
 )
-    return LibPETSc.DMGetLabel(getlib($PetscLib), dm, String(name))
+    found = LibPETSc.DMGetLabel(getlib($PetscLib), dm, String(name))
+    return found.ptr == C_NULL ? nothing : found
+end
+
+"""
+    destroy!(label::DMLabel)
+
+Destroy a `DMLabel` you created. Does nothing on a borrowed handle such as the
+one [`label`](@ref) returns.
+
+# External Links
+$(doc_external("DM/DMLabelDestroy"))
+"""
+function destroy!(label::LibPETSc.AbstractDMLabel{PetscLib}) where {PetscLib}
+    return destroy_handle!(LibPETSc.DMLabelDestroy, label, PetscLib)
 end

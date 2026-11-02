@@ -2,12 +2,14 @@
     mat_nullspace_create(petsclib, comm; has_const = true) -> MatNullSpace
 
 Create a null space containing the constant vector (Neumann / saddle-point problems).
+On a one-rank communicator the garbage collector destroys it if you do not.
 """
 function mat_nullspace_create(petsclib, comm; has_const::Bool = true)
-    return LibPETSc.MatNullSpaceCreate(petsclib, comm,
+    nullsp = LibPETSc.MatNullSpaceCreate(petsclib, comm,
         LibPETSc.PetscBool(has_const),
         petsclib.PetscInt(0),
         LibPETSc.PetscVec{typeof(petsclib)}[])
+    return own_serial!(nullsp, comm)
 end
 
 """
@@ -26,35 +28,33 @@ LibPETSc.@for_petsc function mat_nullspace_create(
 )
     # the wrapper converts the handles itself; accept anything with a `.ptr`
     pvecs = [LibPETSc.PetscVec{$PetscLib}(v.ptr; own = false) for v in vecs]
-    return LibPETSc.MatNullSpaceCreate(petsclib, comm,
+    nullsp = LibPETSc.MatNullSpaceCreate(petsclib, comm,
         LibPETSc.PETSC_FALSE, $PetscInt(length(pvecs)), pvecs)
+    return own_serial!(nullsp, comm)
 end
 
 """
-    destroy!(nullsp::LibPETSc.MatNullSpace)
-    destroy!(petsclib, nullsp::LibPETSc.MatNullSpace)
+    destroy!(nullsp::MatNullSpace)
 
-Destroy a `MatNullSpace` created by [`mat_nullspace_create`](@ref).
-
-`MatNullSpace` is a bare `Ptr` and carries no library, so the one-argument form
-uses the default library. Pass `petsclib` explicitly when several are in use.
+Destroy a `MatNullSpace` created by [`mat_nullspace_create`](@ref). Does nothing
+on a borrowed handle.
 
 # External Links
 $(doc_external("Mat/MatNullSpaceDestroy"))
 """
-function destroy!(petsclib::LibPETSc.PetscLibType, nullsp::LibPETSc.MatNullSpace)
-    LibPETSc.MatNullSpaceDestroy(petsclib, nullsp)
-    return nothing
+function destroy!(nullsp::LibPETSc.AbstractMatNullSpace{PetscLib}) where {PetscLib}
+    return destroy_handle!(LibPETSc.MatNullSpaceDestroy, nullsp, PetscLib)
 end
-
-destroy!(nullsp::LibPETSc.MatNullSpace) = destroy!(getlib(), nullsp)
 
 """
     set_nullspace!(mat, nullsp)
 
 Attach `nullsp` to `mat` so the linear solver removes it each iteration.
 """
-function set_nullspace!(mat, nullsp)
-    LibPETSc.MatSetNullSpace(LibPETSc.getlib(typeof(mat).parameters[1]), mat, nullsp)
+function set_nullspace!(
+    mat::AbstractPetscMat{PetscLib},
+    nullsp::LibPETSc.AbstractMatNullSpace{PetscLib},
+) where {PetscLib}
+    LibPETSc.MatSetNullSpace(getlib(PetscLib), mat, nullsp)
     return mat
 end

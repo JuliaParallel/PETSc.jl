@@ -187,7 +187,7 @@ function stokes_solver(petsclib, comm, dm, A, P; levels = 3, options...)
     pressure = LibPETSc.IS(dm, PC => 0)
 
     # In a closed box only pressure differences are determined: tell the pressure split
-    PETSc.compose_constant_nullspace!(petsclib, comm, pressure)
+    PETSc.compose_constant_nullspace!(pressure)
     PETSc.set_fieldsplit_is!(PETSc.pc(ksp), "u", velocity)
     PETSc.set_fieldsplit_is!(PETSc.pc(ksp), "p", pressure)
     PETSc.destroy!(velocity)                # the fieldsplit keeps its own reference

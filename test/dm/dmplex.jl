@@ -23,10 +23,11 @@ const PetscInt    = _dmplex_petsclib.PetscInt
 # Serial-safe communicator (shared across all lib loops)
 const _TC = MPI.COMM_SELF
 
-# PetscFE is a bare Ptr, so no finalizer is attached and every FE created here
-# has to be released with LibPETSc.PetscFEDestroy or it lives until
-# PetscFinalize. Where an FE is handed to a DM, DMSetField takes its own
-# reference, so the destroy can follow immediately after set_field!.
+# An FE from PETSc.fe_create_default or fe_create_lagrange is released with
+# PETSc.destroy! (the garbage collector frees it as well on one rank); one from
+# LibPETSc.PetscFECreate* has no finalizer and goes through LibPETSc.PetscFEDestroy.
+# Where an FE is handed to a DM, DMSetField takes its own reference, so the
+# destroy can follow immediately after set_field!.
 
 # Intel Mac (x86_64) crashes inside DMPlex + PetscFE operations with the
 # current PETSc_jll binary.  Guard the PETSc-dependent testset; the pure-Julia
@@ -412,13 +413,85 @@ for petsclib in PETSc.petsclibs
         PETSc.destroy!(dm)
     end
 
+    # ── handles for PetscFE, DMLabel and MatNullSpace ─────────────────────
+    @testset "typed handles" begin
+        dm = PETSc.DMPlex(petsclib, _TC, 2, false, [4, 4])
+        fe = PETSc.fe_create_lagrange(petsclib, _TC, 2, 1, false, 1)
+        fe2 = PETSc.fe_create_lagrange(petsclib, _TC, 2, 1, false, 1)
+        @test fe isa LibPETSc.PetscFE{typeof(petsclib)}
+        @test PETSc.owns(fe)
+        @test fe.age == petsclib.age
+
+        # copy_quadrature! mutates its first argument
+        @test PETSc.copy_quadrature!(fe2, fe) === fe2
+
+        # the library comes from the handle
+        @test PETSc.set_name!(fe, "u") === fe
+        @test PETSc.set_name!(dm, "mesh") === dm
+
+        # a constant null space on an FE and on an index set
+        @test PETSc.compose_constant_nullspace!(fe) === fe
+        nsp = PETSc.mat_nullspace_create(petsclib, _TC; has_const = true)
+        @test nsp isa LibPETSc.MatNullSpace{typeof(petsclib)}
+        PETSc.destroy!(nsp)
+        @test nsp.ptr == C_NULL
+        @test_throws "was destroyed" LibPETSc.MatNullSpaceView(petsclib, nsp, LibPETSc.PETSC_VIEWER_STDOUT_SELF(petsclib))
+
+        # a label is borrowed from its DM; a missing one is `nothing`
+        lbl = PETSc.label(dm, "marker")
+        @test lbl isa LibPETSc.DMLabel{typeof(petsclib)}
+        @test !PETSc.owns(lbl)
+        PETSc.destroy!(lbl)
+        @test lbl.ptr != C_NULL
+        @test isnothing(PETSc.label(dm, "no_such_label"))
+
+        # set_field! takes the FE, and a label or none
+        @test PETSc.set_field!(dm, 0, fe) === dm
+        @test_throws MethodError PETSc.set_field!(dm, 0, fe.ptr)
+
+        # a destroyed FE cannot be passed to PETSc again
+        PETSc.destroy!(fe)
+        @test fe.ptr == C_NULL
+        @test_throws "was destroyed" PETSc.set_field!(dm, 1, fe)
+        @test PETSc.destroy!(fe) === nothing
+        PETSc.destroy!(fe2)
+
+        # a null space on an index set, the form the fieldsplit examples use
+        is = LibPETSc.ISCreateStride(petsclib, _TC, PetscInt(4), PetscInt(0), PetscInt(1))
+        @test PETSc.compose_constant_nullspace!(is) === is
+        PETSc.destroy!(is)
+
+        # an FE and a null space dropped without destroy! are freed by the collector
+        function dropped()
+            PETSc.fe_create_lagrange(petsclib, _TC, 2, 1, false, 1)
+            PETSc.mat_nullspace_create(petsclib, _TC; has_const = true)
+            return nothing
+        end
+        dropped()
+        GC.gc(); GC.gc()
+        @test_nowarn PETSc.drain_destroy_queue!()
+
+        # a label can be given to set_field!
+        fe3 = PETSc.fe_create_lagrange(petsclib, _TC, 2, 1, false, 1)
+        @test PETSc.set_field!(dm, 1, fe3; label = PETSc.label(dm, "marker")) === dm
+        PETSc.destroy!(fe3)
+
+        # the discrete system of a DM is borrowed
+        PETSc.create_ds!(dm)
+        ds = PETSc.ds(dm)
+        @test !PETSc.owns(ds)
+        @test ds.age == petsclib.age
+
+        PETSc.destroy!(dm)
+    end
+
     # ── set_name! ───────────────────────────────────────────────────────
     @testset "set_name!" begin
         dm = PETSc.DMPlex(petsclib, _TC, 2, false, [4, 4])
         fe = PETSc.fe_create_lagrange(petsclib, _TC, 2, 1, false, 1)
-        @test_nowarn PETSc.set_name!(petsclib, dm, "testmesh")
-        @test_nowarn PETSc.set_name!(petsclib, fe, "temperature")
-        LibPETSc.PetscFEDestroy(petsclib, fe)
+        @test_nowarn PETSc.set_name!(dm, "testmesh")
+        @test_nowarn PETSc.set_name!(fe, "temperature")
+        PETSc.destroy!(fe)
 
         PETSc.destroy!(dm)
     end
@@ -428,11 +501,11 @@ for petsclib in PETSc.petsclibs
         dm = PETSc.DMPlex(petsclib, _TC, 2, false, [4, 4])
         # DMPlexCreateBoxMesh always creates a "marker" label for the boundary
         lbl = PETSc.label(dm, "marker")
-        @test lbl isa Ptr{Cvoid}
-        @test lbl != C_NULL
-        # Non-existent label → C_NULL
+        @test lbl isa PETSc.LibPETSc.DMLabel
+        @test !PETSc.owns(lbl)
+        # Non-existent label → nothing
         lbl_none = PETSc.label(dm, "no_such_label_xyz")
-        @test lbl_none == C_NULL
+        @test isnothing(lbl_none)
 
         PETSc.destroy!(dm)
     end
@@ -441,11 +514,11 @@ for petsclib in PETSc.petsclibs
     @testset "fe_create_default" begin
         fe = PETSc.fe_create_default(petsclib, _TC, 2, 1, false; degree = 1)
         @test convert(Ptr{Cvoid}, fe) != C_NULL
-        LibPETSc.PetscFEDestroy(petsclib, fe)
+        PETSc.destroy!(fe)
         if real(PetscScalar_t) != Float32
             fe2 = PETSc.fe_create_default(petsclib, _TC, 2, 2, true; degree = 2)
             @test convert(Ptr{Cvoid}, fe2) != C_NULL
-            LibPETSc.PetscFEDestroy(petsclib, fe2)
+            PETSc.destroy!(fe2)
         end
     end
 
@@ -453,28 +526,28 @@ for petsclib in PETSc.petsclibs
     @testset "fe_create_lagrange" begin
         fe_q1 = PETSc.fe_create_lagrange(petsclib, _TC, 2, 1, false, 1)
         @test convert(Ptr{Cvoid}, fe_q1) != C_NULL
-        LibPETSc.PetscFEDestroy(petsclib, fe_q1)
+        PETSc.destroy!(fe_q1)
         fe_q2 = PETSc.fe_create_lagrange(petsclib, _TC, 2, 1, false, 2)
         @test convert(Ptr{Cvoid}, fe_q2) != C_NULL
-        LibPETSc.PetscFEDestroy(petsclib, fe_q2)
+        PETSc.destroy!(fe_q2)
         if real(PetscScalar_t) != Float32
             fe_p1 = PETSc.fe_create_lagrange(petsclib, _TC, 2, 1, true, 1)
             @test convert(Ptr{Cvoid}, fe_p1) != C_NULL
-            LibPETSc.PetscFEDestroy(petsclib, fe_p1)
+            PETSc.destroy!(fe_p1)
         end
         fe_3d = PETSc.fe_create_lagrange(petsclib, _TC, 3, 3, false, 1)
         @test convert(Ptr{Cvoid}, fe_3d) != C_NULL
-        LibPETSc.PetscFEDestroy(petsclib, fe_3d)
+        PETSc.destroy!(fe_3d)
     end
 
     # ── set_field! / create_ds! / ds ────────────────────────────────────────
     @testset "set_field! / create_ds! / ds" begin
         dm = PETSc.DMPlex(petsclib, _TC, 2, false, [4, 4])
         fe = PETSc.fe_create_lagrange(petsclib, _TC, 2, 1, false, 1)
-        PETSc.set_name!(petsclib, fe, "u")
+        PETSc.set_name!(fe, "u")
 
         @test_nowarn PETSc.set_field!(dm, 0, fe)
-        LibPETSc.PetscFEDestroy(petsclib, fe)
+        PETSc.destroy!(fe)
         @test_nowarn PETSc.create_ds!(dm)
 
         ds = PETSc.ds(dm)
@@ -489,7 +562,7 @@ for petsclib in PETSc.petsclibs
         dm = PETSc.DMPlex(petsclib, _TC, 2, false, [4, 4])
         fe = PETSc.fe_create_lagrange(petsclib, _TC, 2, 1, false, 1)
         PETSc.set_field!(dm, 0, fe)
-        LibPETSc.PetscFEDestroy(petsclib, fe)
+        PETSc.destroy!(fe)
         PETSc.create_ds!(dm)
         ds = PETSc.ds(dm)
         @test_nowarn PETSc.set_constants!(ds, [1.0, 2.0, 3.0])
@@ -502,7 +575,7 @@ for petsclib in PETSc.petsclibs
         dm = PETSc.DMPlex(petsclib, _TC, 2, false, [4, 4])
         fe = PETSc.fe_create_lagrange(petsclib, _TC, 2, 1, false, 1)
         PETSc.set_field!(dm, 0, fe)
-        LibPETSc.PetscFEDestroy(petsclib, fe)
+        PETSc.destroy!(fe)
         PETSc.create_ds!(dm)
         ds = PETSc.ds(dm)
 
@@ -518,7 +591,7 @@ for petsclib in PETSc.petsclibs
         dm = PETSc.DMPlex(petsclib, _TC, 2, false, [4, 4])
         fe = PETSc.fe_create_lagrange(petsclib, _TC, 2, 1, false, 1)
         PETSc.set_field!(dm, 0, fe)
-        LibPETSc.PetscFEDestroy(petsclib, fe)
+        PETSc.destroy!(fe)
         PETSc.create_ds!(dm)
         ds = PETSc.ds(dm)
         @test_nowarn PETSc.set_jacobian_preconditioner!(
@@ -532,7 +605,7 @@ for petsclib in PETSc.petsclibs
         dm = PETSc.DMPlex(petsclib, _TC, 2, false, [4, 4])
         fe = PETSc.fe_create_lagrange(petsclib, _TC, 2, 1, false, 1)
         PETSc.set_field!(dm, 0, fe)
-        LibPETSc.PetscFEDestroy(petsclib, fe)
+        PETSc.destroy!(fe)
         PETSc.create_ds!(dm)
 
         gvec = PETSc.global_vec(dm)
@@ -551,7 +624,7 @@ for petsclib in PETSc.petsclibs
         dm = PETSc.DMPlex(petsclib, _TC, 2, false, [4, 4])
         fe = PETSc.fe_create_lagrange(petsclib, _TC, 2, 1, false, 1)
         PETSc.set_field!(dm, 0, fe)
-        LibPETSc.PetscFEDestroy(petsclib, fe)
+        PETSc.destroy!(fe)
         PETSc.create_ds!(dm)
 
         gvec = PETSc.global_vec(dm)
@@ -593,9 +666,9 @@ for petsclib in PETSc.petsclibs
     @testset "copy_disc!" begin
         dm_src = PETSc.DMPlex(petsclib, _TC, 2, false, [4, 4])
         fe = PETSc.fe_create_lagrange(petsclib, _TC, 2, 1, false, 1)
-        PETSc.set_name!(petsclib, fe, "u")
+        PETSc.set_name!(fe, "u")
         PETSc.set_field!(dm_src, 0, fe)
-        LibPETSc.PetscFEDestroy(petsclib, fe)
+        PETSc.destroy!(fe)
         PETSc.create_ds!(dm_src)
         ds_src = PETSc.ds(dm_src)
         PETSc.set_exact_solution!(ds_src, 0, _dm_exact_ptr)
@@ -621,12 +694,12 @@ for petsclib in PETSc.petsclibs
         # field 0: scalar u; field 1: scalar p
         fe_u = PETSc.fe_create_lagrange(petsclib, _TC, 2, 1, false, 2)
         fe_p = PETSc.fe_create_lagrange(petsclib, _TC, 2, 1, false, 1)
-        PETSc.set_name!(petsclib, fe_u, "velocity")
-        PETSc.set_name!(petsclib, fe_p, "pressure")
+        PETSc.set_name!(fe_u, "velocity")
+        PETSc.set_name!(fe_p, "pressure")
         @test_nowarn PETSc.set_field!(dm, 0, fe_u)
-        LibPETSc.PetscFEDestroy(petsclib, fe_u)
+        PETSc.destroy!(fe_u)
         @test_nowarn PETSc.set_field!(dm, 1, fe_p)
-        LibPETSc.PetscFEDestroy(petsclib, fe_p)
+        PETSc.destroy!(fe_p)
         @test_nowarn PETSc.create_ds!(dm)
 
         ds = PETSc.ds(dm)
@@ -643,13 +716,13 @@ for petsclib in PETSc.petsclibs
     @testset "add_boundary!" begin
         dm = PETSc.DMPlex(petsclib, _TC, 2, false, [4, 4])
         fe = PETSc.fe_create_lagrange(petsclib, _TC, 2, 1, false, 1)
-        PETSc.set_name!(petsclib, fe, "u")
+        PETSc.set_name!(fe, "u")
         PETSc.set_field!(dm, 0, fe)
-        LibPETSc.PetscFEDestroy(petsclib, fe)
+        PETSc.destroy!(fe)
         PETSc.create_ds!(dm)
 
         label = PETSc.label(dm, "marker")
-        @test label != C_NULL
+        @test !isnothing(label)
 
         ret = PETSc.add_boundary!(
             dm,
@@ -671,9 +744,9 @@ for petsclib in PETSc.petsclibs
         # The L² error of the projected function vs itself must be ≈ 0.
         dm = PETSc.DMPlex(petsclib, _TC, 2, false, [8, 8])
         fe = PETSc.fe_create_lagrange(petsclib, _TC, 2, 1, false, 1)
-        PETSc.set_name!(petsclib, fe, "u")
+        PETSc.set_name!(fe, "u")
         PETSc.set_field!(dm, 0, fe)
-        LibPETSc.PetscFEDestroy(petsclib, fe)
+        PETSc.destroy!(fe)
         PETSc.create_ds!(dm)
 
         u = PETSc.global_vec(dm)
@@ -690,9 +763,9 @@ for petsclib in PETSc.petsclibs
     @testset "project_function! simplex" begin
         dm = PETSc.DMPlex(petsclib, _TC, 2, true, [8, 8])
         fe = PETSc.fe_create_lagrange(petsclib, _TC, 2, 1, true, 1)
-        PETSc.set_name!(petsclib, fe, "u")
+        PETSc.set_name!(fe, "u")
         PETSc.set_field!(dm, 0, fe)
-        LibPETSc.PetscFEDestroy(petsclib, fe)
+        PETSc.destroy!(fe)
         PETSc.create_ds!(dm)
 
         u = PETSc.global_vec(dm)
@@ -709,9 +782,9 @@ for petsclib in PETSc.petsclibs
     @testset "3D hex mesh + FE + project" begin
         dm = PETSc.DMPlex(petsclib, _TC, 3, false, [4, 4, 4])
         fe = PETSc.fe_create_lagrange(petsclib, _TC, 3, 1, false, 1)
-        PETSc.set_name!(petsclib, fe, "u3d")
+        PETSc.set_name!(fe, "u3d")
         PETSc.set_field!(dm, 0, fe)
-        LibPETSc.PetscFEDestroy(petsclib, fe)
+        PETSc.destroy!(fe)
         PETSc.create_ds!(dm)
 
         # _dm_exact sums all coordinate components, works in any dimension.

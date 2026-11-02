@@ -760,6 +760,7 @@ const INTERNAL = Set{Symbol}([
     :destroy_queue_length,
     :queue_for_destroy!,
     :destroy_at_gc!,
+    :own_serial!,
     :drain_destroy_queue!,
     # exception-safe setup of a new solver, and the one-at-a-time Vec checkout
     :own_solver!,

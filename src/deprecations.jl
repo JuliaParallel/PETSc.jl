@@ -148,7 +148,6 @@ function MatSeqAIJWithArrays(args...; kwargs...)
 end
 
 @renamed MatAIJ PetscMat
-@renamed unsafe_localarray unsafe_local_array
 @renamed acquire_petsc_local_array acquire_local_array
 @renamed release_petsc_local_array release_local_array
 @renamed get_petsc_arrays local_arrays

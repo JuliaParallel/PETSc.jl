@@ -927,8 +927,8 @@ They are listed because the rename table is the register of what is public, not 
 | `VecSeq` | `PetscVec` constructor |
 | `MatCreateSeqAIJ`, `MatSeqAIJ`, `MatSeqDense`, `MatSeqAIJWithArrays`, `MatAIJ` | `PetscMat` constructor |
 | `VecPtr`, `MatPtr` | removed in 0.6: `PetscVec(petsclib, ptr; own)` and `PetscMat(petsclib, ptr; own)` wrap a raw handle, borrowed by default |
-| `unsafe_localarray` | `unsafe_local_array` |
-| `wrap_localarray` | removed in 0.6: `with_local_array!`, or `acquire_local_array` with `release_local_array` |
+| `unsafe_localarray`, `unsafe_local_array` | removed in 0.6: `with_local_array!`, or `acquire_local_array` with `release_local_array` |
+| `wrap_localarray` | removed in 0.6, as above |
 | `acquire_petsc_local_array` | `acquire_local_array` |
 | `release_petsc_local_array` | `release_local_array` |
 | `get_petsc_arrays` | `local_arrays` |

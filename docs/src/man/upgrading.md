@@ -152,7 +152,7 @@ These can't warn without firing on correct code, so check them now. The [release
 - **A callback's return value is ignored**, a nonzero `Integer` too. 0.5.5 warns once per callback that returns one; throw an exception to report a failure.
 - **`size(v)` is a tuple.** `size(v) == n` is `false` from 0.6 and raises no error; use `length(v) == n`. `length(v)` is an `Int`.
 - **`copy_disc!(dst, src)`** takes the destination first.
-- **`wrap_local_array` is removed.** It handed out a local array that went back to PETSc when the array's finalizer ran. Use `with_local_array!(f!, v)`, or `acquire_local_array` with `release_local_array` for an explicit pair.
+- **`wrap_local_array` and `unsafe_local_array` are removed.** They handed out a local array that went back to PETSc when the array's finalizer ran, so the Vec stayed checked out until the garbage collector got to it, on whichever thread that was. Use `with_local_array!(f!, v)` (`memtype = :host` for a host array on a device Vec), or `acquire_local_array(v; read, write)` with `release_local_array(cpu_arr, backend, v; read, write)` for an explicit pair.
 - **`PetscVec <: AbstractVector`.** Generic Julia code accepts a PetscVec. `==` compares the entries (collective) and `hash` throws, on PetscVecs and PetscMats; `collect(v)` gives every rank the whole vector. **`PetscMat <: AbstractMatrix`** as well: `A == B` compares values, so a stored zero no longer makes two matrices unequal; `PETSc.equal(A, B)` is the old `MatEqual` test.
 
 ## 8. Looking up a name

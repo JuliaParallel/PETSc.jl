@@ -1,56 +1,3 @@
-"""
-    unsafe_local_array(vec::AbstractVec; read=true, write=true)
-
-Return an `Array{PetscScalar}` containing local portion of the PETSc `vec`
-
-Use `read=false` if the array is write-only; `write=false` if read-only.
-
-The caller hands the array back: `vec` stays checked out, and the next
-`VecGetArray` or assembly on it fails, until `Base.finalize` runs on the array
-(or the garbage collector gets to it). Prefer [`with_local_array!`](@ref), which
-hands it back when its block returns or throws; [`acquire_local_array`](@ref) and
-[`release_local_array`](@ref) are the explicit pair with no finalizer.
-
-# External Links
-$(doc_external("Vec/VecGetArray"))
-$(doc_external("Vec/VecGetArrayWrite"))
-$(doc_external("Vec/VecGetArrayRead"))
-$(doc_external("Vec/VecRestoreArray"))
-$(doc_external("Vec/VecRestoreArrayWrite"))
-$(doc_external("Vec/VecRestoreArrayRead"))
-"""
-function unsafe_local_array(
-    vec::AbstractPetscVec{PetscLib};
-    read::Bool = true,
-    write::Bool = true,
-) where {PetscLib}
-    if write && read
-        v = LibPETSc.VecGetArray(PetscLib, vec)
-    elseif write
-        v = LibPETSc.VecGetArrayWrite(PetscLib, vec)
-    elseif read
-        v = LibPETSc.VecGetArrayRead(PetscLib, vec)
-    else
-        error("either read or write should be true")
-    end
-    
-    restore = write && read ? LibPETSc.VecRestoreArray :
-              write ? LibPETSc.VecRestoreArrayWrite : LibPETSc.VecRestoreArrayRead
-    # The finalizer may run after the library was finalized/re-initialized or after the
-    # vector's owner destroyed it (borrowed handles): then there is nothing to restore.
-    finalizer(v) do v
-        (vec.ptr == C_NULL || !isdestroyable(vec, PetscLib)) && return nothing
-        try
-            restore(PetscLib, vec, v)
-        catch err
-            err isa LibPETSc.PetscError || rethrow()
-        end
-        return nothing
-    end
-    return v
-end
-
-
 # ── Memory backend type hierarchy ─────────────────────────────────────────────
 #
 # `memtype_backend` maps a `PetscMemType` to a dispatch tag.
@@ -86,7 +33,7 @@ memtype_backend(mt::LibPETSc.PetscMemType) =
 
 # ── No-finalizer acquire/release ─────────────────────────────────────────────
 #
-# `with_local_array!` uses these instead of the finalizer-based `unsafe_local_array`
+# `with_local_array!` uses these instead of a finalizer
 # to avoid a documented Julia pitfall: after `Base.finalize(x)` is called, if
 # `x` later becomes unreachable GC may invoke the finalizer *again*, leading to
 # a double VecRestore call on an already-freed Vec (→ SIGSEGV).

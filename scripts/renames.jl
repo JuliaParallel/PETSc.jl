@@ -107,7 +107,6 @@ const RENAMES = Pair{Symbol, Symbol}[
     :MatCreateSeqAIJ => :PetscMat,
     :MatSeqAIJWithArrays => :PetscMat,
     :MatAIJ => :PetscMat,
-    :unsafe_localarray => :unsafe_local_array,
     :acquire_petsc_local_array => :acquire_local_array,
     :release_petsc_local_array => :release_local_array,
     :get_petsc_arrays => :local_arrays,

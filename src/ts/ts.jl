@@ -1049,12 +1049,11 @@ function (::TSSetRHSFunctionFn{PetscLib, PetscReal})(
     F_ptr::CVec,
     ctx::Ptr{Cvoid},
 ) where {PetscLib, PetscReal}
-    ts = unsafe_pointer_to_objref(ctx)::TSState
-    actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age; own = false)
-    u = PetscVec{PetscLib}(u_ptr, getlib(PetscLib).age; own = false)
-    F = PetscVec{PetscLib}(F_ptr, getlib(PetscLib).age; own = false)
-
-    run_callback("rhs_function!") do
+    return run_callback("rhs_function!") do
+        ts = unsafe_pointer_to_objref(ctx)::TSState
+        actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age; own = false)
+        u = PetscVec{PetscLib}(u_ptr, getlib(PetscLib).age; own = false)
+        F = PetscVec{PetscLib}(F_ptr, getlib(PetscLib).age; own = false)
         ts.rhs_function!(F, actual_ts, t, u)
     end
 end
@@ -1102,13 +1101,12 @@ function (::TSSetRHSJacobianFn{PetscLib, PetscReal})(
     P_ptr::CMat,
     ctx::Ptr{Cvoid},
 ) where {PetscLib, PetscReal}
-    ts = unsafe_pointer_to_objref(ctx)::TSState
-    actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age; own = false)
-    u = PetscVec{PetscLib}(u_ptr, getlib(PetscLib).age; own = false)
-    A = PetscMat{PetscLib}(A_ptr, getlib(PetscLib).age; own = false)
-    P = PetscMat{PetscLib}(P_ptr, getlib(PetscLib).age; own = false)
-
-    run_callback("rhs_jacobian!") do
+    return run_callback("rhs_jacobian!") do
+        ts = unsafe_pointer_to_objref(ctx)::TSState
+        actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age; own = false)
+        u = PetscVec{PetscLib}(u_ptr, getlib(PetscLib).age; own = false)
+        A = PetscMat{PetscLib}(A_ptr, getlib(PetscLib).age; own = false)
+        P = PetscMat{PetscLib}(P_ptr, getlib(PetscLib).age; own = false)
         ts.rhs_jacobian!(A, P, actual_ts, t, u)
     end
 end
@@ -1163,13 +1161,12 @@ function (::TSSetIFunctionFn{PetscLib, PetscReal})(
     F_ptr::CVec,
     ctx::Ptr{Cvoid},
 ) where {PetscLib, PetscReal}
-    ts = unsafe_pointer_to_objref(ctx)::TSState
-    actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age; own = false)
-    u = PetscVec{PetscLib}(u_ptr, getlib(PetscLib).age; own = false)
-    u_t = PetscVec{PetscLib}(udot_ptr, getlib(PetscLib).age; own = false)
-    F = PetscVec{PetscLib}(F_ptr, getlib(PetscLib).age; own = false)
-
-    run_callback("ifunction!") do
+    return run_callback("ifunction!") do
+        ts = unsafe_pointer_to_objref(ctx)::TSState
+        actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age; own = false)
+        u = PetscVec{PetscLib}(u_ptr, getlib(PetscLib).age; own = false)
+        u_t = PetscVec{PetscLib}(udot_ptr, getlib(PetscLib).age; own = false)
+        F = PetscVec{PetscLib}(F_ptr, getlib(PetscLib).age; own = false)
         ts.ifunction!(F, actual_ts, t, u, u_t)
     end
 end
@@ -1219,14 +1216,13 @@ function (::TSSetIJacobianFn{PetscLib, PetscReal})(
     P_ptr::CMat,
     ctx::Ptr{Cvoid},
 ) where {PetscLib, PetscReal}
-    ts = unsafe_pointer_to_objref(ctx)::TSState
-    actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age; own = false)
-    u = PetscVec{PetscLib}(u_ptr, getlib(PetscLib).age; own = false)
-    u_t = PetscVec{PetscLib}(udot_ptr, getlib(PetscLib).age; own = false)
-    A = PetscMat{PetscLib}(A_ptr, getlib(PetscLib).age; own = false)
-    P = PetscMat{PetscLib}(P_ptr, getlib(PetscLib).age; own = false)
-
-    run_callback("ijacobian!") do
+    return run_callback("ijacobian!") do
+        ts = unsafe_pointer_to_objref(ctx)::TSState
+        actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age; own = false)
+        u = PetscVec{PetscLib}(u_ptr, getlib(PetscLib).age; own = false)
+        u_t = PetscVec{PetscLib}(udot_ptr, getlib(PetscLib).age; own = false)
+        A = PetscMat{PetscLib}(A_ptr, getlib(PetscLib).age; own = false)
+        P = PetscMat{PetscLib}(P_ptr, getlib(PetscLib).age; own = false)
         ts.ijacobian!(A, P, actual_ts, t, u, u_t, shift)
     end
 end
@@ -1286,11 +1282,10 @@ function (::TSMonitorSetFn{PetscLib, PetscInt, PetscReal})(
     u_ptr::CVec,
     ctx::Ptr{Cvoid},
 ) where {PetscLib, PetscInt, PetscReal}
-    ts = unsafe_pointer_to_objref(ctx)::TSState
-    actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age; own = false)
-    u = PetscVec{PetscLib}(u_ptr, getlib(PetscLib).age; own = false)
-
-    run_callback("monitor") do
+    return run_callback("monitor") do
+        ts = unsafe_pointer_to_objref(ctx)::TSState
+        actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age; own = false)
+        u = PetscVec{PetscLib}(u_ptr, getlib(PetscLib).age; own = false)
         ts.monitor(actual_ts, step, t, u)
     end
 end

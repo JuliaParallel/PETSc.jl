@@ -20,16 +20,6 @@ function library_ptr(lib_handle)
     end
 end
 
-function release_library_handle(petsclib)
-    entry = pop!(lib_handles, petsclib, nothing)
-    isnothing(entry) && return nothing
-    handle, owned = entry
-    owned || return nothing
-    Libdl.dlclose(library_ptr(handle))
-    return nothing
-end
-
-
 # PETSc and LibPETSc share these functions: there is one of each
 """
     PetscLibType(library_path::String; PetscScalar=Float64, PetscInt=Int64)

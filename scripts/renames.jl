@@ -108,7 +108,6 @@ const RENAMES = Pair{Symbol, Symbol}[
     :MatSeqAIJWithArrays => :PetscMat,
     :MatAIJ => :PetscMat,
     :unsafe_localarray => :unsafe_local_array,
-    :wrap_localarray => :wrap_local_array,
     :acquire_petsc_local_array => :acquire_local_array,
     :release_petsc_local_array => :release_local_array,
     :get_petsc_arrays => :local_arrays,
@@ -774,7 +773,6 @@ const INTERNAL = Set{Symbol}([
     :ensure_mpi_initialized,
     :library_ptr,
     :post_initialize,
-    :release_library_handle,
     :doc_external,
     # the alias src/autowrapped/ interpolates, and the docstring helpers
     :_doc_external,
@@ -811,7 +809,6 @@ const INTERNAL = Set{Symbol}([
     :register_finalize_at_exit,
     :BLAS_THREAD_VARIABLES,
     :ranks_on_node,
-    :_unsafe_local_array,
     :_local_arrays,
     :_restore_local_arrays!,
     # kept as they are

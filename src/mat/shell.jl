@@ -155,66 +155,15 @@ LibPETSc.@for_petsc function create_matshell(
     mult_add,
 ) where {OType}
     mat = MatShell{$PetscLib}(C_NULL, obj, petsclib.age, true)
-
-#=
-    ccall(
-        (:MatCreateShell, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (
-            LibPETSc.MPI_Comm,
-            $PetscInt,
-            $PetscInt,
-            $PetscInt,
-            $PetscInt,
-            Ptr{Cvoid},
-            Ptr{CMat},
-        ),
-        comm,
-        local_rows,
-        local_cols,
-        global_rows,
-        global_cols,
-        pointer_from_objref(mat),
-        A_,
-    )
-=#
-    A_ = Ref{CMat}()
-    ccall(
-               (:MatCreateShell, $petsc_library),
-               LibPETSc.PetscErrorCode,
-               (LibPETSc.MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}, Ptr{CMat}),
-               comm, local_rows, local_cols, global_rows, global_cols, C_NULL, A_,
-              )
-
-    mat.ptr = A_[]
+    # the MatShell takes over the handle of the plain PetscMat PETSc returns
+    mat.ptr = LibPETSc.MatCreateShell(
+        petsclib, comm, $PetscInt(local_rows), $PetscInt(local_cols),
+        $PetscInt(global_rows), $PetscInt(global_cols), C_NULL,
+    ).ptr
     state = object_state!(mat)
     state.obj = obj
     LibPETSc.MatShellSetContext(petsclib, mat, pointer_from_objref(state))
 
-    #=
-     LibPETSc.MatCreateShell(
-        petsclib,
-        comm,
-        local_rows,
-        local_cols,
-        global_rows,
-        global_cols,
-        pointer_from_objref(mat),
-        mat,
-    )
-
-
-    mat = LibPETSc.MatCreateShell(
-        petsclib,
-        comm,
-        local_rows,
-        local_cols,
-        global_rows,
-        global_cols,
-        pointer_from_objref(mat),
-    )
-    =#
-  
     mulptr = @cfunction(
         MatOp{$PetscLib, LibPETSc.MATOP_MULT}(),
         LibPETSc.PetscErrorCode,

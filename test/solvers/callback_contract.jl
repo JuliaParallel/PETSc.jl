@@ -86,3 +86,24 @@ end
     @test !isdefined(PETSc, :user_ctx)
     @test !isdefined(PETSc, :set_user_ctx!)
 end
+
+# PETSc calls these from C, where a Julia exception is undefined behavior. A context
+# pointer that is not the solver's state has to come back as an error code.
+@testset "a trampoline with a wrong context returns an error code" begin
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    PetscLib = typeof(petsclib)
+    PetscInt = petsclib.PetscInt
+    PetscReal = real(petsclib.PetscScalar)
+    notstate = Ref(1)
+    ctx = Ptr{Cvoid}(pointer_from_objref(notstate))
+    code(call) = GC.@preserve notstate Logging.with_logger(call, Logging.NullLogger())
+
+    @test code(() -> PETSc.SNESSetFunctionFn{PetscLib}()(C_NULL, C_NULL, C_NULL, ctx)) != 0
+    @test code(() -> PETSc.SNESSetJacobianFn{PetscLib}()(C_NULL, C_NULL, C_NULL, C_NULL, ctx)) != 0
+    @test code(() -> PETSc.KSPComputeRHSFn{PetscLib, PetscInt}()(C_NULL, C_NULL, ctx)) != 0
+    @test code(() -> PETSc.KSPComputeOperatorsFn{PetscLib, PetscInt}()(C_NULL, C_NULL, C_NULL, ctx)) != 0
+    @test code(() -> PETSc.TSSetRHSFunctionFn{PetscLib, PetscReal}()(C_NULL, PetscReal(0), C_NULL, C_NULL, ctx)) != 0
+    @test code(() -> PETSc.TSSetIFunctionFn{PetscLib, PetscReal}()(C_NULL, PetscReal(0), C_NULL, C_NULL, C_NULL, ctx)) != 0
+    PETSc.finalize(petsclib)
+end

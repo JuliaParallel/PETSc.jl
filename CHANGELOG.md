@@ -22,6 +22,7 @@
 - `VecPtr` and `MatPtr` are removed. `PetscVec(petsclib, ptr; own)` and `PetscMat(petsclib, ptr; own)` wrap a raw handle and return a `PetscVec` or `PetscMat`, borrowed unless `own = true`. Code that annotated `::VecPtr` or `::MatPtr` breaks: annotate `::PetscVec`, `::PetscMat` or the abstract types.
 - `copy_disc!(dst, src)` takes the destination first, as `copyto!` does; the order was `(src, dst)`. Both arguments are DMs, so a call in the old order runs without a warning and copies the wrong way: swap the arguments.
 - `star_fd_coloring` returns `perturb_cols_1b`, `coo_idxs_1b` and `local_rows_1b` as `Vector{Vector{Int}}`, not `Vector{Vector{Int32}}`. They are 1-based indices into Julia arrays. Code that copies them to a GPU and wants 32-bit indices converts them there.
+- `wrap_local_array` is removed. It wrapped an array PETSc had already handed out and gave it a finalizer that handed it back, with no check that the Vec still existed, so `finalize(a)` after `destroy!(v)` crashed Julia. Use `with_local_array!(f!, v)`, or `acquire_local_array` with `release_local_array`. The 0.4 spelling `wrap_localarray` goes with it.
 - The callback trampoline types (`SNESSetFunctionFn`, `SNESSetJacobianFn`, `SNESSetConvergenceTestFn`, `KSPComputeRHSFn`, `KSPComputeOperatorsFn`, `TSSetRHSFunctionFn`, `TSSetRHSJacobianFn`, `TSSetIFunctionFn`, `TSSetIJacobianFn`, `TSMonitorSetFn`) are internal: they leave the `public` list. The 0.4 spellings `Fn_SNESSetFunction`, `Fn_SNESSetJacobian`, `Fn_SNESSetConvergenceTest`, `Fn_KSPComputeRHS` and `Fn_KSPComputeOperators` are removed. Callbacks are set through `set_function!`, `set_rhs_function!` and the other setters, which never needed the types.
 
 ### Added
@@ -41,6 +42,8 @@
 - `initialize` registered one `atexit` hook for every call; it now registers one per library.
 - Using a Vec, Mat, KSP, SNES, TS, DM or other handle after `destroy!` crashed Julia with signal 11 (`norm(v)` after `destroy!(v)`). It now throws an `ArgumentError`. A handle that never held an object, and a borrowed handle, still work as before.
 - A checkout that failed part way through left the Vecs it had already checked out in that state. That covers `with_local_array!` on several Vecs, `with_local_arrays!` and `with_field_views!`, and a Vec whose memory type has no loaded GPU package. A `KSP`, `SNES`, `TS` or DM whose setup threw (a bad `options_at`, an option PETSc rejects) was never destroyed, and the `KSP` kept a reference on its matrix or DM. `ksp \ b` and `MatShell * x` on Julia vectors left their temporary Vecs to the garbage collector when the solve or the product threw. All of these now hand back or destroy what they took before the exception goes on.
+- `MatShell` checks the error code of `MatCreateShell`, so a failure there throws at once instead of leaving a null matrix.
+- The `with_options(f, opts)` docstring shows up in the help again.
 
 ## v0.5.5
 

@@ -363,10 +363,10 @@ function (w::KSPComputeRHSFn{PetscLib, PetscInt})(
     cb::CVec,
     ksp_ptr::Ptr{Cvoid},
 ) where {PetscLib, PetscInt}
-    new_ksp = KSP{PetscLib}(new_ksp_ptr, getlib(PetscLib).age; own = false)
-    b = PetscVec{PetscLib}(cb, getlib(PetscLib).age; own = false)
-    ksp = unsafe_pointer_to_objref(ksp_ptr)::KSPState
     return run_callback("right-hand side rhs!") do
+        new_ksp = KSP{PetscLib}(new_ksp_ptr, getlib(PetscLib).age; own = false)
+        b = PetscVec{PetscLib}(cb, getlib(PetscLib).age; own = false)
+        ksp = unsafe_pointer_to_objref(ksp_ptr)::KSPState
         ksp.computerhs!(b, new_ksp)
     end
 end
@@ -415,11 +415,11 @@ function (w::KSPComputeOperatorsFn{PetscLib, PetscInt})(
     cP::CMat,
     ksp_ptr::Ptr{Cvoid},
 ) where {PetscLib, PetscInt}
-    new_ksp = KSP{PetscLib}(new_ksp_ptr, getlib(PetscLib).age; own = false)
-    A = PetscMat{PetscLib}(cA, getlib(PetscLib).age; own = false)
-    P = PetscMat{PetscLib}(cP, getlib(PetscLib).age; own = false)
-    ksp = unsafe_pointer_to_objref(ksp_ptr)::KSPState
     return run_callback("operators ops!") do
+        new_ksp = KSP{PetscLib}(new_ksp_ptr, getlib(PetscLib).age; own = false)
+        A = PetscMat{PetscLib}(cA, getlib(PetscLib).age; own = false)
+        P = PetscMat{PetscLib}(cP, getlib(PetscLib).age; own = false)
+        ksp = unsafe_pointer_to_objref(ksp_ptr)::KSPState
         ksp.computeops!(A, P, new_ksp)
     end
 end

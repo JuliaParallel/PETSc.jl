@@ -30,27 +30,6 @@ device_array(arr) = CUDA.unsafe_wrap(CuArray,
 
 PETSc.make_local_array(cpu_arr, ::CUDAMemBackend) = device_array(cpu_arr)
 
-# The finalizer-based checkout, handed back when the CuArray is finalized.
-# with_local_array! uses make_local_array and release_local_array instead.
-function PETSc.wrap_local_array(
-    cpu_arr, ::CUDAMemBackend, vec::AbstractPetscVec{PetscLib};
-    read::Bool, write::Bool,
-) where {PetscLib}
-    dev_arr = device_array(cpu_arr)
-    pv = PETSc.as_petsc_vec(vec)
-    finalizer(dev_arr) do _
-        if write && read
-            LibPETSc.VecRestoreArrayAndMemType(PetscLib, pv, cpu_arr)
-        elseif write
-            LibPETSc.VecRestoreArrayWriteAndMemType(PetscLib, pv, cpu_arr)
-        else
-            LibPETSc.VecRestoreArrayReadAndMemType(PetscLib, pv, cpu_arr)
-        end
-        return nothing
-    end
-    return dev_arr
-end
-
 # ============================================================================
 #   with_local_arrays!
 # ============================================================================

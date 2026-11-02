@@ -168,14 +168,13 @@ function (w::SNESSetFunctionFn{PetscLib})(
     r_fx::CVec,
     snes_ptr::Ptr{Cvoid},
 ) where {PetscLib}
-    snes = unsafe_pointer_to_objref(snes_ptr)::SNESState
-    # Wrap the actual C SNES for the current MG level so that dm() inside
-    # the callback returns the correct DM (matches the pattern in KSPComputeRHSFn).
-    actual_snes = SNES{PetscLib}(actual_snes_ptr, getlib(PetscLib).age; own = false)
-    x  = PetscVec{PetscLib}(r_x, getlib(PetscLib).age; own = false)
-    fx = PetscVec{PetscLib}(r_fx, getlib(PetscLib).age; own = false)
-
     return run_callback("residual f!") do
+        snes = unsafe_pointer_to_objref(snes_ptr)::SNESState
+        # Wrap the actual C SNES for the current MG level so that dm() inside
+        # the callback returns the correct DM (matches the pattern in KSPComputeRHSFn).
+        actual_snes = SNES{PetscLib}(actual_snes_ptr, getlib(PetscLib).age; own = false)
+        x  = PetscVec{PetscLib}(r_x, getlib(PetscLib).age; own = false)
+        fx = PetscVec{PetscLib}(r_fx, getlib(PetscLib).age; own = false)
         snes.f!(fx, actual_snes, x)
     end
 end
@@ -194,9 +193,7 @@ LibPETSc.@for_petsc function set_function!(
         (CSNES, CVec, CVec, Ptr{Cvoid})
     )
   
-    #with(snes.opts) do
     LibPETSc.SNESSetFunction($PetscLib, snes, vec, fptr, ctx)
-    #end
     snes.f! = f!
     return snes
 end
@@ -237,15 +234,14 @@ function (w::SNESSetJacobianFn{PetscLib})(
     r_P::CMat,
     snes_ptr::Ptr{Cvoid},
 ) where {PetscLib}
-    snes = unsafe_pointer_to_objref(snes_ptr)::SNESState
-    actual_snes = SNES{PetscLib}(actual_snes_ptr, getlib(PetscLib).age; own = false)
-    x = PetscVec{PetscLib}(r_x, getlib(PetscLib).age; own = false)
-    A = PetscMat{PetscLib}(r_A, getlib(PetscLib).age; own = false)
-    P = PetscMat{PetscLib}(r_P, getlib(PetscLib).age; own = false)
-
-    same_mat = (P.ptr == A.ptr)
-
     return run_callback("Jacobian updateJ!") do
+        snes = unsafe_pointer_to_objref(snes_ptr)::SNESState
+        actual_snes = SNES{PetscLib}(actual_snes_ptr, getlib(PetscLib).age; own = false)
+        x = PetscVec{PetscLib}(r_x, getlib(PetscLib).age; own = false)
+        A = PetscMat{PetscLib}(r_A, getlib(PetscLib).age; own = false)
+        P = PetscMat{PetscLib}(r_P, getlib(PetscLib).age; own = false)
+
+        same_mat = (P.ptr == A.ptr)
         if same_mat
             snes.updateJ!(A, actual_snes, x)
         else
@@ -266,9 +262,7 @@ LibPETSc.@for_petsc function set_snes_jacobian!(
         LibPETSc.PetscErrorCode,
         (CSNES, CVec, CMat, CMat, Ptr{Cvoid})
     )
-    #with(snes.opts) do
-        LibPETSc.SNESSetJacobian($PetscLib, snes, J, PJ, fptr, ctx)
-    #end
+    LibPETSc.SNESSetJacobian($PetscLib, snes, J, PJ, fptr, ctx)
     snes.updateJ! = updateJ!
     return snes
 end
@@ -314,9 +308,9 @@ function (w::SNESSetConvergenceTestFn{PetscLib})(
     reason_ptr::Ptr{<:Integer},
     snes_ptr::Ptr{Cvoid},
 ) where {PetscLib}
-    snes = unsafe_pointer_to_objref(snes_ptr)::SNESState
-    actual_snes = SNES{PetscLib}(actual_snes_ptr, getlib(PetscLib).age; own = false)
     return run_callback("convergence test") do
+        snes = unsafe_pointer_to_objref(snes_ptr)::SNESState
+        actual_snes = SNES{PetscLib}(actual_snes_ptr, getlib(PetscLib).age; own = false)
         PetscReal = getlib(PetscLib).PetscReal
         reason = snes.convergence_test!(actual_snes, Int(it), PetscReal(xnorm), PetscReal(gnorm), PetscReal(fnorm))
         unsafe_store!(reason_ptr, eltype(reason_ptr)(Int(reason)))

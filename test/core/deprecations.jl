@@ -113,7 +113,6 @@ const SHIMS = [
     :MatSeqAIJWithArrays => :PetscMat,
     :MatAIJ => :PetscMat,
     :unsafe_localarray => :unsafe_local_array,
-    :wrap_localarray => :wrap_local_array,
     :acquire_petsc_local_array => :acquire_local_array,
     :release_petsc_local_array => :release_local_array,
     :get_petsc_arrays => :local_arrays,

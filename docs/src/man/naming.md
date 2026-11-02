@@ -30,7 +30,7 @@ Three subsets are treated differently:
 
 **Internal helpers** are exempt: they may be renamed freely, with no shim.
 
-A leading underscore stays legitimate for one thing: distinguishing an inner worker from the wrapper that shares its name, as `Base` does with `_growend!`. As of now, `_mul!`, `_unsafe_local_array`, `_local_arrays` and `_restore_local_arrays!` are the cases in this package.
+A leading underscore stays legitimate for one thing: distinguishing an inner worker from the wrapper that shares its name, as `Base` does with `_growend!`. As of now, `_mul!`, `_local_arrays` and `_restore_local_arrays!` are the cases in this package.
 That is disambiguation, not a visibility marker.
 
 Because [§13](#13.-Exports) exports only types, "unexported" cannot by itself separate the public API from internals.
@@ -646,7 +646,7 @@ That is the distinction this package needs, because exporting only types ([§13]
 v0.5 adopts it unconditionally: `Project.toml` requires Julia 1.12, so a version gate would be dead code.
 
 ```julia
-public @bd_fn, @jacobian_fn, …, with_local_array!, wrap_local_array
+public @bd_fn, @jacobian_fn, …, with_destroy, with_local_array!
 ```
 
 The declaration is `src/public_names.jl`, generated from `scripts/renames.jl` ([§1.1](#1.1-What-these-rules-cover)), so it cannot drift from the register. A name cannot be both exported and `public`, so the generator subtracts §13's list. `names(PETSc)` then reports the API directly and `scripts/api_surface.jl --check` compares against it, rather than depending on searching this document for a substring.
@@ -927,7 +927,8 @@ They are listed because the rename table is the register of what is public, not 
 | `VecSeq` | `PetscVec` constructor |
 | `MatCreateSeqAIJ`, `MatSeqAIJ`, `MatSeqDense`, `MatSeqAIJWithArrays`, `MatAIJ` | `PetscMat` constructor |
 | `VecPtr`, `MatPtr` | removed in 0.6: `PetscVec(petsclib, ptr; own)` and `PetscMat(petsclib, ptr; own)` wrap a raw handle, borrowed by default |
-| `unsafe_localarray`, `wrap_localarray` | `unsafe_local_array`, `wrap_local_array` |
+| `unsafe_localarray` | `unsafe_local_array` |
+| `wrap_localarray` | removed in 0.6: `with_local_array!`, or `acquire_local_array` with `release_local_array` |
 | `acquire_petsc_local_array` | `acquire_local_array` |
 | `release_petsc_local_array` | `release_local_array` |
 | `get_petsc_arrays` | `local_arrays` |
@@ -976,7 +977,7 @@ They drop the `_` prefix, which was standing in for "internal" and is not how Ju
 | `_ensure_mpi_initialized` | `ensure_mpi_initialized` |
 | `_library_ptr` | `library_ptr` |
 | `_post_initialize` | `post_initialize` |
-| `_release_library_handle` | `release_library_handle` |
+| `_release_library_handle` | removed in 0.6 |
 | `_doc_external`, `_lib_handles`, `_petsc_program_name` | prefix dropped likewise. `_doc_external` also stays as a `const` alias, because `src/autowrapped/` interpolates that spelling into several thousand docstrings |
 | `_errorcode`, `_run_callback` | prefix dropped likewise |
 | `_with_options` (`ts.jl`) | `with_options`, public from 0.5.3 (see the `options.jl` table) |
@@ -986,7 +987,7 @@ The exceptions keep their underscore, because there it separates an inner worker
 | v0.4 | v0.5 |
 |---|---|
 | `_mul!` | unchanged (worker for `mul!`) |
-| `_unsafe_localarray` | `_unsafe_local_array` (worker for `unsafe_local_array`) |
+| `_unsafe_localarray` | removed in 0.6 |
 | `get_petsc_arrays_impl` | `_local_arrays` (worker for `local_arrays`) |
 | `restore_petsc_arrays_impl` | `_restore_local_arrays!` |
 

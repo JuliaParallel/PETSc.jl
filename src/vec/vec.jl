@@ -68,9 +68,6 @@ LibPETSc.PetscVec(v::AbstractPetscVec{PetscLib}) where {PetscLib} =
 A standard, sequentially-stored serial PETSc vector for `petsclib.PetscScalar`
 of length `n`.
 
-Replaces v0.4's `VecSeq`: construction goes through the type
-(docs/src/man/naming.md §5.1).
-
 # External Links
 $(doc_external("Vec/VecCreateSeq"))
 """
@@ -166,7 +163,7 @@ end
 
 The name PETSc knows this vector's implementation by, as a `Symbol` (`:seq`,
 `:mpi`, …), or `nothing` when no type has been set yet (docs/src/man/naming.md
-§3.1). v0.4 answered with a `String`; that is a break with no shim (§16).
+§3.1).
 
 # External Links
 $(doc_external("Vec/VecGetType"))
@@ -252,9 +249,7 @@ the second, etc. For certain parallel layouts this range may not be well
 defined.
 
 The range is **1-based**, always: an index into Julia data is 1-based
-(docs/src/man/naming.md §12.1). v0.4 took `base_one::Bool` positionally and
-made the convention a runtime choice; `ownership_range(v, false)` warns in
-v0.5 and is a `MethodError` in v0.6.
+(docs/src/man/naming.md §12.1).
 
 !!! note
 

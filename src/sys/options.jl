@@ -21,9 +21,6 @@ end
 
 Create a PETSc options database for the given `petsclib`.
 
-Replaces v0.4's `Options` factory: construction goes through the type
-(docs/src/man/naming.md §5.1).
-
 Keyword arguments are converted to PETSc options:
 - Options with value `nothing` or `true` are set without a value (flags)
 - Options with value `false` are not set

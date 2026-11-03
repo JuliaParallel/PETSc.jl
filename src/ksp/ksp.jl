@@ -9,8 +9,8 @@ mutable struct KSPState <: ObjectState
     alive::Bool
 end
 KSPState() = KSPState(
-    x -> error("computerhs! not defined"),
-    x -> error("computeops! not defined"),
+    nothing,
+    nothing,
     nothing,
     nothing,
     :first_solve,
@@ -30,22 +30,6 @@ state_type(::Type{<:KSP}) = KSPState
 end
 Base.propertynames(ksp::KSP, private::Bool = false) = forward_propertynames(typeof(ksp))
 
-
-# positional constructor taking callbacks: the callbacks go to the state
-function LibPETSc.KSP{PetscLib}(
-    ptr::CKSP,
-    age::Int,
-    computerhs!::Function,
-    computeops!::Function = x -> error("computeops! not defined"),
-    opts = nothing,
-) where {PetscLib}
-    ptr == C_NULL && throw(ArgumentError("callbacks need a PETSc object; got a null pointer"))
-    ksp = KSP{PetscLib}(ptr, age)
-    ksp.computerhs! = computerhs!
-    ksp.computeops! = computeops!
-    ksp.opts = opts
-    return ksp
-end
 
 # Custom display for REPL
 function Base.show(io::IO, v::AbstractKSP{PetscLib}) where {PetscLib}
@@ -389,8 +373,7 @@ $(doc_callback())
 $(doc_external("KSP/KSPSetComputeRHS"))
 
 The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
-works. v0.4 also accepted the subject-first order; that method is gone in
-v0.5, and there is no shim for it (§16).
+works.
 """
 function set_compute_rhs! end
 # We have to use the macro here because of the @cfunction
@@ -442,8 +425,7 @@ $(doc_callback())
 $(doc_external("KSP/KSPSetComputeOperators"))
 
 The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
-works. v0.4 also accepted the subject-first order; that method is gone in
-v0.5, and there is no shim for it (§16).
+works.
 """
 function set_compute_operators! end
 # We have to use the macro here because of the @cfunction
@@ -478,8 +460,7 @@ solution(ksp::AbstractKSP{PetscLib}) where {PetscLib} =
     type_name(ksp::AbstractKSP)
 
 The name PETSc knows this solver by, as a `Symbol` (`:gmres`, `:cg`, …), or
-`nothing` when no type has been set yet (docs/src/man/naming.md §3.1). v0.4
-answered with a `String`; that is a break with no shim (§16).
+`nothing` when no type has been set yet (docs/src/man/naming.md §3.1).
 
 # External Links
 $(doc_external("KSP/KSPGetType"))

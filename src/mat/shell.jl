@@ -139,9 +139,7 @@ function MatShell(
                            mult_transpose, diagonal, mult_add)
 end
 
-# The per-library body of `MatShell`. The public method above takes `petsclib`
-# as the abstract type, so the old argument order's shim can be told apart
-# from it without an ambiguity.
+# The per-library body of `MatShell`.
 LibPETSc.@for_petsc function create_matshell(
     petsclib::$PetscLib,
     obj::OType,

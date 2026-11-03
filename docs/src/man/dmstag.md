@@ -1,5 +1,9 @@
 # DMStag
 
+```@meta
+CurrentModule = PETSc
+```
+
 The DMStag (Staggered Grid DM) module provides data management for staggered grids, commonly used in finite difference/volume methods for fluid dynamics and similar applications.
 
 ## Overview

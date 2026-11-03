@@ -145,9 +145,6 @@ Set the PETSc implementation `obj` uses, for example `set_type!(ksp, :gmres)`.
 
 Defined for `PetscVec`, `PetscMat`, `KSP`, `PC`, `SNES`, `TS` and `AbstractPetscDM`.
 The `Symbol` is converted to a `String` at the C boundary (§3.1).
-
-`set_type!(obj, "gmres")` still works in v0.5 and warns; it is a `MethodError`
-in v0.6.
 """
 function set_type! end
 

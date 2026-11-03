@@ -26,10 +26,6 @@ end
 
 Create a custom PETSc library instance from a user-specified shared library path.
 
-Replaces v0.4's `set_petsclib`, which mutated nothing despite its name and so
-was never a `set_*!` (docs/src/man/naming.md §7): it builds and returns a
-library handle, which is what a constructor does.
-
 This function allows you to use a custom-compiled PETSc library instead of the
 pre-built libraries provided by `PETSc_jll`. The custom library must be compiled as a
 shared/dynamic library (not static), built with the matching scalar type and integer

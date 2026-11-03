@@ -14,9 +14,6 @@ comes from the name set on the vector via [`set_name!`](@ref).
 Neither `petsclib` nor `comm` is an argument: the vector carries the library as
 a type parameter and PETSc is asked for its communicator (§8).
 
-`vtk_save!` and `vtk_save_fields!` were the two v0.4 names for these two
-methods, and both shim the old argument list.
-
 # External Links
 $(doc_external("Viewer/PetscViewerVTKOpen"))
 """

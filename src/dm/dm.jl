@@ -297,9 +297,7 @@ global_vec(dm::AbstractPetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMCreateGl
 Transfer values from the local vector `lvec` to the global vector `gvec`
 associated with the `dm` object.
 
-The written vector comes first and the `dm` follows it (§8); v0.4 took the DM
-last. A shim forwards the v0.4 name `dm_local_to_global!` from the old order
-(§17.2); the new name only accepts the new one (§16).
+The written vector comes first and the `dm` follows it (§8).
 
 # Arguments
 - `gvec::AbstractPetscVec`: Global vector (destination, written)
@@ -329,10 +327,7 @@ Transfer values from the global vector `gvec` to the local vector `lvec`
 associated with the `dm` object, including ghost point values from neighboring
 processes.
 
-The written vector comes first and the `dm` follows it (§8); v0.4 had two
-spellings of this call, one taking the DM last and one taking it first, and
-they collapse onto this one. A shim forwards the v0.4 name
-`dm_global_to_local!` from the old order (§17.2).
+The written vector comes first and the `dm` follows it (§8).
 
 # Arguments
 - `lvec::AbstractPetscVec`: Local vector (destination, written)
@@ -488,10 +483,9 @@ end
 
 The name PETSc knows this DM's flavour by, as a `Symbol` (`:da`, `:stag`,
 `:plex`, …), or `nothing` when no type has been set yet
-(docs/src/man/naming.md §3.1). v0.4 answered with a `String`; that is a break
-with no shim (§16).
+(docs/src/man/naming.md §3.1).
 
-The flavour is a type parameter in v0.5 ([`DMDA`](@ref), [`DMStag`](@ref),
+The flavour is a type parameter ([`DMDA`](@ref), [`DMStag`](@ref),
 [`DMPlex`](@ref)), so dispatch, not this reader, is the way to branch on it.
 
 # External Links
@@ -531,9 +525,6 @@ Base.ndims(dm::AbstractPetscDM{PetscLib}) where {PetscLib} =
     PetscMat(da::AbstractPetscDM)
 
 Create a sparse matrix (AIJ format) with sparsity pattern determined by the DM.
-
-Replaces v0.4's `MatAIJ`: construction goes through the type
-(docs/src/man/naming.md §5.1).
 
 # Returns
 

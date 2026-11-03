@@ -1,5 +1,9 @@
 # Performance
 
+```@meta
+CurrentModule = PETSc
+```
+
 PETSc.jl aims for a fixed cost per call: the work a high-level call does on the Julia side does not grow with the size of the vector, matrix or grid it acts on. `test/core/performance.jl` holds that as a contract, checking every call below at two problem sizes. If a call in this page starts allocating more at the larger size, that is a bug worth reporting.
 
 ## Read and write arrays in a block

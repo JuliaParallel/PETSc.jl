@@ -9,8 +9,8 @@ mutable struct SNESState <: ObjectState
     alive::Bool
 end
 SNESState() = SNESState(
-    x -> error("function not defined"),
-    x -> error("function not defined"),
+    nothing,
+    nothing,
     nothing,
     nothing,
     :first_solve,
@@ -30,24 +30,6 @@ state_type(::Type{<:SNES}) = SNESState
 end
 Base.propertynames(snes::SNES, private::Bool = false) = forward_propertynames(typeof(snes))
 
-
-# positional constructors taking callbacks: the callbacks go to the state
-function LibPETSc.SNES{PetscLib}(
-    ptr::CSNES,
-    age::Int,
-    f!::Function,
-    updateJ!::Function = x -> error("function not defined"),
-    opts = nothing,
-) where {PetscLib}
-    ptr == C_NULL && throw(ArgumentError("callbacks need a PETSc object; got a null pointer"))
-    snes = SNES{PetscLib}(ptr, age)
-    snes.f! = f!
-    snes.updateJ! = updateJ!
-    snes.opts = opts
-    return snes
-end
-LibPETSc.SNES(ptr::Ptr, lib::PetscLib, f!::Function, updateJ!::Function, age::Int = lib.age) where {PetscLib} =
-    SNES{PetscLib}(ptr, age, f!, updateJ!)
 
 # Custom display for REPL
 function Base.show(io::IO, v::AbstractSNES{PetscLib}) where {PetscLib}
@@ -115,8 +97,7 @@ end
     type_name(snes::AbstractSNES)
 
 The name PETSc knows this solver by, as a `Symbol` (`:newtonls`, `:fas`, …), or
-`nothing` when no type has been set yet (docs/src/man/naming.md §3.1). v0.4
-answered with a `String`; that is a break with no shim (§16).
+`nothing` when no type has been set yet (docs/src/man/naming.md §3.1).
 
 # External Links
 $(doc_external("SNES/SNESGetType"))
@@ -143,8 +124,7 @@ end
 Set the residual function `f!` for the nonlinear solver `snes`.
 
 The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
-works. v0.4 also accepted the subject-first order; that method is gone in
-v0.5, and there is no shim for it (§16).
+works.
 
 The function `f!` will be called as `f!(fx, snes, x)` where:
 - `fx`: Output vector to store the residual F(x)
@@ -220,8 +200,7 @@ $(doc_callback())
 $(doc_external("SNES/SNESSetJacobian"))
 
 The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
-works. v0.4 also accepted the subject-first order; that method is gone in
-v0.5, and there is no shim for it (§16).
+works.
 """
 function set_snes_jacobian! end
 
@@ -291,8 +270,7 @@ $(doc_callback("its return value is the `SNESConvergedReason` it decides"))
 $(doc_external("SNES/SNESSetConvergenceTest"))
 
 The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
-works. v0.4 also accepted the subject-first order; that method is gone in
-v0.5, and there is no shim for it (§16).
+works.
 """
 function set_convergence_test! end
 

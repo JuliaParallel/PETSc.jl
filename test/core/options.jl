@@ -94,6 +94,81 @@ end
     PETSc.finalize(petsclib)
 end
 
+@testset "solver options layer under the options database" begin
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    PetscLib = typeof(petsclib)
+    LP = PETSc.LibPETSc
+    T = petsclib.PetscScalar
+    comm = PETSc.MPI.COMM_SELF
+    global_opts = LP.PetscOptions{PetscLib}(C_NULL, petsclib.age; own = false)
+    has(key) = LP.PetscOptionsHasName(petsclib, global_opts, "", key)
+    S = sparse(T[2 0; 0 4])
+    b = PETSc.PetscVec(petsclib, T[2, 4])
+    x = similar(b)
+    rtol(ksp) = PETSc.tolerances(ksp).rtol
+
+    LP.PetscOptionsSetValue(petsclib, global_opts, "-ksp_rtol", "1e-3")
+    try
+        # the database wins on a shared key; the other constructor keys apply
+        ksp = PETSc.KSP(petsclib, comm, S; ksp_rtol = 1e-6, pc_type = "none")
+        PETSc.solve!(x, ksp, b)
+        @test rtol(ksp) ≈ 1e-3
+        @test PETSc.type_name(PETSc.pc(ksp)) == :none
+        @test !has("-pc_type")
+        @test LP.PetscOptionsGetString(petsclib, global_opts, "", "-ksp_rtol") == "1e-3"
+
+        # a solver without options reads the database at its first solve
+        plain = PETSc.KSP(petsclib, comm, S)
+        PETSc.solve!(x, plain, b)
+        @test rtol(plain) ≈ 1e-3
+        PETSc.destroy!.((ksp, plain))
+    finally
+        LP.PetscOptionsClearValue(petsclib, global_opts, "-ksp_rtol")
+    end
+
+    # a nested solver's key beats the one an enclosing block set, which comes back
+    outer = PETSc.KSP(petsclib, comm, S; ksp_rtol = 1e-2)
+    inner = PETSc.KSP(petsclib, comm, S; ksp_rtol = 1e-8)
+    PETSc.with_options(outer) do
+        PETSc.solve!(x, inner, b)
+        @test LP.PetscOptionsGetString(petsclib, global_opts, "", "-ksp_rtol") == "0.01"
+    end
+    @test rtol(inner) ≈ 1e-8
+    @test !has("-ksp_rtol")
+
+    # a database pushed through LibPETSc inside a block: its keys are the user's
+    for (user_kwargs, expected) in (((ksp_rtol = 1e-4,), 1e-4), ((;), 1e-8))
+        userdb = PETSc.PetscOptions(petsclib; user_kwargs...)
+        user_has(key) = LP.PetscOptionsHasName(petsclib, userdb, "", key)
+        fresh = PETSc.KSP(petsclib, comm, S; ksp_rtol = 1e-8)
+        PETSc.with_options(outer) do
+            LP.PetscOptionsPush(petsclib, userdb)
+            try
+                PETSc.solve!(x, fresh, b)
+            finally
+                LP.PetscOptionsPop(petsclib)
+            end
+            @test LP.PetscOptionsGetString(petsclib, global_opts, "", "-ksp_rtol") == "0.01"
+        end
+        @test rtol(fresh) ≈ expected
+        if isempty(user_kwargs)
+            @test !user_has("-ksp_rtol")
+        else
+            @test userdb["ksp_rtol"] == "0.0001"
+        end
+        @test !has("-ksp_rtol")
+        PETSc.destroy!.((fresh, userdb))
+    end
+
+    # a throw inside the block leaves no key behind
+    bad = PETSc.KSP(petsclib, comm, S; ksp_type = "no_such_type")
+    @test_throws LP.PetscError without_petsc_traceback(() -> PETSc.solve!(x, bad, b), petsclib)
+    @test !has("-ksp_type")
+    PETSc.destroy!.((outer, inner, bad, x, b))
+    PETSc.finalize(petsclib)
+end
+
 @testset "parse_options" begin
     @test begin
 

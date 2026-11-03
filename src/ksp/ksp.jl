@@ -13,7 +13,7 @@ KSPState() = KSPState(
     nothing,
     nothing,
     nothing,
-    :first_solve,
+    :never,
     false,
     true,
 )
@@ -58,7 +58,12 @@ with optional `prefix` and `options`.
   setting made in code for the same option.
 - `:construction`: here, once. A setting made in code afterwards overrides them.
 
-The options stay pushed during `solve!`, and during `setup!` too unless
+PETSc's options database (`PETSc.initialize(; options)`, the `PETSC_OPTIONS`
+environment variable) is read at the same point and wins on a key both set, so
+the constructor options are defaults it can override. A solver built without
+options reads the database too.
+
+The options stay in effect during `solve!`, and during `setup!` too unless
 `options_at = :each_solve`, so the sub-solvers PETSc creates during setup read
 them (see [`with_options`](@ref)).
 
@@ -85,7 +90,7 @@ function KSP(
     return own_solver!(LibPETSc.KSPCreate(petsclib, c), c) do ksp
         LibPETSc.KSPSetOperators(petsclib, ksp, A, P)
         isempty(prefix) || LibPETSc.KSPSetOptionsPrefix(petsclib, ksp, String(prefix))
-        store_options!(ksp, petsclib, options_at, options)
+        store_options!(ksp, options_at, options)
     end
 end
 
@@ -103,7 +108,12 @@ Create a `KSP` associated with the `dm` with optional `prefix` and `options`.
   setting made in code for the same option.
 - `:construction`: here, once. A setting made in code afterwards overrides them.
 
-The options stay pushed during `solve!`, and during `setup!` too unless
+PETSc's options database (`PETSc.initialize(; options)`, the `PETSC_OPTIONS`
+environment variable) is read at the same point and wins on a key both set, so
+the constructor options are defaults it can override. A solver built without
+options reads the database too.
+
+The options stay in effect during `solve!`, and during `setup!` too unless
 `options_at = :each_solve`, so the sub-solvers PETSc creates during setup read
 them (see [`with_options`](@ref)).
 
@@ -132,7 +142,7 @@ function KSP(dm::AbstractPetscDM{PetscLib};
     return own_solver!(LibPETSc.KSPCreate(petsclib, c), c) do ksp
         isempty(prefix) || LibPETSc.KSPSetOptionsPrefix(petsclib, ksp, String(prefix))
         LibPETSc.KSPSetDM(petsclib, ksp, dm)
-        store_options!(ksp, petsclib, options_at, options)
+        store_options!(ksp, options_at, options)
     end
 end
 
@@ -215,7 +225,7 @@ Set up `ksp` and its preconditioner, as [`solve!`](@ref) does before its first
 solve, and return `ksp`. Call it to build the preconditioner at a controlled
 point, for example to time it, or to reach the sub-solvers of a fieldsplit
 before the first solve. Unless `options_at = :each_solve`, the constructor options
-are pushed meanwhile, and under `:first_solve` applied first (see [`KSP`](@ref)).
+are in effect meanwhile, and under `:first_solve` applied first (see [`KSP`](@ref)).
 
 # External Links
 $(doc_external("KSP/KSPSetUp"))
@@ -531,7 +541,7 @@ Set the convergence tolerances of `ksp`, named as [`tolerances`](@ref) returns t
 A keyword left at `nothing` keeps the value `ksp` has. Returns `ksp`.
 
 An option for the same tolerance (`ksp_rtol = 1e-8` to the constructor, or
-`-ksp_rtol` on the command line) is applied when the constructor's `options_at`
+`-ksp_rtol` in `PETSC_OPTIONS`) is applied when the constructor's `options_at`
 says, and overrides this setting if that comes later.
 
 # External Links

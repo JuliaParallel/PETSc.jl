@@ -189,7 +189,7 @@ TSState() = TSState(
     nothing,
     nothing,
     nothing,
-    :first_solve,
+    :never,
     false,
     true,
 )
@@ -231,7 +231,12 @@ Create a PETSc time stepper on the communicator `comm`.
 - `:construction`: here, once. A DM or callback attached afterwards is not
   visible to them.
 
-The options stay pushed during `solve!`, and during `setup!` and `step!` too unless
+PETSc's options database (`PETSc.initialize(; options)`, the `PETSC_OPTIONS`
+environment variable) is read at the same point and wins on a key both set, so
+the constructor options are defaults it can override. A solver built without
+options reads the database too.
+
+The options stay in effect during `solve!`, and during `setup!` and `step!` too unless
 `options_at = :each_solve`, so the sub-solvers PETSc creates during setup read
 them (see [`with_options`](@ref)).
 
@@ -261,7 +266,7 @@ function TS(
     return own_solver!(LibPETSc.TSCreate(petsclib, comm), comm) do ts
         isempty(prefix) || LibPETSc.TSSetOptionsPrefix(petsclib, ts, String(prefix))
         LibPETSc.TSSetExactFinalTime(petsclib, ts, exact_final_time)
-        store_options!(ts, petsclib, options_at, options)
+        store_options!(ts, options_at, options)
     end
 end
 

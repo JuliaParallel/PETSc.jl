@@ -71,7 +71,7 @@ mutable struct PetscVec{PetscLib, T} <: AbstractPetscVec{PetscLib, T}
     age::Int
     own::Bool
 
-    PetscVec{PetscLib}(ptr::CVec = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} =
+    PetscVec{PetscLib}(ptr::CVec = C_NULL, age::Int = getlib(PetscLib).age; own::Bool = true) where {PetscLib} =
         new{PetscLib, scalartype(PetscLib)}(ptr, age, own)
 end
 
@@ -92,7 +92,7 @@ mutable struct PetscMat{PetscLib, T} <: AbstractPetscMat{PetscLib, T}
     age::Int
     own::Bool
 
-    PetscMat{PetscLib}(ptr::CMat = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} =
+    PetscMat{PetscLib}(ptr::CMat = C_NULL, age::Int = getlib(PetscLib).age; own::Bool = true) where {PetscLib} =
         new{PetscLib, scalartype(PetscLib)}(ptr, age, own)
 end
 
@@ -113,7 +113,7 @@ mutable struct KSP{PetscLib} <: AbstractKSP{PetscLib}
     age::Int
     own::Bool
 
-    KSP{PetscLib}(ptr::CKSP = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
+    KSP{PetscLib}(ptr::CKSP = C_NULL, age::Int = getlib(PetscLib).age; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
 end
 
 # Convenience constructor from petsclib instance
@@ -131,7 +131,7 @@ mutable struct PC{PetscLib} <: AbstractPC{PetscLib}
     age::Int
     own::Bool
 
-    PC{PetscLib}(ptr::CPC = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
+    PC{PetscLib}(ptr::CPC = C_NULL, age::Int = getlib(PetscLib).age; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
 end
 
 PC(lib::PetscLib) where {PetscLib} = PC{PetscLib}(C_NULL, lib.age)
@@ -148,7 +148,7 @@ mutable struct SNES{PetscLib} <: AbstractSNES{PetscLib}
     age::Int
     own::Bool
 
-    SNES{PetscLib}(ptr::CSNES = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
+    SNES{PetscLib}(ptr::CSNES = C_NULL, age::Int = getlib(PetscLib).age; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
 end
 
 # Convenience constructor from petsclib instance
@@ -166,7 +166,7 @@ mutable struct PetscDM{PetscLib} <: AbstractPetscDM{PetscLib}
     age::Int
     own::Bool
 
-    PetscDM{PetscLib}(ptr::CDM = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
+    PetscDM{PetscLib}(ptr::CDM = C_NULL, age::Int = getlib(PetscLib).age; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
 end
 
 # Convenience constructor from petsclib instance
@@ -186,7 +186,7 @@ mutable struct PetscOptions{PetscLib} <: AbstractPetscOptions{PetscLib}
     age::Int
     own::Bool
 
-    PetscOptions{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
+    PetscOptions{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = getlib(PetscLib).age; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
 end
 
 # Convenience constructors
@@ -208,7 +208,7 @@ mutable struct IS{PetscLib} <: AbstractIS{PetscLib}
     age::Int
     own::Bool
 
-    IS{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
+    IS{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = getlib(PetscLib).age; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
 end
 
 # Convenience constructors
@@ -235,7 +235,7 @@ mutable struct PF{PetscLib} <: AbstractPF{PetscLib}
     age::Int
     own::Bool
 
-    PF{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
+    PF{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = getlib(PetscLib).age; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
 end
 
 # Convenience constructors
@@ -257,7 +257,7 @@ mutable struct TS{PetscLib} <: AbstractTS{PetscLib}
     age::Int
     own::Bool
 
-    TS{PetscLib}(ptr::CTS = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
+    TS{PetscLib}(ptr::CTS = C_NULL, age::Int = getlib(PetscLib).age; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
 end
 
 # Convenience constructors
@@ -280,7 +280,7 @@ mutable struct Tao{PetscLib} <: AbstractTao{PetscLib}
     age::Int
     own::Bool
 
-    Tao{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
+    Tao{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = getlib(PetscLib).age; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
 end
 
 # Convenience constructors
@@ -302,7 +302,7 @@ mutable struct AO{PetscLib} <: AbstractAO{PetscLib}
     age::Int
     own::Bool
 
-    AO{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
+    AO{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = getlib(PetscLib).age; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
 end
 
 # Convenience constructors
@@ -324,7 +324,7 @@ mutable struct PetscFE{PetscLib} <: AbstractPetscFE{PetscLib}
     age::Int
     own::Bool
 
-    PetscFE{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
+    PetscFE{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = getlib(PetscLib).age; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
 end
 
 # Convenience constructors
@@ -346,7 +346,7 @@ mutable struct DMLabel{PetscLib} <: AbstractDMLabel{PetscLib}
     age::Int
     own::Bool
 
-    DMLabel{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
+    DMLabel{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = getlib(PetscLib).age; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
 end
 
 # Convenience constructors
@@ -368,7 +368,7 @@ mutable struct MatNullSpace{PetscLib} <: AbstractMatNullSpace{PetscLib}
     age::Int
     own::Bool
 
-    MatNullSpace{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = 0; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
+    MatNullSpace{PetscLib}(ptr::Ptr{Cvoid} = C_NULL, age::Int = getlib(PetscLib).age; own::Bool = true) where {PetscLib} = new{PetscLib}(ptr, age, own)
 end
 
 # Convenience constructors

@@ -180,8 +180,7 @@ function Base.push!(opts::AbstractPetscOptions{PetscLib}) where {PetscLib}
     stack = options_stack(PetscLib)
     opts.ptr in stack && throw(ArgumentError(
         "these options are already pushed; PETSc's options stack can hold an " *
-        "options database only once. Use `with_options`, which skips the push " *
-        "when the options are already on top."))
+        "options database only once"))
     LibPETSc.PetscOptionsPush(PetscLib, opts)
     push!(stack, opts.ptr)
     return nothing
@@ -257,15 +256,14 @@ option_entries(options) = Pair{String, Union{Nothing, String}}[
     with_options(f, opts::PetscOptions)
 
 Run `f()` with `opts` pushed onto PETSc's options stack, so that PETSc reads its
-options from `opts`, and pop it again even if `f` throws. Returns the result of
-`f`. If `opts` is already on top of the stack, `f` runs without a second push.
+options from `opts` alone, and pop it again even if `f` throws. Returns the result
+of `f`. PETSc's stack can hold a database only once, so nesting `with_options` on
+the same `opts` throws an `ArgumentError`.
 
 # External Links
 $(doc_external("Sys/PetscOptionsPush"))
 """
 function with_options(f, opts::AbstractPetscOptions{PetscLib}) where {PetscLib}
-    stack = options_stack(PetscLib)
-    !isempty(stack) && last(stack) == opts.ptr && return f()
     push!(opts)
     try
         return f()

@@ -24,10 +24,25 @@ MPI.Initialized() || MPI.Init()
         @test PETSc.with_options(() -> PETSc.set_from_options!(ksp), opts) === ksp
         @test PETSc.type_name(ksp) === :cg
 
-        # nested on the same options: no second push, so the stack stays intact
-        @test PETSc.with_options(opts) do
+        # nested on the same options: refused, and the stack stays intact
+        @test_throws "already pushed" PETSc.with_options(opts) do
             PETSc.with_options(() -> 42, opts)
-        end == 42
+        end
+        @test isempty(PETSc.options_stack(typeof(petsclib)))
+
+        # with a database pushed through LibPETSc on top, `opts` is not on top any
+        # more: pushing it again is refused rather than skipped
+        other = PETSc.PetscOptions(petsclib; ksp_type = "gmres")
+        PETSc.with_options(opts) do
+            LibPETSc.PetscOptionsPush(petsclib, other)
+            try
+                @test_throws "already pushed" PETSc.with_options(() -> nothing, opts)
+            finally
+                LibPETSc.PetscOptionsPop(petsclib)
+            end
+        end
+        @test isempty(PETSc.options_stack(typeof(petsclib)))
+        PETSc.destroy!(other)
 
         # popped even when the block throws
         @test_throws ErrorException PETSc.with_options(() -> error("boom"), opts)

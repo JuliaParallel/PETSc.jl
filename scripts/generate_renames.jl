@@ -2,12 +2,8 @@
 #
 #   julia --project=. scripts/generate_renames.jl
 #
-# Reads scripts/renames.jl and writes
-#
-#   src/public_names.jl        the `public` declaration (§13.1)
-#   src/audit_names.jl         the name sets src/audit.jl matches against
-#
-# Neither file is edited by hand.
+# Reads scripts/renames.jl and writes src/public_names.jl, the `public`
+# declaration (§13.1). The file is not edited by hand.
 
 include(joinpath(@__DIR__, "renames.jl"))
 
@@ -84,74 +80,7 @@ function write_public(path)
 end
 
 # ---------------------------------------------------------------------------
-# src/audit_names.jl
-# ---------------------------------------------------------------------------
-
-function write_audit_names(path)
-    io = IOBuffer()
-    print(io, HEADER)
-    print(
-        io,
-        """
-#
-# The names src/audit.jl matches against. Generated so that the next rename
-# cannot blind the auditor: after a rename its patterns would otherwise stop
-# matching and it would report no leaks on leaking code.
-
-\"\"\"
-    AUDIT_TYPE_CREATORS
-
-Type constructors whose name is also the kind of object they create.
-\"\"\"
-""",
-    )
-    println(io, "const AUDIT_TYPE_CREATORS = Dict{Symbol, String}(")
-    for k in sort!(collect(keys(AUDIT_TYPE_CREATORS)); by = String)
-        println(io, "    :$k => $(repr(AUDIT_TYPE_CREATORS[k])),")
-    end
-    println(io, ")\n")
-
-    print(
-        io,
-        """
-\"\"\"
-    AUDIT_NAMED_CREATORS
-
-Creators whose name carries no `Create`/`Duplicate` marker for
-[`audit_creator`](@ref) to recognise by shape.
-\"\"\"
-""",
-    )
-    println(io, "const AUDIT_NAMED_CREATORS = Dict{Symbol, String}(")
-    for k in sort!(collect(keys(AUDIT_NAMED_CREATORS)); by = String)
-        println(io, "    :$k => $(repr(AUDIT_NAMED_CREATORS[k])),")
-    end
-    println(io, ")\n")
-
-    print(
-        io,
-        """
-\"\"\"
-    AUDIT_DESTROYER_NAMES
-
-Names that release a PETSc object. `finalizer` counts: it hands the release to
-the garbage collector rather than performing it, but the object is accounted for.
-\"\"\"
-""",
-    )
-    println(
-        io,
-        "const AUDIT_DESTROYER_NAMES = Set{Symbol}([" *
-        join((":$n" for n in AUDIT_DESTROYERS), ", ") *
-        "])",
-    )
-    write(path, String(take!(io)))
-    return nothing
-end
-
-# ---------------------------------------------------------------------------
 
 check_register()
 write_public(joinpath(ROOT, "src", "public_names.jl"))
-write_audit_names(joinpath(ROOT, "src", "audit_names.jl"))
-println("wrote src/public_names.jl, src/audit_names.jl")
+println("wrote src/public_names.jl")

@@ -2,13 +2,22 @@
 #   PETSc object leak audit
 # ============================================================================
 #
-# Matches object creations against destroy calls by walking the parsed syntax tree. 
+#   julia scripts/audit.jl path/to/file.jl [more.jl ...]
+#
+# Scans each file for PETSc objects that are created but never destroyed and
+# prints a report. `include` it to call `Audit.audit_file` from Julia. It only
+# parses the files, so it needs neither PETSc nor a project environment.
+#
+# Matches object creations against destroy calls by walking the parsed syntax tree.
 # Matching on source text instead would miss multi-statement lines and
 # would fire inside comments and string literals.
 
-# The names matched against — `AUDIT_TYPE_CREATORS`, `AUDIT_NAMED_CREATORS` and
-# `AUDIT_DESTROYER_NAMES` — live in the generated src/audit_names.jl, so that a
-# rename cannot blind the auditor by moving the API out from under its patterns.
+module Audit
+
+# The names matched against (`AUDIT_TYPE_CREATORS`, `AUDIT_NAMED_CREATORS`,
+# `AUDIT_DESTROYERS`) come from the register, so that a rename cannot blind
+# the auditor by moving the API out from under its patterns.
+include(joinpath(@__DIR__, "renames.jl"))
 
 """
     audit_creator(name::Symbol) -> Union{Nothing, String}
@@ -57,7 +66,7 @@ end
     audit_destroyer(name::Symbol) -> Bool
 
 Whether `name` releases a PETSc object. Covers the names in
-[`AUDIT_DESTROYER_NAMES`](@ref) and the low-level `VecDestroy`, `MatDestroy`,
+`AUDIT_DESTROYERS` and the low-level `VecDestroy`, `MatDestroy`,
 `DMDestroy` and friends, which the previous text-matching version treated as leaks.
 
 `finalizer` and `destroy_at_gc!` count too. `destroy_at_gc!(v)` hands the release to the garbage
@@ -65,7 +74,7 @@ collector rather than performing it, but the object is accounted for and must no
 read as a leak. The package uses that idiom for sequential objects.
 """
 function audit_destroyer(name::Symbol)
-    name in AUDIT_DESTROYER_NAMES && return true
+    name in AUDIT_DESTROYERS && return true
     s = String(name)
     return endswith(s, "Destroy") && length(s) > length("Destroy")
 end
@@ -221,10 +230,13 @@ whose result is not assigned cannot be matched against a release.
 # Examples
 
 ```julia
-julia> report = audit_file("examples/dmstag/dmstag_ex1.jl");
+julia> include("scripts/audit.jl");
 
-julia> isempty(report.leaked)
-true
+julia> Audit.audit_file("test/fixtures/leaky.jl"; verbose = false).leaked
+3-element Vector{Symbol}:
+ :b
+ :dm
+ :mat
 ```
 """
 function audit_file(path::AbstractString; verbose::Bool = true)
@@ -302,7 +314,7 @@ end
 """
     audit_report(created, destroyed, finalized, leaked)
 
-Print the human-readable form of an [`audit_file`](@ref) result.
+Print the human-readable form of an `audit_file` result.
 """
 function audit_report(created, destroyed, finalized, leaked)
     println("CREATION statements:")
@@ -339,4 +351,14 @@ function audit_report(created, destroyed, finalized, leaked)
     end
 
     return nothing
+end
+
+end # module Audit
+
+if abspath(PROGRAM_FILE) == @__FILE__
+    isempty(ARGS) && error("usage: julia scripts/audit.jl file.jl [more.jl ...]")
+    for path in ARGS
+        println("== ", path)
+        Audit.audit_file(path)
+    end
 end

@@ -10,7 +10,7 @@ public @bd_fn, @jacobian_fn, @residual_fn, @simple_fn, AO, AbstractAO, AbstractI
        AbstractSNES, AbstractTS, AbstractTao, ConvergenceError, IS, MatOp, MatShell, PC, PF,
        PetscDM, PetscDS, PetscLibType, PetscNotInitialized, Tao, acquire_local_array,
        add_boundary!, add_coarsen_hook!, add_index!, add_natural_boundary!, array_type,
-       assemble!, audit_file, check_wrappers_version, clone, coarse_dm, comm,
+       assemble!, check_wrappers_version, clone, coarse_dm, comm,
        compose_constant_nullspace!, converged_reason, copy_disc!, copy_quadrature!, corners,
        create_ds!, current_time, destroy!, diagonal!, distribute, dm, dof_slot, ds,
        edge_location, element_location, equal, equation_type, face_location,

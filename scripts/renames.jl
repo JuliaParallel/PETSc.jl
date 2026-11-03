@@ -1,10 +1,8 @@
 # The rename register for the v0.5 high-level API (docs/src/man/naming.md §1.1).
 #
-# This file is plain data and is edited by hand. Two files are generated from it, so
-# that they cannot drift apart from it or from each other:
-#
-#   src/public_names.jl      the `public` declaration (§13.1)
-#   src/audit_names.jl       the creator/destroyer name sets used by src/audit.jl
+# This file is plain data and is edited by hand. src/public_names.jl, the `public`
+# declaration (§13.1), is generated from it so that the two cannot drift apart.
+# scripts/audit.jl reads its creator and destroyer name sets.
 #
 # Run `julia --project=. scripts/generate_renames.jl` after editing.
 #
@@ -115,7 +113,7 @@ const RENAMES = Pair{Symbol, Symbol}[
     :addindex! => :add_index!,
     :determine_memtype => :memtype,
 
-    # init.jl, options.jl, sys.jl, audit.jl
+    # init.jl, options.jl, sys.jl
     :Options => :PetscOptions,
     :set_petsclib => :PetscLibType,
     :initialized => :isinitialized,
@@ -123,7 +121,6 @@ const RENAMES = Pair{Symbol, Symbol}[
     :check_petsc_wrappers_version => :check_wrappers_version,
     :getcomm => :comm,
     :typedget => :parse_option,
-    :audit_petsc_file => :audit_file,
 ]
 
 # New names that are methods of a function owned by Base: not declared `public` here.
@@ -315,19 +312,6 @@ const INTERNAL = Set{Symbol}([
     :checked_array,
     :flags,
     :to_petscint_tuple,
-    :audit_walk,
-    :audit_targets,
-    :audit_report,
-    :audit_creator,
-    :audit_destroyer,
-    :audit_callee,
-    :audit_argnames,
-    :audit_isbroadcast,
-    :audit_isborrowed,
-    :audit_hasparseerror,
-    :AUDIT_TYPE_CREATORS,
-    :AUDIT_NAMED_CREATORS,
-    :AUDIT_DESTROYER_NAMES,
     :finalize_if_serial!,
     :check_same_length,
     :waxpy,
@@ -507,7 +491,7 @@ const EXPORTED = Symbol[
 ]
 
 # ---------------------------------------------------------------------------
-# Names src/audit.jl matches against (naming.md "Two consequences worth knowing").
+# Names scripts/audit.jl matches against (naming.md "Two consequences worth knowing").
 # ---------------------------------------------------------------------------
 
 # Type constructors: the name is also the kind of object.

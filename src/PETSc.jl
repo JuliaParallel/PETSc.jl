@@ -148,9 +148,6 @@ include("tao/tao.jl")
 # After the solvers, whose imports it dispatches on
 include("core/convergence.jl")    # ConvergenceError and the `check` keyword of solve!
 
-include("audit_names.jl")   # generated from scripts/renames.jl
-include("audit.jl")
-
 include("public_names.jl")  # generated from scripts/renames.jl
 
 end

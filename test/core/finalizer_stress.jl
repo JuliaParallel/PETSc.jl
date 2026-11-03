@@ -15,6 +15,7 @@ A = spdiagm(-1 => fill(-1.0, n - 1), 0 => fill(2.0, n), 1 => fill(-1.0, n - 1))
 ksp = PETSc.KSP(petsclib, MPI.COMM_SELF, A; ksp_type = "cg", pc_type = "jacobi", ksp_rtol = 1e-8)
 b = PETSc.PetscVec(petsclib, ones(n))
 x = PETSc.PetscVec(petsclib, zeros(n))
+M = PETSc.PetscMat(petsclib, A)
 stop = Threads.Atomic{Bool}(false)
 solves = Threads.Atomic{Int}(0)
 petsc_task = Threads.@spawn begin
@@ -22,6 +23,7 @@ petsc_task = Threads.@spawn begin
         for _ in 1:50
             PETSc.PetscVec(petsclib, rand(50))
         end
+        M * b
         PETSc.solve!(x, ksp, b)
         Threads.atomic_add!(solves, 1)
         yield()
@@ -41,5 +43,5 @@ wait(gc_task)
 residual = norm(A * x[:] - ones(n)) / sqrt(n)
 println("solves ", solves[], " residual ", residual)
 residual < 1e-10 || error("wrong solution")
-foreach(PETSc.destroy!, (ksp, b, x))
+foreach(PETSc.destroy!, (ksp, b, x, M))
 PETSc.finalize(petsclib)

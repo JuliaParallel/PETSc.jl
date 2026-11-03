@@ -116,9 +116,9 @@ function finish_dm!(
     set_from_options::Bool,
     setup::Bool,
 ) where {PetscLib}
-    options, set_from_options, setup = take_renamed_dm_keywords(options, set_from_options, setup)
     petsclib = getlib(PetscLib)
     try
+        check_renamed_dm_keywords(options)
         isempty(prefix) || LibPETSc.DMSetOptionsPrefix(petsclib, dm, String(prefix))
         if set_from_options
             opts = PetscOptions(petsclib; options...)
@@ -134,25 +134,20 @@ function finish_dm!(
     return own_dm!(dm, comm)
 end
 
-# The DM constructors' keywords before they were renamed. Left in `options...`
-# they would become PETSc options (`-dmsetup`) and do nothing, so they are taken
-# out, warned about and honoured.
-# TODO: remove in v0.6 with the other 0.5 deprecations.
+# The DM constructor keywords before 0.5.4. Left in `options...` they would become
+# PETSc options (`-dmsetup`) that nothing reads, so they throw.
 const RENAMED_DM_KEYWORDS = (
     setfromoptions = :set_from_options,
     dmsetfromoptions = :set_from_options,
     dmsetup = :setup,
 )
 
-function take_renamed_dm_keywords(options, set_from_options, setup)
+function check_renamed_dm_keywords(options)
     for (old, new) in pairs(RENAMED_DM_KEYWORDS)
-        haskey(options, old) || continue
-        @warn "the DM constructor keyword `$old` is deprecated, use `$new`" maxlog = 1 _id = old
-        value = options[old]::Bool
-        new === :setup ? (setup = value) : (set_from_options = value)
+        haskey(options, old) &&
+            throw(ArgumentError("the DM constructor keyword `$old` is called `$new`"))
     end
-    rest = Base.structdiff(values(options), RENAMED_DM_KEYWORDS)
-    return rest, set_from_options, setup
+    return nothing
 end
 
 """
@@ -302,9 +297,7 @@ global_vec(dm::AbstractPetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMCreateGl
 Transfer values from the local vector `lvec` to the global vector `gvec`
 associated with the `dm` object.
 
-The written vector comes first and the `dm` follows it (§8); v0.4 took the DM
-last. A shim forwards the v0.4 name `dm_local_to_global!` from the old order
-(§17.2); the new name only accepts the new one (§16).
+The written vector comes first and the `dm` follows it (§8).
 
 # Arguments
 - `gvec::AbstractPetscVec`: Global vector (destination, written)
@@ -334,10 +327,7 @@ Transfer values from the global vector `gvec` to the local vector `lvec`
 associated with the `dm` object, including ghost point values from neighboring
 processes.
 
-The written vector comes first and the `dm` follows it (§8); v0.4 had two
-spellings of this call, one taking the DM last and one taking it first, and
-they collapse onto this one. A shim forwards the v0.4 name
-`dm_global_to_local!` from the old order (§17.2).
+The written vector comes first and the `dm` follows it (§8).
 
 # Arguments
 - `lvec::AbstractPetscVec`: Local vector (destination, written)
@@ -489,37 +479,13 @@ function with_local_coordinate_array(
 end
 
 """
-    local_coordinate_array(da::Union{DMDA, DMStag})
-
-Return coordinate arrays for the local portion of the domain, as `OffsetArray`s
-addressed with global indices, ghost points included.
-
-Deprecated: use [`with_local_coordinate_array`](@ref). The arrays are a copy,
-so writing to them does not change the coordinates.
-
-# External Links
-$(doc_external("DM/DMGetCoordinatesLocal"))
-"""
-function local_coordinate_array(
-    da::Union{DMDA{PetscLib}, DMStag{PetscLib}},
-) where {PetscLib}
-    # TODO: remove in v0.6 with the other 0.5 deprecations.
-    @warn "local_coordinate_array is deprecated, use with_local_coordinate_array(f, dm)" maxlog = 1
-    # A copy: an array restored by a finalizer can run after `da` and its
-    # coordinate vector are destroyed, and restoring a freed Vec crashes.
-    return with_local_coordinate_array(copy, da)
-end
-
-
-"""
     type_name(dm::AbstractPetscDM)
 
 The name PETSc knows this DM's flavour by, as a `Symbol` (`:da`, `:stag`,
 `:plex`, …), or `nothing` when no type has been set yet
-(docs/src/man/naming.md §3.1). v0.4 answered with a `String`; that is a break
-with no shim (§16).
+(docs/src/man/naming.md §3.1).
 
-The flavour is a type parameter in v0.5 ([`DMDA`](@ref), [`DMStag`](@ref),
+The flavour is a type parameter ([`DMDA`](@ref), [`DMStag`](@ref),
 [`DMPlex`](@ref)), so dispatch, not this reader, is the way to branch on it.
 
 # External Links
@@ -559,9 +525,6 @@ Base.ndims(dm::AbstractPetscDM{PetscLib}) where {PetscLib} =
     PetscMat(da::AbstractPetscDM)
 
 Create a sparse matrix (AIJ format) with sparsity pattern determined by the DM.
-
-Replaces v0.4's `MatAIJ`: construction goes through the type
-(docs/src/man/naming.md §5.1).
 
 # Returns
 

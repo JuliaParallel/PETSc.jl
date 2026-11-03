@@ -1,6 +1,6 @@
 # Upgrading from 0.4
 
-PETSc.jl 0.5 is a breaking release. Most of the high-level API has new names, the low-level `LibPETSc` functions return their outputs, and the package needs Julia 1.12 and PETSc 3.25. This page is the order in which to update code written for 0.4. Every change is listed in the [Release notes](release_notes.md), and every renamed function in the rename table at the end of [Naming Conventions](naming.md).
+PETSc.jl 0.5 is a breaking release. Most of the high-level API has new names, the low-level `LibPETSc` functions return their outputs, and the package needs Julia 1.12 and PETSc 3.25. This page is the order in which to update code written for 0.4. 0.6 removes the 0.5 warnings that name each replacement, so upgrade to 0.5.5 first, follow this page, and then move to 0.6. Every change is listed in the [Release notes](release_notes.md), and every renamed function in the rename table at the end of [Naming Conventions](naming.md).
 
 ## 1. Requirements
 
@@ -8,15 +8,15 @@ PETSc.jl 0.5 is a breaking release. Most of the high-level API has new names, th
 - **PETSc 3.25.** `PETSc_jll` 3.25 is installed automatically. A library configured with `PETSc.set_library!` must be a PETSc 3.25 build; `PETSc.check_wrappers_version()` warns when it is not.
 - **One `PetscInt` width per process.** `PETSc.petsclibs` holds four libraries (`Float64`, `Float32`, `ComplexF64`, `ComplexF32`) with `Int64` indices. Code that indexes `petsclibs[5:8]`, or asks `PETSc.getlib` for an `Int32` library, fails. To use `Int32` indices, call `PETSc.set_petscint!(Int32)` once and restart Julia (see [Installation](installation.md)).
 
-## 2. Run your code and fix the warnings
+## 2. Run your code on 0.5.5 and fix the warnings
 
-About a hundred functions were renamed. The old names still work until 0.6 and print a warning the first time each call site runs, for example
+About a hundred functions were renamed. On 0.5.5 the old names still work and print a warning the first time each call site runs, for example
 
 ```
 ┌ Warning: getcorners is deprecated, use corners
 ```
 
-These warnings appear without `--depwarn=yes`. Run your code or its test suite once, and replace every name a warning reports.
+These warnings appear without `--depwarn=yes`. Pin `PETSc = "0.5.5"` in your `[compat]`, run your code or its test suite once, and replace every name a warning reports. On 0.6 an old name is an `UndefVarError` and an old argument order a `MethodError`, with no hint at the replacement.
 
 ## 3. Qualify names that are no longer exported
 
@@ -79,7 +79,7 @@ PETSc.global_to_local!(lvec, dm, gvec)
 PETSc.local_to_global!(gvec, dm, lvec)
 ```
 
-The 0.4 names still work and warn, but only when called directly: a 0.4-order call passed through `invoke`, or through a variable holding the function, is not translated. The same applies to `project_function!` and `project_field!`.
+On 0.5.5 the 0.4 names still work and warn, but only when called directly: a 0.4-order call passed through `invoke`, or through a variable holding the function, is not translated. The same applies to `project_function!` and `project_field!`.
 
 ## 5. Low-level `LibPETSc` code
 
@@ -99,7 +99,7 @@ The `LibPETSc` wrappers are regenerated for PETSc 3.25 and follow a new calling 
 
   Several outputs come back as a tuple, for example `nroots, nleaves, ilocal, iremote = LibPETSc.PetscSFGetGraph(petsclib, sf)`.
 - **Type names are `String`s.** `LibPETSc.PCSetType(petsclib, pc, "ilu")` works directly, and the registered names are constants such as `LibPETSc.PCILU` and `LibPETSc.KSPGMRES`. `XGetType` functions return a `String`.
-- **Renamed handle types.** `PetscKSP` and `PetscSNES` are now `KSP` and `SNES` (`AbstractPetscKSP` and `AbstractPetscSNES` are `AbstractKSP` and `AbstractSNES`). The old names still work until 0.6.
+- **Renamed handle types.** `PetscKSP` and `PetscSNES` are now `KSP` and `SNES` (`AbstractPetscKSP` and `AbstractPetscSNES` are `AbstractKSP` and `AbstractSNES`). The old names work up to 0.5.5 and are gone in 0.6.
 - **Functions PETSc defines only in its headers are gone.** About 95 macros and inline functions with no symbol in the library (`VecSetValue`, `MatSetValue`, `PetscStrcmp`, `PetscTime`, …) are no longer wrapped. Use the array versions (`VecSetValues`, `MatSetValues`) or plain Julia.
 - **`PetscBool` is one byte**, as it is in PETSc since 3.24. Code that uses `LibPETSc.PetscBool` needs no change. Code that writes a PETSc boolean as `Cint` or `Int32` in its own `ccall` or `unsafe_store!` must use `LibPETSc.PetscBool` instead.
 
@@ -109,7 +109,7 @@ The [Release notes](release_notes.md) list the remaining changes, and [`wrapping
 
 ## 6. Within 0.5: the 0.5.4 spellings
 
-0.5.4 moves options to keywords and puts arguments in the same order across constructors. Every old form still works until 0.6 and warns, so step 2 finds them; this is the list to update by hand.
+0.5.4 moves options to keywords and puts arguments in the same order across constructors. Every old form works up to 0.5.5 and warns, so step 2 finds them, and is gone in 0.6; this is the list to update by hand.
 
 | Up to 0.5.3 | From 0.5.4 |
 |---|---|
@@ -129,7 +129,7 @@ The [Release notes](release_notes.md) list the remaining changes, and [`wrapping
 
 ## 7. Within 0.5: the 0.5.5 deprecations
 
-0.5.5 is the last release before 0.6. Everything below still works and warns once, and is removed in 0.6, so step 2 finds it; this is the list to update by hand.
+0.5.5 is the last release before 0.6. Everything below works on 0.5.5 and warns once, so step 2 finds it, and is removed in 0.6; this is the list to update by hand.
 
 | Up to 0.5.4 | From 0.5.5 |
 |---|---|
@@ -139,7 +139,7 @@ The [Release notes](release_notes.md) list the remaining changes, and [`wrapping
 | `local_coordinate_array(dm)` | `with_local_coordinate_array(f, dm)`; the array is handed back when `f` returns or throws |
 | `@residual_fn f0 Nf`, `@jacobian_fn`, `@bd_fn`, `@simple_fn` | `@residual_fn petsclib f0 Nf`: the library comes first, as a top-level `const` |
 | `vtk_merge_tensor`, `create_split_boundary_labels!` | Copies in `examples/dmplex/vtk_tensor.jl` and `examples/dmplex/ex69.jl` |
-| `isapprox(v, w)` on two PetscVecs | Compares entry by entry now and norm-wise from 0.6, ‖v − w‖ ≤ max(atol, rtol·max(‖v‖, ‖w‖)); say which you mean with `all(isapprox.(v[:], w[:]))` or `norm(v - w) ≤ …` |
+| `isapprox(v, w)` on two PetscVecs | Compares entry by entry up to 0.5.5 and norm-wise from 0.6, ‖v − w‖ ≤ max(atol, rtol·max(‖v‖, ‖w‖)); say which you mean with `all(isapprox.(v[:], w[:]))` or `norm(v - w) ≤ …` |
 
 0.5.5 also adds `x + y`, `x - y`, `α * x`, `dot`, `axpy!` and `copy` on PetscVecs and PetscMats, `MatShell` operations (`mult_transpose`, `diagonal`, `mult_add`) and AMD GPU support.
 

@@ -30,8 +30,7 @@ The options are applied once, at the first `setup!` or `solve!`, after the DM an
 ## Setting the Nonlinear Function
 
 Define the residual function `F(x)`. The callback comes first in the argument
-list, so `do` block syntax works; v0.4's subject-first order
-(`setfunction!(snes, f!, v)`) is gone and has no shim
+list, so `do` block syntax works
 ([naming conventions](naming.md), §8.1):
 
 ```julia

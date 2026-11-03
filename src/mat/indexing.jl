@@ -51,6 +51,9 @@ function Base.setindex!(m::AbstractPetscMat{PetscLib}, vals::AbstractVector, i::
     # Convert to 0-based indexing
     row = PetscInt(i - 1)
     petsc_cols = PetscInt[c - 1 for c in cols]
+    length(vals) == length(cols) || throw(
+        DimensionMismatch("tried to assign $(length(vals)) values to $(length(cols)) columns"),
+    )
     petsc_vals = PetscScalar.(vals)
     
     ncols = PetscInt.(length(petsc_cols))
@@ -67,6 +70,9 @@ function Base.setindex!(m::AbstractPetscMat{PetscLib}, vals::AbstractVector, row
     # Convert to 0-based indexing
     petsc_rows = PetscInt[r - 1 for r in rows]
     col = PetscInt(j - 1)
+    length(vals) == length(rows) || throw(
+        DimensionMismatch("tried to assign $(length(vals)) values to $(length(rows)) rows"),
+    )
     petsc_vals = PetscScalar.(vals)
     
     nrows = PetscInt.(length(petsc_rows))

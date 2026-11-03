@@ -31,19 +31,10 @@ Creators whose name carries no `Create`/`Duplicate` marker for
 const AUDIT_NAMED_CREATORS = Dict{Symbol, String}(
     :DMCreateMatrix => "Mat",
     :DMGetCoordinateDM => "DM",
-    :DMGlobalVec => "Vec",
-    :DMLocalVec => "Vec",
     :DMStagCreateCompatibleDMStag => "DM",
-    :MatAIJ => "Mat",
     :MatCreateVecs => "Vec",
-    :MatSeqAIJ => "Mat",
-    :MatSeqDense => "Mat",
     :MatShell => "Mat",
-    :VecSeq => "Vec",
     :clone => "DM",
-    :dm_create_global_vec => "Vec",
-    :dm_create_local_vec => "Vec",
-    :dmclone => "DM",
     :global_vec => "Vec",
     :local_vec => "Vec",
 )
@@ -54,4 +45,4 @@ const AUDIT_NAMED_CREATORS = Dict{Symbol, String}(
 Names that release a PETSc object. `finalizer` counts: it hands the release to
 the garbage collector rather than performing it, but the object is accounted for.
 """
-const AUDIT_DESTROYER_NAMES = Set{Symbol}([:destroy!, :destroy, :finalizer, :destroy_at_gc!])
+const AUDIT_DESTROYER_NAMES = Set{Symbol}([:destroy!, :finalizer, :destroy_at_gc!])

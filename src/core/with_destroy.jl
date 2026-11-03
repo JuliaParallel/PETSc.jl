@@ -45,10 +45,11 @@ function with_destroy(f)
     try
         return f(list)
     finally
-        for obj in Iterators.reverse(list.objects)
-            destroy!(obj)
+        try
+            destroy_each!(Iterators.reverse(list.objects))
+        finally
+            empty!(list.objects)
         end
-        empty!(list.objects)
     end
 end
 

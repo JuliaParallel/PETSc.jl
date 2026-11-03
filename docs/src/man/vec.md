@@ -35,8 +35,7 @@ lvec = PETSc.local_vec(dm)
 ```
 
 `PetscVec` replaces v0.4's `VecSeq` and `as_petsc_vec`: construction goes
-through the type ([naming conventions](naming.md), §6). The old spellings still
-work in v0.5 and warn once.
+through the type ([naming conventions](naming.md), §6).
 
 ## Julia Array Interface
 
@@ -86,6 +85,8 @@ After setting values, vectors must be assembled:
 v[1:2] = [1.0, 2.0]
 PETSc.assemble!(v)  # Finalize vector assembly
 ```
+
+`v[i] = x` and `v[r] = vals` only queue the values: call `assemble!` before a read or a reduction (`norm`, `dot`, `sum`) that must see them. This holds for a `PetscVec(petsclib, comm, n)` even on one rank, since it is an MPI-type Vec there.
 
 ## Ghost Point Updates
 

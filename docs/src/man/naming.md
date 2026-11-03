@@ -3,7 +3,7 @@
 These rules govern the **high-level interface**: everything reachable as `PETSc.foo`.
 The low-level layer (`LibPETSc.*`) mirrors the PETSc C API name for name and is out of scope; it keeps its C names so that PETSc's own documentation stays usable.
 
-The conventions take effect in v0.5 and break the existing API. Renamed functions keep a deprecation shim for one minor cycle.
+The conventions take effect in v0.5 and break the existing API. Renamed functions kept a deprecation shim for one minor cycle, through 0.5.5; v0.6 removes the shims.
 A few changes are semantic and cannot be shimmed; those are listed in [§16](#16.-Breaking-changes-without-a-shim).
 
 ## 1. Scope and the tiebreak
@@ -30,13 +30,13 @@ Three subsets are treated differently:
 
 **Internal helpers** are exempt: they may be renamed freely, with no shim.
 
-A leading underscore stays legitimate for one thing: distinguishing an inner worker from the wrapper that shares its name, as `Base` does with `_growend!`. As of now, `_mul!`, `_local_arrays` and `_restore_local_arrays!` are the cases in this package.
+A leading underscore stays legitimate for one thing: distinguishing an inner worker from the wrapper that shares its name, as `Base` does with `_growend!`. `_mul!` is the case in this package; `_local_arrays` and `_restore_local_arrays!` keep the underscore as the per-backend workers the GPU extensions extend.
 That is disambiguation, not a visibility marker.
 
 Because [§13](#13.-Exports) exports only types, "unexported" cannot by itself separate the public API from internals.
 The register is `scripts/renames.jl`, a plain list of `old => new` pairs plus a set of names marked internal. Every binding must appear in one or the other, and `scripts/api_surface.jl --check` fails if a binding appears in neither.
 
-The register is data rather than prose because five things have to agree with it: `src/deprecations.jl`, the `public` declaration ([§13.1](#13.1-The-public-keyword)), the rename table at the end of this document, the creator and destroyer name sets in `audit.jl`, and the `--check` comparison set. All five are generated from it. Kept by hand they drift, and the auditor's drift is silent: after a rename its patterns stop matching and it reports no leaks on leaking code.
+The register is data rather than prose because three things have to agree with it: the `public` declaration ([§13.1](#13.1-The-public-keyword)), the creator and destroyer name sets in `audit.jl`, and the `--check` comparison set. The first two are generated from it and the third reads it. Kept by hand they drift, and the auditor's drift is silent: after a rename its patterns stop matching and it reports no leaks on leaking code.
 
 `scripts/api_surface.jl --sweeps` covers the other half: every count this document states is derived rather than remembered.
 
@@ -401,7 +401,7 @@ A `!` function returns the object it mutates, as `push!`, `fill!`, `mul!` and `c
 
 The exceptions:
 
-- A function that releases what it is given returns `nothing`, like `close`: `destroy!`, `restore_local_arrays!`.
+- A function that releases what it is given returns `nothing`, like `close`: `destroy!`.
 - A function that mutates package state only returns `nothing`: `set_library!`, and `push!`/`pop!` on a `PetscOptions`, which change PETSc's global options stack.
 - A function whose first argument is a `do` block returns the block's result, like `open(f, file)` and `lock(f, l)`: `with_local_array!`, `with_destroy`.
 - A function that files an object away for later returns that object, like `get!`, so it can wrap a constructor: `track!(list, obj)` and `untrack!(list, obj)` return `obj`, not `list`.
@@ -435,7 +435,7 @@ vtk_save!           dmda_star_fd_coloring
 This list, and the two others this document states as counts ([§12](#12.-Return-values)'s `NamedTuple` returns and [§13](#13.-Exports)'s export diff), are produced by `scripts/api_surface.jl --sweeps` rather than by reading the source. The first version of this section said seven and missed `dmda_star_fd_coloring`, which is what a sweep asserted by hand is worth.
 
 `vtk_save!` is in that list, which corrects [§4](#4.-Object-prefixes): it takes a `PetscVec`, so it is not a free function and does not keep its prefix.
-It becomes `save_vtk(vec, filename)`, with `comm` recovered from the vector. 0.5.0 spelled it `save_vtk!`; it writes a file and mutates no argument, so 0.5.1 drops the `!` ([§7](#7.-Mutation)) and the old spelling warns until v0.6.
+It becomes `save_vtk(vec, filename)`, with `comm` recovered from the vector. 0.5.0 spelled it `save_vtk!`; it writes a file and mutates no argument, so 0.5.1 drops the `!` ([§7](#7.-Mutation)) and the old spelling warned until v0.6.
 `vtk_save_fields!` takes an iterable of vectors and becomes `save_vtk(vecs, filename)` on the same name.
 
 ### 8.1 Callbacks come first
@@ -592,10 +592,10 @@ A field number is not a position in anything the user indexes; it is the number 
 
 ```julia
 ownership_range(A)          # 1-based, always
-ownership_range(A, false)   # warns in 0.5, MethodError in 0.6
+ownership_range(A, false)   # MethodError (warned in 0.5)
 ```
 
-The shim keeps the positional form, because that is the form v0.4 has. A keyword shim would compile and never fire.
+The v0.5 shim kept the positional form, because that is the form v0.4 has. A keyword shim would have compiled and never fired.
 
 **Bulk index arrays keep PETSc's base.** The scalar and slice interface is 1-based, because `Base.getindex` and `Base.setindex!` have no choice. A `Vector` of indices handed to C, or handed back from C, keeps the base C uses and says so in its name:
 
@@ -737,7 +737,7 @@ A shim translates names, not semantics. These changes have no shim and must be r
 | Dimension-correct returns ([§12](#12.-Return-values)) | `corners(dm2d).size[3]` returned `1`, now throws `BoundsError`. `c.lower` is `CartesianIndex{2}`, not `{3}` |
 | `DMStag`/`DMDA`/`DMPlex` return concrete types ([§5.3](#5.3-DM-flavour-is-a-type,-not-a-string)) | Code annotated `::PetscDM` no longer matches. Use `AbstractPetscDM` |
 | `dm(ksp)` returns a Union ([§5.4](#5.4-DMs-of-unknown-provenance)) | Type-unstable at the boundary; add a function barrier in hot code |
-| Type names are `Symbol` ([§3.1](#3.1-What-accessors-return-and-setters-take)) | `type_name(ksp) == "gmres"` is now false; compare against `:gmres`. Setters still accept a `String` only through the v0.5 shim |
+| Type names are `Symbol` ([§3.1](#3.1-What-accessors-return-and-setters-take)) | `type_name(ksp) == "gmres"` is now false; compare against `:gmres`. Setters accepted a `String` only through the v0.5 shim, removed in v0.6 |
 | `@assert` replaced by typed exceptions ([§14](#14.-Errors)) | Code catching `AssertionError` must catch `ArgumentError`, `DimensionMismatch` or `PetscNotInitialized` |
 | Arguments reordered ([§8](#8.-Argument-order)) | `dm_project_function!` and `dm_project_field!` took the written vector **last**; it moves to first. `dm_global_to_local!`/`dm_local_to_global!` took the DM last; it moves after the written vector. A shim can forward these, but any call written positionally against the old order and passed through `invoke` or a function reference will not be caught |
 | Subject-first callback setters removed ([§8.1](#8.1-Callbacks-come-first)) | v0.4 accepts both `setfunction!(snes, f!, v)` and `setfunction!(f!, snes, v)`, and the same for `setjacobian!`. Only the callback-first order survives |
@@ -746,24 +746,20 @@ A shim translates names, not semantics. These changes have no shim and must be r
 
 ## 17. Migration
 
-Shims live in `src/deprecations.jl`, generated from `scripts/renames.jl` ([§1.1](#1.1-What-these-rules-cover)).
-They are removed in v0.6.
+The v0.5 renames kept a forwarding shim through 0.5.5, and v0.6 removes them all. The rename table below records what each old name became. A later rename follows the same rules.
 
-### 17.1 The shims have to warn, and `@deprecate` does not
+### 17.1 A shim has to warn, and `@deprecate` does not
 
-`Base.@deprecate` calls `Base.depwarn`, which checks `JLOptions().depwarn` and prints nothing unless Julia was started with `--depwarn=yes`. The default is `no`. A migration window that prints nothing is not a migration window: a user would see silence for a whole minor cycle, then a `MethodError` at v0.6 with no warning history to explain it.
+`Base.@deprecate` calls `Base.depwarn`, which checks `JLOptions().depwarn` and prints nothing unless Julia was started with `--depwarn=yes`. The default is `no`. A migration window that prints nothing is not a migration window: a user would see silence for a whole minor cycle, then a `MethodError` with no warning history to explain it.
 
-So the shims use a local `@renamed old new` macro whose body wraps `@warn … maxlog = 1`, which prints whatever the flag is set to:
+So a shim calls `@warn … maxlog = 1`, which prints whatever the flag is set to:
 
 ```julia
-@renamed getcorners_dmda    corners
-@renamed getghostcorners    ghost_corners
-@renamed getDM              dm
-@renamed gettype            type_name
-@renamed destroy            destroy!
+function getcorners(args...; kwargs...)
+    @warn "getcorners is deprecated, use corners" maxlog = 1
+    return corners(args...; kwargs...)
+end
 ```
-
-CI also runs the suite with `--depwarn=yes`, so `@test_deprecated` stays meaningful for anything still on `Base.@deprecate`.
 
 ### 17.2 Forwarding shims and erroring stubs
 
@@ -778,10 +774,11 @@ A shim forwards only when the old call and the new one mean the same thing.
 
 The last row is policy with no instances, and that is the point of writing it down. Where the argument types are identical and only the meaning of the values changes, dispatch cannot tell the calls apart and a forwarding shim corrupts data in silence. [§12.1](#12.1-Index-base) was drafted with `set_values!` in that row and then kept the 0-based convention instead, precisely to avoid needing it. Any future change that would land here should be reconsidered first; if it survives, it throws rather than forwards.
 
+Removing a shim must not turn a call into a silent no-op. The DM constructors pass unknown keywords on as PETSc options, so the pre-0.5.4 keywords `setfromoptions`, `dmsetfromoptions` and `dmsetup` throw an `ArgumentError` from v0.6 instead of becoming options nothing reads.
+
 ### 17.3 Test coverage
 
-The main test suite is converted to the new names, so CI exercises the API that ships.
-`test/core/deprecations.jl` calls every shim and asserts the warning is emitted, and asserts a throw for any entry marked as an erroring stub. It is generated from `scripts/renames.jl` too, so a rename cannot land without its shim being covered.
+The main test suite uses only the current names, so CI exercises the API that ships. Every shim gets a test that it warns and forwards. `test/core/api_surface.jl` checks that no old name in the register is still defined.
 
 ### Rename table
 
@@ -797,7 +794,7 @@ The main test suite is converted to the new names, so CI exercises the API that 
 | `dm_global_to_local`, `dm_global_to_local!` | `global_to_local`, `global_to_local!` |
 | `setuniformcoordinates_dmda!` | `set_uniform_coordinates!` |
 | `coordinatesDMLocalVec` | `local_coordinates` |
-| `getlocalcoordinatearray` | `local_coordinate_array` |
+| `getlocalcoordinatearray` | `local_coordinate_array`; removed in 0.6, use `with_local_coordinate_array(f, dm)` |
 | `MatAIJ` | `PetscMat` constructor |
 | `DMGlobalVec` | `global_vec` (merged, see below) |
 | `DMLocalVec` | `local_vec` (merged, see below) |
@@ -931,8 +928,8 @@ They are listed because the rename table is the register of what is public, not 
 | `wrap_localarray` | removed in 0.6, as above |
 | `acquire_petsc_local_array` | `acquire_local_array` |
 | `release_petsc_local_array` | `release_local_array` |
-| `get_petsc_arrays` | `local_arrays` |
-| `restore_petsc_arrays` | `restore_local_arrays!` |
+| `get_petsc_arrays` | `local_arrays`; removed in 0.6, use `with_local_arrays!(f!, g_fx, l_x)` |
+| `restore_petsc_arrays` | `restore_local_arrays!`; removed in 0.6 with `local_arrays` |
 | `withlocalarray!` | `with_local_array!` |
 | `ghostupdate!` | `ghost_update!` |
 | `ghostupdatebegin!`, `ghostupdateend!` | `ghost_update_begin!`, `ghost_update_end!` |
@@ -988,7 +985,7 @@ The exceptions keep their underscore, because there it separates an inner worker
 |---|---|
 | `_mul!` | unchanged (worker for `mul!`) |
 | `_unsafe_localarray` | removed in 0.6 |
-| `get_petsc_arrays_impl` | `_local_arrays` (worker for `local_arrays`) |
+| `get_petsc_arrays_impl` | `_local_arrays` (worker for `with_local_arrays!`) |
 | `restore_petsc_arrays_impl` | `_restore_local_arrays!` |
 
 #### Types ([§5.5](#5.5-Abstract,-callback-and-wrapper-types))

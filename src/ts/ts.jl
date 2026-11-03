@@ -181,13 +181,13 @@ mutable struct TSState <: ObjectState
     alive::Bool
 end
 TSState() = TSState(
-    _ -> error("rhs_function! not defined"),
-    _ -> error("rhs_jacobian! not defined"),
-    _ -> error("ifunction! not defined"),
-    _ -> error("ijacobian! not defined"),
-    _ -> error("monitor not defined"),
-    _ -> error("pre_step! not defined"),
-    _ -> error("post_step! not defined"),
+    nothing,
+    nothing,
+    nothing,
+    nothing,
+    nothing,
+    nothing,
+    nothing,
     nothing,
     :first_solve,
     false,
@@ -206,28 +206,6 @@ state_type(::Type{<:TS}) = TSState
 end
 Base.propertynames(ts::TS, private::Bool = false) = forward_propertynames(typeof(ts))
 
-
-# positional constructor taking callbacks: the callbacks go to the state
-function LibPETSc.TS{PetscLib}(
-    ptr::CTS,
-    age::Int,
-    rhs_function!::Function,
-    rhs_jacobian!::Function = _ -> error("rhs_jacobian! not defined"),
-    ifunction!::Function = _ -> error("ifunction! not defined"),
-    ijacobian!::Function = _ -> error("ijacobian! not defined"),
-    monitor::Function = _ -> error("monitor not defined"),
-    opts = nothing,
-) where {PetscLib}
-    ptr == C_NULL && throw(ArgumentError("callbacks need a PETSc object; got a null pointer"))
-    ts = TS{PetscLib}(ptr, age)
-    ts.rhs_function! = rhs_function!
-    ts.rhs_jacobian! = rhs_jacobian!
-    ts.ifunction! = ifunction!
-    ts.ijacobian! = ijacobian!
-    ts.monitor = monitor
-    ts.opts = opts
-    return ts
-end
 
 function Base.show(io::IO, ts::AbstractTS{PetscLib}) where {PetscLib}
     if ts.ptr == C_NULL
@@ -1036,8 +1014,7 @@ $(doc_callback())
 $(doc_external("TS/TSSetRHSFunction"))
 
 The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
-works. v0.4 also accepted the subject-first order; that method is gone in
-v0.5, and there is no shim for it (§16).
+works.
 """
 function set_rhs_function! end
 
@@ -1087,8 +1064,7 @@ $(doc_callback())
 $(doc_external("TS/TSSetRHSJacobian"))
 
 The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
-works. v0.4 also accepted the subject-first order; that method is gone in
-v0.5, and there is no shim for it (§16).
+works.
 """
 function set_rhs_jacobian! end
 
@@ -1147,8 +1123,7 @@ $(doc_callback())
 $(doc_external("TS/TSSetIFunction"))
 
 The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
-works. v0.4 also accepted the subject-first order; that method is gone in
-v0.5, and there is no shim for it (§16).
+works.
 """
 function set_ifunction! end
 
@@ -1200,8 +1175,7 @@ $(doc_callback())
 $(doc_external("TS/TSSetIJacobian"))
 
 The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
-works. v0.4 also accepted the subject-first order; that method is gone in
-v0.5, and there is no shim for it (§16).
+works.
 """
 function set_ijacobian! end
 
@@ -1269,8 +1243,7 @@ $(doc_callback())
 $(doc_external("TS/TSMonitorSet"))
 
 The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
-works. v0.4 also accepted the subject-first order; that method is gone in
-v0.5, and there is no shim for it (§16).
+works.
 """
 function set_monitor! end
 

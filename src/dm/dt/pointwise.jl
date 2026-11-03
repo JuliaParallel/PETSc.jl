@@ -33,13 +33,6 @@ function pointwise_types(mod::Module, lib)
     return LibPETSc.inttype(L), LibPETSc.scalartype(L), LibPETSc.realtype(L)
 end
 
-# Old form: the types are the globals PetscInt, PetscScalar and PetscReal of `mod`.
-# TODO: remove in v0.6 with the other 0.5 deprecations.
-function pointwise_types_from_scope(mod::Module, name::Symbol, f)
-    @warn "$name without a library is deprecated, use $name(petsclib, $f, …)" maxlog = 1 _id = name
-    return Core.eval(mod, :PetscInt), Core.eval(mod, :PetscScalar), Core.eval(mod, :PetscReal)
-end
-
 # Helper: substitute gensymmed param names into an output-size expression.
 petsc_subst(ex, m) =
     ex isa Symbol ? get(m, ex, ex) :
@@ -64,11 +57,8 @@ macro simple_fn(lib, f)
     return simple_fn_expr(f, pointwise_types(__module__, lib)...)
 end
 
-macro simple_fn(f)
-    return simple_fn_expr(f, pointwise_types_from_scope(__module__, Symbol("@simple_fn"), f)...)
-end
-
 function simple_fn_expr(f, PI, PS, PR)
+    run_callback = GlobalRef(@__MODULE__, :run_callback)
     cfn = Symbol(f, :__cfn__)
     gdim = gensym("dim"); gNc = gensym("Nc")
     cfn_ptr_expr = :(Base.@cfunction($cfn, Cint,
@@ -80,8 +70,7 @@ function simple_fn_expr(f, PI, PS, PR)
         )::Cint
             x = unsafe_wrap(Vector{$PR}, xp, $gdim)
             u = unsafe_wrap(Vector{$PS}, up, $gNc)
-            $(esc(f))(t, x, u, ctx)
-            return Cint(0)
+            return $run_callback(() -> $(esc(f))(t, x, u, ctx), "pointwise function")
         end
         @eval $cfn_ptr_expr
     end
@@ -109,11 +98,8 @@ macro residual_fn(lib, f, outsz)
     return residual_fn_expr(f, outsz, pointwise_types(__module__, lib)...)
 end
 
-macro residual_fn(f, outsz)
-    return residual_fn_expr(f, outsz, pointwise_types_from_scope(__module__, Symbol("@residual_fn"), f)...)
-end
-
 function residual_fn_expr(f, outsz, PI, PS, PR)
+    run_callback = GlobalRef(@__MODULE__, :run_callback)
     cfn = Symbol(f, :__cfn__)
     gdim = gensym("dim"); gNf = gensym("Nf"); gNfAux = gensym("NfAux"); gnC = gensym("nC")
     m = Dict{Symbol,Any}(:dim_ => gdim, :Nf => gNf, :NfAux => gNfAux, :numConstants => gnC)
@@ -146,8 +132,9 @@ function residual_fn_expr(f, outsz, PI, PS, PR)
             x      = unsafe_wrap(Vector{$PR}, x_p,     $gdim)
             constants = $gnC > 0 ? unsafe_wrap(Vector{$PS}, cst_p, $gnC) : $PS[]
             out    = unsafe_wrap(Vector{$PS}, out_p,   $outsz_s)
-            $(esc(f))($gdim, $gNf, $gNfAux, uOff, uOff_x, u, u_t, u_x,
-                      aOff, aOff_x, a, a_t, a_x, t, x, $gnC, constants, out)
+            $run_callback(() -> $(esc(f))($gdim, $gNf, $gNfAux, uOff, uOff_x, u, u_t, u_x,
+                      aOff, aOff_x, a, a_t, a_x, t, x, $gnC, constants, out),
+                "pointwise function")
             return
         end
         @eval $cfn_ptr_expr
@@ -172,11 +159,8 @@ macro jacobian_fn(lib, f, outsz)
     return jacobian_fn_expr(f, outsz, pointwise_types(__module__, lib)...)
 end
 
-macro jacobian_fn(f, outsz)
-    return jacobian_fn_expr(f, outsz, pointwise_types_from_scope(__module__, Symbol("@jacobian_fn"), f)...)
-end
-
 function jacobian_fn_expr(f, outsz, PI, PS, PR)
+    run_callback = GlobalRef(@__MODULE__, :run_callback)
     cfn = Symbol(f, :__cfn__)
     gdim = gensym("dim"); gNf = gensym("Nf"); gNfAux = gensym("NfAux"); gnC = gensym("nC")
     m = Dict{Symbol,Any}(:dim_ => gdim, :Nf => gNf, :NfAux => gNfAux, :numConstants => gnC)
@@ -210,8 +194,9 @@ function jacobian_fn_expr(f, outsz, PI, PS, PR)
             x      = unsafe_wrap(Vector{$PR}, x_p,     $gdim)
             constants = $gnC > 0 ? unsafe_wrap(Vector{$PS}, cst_p, $gnC) : $PS[]
             out    = unsafe_wrap(Vector{$PS}, out_p,   $outsz_s)
-            $(esc(f))($gdim, $gNf, $gNfAux, uOff, uOff_x, u, u_t, u_x,
-                      aOff, aOff_x, a, a_t, a_x, t, utShift, x, $gnC, constants, out)
+            $run_callback(() -> $(esc(f))($gdim, $gNf, $gNfAux, uOff, uOff_x, u, u_t, u_x,
+                      aOff, aOff_x, a, a_t, a_x, t, utShift, x, $gnC, constants, out),
+                "pointwise function")
             return
         end
         @eval $cfn_ptr_expr
@@ -237,11 +222,8 @@ macro bd_fn(lib, f, outsz)
     return bd_fn_expr(f, outsz, pointwise_types(__module__, lib)...)
 end
 
-macro bd_fn(f, outsz)
-    return bd_fn_expr(f, outsz, pointwise_types_from_scope(__module__, Symbol("@bd_fn"), f)...)
-end
-
 function bd_fn_expr(f, outsz, PI, PS, PR)
+    run_callback = GlobalRef(@__MODULE__, :run_callback)
     cfn = Symbol(f, :__cfn__)
     gdim = gensym("dim"); gNf = gensym("Nf"); gNfAux = gensym("NfAux"); gnC = gensym("nC")
     m = Dict{Symbol,Any}(:dim_ => gdim, :Nf => gNf, :NfAux => gNfAux, :numConstants => gnC)
@@ -276,8 +258,9 @@ function bd_fn_expr(f, outsz, PI, PS, PR)
             n      = unsafe_wrap(Vector{$PR}, n_p, $gdim)
             constants = $gnC > 0 ? unsafe_wrap(Vector{$PS}, cst_p, $gnC) : $PS[]
             out    = unsafe_wrap(Vector{$PS}, out_p, $outsz_s)
-            $(esc(f))($gdim, $gNf, $gNfAux, uOff, uOff_x, u, u_t, u_x,
-                      aOff, aOff_x, a, a_t, a_x, t, x, n, $gnC, constants, out)
+            $run_callback(() -> $(esc(f))($gdim, $gNf, $gNfAux, uOff, uOff_x, u, u_t, u_x,
+                      aOff, aOff_x, a, a_t, a_x, t, x, n, $gnC, constants, out),
+                "pointwise function")
             return
         end
         @eval $cfn_ptr_expr

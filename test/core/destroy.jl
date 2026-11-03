@@ -126,6 +126,17 @@ for petsclib in PETSc.petsclibs
             PETSc.finalize(petsclib)
         end
 
+        # A handle from before a finalize and initialize points into freed memory
+        @testset "stale handle is refused" begin
+            PETSc.initialize(petsclib)
+            v = PETSc.PetscVec(petsclib, PetscScalar[1, 2, 3, 4])
+            PETSc.finalize(petsclib)
+            PETSc.initialize(petsclib)
+            @test_throws "was destroyed" LinearAlgebra.norm(v)
+            @test_throws "was destroyed" LibPETSc.VecGetSize(petsclib, v)
+            PETSc.finalize(petsclib)
+        end
+
         # ── objects built empty and filled in through an out-parameter ───────
         # DMClone and friends take a pre-allocated object and write the pointer
         # into it, so the object is built by the empty constructor rather than

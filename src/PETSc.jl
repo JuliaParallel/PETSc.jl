@@ -31,7 +31,8 @@ function doc_borrowed()
 !!! note "Borrowed handle"
     The returned object is owned by the object it was asked of, not by the
     caller: it carries no finalizer and must not be destroyed. `destroy!` on it
-    is a no-op ([`owns`](@ref)).
+    is a no-op ([`owns`](@ref)). It dies with its owner, so keep a reference to
+    the owner for as long as you use the returned object.
 """
 end
 
@@ -77,10 +78,8 @@ import .LibPETSc: AbstractSNES, CSNES, SNES
 import .LibPETSc: AbstractTS, CTS, TS
 
 # Only types, construction entry points and `petsclibs` are exported (§13); every
-# verb and accessor stays qualified. The v0.4 list exported twelve functions and
-# no types at all; those names are still reachable qualified (`PETSc.set_library!`)
-# and, where they were renamed, through the shims in src/deprecations.jl. The rest
-# of the API is marked with `public` in src/public_names.jl (§13.1).
+# verb and accessor stays qualified (`PETSc.set_library!`). The rest of the API is
+# marked with `public` in src/public_names.jl (§13.1).
 export LibPETSc
 export DMDA, DMStag, DMPlex
 export PetscVec, PetscMat, PetscOptions
@@ -152,7 +151,6 @@ include("core/convergence.jl")    # ConvergenceError and the `check` keyword of 
 include("audit_names.jl")   # generated from scripts/renames.jl
 include("audit.jl")
 
-include("deprecations.jl")  # generated from scripts/renames.jl
 include("public_names.jl")  # generated from scripts/renames.jl
 
 end

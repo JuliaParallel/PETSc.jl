@@ -66,7 +66,6 @@ if selected("core")
     include("core/handle_arrays.jl")    # C arrays of handles go back to their release function
     include("core/lifetimes.jl")        # arrays a Vec or Mat wraps live as long as it does
     include("core/with_destroy.jl")      # with_destroy destroys what it tracks, also after an exception
-    include("core/deprecations.jl")     # the v0.4 names still work and warn (the only file calling them)
     include("core/performance.jl")      # allocations per call, flat in the problem size
     include("core/api_surface.jl")      # scripts/api_surface.jl --check: the register covers the surface
     @testset "method ambiguities do not grow" begin
@@ -81,6 +80,7 @@ if selected("vecmat")
     include("vecmat/mat.jl")
     include("vecmat/mat_vec_methods.jl")  # copyto!, fill!, zero_rows!, set_option!, diagonal!, isassembled
     include("vecmat/matshell.jl")
+    include("vecmat/index_checks.jl")    # length checks and conversions in setindex! and mul!
     include("vecmat/linear_algebra.jl")  # copy, dot, axpy!, +, -, * on Vecs and Mats
     include("vecmat/vec_base.jl")        # AbstractVector contract: ==, hash, reductions, collect
     include("vecmat/mat_base.jl")        # AbstractMatrix contract: ==, equal, isapprox, collect, sum

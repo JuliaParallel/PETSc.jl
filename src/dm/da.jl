@@ -185,9 +185,7 @@ function reshape_local_array(
         ),
     )
 
-    # `N + 1` axes: the dof axis, then one axis per dimension of the DM. v0.4
-    # always built four axes, which only worked because everything was padded
-    # to three dimensions (§12).
+    # `N + 1` axes: the dof axis, then one axis per dimension of the DM (§12).
     return OffsetArray(
         reshape(Arr, Int64(ndof), ntuple(i -> Int64(c.size[i]), Val(N))...),
         1:Int64(ndof),
@@ -421,10 +419,6 @@ A `NamedTuple` with the following fields, all of them `N`-dimensional for an
 - `boundary_type`: `NTuple{N,DMBoundaryType}` with the boundary type per direction
 - `stencil_type`: Stencil type, either `DMDA_STENCIL_STAR` or `DMDA_STENCIL_BOX`
 
-v0.4 reported the stencil width twice, as `s` and as `stencil_width`, spelled
-the dof count `dof` and the process grid `mpi_proc_size`, and padded every
-tuple to three entries. All four are gone; this is a break with no shim (§16).
-
 # External Links
 $(doc_external("DMDA/DMDAGetInfo"))
 """
@@ -454,7 +448,7 @@ Returns a `NamedTuple` with the global indices (excluding ghost points) of the
 
 The result is dimension-correct (§12): `lower` and `upper` are
 `CartesianIndex{N}` and `size` is an `NTuple{N,Int}`, with no padding to three
-entries. This is a break with no shim (§16).
+entries.
 
 # External Links
 $(doc_external("DMDA/DMDAGetCorners"))
@@ -501,8 +495,7 @@ end
 
 Return the global size of the DM as an `NTuple{N,Int}`.
 
-v0.4 returned `(M, N, P)` with the unused dimensions padded to `1`; the result
-is now dimension-correct (§12), which is a break with no shim (§16).
+The result is dimension-correct (§12): there is no padding to three entries.
 
 # External Links
 $(doc_external("DMDA/DMDAGetInfo"))

@@ -62,7 +62,6 @@ also returns the number PETSc gives the boundary.  `label` is a `DMLabel` from
 matching PETSc's boundary callback signature.
 
 `petsclib` is not an argument: the `dm` carries it as a type parameter (§8).
-The v0.4 form with `petsclib` first still works in v0.5 and warns.
 
 The `values` are label values PETSc issued and `field` is the number
 [`set_field!`](@ref) gave the field, so both keep PETSc's numbering (§12.1).
@@ -106,9 +105,8 @@ end
 Project a collection of pointwise functions into the global vector `X` and
 return `X`.
 
-The written vector comes first and `petsclib` is gone (§8); v0.4 took `X` last
-and `petsclib` first. A shim forwards the v0.4 name `dm_project_function!`
-from the old order (§17.2).
+The written vector comes first and `petsclib` is not an argument (§8).
+
 `funcs` holds one `@cfunction` pointer per field, matching PETSc's
 `PetscSimplePointFn` signature. `ctxs` is a matching vector of context pointers,
 or `nothing` to use `C_NULL` for every field.
@@ -134,7 +132,9 @@ function project_function!(
     length(cptrs) == length(fptrs) || throw(
         DimensionMismatch("got $(length(fptrs)) funcs but $(length(cptrs)) ctxs"),
     )
-    LibPETSc.DMProjectFunction(getlib(PetscLib), dm, time, fptrs, cptrs, mode, X)
+    capture_callback_errors() do
+        LibPETSc.DMProjectFunction(getlib(PetscLib), dm, time, fptrs, cptrs, mode, X)
+    end
     return X
 end
 
@@ -147,7 +147,6 @@ functions `funcs` (one per field, matching `PetscSimplePointFn` signature).
 for every field.  Requires that [`set_exact_solution!`](@ref) has been called.
 
 `petsclib` is not an argument: the `dm` carries it as a type parameter (§8).
-The v0.4 name `dm_compute_l2diff` shims the old form.
 
 # External Links
 $(doc_external("DM/DMComputeL2Diff"))
@@ -168,7 +167,9 @@ LibPETSc.@for_petsc function l2diff(
     )
     funcs_v = collect(funcs)
     ctxs_v  = collect(ctxs)
-    return LibPETSc.DMComputeL2Diff(petsclib, dm, time, funcs_v, ctxs_v, X)
+    return capture_callback_errors() do
+        LibPETSc.DMComputeL2Diff(petsclib, dm, time, funcs_v, ctxs_v, X)
+    end
 end
 
 function l2diff(
@@ -214,9 +215,9 @@ end
 Project a function of the fields in the input vector `U` into the FE space of `dm`,
 writing the result into `X`, and return `X`.
 
-The written vector comes first and `petsclib` is gone (§8); v0.4 took `X` last
-and `petsclib` first. A shim forwards the v0.4 name `dm_project_field!` from
-the old order (§17.2).  `funcs` is a vector of `Ptr{Cvoid}` function pointers
+The written vector comes first and `petsclib` is not an argument (§8).
+
+`funcs` is a vector of `Ptr{Cvoid}` function pointers
 (one per field in `dm`), each with the `PetscPointFn` / `@residual_fn` signature.
 `U` must be associated with a DM that shares the same mesh as `dm` (e.g. obtained via
 [`clone`](@ref)).
@@ -237,9 +238,11 @@ function project_field!(
     mode::InsertMode = INSERT_VALUES,
 ) where {PetscLib}
     fptrs = Ptr{Cvoid}[Ptr{Cvoid}(f) for f in funcs]
-    GC.@preserve fptrs LibPETSc.DMProjectField(
-        getlib(PetscLib), dm, PetscLib.PetscReal(time), U, pointer(fptrs), mode, X,
-    )
+    GC.@preserve fptrs capture_callback_errors() do
+        LibPETSc.DMProjectField(
+            getlib(PetscLib), dm, PetscLib.PetscReal(time), U, pointer(fptrs), mode, X,
+        )
+    end
     return X
 end
 
@@ -259,7 +262,6 @@ the boundary integrand (`PetscBdPointFn` signature, with the outward normal `n[]
 between `x[]` and `numConstants`).
 
 `petsclib` is not an argument: the `dm` carries it as a type parameter (§8).
-The v0.4 form with `petsclib` first still works in v0.5 and warns.
 
 # External Links
 $(doc_external("DM/DMAddBoundary"))

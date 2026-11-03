@@ -52,8 +52,7 @@ Base.size(m::AbstractPetscMat{PetscLib}) where {PetscLib} = map(Int, LibPETSc.Ma
 
 The name PETSc knows this matrix's implementation by, as a `Symbol`
 (`:seqaij`, `:mpiaij`, …), or `nothing` when the matrix has no type yet
-(docs/src/man/naming.md §3.1). v0.4 answered with a `String`, using the
-sentinel `"(not set)"`; that is a break with no shim (§16).
+(docs/src/man/naming.md §3.1).
 
 # External Links
 $(doc_external("Mat/MatGetType"))
@@ -83,12 +82,8 @@ format. `comm` defaults to `MPI.COMM_SELF`.
 
 By default the entries are copied into storage PETSc allocates. With
 `with_arrays = true` the CSR arrays converted from `S` are handed to PETSc and
-borrowed rather than copied, which is what v0.4's `MatSeqAIJWithArrays` did; the
+borrowed rather than copied; the
 arrays are kept alive for as long as the matrix.
-
-Replaces v0.4's `MatCreateSeqAIJ`: construction goes through the type
-(docs/src/man/naming.md §5.1). The unrelated `MatSeqAIJ`, which allocated from
-sizes, is now `PetscMat(petsclib, m, n, nnz)`.
 
 # External Links
 $(doc_external("Mat/MatCreateSeqAIJ"))
@@ -198,9 +193,6 @@ PETSc dense array. This wraps a Julia `Matrix{PetscScalar}` object.
 PETSc uses the memory of `A` as its storage, so `A` must be a `Matrix` of exactly the
 library's scalar type; anything else throws an `ArgumentError`. To start from another
 array, convert it first: `PetscMat(petsclib, Matrix{PetscScalar}(B))`.
-
-Replaces v0.4's `MatSeqDense`: construction goes through the type
-(docs/src/man/naming.md §5.1).
 
 # External Links
 $(doc_external("Mat/MatCreateSeqDense"))
@@ -375,9 +367,6 @@ any other vector (another element type, a view, an offset array) is copied once.
 The matrix keeps the arrays alive for as long as it exists, including when a
 solver still holds it after `destroy!` on this handle.
 
-Replaces v0.4's `MatSeqAIJWithArrays`, which took a `SparseMatrixCSC` and so
-could not be told apart from `MatCreateSeqAIJ` (docs/src/man/naming.md §6).
-
 # External Links
 $(doc_external("Mat/MatCreateSeqAIJWithArrays"))
 """
@@ -386,17 +375,9 @@ function LibPETSc.PetscMat(
     rowptr::AbstractVector{<:Integer},
     colval::AbstractVector{<:Integer},
     nzval::AbstractVector;
-    comm = nothing,
     kwargs...,
 )
-    # TODO: remove the `comm` keyword in v0.6 with the other 0.5 deprecations.
-    if comm === nothing
-        comm = MPI.COMM_SELF
-    else
-        @warn "PetscMat(petsclib, rowptr, colval, nzval; comm) is deprecated, " *
-              "use PetscMat(petsclib, comm, rowptr, colval, nzval)" maxlog = 1
-    end
-    return LibPETSc.PetscMat(petsclib, comm, rowptr, colval, nzval; kwargs...)
+    return LibPETSc.PetscMat(petsclib, MPI.COMM_SELF, rowptr, colval, nzval; kwargs...)
 end
 
 function LibPETSc.PetscMat(
@@ -436,8 +417,8 @@ end
 """
     mat_seqaij_with_arrays(petsclib, comm, A::SparseMatrixCSC)
 
-The v0.4 `MatSeqAIJWithArrays` body, kept for its deprecation shim: converts
-`A` to CSR and hands the arrays to the `PetscMat` constructor.
+Convert `A` to CSR and hand the arrays to the CSR `PetscMat` constructor, which
+borrows them. The body of `PetscMat(petsclib, comm, A; with_arrays = true)`.
 """
 function mat_seqaij_with_arrays(petsclib::PetscLibType, comm, A::SparseMatrixCSC)
     rowptr, colval, nzval = csr_from_csc(petsclib, A)
@@ -467,9 +448,7 @@ laid out with the first `n1` rows on the first processor, next `n2` rows on the
 second, etc. For certain parallel layouts this range may not be well defined.
 
 The range is **1-based**, always: an index into Julia data is 1-based
-(docs/src/man/naming.md §12.1). v0.4 took `base_one::Bool` positionally and
-made the convention a runtime choice; `ownership_range(A, false)` warns in
-v0.5 and is a `MethodError` in v0.6.
+(docs/src/man/naming.md §12.1).
 
 !!! note
 

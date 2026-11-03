@@ -29,6 +29,15 @@ Modules = [PETSc]
 Pages   = ["core/with_destroy.jl"]
 ```
 
+## Solve errors
+
+`solve!` and `step!` throw a `ConvergenceError` when the solver stops without converging, unless `check = false`.
+
+```@autodocs
+Modules = [PETSc]
+Pages   = ["core/convergence.jl"]
+```
+
 ## Options
 
 PETSc uses an options database to configure solvers and other objects at runtime. These functions provide access to the options system.

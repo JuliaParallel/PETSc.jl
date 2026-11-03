@@ -55,8 +55,7 @@ jobs:
       - uses: julia-actions/julia-buildpkg@latest
       - uses: julia-actions/julia-runtest@latest
         with:
-          # The v0.5 shims warn through `@warn` rather than `Base.depwarn`, but
-          # anything still on `Base.@deprecate` is silent without this.
+          # Show the warnings of `Base.@deprecate`, which are silent by default.
           depwarn: yes
           test_args: ${{ matrix.group }}
 

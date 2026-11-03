@@ -84,6 +84,15 @@ const _dm_zero_ptr = PETSc.@simple_fn(_dmplex_petsclib, _dm_zero)
 _dm_one(t, x, u, ctx) = (u[1] = x[1] + 1; nothing)
 const _dm_one_ptr = PETSc.@simple_fn(typeof(_dmplex_petsclib), _dm_one)
 
+# A pointwise function that throws
+_dm_throws(t, x, u, ctx) = error("exact solution failed")
+const _dm_throws_ptr = PETSc.@simple_fn(_dmplex_petsclib, _dm_throws)
+function _dm_f0_throws(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
+                       aOff, aOff_x, a, a_t, a_x, t, x, nC, cst, f0)
+    error("f0 failed")
+end
+const _dm_f0_throws_ptr = PETSc.@residual_fn(_dmplex_petsclib, _dm_f0_throws, 1)
+
 # ─────────────────────────────────────────────────────────────────────────────
 @testset "DMPlex" begin
 
@@ -100,6 +109,43 @@ else
     @test err == 0
     @test u[1] == 3
     @test_throws "must name a PETSc library" macroexpand(@__MODULE__, :(PETSc.@simple_fn(1, _dm_one)))
+end
+
+# An exception must not unwind through PETSc's C frames: the wrapper returns an error code
+@testset "pointwise function that throws" begin
+    x = [2.0]
+    u = [0.0]
+    err = redirect_stderr(devnull) do
+        ccall(_dm_throws_ptr, Cint, (PetscInt, Float64, Ptr{Float64}, PetscInt, Ptr{Float64}, Ptr{Cvoid}),
+              1, 0, x, 1, u, C_NULL)
+    end
+    @test err != 0
+
+    # f0 of a residual: dim = 1, one field, no auxiliary fields, no constants
+    uOff = PetscInt[0, 1]
+    ua = [1.0]
+    xa = [0.5]
+    out = [0.0]
+    redirect_stderr(devnull) do
+        ccall(_dm_f0_throws_ptr, Cvoid,
+              (PetscInt, PetscInt, PetscInt, Ptr{PetscInt}, Ptr{PetscInt},
+               Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{PetscInt}, Ptr{PetscInt},
+               Ptr{Float64}, Ptr{Float64}, Ptr{Float64},
+               Float64, Ptr{Float64}, PetscInt, Ptr{Float64}, Ptr{Float64}),
+              1, 1, 0, uOff, uOff, ua, ua, ua, C_NULL, C_NULL, C_NULL, C_NULL, C_NULL,
+              0.0, xa, 0, C_NULL, out)
+    end
+    @test out == [0.0]   # the call returned instead of unwinding through C
+
+    dm = PETSc.DMPlex(_dmplex_petsclib, _TC, 2, false, [4, 4])
+    fe = PETSc.fe_create_lagrange(_dmplex_petsclib, _TC, 2, 1, false, 1)
+    PETSc.set_field!(dm, 0, fe)
+    PETSc.destroy!(fe)
+    PETSc.create_ds!(dm)
+    u = PETSc.global_vec(dm)
+    @test_throws "exact solution failed" PETSc.project_function!(u, dm, 0.0, [_dm_throws_ptr];
+                                                                 mode = LibPETSc.INSERT_ALL_VALUES)
+    foreach(PETSc.destroy!, (u, dm))
 end
 
 

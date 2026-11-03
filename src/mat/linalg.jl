@@ -256,6 +256,17 @@ function diagonal!(
 end
 
 
+# `y = M x` needs length(y) = size(M, 1) and length(x) = size(M, 2). A MatShell
+# does not check this itself, so a wrong length reaches the user callback.
+function check_mul_sizes(y::AbstractPetscVec, sizeM, x::AbstractPetscVec)
+    (length(y), length(x)) == sizeM || throw(
+        DimensionMismatch(
+            "the matrix is $(sizeM[1])x$(sizeM[2]) but y has length $(length(y)) and x has length $(length(x))",
+        ),
+    )
+    return nothing
+end
+
 """
     mul!(y::AbstractPetscVec, M::AbstractPetscMat, x::AbstractPetscVec)
 
@@ -264,6 +275,7 @@ Computes
 
 """
 function LinearAlgebra.mul!(y::AbstractPetscVec{PetscLib}, M::AbstractPetscMat{PetscLib}, x::AbstractPetscVec{PetscLib}) where {PetscLib}
+    check_mul_sizes(y, size(M), x)
     capture_callback_errors(() -> LibPETSc.MatMult(PetscLib, M, x, y))
     return y
 end
@@ -272,9 +284,15 @@ function Base.:*(
     M::AbstractPetscMat{PetscLib},
     x::AbstractPetscVec{PetscLib},
 ) where {PetscLib}
-    _, y = LibPETSc.MatCreateVecs(getlib(PetscLib), M)
-    mul!(y, M, x)
-    return y
+    right, y = LibPETSc.MatCreateVecs(getlib(PetscLib), M)
+    destroy!(right)
+    try
+        mul!(y, M, x)
+    catch
+        destroy!(y)
+        rethrow()
+    end
+    return finalize_if_serial!(y)
 end
 
 # `A'` and `transpose(A)` are lazy wrappers, so `A' * x` and `mul!(y, A', x)` reach
@@ -302,6 +320,7 @@ function LinearAlgebra.mul!(
     M::TransposedPetscMat{PetscLib},
     x::AbstractPetscVec{PetscLib},
 ) where {PetscLib}
+    check_mul_sizes(y, reverse(size(parent(M))), x)
     multiply = M isa Adjoint ? LibPETSc.MatMultHermitianTranspose : LibPETSc.MatMultTranspose
     capture_callback_errors(() -> multiply(PetscLib, parent(M), x, y))
     return y
@@ -312,9 +331,15 @@ function Base.:*(
     M::TransposedPetscMat{PetscLib},
     x::AbstractPetscVec{PetscLib},
 ) where {PetscLib}
-    y, _ = LibPETSc.MatCreateVecs(getlib(PetscLib), parent(M))
-    mul!(y, M, x)
-    return y
+    y, left = LibPETSc.MatCreateVecs(getlib(PetscLib), parent(M))
+    destroy!(left)
+    try
+        mul!(y, M, x)
+    catch
+        destroy!(y)
+        rethrow()
+    end
+    return finalize_if_serial!(y)
 end
 
 function LinearAlgebra.issymmetric(A::PetscMat{PetscLib}; tol = 0.0) where {PetscLib}

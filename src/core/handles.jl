@@ -83,7 +83,23 @@ function drain_destroy_queue!()
         batch
     end
     Threads.atomic_sub!(destroy_queue_length, length(pending))
-    foreach(destroy!, pending)
+    destroy_each!(pending)
+    return nothing
+end
+
+# Destroy every object in `objs` in order, even when one `destroy!` throws, and
+# rethrow the first error afterwards. Stopping at the first error would leave the
+# rest alive with nothing left to destroy them.
+function destroy_each!(objs)
+    first_error = nothing
+    for obj in objs
+        try
+            destroy!(obj)
+        catch e
+            first_error === nothing && (first_error = e)
+        end
+    end
+    first_error === nothing || throw(first_error)
     return nothing
 end
 

@@ -567,8 +567,9 @@ lies outside the function's domain (a negative pressure, say). A few solvers
 then cut the step; the others stop, and [`converged_reason`](@ref) reports
 `SNES_DIVERGED_FUNCTION_DOMAIN`. Returns `snes`.
 
-Either way `solve!` returns normally. Throwing from the callback instead stops
-the solve, and `solve!` rethrows the exception.
+A solve that stops this way throws a [`ConvergenceError`](@ref) from `solve!`
+unless it is called with `check = false`. Throwing from the callback instead
+stops the solve, and `solve!` rethrows that exception.
 
 # External Links
 $(doc_external("SNES/SNESSetFunctionDomainError"))

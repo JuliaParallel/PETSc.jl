@@ -14,6 +14,13 @@ struct Probe
 end
 PETSc.destroy!(p::Probe) = (push!(p.log, p.name); nothing)
 
+# Fails in `destroy!` after recording the call
+struct FailingProbe
+    name::Symbol
+    log::Vector{Symbol}
+end
+PETSc.destroy!(p::FailingProbe) = (push!(p.log, p.name); error("destroy of $(p.name) failed"))
+
 @testset "with_destroy" begin
     petsclib = PETSc.petsclibs[1]
     PETSc.initialize(petsclib)
@@ -38,6 +45,34 @@ PETSc.destroy!(p::Probe) = (push!(p.log, p.name); nothing)
             (dm, x, ksp)
         end
         @test all(o -> o.ptr == C_NULL, objects)
+    end
+
+    @testset "a failing destroy! does not stop the others" begin
+        log = Symbol[]
+        @test_throws "destroy of b failed" PETSc.with_destroy() do list
+            PETSc.track!(list, Probe(:a, log))
+            PETSc.track!(list, FailingProbe(:b, log))
+            PETSc.track!(list, Probe(:c, log))
+        end
+        @test log == [:c, :b, :a]
+
+        # the first error is the one rethrown
+        log = Symbol[]
+        @test_throws "destroy of c failed" PETSc.with_destroy() do list
+            PETSc.track!(list, FailingProbe(:b, log))
+            PETSc.track!(list, FailingProbe(:c, log))
+        end
+        @test log == [:c, :b]
+
+        # the same for the objects the garbage collector queued
+        log = Symbol[]
+        lock(PETSc.destroy_queue_lock) do
+            append!(PETSc.destroy_queue, (Probe(:a, log), FailingProbe(:b, log), Probe(:c, log)))
+        end
+        Threads.atomic_add!(PETSc.destroy_queue_length, 3)
+        @test_throws "destroy of b failed" PETSc.drain_destroy_queue!()
+        @test log == [:a, :b, :c]
+        @test PETSc.destroy_queue_length[] == 0
     end
 
     @testset "after an exception on every rank" begin

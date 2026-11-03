@@ -76,10 +76,20 @@ function Base.setindex!(v::AbstractPetscVec{PetscLib}, val, i::Integer) where {P
     return v
 end
 
+# A scalar is broadcast over `r`; an array must have one entry per index.
 function Base.setindex!(v::AbstractPetscVec{PetscLib}, vals, r::AbstractVector{<:Integer}) where {PetscLib}
     PetscInt = inttype(PetscLib)
+    PetscScalar = scalartype(PetscLib)
+    petsc_vals = if vals isa AbstractArray
+        length(vals) == length(r) || throw(
+            DimensionMismatch("tried to assign $(length(vals)) values to $(length(r)) indices"),
+        )
+        PetscScalar[vals...]
+    else
+        fill(PetscScalar(vals), length(r))
+    end
     LibPETSc.VecSetValues(PetscLib, v, PetscInt(length(r)), PetscInt[i - 1 for i in r],
-                          vals, PETSc.INSERT_VALUES)
+                          petsc_vals, PETSc.INSERT_VALUES)
     return v
 end
 

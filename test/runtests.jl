@@ -80,6 +80,7 @@ if selected("vecmat")
     include("vecmat/mat.jl")
     include("vecmat/mat_vec_methods.jl")  # copyto!, fill!, zero_rows!, set_option!, diagonal!, isassembled
     include("vecmat/matshell.jl")
+    include("vecmat/index_checks.jl")    # length checks and conversions in setindex! and mul!
     include("vecmat/linear_algebra.jl")  # copy, dot, axpy!, +, -, * on Vecs and Mats
     include("vecmat/vec_base.jl")        # AbstractVector contract: ==, hash, reductions, collect
     include("vecmat/mat_base.jl")        # AbstractMatrix contract: ==, equal, isapprox, collect, sum

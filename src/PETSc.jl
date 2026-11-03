@@ -31,7 +31,8 @@ function doc_borrowed()
 !!! note "Borrowed handle"
     The returned object is owned by the object it was asked of, not by the
     caller: it carries no finalizer and must not be destroyed. `destroy!` on it
-    is a no-op ([`owns`](@ref)).
+    is a no-op ([`owns`](@ref)). It dies with its owner, so keep a reference to
+    the owner for as long as you use the returned object.
 """
 end
 

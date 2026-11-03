@@ -52,10 +52,13 @@ const ISColoring = Ptr{_n_ISColoring}
 # `destroy!` sets `age = -1`. Handing a destroyed handle to C would pass PETSc a
 # null pointer, and the shipped PETSc has no debug checks, so that crashes with
 # signal 11. A null handle that was never destroyed (`age >= 0`) is still a valid
-# argument meaning "no object".
+# argument meaning "no object". A handle made before the last initialize or
+# finalize of its library (`age` differs from the library's) holds a pointer into
+# freed memory, so it is refused the same way.
 @noinline throw_destroyed(v) =
-    throw(ArgumentError("this $(nameof(typeof(v))) was destroyed; it cannot be passed to PETSc"))
-@inline live_ptr(v) = v.age < 0 ? throw_destroyed(v) : v.ptr
+    throw(ArgumentError("this $(nameof(typeof(v))) was destroyed, or made before the last initialize or finalize; it cannot be passed to PETSc"))
+@inline library_age(::Type{T}) where {T} = getlib(T.parameters[1]).age
+@inline live_ptr(v) = (v.age < 0 || (v.ptr != C_NULL && v.age != library_age(typeof(v)))) ? throw_destroyed(v) : v.ptr
 
 # ----- Custom Julia struct for PETSc Vec -----
 const CVec = Ptr{Cvoid}

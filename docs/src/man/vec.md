@@ -86,6 +86,8 @@ v[1:2] = [1.0, 2.0]
 PETSc.assemble!(v)  # Finalize vector assembly
 ```
 
+`v[i] = x` and `v[r] = vals` only queue the values: call `assemble!` before a read or a reduction (`norm`, `dot`, `sum`) that must see them. This holds for a `PetscVec(petsclib, comm, n)` even on one rank, since it is an MPI-type Vec there.
+
 ## Ghost Point Updates
 
 For vectors with ghost points (from DMDA/DMStag):

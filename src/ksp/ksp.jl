@@ -278,7 +278,12 @@ end
 
 function Base.:\(ksp::AbstractKSP{PetscLib}, b::AbstractPetscVec{PetscLib}) where {PetscLib}
     x = similar(b)
-    ldiv!(x, ksp, b)
+    try
+        ldiv!(x, ksp, b)
+    catch
+        destroy!(x)
+        rethrow()
+    end
     return x
 end
 

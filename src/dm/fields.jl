@@ -132,7 +132,9 @@ function project_function!(
     length(cptrs) == length(fptrs) || throw(
         DimensionMismatch("got $(length(fptrs)) funcs but $(length(cptrs)) ctxs"),
     )
-    LibPETSc.DMProjectFunction(getlib(PetscLib), dm, time, fptrs, cptrs, mode, X)
+    capture_callback_errors() do
+        LibPETSc.DMProjectFunction(getlib(PetscLib), dm, time, fptrs, cptrs, mode, X)
+    end
     return X
 end
 
@@ -165,7 +167,9 @@ LibPETSc.@for_petsc function l2diff(
     )
     funcs_v = collect(funcs)
     ctxs_v  = collect(ctxs)
-    return LibPETSc.DMComputeL2Diff(petsclib, dm, time, funcs_v, ctxs_v, X)
+    return capture_callback_errors() do
+        LibPETSc.DMComputeL2Diff(petsclib, dm, time, funcs_v, ctxs_v, X)
+    end
 end
 
 function l2diff(
@@ -234,9 +238,11 @@ function project_field!(
     mode::InsertMode = INSERT_VALUES,
 ) where {PetscLib}
     fptrs = Ptr{Cvoid}[Ptr{Cvoid}(f) for f in funcs]
-    GC.@preserve fptrs LibPETSc.DMProjectField(
-        getlib(PetscLib), dm, PetscLib.PetscReal(time), U, pointer(fptrs), mode, X,
-    )
+    GC.@preserve fptrs capture_callback_errors() do
+        LibPETSc.DMProjectField(
+            getlib(PetscLib), dm, PetscLib.PetscReal(time), U, pointer(fptrs), mode, X,
+        )
+    end
     return X
 end
 

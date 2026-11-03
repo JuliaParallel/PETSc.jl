@@ -133,10 +133,12 @@ end
     distribute(dm::DMPlex; overlap = 0) -> DMPlex
 
 Distribute `dm` across its communicator, with `overlap` layers of cells shared
-between neighboring ranks, and return the distributed mesh as a new, owned DM.
-`dm` itself is left unchanged and still has to be destroyed. When PETSc doesn't
-redistribute (on one rank) the returned DM has a null pointer, and `destroy!` on
-it does nothing.
+between neighboring ranks, and return the distributed mesh as a new, owned DM
+with the fields and `PetscDS` of `dm`. `dm` itself is left unchanged and still
+has to be destroyed, so `d = distribute(dm); destroy!(dm); dm = d` works on any
+number of ranks. On one rank, where there is nothing to distribute, the result
+is a [`clone`](@ref) of `dm` (which shares the topology, so it costs no copy of
+the mesh) with the discretization copied over.
 
 # External Links
 $(doc_external("DMPlex/DMPlexDistribute"))
@@ -147,7 +149,10 @@ function distribute(
 ) where {PetscLib}
     petsclib = getlib(PetscLib)
     PetscInt = inttype(PetscLib)
-    _, dm_par = LibPETSc.DMPlexDistribute(petsclib, dm, PetscInt(overlap))
+    sf, dm_par = LibPETSc.DMPlexDistribute(petsclib, dm, PetscInt(overlap))
+    LibPETSc.PetscSFDestroy(petsclib, sf)
+    # PETSc gives NULL when it does not redistribute
+    dm_par.ptr == C_NULL && return copy_disc!(clone(dm), dm)
     # The distributed DM is a new object handed to the caller, not a borrowed
     # handle, so it is narrowed as owned.
     return narrow(dm_par; own = true)

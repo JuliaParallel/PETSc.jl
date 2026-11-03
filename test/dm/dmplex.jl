@@ -445,18 +445,28 @@ for petsclib in PETSc.petsclibs
         PETSc.destroy!(dm_hex)
     end
 
-    # ── distribute (serial: mesh stays on one rank) ─────────────────────
-    @testset "distribute serial" begin
+    # ── distribute on one rank: an owned clone with the fields ───────────
+    @testset "distribute on one rank" begin
         dm = PETSc.DMPlex(petsclib, _TC, 2, false, [4, 4])
-        # On COMM_SELF (1 rank), DMPlexDistribute returns a DM with NULL ptr
-        # (no redistribution needed).  We just check it does not throw.
-        dm_par = @test_nowarn PETSc.distribute(dm; overlap = 0)
-        @test dm_par isa LibPETSc.AbstractPetscDM
+        fe = PETSc.fe_create_lagrange(petsclib, _TC, 2, 1, false, 1)
+        PETSc.set_field!(dm, 0, fe)
+        PETSc.destroy!(fe)
+        PETSc.create_ds!(dm)
+        u = PETSc.global_vec(dm)
+        n = length(u)
+        PETSc.destroy!(u)
 
-        # destroy! skips a NULL pointer, so this is a no-op on one rank and
-        # frees the redistributed mesh on several.
-        PETSc.destroy!(dm_par)
+        d = PETSc.distribute(dm; overlap = 0)
+        @test d isa PETSc.DMPlex
+        @test PETSc.owns(d)
+        @test d.ptr != C_NULL && d.ptr != dm.ptr
+
+        # the old mesh can go, as in `d = distribute(dm); destroy!(dm); dm = d`
         PETSc.destroy!(dm)
+        @test LibPETSc.DMGetNumFields(petsclib, d) == 1
+        u = PETSc.global_vec(d)
+        @test length(u) == n > 0
+        foreach(PETSc.destroy!, (u, d))
     end
 
     # ── handles for PetscFE, DMLabel and MatNullSpace ─────────────────────

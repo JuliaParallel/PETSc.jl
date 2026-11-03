@@ -23,7 +23,8 @@ Create a PETSc options database for the given `petsclib`.
 
 Keyword arguments are converted to PETSc options:
 - Options with value `nothing` or `true` are set without a value (flags)
-- Options with value `false` are not set
+- Options with value `false` are left out, and `opts[key] = false` clears an
+  option set earlier
 - Other values are converted to strings
 
 # Examples
@@ -63,7 +64,13 @@ julia> opt["pc_type"]
 "ilu"
 
 julia> opt["false_opt"]
-ERROR: KeyError: key "bad_key" not found
+ERROR: KeyError: key "false_opt" not found
+
+julia> opt["ksp_view"] = false
+false
+
+julia> opt["ksp_view"]
+ERROR: KeyError: key "ksp_view" not found
 
 julia> opt["bad_key"]
 ERROR: KeyError: key "bad_key" not found
@@ -101,7 +108,11 @@ function Base.setindex!(
     key,
 ) where {PetscLib}
     val === true && (val = nothing)
-    val === false && (return opts)
+    # `-flag false` would still read as on through PetscOptionsHasName, so clear it
+    if val === false
+        LibPETSc.PetscOptionsClearValue(PetscLib, opts, string('-', key))
+        return opts
+    end
 
     LibPETSc.PetscOptionsSetValue(
         PetscLib,
@@ -169,8 +180,7 @@ function Base.push!(opts::AbstractPetscOptions{PetscLib}) where {PetscLib}
     stack = options_stack(PetscLib)
     opts.ptr in stack && throw(ArgumentError(
         "these options are already pushed; PETSc's options stack can hold an " *
-        "options database only once. Use `with_options`, which skips the push " *
-        "when the options are already on top."))
+        "options database only once"))
     LibPETSc.PetscOptionsPush(PetscLib, opts)
     push!(stack, opts.ptr)
     return nothing
@@ -185,25 +195,75 @@ end
 
 # The constructor options of a KSP, SNES or TS go with the solver
 function destroy_options!(solver)
-    isnothing(solver.opts) && return nothing
-    destroy!(solver.opts)
-    solver.opts = nothing
+    isnothing(solver.opts) || (solver.opts = nothing)
     return nothing
 end
+
+# Keys this package set in PETSc's options database for a solver's options block,
+# with their values, so that a nested block overrides them instead of taking them
+# for the user's.
+const layered_keys = IdDict{Any, Dict{String, Union{Nothing, String}}}()
+
+# Whether the default database holds `key` with the value an enclosing block set.
+# Checked by value, as PETSc has no call that names the database on top of its
+# stack: under a database pushed through `LibPETSc` the key is then the user's.
+function set_by_enclosing_block(petsclib, db, ours, key)
+    haskey(ours, key) || return false
+    # shortcut: PetscOptionsGetString reads at most 255 bytes, so a longer value
+    # counts as the user's; read the length first if such values turn up.
+    current = LibPETSc.PetscOptionsGetString(petsclib, db, "", key)
+    return current == something(ours[key], "")
+end
+
+# Run `f()` with the `-key => value` pairs `entries` in PETSc's default options
+# database, the top of its stack. A key the database already has wins, unless an
+# enclosing block set it. Each key is put back as it was afterwards, even if `f`
+# throws, so the database holds only what the user set.
+function with_layered_options(f, ::Type{PetscLib}, entries) where {PetscLib}
+    petsclib = getlib(PetscLib)
+    db = LibPETSc.PetscOptions{PetscLib}(C_NULL, petsclib.age; own = false)
+    ours = get!(Dict{String, Union{Nothing, String}}, layered_keys, PetscLib)
+    undo = Tuple{String, Bool, Union{Missing, Nothing, String}}[]
+    try
+        for (key, val) in entries
+            mine = set_by_enclosing_block(petsclib, db, ours, key)
+            !mine && LibPETSc.PetscOptionsHasName(petsclib, db, "", key) && continue
+            push!(undo, (key, mine, get(ours, key, missing)))
+            LibPETSc.PetscOptionsSetValue(petsclib, db, key, isnothing(val) ? C_NULL : val)
+            ours[key] = val
+        end
+        return f()
+    finally
+        for (key, mine, prev) in Iterators.reverse(undo)
+            if mine
+                LibPETSc.PetscOptionsSetValue(petsclib, db, key, isnothing(prev) ? C_NULL : prev)
+            else
+                LibPETSc.PetscOptionsClearValue(petsclib, db, key)
+            end
+            ismissing(prev) ? delete!(ours, key) : (ours[key] = prev)
+        end
+    end
+end
+
+# Constructor options as `-key => value` pairs, read as `setindex!` on a
+# PetscOptions reads them: `true` and `nothing` are flags, `false` leaves it out.
+option_entries(options) = Pair{String, Union{Nothing, String}}[
+    string('-', k) => (v === true || isnothing(v) ? nothing : string(v))
+    for (k, v) in pairs(options) if v !== false
+]
 
 """
     with_options(f, opts::PetscOptions)
 
 Run `f()` with `opts` pushed onto PETSc's options stack, so that PETSc reads its
-options from `opts`, and pop it again even if `f` throws. Returns the result of
-`f`. If `opts` is already on top of the stack, `f` runs without a second push.
+options from `opts` alone, and pop it again even if `f` throws. Returns the result
+of `f`. PETSc's stack can hold a database only once, so nesting `with_options` on
+the same `opts` throws an `ArgumentError`.
 
 # External Links
 $(doc_external("Sys/PetscOptionsPush"))
 """
 function with_options(f, opts::AbstractPetscOptions{PetscLib}) where {PetscLib}
-    stack = options_stack(PetscLib)
-    !isempty(stack) && last(stack) == opts.ptr && return f()
     push!(opts)
     try
         return f()
@@ -286,9 +346,10 @@ end
 """
     set_from_options!(obj)
 
-Apply PETSc's options to the `KSP`, `SNES` or `TS` `obj`: those given to its
-constructor, then the global database, so a command-line option given for the
-object's prefix (see [`set_options_prefix!`](@ref)) is read too. Returns `obj`.
+Apply PETSc's options to the `KSP`, `SNES` or `TS` `obj`, read under its prefix
+(see [`set_options_prefix!`](@ref)): PETSc's options database
+(`PETSc.initialize(; options)`, the `PETSC_OPTIONS` environment variable), and the
+options given to its constructor for keys the database does not set. Returns `obj`.
 
 The constructor's `options_at` keyword decides when the solver does this itself;
 call it to configure `obj` at another point, for example a nested solver before
@@ -321,18 +382,20 @@ end
     with_options(f, obj)
 
 Run `f()` with the options given to the constructor of `obj`, a `KSP`, `SNES` or
-`TS`, pushed onto PETSc's options stack, and return the result of `f`. 
-Nothing is pushed when the constructor got no options.
+`TS`, in PETSc's options database, and return the result of `f`. A key the
+database already sets keeps its value there, so `PETSC_OPTIONS` and
+`PETSc.initialize(; options)` override the constructor. Afterwards the database
+is as it was.
 
 PETSc reads some options only when it creates a sub-object, such as the solvers
 of a fieldsplit preconditioner during setup. A call that triggers that outside
 `solve!`, for example `KSPSetUp` through `LibPETSc`, sees the constructor options
 only inside this block.
 """
-function with_options(f, obj::Union{LibPETSc.AbstractKSP, LibPETSc.AbstractSNES, LibPETSc.AbstractTS})
+function with_options(f, obj::Union{LibPETSc.AbstractKSP{PetscLib}, LibPETSc.AbstractSNES{PetscLib}, LibPETSc.AbstractTS{PetscLib}}) where {PetscLib}
     opts = obj.opts
     isnothing(opts) && return f()
-    return with_options(f, opts)
+    return with_layered_options(f, PetscLib, opts)
 end
 
 # When the constructor options of a KSP, SNES or TS are applied
@@ -347,17 +410,17 @@ function check_options_at(options_at::Symbol)
 end
 
 # Whether `XSetFromOptions` runs now. `solving` is true in `solve!` and false in
-# `setup!` and `step!`, which apply the options only under `:first_solve`.
+# `setup!` and `step!`, which apply the options only under `:first_solve`. A
+# solver wrapped from a handle has `options_at = :never`: its owner applies them.
 function options_due(obj, solving::Bool)
-    isnothing(obj.opts) && return false
     obj.options_at === :each_solve  && return solving
     obj.options_at === :first_solve && return !obj.options_applied
     return false
 end
 
-# Run `f()` with the constructor options pushed, applying them first when due.
+# Run `f()` with the constructor options in effect, applying them first when due.
 # Under `:each_solve` the options belong to `solve!` alone: `setup!` and `step!`
-# neither push nor apply them.
+# neither set nor apply them.
 function with_solver_options(f, obj; solving::Bool)
     !solving && obj.options_at === :each_solve && return f()
     return with_options(obj) do
@@ -368,11 +431,9 @@ end
 
 # Apply the options of a freshly built solver if `options_at = :construction`,
 # and record the choice for later solves.
-function store_options!(obj, petsclib, options_at::Symbol, options)
-    check_options_at(options_at)
-    isempty(options) && return obj
-    obj.options_at = options_at
-    obj.opts = PetscOptions(petsclib; options...)
+function store_options!(obj, options_at::Symbol, options)
+    obj.options_at = check_options_at(options_at)
+    isempty(options) || (obj.opts = option_entries(options))
     options_at === :construction && set_from_options!(obj)
     return obj
 end

@@ -23,11 +23,9 @@ function fe_create_default(
     qorder::Integer = -1,
 ) where {PetscLib}
     PetscInt = inttype(PetscLib)
-    # Push the polynomial degree into the options DB so PetscFECreateDefault
-    # picks up the correct space even when no command-line option is given.
-    opt_key = isempty(prefix) ? "petscspace_degree" : "$(prefix)petscspace_degree"
-    opts = PetscOptions(petsclib; Symbol(opt_key) => degree)
-    fe = with_options(opts) do
+    # PetscFECreateDefault reads the degree from the options database only
+    entries = ["-$(prefix)petscspace_degree" => string(degree)]
+    fe = with_layered_options(PetscLib, entries) do
         LibPETSc.PetscFECreateDefault(
             petsclib, comm,
             PetscInt(dim), PetscInt(Nc),

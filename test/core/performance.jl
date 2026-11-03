@@ -57,7 +57,8 @@ MPI.Initialized() || MPI.Init()
             ("isassembled",            0, () -> PETSc.isassembled(A)),
             ("mul!",                   2, () -> mul!(x, A, y)),
             # the cost of a solve, converged or not: the large case stops at ksp_max_it
-            ("KSP solve!",             2, () -> PETSc.solve!(x, ksp, y; check = false)),
+            # the constructor options are set in, and cleared from, the database per solve
+            ("KSP solve!",             8, () -> PETSc.solve!(x, ksp, y; check = false)),
             ("KSP iteration_number",   0, () -> PETSc.iteration_number(ksp)),
             ("KSP converged_reason",   0, () -> PETSc.converged_reason(ksp)),
             ("corners",                0, () -> PETSc.corners(dm)),

@@ -1,5 +1,6 @@
 using Test
 using PETSc
+using SparseArrays: sparse
 
 isdefined(Main, :PETScTestUtils) || include(joinpath(@__DIR__, "..", "testutils.jl"))
 using .PETScTestUtils: without_petsc_traceback
@@ -63,6 +64,139 @@ using .PETScTestUtils: without_petsc_traceback
 
         PETSc.finalize(petsclib)
     end
+end
+
+@testset "setting an option to false clears it" begin
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    opts = PETSc.PetscOptions(petsclib)
+    has(key) = PETSc.LibPETSc.PetscOptionsHasName(petsclib, opts, "", key)
+
+    opts[:x] = true
+    @test has("-x")
+    opts[:x] = false
+    @test !has("-x")
+    opts[:pc_type] = "lu"
+    opts[:pc_type] = false
+    @test !has("-pc_type")
+    # a key never set is a no-op
+    opts[:never_set] = false
+    @test !has("-never_set")
+
+    # a viewer option PETSc can't parse as a value (`-ksp_monitor false` is an error)
+    PetscScalar = petsclib.PetscScalar
+    S = sparse(PetscScalar[2 0; 0 4])
+    ksp = PETSc.KSP(petsclib, PETSc.MPI.COMM_SELF, S; ksp_monitor = false, pc_type = "none")
+    b = PETSc.PetscVec(petsclib, PetscScalar[2, 4])
+    x = PETSc.solve!(similar(b), ksp, b)
+    @test x[:] ≈ [1, 1]
+    PETSc.destroy!.((x, b, ksp, opts))
+    PETSc.finalize(petsclib)
+end
+
+@testset "solver options layer under the options database" begin
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    PetscLib = typeof(petsclib)
+    LP = PETSc.LibPETSc
+    T = petsclib.PetscScalar
+    comm = PETSc.MPI.COMM_SELF
+    global_opts = LP.PetscOptions{PetscLib}(C_NULL, petsclib.age; own = false)
+    has(key) = LP.PetscOptionsHasName(petsclib, global_opts, "", key)
+    S = sparse(T[2 0; 0 4])
+    b = PETSc.PetscVec(petsclib, T[2, 4])
+    x = similar(b)
+    rtol(ksp) = PETSc.tolerances(ksp).rtol
+
+    LP.PetscOptionsSetValue(petsclib, global_opts, "-ksp_rtol", "1e-3")
+    try
+        # the database wins on a shared key; the other constructor keys apply
+        ksp = PETSc.KSP(petsclib, comm, S; ksp_rtol = 1e-6, pc_type = "none")
+        PETSc.solve!(x, ksp, b)
+        @test rtol(ksp) ≈ 1e-3
+        @test PETSc.type_name(PETSc.pc(ksp)) == :none
+        @test !has("-pc_type")
+        @test LP.PetscOptionsGetString(petsclib, global_opts, "", "-ksp_rtol") == "1e-3"
+
+        # a solver without options reads the database at its first solve
+        plain = PETSc.KSP(petsclib, comm, S)
+        PETSc.solve!(x, plain, b)
+        @test rtol(plain) ≈ 1e-3
+        PETSc.destroy!.((ksp, plain))
+    finally
+        LP.PetscOptionsClearValue(petsclib, global_opts, "-ksp_rtol")
+    end
+
+    # a nested solver's key beats the one an enclosing block set, which comes back
+    outer = PETSc.KSP(petsclib, comm, S; ksp_rtol = 1e-2)
+    inner = PETSc.KSP(petsclib, comm, S; ksp_rtol = 1e-8)
+    PETSc.with_options(outer) do
+        PETSc.solve!(x, inner, b)
+        @test LP.PetscOptionsGetString(petsclib, global_opts, "", "-ksp_rtol") == "0.01"
+    end
+    @test rtol(inner) ≈ 1e-8
+    @test !has("-ksp_rtol")
+
+    # a database pushed through LibPETSc inside a block: its keys are the user's
+    for (user_kwargs, expected) in (((ksp_rtol = 1e-4,), 1e-4), ((;), 1e-8))
+        userdb = PETSc.PetscOptions(petsclib; user_kwargs...)
+        user_has(key) = LP.PetscOptionsHasName(petsclib, userdb, "", key)
+        fresh = PETSc.KSP(petsclib, comm, S; ksp_rtol = 1e-8)
+        PETSc.with_options(outer) do
+            LP.PetscOptionsPush(petsclib, userdb)
+            try
+                PETSc.solve!(x, fresh, b)
+            finally
+                LP.PetscOptionsPop(petsclib)
+            end
+            @test LP.PetscOptionsGetString(petsclib, global_opts, "", "-ksp_rtol") == "0.01"
+        end
+        @test rtol(fresh) ≈ expected
+        if isempty(user_kwargs)
+            @test !user_has("-ksp_rtol")
+        else
+            @test userdb["ksp_rtol"] == "0.0001"
+        end
+        @test !has("-ksp_rtol")
+        PETSc.destroy!.((fresh, userdb))
+    end
+
+    # a throw inside the block leaves no key behind
+    bad = PETSc.KSP(petsclib, comm, S; ksp_type = "no_such_type")
+    @test_throws LP.PetscError without_petsc_traceback(() -> PETSc.solve!(x, bad, b), petsclib)
+    @test !has("-ksp_type")
+    PETSc.destroy!.((outer, inner, bad, x, b))
+    PETSc.finalize(petsclib)
+end
+
+@testset "DM options layer under the options database" begin
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    PetscLib = typeof(petsclib)
+    LP = PETSc.LibPETSc
+    comm = PETSc.MPI.COMM_SELF
+    nb = PETSc.DM_BOUNDARY_NONE
+    global_opts = LP.PetscOptions{PetscLib}(C_NULL, petsclib.age; own = false)
+    npoints(dm) = (v = PETSc.global_vec(dm); n = length(v); PETSc.destroy!(v); n)
+    da(; kw...) = PETSc.DMDA(petsclib, comm, (nb,), (10,), 1; stencil_width = 1, kw...)
+
+    # a constructor key absent from the database applies, and is gone afterwards
+    dm = da(; da_refine = 2)
+    @test npoints(dm) == 37
+    @test !LP.PetscOptionsHasName(petsclib, global_opts, "", "-da_refine")
+    PETSc.destroy!(dm)
+
+    # the database wins on a shared key, and reaches a DM built without options
+    LP.PetscOptionsSetValue(petsclib, global_opts, "-da_refine", "1")
+    try
+        dm, plain = da(; da_refine = 2), da()
+        @test npoints(dm) == 19
+        @test npoints(plain) == 19
+        PETSc.destroy!.((dm, plain))
+    finally
+        LP.PetscOptionsClearValue(petsclib, global_opts, "-da_refine")
+    end
+    PETSc.finalize(petsclib)
 end
 
 @testset "parse_options" begin

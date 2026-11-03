@@ -13,7 +13,7 @@ SNESState() = SNESState(
     nothing,
     nothing,
     nothing,
-    :first_solve,
+    :never,
     false,
     true,
 )
@@ -58,7 +58,12 @@ Create a PETSc nonlinear solver (SNES) context on the communicator `comm`.
 - `:construction`: here, once. A DM or callback attached afterwards is not
   visible to them.
 
-The options stay pushed during `solve!`, and during `setup!` too unless
+PETSc's options database (`PETSc.initialize(; options)`, the `PETSC_OPTIONS`
+environment variable) is read at the same point and wins on a key both set, so
+the constructor options are defaults it can override. A solver built without
+options reads the database too.
+
+The options stay in effect during `solve!`, and during `setup!` too unless
 `options_at = :each_solve`, so the sub-solvers PETSc creates during setup read
 them (see [`with_options`](@ref)).
 
@@ -88,7 +93,7 @@ function SNES(
     petsclib = getlib(PetscLib)
     return own_solver!(LibPETSc.SNESCreate(petsclib, comm), comm) do snes
         isempty(prefix) || LibPETSc.SNESSetOptionsPrefix(petsclib, snes, String(prefix))
-        store_options!(snes, petsclib, options_at, options)
+        store_options!(snes, options_at, options)
     end
 end
 
@@ -355,7 +360,7 @@ end
 
 Set up `snes`, as [`solve!`](@ref) does before its first solve, and return
 `snes`. Under `options_at = :first_solve` or `:construction` the constructor
-options are pushed meanwhile, and under `:first_solve` applied first (see
+options are in effect meanwhile, and under `:first_solve` applied first (see
 [`SNES`](@ref)).
 
 # External Links
@@ -531,7 +536,7 @@ Set the convergence tolerances of `snes`, named as [`tolerances`](@ref) returns 
 A keyword left at `nothing` keeps the value `snes` has. Returns `snes`.
 
 An option for the same tolerance (`snes_rtol = 1e-8` to the constructor, or
-`-snes_rtol` on the command line) is applied when the constructor's `options_at`
+`-snes_rtol` in `PETSC_OPTIONS`) is applied when the constructor's `options_at`
 says, and overrides this setting if that comes later.
 
 # External Links

@@ -58,7 +58,9 @@ PETSc.set_operators!(ksp, J)
 PETSc.solve!(x, ksp, b)            # options applied here, and not again
 ```
 
-While a solver runs, its options stay pushed on PETSc's options stack, so sub-solvers PETSc creates during setup (the splits of a fieldsplit, the levels of a multigrid) read them too. [`PETSc.with_options`](@ref) does the same around any other code: `with_options(ksp) do ... end`.
+PETSc's options database (`PETSc.initialize(; options)` and the `PETSC_OPTIONS` environment variable) is read at the same point, and wins on a key both set: `PETSC_OPTIONS="-pc_type lu"` overrides `pc_type = "mg"` without editing the script. A solver built without keyword options reads the database too.
+
+While a solver runs, its options stay in PETSc's options database, so sub-solvers PETSc creates during setup (the splits of a fieldsplit, the levels of a multigrid) read them too. Afterwards the database holds only what was there before. [`PETSc.with_options`](@ref) does the same around any other code: `with_options(ksp) do ... end`.
 
 ### From a Sparse Matrix
 

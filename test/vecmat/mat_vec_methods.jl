@@ -111,6 +111,26 @@ MPI.Initialized() || MPI.Init()
         foreach(PETSc.destroy!, (y, x, A))
     end
 
+    @testset "product with a Julia vector" begin
+        A = nonsymmetric()
+        @test A * PetscScalar[1, 2] == PetscScalar[1 2; 3 4] * PetscScalar[1, 2]
+        @test A * OffsetVector([1, 2], -1:0) == PetscScalar[5, 11]
+        @test_throws "the matrix is 2x2 but x has length 3" A * PetscScalar[1, 2, 3]
+        PETSc.destroy!(A)
+
+        # one MatMult, not a MatGetValues per entry: allocations do not grow with n
+        # (both sizes are large enough that Julia allocates array memory separately)
+        function allocations(n)
+            D = PETSc.PetscMat(petsclib, sparse(1:n, 1:n, ones(PetscScalar, n)))
+            x = ones(PetscScalar, n)
+            D * x
+            a = @allocations D * x
+            PETSc.destroy!(D)
+            return a
+        end
+        @test allocations(1000) == allocations(100_000)
+    end
+
     @testset "products and solves take any vector handle" begin
         A = nonsymmetric()
         x = PETSc.PetscVec(petsclib, PetscScalar[1, 1])

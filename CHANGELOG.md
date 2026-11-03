@@ -37,6 +37,7 @@
 
 ### Added
 
+- `A * x` for any `PetscMat` and a Julia vector `x` is one `MatMult` and returns a `Vector`. It is collective and works on any number of ranks: every rank passes the whole `x` and gets the whole product. A `MatShell` uses the same method.
 - `sum`, `maximum`, `minimum` on a PetscVec, through `VecSum`, `VecMax` and `VecMin`, and `any`, `all`, `count` and `mapreduce` (so `sum(f, v)`, `prod`, `extrema` and `reduce`) with a function. All are collective and give every rank the global answer; the function runs on the entries each rank owns, and the results of `mapreduce` combine in rank order. `similar(v, eltype(v))` returns a PetscVec, as `similar(v)` does.
 - `PETSc.equal(A, B)` and `PETSc.equal(v, w)`: PETSc's own `MatEqual` and `VecEqual`, faster than `==` but comparing what is stored (the pattern for a Mat, the bits for a Vec).
 - On a PetscMat: `isapprox` by Frobenius norm as for Julia matrices, `copyto!(B, A)` through `MatCopy`, `sum(A)` through `MatGetRowSum`, and `collect(A)`, `Matrix(A)` and `copyto!(::Matrix, A)` as a dense gather onto every rank. All collective.

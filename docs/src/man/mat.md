@@ -104,6 +104,8 @@ A `PetscMat` (and a `MatShell`) is an `AbstractMatrix` of the library's scalar t
 
 An assembled `PetscMat` supports `copy(A)`, `copyto!(B, A)`, `A + B`, `A - B`, `-A` and `α * A`. Each returns a new matrix and is collective; `A ± B` has the union of the two nonzero patterns. On more than one rank the result has no finalizer, so call `destroy!` on it on every rank.
 
+`A * x` with a `PetscVec` returns a new `PetscVec`; with a Julia vector it is one `MatMult` and returns a `Vector`. That one is collective too: every rank passes the whole `x` and gets the whole product.
+
 `ownership_range(A)` is 1-based and takes no second argument
 ([naming conventions](naming.md), §12.1).
 

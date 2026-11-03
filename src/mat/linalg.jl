@@ -295,6 +295,30 @@ function Base.:*(
     return finalize_if_serial!(y)
 end
 
+"""
+    *(M::AbstractPetscMat, x::AbstractVector)
+
+`M * x` for a Julia vector `x`, through one `MatMult`, as a Julia `Vector`.
+Collective: every rank passes the whole `x` and receives the whole product.
+
+# External Links
+$(doc_external("Mat/MatMult"))
+"""
+function Base.:*(M::AbstractPetscMat{PetscLib}, x::AbstractVector) where {PetscLib}
+    length(x) == size(M, 2) || throw(
+        DimensionMismatch("the matrix is $(size(M, 1))x$(size(M, 2)) but x has length $(length(x))"),
+    )
+    return with_destroy() do list
+        right, y = LibPETSc.MatCreateVecs(getlib(PetscLib), M)
+        track!(list, right)
+        track!(list, y)
+        cols = ownership_range(right) .+ (firstindex(x) - 1)
+        with_local_array!(xa -> copyto!(xa, view(x, cols)), right; read = false, memtype = :host)
+        mul!(y, M, right)
+        collect(y)
+    end
+end
+
 # `A'` and `transpose(A)` are lazy wrappers, so `A' * x` and `mul!(y, A', x)` reach
 # MatMultHermitianTranspose and MatMultTranspose without forming the transpose.
 LinearAlgebra.adjoint(A::AbstractPetscMat) = Adjoint(A)

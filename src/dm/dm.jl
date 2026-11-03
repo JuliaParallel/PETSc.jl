@@ -105,8 +105,8 @@ function own_dm!(dm::TypedPetscDM{PetscLib}, comm) where {PetscLib}
 end
 
 # What every DM constructor does once PETSc has created the DM: set the options
-# prefix, apply `set_from_options!` with the constructor's leftover keywords as
-# the options database, call `setup!`, and take ownership. If any of that throws,
+# prefix, apply `set_from_options!` with the constructor's leftover keywords
+# layered under PETSc's options database, call `setup!`, and take ownership. If any of that throws,
 # the DM is destroyed before the exception goes on.
 function finish_dm!(
     dm::TypedPetscDM{PetscLib},
@@ -121,8 +121,7 @@ function finish_dm!(
         check_renamed_dm_keywords(options)
         isempty(prefix) || LibPETSc.DMSetOptionsPrefix(petsclib, dm, String(prefix))
         if set_from_options
-            opts = PetscOptions(petsclib; options...)
-            with_options(opts) do
+            with_layered_options(PetscLib, option_entries(options)) do
                 LibPETSc.DMSetFromOptions(petsclib, dm)
             end
         end

@@ -169,6 +169,36 @@ end
     PETSc.finalize(petsclib)
 end
 
+@testset "DM options layer under the options database" begin
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    PetscLib = typeof(petsclib)
+    LP = PETSc.LibPETSc
+    comm = PETSc.MPI.COMM_SELF
+    nb = PETSc.DM_BOUNDARY_NONE
+    global_opts = LP.PetscOptions{PetscLib}(C_NULL, petsclib.age; own = false)
+    npoints(dm) = (v = PETSc.global_vec(dm); n = length(v); PETSc.destroy!(v); n)
+    da(; kw...) = PETSc.DMDA(petsclib, comm, (nb,), (10,), 1; stencil_width = 1, kw...)
+
+    # a constructor key absent from the database applies, and is gone afterwards
+    dm = da(; da_refine = 2)
+    @test npoints(dm) == 37
+    @test !LP.PetscOptionsHasName(petsclib, global_opts, "", "-da_refine")
+    PETSc.destroy!(dm)
+
+    # the database wins on a shared key, and reaches a DM built without options
+    LP.PetscOptionsSetValue(petsclib, global_opts, "-da_refine", "1")
+    try
+        dm, plain = da(; da_refine = 2), da()
+        @test npoints(dm) == 19
+        @test npoints(plain) == 19
+        PETSc.destroy!.((dm, plain))
+    finally
+        LP.PetscOptionsClearValue(petsclib, global_opts, "-da_refine")
+    end
+    PETSc.finalize(petsclib)
+end
+
 @testset "parse_options" begin
     @test begin
 

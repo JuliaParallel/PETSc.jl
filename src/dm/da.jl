@@ -49,8 +49,9 @@ If keyword argument `processors[k] isa Integer` then this specifies the number o
 processors used in dimension `k`; ignored when `D == 1`.
 
 With `set_from_options = true`, [`set_from_options!`](@ref) is applied with the
-remaining keywords `options...` as the options database, under `prefix`. With
-`setup = true`, [`setup!`](@ref) is called.
+remaining keywords `options...` under `prefix`. PETSc's options database
+(`PETSc.initialize(; options)`, `PETSC_OPTIONS`) is read too and wins on a key
+both set. With `setup = true`, [`setup!`](@ref) is called.
 
 # External Links
 $(doc_external("DMDA/DMDACreate1d"))

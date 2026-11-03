@@ -38,7 +38,7 @@ Using the GC in combination with MPI code is a tricky business. The users are th
    end
    ```
    An object that should outlive the block is taken out with `PETSc.untrack!(list, obj)`.
-2. The julia function `PETSc.audit_file("path/to/your/file.jl")` which scans your julia file and tries to guess whether objects are destroyed.
+2. The script `scripts/audit.jl` in the PETSc.jl repository: `julia scripts/audit.jl path/to/your/file.jl` scans the file and tries to guess whether objects are destroyed.
 3. You can initialize the PETSc library with `log_view=true`. At the end of the code, it will give an  
 
 Objects on a one-rank communicator also have a finalizer, so the garbage collector frees them if you forget. The finalizer does not call PETSc: Julia runs it on whichever thread triggered the collection, and PETSc is not thread safe, so a destroy there could overlap a PETSc call of another thread. It queues the object instead, and the next PETSc.jl call that creates or destroys an object, or `PETSc.finalize`, destroys what has piled up, on that thread. A program that creates many serial objects and then stays away from PETSc for a long time keeps them until its next such call.

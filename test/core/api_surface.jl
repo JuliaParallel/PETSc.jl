@@ -79,7 +79,8 @@ end
                 (startswith(String(old), "@") || parentmodule(getfield(PETSc, old)) === PETSc)
         @test !owned
     end
-    for name in (:local_arrays, :restore_local_arrays!, :local_coordinate_array,
+    for name in (:audit_file, :audit_petsc_file,
+                 :local_arrays, :restore_local_arrays!, :local_coordinate_array,
                  :AbstractPETScMemBackend, :PetscKSP, :PetscSNES)
         @test !isdefined(PETSc, name)
         @test !Base.ispublic(PETSc, name)

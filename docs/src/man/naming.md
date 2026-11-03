@@ -36,7 +36,7 @@ That is disambiguation, not a visibility marker.
 Because [§13](#13.-Exports) exports only types, "unexported" cannot by itself separate the public API from internals.
 The register is `scripts/renames.jl`, a plain list of `old => new` pairs plus a set of names marked internal. Every binding must appear in one or the other, and `scripts/api_surface.jl --check` fails if a binding appears in neither.
 
-The register is data rather than prose because three things have to agree with it: the `public` declaration ([§13.1](#13.1-The-public-keyword)), the creator and destroyer name sets in `audit.jl`, and the `--check` comparison set. The first two are generated from it and the third reads it. Kept by hand they drift, and the auditor's drift is silent: after a rename its patterns stop matching and it reports no leaks on leaking code.
+The register is data rather than prose because three things have to agree with it: the `public` declaration ([§13.1](#13.1-The-public-keyword)), the creator and destroyer name sets of `scripts/audit.jl`, and the `--check` comparison set. The first is generated from it and the other two read it. Kept by hand they drift, and the auditor's drift is silent: after a rename its patterns stop matching and it reports no leaks on leaking code.
 
 `scripts/api_surface.jl --sweeps` covers the other half: every count this document states is derived rather than remembered.
 

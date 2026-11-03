@@ -1,6 +1,6 @@
 # Utilities
 
-This page documents utility functions for initialization, options handling, system information, and code auditing.
+This page documents utility functions for initialization, options handling, and system information.
 
 ## Initialization
 
@@ -58,9 +58,10 @@ Pages   = ["sys/object.jl"]
 
 ## Code Auditing
 
-The audit utilities help identify potential memory leaks by tracking PETSc object creation and destruction.
+`scripts/audit.jl` in the PETSc.jl repository lists the PETSc objects a file creates and never destroys. It only parses the file, so it runs without PETSc:
 
-```@autodocs
-Modules = [PETSc]
-Pages   = ["audit.jl", "audit_names.jl"]
 ```
+julia scripts/audit.jl path/to/your/file.jl
+```
+
+It does not follow control flow or aliasing, so read its report as a list of places to check.

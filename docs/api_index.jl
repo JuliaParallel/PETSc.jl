@@ -21,7 +21,6 @@ const HIGH_LEVEL_SOURCES = [
     "dmda.jl",
     "dmstag.jl",
     "dmplex.jl",
-    "audit.jl",
 ]
 
 # `doc_external("DMSTAG/DMStagGetCorners")`, and the `_doc_external` alias the

@@ -1,11 +1,12 @@
 using Test
-using PETSc
+
+include(joinpath(@__DIR__, "..", "..", "scripts", "audit.jl"))
 
 const LEAKY = joinpath(dirname(@__DIR__), "fixtures", "leaky.jl")
 const CONSTRUCTS = joinpath(dirname(@__DIR__), "fixtures", "constructs.jl")
 
 @testset "audit_file" begin
-    report = PETSc.audit_file(LEAKY; verbose = false)
+    report = Audit.audit_file(LEAKY; verbose = false)
 
     created = Set(v for (_, v, _) in report.created if v !== nothing)
     destroyed = Set(v for (_, v) in report.destroyed)
@@ -60,7 +61,7 @@ const CONSTRUCTS = joinpath(dirname(@__DIR__), "fixtures", "constructs.jl")
             )
             close(io)
             # v and mat are handed to the garbage collector; only dm leaks
-            @test PETSc.audit_file(path; verbose = false).leaked == [:dm]
+            @test Audit.audit_file(path; verbose = false).leaked == [:dm]
         end
     end
 
@@ -71,7 +72,7 @@ const CONSTRUCTS = joinpath(dirname(@__DIR__), "fixtures", "constructs.jl")
             write(io, "g = PETSc.PetscVec(petsclib, g_ptr; own = false)\n")
             write(io, "h = PETSc.PetscMat(petsclib, h_ptr; own = false)\n")
             close(io)
-            @test isempty(PETSc.audit_file(path; verbose = false).leaked)
+            @test isempty(Audit.audit_file(path; verbose = false).leaked)
         end
     end
 
@@ -85,14 +86,14 @@ const CONSTRUCTS = joinpath(dirname(@__DIR__), "fixtures", "constructs.jl")
                 """,
             )
             close(io)
-            @test isempty(PETSc.audit_file(path; verbose = false).leaked)
+            @test isempty(Audit.audit_file(path; verbose = false).leaked)
         end
     end
 
     @testset "language constructs" begin
         # Every construct in the fixture is released except the two named here.
         # A failure names the construct that broke.
-        report = PETSc.audit_file(CONSTRUCTS; verbose = false)
+        report = Audit.audit_file(CONSTRUCTS; verbose = false)
         @test report.leaked == [:never_freed, :quoted_v]
     end
 
@@ -101,7 +102,7 @@ const CONSTRUCTS = joinpath(dirname(@__DIR__), "fixtures", "constructs.jl")
             write(io, "v = LibPETSc.VecCreateSeq(petsclib, comm, 10\nfunction broken(\n")
             close(io)
             # a syntax error must not silently read as a clean bill of health
-            @test_logs (:warn, r"does not parse") PETSc.audit_file(
+            @test_logs (:warn, r"does not parse") Audit.audit_file(
                 path;
                 verbose = false,
             )
@@ -109,27 +110,34 @@ const CONSTRUCTS = joinpath(dirname(@__DIR__), "fixtures", "constructs.jl")
     end
 
     @testset "helpers" begin
-        @test PETSc.audit_creator(:VecCreateSeq) == "Vec"
-        @test PETSc.audit_creator(:MatSeqAIJWithArrays) == "Mat"
-        @test PETSc.audit_creator(:DMStag) == "DM"
-        @test PETSc.audit_creator(:solve!) === nothing
+        @test Audit.audit_creator(:VecCreateSeq) == "Vec"
+        @test Audit.audit_creator(:MatSeqAIJWithArrays) == "Mat"
+        @test Audit.audit_creator(:DMStag) == "DM"
+        @test Audit.audit_creator(:solve!) === nothing
 
-        @test PETSc.audit_destroyer(:destroy!)
-        @test PETSc.audit_destroyer(:destroy!)
-        @test PETSc.audit_destroyer(:VecDestroy)
-        @test PETSc.audit_destroyer(:finalizer)
-        @test !PETSc.audit_destroyer(:Destroy)
-        @test !PETSc.audit_destroyer(:assemble!)
+        @test Audit.audit_destroyer(:destroy!)
+        @test Audit.audit_destroyer(:destroy!)
+        @test Audit.audit_destroyer(:VecDestroy)
+        @test Audit.audit_destroyer(:finalizer)
+        @test !Audit.audit_destroyer(:Destroy)
+        @test !Audit.audit_destroyer(:assemble!)
 
-        @test PETSc.audit_callee(:(PETSc.LibPETSc.f(x))) === :f
-        @test PETSc.audit_callee(:(PETSc.f.(xs))) === :f
-        @test !PETSc.audit_isbroadcast(:(a.b))
-        @test PETSc.audit_isbroadcast(:(f.(x)))
-        @test PETSc.audit_argnames(:(destroy!(v))) == [:v]
-        @test PETSc.audit_argnames(:(destroy!(v...))) == [:v]
-        @test PETSc.audit_argnames(:(destroy!.([v, w]))) == [:v, :w]
-        @test PETSc.audit_argnames(:(VecDestroy(lib, v))) == [:lib, :v]
-        @test PETSc.audit_callee(:(f(x))) === :f
-        @test PETSc.audit_callee(:(x + 1)) === :+
+        @test Audit.audit_callee(:(PETSc.LibPETSc.f(x))) === :f
+        @test Audit.audit_callee(:(PETSc.f.(xs))) === :f
+        @test !Audit.audit_isbroadcast(:(a.b))
+        @test Audit.audit_isbroadcast(:(f.(x)))
+        @test Audit.audit_argnames(:(destroy!(v))) == [:v]
+        @test Audit.audit_argnames(:(destroy!(v...))) == [:v]
+        @test Audit.audit_argnames(:(destroy!.([v, w]))) == [:v, :w]
+        @test Audit.audit_argnames(:(VecDestroy(lib, v))) == [:lib, :v]
+        @test Audit.audit_callee(:(f(x))) === :f
+        @test Audit.audit_callee(:(x + 1)) === :+
     end
+end
+
+@testset "audit script command line" begin
+    script = joinpath(@__DIR__, "..", "..", "scripts", "audit.jl")
+    out = read(`$(Base.julia_cmd()) --startup-file=no $script $LEAKY`, String)
+    @test occursin("POSSIBLY UNDESTROYED", out)
+    @test occursin("  dm\n", out)
 end

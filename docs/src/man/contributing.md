@@ -51,4 +51,4 @@ The high-level code in `src/` has one directory per PETSc family, as in PETSc's 
 | `dm/dt/` | the discretization objects, as in PETSc's `src/dm/dt`: `PetscDS`, `PetscFE` and the pointwise-function macros |
 | `ksp/`, `snes/`, `ts/`, `tao/` | the solvers; `ksp/` also holds `PC` |
 
-`src/autowrapped/` is generated, and `public_names.jl` and `audit_names.jl` are generated from `scripts/renames.jl`. The docs pages list their files in `Pages = [...]`, so a new file also goes into its page's list.
+`src/autowrapped/` is generated, and `public_names.jl` is generated from `scripts/renames.jl`. The docs pages list their files in `Pages = [...]`, so a new file also goes into its page's list.

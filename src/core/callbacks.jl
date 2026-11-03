@@ -188,7 +188,9 @@ function capture_callback_errors(f)
         slot[] === nothing && rethrow()
         rethrow_callback_error(slot[])
     finally
-        outer === nothing ? delete!(tls, CALLBACK_ERROR) : (tls[CALLBACK_ERROR] = outer)
+        # never `delete!`: the IdDict then rehashes now and then, an allocation
+        # that comes and goes from one call to the next
+        tls[CALLBACK_ERROR] = outer
     end
     # PETSc absorbed the failure, but the callback still threw
     slot[] === nothing || rethrow_callback_error(slot[])

@@ -23,7 +23,8 @@ Create a PETSc options database for the given `petsclib`.
 
 Keyword arguments are converted to PETSc options:
 - Options with value `nothing` or `true` are set without a value (flags)
-- Options with value `false` are not set
+- Options with value `false` are left out, and `opts[key] = false` clears an
+  option set earlier
 - Other values are converted to strings
 
 # Examples
@@ -63,7 +64,13 @@ julia> opt["pc_type"]
 "ilu"
 
 julia> opt["false_opt"]
-ERROR: KeyError: key "bad_key" not found
+ERROR: KeyError: key "false_opt" not found
+
+julia> opt["ksp_view"] = false
+false
+
+julia> opt["ksp_view"]
+ERROR: KeyError: key "ksp_view" not found
 
 julia> opt["bad_key"]
 ERROR: KeyError: key "bad_key" not found
@@ -101,7 +108,11 @@ function Base.setindex!(
     key,
 ) where {PetscLib}
     val === true && (val = nothing)
-    val === false && (return opts)
+    # `-flag false` would still read as on through PetscOptionsHasName, so clear it
+    if val === false
+        LibPETSc.PetscOptionsClearValue(PetscLib, opts, string('-', key))
+        return opts
+    end
 
     LibPETSc.PetscOptionsSetValue(
         PetscLib,

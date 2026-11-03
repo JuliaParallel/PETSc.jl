@@ -1,5 +1,6 @@
 using Test
 using PETSc
+using SparseArrays: sparse
 
 isdefined(Main, :PETScTestUtils) || include(joinpath(@__DIR__, "..", "testutils.jl"))
 using .PETScTestUtils: without_petsc_traceback
@@ -63,6 +64,34 @@ using .PETScTestUtils: without_petsc_traceback
 
         PETSc.finalize(petsclib)
     end
+end
+
+@testset "setting an option to false clears it" begin
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    opts = PETSc.PetscOptions(petsclib)
+    has(key) = PETSc.LibPETSc.PetscOptionsHasName(petsclib, opts, "", key)
+
+    opts[:x] = true
+    @test has("-x")
+    opts[:x] = false
+    @test !has("-x")
+    opts[:pc_type] = "lu"
+    opts[:pc_type] = false
+    @test !has("-pc_type")
+    # a key never set is a no-op
+    opts[:never_set] = false
+    @test !has("-never_set")
+
+    # a viewer option PETSc can't parse as a value (`-ksp_monitor false` is an error)
+    PetscScalar = petsclib.PetscScalar
+    S = sparse(PetscScalar[2 0; 0 4])
+    ksp = PETSc.KSP(petsclib, PETSc.MPI.COMM_SELF, S; ksp_monitor = false, pc_type = "none")
+    b = PETSc.PetscVec(petsclib, PetscScalar[2, 4])
+    x = PETSc.solve!(similar(b), ksp, b)
+    @test x[:] ≈ [1, 1]
+    PETSc.destroy!.((x, b, ksp, opts))
+    PETSc.finalize(petsclib)
 end
 
 @testset "parse_options" begin

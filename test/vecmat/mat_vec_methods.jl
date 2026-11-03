@@ -9,7 +9,7 @@ using PETSc
 using MPI
 using LinearAlgebra: norm, opnorm, mul!, issymmetric, ishermitian
 using SparseArrays: sparse
-using OffsetArrays: OffsetVector
+using OffsetArrays: OffsetArray, OffsetVector
 
 MPI.Initialized() || MPI.Init()
 
@@ -261,6 +261,40 @@ MPI.Initialized() || MPI.Init()
         PETSc.assemble!(S)
         @test S[1:2, 1:2] == reference
         foreach(PETSc.destroy!, (S, da, B, A))
+    end
+
+    @testset "set_values! with a matrix sets that block" begin
+        PetscInt = petsclib.PetscInt
+        block = PetscScalar[1 2 3; 4 5 6]
+
+        R = PETSc.PetscMat(petsclib, 3, 3, 3)
+        R[[1, 3], 1:3] = block
+        PETSc.assemble!(R)
+
+        A = PETSc.PetscMat(petsclib, 3, 3, 3)
+        @test PETSc.set_values!(A, PetscInt[0, 2], PetscInt[0, 1, 2], block) === A
+        PETSc.assemble!(A)
+        @test A[:, :] == R[:, :]
+
+        # an offset Float32 matrix, and num_rows/num_cols picking a smaller block
+        B = PETSc.PetscMat(petsclib, 3, 3, 3)
+        PETSc.set_values!(B, PetscInt[0, 2], PetscInt[0, 1, 2], OffsetArray(Float32.(block), 0:1, -1:1))
+        PETSc.set_values!(B, PetscInt[1, 0], PetscInt[1, 2, 0], PetscScalar[7 8]; num_rows = 1, num_cols = 2)
+        PETSc.assemble!(B)
+        @test B[:, :] == PetscScalar[1 2 3; 0 7 8; 4 5 6]
+
+        @test_throws "a 2x3 block needs a 2x3 matrix of values, got 3x2" PETSc.set_values!(
+            B, PetscInt[0, 2], PetscInt[0, 1, 2], permutedims(block),
+        )
+
+        # the MatStencil form, on a 1D DMDA: the x index is the third field
+        da = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (3,), 1; stencil_width = 1)
+        S = PETSc.PetscMat(da)
+        stencils = [LibPETSc.MatStencil(0, 0, i, 0) for i in 0:1]
+        PETSc.set_values!(S, stencils, stencils, PetscScalar[1 2; 3 4])
+        PETSc.assemble!(S)
+        @test S[1:2, 1:2] == PetscScalar[1 2; 3 4]
+        foreach(PETSc.destroy!, (S, da, B, A, R))
     end
 
     @testset "PetscMat from CSR arrays of any vector type" begin

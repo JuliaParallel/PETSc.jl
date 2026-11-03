@@ -145,9 +145,10 @@ end
     )
 
 Set values of the matrix `M` with base-0 row and column indices `rows_0b` and
-`cols_0b`, inserting the values `rowvals`, read row by row in linear order.
-A `Vector{MatStencil}` and a `Vector` (or `Array`) of the library's scalar type 
-go to PETSc as they are; anything else is copied first.
+`cols_0b`. A matrix `rowvals` is the block itself, of size `num_rows`×`num_cols`,
+as for `A[rows, cols] = B`; any other array is read row by row in linear order.
+A `Vector{MatStencil}` and a `Vector` (or `Array` other than a matrix) of the
+library's scalar type go to PETSc as they are; anything else is copied first.
 
 The `_0b` suffix says what the base is: a bulk index array handed to C keeps
 PETSc's base rather than being rebuilt on a hot path (docs/src/man/naming.md
@@ -170,7 +171,8 @@ function set_values!(
     num_cols = length(cols_0b),
 ) where {PetscLib}
     PetscInt = PetscLib.PetscInt
-    check_block(num_rows, num_cols, length(rows_0b), length(cols_0b), length(rowvals))
+    vals = block_values(PetscLib.PetscScalar, rowvals, num_rows, num_cols)
+    check_block(num_rows, num_cols, length(rows_0b), length(cols_0b), length(vals))
     LibPETSc.MatSetValuesStencil(
         PetscLib,
         M,
@@ -178,7 +180,7 @@ function set_values!(
         c_vector(MatStencil, rows_0b),
         PetscInt(num_cols),
         c_vector(MatStencil, cols_0b),
-        c_vector(PetscLib.PetscScalar, rowvals),
+        vals,
         mode,
     )
     return M
@@ -190,6 +192,19 @@ end
 c_vector(::Type{T}, v::Vector{T}) where {T} = v
 c_vector(::Type{T}, v::Array{T}) where {T} = vec(v)
 c_vector(::Type{T}, v::AbstractArray) where {T} = copyto!(Vector{T}(undef, length(v)), v)
+
+# The values in the row-major order MatSetValues reads. A matrix is the block
+# and is transposed into a copy, since Julia stores it column by column.
+block_values(::Type{T}, vals::AbstractArray, num_rows, num_cols) where {T} = c_vector(T, vals)
+function block_values(::Type{T}, vals::AbstractMatrix, num_rows, num_cols) where {T}
+    size(vals) == (num_rows, num_cols) || throw(
+        DimensionMismatch(
+            "a $(num_rows)x$(num_cols) block needs a $(num_rows)x$(num_cols) matrix " *
+            "of values, got $(join(size(vals), 'x'))",
+        ),
+    )
+    return c_vector(T, transpose(vals))
+end
 
 # A num_rows x num_cols block needs that many indices and values
 function check_block(num_rows, num_cols, nrows, ncols, nvals)
@@ -220,10 +235,11 @@ end
     )
 
 Set values of the matrix `M` with base-0 row and column indices `rows_0b` and
-`cols_0b`, inserting the values `rowvals`, read row by row in linear order.
-A `Vector` of the library's integer type for the indices, and a `Vector` (or `Array`)
-of its scalar type for the values, go to PETSc as they are; anything else is
-copied first.
+`cols_0b`. A matrix `rowvals` is the block itself, of size `num_rows`×`num_cols`,
+as for `A[rows, cols] = B`; any other array is read row by row in linear order.
+A `Vector` of the library's integer type for the indices, and a `Vector` (or `Array`
+other than a matrix) of its scalar type for the values, go to PETSc as they are;
+anything else is copied first.
 
 The `_0b` suffix says what the base is: a bulk index array handed to C keeps
 PETSc's base rather than being rebuilt on a hot path (docs/src/man/naming.md
@@ -246,7 +262,8 @@ function set_values!(
     num_cols = length(cols_0b),
 ) where {PetscLib}
     PetscInt = PetscLib.PetscInt
-    check_block(num_rows, num_cols, length(rows_0b), length(cols_0b), length(rowvals))
+    vals = block_values(PetscLib.PetscScalar, rowvals, num_rows, num_cols)
+    check_block(num_rows, num_cols, length(rows_0b), length(cols_0b), length(vals))
     LibPETSc.MatSetValues(
         PetscLib,
         M,
@@ -254,7 +271,7 @@ function set_values!(
         c_vector(PetscInt, rows_0b),
         PetscInt(num_cols),
         c_vector(PetscInt, cols_0b),
-        c_vector(PetscLib.PetscScalar, rowvals),
+        vals,
         mode,
     )
     return M

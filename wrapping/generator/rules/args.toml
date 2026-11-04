@@ -489,3 +489,14 @@ direction = "inout"
 direction = "inout"
 [PetscOptionsGetEnumArray.nmax]
 direction = "inout"
+
+# ExodusII variable names: the manual page lists numVars as an input, but PETSc
+# writes it (the number of variables in the file); varNames holds numVars names
+[PetscViewerExodusIIGetNodalVariableNames.numVars]
+direction = "out"
+[PetscViewerExodusIIGetNodalVariableNames.varNames]
+size = "numVars"
+[PetscViewerExodusIIGetZonalVariableNames.numVars]
+direction = "out"
+[PetscViewerExodusIIGetZonalVariableNames.varNames]
+size = "numVars"

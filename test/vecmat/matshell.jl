@@ -9,7 +9,6 @@ using .PETScTestUtils: without_petsc_traceback
 
 @testset "MatShell" begin
     for petsclib in PETSc.petsclibs
-        petsclib = PETSc.petsclibs[1]
         PETSc.initialize(petsclib)
         PetscScalar = petsclib.PetscScalar
         PetscInt = petsclib.PetscInt

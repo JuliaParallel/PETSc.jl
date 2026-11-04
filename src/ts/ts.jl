@@ -930,9 +930,12 @@ end
 """
     step!(ts::AbstractTS; check = true)
 
-Take a single step. It ignores the time set by [`set_max_time!`](@ref), and
-applies the options given to the constructor only under `options_at = :first_solve`,
-when it is the first call to do so (see [`TS`](@ref)).
+Take a single step. PETSc refuses to step unless a max time or a max number of
+steps is set ([`set_max_time!`](@ref), [`set_max_steps!`](@ref)), but `step!` stops
+at neither: calling it again steps past them. The step that crosses the max time
+can be shortened to land on it, and the time step stays that
+short afterwards. The options given to the constructor are applied only under
+`options_at = :first_solve`, when it is the first call to do so (see [`TS`](@ref)).
 
 `check` treats a failed step as [`solve!`](@ref) treats a failed run.
 

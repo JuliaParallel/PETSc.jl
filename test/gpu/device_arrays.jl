@@ -151,6 +151,19 @@ end
         PETSc.destroy!(v)
     end
 
+    # CUDA.jl and AMDGPU.jl refuse the host array; the Vec is checked back in unchanged
+    @testset "broadcast with a host array on a device Vec" begin
+        x = rand(T, n)
+        v = vec_of_type(seq_type, x)
+        h = ones(T, n)
+        @test_throws "cannot use a CPU array" v .= v .+ h
+        @test_throws "cannot use a CPU array" v .+ h
+        @test v[1:n] == x
+        v .= v .+ 1
+        @test v[1:n] ≈ x .+ 1
+        PETSc.destroy!(v)
+    end
+
     @testset "host Vecs stay on the host" begin
         g = vec_of_type(:seq, ones(T, n))
         l = vec_of_type(:seq, ones(T, n))

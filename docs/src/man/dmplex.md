@@ -42,7 +42,7 @@ Useful options include `-dm_refine N` (uniform refinement) and
 ### Box mesh (built-in)
 
 ```julia
-dm = PETSc.DMPlex(petsclib, MPI.COMM_WORLD, 2, true, (10, 10))
+dm = PETSc.DMPlex(petsclib, MPI.COMM_WORLD, 2, true, [10, 10])
 #                                            ^dim  ^simplex  ^faces
 ```
 

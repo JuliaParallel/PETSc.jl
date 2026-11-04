@@ -14,6 +14,29 @@ PETSc matrices support:
 `MatSeqDense`, `MatCreateSeqAIJ`, `MatSeqAIJWithArrays` and `MatAIJ`
 ([naming conventions](naming.md), §6).
 
+## Example
+
+```jldoctest mat
+julia> using PETSc, SparseArrays
+
+julia> petsclib = PETSc.petsclibs[1];
+
+julia> PETSc.initialize(petsclib)
+
+julia> A = PetscMat(petsclib, sparse([2.0 -1 0; -1 2 -1; 0 -1 2]));
+
+julia> A[2, 1]
+-1.0
+
+julia> A * [1.0, 1.0, 1.0]
+3-element Vector{Float64}:
+ 1.0
+ 0.0
+ 1.0
+
+julia> PETSc.destroy!(A);
+```
+
 ## Creating Matrices
 
 ### Sparse Matrices (AIJ/CSR Format)

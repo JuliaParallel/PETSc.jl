@@ -11,6 +11,44 @@ SNES provides:
 - **FAS multigrid**: Full Approximation Scheme for nonlinear problems
 - **Composite solvers**: Combine multiple nonlinear solvers
 
+## Example
+
+Newton's method for x₁² + x₂ = 1, x₁ + x₂² = 1, started from (1, 1), finds the root x₁ = x₂ = (√5 − 1)/2:
+
+```jldoctest snes
+julia> using PETSc, MPI
+
+julia> petsclib = PETSc.petsclibs[1];
+
+julia> PETSc.initialize(petsclib)
+
+julia> snes = SNES(petsclib, MPI.COMM_SELF; snes_rtol = 1e-12);
+
+julia> f = PetscVec(petsclib, zeros(2));
+
+julia> PETSc.set_function!(snes, f) do fx, snes, x
+           fx[1] = x[1]^2 + x[2] - 1
+           fx[2] = x[1] + x[2]^2 - 1
+       end;
+
+julia> J = PetscMat(petsclib, zeros(2, 2));
+
+julia> PETSc.set_snes_jacobian!(snes, J) do J, snes, x
+           J[1, 1] = 2x[1]; J[1, 2] = 1
+           J[2, 1] = 1;     J[2, 2] = 2x[2]
+           PETSc.assemble!(J)
+       end;
+
+julia> x = PetscVec(petsclib, [1.0, 1.0]);
+
+julia> PETSc.solve!(x, snes);
+
+julia> x[:] ≈ fill((√5 - 1) / 2, 2)
+true
+
+julia> foreach(PETSc.destroy!, (x, J, f, snes))
+```
+
 ## Creating a SNES Solver
 
 ```julia

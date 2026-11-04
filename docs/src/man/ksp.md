@@ -10,6 +10,30 @@ KSP provides:
 - **Runtime configuration**: Choose methods via command-line options
 - **Convergence monitoring**: Built-in residual tracking
 
+## Example
+
+```jldoctest ksp
+julia> using PETSc, SparseArrays
+
+julia> petsclib = PETSc.petsclibs[1];
+
+julia> PETSc.initialize(petsclib)
+
+julia> A = PetscMat(petsclib, sparse([2.0 -1 0; -1 2 -1; 0 -1 2]));
+
+julia> ksp = KSP(A; ksp_type = "cg", pc_type = "jacobi", ksp_rtol = 1e-12);
+
+julia> x = ksp \ [1.0, 0.0, 1.0];
+
+julia> x ≈ [1, 1, 1]
+true
+
+julia> PETSc.type_name(ksp)
+:cg
+
+julia> PETSc.destroy!(ksp); PETSc.destroy!(A);
+```
+
 ## Creating a KSP Solver
 
 ### From a Matrix

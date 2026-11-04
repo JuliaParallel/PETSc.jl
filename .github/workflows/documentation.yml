@@ -7,16 +7,25 @@ on:
     tags: '*'
   pull_request:
 
+# Deploying pushes to gh-pages and sets the preview status; julia-actions/cache
+# prunes stale caches through the GitHub API.
+permissions:
+  actions: write
+  contents: write
+  pull-requests: read
+  statuses: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: julia-actions/setup-julia@latest
+      - uses: julia-actions/setup-julia@v3
         with:
           version: '1'
+      - uses: julia-actions/cache@v3
       - name: Install dependencies
-        run: julia --project=docs/ -e 'using Pkg; Pkg.build(); Pkg.develop(PackageSpec(path=pwd()));  Pkg.instantiate()'
+        run: julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
       - name: Build and deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # For authentication with GitHub Actions token

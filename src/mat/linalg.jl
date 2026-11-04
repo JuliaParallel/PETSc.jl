@@ -418,6 +418,24 @@ Base.:-(A::PetscMat) = scaled_copy(A, -1)
 Base.:*(α::Number, A::PetscMat) = scaled_copy(A, α)
 Base.:*(A::PetscMat, α::Number) = scaled_copy(A, α)
 
+"""
+    A * B
+
+The product of two assembled `PetscMat`s as a new `PetscMat`, with the rows of `A`
+and the columns of `B`, through one `MatMatMult`. Collective. The result has a
+finalizer only on a one-rank communicator, as [`copy`](@ref) does.
+
+# External Links
+$(doc_external("Mat/MatMatMult"))
+"""
+function Base.:*(A::PetscMat{PetscLib}, B::PetscMat{PetscLib}) where {PetscLib}
+    size(A, 2) == size(B, 1) ||
+        throw(DimensionMismatch("cannot multiply a $(size(A, 1))x$(size(A, 2)) matrix by a $(size(B, 1))x$(size(B, 2)) matrix"))
+    PetscReal = real(scalartype(PetscLib))
+    C = LibPETSc.MatMatMult(getlib(PetscLib), A, B, LibPETSc.MAT_INITIAL_MATRIX, PetscReal(LibPETSc.PETSC_DETERMINE))
+    return finalize_if_serial!(C)
+end
+
 function scaled_copy(A::PetscMat{PetscLib}, α::Number) where {PetscLib}
     C = copy(A)
     LibPETSc.MatScale(PetscLib, C, scalartype(PetscLib)(α))

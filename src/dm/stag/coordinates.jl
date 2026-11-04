@@ -13,7 +13,7 @@ The [`DMStag`](@ref) method of [`set_uniform_coordinates!`](@ref): sets uniform
 coordinates on `dm` in the range specified by `xyzmin` and `xyzmax`.
 
 # External Links
-$(doc_external("DMSTAG/DMStagSetUniformCoordinatesProduct"))
+$(doc_external("DMStag/DMStagSetUniformCoordinatesProduct"))
 """
 function set_uniform_coordinates!(
     dm::DMStag{PetscLib},

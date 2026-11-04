@@ -63,33 +63,7 @@ PetscInt = petsclib.PetscInt        # The integer type (e.g., Int64)
 PetscReal = petsclib.PetscReal      # The real type (real part of PetscScalar)
 ```
 
-#### Using a Custom PETSc Build
-
-You can link to your own custom build of PETSc instead of using the prebuilt binaries. This is useful when you need:
-- Specific configure options not available in the default build
-- Custom optimizations for your hardware
-- Debug builds for troubleshooting
-- Integration with specific external packages
-
-To persistently configure a custom PETSc installation (recommended):
-
-```julia
-using PETSc
-PETSc.set_library!("/path/to/your/libpetsc.so"; PetscScalar=Float64, PetscInt=Int64)
-# Restart Julia — PETSc_jll is not loaded and your library is used automatically.
-```
-
-To revert: `PETSc.unset_library!()`. To inspect the current config: `PETSc.library_info()`.
-
-For a one-off session without changing persistent settings, use the `PetscLibType` constructor:
-
-```julia
-petsclib = PETSc.LibPETSc.PetscLibType("/path/to/your/libpetsc.so";
-                              PetscScalar=Float64, PetscInt=Int64)
-PETSc.initialize(petsclib)
-# ... your code using petsclib ...
-PETSc.finalize(petsclib)
-```
+To use your own PETSc build instead of the prebuilt binaries, see [Using a custom PETSc build](@ref).
 
 **Important notes for custom builds:**
 - The library must be compiled as a dynamic/shared library (`libpetsc.so` / `.dylib`)
@@ -148,7 +122,7 @@ LibPETSc.KSPGetType(petsclib, ksp) == LibPETSc.KSPGMRES   # true
 
 Most wrapper functions already include error checking, but when calling C functions directly, use `@chk`.
 
-### 4. Memory Management
+### 5. Memory Management
 
 PETSc objects created with `Create` functions must be destroyed with corresponding `Destroy` functions:
 
@@ -184,7 +158,7 @@ The `Get...Array` functions return a `PetscArray` that points into PETSc's stora
 PETSc.LibPETSc.PetscArray
 ```
 
-### 5. Assembly
+### 6. Assembly
 
 After setting values in vectors or matrices, you must call assembly functions:
 

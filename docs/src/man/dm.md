@@ -76,9 +76,10 @@ For DM types without high-level wrappers, you can use the `LibPETSc` module dire
 using PETSc
 using PETSc.LibPETSc
 
-# Example: Create a DMPlex (low-level)
+# Example: create a DMSwarm (low-level)
 petsclib = PETSc.petsclibs[1]
-dm = LibPETSc.DMPlexCreate(petsclib, MPI.COMM_WORLD)
+dm = LibPETSc.DMCreate(petsclib, MPI.COMM_WORLD)
+LibPETSc.DMSetType(petsclib, dm, "swarm")
 # ... configure using LibPETSc functions ...
 LibPETSc.DMDestroy(petsclib, dm)
 ```

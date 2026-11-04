@@ -49,23 +49,10 @@ end
 Create a `KSP` using the matrix `A` and preconditioner construction matrix `P`
 with optional `prefix` and `options`.
 
-`options_at` decides when the options are applied, through `KSPSetFromOptions`:
-
-- `:first_solve` (the default): once, at the first [`setup!`](@ref) or `solve!`,
-  after the DM and callbacks are attached. A setting made in code after that,
-  such as [`set_tolerances!`](@ref), overrides them.
-- `:each_solve`: at the start of every [`solve!`](@ref), so they override a
-  setting made in code for the same option.
-- `:construction`: here, once. A setting made in code afterwards overrides them.
-
-PETSc's options database (`PETSc.initialize(; options)`, the `PETSC_OPTIONS`
-environment variable) is read at the same point and wins on a key both set, so
-the constructor options are defaults it can override. A solver built without
-options reads the database too.
-
-The options stay in effect during `solve!`, and during `setup!` too unless
-`options_at = :each_solve`, so the sub-solvers PETSc creates during setup read
-them (see [`with_options`](@ref)).
+`options_at` says when the options are applied, through `KSPSetFromOptions`: at the first
+`setup!` or `solve!` (`:first_solve`, the default), at every `solve!`
+(`:each_solve`) or in the constructor (`:construction`). PETSc's options database
+wins on a key both set. See [When the options apply](@ref) for the details.
 
 The communicator is obtained from `A` and if it has size `1` then the garbage
 collector is set, otherwise the user is responsible for calling
@@ -99,23 +86,10 @@ end
 
 Create a `KSP` associated with the `dm` with optional `prefix` and `options`.
 
-`options_at` decides when the options are applied, through `KSPSetFromOptions`:
-
-- `:first_solve` (the default): once, at the first [`setup!`](@ref) or `solve!`,
-  after the DM and callbacks are attached. A setting made in code after that,
-  such as [`set_tolerances!`](@ref), overrides them.
-- `:each_solve`: at the start of every [`solve!`](@ref), so they override a
-  setting made in code for the same option.
-- `:construction`: here, once. A setting made in code afterwards overrides them.
-
-PETSc's options database (`PETSc.initialize(; options)`, the `PETSC_OPTIONS`
-environment variable) is read at the same point and wins on a key both set, so
-the constructor options are defaults it can override. A solver built without
-options reads the database too.
-
-The options stay in effect during `solve!`, and during `setup!` too unless
-`options_at = :each_solve`, so the sub-solvers PETSc creates during setup read
-them (see [`with_options`](@ref)).
+`options_at` says when the options are applied, through `KSPSetFromOptions`: at the first
+`setup!` or `solve!` (`:first_solve`, the default), at every `solve!`
+(`:each_solve`) or in the constructor (`:construction`). PETSc's options database
+wins on a key both set. See [When the options apply](@ref) for the details.
 
 The communicator is obtained from `dm`. The KSP can be used with geometric
 multigrid when the DM provides grid hierarchy information.

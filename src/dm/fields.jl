@@ -265,7 +265,7 @@ between `x[]` and `numConstants`).
 
 # External Links
 $(doc_external("DM/DMAddBoundary"))
-$(doc_external("Dm/PetscWeakFormSetIndexBdResidual"))
+$(doc_external("DT/PetscWeakFormSetIndexBdResidual"))
 """
 function add_natural_boundary! end
 

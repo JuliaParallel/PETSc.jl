@@ -15,7 +15,7 @@ This package comprises two main components:
 1. An automatically generated, low-level interface for large parts of the PETSc API (see `PETSc.LibPETSc`).
 2. A curated, high-level, more Julianic interface for selected functionality.
 
-The low-level interface covers nearly the entire PETSc API, but may be awkward to work with and likely requires previous experience with PETSc to use effectively. The high level interface is designed to be more familiar and convenient for Julia users, and allows, for example, to set matrix entries with `A[1,2] = 3.0`, rather than having to call `LibPETSc.MatSetValue`. It, however, exposes only a small portion of the functionality of the underlying library. 
+The low-level interface covers nearly the entire PETSc API, but may be awkward to work with and likely requires previous experience with PETSc to use effectively. The high level interface is designed to be more familiar and convenient for Julia users, and allows, for example, to set matrix entries with `A[1,2] = 3.0`, rather than calling `LibPETSc.MatSetValues`. It, however, exposes only a small portion of the functionality of the underlying library. 
 
 ## Installation
 This package can be added with the julia command:

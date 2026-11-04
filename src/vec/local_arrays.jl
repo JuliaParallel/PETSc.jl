@@ -219,7 +219,7 @@ array_type(::Val{MT}) where {MT} =
         write::Union{Bool, NTuple{N, Bool}} = true,
         memtype::Symbol = :native,
     )
-    with_local_array!(::Type{A}, f!, vecs...; read, write, memtype) where {A <: AbstractArray}
+    with_local_array!(f!, ::Type{A}, vecs...; read, write, memtype) where {A <: AbstractArray}
 
 Apply `f!` to local array views of `vecs`.
 

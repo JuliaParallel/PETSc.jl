@@ -151,7 +151,7 @@ An iterate the residual cannot be evaluated at (a negative density, say) is repo
 - `snes_max_funcs` - Maximum residual evaluations
 - `snes_monitor` - Print residual each iteration
 
-In code, `PETSc.tolerances(snes)` returns `(; atol, rtol, stol, max_it, max_funcs)` and `PETSc.set_tolerances!(snes; rtol = 1e-10)` changes the ones given. Options passed to the constructor are applied again at every `solve!` and win over a value set this way.
+In code, `PETSc.tolerances(snes)` returns `(; atol, rtol, stol, max_it, max_funcs)` and `PETSc.set_tolerances!(snes; rtol = 1e-10)` changes the ones given. Under the default `options_at = :first_solve`, a value set after the first solve stays; under `:each_solve` the constructor options win at every solve.
 
 ### Line Search Options
 - `snes_linesearch_type` - `bt` (backtracking), `basic`, `l2`, `cp`

@@ -6,23 +6,7 @@ Yes. You do need to compile PETSc as a dynamic (shared) library, and `MPI.jl` mu
 
 Please note that the version of PETSc should be compatible with the version used for the wrappers.
 
-The recommended approach is `set_library!`, which stores the path persistently in `LocalPreferences.toml` — no environment variables needed:
-
-```julia
-using PETSc
-PETSc.set_library!("/path/to/libpetsc.so"; PetscScalar=Float64, PetscInt=Int64)
-# Restart Julia — the custom library is used automatically from here on.
-```
-
-To revert to the bundled `PETSc_jll` binaries:
-```julia
-PETSc.unset_library!()
-```
-
-For a one-off session without changing the persistent preference, use the `PetscLibType` constructor directly:
-```julia
-petsclib = PETSc.LibPETSc.PetscLibType("/path/to/libpetsc.so"; PetscScalar=Float64, PetscInt=Int64)
-```
+Point PETSc.jl at it with `PETSc.set_library!`; see [Using a custom PETSc build](@ref) for the steps, how to revert, and a one-off session without changing the stored preference.
 
 ## 2. Help, my code crashes?
 That is very possible. If you provide a *short* minimum working example (MWE), feel free to open an issue on the github repo, so we can check it out.
@@ -39,7 +23,7 @@ Using the GC in combination with MPI code is a tricky business. The users are th
    ```
    An object that should outlive the block is taken out with `PETSc.untrack!(list, obj)`.
 2. The script `scripts/audit.jl` in the PETSc.jl repository: `julia scripts/audit.jl path/to/your/file.jl` scans the file and tries to guess whether objects are destroyed.
-3. You can initialize the PETSc library with `log_view=true`. At the end of the code, it will give an  
+3. Initialize with `log_view = true`: at `finalize`, PETSc lists the objects created and destroyed per class, so a leak shows as a count mismatch.
 
 Objects on a one-rank communicator also have a finalizer, so the garbage collector frees them if you forget. The finalizer does not call PETSc: Julia runs it on whichever thread triggered the collection, and PETSc is not thread safe, so a destroy there could overlap a PETSc call of another thread. It queues the object instead, and the next PETSc.jl call that creates or destroys an object, or `PETSc.finalize`, destroys what has piled up, on that thread. A program that creates many serial objects and then stays away from PETSc for a long time keeps them until its next such call.
 

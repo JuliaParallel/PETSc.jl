@@ -39,7 +39,7 @@ the `PetscDS` `ds`.  `f0_ptr` and `f1_ptr` must be `@cfunction(...)`-style
 function pointers (`Ptr{Cvoid}`) matching PETSc's `PetscPointFn` signature.
 
 # External Links
-$(doc_external("Dm/PetscDSSetResidual"))
+$(doc_external("DT/PetscDSSetResidual"))
 """
 function set_residual!(
     ds::PetscDS{PetscLib},
@@ -59,7 +59,7 @@ Attach the pointwise Jacobian point-function quadruple for the block
 `(fieldI, fieldJ)` of the `PetscDS` `ds`.  Pass `C_NULL` for any unused term.
 
 # External Links
-$(doc_external("Dm/PetscDSSetJacobian"))
+$(doc_external("DT/PetscDSSetJacobian"))
 """
 function set_jacobian!(
     ds::PetscDS{PetscLib},
@@ -85,7 +85,7 @@ Each `gN` argument is either a `Ptr{Cvoid}` function pointer or `C_NULL`.
 This is the preconditioner equivalent of [`set_jacobian!`](@ref).
 
 # External Links
-$(doc_external("Dm/PetscDSSetJacobianPreconditioner"))
+$(doc_external("DT/PetscDSSetJacobianPreconditioner"))
 """
 function set_jacobian_preconditioner!(
     ds::PetscDS{PetscLib},
@@ -110,7 +110,7 @@ Register the pointwise exact-solution function `sol_ptr` for field `field`
 This is required for `DMComputeL2Diff` and `DMComputeExactSolution` to work.
 
 # External Links
-$(doc_external("Dm/PetscDSSetExactSolution"))
+$(doc_external("DT/PetscDSSetExactSolution"))
 """
 function set_exact_solution!(
     ds::PetscDS{PetscLib},
@@ -131,7 +131,7 @@ Set the named constants (accessible as `constants[i]` in pointwise functions) on
 to `PetscScalar`.
 
 # External Links
-$(doc_external("Dm/PetscDSSetConstants"))
+$(doc_external("DT/PetscDSSetConstants"))
 """
 function set_constants!(ds::PetscDS{PetscLib}, constants::AbstractVector) where {PetscLib}
     petsclib = getlib(PetscLib)

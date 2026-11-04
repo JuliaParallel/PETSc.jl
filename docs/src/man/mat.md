@@ -67,7 +67,7 @@ A = PetscMat(petsclib, julia_mat)
 
 ```julia
 # Create matrix with sparsity pattern from DM
-A = LibPETSc.DMCreateMatrix(petsclib, dm)
+A = PetscMat(dm)
 ```
 
 ### Matrix Shell (Matrix-Free)

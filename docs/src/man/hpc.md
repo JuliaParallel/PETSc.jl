@@ -100,17 +100,7 @@ The local PETSc must be compiled as a **shared library** (`--with-shared-librari
 
 #### 2.1 Link `PETSc` to the local library  
 
-Use `set_library!` to configure the path once — it is stored in `LocalPreferences.toml` and no environment variables are needed afterwards:
-
-```julia
-using PETSc
-PETSc.set_library!(
-    "/path/to/custom/libpetsc.so";
-    PetscScalar = Float64,
-    PetscInt    = Int64,
-)
-# Restart Julia — PETSc_jll is not loaded and your library is used automatically.
-```
+Configure the path once with `PETSc.set_library!`, as described in [Using a custom PETSc build](@ref).
 
 #### 2.2 Link `MPI.jl` to the local mpi
 You *must* use the same MPI implementation as the one versus which you compiled PETSc (otherwise you'll get heaps of problems).
@@ -193,7 +183,7 @@ All files are uploaded under [PETSc.jl/examples/scalability_tests](https://githu
 ```bash
 $ ./submit_scaling.sh 512 1025 1025 1025 6 16
 ```
-which will start a $1025 \times 1025 \times 1015$ simulation on 512 cores, with 6 multigrid levels and the coarse grid solver being solved on 16 cores.
+which will start a 1025³ simulation on 512 cores, with 6 multigrid levels and the coarse grid solver being solved on 16 cores.
 
 We consider 3 cases:
 - Using `PETSc.jl` with MPITrampoline linked to the local MPI ("PETSc.jl"). This is generally the easiest setup
@@ -217,9 +207,9 @@ Here the collected results (all simulations, except the largest ones, where done
 | 17767610 | 4096 | 7 | 16 | 2049³ | native | 41.345 | 28.214 | 21540.00 | 506.10 | 9 | 2.7738e-07 | 7.8741e-07 | 1.9254e-04 | ✅ |
 | 17726872 | 32768 | 8 | 16 | 4097³ | PETSc.jl | 142.540 | 63.300 | 171000.00 | 746.60 | 9 | 6.9301e-08 | 1.9765e-07 | 6.6391e-04 | ✅ |
 | 17767541 | 32768 | 8 | 16 | 4097³ | native | 69.282 | 50.858 | 172200.00 | 2386.00 | 9 | 6.9301e-08 | 1.9765e-07 | 6.6391e-04 | ✅ |
-17769918  |  32768  |   8 |   16 |  4097³ | local lib |    135.402  |     73.108 |  171000.00   |   263.20 |    9 |   6.9301e-08  |  1.9765e-07 |   6.6391e-04 | ✅ |
+| 17769918  |  32768  |   8 |   16 |  4097³ | local lib |    135.402  |     73.108 |  171000.00   |   263.20 |    9 |   6.9301e-08  |  1.9765e-07 |   6.6391e-04 | ✅ |
 ---
-In this table `KSPSolve` indicates the time spend in the solver (taken from the log) and `SolveTime` the time for the full solution.
+In this table `KSPSolve` indicates the time spent in the solver (taken from the log) and `SolveTime` the time for the full solution.
 
 Below, we break this for each of the cases:
 

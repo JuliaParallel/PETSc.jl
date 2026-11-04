@@ -206,9 +206,9 @@ sets the preconditioner up, for example after the operator changes. Returns `p`.
 
 This is where to configure the parts of a composite preconditioner that only exist
 once it has been set up, such as the solvers of a `:fieldsplit`'s splits
-(`LibPETSc.PCFieldSplitGetSubKSP`). The options are applied again on every
-`solve!`, so the callback can run more than once on the same objects: write it so
-that a second run is harmless.
+(`LibPETSc.PCFieldSplitGetSubKSP`). PETSc sets the preconditioner up again when
+the operator changes, so the callback can run more than once on the same objects:
+write it so that a second run is harmless.
 
 A second call replaces the first callback. Any PC type works, unlike
 [`set_shell_setup!`](@ref), which is the setup of a `:shell` preconditioner itself.

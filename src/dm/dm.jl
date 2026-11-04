@@ -45,7 +45,7 @@ stencil_width, stencil_type)`](@ref). A handle onto a DMStag that PETSc owns
 comes from [`narrow`](@ref).
 
 # External Links
-$(doc_external("DMSTAG/DMSTAG"))
+$(doc_external("DMStag/DMSTAG"))
 """
 mutable struct DMStag{PetscLib, N} <: AbstractPetscDM{PetscLib}
     ptr::CDM
@@ -63,7 +63,7 @@ nothing dispatches on it and `DMPlex(petsclib, comm)` leaves it unset until
 setup. Ask for it with `ndims(dm)`.
 
 # External Links
-$(doc_external("DMPLEX/DMPLEX"))
+$(doc_external("DMPlex/DMPLEX"))
 """
 mutable struct DMPlex{PetscLib} <: AbstractPetscDM{PetscLib}
     ptr::CDM
@@ -251,7 +251,9 @@ Defined for [`DMDA`](@ref) and [`DMStag`](@ref).
 function ghost_corners end
 
 """
-    setup!(dm::DM)
+    setup!(dm::AbstractPetscDM)
+
+Set up `dm` after its options are set, and return `dm`.
 
 # External Links
 $(doc_external("DM/DMSetUp"))
@@ -394,7 +396,7 @@ calls; the flavour is a type parameter, so the two are ordinary methods.
 
 # External Links
 $(doc_external("DMDA/DMDASetUniformCoordinates"))
-$(doc_external("DMSTAG/DMStagSetUniformCoordinatesProduct"))
+$(doc_external("DMStag/DMStagSetUniformCoordinatesProduct"))
 """
 function set_uniform_coordinates! end
 

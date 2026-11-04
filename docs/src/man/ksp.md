@@ -218,7 +218,7 @@ PETSc.set_post_setup!(p) do p
 end
 ```
 
-It runs again whenever the operator changes, and the options given to a `SNES` are applied again on every `solve!`, so write it so that a second run is harmless. With a Schur split, set the factorization type in code (`LibPETSc.PCFieldSplitSetType`) before `LibPETSc.PCFieldSplitSetSchurPre` with a user matrix: when the type comes only from the options, PETSc drops the user matrix without saying so. [`set_pre_solve!`](@ref PETSc.set_pre_solve!) is the matching hook on the `KSP`; it runs at the start of every solve, before the preconditioner is set up.
+It runs again whenever the operator changes, so write it so that a second run is harmless. With a Schur split, set the factorization type in code (`LibPETSc.PCFieldSplitSetType`) before `LibPETSc.PCFieldSplitSetSchurPre` with a user matrix: when the type comes only from the options, PETSc drops the user matrix without saying so. [`set_pre_solve!`](@ref PETSc.set_pre_solve!) is the matching hook on the `KSP`; it runs at the start of every solve, before the preconditioner is set up.
 
 A `LibPETSc.PC` is also what every low-level `PC*` function takes, so anything without a high-level verb is one call away: `LibPETSc.PCFieldSplitSetType(petsclib, p, LibPETSc.PC_COMPOSITE_SCHUR)`.
 

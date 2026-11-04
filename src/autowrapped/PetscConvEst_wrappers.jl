@@ -25,6 +25,7 @@ function PetscConvEstComputeError(petsclib::PetscLibType, ce::PetscConvEst, r::I
 end
 
 @for_petsc function PetscConvEstComputeError(petsclib::$UnionPetscLib, ce::PetscConvEst, r::$PetscInt, dm::AbstractPetscDM, u::AbstractPetscVec, errors::Vector{$PetscReal} )
+	u.ptr == C_NULL && throw_null_handle(u, "PetscConvEstComputeError", "u")
 
     @chk ccall(
                (:PetscConvEstComputeError, $petsc_library),
@@ -63,6 +64,7 @@ function PetscConvEstComputeInitialGuess(petsclib::PetscLibType, ce::PetscConvEs
 end
 
 @for_petsc function PetscConvEstComputeInitialGuess(petsclib::$UnionPetscLib, ce::PetscConvEst, r::$PetscInt, dm::AbstractPetscDM, u::AbstractPetscVec )
+	u.ptr == C_NULL && throw_null_handle(u, "PetscConvEstComputeInitialGuess", "u")
 
     @chk ccall(
                (:PetscConvEstComputeInitialGuess, $petsc_library),

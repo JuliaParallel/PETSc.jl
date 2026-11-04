@@ -1,6 +1,6 @@
-# override for PetscSFGetGraphLayout; C signature: PetscSFGetGraphLayout(PetscSF sf, PetscLayout* layout, PetscInt* nleaves, PetscInt* ilocal[], PetscInt* gremote[])
+# override for PetscSFGetGraphLayout; C signature: PetscSFGetGraphLayout(PetscSF sf, PetscLayout* layout, PetscInt* nleaves, const PetscInt* ilocal[], PetscInt* gremote[])
 """
-	nleaves::PetscInt,iloc::Vector{PetscInt},gremote::Vector{PetscInt} = PetscSFGetGraphLayout(petsclib::PetscLibType,sf::PetscSF, layout::PetscLayout) 
+	layout::PetscLayout,nleaves::PetscInt,ilocal::Union{Nothing, Vector{PetscInt}},gremote::Vector{PetscInt} = PetscSFGetGraphLayout(petsclib::PetscLibType,sf::PetscSF)
 Get the global indices and `PetscLayout` that describe this star forest
 
 Collective
@@ -9,10 +9,10 @@ Input Parameter:
 - `sf` - star forest
 
 Output Parameters:
-- `layout`  - `PetscLayout` defining the global space for roots
+- `layout`  - `PetscLayout` defining the global space for roots, new on every call: destroy it with `PetscLayoutDestroy`
 - `nleaves` - number of leaf vertices on the current process, each of these references a root on any process
-- `ilocal`  - locations of leaves in leafdata buffers, or `NULL` for contiguous storage
-- `gremote` - root vertices in global numbering corresponding to leaves in ilocal
+- `ilocal`  - locations of leaves in leafdata buffers, borrowed from `sf`, or `nothing` for contiguous storage
+- `gremote` - root vertices in global numbering corresponding to the leaves, a Julia copy
 
 Level: intermediate
 
@@ -21,24 +21,27 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/PetscSFGetGraphLayout"))
 """
-function PetscSFGetGraphLayout(petsclib::PetscLibType, sf::PetscSF, layout::PetscLayout) end
+function PetscSFGetGraphLayout(petsclib::PetscLibType, sf::PetscSF) end
 
-@for_petsc function PetscSFGetGraphLayout(petsclib::$UnionPetscLib, sf::PetscSF, layout::PetscLayout )
+@for_petsc function PetscSFGetGraphLayout(petsclib::$UnionPetscLib, sf::PetscSF )
+	layout_ = Ref{PetscLayout}(C_NULL)
 	nleaves_ = Ref{$PetscInt}()
-	iloc_ = Ref{Ptr{$PetscInt}}()
-	gremote_ = Ref{Ptr{$PetscInt}}()
+	ilocal_ = Ref{Ptr{$PetscInt}}(C_NULL)
+	gremote_ = Ref{Ptr{$PetscInt}}(C_NULL)
 
     @chk ccall(
                (:PetscSFGetGraphLayout, $petsc_library),
                PetscErrorCode,
                (PetscSF, Ptr{PetscLayout}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}, Ptr{Ptr{$PetscInt}}),
-               sf, layout, nleaves_, iloc_, gremote_,
+               sf, layout_, nleaves_, ilocal_, gremote_,
               )
 
 	nleaves = nleaves_[]
-	iloc = unsafe_wrap(Array, iloc_[], VecGetLocalSize(petsclib, x); own = false)
-	gremote = unsafe_wrap(Array, gremote_[], VecGetLocalSize(petsclib, x); own = false)
+	# ilocal == NULL means the leaves are contiguous [0, nleaves)
+	ilocal = ilocal_[] == C_NULL ? nothing : unsafe_wrap(Array, ilocal_[], max(nleaves, 0); own = false)
+	# PETSc allocates gremote for the caller: copy it and free PETSc's array
+	gremote = copy(unsafe_wrap(Array, gremote_[], max(nleaves, 0); own = false))
+	PetscFree(petsclib, gremote_[])
 
-	return nleaves,iloc,gremote
+	return layout_[],nleaves,ilocal,gremote
 end
-

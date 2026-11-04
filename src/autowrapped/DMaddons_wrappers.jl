@@ -457,6 +457,8 @@ function DMAdaptorMonitorError(petsclib::PetscLibType, adaptor::DMAdaptor, n::In
 end
 
 @for_petsc function DMAdaptorMonitorError(petsclib::$UnionPetscLib, adaptor::DMAdaptor, n::$PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::$PetscInt, enorms::Vector{$PetscReal}, error::AbstractPetscVec, vf::Vector{PetscViewerAndFormat} )
+	odm.ptr == C_NULL && throw_null_handle(odm, "DMAdaptorMonitorError", "odm")
+	adm.ptr == C_NULL && throw_null_handle(adm, "DMAdaptorMonitorError", "adm")
 
     @chk ccall(
                (:DMAdaptorMonitorError, $petsc_library),
@@ -500,6 +502,7 @@ function DMAdaptorMonitorErrorDraw(petsclib::PetscLibType, adaptor::DMAdaptor, n
 end
 
 @for_petsc function DMAdaptorMonitorErrorDraw(petsclib::$UnionPetscLib, adaptor::DMAdaptor, n::$PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::$PetscInt, enorms::Vector{$PetscReal}, error::AbstractPetscVec, vf::Vector{PetscViewerAndFormat} )
+	error.ptr == C_NULL && throw_null_handle(error, "DMAdaptorMonitorErrorDraw", "error")
 
     @chk ccall(
                (:DMAdaptorMonitorErrorDraw, $petsc_library),
@@ -813,6 +816,8 @@ function DMAdaptorMonitorSize(petsclib::PetscLibType, adaptor::DMAdaptor, n::Int
 end
 
 @for_petsc function DMAdaptorMonitorSize(petsclib::$UnionPetscLib, adaptor::DMAdaptor, n::$PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::$PetscInt, enorms::Vector{$PetscReal}, error::AbstractPetscVec, vf::Vector{PetscViewerAndFormat} )
+	odm.ptr == C_NULL && throw_null_handle(odm, "DMAdaptorMonitorSize", "odm")
+	adm.ptr == C_NULL && throw_null_handle(adm, "DMAdaptorMonitorSize", "adm")
 
     @chk ccall(
                (:DMAdaptorMonitorSize, $petsc_library),
@@ -1118,6 +1123,7 @@ function DMAdaptorSetSolver(petsclib::PetscLibType, adaptor::DMAdaptor, snes::Ab
 end
 
 @for_petsc function DMAdaptorSetSolver(petsclib::$UnionPetscLib, adaptor::DMAdaptor, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "DMAdaptorSetSolver", "snes")
 
     @chk ccall(
                (:DMAdaptorSetSolver, $petsc_library),
@@ -1302,6 +1308,7 @@ function DMFieldCreateDA(petsclib::PetscLibType, dm::AbstractPetscDM, nc::Intege
 end
 
 @for_petsc function DMFieldCreateDA(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nc::$PetscInt, cornerValues::Vector{$PetscScalar} )
+	dm.ptr == C_NULL && throw_null_handle(dm, "DMFieldCreateDA", "dm")
 	field_ = Ref{DMField}()
 
     @chk ccall(
@@ -1342,6 +1349,7 @@ function DMFieldCreateDS(petsclib::PetscLibType, dm::AbstractPetscDM, fieldNum::
 end
 
 @for_petsc function DMFieldCreateDS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fieldNum::$PetscInt, vec::AbstractPetscVec )
+	dm.ptr == C_NULL && throw_null_handle(dm, "DMFieldCreateDS", "dm")
 	field_ = Ref{DMField}()
 
     @chk ccall(
@@ -1384,6 +1392,7 @@ function DMFieldCreateDSWithDG(petsclib::PetscLibType, dm::AbstractPetscDM, dmDG
 end
 
 @for_petsc function DMFieldCreateDSWithDG(petsclib::$UnionPetscLib, dm::AbstractPetscDM, dmDG::AbstractPetscDM, fieldNum::$PetscInt, vec::AbstractPetscVec, vecDG::AbstractPetscVec )
+	dm.ptr == C_NULL && throw_null_handle(dm, "DMFieldCreateDSWithDG", "dm")
 	field_ = Ref{DMField}()
 
     @chk ccall(
@@ -1423,6 +1432,7 @@ function DMFieldCreateDefaultFaceQuadrature(petsclib::PetscLibType, field::DMFie
 end
 
 @for_petsc function DMFieldCreateDefaultFaceQuadrature(petsclib::$UnionPetscLib, field::DMField, pointIS::AbstractIS )
+	pointIS.ptr == C_NULL && throw_null_handle(pointIS, "DMFieldCreateDefaultFaceQuadrature", "pointIS")
 	quad_ = Ref{PetscQuadrature}()
 
     @chk ccall(
@@ -1463,6 +1473,7 @@ function DMFieldCreateDefaultQuadrature(petsclib::PetscLibType, field::DMField, 
 end
 
 @for_petsc function DMFieldCreateDefaultQuadrature(petsclib::$UnionPetscLib, field::DMField, pointIS::AbstractIS )
+	pointIS.ptr == C_NULL && throw_null_handle(pointIS, "DMFieldCreateDefaultQuadrature", "pointIS")
 	quad_ = Ref{PetscQuadrature}()
 
     @chk ccall(
@@ -1504,6 +1515,7 @@ function DMFieldCreateFEGeom(petsclib::PetscLibType, field::DMField, pointIS::Ab
 end
 
 @for_petsc function DMFieldCreateFEGeom(petsclib::$UnionPetscLib, field::DMField, pointIS::AbstractIS, quad::PetscQuadrature, mode::PetscFEGeomMode )
+	pointIS.ptr == C_NULL && throw_null_handle(pointIS, "DMFieldCreateFEGeom", "pointIS")
 	geom_ = Ref{Ptr{PetscFEGeom}}()
 
     @chk ccall(
@@ -1545,6 +1557,7 @@ function DMFieldCreateShell(petsclib::PetscLibType, dm::AbstractPetscDM, numComp
 end
 
 @for_petsc function DMFieldCreateShell(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numComponents::$PetscInt, continuity::DMFieldContinuity, ctx::Ptr{Cvoid} )
+	dm.ptr == C_NULL && throw_null_handle(dm, "DMFieldCreateShell", "dm")
 	field_ = Ref{DMField}()
 
     @chk ccall(
@@ -1631,6 +1644,7 @@ function DMFieldEvaluate(petsclib::PetscLibType, field::DMField, points::Abstrac
 end
 
 @for_petsc function DMFieldEvaluate(petsclib::$UnionPetscLib, field::DMField, points::AbstractPetscVec, datatype::PetscDataType )
+	points.ptr == C_NULL && throw_null_handle(points, "DMFieldEvaluate", "points")
 	B_ = Ref{Ptr{Cvoid}}()
 	D_ = Ref{Ptr{Cvoid}}()
 	H_ = Ref{Ptr{Cvoid}}()
@@ -1688,6 +1702,7 @@ function DMFieldEvaluateFE(petsclib::PetscLibType, field::DMField, cellIS::Abstr
 end
 
 @for_petsc function DMFieldEvaluateFE(petsclib::$UnionPetscLib, field::DMField, cellIS::AbstractIS, points::PetscQuadrature, datatype::PetscDataType )
+	cellIS.ptr == C_NULL && throw_null_handle(cellIS, "DMFieldEvaluateFE", "cellIS")
 	B_ = Ref{Ptr{Cvoid}}()
 	D_ = Ref{Ptr{Cvoid}}()
 	H_ = Ref{Ptr{Cvoid}}()
@@ -1742,6 +1757,7 @@ function DMFieldEvaluateFV(petsclib::PetscLibType, field::DMField, cellIS::Abstr
 end
 
 @for_petsc function DMFieldEvaluateFV(petsclib::$UnionPetscLib, field::DMField, cellIS::AbstractIS, datatype::PetscDataType )
+	cellIS.ptr == C_NULL && throw_null_handle(cellIS, "DMFieldEvaluateFV", "cellIS")
 	B_ = Ref{Ptr{Cvoid}}()
 	D_ = Ref{Ptr{Cvoid}}()
 	H_ = Ref{Ptr{Cvoid}}()
@@ -1854,6 +1870,7 @@ function DMFieldGetDegree(petsclib::PetscLibType, field::DMField, cellIS::Abstra
 end
 
 @for_petsc function DMFieldGetDegree(petsclib::$UnionPetscLib, field::DMField, cellIS::AbstractIS )
+	cellIS.ptr == C_NULL && throw_null_handle(cellIS, "DMFieldGetDegree", "cellIS")
 	minDegree_ = Ref{$PetscInt}()
 	maxDegree_ = Ref{$PetscInt}()
 
@@ -2070,6 +2087,7 @@ function DMFieldShellEvaluateFEDefault(petsclib::PetscLibType, field::DMField, p
 end
 
 @for_petsc function DMFieldShellEvaluateFEDefault(petsclib::$UnionPetscLib, field::DMField, pointIS::AbstractIS, quad::PetscQuadrature, type::PetscDataType )
+	pointIS.ptr == C_NULL && throw_null_handle(pointIS, "DMFieldShellEvaluateFEDefault", "pointIS")
 	B_ = Ref{Ptr{Cvoid}}()
 	D_ = Ref{Ptr{Cvoid}}()
 	H_ = Ref{Ptr{Cvoid}}()
@@ -2116,6 +2134,7 @@ function DMFieldShellEvaluateFVDefault(petsclib::PetscLibType, field::DMField, p
 end
 
 @for_petsc function DMFieldShellEvaluateFVDefault(petsclib::$UnionPetscLib, field::DMField, pointIS::AbstractIS, type::PetscDataType )
+	pointIS.ptr == C_NULL && throw_null_handle(pointIS, "DMFieldShellEvaluateFVDefault", "pointIS")
 	B_ = Ref{Ptr{Cvoid}}()
 	D_ = Ref{Ptr{Cvoid}}()
 	H_ = Ref{Ptr{Cvoid}}()
@@ -2472,6 +2491,7 @@ function DMLabelAddStrata(petsclib::PetscLibType, label::AbstractDMLabel, numStr
 end
 
 @for_petsc function DMLabelAddStrata(petsclib::$UnionPetscLib, label::AbstractDMLabel, numStrata::$PetscInt, stratumValues::Vector{$PetscInt} )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelAddStrata", "label")
 
     @chk ccall(
                (:DMLabelAddStrata, $petsc_library),
@@ -2506,6 +2526,8 @@ function DMLabelAddStrataIS(petsclib::PetscLibType, label::AbstractDMLabel, valu
 end
 
 @for_petsc function DMLabelAddStrataIS(petsclib::$UnionPetscLib, label::AbstractDMLabel, valueIS::AbstractIS )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelAddStrataIS", "label")
+	valueIS.ptr == C_NULL && throw_null_handle(valueIS, "DMLabelAddStrataIS", "valueIS")
 
     @chk ccall(
                (:DMLabelAddStrataIS, $petsc_library),
@@ -2538,6 +2560,7 @@ function DMLabelAddStratum(petsclib::PetscLibType, label::AbstractDMLabel, value
 end
 
 @for_petsc function DMLabelAddStratum(petsclib::$UnionPetscLib, label::AbstractDMLabel, value::$PetscInt )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelAddStratum", "label")
 
     @chk ccall(
                (:DMLabelAddStratum, $petsc_library),
@@ -2572,6 +2595,7 @@ function DMLabelClearStratum(petsclib::PetscLibType, label::AbstractDMLabel, val
 end
 
 @for_petsc function DMLabelClearStratum(petsclib::$UnionPetscLib, label::AbstractDMLabel, value::$PetscInt )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelClearStratum", "label")
 
     @chk ccall(
                (:DMLabelClearStratum, $petsc_library),
@@ -2607,6 +2631,7 @@ function DMLabelClearValue(petsclib::PetscLibType, label::AbstractDMLabel, point
 end
 
 @for_petsc function DMLabelClearValue(petsclib::$UnionPetscLib, label::AbstractDMLabel, point::$PetscInt, value::$PetscInt )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelClearValue", "label")
 
     @chk ccall(
                (:DMLabelClearValue, $petsc_library),
@@ -2646,6 +2671,8 @@ function DMLabelCompare(petsclib::PetscLibType, comm::MPI_Comm, l0::AbstractDMLa
 end
 
 @for_petsc function DMLabelCompare(petsclib::$UnionPetscLib, comm::MPI_Comm, l0::AbstractDMLabel, l1::AbstractDMLabel )
+	l0.ptr == C_NULL && throw_null_handle(l0, "DMLabelCompare", "l0")
+	l1.ptr == C_NULL && throw_null_handle(l1, "DMLabelCompare", "l1")
 	equal_ = Ref{PetscBool}()
 	message_ = Ref{Ptr{Cchar}}()
 
@@ -2683,6 +2710,7 @@ function DMLabelComputeIndex(petsclib::PetscLibType, label::AbstractDMLabel)
 end
 
 @for_petsc function DMLabelComputeIndex(petsclib::$UnionPetscLib, label::AbstractDMLabel )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelComputeIndex", "label")
 
     @chk ccall(
                (:DMLabelComputeIndex, $petsc_library),
@@ -2720,6 +2748,7 @@ function DMLabelConvertToSection(petsclib::PetscLibType, label::AbstractDMLabel)
 end
 
 @for_petsc function DMLabelConvertToSection(petsclib::$UnionPetscLib, label::AbstractDMLabel )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelConvertToSection", "label")
 	section_ = Ref{PetscSection}()
 	is_ = Ref{CIS}()
 
@@ -2798,6 +2827,7 @@ function DMLabelCreateIndex(petsclib::PetscLibType, label::AbstractDMLabel, pSta
 end
 
 @for_petsc function DMLabelCreateIndex(petsclib::$UnionPetscLib, label::AbstractDMLabel, pStart::$PetscInt, pEnd::$PetscInt )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelCreateIndex", "label")
 
     @chk ccall(
                (:DMLabelCreateIndex, $petsc_library),
@@ -2866,6 +2896,7 @@ function DMLabelDestroyIndex(petsclib::PetscLibType, label::AbstractDMLabel)
 end
 
 @for_petsc function DMLabelDestroyIndex(petsclib::$UnionPetscLib, label::AbstractDMLabel )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelDestroyIndex", "label")
 
     @chk ccall(
                (:DMLabelDestroyIndex, $petsc_library),
@@ -2941,6 +2972,7 @@ function DMLabelDuplicate(petsclib::PetscLibType, label::AbstractDMLabel)
 end
 
 @for_petsc function DMLabelDuplicate(petsclib::$UnionPetscLib, label::AbstractDMLabel )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelDuplicate", "label")
 	labelnew_ = Ref{CDMLabel}()
 
     @chk ccall(
@@ -3122,6 +3154,7 @@ function DMLabelFilter(petsclib::PetscLibType, label::AbstractDMLabel, start::In
 end
 
 @for_petsc function DMLabelFilter(petsclib::$UnionPetscLib, label::AbstractDMLabel, start::$PetscInt, end_::$PetscInt )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelFilter", "label")
 
     @chk ccall(
                (:DMLabelFilter, $petsc_library),
@@ -3159,6 +3192,7 @@ function DMLabelGather(petsclib::PetscLibType, label::AbstractDMLabel, sf::Petsc
 end
 
 @for_petsc function DMLabelGather(petsclib::$UnionPetscLib, label::AbstractDMLabel, sf::PetscSF )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelGather", "label")
 	labelNew_ = Ref{CDMLabel}()
 
     @chk ccall(
@@ -3198,6 +3232,7 @@ function DMLabelGetBounds(petsclib::PetscLibType, label::AbstractDMLabel)
 end
 
 @for_petsc function DMLabelGetBounds(petsclib::$UnionPetscLib, label::AbstractDMLabel )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelGetBounds", "label")
 	pStart_ = Ref{$PetscInt}()
 	pEnd_ = Ref{$PetscInt}()
 
@@ -3239,6 +3274,7 @@ function DMLabelGetDefaultValue(petsclib::PetscLibType, label::AbstractDMLabel)
 end
 
 @for_petsc function DMLabelGetDefaultValue(petsclib::$UnionPetscLib, label::AbstractDMLabel )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelGetDefaultValue", "label")
 	defaultValue_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3277,6 +3313,7 @@ function DMLabelGetNonEmptyStratumValuesIS(petsclib::PetscLibType, label::Abstra
 end
 
 @for_petsc function DMLabelGetNonEmptyStratumValuesIS(petsclib::$UnionPetscLib, label::AbstractDMLabel )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelGetNonEmptyStratumValuesIS", "label")
 	values_ = Ref{CIS}()
 
     @chk ccall(
@@ -3315,6 +3352,7 @@ function DMLabelGetNumValues(petsclib::PetscLibType, label::AbstractDMLabel)
 end
 
 @for_petsc function DMLabelGetNumValues(petsclib::$UnionPetscLib, label::AbstractDMLabel )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelGetNumValues", "label")
 	numValues_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3355,6 +3393,7 @@ function DMLabelGetStratumBounds(petsclib::PetscLibType, label::AbstractDMLabel,
 end
 
 @for_petsc function DMLabelGetStratumBounds(petsclib::$UnionPetscLib, label::AbstractDMLabel, value::$PetscInt )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelGetStratumBounds", "label")
 	start_ = Ref{$PetscInt}()
 	end__ = Ref{$PetscInt}()
 
@@ -3396,6 +3435,7 @@ function DMLabelGetStratumIS(petsclib::PetscLibType, label::AbstractDMLabel, val
 end
 
 @for_petsc function DMLabelGetStratumIS(petsclib::$UnionPetscLib, label::AbstractDMLabel, value::$PetscInt )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelGetStratumIS", "label")
 	points_ = Ref{CIS}()
 
     @chk ccall(
@@ -3436,6 +3476,7 @@ function DMLabelGetStratumPointIndex(petsclib::PetscLibType, label::AbstractDMLa
 end
 
 @for_petsc function DMLabelGetStratumPointIndex(petsclib::$UnionPetscLib, label::AbstractDMLabel, value::$PetscInt, p::$PetscInt )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelGetStratumPointIndex", "label")
 	index_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3475,6 +3516,7 @@ function DMLabelGetStratumSize(petsclib::PetscLibType, label::AbstractDMLabel, v
 end
 
 @for_petsc function DMLabelGetStratumSize(petsclib::$UnionPetscLib, label::AbstractDMLabel, value::$PetscInt )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelGetStratumSize", "label")
 	size_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3513,6 +3555,7 @@ function DMLabelGetType(petsclib::PetscLibType, label::AbstractDMLabel)
 end
 
 @for_petsc function DMLabelGetType(petsclib::$UnionPetscLib, label::AbstractDMLabel )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelGetType", "label")
 	type_ = Ref{DMLabelType}()
 
     @chk ccall(
@@ -3553,6 +3596,7 @@ function DMLabelGetValue(petsclib::PetscLibType, label::AbstractDMLabel, point::
 end
 
 @for_petsc function DMLabelGetValue(petsclib::$UnionPetscLib, label::AbstractDMLabel, point::$PetscInt )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelGetValue", "label")
 	value_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3592,6 +3636,7 @@ function DMLabelGetValueBounds(petsclib::PetscLibType, label::AbstractDMLabel)
 end
 
 @for_petsc function DMLabelGetValueBounds(petsclib::$UnionPetscLib, label::AbstractDMLabel )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelGetValueBounds", "label")
 	minValue_ = Ref{$PetscInt}()
 	maxValue_ = Ref{$PetscInt}()
 
@@ -3632,6 +3677,7 @@ function DMLabelGetValueIS(petsclib::PetscLibType, label::AbstractDMLabel)
 end
 
 @for_petsc function DMLabelGetValueIS(petsclib::$UnionPetscLib, label::AbstractDMLabel )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelGetValueIS", "label")
 	values_ = Ref{CIS}()
 
     @chk ccall(
@@ -3711,6 +3757,7 @@ function DMLabelGetValueIndex(petsclib::PetscLibType, label::AbstractDMLabel, va
 end
 
 @for_petsc function DMLabelGetValueIndex(petsclib::$UnionPetscLib, label::AbstractDMLabel, value::$PetscInt )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelGetValueIndex", "label")
 	index_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3750,6 +3797,7 @@ function DMLabelHasPoint(petsclib::PetscLibType, label::AbstractDMLabel, point::
 end
 
 @for_petsc function DMLabelHasPoint(petsclib::$UnionPetscLib, label::AbstractDMLabel, point::$PetscInt )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelHasPoint", "label")
 	contains_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3789,6 +3837,7 @@ function DMLabelHasStratum(petsclib::PetscLibType, label::AbstractDMLabel, value
 end
 
 @for_petsc function DMLabelHasStratum(petsclib::$UnionPetscLib, label::AbstractDMLabel, value::$PetscInt )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelHasStratum", "label")
 	exists_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3828,6 +3877,7 @@ function DMLabelHasValue(petsclib::PetscLibType, label::AbstractDMLabel, value::
 end
 
 @for_petsc function DMLabelHasValue(petsclib::$UnionPetscLib, label::AbstractDMLabel, value::$PetscInt )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelHasValue", "label")
 	contains_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3865,6 +3915,8 @@ function DMLabelInsertIS(petsclib::PetscLibType, label::AbstractDMLabel, is::Abs
 end
 
 @for_petsc function DMLabelInsertIS(petsclib::$UnionPetscLib, label::AbstractDMLabel, is::AbstractIS, value::$PetscInt )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelInsertIS", "label")
+	is.ptr == C_NULL && throw_null_handle(is, "DMLabelInsertIS", "is")
 
     @chk ccall(
                (:DMLabelInsertIS, $petsc_library),
@@ -3902,6 +3954,8 @@ function DMLabelPermute(petsclib::PetscLibType, label::AbstractDMLabel, permutat
 end
 
 @for_petsc function DMLabelPermute(petsclib::$UnionPetscLib, label::AbstractDMLabel, permutation::AbstractIS )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelPermute", "label")
+	permutation.ptr == C_NULL && throw_null_handle(permutation, "DMLabelPermute", "permutation")
 	labelNew_ = Ref{CDMLabel}()
 
     @chk ccall(
@@ -3939,6 +3993,8 @@ function DMLabelPermuteValues(petsclib::PetscLibType, label::AbstractDMLabel, pe
 end
 
 @for_petsc function DMLabelPermuteValues(petsclib::$UnionPetscLib, label::AbstractDMLabel, permutation::AbstractIS )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelPermuteValues", "label")
+	permutation.ptr == C_NULL && throw_null_handle(permutation, "DMLabelPermuteValues", "permutation")
 
     @chk ccall(
                (:DMLabelPermuteValues, $petsc_library),
@@ -4170,6 +4226,7 @@ function DMLabelReset(petsclib::PetscLibType, label::AbstractDMLabel)
 end
 
 @for_petsc function DMLabelReset(petsclib::$UnionPetscLib, label::AbstractDMLabel )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelReset", "label")
 
     @chk ccall(
                (:DMLabelReset, $petsc_library),
@@ -4205,6 +4262,8 @@ function DMLabelRewriteValues(petsclib::PetscLibType, label::AbstractDMLabel, pe
 end
 
 @for_petsc function DMLabelRewriteValues(petsclib::$UnionPetscLib, label::AbstractDMLabel, permutation::AbstractIS )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelRewriteValues", "label")
+	permutation.ptr == C_NULL && throw_null_handle(permutation, "DMLabelRewriteValues", "permutation")
 
     @chk ccall(
                (:DMLabelRewriteValues, $petsc_library),
@@ -4242,6 +4301,7 @@ function DMLabelSetDefaultValue(petsclib::PetscLibType, label::AbstractDMLabel, 
 end
 
 @for_petsc function DMLabelSetDefaultValue(petsclib::$UnionPetscLib, label::AbstractDMLabel, defaultValue::$PetscInt )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelSetDefaultValue", "label")
 
     @chk ccall(
                (:DMLabelSetDefaultValue, $petsc_library),
@@ -4278,6 +4338,7 @@ function DMLabelSetStratumBounds(petsclib::PetscLibType, label::AbstractDMLabel,
 end
 
 @for_petsc function DMLabelSetStratumBounds(petsclib::$UnionPetscLib, label::AbstractDMLabel, value::$PetscInt, pStart::$PetscInt, pEnd::$PetscInt )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelSetStratumBounds", "label")
 
     @chk ccall(
                (:DMLabelSetStratumBounds, $petsc_library),
@@ -4313,6 +4374,8 @@ function DMLabelSetStratumIS(petsclib::PetscLibType, label::AbstractDMLabel, val
 end
 
 @for_petsc function DMLabelSetStratumIS(petsclib::$UnionPetscLib, label::AbstractDMLabel, value::$PetscInt, is::AbstractIS )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelSetStratumIS", "label")
+	is.ptr == C_NULL && throw_null_handle(is, "DMLabelSetStratumIS", "is")
 
     @chk ccall(
                (:DMLabelSetStratumIS, $petsc_library),
@@ -4350,6 +4413,7 @@ function DMLabelSetType(petsclib::PetscLibType, label::AbstractDMLabel, method::
 end
 
 @for_petsc function DMLabelSetType(petsclib::$UnionPetscLib, label::AbstractDMLabel, method::String )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelSetType", "label")
 
     @chk ccall(
                (:DMLabelSetType, $petsc_library),
@@ -4383,6 +4447,7 @@ function DMLabelSetUp(petsclib::PetscLibType, label::AbstractDMLabel)
 end
 
 @for_petsc function DMLabelSetUp(petsclib::$UnionPetscLib, label::AbstractDMLabel )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelSetUp", "label")
 
     @chk ccall(
                (:DMLabelSetUp, $petsc_library),
@@ -4419,6 +4484,7 @@ function DMLabelSetValue(petsclib::PetscLibType, label::AbstractDMLabel, point::
 end
 
 @for_petsc function DMLabelSetValue(petsclib::$UnionPetscLib, label::AbstractDMLabel, point::$PetscInt, value::$PetscInt )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelSetValue", "label")
 
     @chk ccall(
                (:DMLabelSetValue, $petsc_library),
@@ -4457,6 +4523,7 @@ function DMLabelStratumHasPoint(petsclib::PetscLibType, label::AbstractDMLabel, 
 end
 
 @for_petsc function DMLabelStratumHasPoint(petsclib::$UnionPetscLib, label::AbstractDMLabel, value::$PetscInt, point::$PetscInt )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelStratumHasPoint", "label")
 	contains_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -4493,6 +4560,7 @@ function DMLabelView(petsclib::PetscLibType, label::AbstractDMLabel, viewer::Pet
 end
 
 @for_petsc function DMLabelView(petsclib::$UnionPetscLib, label::AbstractDMLabel, viewer::PetscViewer )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelView", "label")
 
     @chk ccall(
                (:DMLabelView, $petsc_library),
@@ -4531,6 +4599,7 @@ function DMLabelViewFromOptions(petsclib::PetscLibType, label::AbstractDMLabel, 
 end
 
 @for_petsc function DMLabelViewFromOptions(petsclib::$UnionPetscLib, label::AbstractDMLabel, obj, name::String )
+	label.ptr == C_NULL && throw_null_handle(label, "DMLabelViewFromOptions", "label")
 
     @chk ccall(
                (:DMLabelViewFromOptions, $petsc_library),
@@ -4713,6 +4782,7 @@ function DMNetworkMonitorView(petsclib::PetscLibType, monitor::DMNetworkMonitor,
 end
 
 @for_petsc function DMNetworkMonitorView(petsclib::$UnionPetscLib, monitor::DMNetworkMonitor, x::AbstractPetscVec )
+	x.ptr == C_NULL && throw_null_handle(x, "DMNetworkMonitorView", "x")
 
     @chk ccall(
                (:DMNetworkMonitorView, $petsc_library),
@@ -5044,6 +5114,7 @@ function DMPlexTransformAdaptLabel(petsclib::PetscLibType, dm::AbstractPetscDM, 
 end
 
 @for_petsc function DMPlexTransformAdaptLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, metric::AbstractPetscVec, adaptLabel::AbstractDMLabel, rgLabel::AbstractDMLabel )
+	dm.ptr == C_NULL && throw_null_handle(dm, "DMPlexTransformAdaptLabel", "dm")
 	rdm_ = Ref{CDM}()
 
     @chk ccall(
@@ -5088,6 +5159,7 @@ function DMPlexTransformApply(petsclib::PetscLibType, tr::DMPlexTransform, dm::A
 end
 
 @for_petsc function DMPlexTransformApply(petsclib::$UnionPetscLib, tr::DMPlexTransform, dm::AbstractPetscDM )
+	dm.ptr == C_NULL && throw_null_handle(dm, "DMPlexTransformApply", "dm")
 	trdm_ = Ref{CDM}()
 
     @chk ccall(
@@ -6983,6 +7055,7 @@ function DMPlexTransformSetDM(petsclib::PetscLibType, tr::DMPlexTransform, dm::A
 end
 
 @for_petsc function DMPlexTransformSetDM(petsclib::$UnionPetscLib, tr::DMPlexTransform, dm::AbstractPetscDM )
+	dm.ptr == C_NULL && throw_null_handle(dm, "DMPlexTransformSetDM", "dm")
 
     @chk ccall(
                (:DMPlexTransformSetDM, $petsc_library),
@@ -7266,6 +7339,7 @@ function DMSwarmCellDMCreate(petsclib::PetscLibType, dm::AbstractPetscDM, Nf::In
 end
 
 @for_petsc function DMSwarmCellDMCreate(petsclib::$UnionPetscLib, dm::AbstractPetscDM, Nf::$PetscInt, dmFields::String, Nfc::$PetscInt, coordFields::String )
+	dm.ptr == C_NULL && throw_null_handle(dm, "DMSwarmCellDMCreate", "dm")
 	dmFields_ = Ref{Ptr{Cchar}}(dmFields isa Ptr ? dmFields : pointer(dmFields))
 	coordFields_ = Ref{Ptr{Cchar}}(coordFields isa Ptr ? coordFields : pointer(coordFields))
 	celldm_ = Ref{DMSwarmCellDM}()
@@ -7341,6 +7415,7 @@ function DMSwarmCellDMGetBlockSize(petsclib::PetscLibType, celldm::DMSwarmCellDM
 end
 
 @for_petsc function DMSwarmCellDMGetBlockSize(petsclib::$UnionPetscLib, celldm::DMSwarmCellDM, sw::AbstractPetscDM )
+	sw.ptr == C_NULL && throw_null_handle(sw, "DMSwarmCellDMGetBlockSize", "sw")
 	bs_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -7857,6 +7932,7 @@ function DMSwarmSortGetAccess(petsclib::PetscLibType, sw::AbstractPetscDM)
 end
 
 @for_petsc function DMSwarmSortGetAccess(petsclib::$UnionPetscLib, sw::AbstractPetscDM )
+	sw.ptr == C_NULL && throw_null_handle(sw, "DMSwarmSortGetAccess", "sw")
 
     @chk ccall(
                (:DMSwarmSortGetAccess, $petsc_library),
@@ -7893,6 +7969,7 @@ function DMSwarmSortGetIsValid(petsclib::PetscLibType, sw::AbstractPetscDM)
 end
 
 @for_petsc function DMSwarmSortGetIsValid(petsclib::$UnionPetscLib, sw::AbstractPetscDM )
+	sw.ptr == C_NULL && throw_null_handle(sw, "DMSwarmSortGetIsValid", "sw")
 	isvalid_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -7932,6 +8009,7 @@ function DMSwarmSortGetNumberOfPointsPerCell(petsclib::PetscLibType, sw::Abstrac
 end
 
 @for_petsc function DMSwarmSortGetNumberOfPointsPerCell(petsclib::$UnionPetscLib, sw::AbstractPetscDM, cell::$PetscInt )
+	sw.ptr == C_NULL && throw_null_handle(sw, "DMSwarmSortGetNumberOfPointsPerCell", "sw")
 	npoints_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -7970,6 +8048,7 @@ function DMSwarmSortGetPointsPerCell(petsclib::PetscLibType, sw::AbstractPetscDM
 end
 
 @for_petsc function DMSwarmSortGetPointsPerCell(petsclib::$UnionPetscLib, sw::AbstractPetscDM, cell::$PetscInt, pidlist::$PetscInt )
+	sw.ptr == C_NULL && throw_null_handle(sw, "DMSwarmSortGetPointsPerCell", "sw")
 	npoints_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -8009,6 +8088,7 @@ function DMSwarmSortGetSizes(petsclib::PetscLibType, sw::AbstractPetscDM)
 end
 
 @for_petsc function DMSwarmSortGetSizes(petsclib::$UnionPetscLib, sw::AbstractPetscDM )
+	sw.ptr == C_NULL && throw_null_handle(sw, "DMSwarmSortGetSizes", "sw")
 	ncells_ = Ref{$PetscInt}()
 	npoints_ = Ref{$PetscInt}()
 
@@ -8046,6 +8126,7 @@ function DMSwarmSortRestoreAccess(petsclib::PetscLibType, sw::AbstractPetscDM)
 end
 
 @for_petsc function DMSwarmSortRestoreAccess(petsclib::$UnionPetscLib, sw::AbstractPetscDM )
+	sw.ptr == C_NULL && throw_null_handle(sw, "DMSwarmSortRestoreAccess", "sw")
 
     @chk ccall(
                (:DMSwarmSortRestoreAccess, $petsc_library),

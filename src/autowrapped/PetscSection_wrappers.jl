@@ -476,6 +476,7 @@ function PetscSectionCreateGlobalSectionLabel(petsclib::PetscLibType, s::PetscSe
 end
 
 @for_petsc function PetscSectionCreateGlobalSectionLabel(petsclib::$UnionPetscLib, s::PetscSection, sf::PetscSF, includeConstraints::PetscBool, label::AbstractDMLabel, labelValue::$PetscInt )
+	label.ptr == C_NULL && throw_null_handle(label, "PetscSectionCreateGlobalSectionLabel", "label")
 	gsection_ = Ref{PetscSection}()
 
     @chk ccall(
@@ -2134,6 +2135,7 @@ function PetscSectionPermute(petsclib::PetscLibType, section::PetscSection, perm
 end
 
 @for_petsc function PetscSectionPermute(petsclib::$UnionPetscLib, section::PetscSection, permutation::AbstractIS )
+	permutation.ptr == C_NULL && throw_null_handle(permutation, "PetscSectionPermute", "permutation")
 	sectionNew_ = Ref{PetscSection}()
 
     @chk ccall(
@@ -2386,6 +2388,7 @@ function PetscSectionSetClosureIndex(petsclib::PetscLibType, section::PetscSecti
 end
 
 @for_petsc function PetscSectionSetClosureIndex(petsclib::$UnionPetscLib, section::PetscSection, obj, clSection::PetscSection, clPoints::AbstractIS )
+	clPoints.ptr == C_NULL && throw_null_handle(clPoints, "PetscSectionSetClosureIndex", "clPoints")
 
     @chk ccall(
                (:PetscSectionSetClosureIndex, $petsc_library),
@@ -3643,6 +3646,7 @@ function PetscSectionVecNorm(petsclib::PetscLibType, s::PetscSection, gs::PetscS
 end
 
 @for_petsc function PetscSectionVecNorm(petsclib::$UnionPetscLib, s::PetscSection, gs::PetscSection, x::AbstractPetscVec, type::NormType, val::Vector{$PetscReal} )
+	x.ptr == C_NULL && throw_null_handle(x, "PetscSectionVecNorm", "x")
 
     @chk ccall(
                (:PetscSectionVecNorm, $petsc_library),
@@ -3678,6 +3682,7 @@ function PetscSectionVecView(petsclib::PetscLibType, s::PetscSection, v::Abstrac
 end
 
 @for_petsc function PetscSectionVecView(petsclib::$UnionPetscLib, s::PetscSection, v::AbstractPetscVec, viewer::PetscViewer )
+	v.ptr == C_NULL && throw_null_handle(v, "PetscSectionVecView", "v")
 
     @chk ccall(
                (:PetscSectionVecView, $petsc_library),

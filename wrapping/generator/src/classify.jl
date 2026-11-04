@@ -262,6 +262,9 @@ function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
     end
     if get(ov, "nullable", false) && !isoutput
         typename = startswith(typename, "Union{") ? typename : "Union{Ptr, $typename}"
+    elseif get(ov, "required", false) && !isoutput && !isarray && stars == 0 && is_handle(r, typename) && isempty(init)
+        # PETSc checks this argument for NULL only in a debug build; an optimized one crashes
+        init = "$name.ptr == C_NULL && throw_null_handle($name, \"$(fn.name)\", \"$name\")"
     end
     FArg(name, name_ccall, typename, ccall_str, isoutput, init, extract, isarray, stars, a.isfunction)
 end

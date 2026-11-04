@@ -24,6 +24,7 @@ function ISAllGather(petsclib::PetscLibType, is::AbstractIS)
 end
 
 @for_petsc function ISAllGather(petsclib::$UnionPetscLib, is::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISAllGather", "is")
 	isout_ = Ref{CIS}()
 
     @chk ccall(
@@ -259,6 +260,7 @@ function ISBlockSetIndices(petsclib::PetscLibType, is::AbstractIS, bs::Integer, 
 end
 
 @for_petsc function ISBlockSetIndices(petsclib::$UnionPetscLib, is::AbstractIS, bs::$PetscInt, n::$PetscInt, idx::Vector{$PetscInt}, mode::PetscCopyMode )
+	is.ptr == C_NULL && throw_null_handle(is, "ISBlockSetIndices", "is")
 
     @chk ccall(
                (:ISBlockSetIndices, $petsc_library),
@@ -297,6 +299,7 @@ function ISBuildTwoSided(petsclib::PetscLibType, ito::AbstractIS, toindx::Abstra
 end
 
 @for_petsc function ISBuildTwoSided(petsclib::$UnionPetscLib, ito::AbstractIS, toindx::AbstractIS )
+	ito.ptr == C_NULL && throw_null_handle(ito, "ISBuildTwoSided", "ito")
 	rows_ = Ref{CIS}()
 
     @chk ccall(
@@ -333,6 +336,7 @@ function ISClearInfoCache(petsclib::PetscLibType, is::AbstractIS, clear_permanen
 end
 
 @for_petsc function ISClearInfoCache(petsclib::$UnionPetscLib, is::AbstractIS, clear_permanent_local::PetscBool )
+	is.ptr == C_NULL && throw_null_handle(is, "ISClearInfoCache", "is")
 
     @chk ccall(
                (:ISClearInfoCache, $petsc_library),
@@ -372,6 +376,7 @@ function ISComplement(petsclib::PetscLibType, is::AbstractIS, nmin::Integer, nma
 end
 
 @for_petsc function ISComplement(petsclib::$UnionPetscLib, is::AbstractIS, nmin::$PetscInt, nmax::$PetscInt )
+	is.ptr == C_NULL && throw_null_handle(is, "ISComplement", "is")
 	isout_ = Ref{CIS}()
 
     @chk ccall(
@@ -411,6 +416,8 @@ function ISComplementVec(petsclib::PetscLibType, S::AbstractIS, V::AbstractPetsc
 end
 
 @for_petsc function ISComplementVec(petsclib::$UnionPetscLib, S::AbstractIS, V::AbstractPetscVec )
+	S.ptr == C_NULL && throw_null_handle(S, "ISComplementVec", "S")
+	V.ptr == C_NULL && throw_null_handle(V, "ISComplementVec", "V")
 	T_ = Ref{CIS}()
 
     @chk ccall(
@@ -530,6 +537,7 @@ function ISContiguousLocal(petsclib::PetscLibType, is::AbstractIS, gstart::Integ
 end
 
 @for_petsc function ISContiguousLocal(petsclib::$UnionPetscLib, is::AbstractIS, gstart::$PetscInt, gend::$PetscInt )
+	is.ptr == C_NULL && throw_null_handle(is, "ISContiguousLocal", "is")
 	start_ = Ref{$PetscInt}()
 	contig_ = Ref{PetscBool}()
 
@@ -570,6 +578,8 @@ function ISCopy(petsclib::PetscLibType, is::AbstractIS, isy::AbstractIS)
 end
 
 @for_petsc function ISCopy(petsclib::$UnionPetscLib, is::AbstractIS, isy::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISCopy", "is")
+	isy.ptr == C_NULL && throw_null_handle(isy, "ISCopy", "isy")
 
     @chk ccall(
                (:ISCopy, $petsc_library),
@@ -779,6 +789,8 @@ function ISCreateSubIS(petsclib::PetscLibType, is::AbstractIS, comps::AbstractIS
 end
 
 @for_petsc function ISCreateSubIS(petsclib::$UnionPetscLib, is::AbstractIS, comps::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISCreateSubIS", "is")
+	comps.ptr == C_NULL && throw_null_handle(comps, "ISCreateSubIS", "comps")
 	subis_ = Ref{CIS}()
 
     @chk ccall(
@@ -853,6 +865,7 @@ function ISDifference(petsclib::PetscLibType, is1::AbstractIS, is2::AbstractIS)
 end
 
 @for_petsc function ISDifference(petsclib::$UnionPetscLib, is1::AbstractIS, is2::AbstractIS )
+	is1.ptr == C_NULL && throw_null_handle(is1, "ISDifference", "is1")
 	isout_ = Ref{CIS}()
 
     @chk ccall(
@@ -891,6 +904,7 @@ function ISDuplicate(petsclib::PetscLibType, is::AbstractIS)
 end
 
 @for_petsc function ISDuplicate(petsclib::$UnionPetscLib, is::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISDuplicate", "is")
 	newIS_ = Ref{CIS}()
 
     @chk ccall(
@@ -933,6 +947,8 @@ function ISEmbed(petsclib::PetscLibType, a::AbstractIS, b::AbstractIS, drop::Pet
 end
 
 @for_petsc function ISEmbed(petsclib::$UnionPetscLib, a::AbstractIS, b::AbstractIS, drop::PetscBool )
+	a.ptr == C_NULL && throw_null_handle(a, "ISEmbed", "a")
+	b.ptr == C_NULL && throw_null_handle(b, "ISEmbed", "b")
 	c_ = Ref{CIS}()
 
     @chk ccall(
@@ -974,6 +990,8 @@ function ISEqual(petsclib::PetscLibType, is1::AbstractIS, is2::AbstractIS)
 end
 
 @for_petsc function ISEqual(petsclib::$UnionPetscLib, is1::AbstractIS, is2::AbstractIS )
+	is1.ptr == C_NULL && throw_null_handle(is1, "ISEqual", "is1")
+	is2.ptr == C_NULL && throw_null_handle(is2, "ISEqual", "is2")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -1015,6 +1033,8 @@ function ISEqualUnsorted(petsclib::PetscLibType, is1::AbstractIS, is2::AbstractI
 end
 
 @for_petsc function ISEqualUnsorted(petsclib::$UnionPetscLib, is1::AbstractIS, is2::AbstractIS )
+	is1.ptr == C_NULL && throw_null_handle(is1, "ISEqualUnsorted", "is1")
+	is2.ptr == C_NULL && throw_null_handle(is2, "ISEqualUnsorted", "is2")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -1158,6 +1178,7 @@ function ISGeneralFilter(petsclib::PetscLibType, is::AbstractIS, start::Integer,
 end
 
 @for_petsc function ISGeneralFilter(petsclib::$UnionPetscLib, is::AbstractIS, start::$PetscInt, end_::$PetscInt )
+	is.ptr == C_NULL && throw_null_handle(is, "ISGeneralFilter", "is")
 
     @chk ccall(
                (:ISGeneralFilter, $petsc_library),
@@ -1194,6 +1215,7 @@ function ISGeneralSetIndices(petsclib::PetscLibType, is::AbstractIS, n::Integer,
 end
 
 @for_petsc function ISGeneralSetIndices(petsclib::$UnionPetscLib, is::AbstractIS, n::$PetscInt, idx::Vector{$PetscInt}, mode::PetscCopyMode )
+	is.ptr == C_NULL && throw_null_handle(is, "ISGeneralSetIndices", "is")
 
     @chk ccall(
                (:ISGeneralSetIndices, $petsc_library),
@@ -1230,6 +1252,7 @@ function ISGeneralSetIndicesFromMask(petsclib::PetscLibType, is::AbstractIS, rst
 end
 
 @for_petsc function ISGeneralSetIndicesFromMask(petsclib::$UnionPetscLib, is::AbstractIS, rstart::$PetscInt, rend::$PetscInt, mask::Vector{PetscBool} )
+	is.ptr == C_NULL && throw_null_handle(is, "ISGeneralSetIndicesFromMask", "is")
 
     @chk ccall(
                (:ISGeneralSetIndicesFromMask, $petsc_library),
@@ -1304,6 +1327,7 @@ function ISGetCompressOutput(petsclib::PetscLibType, is::AbstractIS)
 end
 
 @for_petsc function ISGetCompressOutput(petsclib::$UnionPetscLib, is::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISGetCompressOutput", "is")
 	compress_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -1344,6 +1368,7 @@ function ISGetIndices(petsclib::PetscLibType, is::AbstractIS)
 end
 
 @for_petsc function ISGetIndices(petsclib::$UnionPetscLib, is::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISGetIndices", "is")
 	ptr_ = Ref{Ptr{$PetscInt}}()
 
     @chk ccall(
@@ -1385,6 +1410,7 @@ function ISGetInfo(petsclib::PetscLibType, is::AbstractIS, info::ISInfo, type::I
 end
 
 @for_petsc function ISGetInfo(petsclib::$UnionPetscLib, is::AbstractIS, info::ISInfo, type::ISInfoType, compute::PetscBool )
+	is.ptr == C_NULL && throw_null_handle(is, "ISGetInfo", "is")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -1423,6 +1449,7 @@ function ISGetLayout(petsclib::PetscLibType, is::AbstractIS)
 end
 
 @for_petsc function ISGetLayout(petsclib::$UnionPetscLib, is::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISGetLayout", "is")
 	map_ = Ref{PetscLayout}()
 
     @chk ccall(
@@ -1461,6 +1488,7 @@ function ISGetLocalSize(petsclib::PetscLibType, is::AbstractIS)
 end
 
 @for_petsc function ISGetLocalSize(petsclib::$UnionPetscLib, is::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISGetLocalSize", "is")
 	size_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1500,6 +1528,7 @@ function ISGetMinMax(petsclib::PetscLibType, is::AbstractIS)
 end
 
 @for_petsc function ISGetMinMax(petsclib::$UnionPetscLib, is::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISGetMinMax", "is")
 	min_ = Ref{$PetscInt}()
 	max_ = Ref{$PetscInt}()
 
@@ -1542,6 +1571,7 @@ function ISGetNonlocalIS(petsclib::PetscLibType, is::AbstractIS)
 end
 
 @for_petsc function ISGetNonlocalIS(petsclib::$UnionPetscLib, is::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISGetNonlocalIS", "is")
 	complement_ = Ref{CIS}()
 
     @chk ccall(
@@ -1584,6 +1614,7 @@ function ISGetNonlocalIndices(petsclib::PetscLibType, is::AbstractIS)
 end
 
 @for_petsc function ISGetNonlocalIndices(petsclib::$UnionPetscLib, is::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISGetNonlocalIndices", "is")
 	indices_ = Ref{Ptr{$PetscInt}}(C_NULL)
 
     @chk ccall(
@@ -1625,6 +1656,7 @@ function ISGetPointRange(petsclib::PetscLibType, pointIS::AbstractIS)
 end
 
 @for_petsc function ISGetPointRange(petsclib::$UnionPetscLib, pointIS::AbstractIS )
+	pointIS.ptr == C_NULL && throw_null_handle(pointIS, "ISGetPointRange", "pointIS")
 	pStart_ = Ref{$PetscInt}()
 	pEnd_ = Ref{$PetscInt}()
 	points_ = Ref{Ptr{$PetscInt}}()
@@ -1706,6 +1738,7 @@ function ISGetSize(petsclib::PetscLibType, is::AbstractIS)
 end
 
 @for_petsc function ISGetSize(petsclib::$UnionPetscLib, is::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISGetSize", "is")
 	size_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1745,6 +1778,7 @@ function ISGetTotalIndices(petsclib::PetscLibType, is::AbstractIS)
 end
 
 @for_petsc function ISGetTotalIndices(petsclib::$UnionPetscLib, is::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISGetTotalIndices", "is")
 	indices_ = Ref{Ptr{$PetscInt}}(C_NULL)
 
     @chk ccall(
@@ -1784,6 +1818,7 @@ function ISGetType(petsclib::PetscLibType, is::AbstractIS)
 end
 
 @for_petsc function ISGetType(petsclib::$UnionPetscLib, is::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISGetType", "is")
 	type_ = Ref{ISType}()
 
     @chk ccall(
@@ -1926,6 +1961,7 @@ function ISGlobalToLocalMappingApplyIS(petsclib::PetscLibType, mapping::ISLocalT
 end
 
 @for_petsc function ISGlobalToLocalMappingApplyIS(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, type::ISGlobalToLocalMappingMode, is::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISGlobalToLocalMappingApplyIS", "is")
 	newis_ = Ref{CIS}()
 
     @chk ccall(
@@ -1964,6 +2000,7 @@ function ISIdentity(petsclib::PetscLibType, is::AbstractIS)
 end
 
 @for_petsc function ISIdentity(petsclib::$UnionPetscLib, is::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISIdentity", "is")
 	ident_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -2032,6 +2069,8 @@ function ISIntersect(petsclib::PetscLibType, is1::AbstractIS, is2::AbstractIS)
 end
 
 @for_petsc function ISIntersect(petsclib::$UnionPetscLib, is1::AbstractIS, is2::AbstractIS )
+	is1.ptr == C_NULL && throw_null_handle(is1, "ISIntersect", "is1")
+	is2.ptr == C_NULL && throw_null_handle(is2, "ISIntersect", "is2")
 	isout_ = Ref{CIS}()
 
     @chk ccall(
@@ -2073,6 +2112,7 @@ function ISInvertPermutation(petsclib::PetscLibType, is::AbstractIS, nlocal::Int
 end
 
 @for_petsc function ISInvertPermutation(petsclib::$UnionPetscLib, is::AbstractIS, nlocal::$PetscInt )
+	is.ptr == C_NULL && throw_null_handle(is, "ISInvertPermutation", "is")
 	isout_ = Ref{CIS}()
 
     @chk ccall(
@@ -2154,6 +2194,7 @@ function ISLoad(petsclib::PetscLibType, is::AbstractIS, viewer::PetscViewer)
 end
 
 @for_petsc function ISLoad(petsclib::$UnionPetscLib, is::AbstractIS, viewer::PetscViewer )
+	is.ptr == C_NULL && throw_null_handle(is, "ISLoad", "is")
 
     @chk ccall(
                (:ISLoad, $petsc_library),
@@ -2231,6 +2272,7 @@ function ISOnComm(petsclib::PetscLibType, is::AbstractIS, comm::MPI_Comm, mode::
 end
 
 @for_petsc function ISOnComm(petsclib::$UnionPetscLib, is::AbstractIS, comm::MPI_Comm, mode::PetscCopyMode )
+	is.ptr == C_NULL && throw_null_handle(is, "ISOnComm", "is")
 	newis_ = Ref{CIS}()
 
     @chk ccall(
@@ -2271,6 +2313,8 @@ function ISPairToList(petsclib::PetscLibType, xis::AbstractIS, yis::AbstractIS)
 end
 
 @for_petsc function ISPairToList(petsclib::$UnionPetscLib, xis::AbstractIS, yis::AbstractIS )
+	xis.ptr == C_NULL && throw_null_handle(xis, "ISPairToList", "xis")
+	yis.ptr == C_NULL && throw_null_handle(yis, "ISPairToList", "yis")
 	listlen_ = Ref{$PetscInt}()
 	islist_ = Ref{CIS}()
 
@@ -2316,6 +2360,7 @@ function ISPartitioningCount(petsclib::PetscLibType, part::AbstractIS, len::Inte
 end
 
 @for_petsc function ISPartitioningCount(petsclib::$UnionPetscLib, part::AbstractIS, len::$PetscInt, count::Vector{$PetscInt} )
+	part.ptr == C_NULL && throw_null_handle(part, "ISPartitioningCount", "part")
 
     @chk ccall(
                (:ISPartitioningCount, $petsc_library),
@@ -2355,6 +2400,7 @@ function ISPartitioningToNumbering(petsclib::PetscLibType, part::AbstractIS)
 end
 
 @for_petsc function ISPartitioningToNumbering(petsclib::$UnionPetscLib, part::AbstractIS )
+	part.ptr == C_NULL && throw_null_handle(part, "ISPartitioningToNumbering", "part")
 	is_ = Ref{CIS}()
 
     @chk ccall(
@@ -2394,6 +2440,7 @@ function ISPermutation(petsclib::PetscLibType, is::AbstractIS)
 end
 
 @for_petsc function ISPermutation(petsclib::$UnionPetscLib, is::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISPermutation", "is")
 	perm_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -2495,6 +2542,7 @@ function ISRenumber(petsclib::PetscLibType, subset::AbstractIS, subset_mult::Abs
 end
 
 @for_petsc function ISRenumber(petsclib::$UnionPetscLib, subset::AbstractIS, subset_mult::AbstractIS )
+	subset.ptr == C_NULL && throw_null_handle(subset, "ISRenumber", "subset")
 	N_ = Ref{$PetscInt}()
 	subset_n_ = Ref{CIS}()
 
@@ -2533,6 +2581,7 @@ function ISRestoreIndices(petsclib::PetscLibType, is::AbstractIS, ptr::Union{Ptr
 end
 
 @for_petsc function ISRestoreIndices(petsclib::$UnionPetscLib, is::AbstractIS, ptr::Union{Ptr, AbstractArray{$PetscInt}} )
+	is.ptr == C_NULL && throw_null_handle(is, "ISRestoreIndices", "is")
 	ptr_ = Ref{Ptr{$PetscInt}}(ptr isa Ptr ? ptr : pointer(ptr))
 
     @chk ccall(
@@ -2568,6 +2617,7 @@ function ISRestoreNonlocalIS(petsclib::PetscLibType, is::AbstractIS, complement:
 end
 
 @for_petsc function ISRestoreNonlocalIS(petsclib::$UnionPetscLib, is::AbstractIS, complement::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISRestoreNonlocalIS", "is")
 	complement_ = Ref(complement.ptr)
 
     @chk ccall(
@@ -2604,6 +2654,7 @@ function ISRestoreNonlocalIndices(petsclib::PetscLibType, is::AbstractIS, indice
 end
 
 @for_petsc function ISRestoreNonlocalIndices(petsclib::$UnionPetscLib, is::AbstractIS, indices::Union{Ptr, AbstractArray{$PetscInt}} )
+	is.ptr == C_NULL && throw_null_handle(is, "ISRestoreNonlocalIndices", "is")
 	indices_ = Ref{Ptr{$PetscInt}}(indices isa Ptr ? indices : pointer(indices))
 
     @chk ccall(
@@ -2678,6 +2729,7 @@ function ISRestoreTotalIndices(petsclib::PetscLibType, is::AbstractIS, indices::
 end
 
 @for_petsc function ISRestoreTotalIndices(petsclib::$UnionPetscLib, is::AbstractIS, indices::Union{Ptr, AbstractArray{$PetscInt}} )
+	is.ptr == C_NULL && throw_null_handle(is, "ISRestoreTotalIndices", "is")
 	indices_ = Ref{Ptr{$PetscInt}}(indices isa Ptr ? indices : pointer(indices))
 
     @chk ccall(
@@ -2713,6 +2765,7 @@ function ISSetBlockSize(petsclib::PetscLibType, is::AbstractIS, bs::Integer)
 end
 
 @for_petsc function ISSetBlockSize(petsclib::$UnionPetscLib, is::AbstractIS, bs::$PetscInt )
+	is.ptr == C_NULL && throw_null_handle(is, "ISSetBlockSize", "is")
 
     @chk ccall(
                (:ISSetBlockSize, $petsc_library),
@@ -2747,6 +2800,7 @@ function ISSetCompressOutput(petsclib::PetscLibType, is::AbstractIS, compress::P
 end
 
 @for_petsc function ISSetCompressOutput(petsclib::$UnionPetscLib, is::AbstractIS, compress::PetscBool )
+	is.ptr == C_NULL && throw_null_handle(is, "ISSetCompressOutput", "is")
 
     @chk ccall(
                (:ISSetCompressOutput, $petsc_library),
@@ -2780,6 +2834,7 @@ function ISSetIdentity(petsclib::PetscLibType, is::AbstractIS)
 end
 
 @for_petsc function ISSetIdentity(petsclib::$UnionPetscLib, is::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISSetIdentity", "is")
 
     @chk ccall(
                (:ISSetIdentity, $petsc_library),
@@ -2826,6 +2881,7 @@ function ISSetInfo(petsclib::PetscLibType, is::AbstractIS, info::ISInfo, type::I
 end
 
 @for_petsc function ISSetInfo(petsclib::$UnionPetscLib, is::AbstractIS, info::ISInfo, type::ISInfoType, permanent::PetscBool, flg::PetscBool )
+	is.ptr == C_NULL && throw_null_handle(is, "ISSetInfo", "is")
 
     @chk ccall(
                (:ISSetInfo, $petsc_library),
@@ -2860,6 +2916,7 @@ function ISSetLayout(petsclib::PetscLibType, is::AbstractIS, map::PetscLayout)
 end
 
 @for_petsc function ISSetLayout(petsclib::$UnionPetscLib, is::AbstractIS, map::PetscLayout )
+	is.ptr == C_NULL && throw_null_handle(is, "ISSetLayout", "is")
 
     @chk ccall(
                (:ISSetLayout, $petsc_library),
@@ -2893,6 +2950,7 @@ function ISSetPermutation(petsclib::PetscLibType, is::AbstractIS)
 end
 
 @for_petsc function ISSetPermutation(petsclib::$UnionPetscLib, is::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISSetPermutation", "is")
 
     @chk ccall(
                (:ISSetPermutation, $petsc_library),
@@ -2930,6 +2988,7 @@ function ISSetType(petsclib::PetscLibType, is::AbstractIS, method::String)
 end
 
 @for_petsc function ISSetType(petsclib::$UnionPetscLib, is::AbstractIS, method::String )
+	is.ptr == C_NULL && throw_null_handle(is, "ISSetType", "is")
 
     @chk ccall(
                (:ISSetType, $petsc_library),
@@ -2967,6 +3026,8 @@ function ISShift(petsclib::PetscLibType, is::AbstractIS, offset::Integer, isy::A
 end
 
 @for_petsc function ISShift(petsclib::$UnionPetscLib, is::AbstractIS, offset::$PetscInt, isy::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISShift", "is")
+	isy.ptr == C_NULL && throw_null_handle(isy, "ISShift", "isy")
 
     @chk ccall(
                (:ISShift, $petsc_library),
@@ -3000,6 +3061,7 @@ function ISSort(petsclib::PetscLibType, is::AbstractIS)
 end
 
 @for_petsc function ISSort(petsclib::$UnionPetscLib, is::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISSort", "is")
 
     @chk ccall(
                (:ISSort, $petsc_library),
@@ -3037,6 +3099,7 @@ function ISSortPermutation(petsclib::PetscLibType, f::AbstractIS, always::PetscB
 end
 
 @for_petsc function ISSortPermutation(petsclib::$UnionPetscLib, f::AbstractIS, always::PetscBool )
+	f.ptr == C_NULL && throw_null_handle(f, "ISSortPermutation", "f")
 	h_ = Ref{CIS}()
 
     @chk ccall(
@@ -3072,6 +3135,7 @@ function ISSortRemoveDups(petsclib::PetscLibType, is::AbstractIS)
 end
 
 @for_petsc function ISSortRemoveDups(petsclib::$UnionPetscLib, is::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISSortRemoveDups", "is")
 
     @chk ccall(
                (:ISSortRemoveDups, $petsc_library),
@@ -3109,6 +3173,7 @@ function ISSorted(petsclib::PetscLibType, is::AbstractIS)
 end
 
 @for_petsc function ISSorted(petsclib::$UnionPetscLib, is::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISSorted", "is")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3148,6 +3213,7 @@ function ISStrideGetInfo(petsclib::PetscLibType, is::AbstractIS)
 end
 
 @for_petsc function ISStrideGetInfo(petsclib::$UnionPetscLib, is::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISStrideGetInfo", "is")
 	first_ = Ref{$PetscInt}()
 	step_ = Ref{$PetscInt}()
 
@@ -3188,6 +3254,7 @@ function ISStrideSetStride(petsclib::PetscLibType, is::AbstractIS, n::Integer, f
 end
 
 @for_petsc function ISStrideSetStride(petsclib::$UnionPetscLib, is::AbstractIS, n::$PetscInt, first::$PetscInt, step::$PetscInt )
+	is.ptr == C_NULL && throw_null_handle(is, "ISStrideSetStride", "is")
 
     @chk ccall(
                (:ISStrideSetStride, $petsc_library),
@@ -3225,6 +3292,8 @@ function ISSum(petsclib::PetscLibType, is1::AbstractIS, is2::AbstractIS)
 end
 
 @for_petsc function ISSum(petsclib::$UnionPetscLib, is1::AbstractIS, is2::AbstractIS )
+	is1.ptr == C_NULL && throw_null_handle(is1, "ISSum", "is1")
+	is2.ptr == C_NULL && throw_null_handle(is2, "ISSum", "is2")
 	is3_ = Ref{CIS}()
 
     @chk ccall(
@@ -3260,6 +3329,7 @@ function ISToGeneral(petsclib::PetscLibType, is::AbstractIS)
 end
 
 @for_petsc function ISToGeneral(petsclib::$UnionPetscLib, is::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISToGeneral", "is")
 
     @chk ccall(
                (:ISToGeneral, $petsc_library),
@@ -3294,6 +3364,7 @@ function ISView(petsclib::PetscLibType, is::AbstractIS, viewer::PetscViewer)
 end
 
 @for_petsc function ISView(petsclib::$UnionPetscLib, is::AbstractIS, viewer::PetscViewer )
+	is.ptr == C_NULL && throw_null_handle(is, "ISView", "is")
 
     @chk ccall(
                (:ISView, $petsc_library),
@@ -3332,6 +3403,7 @@ function ISViewFromOptions(petsclib::PetscLibType, A::AbstractIS, obj, name::Str
 end
 
 @for_petsc function ISViewFromOptions(petsclib::$UnionPetscLib, A::AbstractIS, obj, name::String )
+	A.ptr == C_NULL && throw_null_handle(A, "ISViewFromOptions", "A")
 
     @chk ccall(
                (:ISViewFromOptions, $petsc_library),

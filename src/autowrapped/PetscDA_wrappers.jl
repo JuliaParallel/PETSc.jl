@@ -125,6 +125,8 @@ function PetscDAEnsembleAnalysis(petsclib::PetscLibType, da::PetscDA, observatio
 end
 
 @for_petsc function PetscDAEnsembleAnalysis(petsclib::$UnionPetscLib, da::PetscDA, observation::AbstractPetscVec, H::AbstractPetscMat )
+	observation.ptr == C_NULL && throw_null_handle(observation, "PetscDAEnsembleAnalysis", "observation")
+	H.ptr == C_NULL && throw_null_handle(H, "PetscDAEnsembleAnalysis", "H")
 
     @chk ccall(
                (:PetscDAEnsembleAnalysis, $petsc_library),
@@ -160,6 +162,7 @@ function PetscDAEnsembleApplySqrtTInverse(petsclib::PetscLibType, da::PetscDA, U
 end
 
 @for_petsc function PetscDAEnsembleApplySqrtTInverse(petsclib::$UnionPetscLib, da::PetscDA, U::AbstractPetscMat, Y::AbstractPetscMat )
+	Y.ptr == C_NULL && throw_null_handle(Y, "PetscDAEnsembleApplySqrtTInverse", "Y")
 
     @chk ccall(
                (:PetscDAEnsembleApplySqrtTInverse, $petsc_library),
@@ -195,6 +198,8 @@ function PetscDAEnsembleApplyTInverse(petsclib::PetscLibType, da::PetscDA, sdel:
 end
 
 @for_petsc function PetscDAEnsembleApplyTInverse(petsclib::$UnionPetscLib, da::PetscDA, sdel::AbstractPetscVec, w::AbstractPetscVec )
+	sdel.ptr == C_NULL && throw_null_handle(sdel, "PetscDAEnsembleApplyTInverse", "sdel")
+	w.ptr == C_NULL && throw_null_handle(w, "PetscDAEnsembleApplyTInverse", "w")
 
     @chk ccall(
                (:PetscDAEnsembleApplyTInverse, $petsc_library),
@@ -268,6 +273,7 @@ function PetscDAEnsembleComputeMean(petsclib::PetscLibType, da::PetscDA, mean::A
 end
 
 @for_petsc function PetscDAEnsembleComputeMean(petsclib::$UnionPetscLib, da::PetscDA, mean::AbstractPetscVec )
+	mean.ptr == C_NULL && throw_null_handle(mean, "PetscDAEnsembleComputeMean", "mean")
 
     @chk ccall(
                (:PetscDAEnsembleComputeMean, $petsc_library),
@@ -308,6 +314,10 @@ function PetscDAEnsembleComputeNormalizedInnovationMatrix(petsclib::PetscLibType
 end
 
 @for_petsc function PetscDAEnsembleComputeNormalizedInnovationMatrix(petsclib::$UnionPetscLib, Z::AbstractPetscMat, y_mean::AbstractPetscVec, r_inv_sqrt::AbstractPetscVec, m::$PetscInt, scale::$PetscScalar, S::AbstractPetscMat )
+	Z.ptr == C_NULL && throw_null_handle(Z, "PetscDAEnsembleComputeNormalizedInnovationMatrix", "Z")
+	y_mean.ptr == C_NULL && throw_null_handle(y_mean, "PetscDAEnsembleComputeNormalizedInnovationMatrix", "y_mean")
+	r_inv_sqrt.ptr == C_NULL && throw_null_handle(r_inv_sqrt, "PetscDAEnsembleComputeNormalizedInnovationMatrix", "r_inv_sqrt")
+	S.ptr == C_NULL && throw_null_handle(S, "PetscDAEnsembleComputeNormalizedInnovationMatrix", "S")
 
     @chk ccall(
                (:PetscDAEnsembleComputeNormalizedInnovationMatrix, $petsc_library),
@@ -530,6 +540,7 @@ function PetscDAEnsembleInitialize(petsclib::PetscLibType, da::PetscDA, x0::Abst
 end
 
 @for_petsc function PetscDAEnsembleInitialize(petsclib::$UnionPetscLib, da::PetscDA, x0::AbstractPetscVec, obs_error_std::$PetscReal, rng::PetscRandom )
+	x0.ptr == C_NULL && throw_null_handle(x0, "PetscDAEnsembleInitialize", "x0")
 
     @chk ccall(
                (:PetscDAEnsembleInitialize, $petsc_library),
@@ -636,6 +647,7 @@ function PetscDAEnsembleSetMember(petsclib::PetscLibType, da::PetscDA, member_id
 end
 
 @for_petsc function PetscDAEnsembleSetMember(petsclib::$UnionPetscLib, da::PetscDA, member_idx::$PetscInt, member::AbstractPetscVec )
+	member.ptr == C_NULL && throw_null_handle(member, "PetscDAEnsembleSetMember", "member")
 
     @chk ccall(
                (:PetscDAEnsembleSetMember, $petsc_library),
@@ -742,6 +754,7 @@ function PetscDAEnsembleTFactor(petsclib::PetscLibType, da::PetscDA, S::Abstract
 end
 
 @for_petsc function PetscDAEnsembleTFactor(petsclib::$UnionPetscLib, da::PetscDA, S::AbstractPetscMat )
+	S.ptr == C_NULL && throw_null_handle(S, "PetscDAEnsembleTFactor", "S")
 
     @chk ccall(
                (:PetscDAEnsembleTFactor, $petsc_library),
@@ -1095,6 +1108,8 @@ function PetscDALETKFSetLocalization(petsclib::PetscLibType, da::PetscDA, Q::Abs
 end
 
 @for_petsc function PetscDALETKFSetLocalization(petsclib::$UnionPetscLib, da::PetscDA, Q::AbstractPetscMat, H::AbstractPetscMat )
+	Q.ptr == C_NULL && throw_null_handle(Q, "PetscDALETKFSetLocalization", "Q")
+	H.ptr == C_NULL && throw_null_handle(H, "PetscDALETKFSetLocalization", "H")
 
     @chk ccall(
                (:PetscDALETKFSetLocalization, $petsc_library),
@@ -1327,6 +1342,7 @@ function PetscDASetObsErrorVariance(petsclib::PetscLibType, da::PetscDA, obs_err
 end
 
 @for_petsc function PetscDASetObsErrorVariance(petsclib::$UnionPetscLib, da::PetscDA, obs_error_var::AbstractPetscVec )
+	obs_error_var.ptr == C_NULL && throw_null_handle(obs_error_var, "PetscDASetObsErrorVariance", "obs_error_var")
 
     @chk ccall(
                (:PetscDASetObsErrorVariance, $petsc_library),

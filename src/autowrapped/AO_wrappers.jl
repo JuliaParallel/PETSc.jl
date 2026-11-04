@@ -26,6 +26,7 @@ function AOApplicationToPetsc(petsclib::PetscLibType, ao::AbstractAO, n::Integer
 end
 
 @for_petsc function AOApplicationToPetsc(petsclib::$UnionPetscLib, ao::AbstractAO, n::$PetscInt, ia::Vector{$PetscInt} )
+	ao.ptr == C_NULL && throw_null_handle(ao, "AOApplicationToPetsc", "ao")
 
     @chk ccall(
                (:AOApplicationToPetsc, $petsc_library),
@@ -65,6 +66,8 @@ function AOApplicationToPetscIS(petsclib::PetscLibType, ao::AbstractAO, is::Abst
 end
 
 @for_petsc function AOApplicationToPetscIS(petsclib::$UnionPetscLib, ao::AbstractAO, is::AbstractIS )
+	ao.ptr == C_NULL && throw_null_handle(ao, "AOApplicationToPetscIS", "ao")
+	is.ptr == C_NULL && throw_null_handle(is, "AOApplicationToPetscIS", "is")
 
     @chk ccall(
                (:AOApplicationToPetscIS, $petsc_library),
@@ -104,6 +107,7 @@ function AOApplicationToPetscPermuteInt(petsclib::PetscLibType, ao::AbstractAO, 
 end
 
 @for_petsc function AOApplicationToPetscPermuteInt(petsclib::$UnionPetscLib, ao::AbstractAO, block::$PetscInt, array::Vector{$PetscInt} )
+	ao.ptr == C_NULL && throw_null_handle(ao, "AOApplicationToPetscPermuteInt", "ao")
 
     @chk ccall(
                (:AOApplicationToPetscPermuteInt, $petsc_library),
@@ -143,6 +147,7 @@ function AOApplicationToPetscPermuteReal(petsclib::PetscLibType, ao::AbstractAO,
 end
 
 @for_petsc function AOApplicationToPetscPermuteReal(petsclib::$UnionPetscLib, ao::AbstractAO, block::$PetscInt, array::Vector{$PetscReal} )
+	ao.ptr == C_NULL && throw_null_handle(ao, "AOApplicationToPetscPermuteReal", "ao")
 
     @chk ccall(
                (:AOApplicationToPetscPermuteReal, $petsc_library),
@@ -346,6 +351,7 @@ function AOCreateMappingIS(petsclib::PetscLibType, isapp::AbstractIS, ispetsc::A
 end
 
 @for_petsc function AOCreateMappingIS(petsclib::$UnionPetscLib, isapp::AbstractIS, ispetsc::AbstractIS )
+	isapp.ptr == C_NULL && throw_null_handle(isapp, "AOCreateMappingIS", "isapp")
 	aoout_ = Ref{CAO}()
 
     @chk ccall(
@@ -527,6 +533,7 @@ function AOGetType(petsclib::PetscLibType, ao::AbstractAO)
 end
 
 @for_petsc function AOGetType(petsclib::$UnionPetscLib, ao::AbstractAO )
+	ao.ptr == C_NULL && throw_null_handle(ao, "AOGetType", "ao")
 	type_ = Ref{AOType}()
 
     @chk ccall(
@@ -595,6 +602,7 @@ function AOMappingHasApplicationIndex(petsclib::PetscLibType, ao::AbstractAO, id
 end
 
 @for_petsc function AOMappingHasApplicationIndex(petsclib::$UnionPetscLib, ao::AbstractAO, idex::$PetscInt )
+	ao.ptr == C_NULL && throw_null_handle(ao, "AOMappingHasApplicationIndex", "ao")
 	hasIndex_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -634,6 +642,7 @@ function AOMappingHasPetscIndex(petsclib::PetscLibType, ao::AbstractAO, idex::In
 end
 
 @for_petsc function AOMappingHasPetscIndex(petsclib::$UnionPetscLib, ao::AbstractAO, idex::$PetscInt )
+	ao.ptr == C_NULL && throw_null_handle(ao, "AOMappingHasPetscIndex", "ao")
 	hasIndex_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -676,6 +685,7 @@ function AOPetscToApplication(petsclib::PetscLibType, ao::AbstractAO, n::Integer
 end
 
 @for_petsc function AOPetscToApplication(petsclib::$UnionPetscLib, ao::AbstractAO, n::$PetscInt, ia::Vector{$PetscInt} )
+	ao.ptr == C_NULL && throw_null_handle(ao, "AOPetscToApplication", "ao")
 
     @chk ccall(
                (:AOPetscToApplication, $petsc_library),
@@ -715,6 +725,8 @@ function AOPetscToApplicationIS(petsclib::PetscLibType, ao::AbstractAO, is::Abst
 end
 
 @for_petsc function AOPetscToApplicationIS(petsclib::$UnionPetscLib, ao::AbstractAO, is::AbstractIS )
+	ao.ptr == C_NULL && throw_null_handle(ao, "AOPetscToApplicationIS", "ao")
+	is.ptr == C_NULL && throw_null_handle(is, "AOPetscToApplicationIS", "is")
 
     @chk ccall(
                (:AOPetscToApplicationIS, $petsc_library),
@@ -754,6 +766,7 @@ function AOPetscToApplicationPermuteInt(petsclib::PetscLibType, ao::AbstractAO, 
 end
 
 @for_petsc function AOPetscToApplicationPermuteInt(petsclib::$UnionPetscLib, ao::AbstractAO, block::$PetscInt, array::Vector{$PetscInt} )
+	ao.ptr == C_NULL && throw_null_handle(ao, "AOPetscToApplicationPermuteInt", "ao")
 
     @chk ccall(
                (:AOPetscToApplicationPermuteInt, $petsc_library),
@@ -793,6 +806,7 @@ function AOPetscToApplicationPermuteReal(petsclib::PetscLibType, ao::AbstractAO,
 end
 
 @for_petsc function AOPetscToApplicationPermuteReal(petsclib::$UnionPetscLib, ao::AbstractAO, block::$PetscInt, array::Vector{$PetscReal} )
+	ao.ptr == C_NULL && throw_null_handle(ao, "AOPetscToApplicationPermuteReal", "ao")
 
     @chk ccall(
                (:AOPetscToApplicationPermuteReal, $petsc_library),
@@ -892,6 +906,7 @@ function AOSetFromOptions(petsclib::PetscLibType, ao::AbstractAO)
 end
 
 @for_petsc function AOSetFromOptions(petsclib::$UnionPetscLib, ao::AbstractAO )
+	ao.ptr == C_NULL && throw_null_handle(ao, "AOSetFromOptions", "ao")
 
     @chk ccall(
                (:AOSetFromOptions, $petsc_library),
@@ -964,6 +979,7 @@ function AOSetType(petsclib::PetscLibType, ao::AbstractAO, method::String)
 end
 
 @for_petsc function AOSetType(petsclib::$UnionPetscLib, ao::AbstractAO, method::String )
+	ao.ptr == C_NULL && throw_null_handle(ao, "AOSetType", "ao")
 
     @chk ccall(
                (:AOSetType, $petsc_library),
@@ -1001,6 +1017,7 @@ function AOView(petsclib::PetscLibType, ao::AbstractAO, viewer::PetscViewer)
 end
 
 @for_petsc function AOView(petsclib::$UnionPetscLib, ao::AbstractAO, viewer::PetscViewer )
+	ao.ptr == C_NULL && throw_null_handle(ao, "AOView", "ao")
 
     @chk ccall(
                (:AOView, $petsc_library),
@@ -1039,6 +1056,7 @@ function AOViewFromOptions(petsclib::PetscLibType, ao::AbstractAO, obj, name::St
 end
 
 @for_petsc function AOViewFromOptions(petsclib::$UnionPetscLib, ao::AbstractAO, obj, name::String )
+	ao.ptr == C_NULL && throw_null_handle(ao, "AOViewFromOptions", "ao")
 
     @chk ccall(
                (:AOViewFromOptions, $petsc_library),

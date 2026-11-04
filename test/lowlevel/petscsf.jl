@@ -25,6 +25,14 @@ MPI.Initialized() || MPI.Init()
     @test il === nothing || il == ilocal      # NULL ilocal means the leaves are contiguous [0, nleaves)
     @test [r.index for r in ir] == [n - 1 - i for i in 0:n-1]
 
+    # the same graph with the roots in global numbering, and a new layout of the roots
+    layout, nl, il, gremote = LibPETSc.PetscSFGetGraphLayout(petsclib, sf)
+    @test nl == n
+    @test il === nothing || il == ilocal
+    @test gremote isa Vector{PetscInt} && gremote == [n - 1 - i for i in 0:n-1]
+    @test LibPETSc.PetscLayoutGetSize(petsclib, layout) == n
+    LibPETSc.PetscLayoutDestroy(petsclib, layout)
+
     # broadcast roots -> leaves
     rootdata = Float64.(1:n)
     leafdata = zeros(Float64, n)

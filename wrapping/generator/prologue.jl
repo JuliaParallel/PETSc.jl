@@ -57,6 +57,10 @@ const ISColoring = Ptr{_n_ISColoring}
 # freed memory, so it is refused the same way.
 @noinline throw_destroyed(v) =
     throw(ArgumentError("this $(nameof(typeof(v))) was destroyed, or made before the last initialize or finalize; it cannot be passed to PETSc"))
+# A null handle that was never destroyed is refused where PETSc requires an object
+# (rules/args_required.toml): the optimized PETSc_jll would crash on it.
+@noinline throw_null_handle(v, f, arg) = v.age < 0 ? throw_destroyed(v) :
+    throw(ArgumentError("$f needs a $(nameof(typeof(v))) for `$arg`, got one with a null pointer (never created, or an empty handle)"))
 @inline library_age(::Type{T}) where {T} = getlib(T.parameters[1]).age
 @inline live_ptr(v) = (v.age < 0 || (v.ptr != C_NULL && v.age != library_age(typeof(v)))) ? throw_destroyed(v) : v.ptr
 

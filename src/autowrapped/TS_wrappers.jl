@@ -24,6 +24,7 @@ function TS2GetSolution(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TS2GetSolution(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TS2GetSolution", "ts")
 	u_ = Ref{CVec}()
 	v_ = Ref{CVec}()
 
@@ -64,6 +65,9 @@ function TS2SetSolution(petsclib::PetscLibType, ts::AbstractTS, u::AbstractPetsc
 end
 
 @for_petsc function TS2SetSolution(petsclib::$UnionPetscLib, ts::AbstractTS, u::AbstractPetscVec, v::AbstractPetscVec )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TS2SetSolution", "ts")
+	u.ptr == C_NULL && throw_null_handle(u, "TS2SetSolution", "u")
+	v.ptr == C_NULL && throw_null_handle(v, "TS2SetSolution", "v")
 
     @chk ccall(
                (:TS2SetSolution, $petsc_library),
@@ -166,6 +170,7 @@ function TSARKIMEXGetFullyImplicit(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSARKIMEXGetFullyImplicit(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSARKIMEXGetFullyImplicit", "ts")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -204,6 +209,7 @@ function TSARKIMEXGetType(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSARKIMEXGetType(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSARKIMEXGetType", "ts")
 	arktype_ = Ref{TSARKIMEXType}()
 
     @chk ccall(
@@ -383,6 +389,7 @@ function TSARKIMEXSetFullyImplicit(petsclib::PetscLibType, ts::AbstractTS, flg::
 end
 
 @for_petsc function TSARKIMEXSetFullyImplicit(petsclib::$UnionPetscLib, ts::AbstractTS, flg::PetscBool )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSARKIMEXSetFullyImplicit", "ts")
 
     @chk ccall(
                (:TSARKIMEXSetFullyImplicit, $petsc_library),
@@ -421,6 +428,7 @@ function TSARKIMEXSetType(petsclib::PetscLibType, ts::AbstractTS, arktype::Strin
 end
 
 @for_petsc function TSARKIMEXSetType(petsclib::$UnionPetscLib, ts::AbstractTS, arktype::String )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSARKIMEXSetType", "ts")
 
     @chk ccall(
                (:TSARKIMEXSetType, $petsc_library),
@@ -454,6 +462,7 @@ function TSAdjointCostIntegral(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSAdjointCostIntegral(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSAdjointCostIntegral", "ts")
 
     @chk ccall(
                (:TSAdjointCostIntegral, $petsc_library),
@@ -493,6 +502,8 @@ function TSAdjointMonitor(petsclib::PetscLibType, ts::AbstractTS, step::Integer,
 end
 
 @for_petsc function TSAdjointMonitor(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, u::AbstractPetscVec, numcost::$PetscInt, lambda::Vector{<:AbstractPetscVec}, mu::Vector{<:AbstractPetscVec} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSAdjointMonitor", "ts")
+	u.ptr == C_NULL && throw_null_handle(u, "TSAdjointMonitor", "u")
 
     @chk ccall(
                (:TSAdjointMonitor, $petsc_library),
@@ -524,6 +535,7 @@ function TSAdjointMonitorCancel(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSAdjointMonitorCancel(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSAdjointMonitorCancel", "ts")
 
     @chk ccall(
                (:TSAdjointMonitorCancel, $petsc_library),
@@ -744,6 +756,7 @@ function TSAdjointReset(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSAdjointReset(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSAdjointReset", "ts")
 
     @chk ccall(
                (:TSAdjointReset, $petsc_library),
@@ -777,6 +790,7 @@ function TSAdjointResetForward(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSAdjointResetForward(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSAdjointResetForward", "ts")
 
     @chk ccall(
                (:TSAdjointResetForward, $petsc_library),
@@ -811,6 +825,7 @@ function TSAdjointSetForward(petsclib::PetscLibType, ts::AbstractTS, didp::Abstr
 end
 
 @for_petsc function TSAdjointSetForward(petsclib::$UnionPetscLib, ts::AbstractTS, didp::AbstractPetscMat )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSAdjointSetForward", "ts")
 
     @chk ccall(
                (:TSAdjointSetForward, $petsc_library),
@@ -850,6 +865,7 @@ function TSAdjointSetFromOptions(petsclib::PetscLibType, ts::AbstractTS, PetscOp
 end
 
 @for_petsc function TSAdjointSetFromOptions(petsclib::$UnionPetscLib, ts::AbstractTS, PetscOptionsObject::PetscOptionItems )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSAdjointSetFromOptions", "ts")
 
     @chk ccall(
                (:TSAdjointSetFromOptions, $petsc_library),
@@ -884,6 +900,7 @@ function TSAdjointSetSteps(petsclib::PetscLibType, ts::AbstractTS, steps::Intege
 end
 
 @for_petsc function TSAdjointSetSteps(petsclib::$UnionPetscLib, ts::AbstractTS, steps::$PetscInt )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSAdjointSetSteps", "ts")
 
     @chk ccall(
                (:TSAdjointSetSteps, $petsc_library),
@@ -918,6 +935,7 @@ function TSAdjointSetUp(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSAdjointSetUp(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSAdjointSetUp", "ts")
 
     @chk ccall(
                (:TSAdjointSetUp, $petsc_library),
@@ -955,6 +973,7 @@ function TSAdjointSolve(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSAdjointSolve(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSAdjointSolve", "ts")
 
     @chk ccall(
                (:TSAdjointSolve, $petsc_library),
@@ -988,6 +1007,7 @@ function TSAdjointStep(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSAdjointStep(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSAdjointStep", "ts")
 
     @chk ccall(
                (:TSAdjointStep, $petsc_library),
@@ -1027,6 +1047,7 @@ function TSAlpha2GetParams(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSAlpha2GetParams(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSAlpha2GetParams", "ts")
 	alpha_m_ = Ref{$PetscReal}()
 	alpha_f_ = Ref{$PetscReal}()
 	gamma_ = Ref{$PetscReal}()
@@ -1078,6 +1099,7 @@ function TSAlpha2SetParams(petsclib::PetscLibType, ts::AbstractTS, alpha_m::Real
 end
 
 @for_petsc function TSAlpha2SetParams(petsclib::$UnionPetscLib, ts::AbstractTS, alpha_m::$PetscReal, alpha_f::$PetscReal, gamma::$PetscReal, beta::$PetscReal )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSAlpha2SetParams", "ts")
 
     @chk ccall(
                (:TSAlpha2SetParams, $petsc_library),
@@ -1150,6 +1172,7 @@ function TSAlpha2SetRadius(petsclib::PetscLibType, ts::AbstractTS, radius::Real)
 end
 
 @for_petsc function TSAlpha2SetRadius(petsclib::$UnionPetscLib, ts::AbstractTS, radius::$PetscReal )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSAlpha2SetRadius", "ts")
 
     @chk ccall(
                (:TSAlpha2SetRadius, $petsc_library),
@@ -1188,6 +1211,7 @@ function TSAlphaGetParams(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSAlphaGetParams(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSAlphaGetParams", "ts")
 	alpha_m_ = Ref{$PetscReal}()
 	alpha_f_ = Ref{$PetscReal}()
 	gamma_ = Ref{$PetscReal}()
@@ -1235,6 +1259,7 @@ function TSAlphaSetParams(petsclib::PetscLibType, ts::AbstractTS, alpha_m::Real,
 end
 
 @for_petsc function TSAlphaSetParams(petsclib::$UnionPetscLib, ts::AbstractTS, alpha_m::$PetscReal, alpha_f::$PetscReal, gamma::$PetscReal )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSAlphaSetParams", "ts")
 
     @chk ccall(
                (:TSAlphaSetParams, $petsc_library),
@@ -1273,6 +1298,7 @@ function TSAlphaSetRadius(petsclib::PetscLibType, ts::AbstractTS, radius::Real)
 end
 
 @for_petsc function TSAlphaSetRadius(petsclib::$UnionPetscLib, ts::AbstractTS, radius::$PetscReal )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSAlphaSetRadius", "ts")
 
     @chk ccall(
                (:TSAlphaSetRadius, $petsc_library),
@@ -1308,6 +1334,7 @@ function TSAppendOptionsPrefix(petsclib::PetscLibType, ts::AbstractTS, prefix::S
 end
 
 @for_petsc function TSAppendOptionsPrefix(petsclib::$UnionPetscLib, ts::AbstractTS, prefix::String )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSAppendOptionsPrefix", "ts")
 
     @chk ccall(
                (:TSAppendOptionsPrefix, $petsc_library),
@@ -1344,6 +1371,7 @@ function TSBDFGetOrder(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSBDFGetOrder(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSBDFGetOrder", "ts")
 	order_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1383,6 +1411,7 @@ function TSBDFSetOrder(petsclib::PetscLibType, ts::AbstractTS, order::Integer)
 end
 
 @for_petsc function TSBDFSetOrder(petsclib::$UnionPetscLib, ts::AbstractTS, order::$PetscInt )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSBDFSetOrder", "ts")
 
     @chk ccall(
                (:TSBDFSetOrder, $petsc_library),
@@ -1445,6 +1474,7 @@ function TSBasicSymplecticGetType(petsclib::PetscLibType, ts::AbstractTS, bsympt
 end
 
 @for_petsc function TSBasicSymplecticGetType(petsclib::$UnionPetscLib, ts::AbstractTS, bsymptype::TSBasicSymplecticType )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSBasicSymplecticGetType", "ts")
 
     @chk ccall(
                (:TSBasicSymplecticGetType, $petsc_library),
@@ -1605,6 +1635,7 @@ function TSBasicSymplecticSetType(petsclib::PetscLibType, ts::AbstractTS, bsympt
 end
 
 @for_petsc function TSBasicSymplecticSetType(petsclib::$UnionPetscLib, ts::AbstractTS, bsymptype::String )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSBasicSymplecticSetType", "ts")
 
     @chk ccall(
                (:TSBasicSymplecticSetType, $petsc_library),
@@ -1641,6 +1672,7 @@ function TSClone(petsclib::PetscLibType, tsin::AbstractTS)
 end
 
 @for_petsc function TSClone(petsclib::$UnionPetscLib, tsin::AbstractTS )
+	tsin.ptr == C_NULL && throw_null_handle(tsin, "TSClone", "tsin")
 	tsout_ = Ref{CTS}()
 
     @chk ccall(
@@ -1679,6 +1711,9 @@ function TSComputeCostIntegrand(petsclib::PetscLibType, ts::AbstractTS, t::Real,
 end
 
 @for_petsc function TSComputeCostIntegrand(petsclib::$UnionPetscLib, ts::AbstractTS, t::$PetscReal, U::AbstractPetscVec, Q::AbstractPetscVec )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeCostIntegrand", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSComputeCostIntegrand", "U")
+	Q.ptr == C_NULL && throw_null_handle(Q, "TSComputeCostIntegrand", "Q")
 
     @chk ccall(
                (:TSComputeCostIntegrand, $petsc_library),
@@ -1714,6 +1749,9 @@ function TSComputeExactError(petsclib::PetscLibType, ts::AbstractTS, u::Abstract
 end
 
 @for_petsc function TSComputeExactError(petsclib::$UnionPetscLib, ts::AbstractTS, u::AbstractPetscVec, e::AbstractPetscVec )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeExactError", "ts")
+	u.ptr == C_NULL && throw_null_handle(u, "TSComputeExactError", "u")
+	e.ptr == C_NULL && throw_null_handle(e, "TSComputeExactError", "e")
 
     @chk ccall(
                (:TSComputeExactError, $petsc_library),
@@ -1751,6 +1789,8 @@ function TSComputeForcingFunction(petsclib::PetscLibType, ts::AbstractTS, t::Rea
 end
 
 @for_petsc function TSComputeForcingFunction(petsclib::$UnionPetscLib, ts::AbstractTS, t::$PetscReal, U::AbstractPetscVec )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeForcingFunction", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSComputeForcingFunction", "U")
 
     @chk ccall(
                (:TSComputeForcingFunction, $petsc_library),
@@ -1791,6 +1831,11 @@ function TSComputeI2Function(petsclib::PetscLibType, ts::AbstractTS, t::Real, U:
 end
 
 @for_petsc function TSComputeI2Function(petsclib::$UnionPetscLib, ts::AbstractTS, t::$PetscReal, U::AbstractPetscVec, V::AbstractPetscVec, A::AbstractPetscVec, F::AbstractPetscVec )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeI2Function", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSComputeI2Function", "U")
+	V.ptr == C_NULL && throw_null_handle(V, "TSComputeI2Function", "V")
+	A.ptr == C_NULL && throw_null_handle(A, "TSComputeI2Function", "A")
+	F.ptr == C_NULL && throw_null_handle(F, "TSComputeI2Function", "F")
 
     @chk ccall(
                (:TSComputeI2Function, $petsc_library),
@@ -1834,6 +1879,12 @@ function TSComputeI2Jacobian(petsclib::PetscLibType, ts::AbstractTS, t::Real, U:
 end
 
 @for_petsc function TSComputeI2Jacobian(petsclib::$UnionPetscLib, ts::AbstractTS, t::$PetscReal, U::AbstractPetscVec, V::AbstractPetscVec, A::AbstractPetscVec, shiftV::$PetscReal, shiftA::$PetscReal, J::AbstractPetscMat, P::AbstractPetscMat )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeI2Jacobian", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSComputeI2Jacobian", "U")
+	V.ptr == C_NULL && throw_null_handle(V, "TSComputeI2Jacobian", "V")
+	A.ptr == C_NULL && throw_null_handle(A, "TSComputeI2Jacobian", "A")
+	J.ptr == C_NULL && throw_null_handle(J, "TSComputeI2Jacobian", "J")
+	P.ptr == C_NULL && throw_null_handle(P, "TSComputeI2Jacobian", "P")
 
     @chk ccall(
                (:TSComputeI2Jacobian, $petsc_library),
@@ -1874,6 +1925,10 @@ function TSComputeIFunction(petsclib::PetscLibType, ts::AbstractTS, t::Real, U::
 end
 
 @for_petsc function TSComputeIFunction(petsclib::$UnionPetscLib, ts::AbstractTS, t::$PetscReal, U::AbstractPetscVec, Udot::AbstractPetscVec, Y::AbstractPetscVec, imex::PetscBool )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeIFunction", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSComputeIFunction", "U")
+	Udot.ptr == C_NULL && throw_null_handle(Udot, "TSComputeIFunction", "Udot")
+	Y.ptr == C_NULL && throw_null_handle(Y, "TSComputeIFunction", "Y")
 
     @chk ccall(
                (:TSComputeIFunction, $petsc_library),
@@ -1914,6 +1969,10 @@ function TSComputeIFunctionLinear(petsclib::PetscLibType, ts::AbstractTS, t::Rea
 end
 
 @for_petsc function TSComputeIFunctionLinear(petsclib::$UnionPetscLib, ts::AbstractTS, t::$PetscReal, U::AbstractPetscVec, Udot::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeIFunctionLinear", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSComputeIFunctionLinear", "U")
+	Udot.ptr == C_NULL && throw_null_handle(Udot, "TSComputeIFunctionLinear", "Udot")
+	F.ptr == C_NULL && throw_null_handle(F, "TSComputeIFunctionLinear", "F")
 
     @chk ccall(
                (:TSComputeIFunctionLinear, $petsc_library),
@@ -1954,6 +2013,8 @@ function TSComputeIHessianProductFunctionPP(petsclib::PetscLibType, ts::Abstract
 end
 
 @for_petsc function TSComputeIHessianProductFunctionPP(petsclib::$UnionPetscLib, ts::AbstractTS, t::$PetscReal, U::AbstractPetscVec, Vl::Vector{<:AbstractPetscVec}, Vr::AbstractPetscVec, VHV::Vector{<:AbstractPetscVec} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeIHessianProductFunctionPP", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSComputeIHessianProductFunctionPP", "U")
 
     @chk ccall(
                (:TSComputeIHessianProductFunctionPP, $petsc_library),
@@ -1994,6 +2055,8 @@ function TSComputeIHessianProductFunctionPU(petsclib::PetscLibType, ts::Abstract
 end
 
 @for_petsc function TSComputeIHessianProductFunctionPU(petsclib::$UnionPetscLib, ts::AbstractTS, t::$PetscReal, U::AbstractPetscVec, Vl::Vector{<:AbstractPetscVec}, Vr::AbstractPetscVec, VHV::Vector{<:AbstractPetscVec} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeIHessianProductFunctionPU", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSComputeIHessianProductFunctionPU", "U")
 
     @chk ccall(
                (:TSComputeIHessianProductFunctionPU, $petsc_library),
@@ -2034,6 +2097,8 @@ function TSComputeIHessianProductFunctionUP(petsclib::PetscLibType, ts::Abstract
 end
 
 @for_petsc function TSComputeIHessianProductFunctionUP(petsclib::$UnionPetscLib, ts::AbstractTS, t::$PetscReal, U::AbstractPetscVec, Vl::Vector{<:AbstractPetscVec}, Vr::AbstractPetscVec, VHV::Vector{<:AbstractPetscVec} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeIHessianProductFunctionUP", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSComputeIHessianProductFunctionUP", "U")
 
     @chk ccall(
                (:TSComputeIHessianProductFunctionUP, $petsc_library),
@@ -2074,6 +2139,8 @@ function TSComputeIHessianProductFunctionUU(petsclib::PetscLibType, ts::Abstract
 end
 
 @for_petsc function TSComputeIHessianProductFunctionUU(petsclib::$UnionPetscLib, ts::AbstractTS, t::$PetscReal, U::AbstractPetscVec, Vl::Vector{<:AbstractPetscVec}, Vr::AbstractPetscVec, VHV::Vector{<:AbstractPetscVec} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeIHessianProductFunctionUU", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSComputeIHessianProductFunctionUU", "U")
 
     @chk ccall(
                (:TSComputeIHessianProductFunctionUU, $petsc_library),
@@ -2116,6 +2183,11 @@ function TSComputeIJacobian(petsclib::PetscLibType, ts::AbstractTS, t::Real, U::
 end
 
 @for_petsc function TSComputeIJacobian(petsclib::$UnionPetscLib, ts::AbstractTS, t::$PetscReal, U::AbstractPetscVec, Udot::AbstractPetscVec, shift::$PetscReal, A::AbstractPetscMat, B::AbstractPetscMat, imex::PetscBool )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeIJacobian", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSComputeIJacobian", "U")
+	Udot.ptr == C_NULL && throw_null_handle(Udot, "TSComputeIJacobian", "Udot")
+	A.ptr == C_NULL && throw_null_handle(A, "TSComputeIJacobian", "A")
+	B.ptr == C_NULL && throw_null_handle(B, "TSComputeIJacobian", "B")
 
     @chk ccall(
                (:TSComputeIJacobian, $petsc_library),
@@ -2158,6 +2230,7 @@ function TSComputeIJacobianConstant(petsclib::PetscLibType, ts::AbstractTS, t::R
 end
 
 @for_petsc function TSComputeIJacobianConstant(petsclib::$UnionPetscLib, ts::AbstractTS, t::$PetscReal, U::AbstractPetscVec, Udot::AbstractPetscVec, shift::$PetscReal, A::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid} )
+	A.ptr == C_NULL && throw_null_handle(A, "TSComputeIJacobianConstant", "A")
 
     @chk ccall(
                (:TSComputeIJacobianConstant, $petsc_library),
@@ -2200,6 +2273,9 @@ function TSComputeIJacobianDefaultColor(petsclib::PetscLibType, ts::AbstractTS, 
 end
 
 @for_petsc function TSComputeIJacobianDefaultColor(petsclib::$UnionPetscLib, ts::AbstractTS, t::$PetscReal, U::AbstractPetscVec, Udot::AbstractPetscVec, shift::$PetscReal, J::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeIJacobianDefaultColor", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSComputeIJacobianDefaultColor", "U")
+	B.ptr == C_NULL && throw_null_handle(B, "TSComputeIJacobianDefaultColor", "B")
 
     @chk ccall(
                (:TSComputeIJacobianDefaultColor, $petsc_library),
@@ -2241,6 +2317,9 @@ function TSComputeIJacobianP(petsclib::PetscLibType, ts::AbstractTS, t::Real, U:
 end
 
 @for_petsc function TSComputeIJacobianP(petsclib::$UnionPetscLib, ts::AbstractTS, t::$PetscReal, U::AbstractPetscVec, Udot::AbstractPetscVec, shift::$PetscReal, Amat::AbstractPetscMat, imex::PetscBool )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeIJacobianP", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSComputeIJacobianP", "U")
+	Udot.ptr == C_NULL && throw_null_handle(Udot, "TSComputeIJacobianP", "Udot")
 
     @chk ccall(
                (:TSComputeIJacobianP, $petsc_library),
@@ -2275,6 +2354,8 @@ function TSComputeInitialCondition(petsclib::PetscLibType, ts::AbstractTS, u::Ab
 end
 
 @for_petsc function TSComputeInitialCondition(petsclib::$UnionPetscLib, ts::AbstractTS, u::AbstractPetscVec )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeInitialCondition", "ts")
+	u.ptr == C_NULL && throw_null_handle(u, "TSComputeInitialCondition", "u")
 
     @chk ccall(
                (:TSComputeInitialCondition, $petsc_library),
@@ -2314,6 +2395,7 @@ function TSComputeLinearStability(petsclib::PetscLibType, ts::AbstractTS, xr::Re
 end
 
 @for_petsc function TSComputeLinearStability(petsclib::$UnionPetscLib, ts::AbstractTS, xr::$PetscReal, xi::$PetscReal )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeLinearStability", "ts")
 	yr_ = Ref{$PetscReal}()
 	yi_ = Ref{$PetscReal}()
 
@@ -2356,6 +2438,9 @@ function TSComputeRHSFunction(petsclib::PetscLibType, ts::AbstractTS, t::Real, U
 end
 
 @for_petsc function TSComputeRHSFunction(petsclib::$UnionPetscLib, ts::AbstractTS, t::$PetscReal, U::AbstractPetscVec, y::AbstractPetscVec )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeRHSFunction", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSComputeRHSFunction", "U")
+	y.ptr == C_NULL && throw_null_handle(y, "TSComputeRHSFunction", "y")
 
     @chk ccall(
                (:TSComputeRHSFunction, $petsc_library),
@@ -2395,6 +2480,9 @@ function TSComputeRHSFunctionLinear(petsclib::PetscLibType, ts::AbstractTS, t::R
 end
 
 @for_petsc function TSComputeRHSFunctionLinear(petsclib::$UnionPetscLib, ts::AbstractTS, t::$PetscReal, U::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeRHSFunctionLinear", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSComputeRHSFunctionLinear", "U")
+	F.ptr == C_NULL && throw_null_handle(F, "TSComputeRHSFunctionLinear", "F")
 
     @chk ccall(
                (:TSComputeRHSFunctionLinear, $petsc_library),
@@ -2435,6 +2523,8 @@ function TSComputeRHSHessianProductFunctionPP(petsclib::PetscLibType, ts::Abstra
 end
 
 @for_petsc function TSComputeRHSHessianProductFunctionPP(petsclib::$UnionPetscLib, ts::AbstractTS, t::$PetscReal, U::AbstractPetscVec, Vl::Vector{<:AbstractPetscVec}, Vr::AbstractPetscVec, VHV::Vector{<:AbstractPetscVec} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeRHSHessianProductFunctionPP", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSComputeRHSHessianProductFunctionPP", "U")
 
     @chk ccall(
                (:TSComputeRHSHessianProductFunctionPP, $petsc_library),
@@ -2475,6 +2565,8 @@ function TSComputeRHSHessianProductFunctionPU(petsclib::PetscLibType, ts::Abstra
 end
 
 @for_petsc function TSComputeRHSHessianProductFunctionPU(petsclib::$UnionPetscLib, ts::AbstractTS, t::$PetscReal, U::AbstractPetscVec, Vl::Vector{<:AbstractPetscVec}, Vr::AbstractPetscVec, VHV::Vector{<:AbstractPetscVec} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeRHSHessianProductFunctionPU", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSComputeRHSHessianProductFunctionPU", "U")
 
     @chk ccall(
                (:TSComputeRHSHessianProductFunctionPU, $petsc_library),
@@ -2515,6 +2607,8 @@ function TSComputeRHSHessianProductFunctionUP(petsclib::PetscLibType, ts::Abstra
 end
 
 @for_petsc function TSComputeRHSHessianProductFunctionUP(petsclib::$UnionPetscLib, ts::AbstractTS, t::$PetscReal, U::AbstractPetscVec, Vl::Vector{<:AbstractPetscVec}, Vr::AbstractPetscVec, VHV::Vector{<:AbstractPetscVec} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeRHSHessianProductFunctionUP", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSComputeRHSHessianProductFunctionUP", "U")
 
     @chk ccall(
                (:TSComputeRHSHessianProductFunctionUP, $petsc_library),
@@ -2555,6 +2649,8 @@ function TSComputeRHSHessianProductFunctionUU(petsclib::PetscLibType, ts::Abstra
 end
 
 @for_petsc function TSComputeRHSHessianProductFunctionUU(petsclib::$UnionPetscLib, ts::AbstractTS, t::$PetscReal, U::AbstractPetscVec, Vl::Vector{<:AbstractPetscVec}, Vr::AbstractPetscVec, VHV::Vector{<:AbstractPetscVec} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeRHSHessianProductFunctionUU", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSComputeRHSHessianProductFunctionUU", "U")
 
     @chk ccall(
                (:TSComputeRHSHessianProductFunctionUU, $petsc_library),
@@ -2595,6 +2691,8 @@ function TSComputeRHSJacobian(petsclib::PetscLibType, ts::AbstractTS, t::Real, U
 end
 
 @for_petsc function TSComputeRHSJacobian(petsclib::$UnionPetscLib, ts::AbstractTS, t::$PetscReal, U::AbstractPetscVec, A::AbstractPetscMat, B::AbstractPetscMat )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeRHSJacobian", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSComputeRHSJacobian", "U")
 
     @chk ccall(
                (:TSComputeRHSJacobian, $petsc_library),
@@ -2673,6 +2771,8 @@ function TSComputeRHSJacobianP(petsclib::PetscLibType, ts::AbstractTS, t::Real, 
 end
 
 @for_petsc function TSComputeRHSJacobianP(petsclib::$UnionPetscLib, ts::AbstractTS, t::$PetscReal, U::AbstractPetscVec, Amat::AbstractPetscMat )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeRHSJacobianP", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSComputeRHSJacobianP", "U")
 
     @chk ccall(
                (:TSComputeRHSJacobianP, $petsc_library),
@@ -2711,6 +2811,7 @@ function TSComputeSNESJacobian(petsclib::PetscLibType, ts::AbstractTS, x::Abstra
 end
 
 @for_petsc function TSComputeSNESJacobian(petsclib::$UnionPetscLib, ts::AbstractTS, x::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat )
+	x.ptr == C_NULL && throw_null_handle(x, "TSComputeSNESJacobian", "x")
 
     @chk ccall(
                (:TSComputeSNESJacobian, $petsc_library),
@@ -2748,6 +2849,8 @@ function TSComputeSolutionFunction(petsclib::PetscLibType, ts::AbstractTS, t::Re
 end
 
 @for_petsc function TSComputeSolutionFunction(petsclib::$UnionPetscLib, ts::AbstractTS, t::$PetscReal, U::AbstractPetscVec )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeSolutionFunction", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSComputeSolutionFunction", "U")
 
     @chk ccall(
                (:TSComputeSolutionFunction, $petsc_library),
@@ -2785,6 +2888,8 @@ function TSComputeTransientVariable(petsclib::PetscLibType, ts::AbstractTS, U::A
 end
 
 @for_petsc function TSComputeTransientVariable(petsclib::$UnionPetscLib, ts::AbstractTS, U::AbstractPetscVec, C::AbstractPetscVec )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSComputeTransientVariable", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSComputeTransientVariable", "U")
 
     @chk ccall(
                (:TSComputeTransientVariable, $petsc_library),
@@ -2859,6 +2964,7 @@ function TSCreateQuadratureTS(petsclib::PetscLibType, ts::AbstractTS, fwd::Petsc
 end
 
 @for_petsc function TSCreateQuadratureTS(petsclib::$UnionPetscLib, ts::AbstractTS, fwd::PetscBool )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSCreateQuadratureTS", "ts")
 	quadts_ = Ref{CTS}()
 
     @chk ccall(
@@ -2897,6 +3003,7 @@ function TSDIRKGetType(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSDIRKGetType(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSDIRKGetType", "ts")
 	dirktype_ = Ref{TSDIRKType}()
 
     @chk ccall(
@@ -2977,6 +3084,7 @@ function TSDIRKSetType(petsclib::PetscLibType, ts::AbstractTS, dirktype::String)
 end
 
 @for_petsc function TSDIRKSetType(petsclib::$UnionPetscLib, ts::AbstractTS, dirktype::String )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSDIRKSetType", "ts")
 
     @chk ccall(
                (:TSDIRKSetType, $petsc_library),
@@ -3018,6 +3126,8 @@ function TSDMSwarmMonitorMoments(petsclib::PetscLibType, ts::AbstractTS, step::I
 end
 
 @for_petsc function TSDMSwarmMonitorMoments(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, t::$PetscReal, U::AbstractPetscVec, vf::Vector{PetscViewerAndFormat} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSDMSwarmMonitorMoments", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSDMSwarmMonitorMoments", "U")
 
     @chk ccall(
                (:TSDMSwarmMonitorMoments, $petsc_library),
@@ -3151,6 +3261,7 @@ function TSDiscGradGetType(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSDiscGradGetType(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSDiscGradGetType", "ts")
 	dgtype_ = Ref{TSDGType}()
 
     @chk ccall(
@@ -3249,6 +3360,7 @@ function TSDiscGradSetType(petsclib::PetscLibType, ts::AbstractTS, dgtype::TSDGT
 end
 
 @for_petsc function TSDiscGradSetType(petsclib::$UnionPetscLib, ts::AbstractTS, dgtype::TSDGType )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSDiscGradSetType", "ts")
 
     @chk ccall(
                (:TSDiscGradSetType, $petsc_library),
@@ -3283,6 +3395,7 @@ function TSEIMEXSetMaxRows(petsclib::PetscLibType, ts::AbstractTS, nrows::Intege
 end
 
 @for_petsc function TSEIMEXSetMaxRows(petsclib::$UnionPetscLib, ts::AbstractTS, nrows::$PetscInt )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSEIMEXSetMaxRows", "ts")
 
     @chk ccall(
                (:TSEIMEXSetMaxRows, $petsc_library),
@@ -3317,6 +3430,7 @@ function TSEIMEXSetOrdAdapt(petsclib::PetscLibType, ts::AbstractTS, flg::PetscBo
 end
 
 @for_petsc function TSEIMEXSetOrdAdapt(petsclib::$UnionPetscLib, ts::AbstractTS, flg::PetscBool )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSEIMEXSetOrdAdapt", "ts")
 
     @chk ccall(
                (:TSEIMEXSetOrdAdapt, $petsc_library),
@@ -3352,6 +3466,7 @@ function TSEIMEXSetRowCol(petsclib::PetscLibType, ts::AbstractTS, row::Integer, 
 end
 
 @for_petsc function TSEIMEXSetRowCol(petsclib::$UnionPetscLib, ts::AbstractTS, row::$PetscInt, col::$PetscInt )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSEIMEXSetRowCol", "ts")
 
     @chk ccall(
                (:TSEIMEXSetRowCol, $petsc_library),
@@ -3397,6 +3512,9 @@ function TSErrorWeightedENorm(petsclib::PetscLibType, ts::AbstractTS, E::Abstrac
 end
 
 @for_petsc function TSErrorWeightedENorm(petsclib::$UnionPetscLib, ts::AbstractTS, E::AbstractPetscVec, U::AbstractPetscVec, Y::AbstractPetscVec, wnormtype::NormType )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSErrorWeightedENorm", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSErrorWeightedENorm", "U")
+	Y.ptr == C_NULL && throw_null_handle(Y, "TSErrorWeightedENorm", "Y")
 	norm_ = Ref{$PetscReal}()
 	norma_ = Ref{$PetscReal}()
 	normr_ = Ref{$PetscReal}()
@@ -3447,6 +3565,9 @@ function TSErrorWeightedNorm(petsclib::PetscLibType, ts::AbstractTS, U::Abstract
 end
 
 @for_petsc function TSErrorWeightedNorm(petsclib::$UnionPetscLib, ts::AbstractTS, U::AbstractPetscVec, Y::AbstractPetscVec, wnormtype::NormType )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSErrorWeightedNorm", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSErrorWeightedNorm", "U")
+	Y.ptr == C_NULL && throw_null_handle(Y, "TSErrorWeightedNorm", "Y")
 	norm_ = Ref{$PetscReal}()
 	norma_ = Ref{$PetscReal}()
 	normr_ = Ref{$PetscReal}()
@@ -3491,6 +3612,8 @@ function TSEvaluateStep(petsclib::PetscLibType, ts::AbstractTS, order::Integer, 
 end
 
 @for_petsc function TSEvaluateStep(petsclib::$UnionPetscLib, ts::AbstractTS, order::$PetscInt, U::AbstractPetscVec )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSEvaluateStep", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSEvaluateStep", "U")
 	done_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3535,6 +3658,7 @@ function TSEvaluateWLTE(petsclib::PetscLibType, ts::AbstractTS, wnormtype::NormT
 end
 
 @for_petsc function TSEvaluateWLTE(petsclib::$UnionPetscLib, ts::AbstractTS, wnormtype::NormType )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSEvaluateWLTE", "ts")
 	order_ = Ref{$PetscInt}()
 	wlte_ = Ref{$PetscReal}()
 
@@ -3600,6 +3724,7 @@ function TSForwardCostIntegral(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSForwardCostIntegral(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSForwardCostIntegral", "ts")
 
     @chk ccall(
                (:TSForwardCostIntegral, $petsc_library),
@@ -3635,6 +3760,7 @@ function TSForwardGetSensitivities(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSForwardGetSensitivities(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSForwardGetSensitivities", "ts")
 	nump_ = Ref{$PetscInt}()
 	Smat_ = Ref{CMat}()
 
@@ -3674,6 +3800,7 @@ function TSForwardGetStages(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSForwardGetStages(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSForwardGetStages", "ts")
 	ns_ = Ref{$PetscInt}()
 	S_ = Ref{CMat}()
 
@@ -3711,6 +3838,7 @@ function TSForwardReset(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSForwardReset(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSForwardReset", "ts")
 
     @chk ccall(
                (:TSForwardReset, $petsc_library),
@@ -3745,6 +3873,8 @@ function TSForwardSetInitialSensitivities(petsclib::PetscLibType, ts::AbstractTS
 end
 
 @for_petsc function TSForwardSetInitialSensitivities(petsclib::$UnionPetscLib, ts::AbstractTS, didp::AbstractPetscMat )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSForwardSetInitialSensitivities", "ts")
+	didp.ptr == C_NULL && throw_null_handle(didp, "TSForwardSetInitialSensitivities", "didp")
 
     @chk ccall(
                (:TSForwardSetInitialSensitivities, $petsc_library),
@@ -3780,6 +3910,8 @@ function TSForwardSetSensitivities(petsclib::PetscLibType, ts::AbstractTS, nump:
 end
 
 @for_petsc function TSForwardSetSensitivities(petsclib::$UnionPetscLib, ts::AbstractTS, nump::$PetscInt, Smat::AbstractPetscMat )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSForwardSetSensitivities", "ts")
+	Smat.ptr == C_NULL && throw_null_handle(Smat, "TSForwardSetSensitivities", "Smat")
 
     @chk ccall(
                (:TSForwardSetSensitivities, $petsc_library),
@@ -3814,6 +3946,7 @@ function TSForwardSetUp(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSForwardSetUp(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSForwardSetUp", "ts")
 
     @chk ccall(
                (:TSForwardSetUp, $petsc_library),
@@ -3847,6 +3980,7 @@ function TSForwardStep(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSForwardStep(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSForwardStep", "ts")
 
     @chk ccall(
                (:TSForwardStep, $petsc_library),
@@ -3885,6 +4019,8 @@ function TSFunctionDomainError(petsclib::PetscLibType, ts::AbstractTS, stagetime
 end
 
 @for_petsc function TSFunctionDomainError(petsclib::$UnionPetscLib, ts::AbstractTS, stagetime::$PetscReal, Y::AbstractPetscVec )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSFunctionDomainError", "ts")
+	Y.ptr == C_NULL && throw_null_handle(Y, "TSFunctionDomainError", "Y")
 	accept_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3951,6 +4087,7 @@ function TSGLEEGetType(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGLEEGetType(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGLEEGetType", "ts")
 	gleetype_ = Ref{TSGLEEType}()
 
     @chk ccall(
@@ -4122,6 +4259,7 @@ function TSGLEESetType(petsclib::PetscLibType, ts::AbstractTS, gleetype::String)
 end
 
 @for_petsc function TSGLEESetType(petsclib::$UnionPetscLib, ts::AbstractTS, gleetype::String )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGLEESetType", "ts")
 
     @chk ccall(
                (:TSGLEESetType, $petsc_library),
@@ -4220,6 +4358,7 @@ function TSGLLEGetAdapt(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGLLEGetAdapt(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGLLEGetAdapt", "ts")
 	adapt_ = Ref{TSGLLEAdapt}()
 
     @chk ccall(
@@ -4321,6 +4460,7 @@ function TSGLLESetAcceptType(petsclib::PetscLibType, ts::AbstractTS, type::Strin
 end
 
 @for_petsc function TSGLLESetAcceptType(petsclib::$UnionPetscLib, ts::AbstractTS, type::String )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGLLESetAcceptType", "ts")
 
     @chk ccall(
                (:TSGLLESetAcceptType, $petsc_library),
@@ -4359,6 +4499,7 @@ function TSGLLESetType(petsclib::PetscLibType, ts::AbstractTS, type::String)
 end
 
 @for_petsc function TSGLLESetType(petsclib::$UnionPetscLib, ts::AbstractTS, type::String )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGLLESetType", "ts")
 
     @chk ccall(
                (:TSGLLESetType, $petsc_library),
@@ -4395,6 +4536,7 @@ function TSGetAdapt(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetAdapt(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetAdapt", "ts")
 	adapt_ = Ref{TSAdapt}()
 
     @chk ccall(
@@ -4434,6 +4576,7 @@ function TSGetApplicationContext(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetApplicationContext(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetApplicationContext", "ts")
 	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
@@ -4471,6 +4614,7 @@ function TSGetAuxSolution(petsclib::PetscLibType, ts::AbstractTS, v::AbstractPet
 end
 
 @for_petsc function TSGetAuxSolution(petsclib::$UnionPetscLib, ts::AbstractTS, v::AbstractPetscVec )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetAuxSolution", "ts")
 	v_ = Ref(v.ptr)
 
     @chk ccall(
@@ -4629,6 +4773,7 @@ function TSGetConvergedReason(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetConvergedReason(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetConvergedReason", "ts")
 	reason_ = Ref{TSConvergedReason}()
 
     @chk ccall(
@@ -4669,6 +4814,7 @@ function TSGetCostGradients(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetCostGradients(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetCostGradients", "ts")
 	numcost_ = Ref{$PetscInt}()
 	lambda_ = Ref{Ptr{CVec}}()
 	mu_ = Ref{Ptr{CVec}}()
@@ -4714,6 +4860,7 @@ function TSGetCostHessianProducts(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetCostHessianProducts(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetCostHessianProducts", "ts")
 	numcost_ = Ref{$PetscInt}()
 	lambda2_ = Ref{Ptr{CVec}}()
 	mu2_ = Ref{Ptr{CVec}}()
@@ -4759,6 +4906,7 @@ function TSGetCostIntegral(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetCostIntegral(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetCostIntegral", "ts")
 	v_ = Ref{CVec}()
 
     @chk ccall(
@@ -4797,6 +4945,7 @@ function TSGetDM(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetDM(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetDM", "ts")
 	dm_ = Ref{CDM}()
 
     @chk ccall(
@@ -4835,6 +4984,7 @@ function TSGetEquationType(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetEquationType(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetEquationType", "ts")
 	equation_type_ = Ref{TSEquationType}()
 
     @chk ccall(
@@ -4873,6 +5023,7 @@ function TSGetEvaluationSolutions(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetEvaluationSolutions(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetEvaluationSolutions", "ts")
 	nsol_ = Ref{$PetscInt}()
 	sol_times_ = Ref{Ptr{$PetscReal}}()
 	Sols_ = Ref{Ptr{CVec}}()
@@ -4916,6 +5067,7 @@ function TSGetEvaluationTimes(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetEvaluationTimes(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetEvaluationTimes", "ts")
 	n_ = Ref{$PetscInt}()
 	time_points_ = Ref{Ptr{$PetscReal}}()
 
@@ -4956,6 +5108,7 @@ function TSGetExactFinalTime(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetExactFinalTime(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetExactFinalTime", "ts")
 	eftopt_ = Ref{TSExactFinalTimeOption}()
 
     @chk ccall(
@@ -4996,6 +5149,7 @@ function TSGetI2Function(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetI2Function(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetI2Function", "ts")
 	r_ = Ref{CVec}()
 	fun_ = Ref{Ptr{Cvoid}}()
 	ctx_ = Ref{Ptr{Cvoid}}()
@@ -5041,6 +5195,7 @@ function TSGetI2Jacobian(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetI2Jacobian(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetI2Jacobian", "ts")
 	J_ = Ref{CMat}()
 	P_ = Ref{CMat}()
 	jac_ = Ref{Ptr{Cvoid}}()
@@ -5087,6 +5242,7 @@ function TSGetIFunction(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetIFunction(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetIFunction", "ts")
 	r_ = Ref{CVec}()
 	func_ = Ref{Ptr{Cvoid}}()
 	ctx_ = Ref{Ptr{Cvoid}}()
@@ -5132,6 +5288,7 @@ function TSGetIJacobian(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetIJacobian(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetIJacobian", "ts")
 	Amat_ = Ref{CMat}()
 	Pmat_ = Ref{CMat}()
 	f_ = Ref{Ptr{Cvoid}}()
@@ -5226,6 +5383,7 @@ function TSGetKSP(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetKSP(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetKSP", "ts")
 	ksp_ = Ref{CKSP}()
 
     @chk ccall(
@@ -5265,6 +5423,7 @@ function TSGetKSPIterations(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetKSPIterations(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetKSPIterations", "ts")
 	lits_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -5303,6 +5462,7 @@ function TSGetMaxSteps(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetMaxSteps(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetMaxSteps", "ts")
 	maxsteps_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -5341,6 +5501,7 @@ function TSGetMaxTime(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetMaxTime(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetMaxTime", "ts")
 	maxtime_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -5418,6 +5579,7 @@ function TSGetOptionsPrefix(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetOptionsPrefix(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetOptionsPrefix", "ts")
 	prefix_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -5456,6 +5618,7 @@ function TSGetPrevTime(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetPrevTime(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetPrevTime", "ts")
 	t_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -5499,6 +5662,7 @@ function TSGetProblemType(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetProblemType(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetProblemType", "ts")
 	type_ = Ref{TSProblemType}()
 
     @chk ccall(
@@ -5536,6 +5700,7 @@ function TSGetQuadratureTS(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetQuadratureTS(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetQuadratureTS", "ts")
 	fwd_ = Ref{PetscBool}()
 	quadts_ = Ref{CTS}()
 
@@ -5578,6 +5743,7 @@ function TSGetRHSFunction(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetRHSFunction(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetRHSFunction", "ts")
 	r_ = Ref{CVec}()
 	func_ = Ref{Ptr{Cvoid}}()
 	ctx_ = Ref{Ptr{Cvoid}}()
@@ -5623,6 +5789,7 @@ function TSGetRHSJacobian(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetRHSJacobian(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetRHSJacobian", "ts")
 	Amat_ = Ref{CMat}()
 	Pmat_ = Ref{CMat}()
 	func_ = Ref{Ptr{Cvoid}}()
@@ -5711,6 +5878,7 @@ function TSGetRunSteps(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetRunSteps(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetRunSteps", "ts")
 	runsteps_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -5750,6 +5918,7 @@ function TSGetSNES(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetSNES(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetSNES", "ts")
 	snes_ = Ref{CSNES}()
 
     @chk ccall(
@@ -5788,6 +5957,7 @@ function TSGetSNESFailures(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetSNESFailures(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetSNESFailures", "ts")
 	fails_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -5827,6 +5997,7 @@ function TSGetSNESIterations(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetSNESIterations(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetSNESIterations", "ts")
 	nits_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -5868,6 +6039,7 @@ function TSGetSolution(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetSolution(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetSolution", "ts")
 	v_ = Ref{CVec}()
 
     @chk ccall(
@@ -5912,6 +6084,7 @@ function TSGetSolutionComponents(petsclib::PetscLibType, ts::AbstractTS, v::Abst
 end
 
 @for_petsc function TSGetSolutionComponents(petsclib::$UnionPetscLib, ts::AbstractTS, v::AbstractPetscVec )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetSolutionComponents", "ts")
 	n_ = Ref{$PetscInt}()
 	v_ = Ref(v.ptr)
 
@@ -5952,6 +6125,7 @@ function TSGetSolveTime(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetSolveTime(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetSolveTime", "ts")
 	ftime_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -5989,6 +6163,7 @@ function TSGetStages(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetStages(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetStages", "ts")
 	ns_ = Ref{$PetscInt}()
 	Y_ = Ref{CVec}()
 
@@ -6029,6 +6204,7 @@ function TSGetStepNumber(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetStepNumber(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetStepNumber", "ts")
 	steps_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -6067,6 +6243,7 @@ function TSGetStepRejections(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetStepRejections(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetStepRejections", "ts")
 	rejects_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -6105,6 +6282,7 @@ function TSGetStepResize(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetStepResize(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetStepResize", "ts")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -6143,6 +6321,7 @@ function TSGetStepRollBack(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetStepRollBack(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetStepRollBack", "ts")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -6181,6 +6360,7 @@ function TSGetTime(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetTime(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetTime", "ts")
 	t_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -6219,6 +6399,7 @@ function TSGetTimeError(petsclib::PetscLibType, ts::AbstractTS, n::Integer, v::A
 end
 
 @for_petsc function TSGetTimeError(petsclib::$UnionPetscLib, ts::AbstractTS, n::$PetscInt, v::AbstractPetscVec )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetTimeError", "ts")
 	v_ = Ref(v.ptr)
 
     @chk ccall(
@@ -6257,6 +6438,7 @@ function TSGetTimeStep(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetTimeStep(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetTimeStep", "ts")
 	dt_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -6341,6 +6523,7 @@ function TSGetTrajectory(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetTrajectory(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetTrajectory", "ts")
 	tr_ = Ref{TSTrajectory}()
 
     @chk ccall(
@@ -6379,6 +6562,7 @@ function TSGetType(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetType(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetType", "ts")
 	type_ = Ref{TSType}()
 
     @chk ccall(
@@ -6417,6 +6601,7 @@ function TSGetUseSplitRHSFunction(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSGetUseSplitRHSFunction(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSGetUseSplitRHSFunction", "ts")
 	use_splitrhsfunction_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -6455,6 +6640,7 @@ function TSHasTransientVariable(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSHasTransientVariable(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSHasTransientVariable", "ts")
 	has_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -6519,6 +6705,7 @@ function TSIRKGetNumStages(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSIRKGetNumStages(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSIRKGetNumStages", "ts")
 	nstages_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -6557,6 +6744,7 @@ function TSIRKGetType(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSIRKGetType(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSIRKGetType", "ts")
 	irktype_ = Ref{TSIRKType}()
 
     @chk ccall(
@@ -6687,6 +6875,7 @@ function TSIRKSetNumStages(petsclib::PetscLibType, ts::AbstractTS, nstages::Inte
 end
 
 @for_petsc function TSIRKSetNumStages(petsclib::$UnionPetscLib, ts::AbstractTS, nstages::$PetscInt )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSIRKSetNumStages", "ts")
 
     @chk ccall(
                (:TSIRKSetNumStages, $petsc_library),
@@ -6724,6 +6913,7 @@ function TSIRKSetType(petsclib::PetscLibType, ts::AbstractTS, irktype::String)
 end
 
 @for_petsc function TSIRKSetType(petsclib::$UnionPetscLib, ts::AbstractTS, irktype::String )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSIRKSetType", "ts")
 
     @chk ccall(
                (:TSIRKSetType, $petsc_library),
@@ -6831,6 +7021,8 @@ function TSInterpolate(petsclib::PetscLibType, ts::AbstractTS, t::Real, U::Abstr
 end
 
 @for_petsc function TSInterpolate(petsclib::$UnionPetscLib, ts::AbstractTS, t::$PetscReal, U::AbstractPetscVec )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSInterpolate", "ts")
+	U.ptr == C_NULL && throw_null_handle(U, "TSInterpolate", "U")
 
     @chk ccall(
                (:TSInterpolate, $petsc_library),
@@ -6866,6 +7058,7 @@ function TSLoad(petsclib::PetscLibType, ts::AbstractTS, viewer::PetscViewer)
 end
 
 @for_petsc function TSLoad(petsclib::$UnionPetscLib, ts::AbstractTS, viewer::PetscViewer )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSLoad", "ts")
 
     @chk ccall(
                (:TSLoad, $petsc_library),
@@ -6930,6 +7123,7 @@ function TSMPRKGetType(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSMPRKGetType(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSMPRKGetType", "ts")
 	mprktype_ = Ref{TSMPRKType}()
 
     @chk ccall(
@@ -7075,6 +7269,7 @@ function TSMPRKSetType(petsclib::PetscLibType, ts::AbstractTS, mprktype::String)
 end
 
 @for_petsc function TSMPRKSetType(petsclib::$UnionPetscLib, ts::AbstractTS, mprktype::String )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSMPRKSetType", "ts")
 
     @chk ccall(
                (:TSMPRKSetType, $petsc_library),
@@ -7111,6 +7306,8 @@ function TSMonitor(petsclib::PetscLibType, ts::AbstractTS, step::Integer, ptime:
 end
 
 @for_petsc function TSMonitor(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, u::AbstractPetscVec )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSMonitor", "ts")
+	u.ptr == C_NULL && throw_null_handle(u, "TSMonitor", "u")
 
     @chk ccall(
                (:TSMonitor, $petsc_library),
@@ -7144,6 +7341,7 @@ function TSMonitorCancel(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSMonitorCancel(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSMonitorCancel", "ts")
 
     @chk ccall(
                (:TSMonitorCancel, $petsc_library),
@@ -7181,6 +7379,7 @@ function TSMonitorDMDARay(petsclib::PetscLibType, ts::AbstractTS, steps::Integer
 end
 
 @for_petsc function TSMonitorDMDARay(petsclib::$UnionPetscLib, ts::AbstractTS, steps::$PetscInt, time::$PetscReal, u::AbstractPetscVec, mctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSMonitorDMDARay", "ts")
 
     @chk ccall(
                (:TSMonitorDMDARay, $petsc_library),
@@ -7295,6 +7494,8 @@ function TSMonitorDrawError(petsclib::PetscLibType, ts::AbstractTS, step::Intege
 end
 
 @for_petsc function TSMonitorDrawError(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, u::AbstractPetscVec, Ctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSMonitorDrawError", "ts")
+	u.ptr == C_NULL && throw_null_handle(u, "TSMonitorDrawError", "u")
 
     @chk ccall(
                (:TSMonitorDrawError, $petsc_library),
@@ -7337,6 +7538,7 @@ function TSMonitorDrawSolution(petsclib::PetscLibType, ts::AbstractTS, step::Int
 end
 
 @for_petsc function TSMonitorDrawSolution(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, u::AbstractPetscVec, ctx::Ptr{Cvoid} )
+	u.ptr == C_NULL && throw_null_handle(u, "TSMonitorDrawSolution", "u")
 
     @chk ccall(
                (:TSMonitorDrawSolution, $petsc_library),
@@ -7378,6 +7580,8 @@ function TSMonitorDrawSolutionFunction(petsclib::PetscLibType, ts::AbstractTS, s
 end
 
 @for_petsc function TSMonitorDrawSolutionFunction(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, u::AbstractPetscVec, Ctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSMonitorDrawSolutionFunction", "ts")
+	u.ptr == C_NULL && throw_null_handle(u, "TSMonitorDrawSolutionFunction", "u")
 
     @chk ccall(
                (:TSMonitorDrawSolutionFunction, $petsc_library),
@@ -7415,6 +7619,7 @@ function TSMonitorDrawSolutionPhase(petsclib::PetscLibType, ts::AbstractTS, step
 end
 
 @for_petsc function TSMonitorDrawSolutionPhase(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, u::AbstractPetscVec, ctx::Ptr{Cvoid} )
+	u.ptr == C_NULL && throw_null_handle(u, "TSMonitorDrawSolutionPhase", "u")
 
     @chk ccall(
                (:TSMonitorDrawSolutionPhase, $petsc_library),
@@ -7536,6 +7741,7 @@ function TSMonitorError(petsclib::PetscLibType, ts::AbstractTS, step::Integer, p
 end
 
 @for_petsc function TSMonitorError(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, u::AbstractPetscVec, vf::Vector{PetscViewerAndFormat} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSMonitorError", "ts")
 
     @chk ccall(
                (:TSMonitorError, $petsc_library),
@@ -7612,6 +7818,8 @@ function TSMonitorHGSwarmSolution(petsclib::PetscLibType, ts::AbstractTS, step::
 end
 
 @for_petsc function TSMonitorHGSwarmSolution(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, u::AbstractPetscVec, dctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSMonitorHGSwarmSolution", "ts")
+	u.ptr == C_NULL && throw_null_handle(u, "TSMonitorHGSwarmSolution", "u")
 
     @chk ccall(
                (:TSMonitorHGSwarmSolution, $petsc_library),
@@ -7649,6 +7857,7 @@ function TSMonitorLGDMDARay(petsclib::PetscLibType, ts::AbstractTS, step::Intege
 end
 
 @for_petsc function TSMonitorLGDMDARay(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, u::AbstractPetscVec, ctx::Ptr{Cvoid} )
+	u.ptr == C_NULL && throw_null_handle(u, "TSMonitorLGDMDARay", "u")
 
     @chk ccall(
                (:TSMonitorLGDMDARay, $petsc_library),
@@ -7690,6 +7899,8 @@ function TSMonitorLGError(petsclib::PetscLibType, ts::AbstractTS, step::Integer,
 end
 
 @for_petsc function TSMonitorLGError(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, u::AbstractPetscVec, Ctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSMonitorLGError", "ts")
+	u.ptr == C_NULL && throw_null_handle(u, "TSMonitorLGError", "u")
 
     @chk ccall(
                (:TSMonitorLGError, $petsc_library),
@@ -7765,6 +7976,7 @@ function TSMonitorLGKSPIterations(petsclib::PetscLibType, ts::AbstractTS, n::Int
 end
 
 @for_petsc function TSMonitorLGKSPIterations(petsclib::$UnionPetscLib, ts::AbstractTS, n::$PetscInt, ptime::$PetscReal, v::AbstractPetscVec, monctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSMonitorLGKSPIterations", "ts")
 
     @chk ccall(
                (:TSMonitorLGKSPIterations, $petsc_library),
@@ -7802,6 +8014,7 @@ function TSMonitorLGSNESIterations(petsclib::PetscLibType, ts::AbstractTS, n::In
 end
 
 @for_petsc function TSMonitorLGSNESIterations(petsclib::$UnionPetscLib, ts::AbstractTS, n::$PetscInt, ptime::$PetscReal, v::AbstractPetscVec, monctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSMonitorLGSNESIterations", "ts")
 
     @chk ccall(
                (:TSMonitorLGSNESIterations, $petsc_library),
@@ -7992,6 +8205,7 @@ function TSMonitorLGTimeStep(petsclib::PetscLibType, ts::AbstractTS, step::Integ
 end
 
 @for_petsc function TSMonitorLGTimeStep(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, v::AbstractPetscVec, monctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSMonitorLGTimeStep", "ts")
 
     @chk ccall(
                (:TSMonitorLGTimeStep, $petsc_library),
@@ -8073,6 +8287,8 @@ function TSMonitorSPSwarmSolution(petsclib::PetscLibType, ts::AbstractTS, step::
 end
 
 @for_petsc function TSMonitorSPSwarmSolution(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, u::AbstractPetscVec, dctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSMonitorSPSwarmSolution", "ts")
+	u.ptr == C_NULL && throw_null_handle(u, "TSMonitorSPSwarmSolution", "u")
 
     @chk ccall(
                (:TSMonitorSPSwarmSolution, $petsc_library),
@@ -8394,6 +8610,7 @@ function TSMonitorWallClockTime(petsclib::PetscLibType, ts::AbstractTS, step::In
 end
 
 @for_petsc function TSMonitorWallClockTime(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, v::AbstractPetscVec, vf::Vector{PetscViewerAndFormat} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSMonitorWallClockTime", "ts")
 
     @chk ccall(
                (:TSMonitorWallClockTime, $petsc_library),
@@ -8459,6 +8676,7 @@ function TSPostEvaluate(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSPostEvaluate(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSPostEvaluate", "ts")
 
     @chk ccall(
                (:TSPostEvaluate, $petsc_library),
@@ -8495,6 +8713,7 @@ function TSPostStage(petsclib::PetscLibType, ts::AbstractTS, stagetime::Real, st
 end
 
 @for_petsc function TSPostStage(petsclib::$UnionPetscLib, ts::AbstractTS, stagetime::$PetscReal, stageindex::$PetscInt, Y::Vector{<:AbstractPetscVec} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSPostStage", "ts")
 
     @chk ccall(
                (:TSPostStage, $petsc_library),
@@ -8526,6 +8745,7 @@ function TSPostStep(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSPostStep(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSPostStep", "ts")
 
     @chk ccall(
                (:TSPostStep, $petsc_library),
@@ -8560,6 +8780,7 @@ function TSPreStage(petsclib::PetscLibType, ts::AbstractTS, stagetime::Real)
 end
 
 @for_petsc function TSPreStage(petsclib::$UnionPetscLib, ts::AbstractTS, stagetime::$PetscReal )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSPreStage", "ts")
 
     @chk ccall(
                (:TSPreStage, $petsc_library),
@@ -8593,6 +8814,7 @@ function TSPreStep(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSPreStep(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSPreStep", "ts")
 
     @chk ccall(
                (:TSPreStep, $petsc_library),
@@ -8628,6 +8850,7 @@ function TSPruneIJacobianColor(petsclib::PetscLibType, ts::AbstractTS, J::Abstra
 end
 
 @for_petsc function TSPruneIJacobianColor(petsclib::$UnionPetscLib, ts::AbstractTS, J::AbstractPetscMat, B::AbstractPetscMat )
+	B.ptr == C_NULL && throw_null_handle(B, "TSPruneIJacobianColor", "B")
 
     @chk ccall(
                (:TSPruneIJacobianColor, $petsc_library),
@@ -8668,6 +8891,8 @@ function TSPseudoComputeFunction(petsclib::PetscLibType, ts::AbstractTS, solutio
 end
 
 @for_petsc function TSPseudoComputeFunction(petsclib::$UnionPetscLib, ts::AbstractTS, solution::AbstractPetscVec )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSPseudoComputeFunction", "ts")
+	solution.ptr == C_NULL && throw_null_handle(solution, "TSPseudoComputeFunction", "solution")
 	residual_ = Ref{CVec}()
 	fnorm_ = Ref{$PetscReal}()
 
@@ -8709,6 +8934,7 @@ function TSPseudoIncrementDtFromInitialDt(petsclib::PetscLibType, ts::AbstractTS
 end
 
 @for_petsc function TSPseudoIncrementDtFromInitialDt(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSPseudoIncrementDtFromInitialDt", "ts")
 
     @chk ccall(
                (:TSPseudoIncrementDtFromInitialDt, $petsc_library),
@@ -8747,6 +8973,7 @@ function TSPseudoSetMaxTimeStep(petsclib::PetscLibType, ts::AbstractTS, maxdt::R
 end
 
 @for_petsc function TSPseudoSetMaxTimeStep(petsclib::$UnionPetscLib, ts::AbstractTS, maxdt::$PetscReal )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSPseudoSetMaxTimeStep", "ts")
 
     @chk ccall(
                (:TSPseudoSetMaxTimeStep, $petsc_library),
@@ -8826,6 +9053,7 @@ function TSPseudoSetTimeStepIncrement(petsclib::PetscLibType, ts::AbstractTS, in
 end
 
 @for_petsc function TSPseudoSetTimeStepIncrement(petsclib::$UnionPetscLib, ts::AbstractTS, inc::$PetscReal )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSPseudoSetTimeStepIncrement", "ts")
 
     @chk ccall(
                (:TSPseudoSetTimeStepIncrement, $petsc_library),
@@ -8906,6 +9134,7 @@ function TSPseudoTimeStepDefault(petsclib::PetscLibType, ts::AbstractTS, dtctx::
 end
 
 @for_petsc function TSPseudoTimeStepDefault(petsclib::$UnionPetscLib, ts::AbstractTS, dtctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSPseudoTimeStepDefault", "ts")
 	newdt_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -8944,6 +9173,7 @@ function TSPythonGetType(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSPythonGetType(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSPythonGetType", "ts")
 	pyname_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -8983,6 +9213,7 @@ function TSPythonSetType(petsclib::PetscLibType, ts::AbstractTS, pyname::String)
 end
 
 @for_petsc function TSPythonSetType(petsclib::$UnionPetscLib, ts::AbstractTS, pyname::String )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSPythonSetType", "ts")
 
     @chk ccall(
                (:TSPythonSetType, $petsc_library),
@@ -9056,6 +9287,7 @@ function TSRHSJacobianTest(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSRHSJacobianTest(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSRHSJacobianTest", "ts")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -9097,6 +9329,7 @@ function TSRHSJacobianTestTranspose(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSRHSJacobianTestTranspose(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSRHSJacobianTestTranspose", "ts")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -9136,6 +9369,7 @@ function TSRHSSplitGetIS(petsclib::PetscLibType, ts::AbstractTS, splitname::Stri
 end
 
 @for_petsc function TSRHSSplitGetIS(petsclib::$UnionPetscLib, ts::AbstractTS, splitname::String )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSRHSSplitGetIS", "ts")
 	is_ = Ref{CIS}()
 
     @chk ccall(
@@ -9175,6 +9409,7 @@ function TSRHSSplitGetSNES(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSRHSSplitGetSNES(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSRHSSplitGetSNES", "ts")
 	snes_ = Ref{CSNES}()
 
     @chk ccall(
@@ -9214,6 +9449,7 @@ function TSRHSSplitGetSubTS(petsclib::PetscLibType, ts::AbstractTS, splitname::S
 end
 
 @for_petsc function TSRHSSplitGetSubTS(petsclib::$UnionPetscLib, ts::AbstractTS, splitname::String )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSRHSSplitGetSubTS", "ts")
 	subts_ = Ref{CTS}()
 
     @chk ccall(
@@ -9253,6 +9489,7 @@ function TSRHSSplitGetSubTSs(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSRHSSplitGetSubTSs(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSRHSSplitGetSubTSs", "ts")
 	n_ = Ref{$PetscInt}()
 	subts_ = Ref{Ptr{CTS}}()
 
@@ -9294,6 +9531,7 @@ function TSRHSSplitSetIFunction(petsclib::PetscLibType, ts::AbstractTS, splitnam
 end
 
 @for_petsc function TSRHSSplitSetIFunction(petsclib::$UnionPetscLib, ts::AbstractTS, splitname::String, r::AbstractPetscVec, ifunc::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSRHSSplitSetIFunction", "ts")
 
     @chk ccall(
                (:TSRHSSplitSetIFunction, $petsc_library),
@@ -9332,6 +9570,7 @@ function TSRHSSplitSetIJacobian(petsclib::PetscLibType, ts::AbstractTS, splitnam
 end
 
 @for_petsc function TSRHSSplitSetIJacobian(petsclib::$UnionPetscLib, ts::AbstractTS, splitname::String, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, ijac::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSRHSSplitSetIJacobian", "ts")
 
     @chk ccall(
                (:TSRHSSplitSetIJacobian, $petsc_library),
@@ -9367,6 +9606,8 @@ function TSRHSSplitSetIS(petsclib::PetscLibType, ts::AbstractTS, splitname::Stri
 end
 
 @for_petsc function TSRHSSplitSetIS(petsclib::$UnionPetscLib, ts::AbstractTS, splitname::String, is::AbstractIS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSRHSSplitSetIS", "ts")
+	is.ptr == C_NULL && throw_null_handle(is, "TSRHSSplitSetIS", "is")
 
     @chk ccall(
                (:TSRHSSplitSetIS, $petsc_library),
@@ -9404,6 +9645,7 @@ function TSRHSSplitSetRHSFunction(petsclib::PetscLibType, ts::AbstractTS, splitn
 end
 
 @for_petsc function TSRHSSplitSetRHSFunction(petsclib::$UnionPetscLib, ts::AbstractTS, splitname::String, r::AbstractPetscVec, rhsfunc::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSRHSSplitSetRHSFunction", "ts")
 
     @chk ccall(
                (:TSRHSSplitSetRHSFunction, $petsc_library),
@@ -9439,6 +9681,8 @@ function TSRHSSplitSetSNES(petsclib::PetscLibType, ts::AbstractTS, snes::Abstrac
 end
 
 @for_petsc function TSRHSSplitSetSNES(petsclib::$UnionPetscLib, ts::AbstractTS, snes::AbstractSNES )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSRHSSplitSetSNES", "ts")
+	snes.ptr == C_NULL && throw_null_handle(snes, "TSRHSSplitSetSNES", "snes")
 
     @chk ccall(
                (:TSRHSSplitSetSNES, $petsc_library),
@@ -9541,6 +9785,7 @@ function TSRKGetOrder(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSRKGetOrder(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSRKGetOrder", "ts")
 	order_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -9586,6 +9831,7 @@ function TSRKGetTableau(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSRKGetTableau(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSRKGetTableau", "ts")
 	s_ = Ref{$PetscInt}()
 	A_ = Ref{Ptr{$PetscReal}}()
 	b_ = Ref{Ptr{$PetscReal}}()
@@ -9638,6 +9884,7 @@ function TSRKGetType(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSRKGetType(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSRKGetType", "ts")
 	rktype_ = Ref{TSRKType}()
 
     @chk ccall(
@@ -9812,6 +10059,7 @@ function TSRKSetType(petsclib::PetscLibType, ts::AbstractTS, rktype::String)
 end
 
 @for_petsc function TSRKSetType(petsclib::$UnionPetscLib, ts::AbstractTS, rktype::String )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSRKSetType", "ts")
 
     @chk ccall(
                (:TSRKSetType, $petsc_library),
@@ -9882,6 +10130,7 @@ function TSRemoveTrajectory(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSRemoveTrajectory(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSRemoveTrajectory", "ts")
 
     @chk ccall(
                (:TSRemoveTrajectory, $petsc_library),
@@ -9915,6 +10164,7 @@ function TSReset(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSReset(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSReset", "ts")
 
     @chk ccall(
                (:TSReset, $petsc_library),
@@ -9948,6 +10198,7 @@ function TSResetTrajectory(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSResetTrajectory(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSResetTrajectory", "ts")
 
     @chk ccall(
                (:TSResetTrajectory, $petsc_library),
@@ -9981,6 +10232,7 @@ function TSResize(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSResize(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSResize", "ts")
 
     @chk ccall(
                (:TSResize, $petsc_library),
@@ -10016,6 +10268,7 @@ function TSResizeRegisterVec(petsclib::PetscLibType, ts::AbstractTS, name::Strin
 end
 
 @for_petsc function TSResizeRegisterVec(petsclib::$UnionPetscLib, ts::AbstractTS, name::String, vec::AbstractPetscVec )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSResizeRegisterVec", "ts")
 
     @chk ccall(
                (:TSResizeRegisterVec, $petsc_library),
@@ -10051,6 +10304,7 @@ function TSResizeRetrieveVec(petsclib::PetscLibType, ts::AbstractTS, name::Strin
 end
 
 @for_petsc function TSResizeRetrieveVec(petsclib::$UnionPetscLib, ts::AbstractTS, name::String, vec::AbstractPetscVec )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSResizeRetrieveVec", "ts")
 	vec_ = Ref(vec.ptr)
 
     @chk ccall(
@@ -10086,6 +10340,7 @@ function TSRestartStep(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSRestartStep(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSRestartStep", "ts")
 
     @chk ccall(
                (:TSRestartStep, $petsc_library),
@@ -10119,6 +10374,7 @@ function TSRollBack(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSRollBack(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSRollBack", "ts")
 
     @chk ccall(
                (:TSRollBack, $petsc_library),
@@ -10183,6 +10439,7 @@ function TSRosWGetType(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSRosWGetType(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSRosWGetType", "ts")
 	rostype_ = Ref{TSRosWType}()
 
     @chk ccall(
@@ -10355,6 +10612,7 @@ function TSRosWSetRecomputeJacobian(petsclib::PetscLibType, ts::AbstractTS, flg:
 end
 
 @for_petsc function TSRosWSetRecomputeJacobian(petsclib::$UnionPetscLib, ts::AbstractTS, flg::PetscBool )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSRosWSetRecomputeJacobian", "ts")
 
     @chk ccall(
                (:TSRosWSetRecomputeJacobian, $petsc_library),
@@ -10389,6 +10647,7 @@ function TSRosWSetType(petsclib::PetscLibType, ts::AbstractTS, roswtype::String)
 end
 
 @for_petsc function TSRosWSetType(petsclib::$UnionPetscLib, ts::AbstractTS, roswtype::String )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSRosWSetType", "ts")
 
     @chk ccall(
                (:TSRosWSetType, $petsc_library),
@@ -10453,6 +10712,7 @@ function TSSSPGetNumStages(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSSSPGetNumStages(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSSPGetNumStages", "ts")
 	nstages_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -10491,6 +10751,7 @@ function TSSSPGetType(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSSSPGetType(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSSPGetType", "ts")
 	type_ = Ref{TSSSPType}()
 
     @chk ccall(
@@ -10560,6 +10821,7 @@ function TSSSPSetNumStages(petsclib::PetscLibType, ts::AbstractTS, nstages::Inte
 end
 
 @for_petsc function TSSSPSetNumStages(petsclib::$UnionPetscLib, ts::AbstractTS, nstages::$PetscInt )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSSPSetNumStages", "ts")
 
     @chk ccall(
                (:TSSSPSetNumStages, $petsc_library),
@@ -10598,6 +10860,7 @@ function TSSSPSetType(petsclib::PetscLibType, ts::AbstractTS, ssptype::String)
 end
 
 @for_petsc function TSSSPSetType(petsclib::$UnionPetscLib, ts::AbstractTS, ssptype::String )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSSPSetType", "ts")
 
     @chk ccall(
                (:TSSSPSetType, $petsc_library),
@@ -10633,6 +10896,7 @@ function TSSetApplicationContext(petsclib::PetscLibType, ts::AbstractTS, ctx::Pt
 end
 
 @for_petsc function TSSetApplicationContext(petsclib::$UnionPetscLib, ts::AbstractTS, ctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetApplicationContext", "ts")
 
     @chk ccall(
                (:TSSetApplicationContext, $petsc_library),
@@ -10665,6 +10929,7 @@ function TSSetCFLTimeLocal(petsclib::PetscLibType, ts::AbstractTS, cfltime::Real
 end
 
 @for_petsc function TSSetCFLTimeLocal(petsclib::$UnionPetscLib, ts::AbstractTS, cfltime::$PetscReal )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetCFLTimeLocal", "ts")
 
     @chk ccall(
                (:TSSetCFLTimeLocal, $petsc_library),
@@ -10777,6 +11042,7 @@ function TSSetConvergedReason(petsclib::PetscLibType, ts::AbstractTS, reason::TS
 end
 
 @for_petsc function TSSetConvergedReason(petsclib::$UnionPetscLib, ts::AbstractTS, reason::TSConvergedReason )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetConvergedReason", "ts")
 
     @chk ccall(
                (:TSSetConvergedReason, $petsc_library),
@@ -10814,6 +11080,7 @@ function TSSetCostGradients(petsclib::PetscLibType, ts::AbstractTS, numcost::Int
 end
 
 @for_petsc function TSSetCostGradients(petsclib::$UnionPetscLib, ts::AbstractTS, numcost::$PetscInt, lambda::Vector{<:AbstractPetscVec}, mu::Vector{<:AbstractPetscVec} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetCostGradients", "ts")
 
     @chk ccall(
                (:TSSetCostGradients, $petsc_library),
@@ -10852,6 +11119,7 @@ function TSSetCostHessianProducts(petsclib::PetscLibType, ts::AbstractTS, numcos
 end
 
 @for_petsc function TSSetCostHessianProducts(petsclib::$UnionPetscLib, ts::AbstractTS, numcost::$PetscInt, lambda2::Vector{<:AbstractPetscVec}, mu2::Vector{<:AbstractPetscVec}, dir::AbstractPetscVec )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetCostHessianProducts", "ts")
 
     @chk ccall(
                (:TSSetCostHessianProducts, $petsc_library),
@@ -10886,6 +11154,8 @@ function TSSetDM(petsclib::PetscLibType, ts::AbstractTS, dm::AbstractPetscDM)
 end
 
 @for_petsc function TSSetDM(petsclib::$UnionPetscLib, ts::AbstractTS, dm::AbstractPetscDM )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetDM", "ts")
+	dm.ptr == C_NULL && throw_null_handle(dm, "TSSetDM", "dm")
 
     @chk ccall(
                (:TSSetDM, $petsc_library),
@@ -10920,6 +11190,7 @@ function TSSetEquationType(petsclib::PetscLibType, ts::AbstractTS, equation_type
 end
 
 @for_petsc function TSSetEquationType(petsclib::$UnionPetscLib, ts::AbstractTS, equation_type::TSEquationType )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetEquationType", "ts")
 
     @chk ccall(
                (:TSSetEquationType, $petsc_library),
@@ -10957,6 +11228,7 @@ function TSSetErrorIfStepFails(petsclib::PetscLibType, ts::AbstractTS, err::Pets
 end
 
 @for_petsc function TSSetErrorIfStepFails(petsclib::$UnionPetscLib, ts::AbstractTS, err::PetscBool )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetErrorIfStepFails", "ts")
 
     @chk ccall(
                (:TSSetErrorIfStepFails, $petsc_library),
@@ -10995,6 +11267,7 @@ function TSSetEvaluationTimes(petsclib::PetscLibType, ts::AbstractTS, n::Integer
 end
 
 @for_petsc function TSSetEvaluationTimes(petsclib::$UnionPetscLib, ts::AbstractTS, n::$PetscInt, time_points::Vector{$PetscReal} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetEvaluationTimes", "ts")
 
     @chk ccall(
                (:TSSetEvaluationTimes, $petsc_library),
@@ -11101,6 +11374,7 @@ function TSSetEventTolerances(petsclib::PetscLibType, ts::AbstractTS, tol::Real,
 end
 
 @for_petsc function TSSetEventTolerances(petsclib::$UnionPetscLib, ts::AbstractTS, tol::$PetscReal, vtol::Vector{$PetscReal} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetEventTolerances", "ts")
 
     @chk ccall(
                (:TSSetEventTolerances, $petsc_library),
@@ -11146,6 +11420,7 @@ function TSSetExactFinalTime(petsclib::PetscLibType, ts::AbstractTS, eftopt::TSE
 end
 
 @for_petsc function TSSetExactFinalTime(petsclib::$UnionPetscLib, ts::AbstractTS, eftopt::TSExactFinalTimeOption )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetExactFinalTime", "ts")
 
     @chk ccall(
                (:TSSetExactFinalTime, $petsc_library),
@@ -11183,6 +11458,7 @@ function TSSetForcingFunction(petsclib::PetscLibType, ts::AbstractTS, func::Ptr{
 end
 
 @for_petsc function TSSetForcingFunction(petsclib::$UnionPetscLib, ts::AbstractTS, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetForcingFunction", "ts")
 
     @chk ccall(
                (:TSSetForcingFunction, $petsc_library),
@@ -11258,6 +11534,7 @@ function TSSetFromOptions(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSSetFromOptions(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetFromOptions", "ts")
 
     @chk ccall(
                (:TSSetFromOptions, $petsc_library),
@@ -11335,6 +11612,7 @@ function TSSetI2Function(petsclib::PetscLibType, ts::AbstractTS, F::AbstractPets
 end
 
 @for_petsc function TSSetI2Function(petsclib::$UnionPetscLib, ts::AbstractTS, F::AbstractPetscVec, fun::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetI2Function", "ts")
 
     @chk ccall(
                (:TSSetI2Function, $petsc_library),
@@ -11373,6 +11651,7 @@ function TSSetI2Jacobian(petsclib::PetscLibType, ts::AbstractTS, J::AbstractPets
 end
 
 @for_petsc function TSSetI2Jacobian(petsclib::$UnionPetscLib, ts::AbstractTS, J::AbstractPetscMat, P::AbstractPetscMat, jac::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetI2Jacobian", "ts")
 
     @chk ccall(
                (:TSSetI2Jacobian, $petsc_library),
@@ -11410,6 +11689,7 @@ function TSSetIFunction(petsclib::PetscLibType, ts::AbstractTS, r::AbstractPetsc
 end
 
 @for_petsc function TSSetIFunction(petsclib::$UnionPetscLib, ts::AbstractTS, r::AbstractPetscVec, f::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetIFunction", "ts")
 
     @chk ccall(
                (:TSSetIFunction, $petsc_library),
@@ -11500,6 +11780,7 @@ function TSSetIJacobian(petsclib::PetscLibType, ts::AbstractTS, Amat::AbstractPe
 end
 
 @for_petsc function TSSetIJacobian(petsclib::$UnionPetscLib, ts::AbstractTS, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, f::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetIJacobian", "ts")
 
     @chk ccall(
                (:TSSetIJacobian, $petsc_library),
@@ -11579,6 +11860,7 @@ function TSSetMatStructure(petsclib::PetscLibType, ts::AbstractTS, str::MatStruc
 end
 
 @for_petsc function TSSetMatStructure(petsclib::$UnionPetscLib, ts::AbstractTS, str::MatStructure )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetMatStructure", "ts")
 
     @chk ccall(
                (:TSSetMatStructure, $petsc_library),
@@ -11617,6 +11899,7 @@ function TSSetMaxSNESFailures(petsclib::PetscLibType, ts::AbstractTS, fails::Int
 end
 
 @for_petsc function TSSetMaxSNESFailures(petsclib::$UnionPetscLib, ts::AbstractTS, fails::$PetscInt )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetMaxSNESFailures", "ts")
 
     @chk ccall(
                (:TSSetMaxSNESFailures, $petsc_library),
@@ -11655,6 +11938,7 @@ function TSSetMaxStepRejections(petsclib::PetscLibType, ts::AbstractTS, rejects:
 end
 
 @for_petsc function TSSetMaxStepRejections(petsclib::$UnionPetscLib, ts::AbstractTS, rejects::$PetscInt )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetMaxStepRejections", "ts")
 
     @chk ccall(
                (:TSSetMaxStepRejections, $petsc_library),
@@ -11692,6 +11976,7 @@ function TSSetMaxSteps(petsclib::PetscLibType, ts::AbstractTS, maxsteps::Integer
 end
 
 @for_petsc function TSSetMaxSteps(petsclib::$UnionPetscLib, ts::AbstractTS, maxsteps::$PetscInt )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetMaxSteps", "ts")
 
     @chk ccall(
                (:TSSetMaxSteps, $petsc_library),
@@ -11729,6 +12014,7 @@ function TSSetMaxTime(petsclib::PetscLibType, ts::AbstractTS, maxtime::Real)
 end
 
 @for_petsc function TSSetMaxTime(petsclib::$UnionPetscLib, ts::AbstractTS, maxtime::$PetscReal )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetMaxTime", "ts")
 
     @chk ccall(
                (:TSSetMaxTime, $petsc_library),
@@ -11764,6 +12050,7 @@ function TSSetOptionsPrefix(petsclib::PetscLibType, ts::AbstractTS, prefix::Stri
 end
 
 @for_petsc function TSSetOptionsPrefix(petsclib::$UnionPetscLib, ts::AbstractTS, prefix::String )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetOptionsPrefix", "ts")
 
     @chk ccall(
                (:TSSetOptionsPrefix, $petsc_library),
@@ -12071,6 +12358,7 @@ function TSSetProblemType(petsclib::PetscLibType, ts::AbstractTS, type::TSProble
 end
 
 @for_petsc function TSSetProblemType(petsclib::$UnionPetscLib, ts::AbstractTS, type::TSProblemType )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetProblemType", "ts")
 
     @chk ccall(
                (:TSSetProblemType, $petsc_library),
@@ -12108,6 +12396,7 @@ function TSSetRHSFunction(petsclib::PetscLibType, ts::AbstractTS, r::AbstractPet
 end
 
 @for_petsc function TSSetRHSFunction(petsclib::$UnionPetscLib, ts::AbstractTS, r::AbstractPetscVec, f::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetRHSFunction", "ts")
 
     @chk ccall(
                (:TSSetRHSFunction, $petsc_library),
@@ -12200,6 +12489,7 @@ function TSSetRHSJacobian(petsclib::PetscLibType, ts::AbstractTS, Amat::Abstract
 end
 
 @for_petsc function TSSetRHSJacobian(petsclib::$UnionPetscLib, ts::AbstractTS, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, f::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetRHSJacobian", "ts")
 
     @chk ccall(
                (:TSSetRHSJacobian, $petsc_library),
@@ -12236,6 +12526,7 @@ function TSSetRHSJacobianP(petsclib::PetscLibType, ts::AbstractTS, Amat::Abstrac
 end
 
 @for_petsc function TSSetRHSJacobianP(petsclib::$UnionPetscLib, ts::AbstractTS, Amat::AbstractPetscMat, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetRHSJacobianP", "ts")
 
     @chk ccall(
                (:TSSetRHSJacobianP, $petsc_library),
@@ -12327,6 +12618,7 @@ function TSSetRunSteps(petsclib::PetscLibType, ts::AbstractTS, runsteps::Integer
 end
 
 @for_petsc function TSSetRunSteps(petsclib::$UnionPetscLib, ts::AbstractTS, runsteps::$PetscInt )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetRunSteps", "ts")
 
     @chk ccall(
                (:TSSetRunSteps, $petsc_library),
@@ -12361,6 +12653,8 @@ function TSSetSNES(petsclib::PetscLibType, ts::AbstractTS, snes::AbstractSNES)
 end
 
 @for_petsc function TSSetSNES(petsclib::$UnionPetscLib, ts::AbstractTS, snes::AbstractSNES )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetSNES", "ts")
+	snes.ptr == C_NULL && throw_null_handle(snes, "TSSetSNES", "snes")
 
     @chk ccall(
                (:TSSetSNES, $petsc_library),
@@ -12398,6 +12692,7 @@ function TSSetSaveTrajectory(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSSetSaveTrajectory(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetSaveTrajectory", "ts")
 
     @chk ccall(
                (:TSSetSaveTrajectory, $petsc_library),
@@ -12433,6 +12728,8 @@ function TSSetSolution(petsclib::PetscLibType, ts::AbstractTS, u::AbstractPetscV
 end
 
 @for_petsc function TSSetSolution(petsclib::$UnionPetscLib, ts::AbstractTS, u::AbstractPetscVec )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetSolution", "ts")
+	u.ptr == C_NULL && throw_null_handle(u, "TSSetSolution", "u")
 
     @chk ccall(
                (:TSSetSolution, $petsc_library),
@@ -12473,6 +12770,7 @@ function TSSetSolutionFunction(petsclib::PetscLibType, ts::AbstractTS, f::Ptr{Cv
 end
 
 @for_petsc function TSSetSolutionFunction(petsclib::$UnionPetscLib, ts::AbstractTS, f::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetSolutionFunction", "ts")
 
     @chk ccall(
                (:TSSetSolutionFunction, $petsc_library),
@@ -12507,6 +12805,7 @@ function TSSetStepNumber(petsclib::PetscLibType, ts::AbstractTS, steps::Integer)
 end
 
 @for_petsc function TSSetStepNumber(petsclib::$UnionPetscLib, ts::AbstractTS, steps::$PetscInt )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetStepNumber", "ts")
 
     @chk ccall(
                (:TSSetStepNumber, $petsc_library),
@@ -12541,6 +12840,7 @@ function TSSetTime(petsclib::PetscLibType, ts::AbstractTS, t::Real)
 end
 
 @for_petsc function TSSetTime(petsclib::$UnionPetscLib, ts::AbstractTS, t::$PetscReal )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetTime", "ts")
 
     @chk ccall(
                (:TSSetTime, $petsc_library),
@@ -12577,6 +12877,7 @@ function TSSetTimeError(petsclib::PetscLibType, ts::AbstractTS, v::AbstractPetsc
 end
 
 @for_petsc function TSSetTimeError(petsclib::$UnionPetscLib, ts::AbstractTS, v::AbstractPetscVec )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetTimeError", "ts")
 
     @chk ccall(
                (:TSSetTimeError, $petsc_library),
@@ -12615,6 +12916,7 @@ function TSSetTimeSpan(petsclib::PetscLibType, ts::AbstractTS, n::Integer, span_
 end
 
 @for_petsc function TSSetTimeSpan(petsclib::$UnionPetscLib, ts::AbstractTS, n::$PetscInt, span_times::Vector{$PetscReal} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetTimeSpan", "ts")
 
     @chk ccall(
                (:TSSetTimeSpan, $petsc_library),
@@ -12652,6 +12954,7 @@ function TSSetTimeStep(petsclib::PetscLibType, ts::AbstractTS, time_step::Real)
 end
 
 @for_petsc function TSSetTimeStep(petsclib::$UnionPetscLib, ts::AbstractTS, time_step::$PetscReal )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetTimeStep", "ts")
 
     @chk ccall(
                (:TSSetTimeStep, $petsc_library),
@@ -12728,6 +13031,7 @@ function TSSetTransientVariable(petsclib::PetscLibType, ts::AbstractTS, tvar::Pt
 end
 
 @for_petsc function TSSetTransientVariable(petsclib::$UnionPetscLib, ts::AbstractTS, tvar::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetTransientVariable", "ts")
 
     @chk ccall(
                (:TSSetTransientVariable, $petsc_library),
@@ -12765,6 +13069,7 @@ function TSSetType(petsclib::PetscLibType, ts::AbstractTS, type::String)
 end
 
 @for_petsc function TSSetType(petsclib::$UnionPetscLib, ts::AbstractTS, type::String )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetType", "ts")
 
     @chk ccall(
                (:TSSetType, $petsc_library),
@@ -12798,6 +13103,7 @@ function TSSetUp(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSSetUp(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetUp", "ts")
 
     @chk ccall(
                (:TSSetUp, $petsc_library),
@@ -12835,6 +13141,7 @@ function TSSetUseSplitRHSFunction(petsclib::PetscLibType, ts::AbstractTS, use_sp
 end
 
 @for_petsc function TSSetUseSplitRHSFunction(petsclib::$UnionPetscLib, ts::AbstractTS, use_splitrhsfunction::PetscBool )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSetUseSplitRHSFunction", "ts")
 
     @chk ccall(
                (:TSSetUseSplitRHSFunction, $petsc_library),
@@ -12870,6 +13177,7 @@ function TSSolve(petsclib::PetscLibType, ts::AbstractTS, u::AbstractPetscVec)
 end
 
 @for_petsc function TSSolve(petsclib::$UnionPetscLib, ts::AbstractTS, u::AbstractPetscVec )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSSolve", "ts")
 
     @chk ccall(
                (:TSSolve, $petsc_library),
@@ -12903,6 +13211,7 @@ function TSStep(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSStep(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSStep", "ts")
 
     @chk ccall(
                (:TSStep, $petsc_library),
@@ -13378,6 +13687,7 @@ function TSThetaGetEndpoint(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSThetaGetEndpoint(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSThetaGetEndpoint", "ts")
 	endpoint_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -13416,6 +13726,7 @@ function TSThetaGetTheta(petsclib::PetscLibType, ts::AbstractTS)
 end
 
 @for_petsc function TSThetaGetTheta(petsclib::$UnionPetscLib, ts::AbstractTS )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSThetaGetTheta", "ts")
 	theta_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -13455,6 +13766,7 @@ function TSThetaSetEndpoint(petsclib::PetscLibType, ts::AbstractTS, flg::PetscBo
 end
 
 @for_petsc function TSThetaSetEndpoint(petsclib::$UnionPetscLib, ts::AbstractTS, flg::PetscBool )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSThetaSetEndpoint", "ts")
 
     @chk ccall(
                (:TSThetaSetEndpoint, $petsc_library),
@@ -13492,6 +13804,7 @@ function TSThetaSetTheta(petsclib::PetscLibType, ts::AbstractTS, theta::Real)
 end
 
 @for_petsc function TSThetaSetTheta(petsclib::$UnionPetscLib, ts::AbstractTS, theta::$PetscReal )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSThetaSetTheta", "ts")
 
     @chk ccall(
                (:TSThetaSetTheta, $petsc_library),
@@ -13525,6 +13838,9 @@ function TSVISetVariableBounds(petsclib::PetscLibType, ts::AbstractTS, xl::Abstr
 end
 
 @for_petsc function TSVISetVariableBounds(petsclib::$UnionPetscLib, ts::AbstractTS, xl::AbstractPetscVec, xu::AbstractPetscVec )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSVISetVariableBounds", "ts")
+	xl.ptr == C_NULL && throw_null_handle(xl, "TSVISetVariableBounds", "xl")
+	xu.ptr == C_NULL && throw_null_handle(xu, "TSVISetVariableBounds", "xu")
 
     @chk ccall(
                (:TSVISetVariableBounds, $petsc_library),
@@ -13562,6 +13878,7 @@ function TSView(petsclib::PetscLibType, ts::AbstractTS, viewer::PetscViewer)
 end
 
 @for_petsc function TSView(petsclib::$UnionPetscLib, ts::AbstractTS, viewer::PetscViewer )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSView", "ts")
 
     @chk ccall(
                (:TSView, $petsc_library),
@@ -13600,6 +13917,7 @@ function TSViewFromOptions(petsclib::PetscLibType, ts::AbstractTS, obj, name::St
 end
 
 @for_petsc function TSViewFromOptions(petsclib::$UnionPetscLib, ts::AbstractTS, obj, name::String )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSViewFromOptions", "ts")
 
     @chk ccall(
                (:TSViewFromOptions, $petsc_library),

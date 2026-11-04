@@ -147,6 +147,8 @@ function TSAdaptCheckStage(petsclib::PetscLibType, adapt::TSAdapt, ts::AbstractT
 end
 
 @for_petsc function TSAdaptCheckStage(petsclib::$UnionPetscLib, adapt::TSAdapt, ts::AbstractTS, t::$PetscReal, Y::AbstractPetscVec )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSAdaptCheckStage", "ts")
+	Y.ptr == C_NULL && throw_null_handle(Y, "TSAdaptCheckStage", "Y")
 	accept_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -189,6 +191,7 @@ function TSAdaptChoose(petsclib::PetscLibType, adapt::TSAdapt, ts::AbstractTS, h
 end
 
 @for_petsc function TSAdaptChoose(petsclib::$UnionPetscLib, adapt::TSAdapt, ts::AbstractTS, h::$PetscReal )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSAdaptChoose", "ts")
 	next_sc_ = Ref{$PetscInt}()
 	next_h_ = Ref{$PetscReal}()
 	accept_ = Ref{PetscBool}()
@@ -2084,6 +2087,7 @@ function TSMonitorLGCtxNetworkCreate(petsclib::PetscLibType, ts::AbstractTS, hos
 end
 
 @for_petsc function TSMonitorLGCtxNetworkCreate(petsclib::$UnionPetscLib, ts::AbstractTS, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::$PetscInt )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSMonitorLGCtxNetworkCreate", "ts")
 	ctx_ = Ref{TSMonitorLGCtxNetwork}()
 
     @chk ccall(
@@ -2160,6 +2164,7 @@ function TSMonitorLGCtxNetworkSolution(petsclib::PetscLibType, ts::AbstractTS, s
 end
 
 @for_petsc function TSMonitorLGCtxNetworkSolution(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, u::AbstractPetscVec, dctx::Ptr{Cvoid} )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSMonitorLGCtxNetworkSolution", "ts")
 
     @chk ccall(
                (:TSMonitorLGCtxNetworkSolution, $petsc_library),
@@ -2543,6 +2548,7 @@ function TSTrajectoryGet(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractT
 end
 
 @for_petsc function TSTrajectoryGet(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::AbstractTS, stepnum::$PetscInt )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSTrajectoryGet", "ts")
 	time_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -2699,6 +2705,7 @@ function TSTrajectoryGetUpdatedHistoryVecs(petsclib::PetscLibType, tj::TSTraject
 end
 
 @for_petsc function TSTrajectoryGetUpdatedHistoryVecs(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::AbstractTS, time::$PetscReal )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TSTrajectoryGetUpdatedHistoryVecs", "ts")
 	U_ = Ref{CVec}()
 	Udot_ = Ref{CVec}()
 
@@ -2954,6 +2961,7 @@ function TSTrajectorySet(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractT
 end
 
 @for_petsc function TSTrajectorySet(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::AbstractTS, stepnum::$PetscInt, time::$PetscReal, X::AbstractPetscVec )
+	X.ptr == C_NULL && throw_null_handle(X, "TSTrajectorySet", "X")
 
     @chk ccall(
                (:TSTrajectorySet, $petsc_library),

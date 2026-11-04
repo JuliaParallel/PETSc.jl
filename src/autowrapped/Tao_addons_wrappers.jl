@@ -64,7 +64,10 @@ function TaoLineSearchApply(petsclib::PetscLibType, ls::TaoLineSearch, x::Abstra
 end
 
 @for_petsc function TaoLineSearchApply(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec, s::AbstractPetscVec )
+	x.ptr == C_NULL && throw_null_handle(x, "TaoLineSearchApply", "x")
 	f_ = Ref{$PetscReal}()
+	g.ptr == C_NULL && throw_null_handle(g, "TaoLineSearchApply", "g")
+	s.ptr == C_NULL && throw_null_handle(s, "TaoLineSearchApply", "s")
 	steplength_ = Ref{$PetscReal}()
 	reason_ = Ref{TaoLineSearchConvergedReason}()
 
@@ -107,6 +110,8 @@ function TaoLineSearchComputeGradient(petsclib::PetscLibType, ls::TaoLineSearch,
 end
 
 @for_petsc function TaoLineSearchComputeGradient(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec )
+	x.ptr == C_NULL && throw_null_handle(x, "TaoLineSearchComputeGradient", "x")
+	g.ptr == C_NULL && throw_null_handle(g, "TaoLineSearchComputeGradient", "g")
 
     @chk ccall(
                (:TaoLineSearchComputeGradient, $petsc_library),
@@ -144,6 +149,7 @@ function TaoLineSearchComputeObjective(petsclib::PetscLibType, ls::TaoLineSearch
 end
 
 @for_petsc function TaoLineSearchComputeObjective(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::AbstractPetscVec )
+	x.ptr == C_NULL && throw_null_handle(x, "TaoLineSearchComputeObjective", "x")
 	f_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -185,6 +191,7 @@ function TaoLineSearchComputeObjectiveAndGTS(petsclib::PetscLibType, ls::TaoLine
 end
 
 @for_petsc function TaoLineSearchComputeObjectiveAndGTS(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::AbstractPetscVec )
+	x.ptr == C_NULL && throw_null_handle(x, "TaoLineSearchComputeObjectiveAndGTS", "x")
 	f_ = Ref{$PetscReal}()
 	gts_ = Ref{$PetscReal}()
 
@@ -227,7 +234,9 @@ function TaoLineSearchComputeObjectiveAndGradient(petsclib::PetscLibType, ls::Ta
 end
 
 @for_petsc function TaoLineSearchComputeObjectiveAndGradient(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec )
+	x.ptr == C_NULL && throw_null_handle(x, "TaoLineSearchComputeObjectiveAndGradient", "x")
 	f_ = Ref{$PetscReal}()
+	g.ptr == C_NULL && throw_null_handle(g, "TaoLineSearchComputeObjectiveAndGradient", "g")
 
     @chk ccall(
                (:TaoLineSearchComputeObjectiveAndGradient, $petsc_library),
@@ -495,7 +504,9 @@ function TaoLineSearchGetSolution(petsclib::PetscLibType, ls::TaoLineSearch, x::
 end
 
 @for_petsc function TaoLineSearchGetSolution(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec )
+	x.ptr == C_NULL && throw_null_handle(x, "TaoLineSearchGetSolution", "x")
 	f_ = Ref{$PetscReal}()
+	g.ptr == C_NULL && throw_null_handle(g, "TaoLineSearchGetSolution", "g")
 	steplength_ = Ref{$PetscReal}()
 	reason_ = Ref{TaoLineSearchConvergedReason}()
 
@@ -1259,6 +1270,7 @@ function TaoLineSearchUseTaoRoutines(petsclib::PetscLibType, ls::TaoLineSearch, 
 end
 
 @for_petsc function TaoLineSearchUseTaoRoutines(petsclib::$UnionPetscLib, ls::TaoLineSearch, ts::AbstractTao )
+	ts.ptr == C_NULL && throw_null_handle(ts, "TaoLineSearchUseTaoRoutines", "ts")
 
     @chk ccall(
                (:TaoLineSearchUseTaoRoutines, $petsc_library),
@@ -1459,6 +1471,8 @@ function TaoTermComputeGradient(petsclib::PetscLibType, term::TaoTerm, x::Abstra
 end
 
 @for_petsc function TaoTermComputeGradient(petsclib::$UnionPetscLib, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, g::AbstractPetscVec )
+	x.ptr == C_NULL && throw_null_handle(x, "TaoTermComputeGradient", "x")
+	g.ptr == C_NULL && throw_null_handle(g, "TaoTermComputeGradient", "g")
 
     @chk ccall(
                (:TaoTermComputeGradient, $petsc_library),
@@ -1513,6 +1527,8 @@ function TaoTermComputeGradientFD(petsclib::PetscLibType, term::TaoTerm, x::Abst
 end
 
 @for_petsc function TaoTermComputeGradientFD(petsclib::$UnionPetscLib, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, g::AbstractPetscVec )
+	x.ptr == C_NULL && throw_null_handle(x, "TaoTermComputeGradientFD", "x")
+	g.ptr == C_NULL && throw_null_handle(g, "TaoTermComputeGradientFD", "g")
 
     @chk ccall(
                (:TaoTermComputeGradientFD, $petsc_library),
@@ -1650,6 +1666,7 @@ function TaoTermComputeHessian(petsclib::PetscLibType, term::TaoTerm, x::Abstrac
 end
 
 @for_petsc function TaoTermComputeHessian(petsclib::$UnionPetscLib, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, H::AbstractPetscMat, Hpre::AbstractPetscMat )
+	x.ptr == C_NULL && throw_null_handle(x, "TaoTermComputeHessian", "x")
 
     @chk ccall(
                (:TaoTermComputeHessian, $petsc_library),
@@ -1705,6 +1722,7 @@ function TaoTermComputeHessianFD(petsclib::PetscLibType, term::TaoTerm, x::Abstr
 end
 
 @for_petsc function TaoTermComputeHessianFD(petsclib::$UnionPetscLib, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, H::AbstractPetscMat, Hpre::AbstractPetscMat )
+	x.ptr == C_NULL && throw_null_handle(x, "TaoTermComputeHessianFD", "x")
 
     @chk ccall(
                (:TaoTermComputeHessianFD, $petsc_library),
@@ -1790,6 +1808,8 @@ function TaoTermComputeHessianMFFD(petsclib::PetscLibType, term::TaoTerm, x::Abs
 end
 
 @for_petsc function TaoTermComputeHessianMFFD(petsclib::$UnionPetscLib, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat )
+	x.ptr == C_NULL && throw_null_handle(x, "TaoTermComputeHessianMFFD", "x")
+	H.ptr == C_NULL && throw_null_handle(H, "TaoTermComputeHessianMFFD", "H")
 
     @chk ccall(
                (:TaoTermComputeHessianMFFD, $petsc_library),
@@ -1876,6 +1896,7 @@ function TaoTermComputeObjective(petsclib::PetscLibType, term::TaoTerm, x::Abstr
 end
 
 @for_petsc function TaoTermComputeObjective(petsclib::$UnionPetscLib, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec )
+	x.ptr == C_NULL && throw_null_handle(x, "TaoTermComputeObjective", "x")
 	value_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -1922,7 +1943,9 @@ function TaoTermComputeObjectiveAndGradient(petsclib::PetscLibType, term::TaoTer
 end
 
 @for_petsc function TaoTermComputeObjectiveAndGradient(petsclib::$UnionPetscLib, term::TaoTerm, x::AbstractPetscVec, params::AbstractPetscVec, g::AbstractPetscVec )
+	x.ptr == C_NULL && throw_null_handle(x, "TaoTermComputeObjectiveAndGradient", "x")
 	value_ = Ref{$PetscReal}()
+	g.ptr == C_NULL && throw_null_handle(g, "TaoTermComputeObjectiveAndGradient", "g")
 
     @chk ccall(
                (:TaoTermComputeObjectiveAndGradient, $petsc_library),
@@ -2331,6 +2354,7 @@ function TaoTermCreateQuadratic(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function TaoTermCreateQuadratic(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "TaoTermCreateQuadratic", "A")
 	term_ = Ref{TaoTerm}()
 
     @chk ccall(
@@ -3418,6 +3442,7 @@ function TaoTermQuadraticSetMat(petsclib::PetscLibType, term::TaoTerm, A::Abstra
 end
 
 @for_petsc function TaoTermQuadraticSetMat(petsclib::$UnionPetscLib, term::TaoTerm, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "TaoTermQuadraticSetMat", "A")
 
     @chk ccall(
                (:TaoTermQuadraticSetMat, $petsc_library),
@@ -3778,6 +3803,7 @@ function TaoTermSetParametersTemplate(petsclib::PetscLibType, term::TaoTerm, par
 end
 
 @for_petsc function TaoTermSetParametersTemplate(petsclib::$UnionPetscLib, term::TaoTerm, params_template::AbstractPetscVec )
+	params_template.ptr == C_NULL && throw_null_handle(params_template, "TaoTermSetParametersTemplate", "params_template")
 
     @chk ccall(
                (:TaoTermSetParametersTemplate, $petsc_library),
@@ -3985,6 +4011,7 @@ function TaoTermSetSolutionTemplate(petsclib::PetscLibType, term::TaoTerm, sol_t
 end
 
 @for_petsc function TaoTermSetSolutionTemplate(petsclib::$UnionPetscLib, term::TaoTerm, sol_template::AbstractPetscVec )
+	sol_template.ptr == C_NULL && throw_null_handle(sol_template, "TaoTermSetSolutionTemplate", "sol_template")
 
     @chk ccall(
                (:TaoTermSetSolutionTemplate, $petsc_library),

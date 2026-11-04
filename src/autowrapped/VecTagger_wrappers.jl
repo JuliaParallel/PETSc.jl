@@ -402,6 +402,7 @@ function VecTaggerComputeBoxes(petsclib::PetscLibType, tagger::VecTagger, vec::A
 end
 
 @for_petsc function VecTaggerComputeBoxes(petsclib::$UnionPetscLib, tagger::VecTagger, vec::AbstractPetscVec )
+	vec.ptr == C_NULL && throw_null_handle(vec, "VecTaggerComputeBoxes", "vec")
 	numBoxes_ = Ref{$PetscInt}()
 	boxes_ = Ref{Ptr{VecTaggerBox}}()
 	listed_ = Ref{PetscBool}()
@@ -447,6 +448,7 @@ function VecTaggerComputeIS(petsclib::PetscLibType, tagger::VecTagger, vec::Abst
 end
 
 @for_petsc function VecTaggerComputeIS(petsclib::$UnionPetscLib, tagger::VecTagger, vec::AbstractPetscVec, is::Vector{<:AbstractIS} )
+	vec.ptr == C_NULL && throw_null_handle(vec, "VecTaggerComputeIS", "vec")
 	listed_ = Ref{PetscBool}()
 
     @chk ccall(

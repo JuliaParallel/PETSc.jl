@@ -446,6 +446,7 @@ function CharacteristicSolve(petsclib::PetscLibType, c::Characteristic, dt::Real
 end
 
 @for_petsc function CharacteristicSolve(petsclib::$UnionPetscLib, c::Characteristic, dt::$PetscReal, solution::AbstractPetscVec )
+	solution.ptr == C_NULL && throw_null_handle(solution, "CharacteristicSolve", "solution")
 
     @chk ccall(
                (:CharacteristicSolve, $petsc_library),

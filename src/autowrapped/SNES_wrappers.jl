@@ -57,6 +57,7 @@ function SNESAppendOptionsPrefix(petsclib::PetscLibType, snes::AbstractSNES, pre
 end
 
 @for_petsc function SNESAppendOptionsPrefix(petsclib::$UnionPetscLib, snes::AbstractSNES, prefix::String )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESAppendOptionsPrefix", "snes")
 
     @chk ccall(
                (:SNESAppendOptionsPrefix, $petsc_library),
@@ -95,6 +96,9 @@ function SNESApplyNPC(petsclib::PetscLibType, snes::AbstractSNES, x::AbstractPet
 end
 
 @for_petsc function SNESApplyNPC(petsclib::$UnionPetscLib, snes::AbstractSNES, x::AbstractPetscVec, f::AbstractPetscVec, y::AbstractPetscVec )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESApplyNPC", "snes")
+	x.ptr == C_NULL && throw_null_handle(x, "SNESApplyNPC", "x")
+	y.ptr == C_NULL && throw_null_handle(y, "SNESApplyNPC", "y")
 
     @chk ccall(
                (:SNESApplyNPC, $petsc_library),
@@ -129,6 +133,7 @@ function SNESCompositeAddSNES(petsclib::PetscLibType, snes::AbstractSNES, type::
 end
 
 @for_petsc function SNESCompositeAddSNES(petsclib::$UnionPetscLib, snes::AbstractSNES, type::String )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESCompositeAddSNES", "snes")
 
     @chk ccall(
                (:SNESCompositeAddSNES, $petsc_library),
@@ -204,6 +209,7 @@ function SNESCompositeGetSNES(petsclib::PetscLibType, snes::AbstractSNES, n::Int
 end
 
 @for_petsc function SNESCompositeGetSNES(petsclib::$UnionPetscLib, snes::AbstractSNES, n::$PetscInt )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESCompositeGetSNES", "snes")
 	subsnes_ = Ref{CSNES}()
 
     @chk ccall(
@@ -242,6 +248,7 @@ function SNESCompositeSetDamping(petsclib::PetscLibType, snes::AbstractSNES, n::
 end
 
 @for_petsc function SNESCompositeSetDamping(petsclib::$UnionPetscLib, snes::AbstractSNES, n::$PetscInt, dmp::$PetscReal )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESCompositeSetDamping", "snes")
 
     @chk ccall(
                (:SNESCompositeSetDamping, $petsc_library),
@@ -280,6 +287,7 @@ function SNESCompositeSetType(petsclib::PetscLibType, snes::AbstractSNES, type::
 end
 
 @for_petsc function SNESCompositeSetType(petsclib::$UnionPetscLib, snes::AbstractSNES, type::SNESCompositeType )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESCompositeSetType", "snes")
 
     @chk ccall(
                (:SNESCompositeSetType, $petsc_library),
@@ -317,6 +325,9 @@ function SNESComputeFunction(petsclib::PetscLibType, snes::AbstractSNES, x::Abst
 end
 
 @for_petsc function SNESComputeFunction(petsclib::$UnionPetscLib, snes::AbstractSNES, x::AbstractPetscVec, f::AbstractPetscVec )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESComputeFunction", "snes")
+	x.ptr == C_NULL && throw_null_handle(x, "SNESComputeFunction", "x")
+	f.ptr == C_NULL && throw_null_handle(f, "SNESComputeFunction", "f")
 
     @chk ccall(
                (:SNESComputeFunction, $petsc_library),
@@ -411,6 +422,8 @@ function SNESComputeJacobian(petsclib::PetscLibType, snes::AbstractSNES, X::Abst
 end
 
 @for_petsc function SNESComputeJacobian(petsclib::$UnionPetscLib, snes::AbstractSNES, X::AbstractPetscVec, A::AbstractPetscMat, B::AbstractPetscMat )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESComputeJacobian", "snes")
+	X.ptr == C_NULL && throw_null_handle(X, "SNESComputeJacobian", "X")
 
     @chk ccall(
                (:SNESComputeJacobian, $petsc_library),
@@ -457,6 +470,9 @@ function SNESComputeJacobianDefault(petsclib::PetscLibType, snes::AbstractSNES, 
 end
 
 @for_petsc function SNESComputeJacobianDefault(petsclib::$UnionPetscLib, snes::AbstractSNES, x1::AbstractPetscVec, J::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESComputeJacobianDefault", "snes")
+	x1.ptr == C_NULL && throw_null_handle(x1, "SNESComputeJacobianDefault", "x1")
+	B.ptr == C_NULL && throw_null_handle(B, "SNESComputeJacobianDefault", "B")
 
     @chk ccall(
                (:SNESComputeJacobianDefault, $petsc_library),
@@ -505,6 +521,8 @@ function SNESComputeJacobianDefaultColor(petsclib::PetscLibType, snes::AbstractS
 end
 
 @for_petsc function SNESComputeJacobianDefaultColor(petsclib::$UnionPetscLib, snes::AbstractSNES, x1::AbstractPetscVec, J::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid} )
+	x1.ptr == C_NULL && throw_null_handle(x1, "SNESComputeJacobianDefaultColor", "x1")
+	B.ptr == C_NULL && throw_null_handle(B, "SNESComputeJacobianDefaultColor", "B")
 
     @chk ccall(
                (:SNESComputeJacobianDefaultColor, $petsc_library),
@@ -542,6 +560,9 @@ function SNESComputeMFFunction(petsclib::PetscLibType, snes::AbstractSNES, x::Ab
 end
 
 @for_petsc function SNESComputeMFFunction(petsclib::$UnionPetscLib, snes::AbstractSNES, x::AbstractPetscVec, y::AbstractPetscVec )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESComputeMFFunction", "snes")
+	x.ptr == C_NULL && throw_null_handle(x, "SNESComputeMFFunction", "x")
+	y.ptr == C_NULL && throw_null_handle(y, "SNESComputeMFFunction", "y")
 
     @chk ccall(
                (:SNESComputeMFFunction, $petsc_library),
@@ -580,6 +601,8 @@ function SNESComputeNGS(petsclib::PetscLibType, snes::AbstractSNES, b::AbstractP
 end
 
 @for_petsc function SNESComputeNGS(petsclib::$UnionPetscLib, snes::AbstractSNES, b::AbstractPetscVec, x::AbstractPetscVec )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESComputeNGS", "snes")
+	x.ptr == C_NULL && throw_null_handle(x, "SNESComputeNGS", "x")
 
     @chk ccall(
                (:SNESComputeNGS, $petsc_library),
@@ -617,6 +640,8 @@ function SNESComputeObjective(petsclib::PetscLibType, snes::AbstractSNES, X::Abs
 end
 
 @for_petsc function SNESComputeObjective(petsclib::$UnionPetscLib, snes::AbstractSNES, X::AbstractPetscVec )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESComputeObjective", "snes")
+	X.ptr == C_NULL && throw_null_handle(X, "SNESComputeObjective", "X")
 	ob_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -701,6 +726,7 @@ function SNESConvergedCorrectPressure(petsclib::PetscLibType, snes::AbstractSNES
 end
 
 @for_petsc function SNESConvergedCorrectPressure(petsclib::$UnionPetscLib, snes::AbstractSNES, it::$PetscInt, xnorm::$PetscReal, gnorm::$PetscReal, f::$PetscReal, ctx::Ptr{Cvoid} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESConvergedCorrectPressure", "snes")
 	reason_ = Ref{SNESConvergedReason}()
 
     @chk ccall(
@@ -755,6 +781,7 @@ function SNESConvergedDefault(petsclib::PetscLibType, snes::AbstractSNES, it::In
 end
 
 @for_petsc function SNESConvergedDefault(petsclib::$UnionPetscLib, snes::AbstractSNES, it::$PetscInt, xnorm::$PetscReal, snorm::$PetscReal, fnorm::$PetscReal, ctx::Ptr{Cvoid} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESConvergedDefault", "snes")
 	reason_ = Ref{SNESConvergedReason}()
 
     @chk ccall(
@@ -832,6 +859,7 @@ function SNESConvergedReasonViewCancel(petsclib::PetscLibType, snes::AbstractSNE
 end
 
 @for_petsc function SNESConvergedReasonViewCancel(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESConvergedReasonViewCancel", "snes")
 
     @chk ccall(
                (:SNESConvergedReasonViewCancel, $petsc_library),
@@ -959,6 +987,7 @@ function SNESConvergedSkip(petsclib::PetscLibType, snes::AbstractSNES, it::Integ
 end
 
 @for_petsc function SNESConvergedSkip(petsclib::$UnionPetscLib, snes::AbstractSNES, it::$PetscInt, xnorm::$PetscReal, snorm::$PetscReal, fnorm::$PetscReal, ctx::Ptr{Cvoid} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESConvergedSkip", "snes")
 	reason_ = Ref{SNESConvergedReason}()
 
     @chk ccall(
@@ -1077,6 +1106,7 @@ function SNESFASCreateCoarseVec(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESFASCreateCoarseVec(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASCreateCoarseVec", "snes")
 	Xcoarse_ = Ref{CVec}()
 
     @chk ccall(
@@ -1115,6 +1145,7 @@ function SNESFASCycleGetCorrection(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESFASCycleGetCorrection(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASCycleGetCorrection", "snes")
 	correction_ = Ref{CSNES}()
 
     @chk ccall(
@@ -1153,6 +1184,7 @@ function SNESFASCycleGetInjection(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESFASCycleGetInjection(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASCycleGetInjection", "snes")
 	mat_ = Ref{CMat}()
 
     @chk ccall(
@@ -1191,6 +1223,7 @@ function SNESFASCycleGetInterpolation(petsclib::PetscLibType, snes::AbstractSNES
 end
 
 @for_petsc function SNESFASCycleGetInterpolation(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASCycleGetInterpolation", "snes")
 	mat_ = Ref{CMat}()
 
     @chk ccall(
@@ -1229,6 +1262,7 @@ function SNESFASCycleGetRScale(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESFASCycleGetRScale(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASCycleGetRScale", "snes")
 	vec_ = Ref{CVec}()
 
     @chk ccall(
@@ -1267,6 +1301,7 @@ function SNESFASCycleGetRestriction(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESFASCycleGetRestriction(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASCycleGetRestriction", "snes")
 	mat_ = Ref{CMat}()
 
     @chk ccall(
@@ -1305,6 +1340,7 @@ function SNESFASCycleGetSmoother(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESFASCycleGetSmoother(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASCycleGetSmoother", "snes")
 	smooth_ = Ref{CSNES}()
 
     @chk ccall(
@@ -1343,6 +1379,7 @@ function SNESFASCycleGetSmootherDown(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESFASCycleGetSmootherDown(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASCycleGetSmootherDown", "snes")
 	smoothd_ = Ref{CSNES}()
 
     @chk ccall(
@@ -1381,6 +1418,7 @@ function SNESFASCycleGetSmootherUp(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESFASCycleGetSmootherUp(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASCycleGetSmootherUp", "snes")
 	smoothu_ = Ref{CSNES}()
 
     @chk ccall(
@@ -1419,6 +1457,7 @@ function SNESFASCycleIsFine(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESFASCycleIsFine(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASCycleIsFine", "snes")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -1455,6 +1494,7 @@ function SNESFASCycleSetCycles(petsclib::PetscLibType, snes::AbstractSNES, cycle
 end
 
 @for_petsc function SNESFASCycleSetCycles(petsclib::$UnionPetscLib, snes::AbstractSNES, cycles::$PetscInt )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASCycleSetCycles", "snes")
 
     @chk ccall(
                (:SNESFASCycleSetCycles, $petsc_library),
@@ -1491,6 +1531,7 @@ function SNESFASFullGetTotal(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESFASFullGetTotal(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASFullGetTotal", "snes")
 	total_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -1530,6 +1571,7 @@ function SNESFASFullSetDownSweep(petsclib::PetscLibType, snes::AbstractSNES, swp
 end
 
 @for_petsc function SNESFASFullSetDownSweep(petsclib::$UnionPetscLib, snes::AbstractSNES, swp::PetscBool )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASFullSetDownSweep", "snes")
 
     @chk ccall(
                (:SNESFASFullSetDownSweep, $petsc_library),
@@ -1567,6 +1609,7 @@ function SNESFASFullSetTotal(petsclib::PetscLibType, snes::AbstractSNES, total::
 end
 
 @for_petsc function SNESFASFullSetTotal(petsclib::$UnionPetscLib, snes::AbstractSNES, total::PetscBool )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASFullSetTotal", "snes")
 
     @chk ccall(
                (:SNESFASFullSetTotal, $petsc_library),
@@ -1605,6 +1648,8 @@ function SNESFASGalerkinFunctionDefault(petsclib::PetscLibType, snes::AbstractSN
 end
 
 @for_petsc function SNESFASGalerkinFunctionDefault(petsclib::$UnionPetscLib, snes::AbstractSNES, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid} )
+	X.ptr == C_NULL && throw_null_handle(X, "SNESFASGalerkinFunctionDefault", "X")
+	F.ptr == C_NULL && throw_null_handle(F, "SNESFASGalerkinFunctionDefault", "F")
 
     @chk ccall(
                (:SNESFASGalerkinFunctionDefault, $petsc_library),
@@ -1639,6 +1684,7 @@ function SNESFASGetCoarseSolve(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESFASGetCoarseSolve(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASGetCoarseSolve", "snes")
 	coarse_ = Ref{CSNES}()
 
     @chk ccall(
@@ -1676,6 +1722,7 @@ function SNESFASGetCycleSNES(petsclib::PetscLibType, snes::AbstractSNES, level::
 end
 
 @for_petsc function SNESFASGetCycleSNES(petsclib::$UnionPetscLib, snes::AbstractSNES, level::$PetscInt )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASGetCycleSNES", "snes")
 	lsnes_ = Ref{CSNES}()
 
     @chk ccall(
@@ -1714,6 +1761,7 @@ function SNESFASGetGalerkin(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESFASGetGalerkin(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASGetGalerkin", "snes")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -1752,6 +1800,7 @@ function SNESFASGetInjection(petsclib::PetscLibType, snes::AbstractSNES, level::
 end
 
 @for_petsc function SNESFASGetInjection(petsclib::$UnionPetscLib, snes::AbstractSNES, level::$PetscInt )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASGetInjection", "snes")
 	mat_ = Ref{CMat}()
 
     @chk ccall(
@@ -1790,6 +1839,7 @@ function SNESFASGetInterpolation(petsclib::PetscLibType, snes::AbstractSNES, lev
 end
 
 @for_petsc function SNESFASGetInterpolation(petsclib::$UnionPetscLib, snes::AbstractSNES, level::$PetscInt )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASGetInterpolation", "snes")
 	mat_ = Ref{CMat}()
 
     @chk ccall(
@@ -1826,6 +1876,7 @@ function SNESFASGetLevels(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESFASGetLevels(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASGetLevels", "snes")
 	levels_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1864,6 +1915,7 @@ function SNESFASGetRestriction(petsclib::PetscLibType, snes::AbstractSNES, level
 end
 
 @for_petsc function SNESFASGetRestriction(petsclib::$UnionPetscLib, snes::AbstractSNES, level::$PetscInt )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASGetRestriction", "snes")
 	mat_ = Ref{CMat}()
 
     @chk ccall(
@@ -1901,6 +1953,7 @@ function SNESFASGetSmoother(petsclib::PetscLibType, snes::AbstractSNES, level::I
 end
 
 @for_petsc function SNESFASGetSmoother(petsclib::$UnionPetscLib, snes::AbstractSNES, level::$PetscInt )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASGetSmoother", "snes")
 	smooth_ = Ref{CSNES}()
 
     @chk ccall(
@@ -1938,6 +1991,7 @@ function SNESFASGetSmootherDown(petsclib::PetscLibType, snes::AbstractSNES, leve
 end
 
 @for_petsc function SNESFASGetSmootherDown(petsclib::$UnionPetscLib, snes::AbstractSNES, level::$PetscInt )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASGetSmootherDown", "snes")
 	smooth_ = Ref{CSNES}()
 
     @chk ccall(
@@ -1975,6 +2029,7 @@ function SNESFASGetSmootherUp(petsclib::PetscLibType, snes::AbstractSNES, level:
 end
 
 @for_petsc function SNESFASGetSmootherUp(petsclib::$UnionPetscLib, snes::AbstractSNES, level::$PetscInt )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASGetSmootherUp", "snes")
 	smooth_ = Ref{CSNES}()
 
     @chk ccall(
@@ -2013,6 +2068,7 @@ function SNESFASGetType(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESFASGetType(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASGetType", "snes")
 	fastype_ = Ref{SNESFASType}()
 
     @chk ccall(
@@ -2052,6 +2108,9 @@ function SNESFASRestrict(petsclib::PetscLibType, fine::AbstractSNES, Xfine::Abst
 end
 
 @for_petsc function SNESFASRestrict(petsclib::$UnionPetscLib, fine::AbstractSNES, Xfine::AbstractPetscVec, Xcoarse::AbstractPetscVec )
+	fine.ptr == C_NULL && throw_null_handle(fine, "SNESFASRestrict", "fine")
+	Xfine.ptr == C_NULL && throw_null_handle(Xfine, "SNESFASRestrict", "Xfine")
+	Xcoarse.ptr == C_NULL && throw_null_handle(Xcoarse, "SNESFASRestrict", "Xcoarse")
 
     @chk ccall(
                (:SNESFASRestrict, $petsc_library),
@@ -2089,6 +2148,7 @@ function SNESFASSetContinuation(petsclib::PetscLibType, snes::AbstractSNES, cont
 end
 
 @for_petsc function SNESFASSetContinuation(petsclib::$UnionPetscLib, snes::AbstractSNES, continuation::PetscBool )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASSetContinuation", "snes")
 
     @chk ccall(
                (:SNESFASSetContinuation, $petsc_library),
@@ -2127,6 +2187,7 @@ function SNESFASSetCycles(petsclib::PetscLibType, snes::AbstractSNES, cycles::In
 end
 
 @for_petsc function SNESFASSetCycles(petsclib::$UnionPetscLib, snes::AbstractSNES, cycles::$PetscInt )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASSetCycles", "snes")
 
     @chk ccall(
                (:SNESFASSetCycles, $petsc_library),
@@ -2161,6 +2222,7 @@ function SNESFASSetGalerkin(petsclib::PetscLibType, snes::AbstractSNES, flg::Pet
 end
 
 @for_petsc function SNESFASSetGalerkin(petsclib::$UnionPetscLib, snes::AbstractSNES, flg::PetscBool )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASSetGalerkin", "snes")
 
     @chk ccall(
                (:SNESFASSetGalerkin, $petsc_library),
@@ -2195,6 +2257,7 @@ function SNESFASSetInjection(petsclib::PetscLibType, snes::AbstractSNES, level::
 end
 
 @for_petsc function SNESFASSetInjection(petsclib::$UnionPetscLib, snes::AbstractSNES, level::$PetscInt, mat::AbstractPetscMat )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASSetInjection", "snes")
 
     @chk ccall(
                (:SNESFASSetInjection, $petsc_library),
@@ -2229,6 +2292,7 @@ function SNESFASSetInterpolation(petsclib::PetscLibType, snes::AbstractSNES, lev
 end
 
 @for_petsc function SNESFASSetInterpolation(petsclib::$UnionPetscLib, snes::AbstractSNES, level::$PetscInt, mat::AbstractPetscMat )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASSetInterpolation", "snes")
 
     @chk ccall(
                (:SNESFASSetInterpolation, $petsc_library),
@@ -2264,6 +2328,7 @@ function SNESFASSetLevels(petsclib::PetscLibType, snes::AbstractSNES, levels::In
 end
 
 @for_petsc function SNESFASSetLevels(petsclib::$UnionPetscLib, snes::AbstractSNES, levels::$PetscInt )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASSetLevels", "snes")
 	comms_ = Ref{MPI.MPI_Comm}()
 
     @chk ccall(
@@ -2300,6 +2365,7 @@ function SNESFASSetLog(petsclib::PetscLibType, snes::AbstractSNES, flg::PetscBoo
 end
 
 @for_petsc function SNESFASSetLog(petsclib::$UnionPetscLib, snes::AbstractSNES, flg::PetscBool )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASSetLog", "snes")
 
     @chk ccall(
                (:SNESFASSetLog, $petsc_library),
@@ -2335,6 +2401,7 @@ function SNESFASSetMonitor(petsclib::PetscLibType, snes::AbstractSNES, vf::Vecto
 end
 
 @for_petsc function SNESFASSetMonitor(petsclib::$UnionPetscLib, snes::AbstractSNES, vf::Vector{PetscViewerAndFormat}, flg::PetscBool )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASSetMonitor", "snes")
 
     @chk ccall(
                (:SNESFASSetMonitor, $petsc_library),
@@ -2373,6 +2440,7 @@ function SNESFASSetNumberSmoothDown(petsclib::PetscLibType, snes::AbstractSNES, 
 end
 
 @for_petsc function SNESFASSetNumberSmoothDown(petsclib::$UnionPetscLib, snes::AbstractSNES, n::$PetscInt )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASSetNumberSmoothDown", "snes")
 
     @chk ccall(
                (:SNESFASSetNumberSmoothDown, $petsc_library),
@@ -2411,6 +2479,7 @@ function SNESFASSetNumberSmoothUp(petsclib::PetscLibType, snes::AbstractSNES, n:
 end
 
 @for_petsc function SNESFASSetNumberSmoothUp(petsclib::$UnionPetscLib, snes::AbstractSNES, n::$PetscInt )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASSetNumberSmoothUp", "snes")
 
     @chk ccall(
                (:SNESFASSetNumberSmoothUp, $petsc_library),
@@ -2445,6 +2514,7 @@ function SNESFASSetRScale(petsclib::PetscLibType, snes::AbstractSNES, level::Int
 end
 
 @for_petsc function SNESFASSetRScale(petsclib::$UnionPetscLib, snes::AbstractSNES, level::$PetscInt, rscale::AbstractPetscVec )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASSetRScale", "snes")
 
     @chk ccall(
                (:SNESFASSetRScale, $petsc_library),
@@ -2479,6 +2549,7 @@ function SNESFASSetRestriction(petsclib::PetscLibType, snes::AbstractSNES, level
 end
 
 @for_petsc function SNESFASSetRestriction(petsclib::$UnionPetscLib, snes::AbstractSNES, level::$PetscInt, mat::AbstractPetscMat )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASSetRestriction", "snes")
 
     @chk ccall(
                (:SNESFASSetRestriction, $petsc_library),
@@ -2513,6 +2584,7 @@ function SNESFASSetType(petsclib::PetscLibType, snes::AbstractSNES, fastype::SNE
 end
 
 @for_petsc function SNESFASSetType(petsclib::$UnionPetscLib, snes::AbstractSNES, fastype::SNESFASType )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESFASSetType", "snes")
 
     @chk ccall(
                (:SNESFASSetType, $petsc_library),
@@ -2577,6 +2649,7 @@ function SNESGetAlwaysComputesFinalResidual(petsclib::PetscLibType, snes::Abstra
 end
 
 @for_petsc function SNESGetAlwaysComputesFinalResidual(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetAlwaysComputesFinalResidual", "snes")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -2616,6 +2689,7 @@ function SNESGetApplicationContext(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetApplicationContext(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetApplicationContext", "snes")
 	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
@@ -2654,6 +2728,7 @@ function SNESGetCheckJacobianDomainError(petsclib::PetscLibType, snes::AbstractS
 end
 
 @for_petsc function SNESGetCheckJacobianDomainError(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetCheckJacobianDomainError", "snes")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -2695,6 +2770,7 @@ function SNESGetConvergedReason(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetConvergedReason(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetConvergedReason", "snes")
 	reason_ = Ref{SNESConvergedReason}()
 
     @chk ccall(
@@ -2733,6 +2809,7 @@ function SNESGetConvergedReasonString(petsclib::PetscLibType, snes::AbstractSNES
 end
 
 @for_petsc function SNESGetConvergedReasonString(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetConvergedReasonString", "snes")
 	strreason_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -2774,6 +2851,7 @@ function SNESGetConvergenceHistory(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetConvergenceHistory(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetConvergenceHistory", "snes")
 	a_ = Ref{Ptr{$PetscReal}}()
 	its_ = Ref{Ptr{$PetscInt}}()
 	na_ = Ref{$PetscInt}()
@@ -2816,6 +2894,7 @@ function SNESGetDM(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetDM(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetDM", "snes")
 	dm_ = Ref{CDM}()
 
     @chk ccall(
@@ -2852,6 +2931,7 @@ function SNESGetDivergenceTolerance(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetDivergenceTolerance(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetDivergenceTolerance", "snes")
 	divtol_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -2890,6 +2970,7 @@ function SNESGetErrorIfNotConverged(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetErrorIfNotConverged(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetErrorIfNotConverged", "snes")
 	flag_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -2928,6 +3009,7 @@ function SNESGetForceIteration(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetForceIteration(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetForceIteration", "snes")
 	force_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -2968,6 +3050,7 @@ function SNESGetFunction(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetFunction(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetFunction", "snes")
 	r_ = Ref{CVec}()
 	f_ = Ref{Ptr{Cvoid}}()
 	ctx_ = Ref{Ptr{Cvoid}}()
@@ -3010,6 +3093,7 @@ function SNESGetFunctionNorm(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetFunctionNorm(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetFunctionNorm", "snes")
 	norm_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -3047,6 +3131,7 @@ function SNESGetFunctionType(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetFunctionType(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetFunctionType", "snes")
 	type_ = Ref{SNESFunctionType}()
 
     @chk ccall(
@@ -3085,6 +3170,7 @@ function SNESGetGridSequence(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetGridSequence(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetGridSequence", "snes")
 	steps_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3123,6 +3209,7 @@ function SNESGetIterationNumber(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetIterationNumber(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetIterationNumber", "snes")
 	iter_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3165,6 +3252,7 @@ function SNESGetJacobian(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetJacobian(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetJacobian", "snes")
 	Amat_ = Ref{CMat}()
 	Pmat_ = Ref{CMat}()
 	J_ = Ref{Ptr{Cvoid}}()
@@ -3209,6 +3297,7 @@ function SNESGetKSP(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetKSP(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetKSP", "snes")
 	ksp_ = Ref{CKSP}()
 
     @chk ccall(
@@ -3248,6 +3337,7 @@ function SNESGetLagJacobian(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetLagJacobian(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetLagJacobian", "snes")
 	lag_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3287,6 +3377,7 @@ function SNESGetLagPreconditioner(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetLagPreconditioner(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetLagPreconditioner", "snes")
 	lag_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3325,6 +3416,7 @@ function SNESGetLineSearch(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetLineSearch(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetLineSearch", "snes")
 	linesearch_ = Ref{SNESLineSearch}()
 
     @chk ccall(
@@ -3367,6 +3459,7 @@ function SNESGetLinearSolveFailures(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetLinearSolveFailures(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetLinearSolveFailures", "snes")
 	nfails_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3406,6 +3499,7 @@ function SNESGetLinearSolveIterations(petsclib::PetscLibType, snes::AbstractSNES
 end
 
 @for_petsc function SNESGetLinearSolveIterations(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetLinearSolveIterations", "snes")
 	lits_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3445,6 +3539,7 @@ function SNESGetMaxLinearSolveFailures(petsclib::PetscLibType, snes::AbstractSNE
 end
 
 @for_petsc function SNESGetMaxLinearSolveFailures(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetMaxLinearSolveFailures", "snes")
 	maxFails_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3485,6 +3580,7 @@ function SNESGetMaxNonlinearStepFailures(petsclib::PetscLibType, snes::AbstractS
 end
 
 @for_petsc function SNESGetMaxNonlinearStepFailures(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetMaxNonlinearStepFailures", "snes")
 	maxFails_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3522,6 +3618,7 @@ function SNESGetNGS(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetNGS(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetNGS", "snes")
 	f_ = Ref{Ptr{Cvoid}}()
 	ctx_ = Ref{Ptr{Cvoid}}()
 
@@ -3565,6 +3662,7 @@ function SNESGetNPC(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetNPC(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetNPC", "snes")
 	pc_ = Ref{CSNES}()
 
     @chk ccall(
@@ -3605,6 +3703,7 @@ function SNESGetNPCFunction(petsclib::PetscLibType, snes::AbstractSNES, F::Abstr
 end
 
 @for_petsc function SNESGetNPCFunction(petsclib::$UnionPetscLib, snes::AbstractSNES, F::AbstractPetscVec )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetNPCFunction", "snes")
 	fnorm_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -3647,6 +3746,7 @@ function SNESGetNPCSide(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetNPCSide(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetNPCSide", "snes")
 	side_ = Ref{PCSide}()
 
     @chk ccall(
@@ -3687,6 +3787,7 @@ function SNESGetNonlinearStepFailures(petsclib::PetscLibType, snes::AbstractSNES
 end
 
 @for_petsc function SNESGetNonlinearStepFailures(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetNonlinearStepFailures", "snes")
 	nfails_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3724,6 +3825,7 @@ function SNESGetNormSchedule(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetNormSchedule(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetNormSchedule", "snes")
 	normschedule_ = Ref{SNESNormSchedule}()
 
     @chk ccall(
@@ -3763,6 +3865,7 @@ function SNESGetNumberFunctionEvals(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetNumberFunctionEvals(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetNumberFunctionEvals", "snes")
 	nfuncs_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3802,6 +3905,7 @@ function SNESGetObjective(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetObjective(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetObjective", "snes")
 	obj_ = Ref{Ptr{Cvoid}}()
 	ctx_ = Ref{Ptr{Cvoid}}()
 
@@ -3843,6 +3947,7 @@ function SNESGetOptionsPrefix(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetOptionsPrefix(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetOptionsPrefix", "snes")
 	prefix_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -3886,6 +3991,7 @@ function SNESGetPicard(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetPicard(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetPicard", "snes")
 	r_ = Ref{CVec}()
 	f_ = Ref{Ptr{Cvoid}}()
 	Amat_ = Ref{CMat}()
@@ -3935,6 +4041,7 @@ function SNESGetRhs(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetRhs(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetRhs", "snes")
 	rhs_ = Ref{CVec}()
 
     @chk ccall(
@@ -3974,6 +4081,7 @@ function SNESGetSolution(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetSolution(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetSolution", "snes")
 	x_ = Ref{CVec}()
 
     @chk ccall(
@@ -4012,6 +4120,7 @@ function SNESGetSolutionNorm(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetSolutionNorm(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetSolutionNorm", "snes")
 	xnorm_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -4051,6 +4160,7 @@ function SNESGetSolutionUpdate(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetSolutionUpdate(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetSolutionUpdate", "snes")
 	x_ = Ref{CVec}()
 
     @chk ccall(
@@ -4093,6 +4203,7 @@ function SNESGetTolerances(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetTolerances(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetTolerances", "snes")
 	atol_ = Ref{$PetscReal}()
 	rtol_ = Ref{$PetscReal}()
 	stol_ = Ref{$PetscReal}()
@@ -4139,6 +4250,7 @@ function SNESGetType(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetType(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetType", "snes")
 	type_ = Ref{SNESType}()
 
     @chk ccall(
@@ -4177,6 +4289,7 @@ function SNESGetUpdateNorm(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetUpdateNorm(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetUpdateNorm", "snes")
 	ynorm_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -4216,6 +4329,7 @@ function SNESGetUseMatrixFree(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESGetUseMatrixFree(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESGetUseMatrixFree", "snes")
 	mf_operator_ = Ref{PetscBool}()
 	mf_ = Ref{PetscBool}()
 
@@ -4256,6 +4370,7 @@ function SNESHasNPC(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESHasNPC(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESHasNPC", "snes")
 	has_npc_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -4331,6 +4446,7 @@ function SNESKSPGetParametersEW(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESKSPGetParametersEW(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESKSPGetParametersEW", "snes")
 	version_ = Ref{$PetscInt}()
 	rtol_0_ = Ref{$PetscReal}()
 	rtol_max_ = Ref{$PetscReal}()
@@ -4383,6 +4499,7 @@ function SNESKSPGetUseEW(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESKSPGetUseEW(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESKSPGetUseEW", "snes")
 	flag_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -4428,6 +4545,7 @@ function SNESKSPSetParametersEW(petsclib::PetscLibType, snes::AbstractSNES, vers
 end
 
 @for_petsc function SNESKSPSetParametersEW(petsclib::$UnionPetscLib, snes::AbstractSNES, version::$PetscInt, rtol_0::$PetscReal, rtol_max::$PetscReal, gamma::$PetscReal, alpha::$PetscReal, alpha2::$PetscReal, threshold::$PetscReal )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESKSPSetParametersEW", "snes")
 
     @chk ccall(
                (:SNESKSPSetParametersEW, $petsc_library),
@@ -4474,6 +4592,7 @@ function SNESKSPSetUseEW(petsclib::PetscLibType, snes::AbstractSNES, flag::Petsc
 end
 
 @for_petsc function SNESKSPSetUseEW(petsclib::$UnionPetscLib, snes::AbstractSNES, flag::PetscBool )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESKSPSetUseEW", "snes")
 
     @chk ccall(
                (:SNESKSPSetUseEW, $petsc_library),
@@ -4509,6 +4628,7 @@ function SNESLoad(petsclib::PetscLibType, snes::AbstractSNES, viewer::PetscViewe
 end
 
 @for_petsc function SNESLoad(petsclib::$UnionPetscLib, snes::AbstractSNES, viewer::PetscViewer )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESLoad", "snes")
 
     @chk ccall(
                (:SNESLoad, $petsc_library),
@@ -4573,6 +4693,7 @@ function SNESMSGetDamping(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESMSGetDamping(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESMSGetDamping", "snes")
 	damping_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -4611,6 +4732,7 @@ function SNESMSGetType(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESMSGetType(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESMSGetType", "snes")
 	mstype_ = Ref{SNESMSType}()
 
     @chk ccall(
@@ -4772,6 +4894,7 @@ function SNESMSSetDamping(petsclib::PetscLibType, snes::AbstractSNES, damping::R
 end
 
 @for_petsc function SNESMSSetDamping(petsclib::$UnionPetscLib, snes::AbstractSNES, damping::$PetscReal )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESMSSetDamping", "snes")
 
     @chk ccall(
                (:SNESMSSetDamping, $petsc_library),
@@ -4806,6 +4929,7 @@ function SNESMSSetType(petsclib::PetscLibType, snes::AbstractSNES, mstype::Strin
 end
 
 @for_petsc function SNESMSSetType(petsclib::$UnionPetscLib, snes::AbstractSNES, mstype::String )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESMSSetType", "snes")
 
     @chk ccall(
                (:SNESMSSetType, $petsc_library),
@@ -4879,6 +5003,7 @@ function SNESMonitorCancel(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESMonitorCancel(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESMonitorCancel", "snes")
 
     @chk ccall(
                (:SNESMonitorCancel, $petsc_library),
@@ -4959,6 +5084,7 @@ function SNESMonitorDefaultField(petsclib::PetscLibType, snes::AbstractSNES, its
 end
 
 @for_petsc function SNESMonitorDefaultField(petsclib::$UnionPetscLib, snes::AbstractSNES, its::$PetscInt, fgnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESMonitorDefaultField", "snes")
 
     @chk ccall(
                (:SNESMonitorDefaultField, $petsc_library),
@@ -5052,6 +5178,7 @@ function SNESMonitorFields(petsclib::PetscLibType, snes::AbstractSNES, its::Inte
 end
 
 @for_petsc function SNESMonitorFields(petsclib::$UnionPetscLib, snes::AbstractSNES, its::$PetscInt, fgnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESMonitorFields", "snes")
 
     @chk ccall(
                (:SNESMonitorFields, $petsc_library),
@@ -5091,6 +5218,7 @@ function SNESMonitorJacUpdateSpectrum(petsclib::PetscLibType, snes::AbstractSNES
 end
 
 @for_petsc function SNESMonitorJacUpdateSpectrum(petsclib::$UnionPetscLib, snes::AbstractSNES, it::$PetscInt, fnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESMonitorJacUpdateSpectrum", "snes")
 
     @chk ccall(
                (:SNESMonitorJacUpdateSpectrum, $petsc_library),
@@ -5127,6 +5255,7 @@ function SNESMonitorLGRange(petsclib::PetscLibType, snes::AbstractSNES, n::Integ
 end
 
 @for_petsc function SNESMonitorLGRange(petsclib::$UnionPetscLib, snes::AbstractSNES, n::$PetscInt, rnorm::$PetscReal, monctx::Ptr{Cvoid} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESMonitorLGRange", "snes")
 
     @chk ccall(
                (:SNESMonitorLGRange, $petsc_library),
@@ -5166,6 +5295,7 @@ function SNESMonitorRange(petsclib::PetscLibType, snes::AbstractSNES, it::Intege
 end
 
 @for_petsc function SNESMonitorRange(petsclib::$UnionPetscLib, snes::AbstractSNES, it::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESMonitorRange", "snes")
 
     @chk ccall(
                (:SNESMonitorRange, $petsc_library),
@@ -5205,6 +5335,7 @@ function SNESMonitorRatio(petsclib::PetscLibType, snes::AbstractSNES, its::Integ
 end
 
 @for_petsc function SNESMonitorRatio(petsclib::$UnionPetscLib, snes::AbstractSNES, its::$PetscInt, fgnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESMonitorRatio", "snes")
 
     @chk ccall(
                (:SNESMonitorRatio, $petsc_library),
@@ -5239,6 +5370,7 @@ function SNESMonitorRatioSetUp(petsclib::PetscLibType, snes::AbstractSNES, vf::V
 end
 
 @for_petsc function SNESMonitorRatioSetUp(petsclib::$UnionPetscLib, snes::AbstractSNES, vf::Vector{PetscViewerAndFormat} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESMonitorRatioSetUp", "snes")
 
     @chk ccall(
                (:SNESMonitorRatioSetUp, $petsc_library),
@@ -5279,6 +5411,7 @@ function SNESMonitorResidual(petsclib::PetscLibType, snes::AbstractSNES, its::In
 end
 
 @for_petsc function SNESMonitorResidual(petsclib::$UnionPetscLib, snes::AbstractSNES, its::$PetscInt, fgnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESMonitorResidual", "snes")
 
     @chk ccall(
                (:SNESMonitorResidual, $petsc_library),
@@ -5315,6 +5448,7 @@ function SNESMonitorSAWs(petsclib::PetscLibType, snes::AbstractSNES, n::Integer,
 end
 
 @for_petsc function SNESMonitorSAWs(petsclib::$UnionPetscLib, snes::AbstractSNES, n::$PetscInt, rnorm::$PetscReal, ctx::Ptr{Cvoid} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESMonitorSAWs", "snes")
 
     @chk ccall(
                (:SNESMonitorSAWs, $petsc_library),
@@ -5423,6 +5557,7 @@ function SNESMonitorScaling(petsclib::PetscLibType, snes::AbstractSNES, its::Int
 end
 
 @for_petsc function SNESMonitorScaling(petsclib::$UnionPetscLib, snes::AbstractSNES, its::$PetscInt, fgnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESMonitorScaling", "snes")
 
     @chk ccall(
                (:SNESMonitorScaling, $petsc_library),
@@ -5570,6 +5705,7 @@ function SNESMonitorSolution(petsclib::PetscLibType, snes::AbstractSNES, its::In
 end
 
 @for_petsc function SNESMonitorSolution(petsclib::$UnionPetscLib, snes::AbstractSNES, its::$PetscInt, fgnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESMonitorSolution", "snes")
 
     @chk ccall(
                (:SNESMonitorSolution, $petsc_library),
@@ -5610,6 +5746,7 @@ function SNESMonitorSolutionUpdate(petsclib::PetscLibType, snes::AbstractSNES, i
 end
 
 @for_petsc function SNESMonitorSolutionUpdate(petsclib::$UnionPetscLib, snes::AbstractSNES, its::$PetscInt, fgnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESMonitorSolutionUpdate", "snes")
 
     @chk ccall(
                (:SNESMonitorSolutionUpdate, $petsc_library),
@@ -5647,6 +5784,7 @@ function SNESMultiblockGetSubSNES(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESMultiblockGetSubSNES(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESMultiblockGetSubSNES", "snes")
 	n_ = Ref{$PetscInt}()
 	subsnes_ = Ref{Ptr{CSNES}}()
 
@@ -5685,6 +5823,7 @@ function SNESMultiblockSetBlockSize(petsclib::PetscLibType, snes::AbstractSNES, 
 end
 
 @for_petsc function SNESMultiblockSetBlockSize(petsclib::$UnionPetscLib, snes::AbstractSNES, bs::$PetscInt )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESMultiblockSetBlockSize", "snes")
 
     @chk ccall(
                (:SNESMultiblockSetBlockSize, $petsc_library),
@@ -5721,6 +5860,7 @@ function SNESMultiblockSetFields(petsclib::PetscLibType, snes::AbstractSNES, nam
 end
 
 @for_petsc function SNESMultiblockSetFields(petsclib::$UnionPetscLib, snes::AbstractSNES, name::String, n::$PetscInt, fields::Vector{$PetscInt} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESMultiblockSetFields", "snes")
 
     @chk ccall(
                (:SNESMultiblockSetFields, $petsc_library),
@@ -5756,6 +5896,8 @@ function SNESMultiblockSetIS(petsclib::PetscLibType, snes::AbstractSNES, name::S
 end
 
 @for_petsc function SNESMultiblockSetIS(petsclib::$UnionPetscLib, snes::AbstractSNES, name::String, is::AbstractIS )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESMultiblockSetIS", "snes")
+	is.ptr == C_NULL && throw_null_handle(is, "SNESMultiblockSetIS", "is")
 
     @chk ccall(
                (:SNESMultiblockSetIS, $petsc_library),
@@ -5794,6 +5936,7 @@ function SNESMultiblockSetType(petsclib::PetscLibType, snes::AbstractSNES, type:
 end
 
 @for_petsc function SNESMultiblockSetType(petsclib::$UnionPetscLib, snes::AbstractSNES, type::PCCompositeType )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESMultiblockSetType", "snes")
 
     @chk ccall(
                (:SNESMultiblockSetType, $petsc_library),
@@ -6265,6 +6408,7 @@ function SNESNCGSetType(petsclib::PetscLibType, snes::AbstractSNES, btype::SNESN
 end
 
 @for_petsc function SNESNCGSetType(petsclib::$UnionPetscLib, snes::AbstractSNES, btype::SNESNCGType )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESNCGSetType", "snes")
 
     @chk ccall(
                (:SNESNCGSetType, $petsc_library),
@@ -6377,6 +6521,7 @@ function SNESNGMRESSetRestartType(petsclib::PetscLibType, snes::AbstractSNES, rt
 end
 
 @for_petsc function SNESNGMRESSetRestartType(petsclib::$UnionPetscLib, snes::AbstractSNES, rtype::SNESNGMRESRestartType )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESNGMRESSetRestartType", "snes")
 
     @chk ccall(
                (:SNESNGMRESSetRestartType, $petsc_library),
@@ -6416,6 +6561,7 @@ function SNESNGMRESSetSelectType(petsclib::PetscLibType, snes::AbstractSNES, sty
 end
 
 @for_petsc function SNESNGMRESSetSelectType(petsclib::$UnionPetscLib, snes::AbstractSNES, stype::SNESNGMRESSelectType )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESNGMRESSetSelectType", "snes")
 
     @chk ccall(
                (:SNESNGMRESSetSelectType, $petsc_library),
@@ -6450,6 +6596,7 @@ function SNESNGSGetSweeps(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESNGSGetSweeps(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESNGSGetSweeps", "snes")
 	sweeps_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -6490,6 +6637,7 @@ function SNESNGSGetTolerances(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESNGSGetTolerances(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESNGSGetTolerances", "snes")
 	atol_ = Ref{$PetscReal}()
 	rtol_ = Ref{$PetscReal}()
 	stol_ = Ref{$PetscReal}()
@@ -6535,6 +6683,7 @@ function SNESNGSSetSweeps(petsclib::PetscLibType, snes::AbstractSNES, sweeps::In
 end
 
 @for_petsc function SNESNGSSetSweeps(petsclib::$UnionPetscLib, snes::AbstractSNES, sweeps::$PetscInt )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESNGSSetSweeps", "snes")
 
     @chk ccall(
                (:SNESNGSSetSweeps, $petsc_library),
@@ -6578,6 +6727,7 @@ function SNESNGSSetTolerances(petsclib::PetscLibType, snes::AbstractSNES, abstol
 end
 
 @for_petsc function SNESNGSSetTolerances(petsclib::$UnionPetscLib, snes::AbstractSNES, abstol::$PetscReal, rtol::$PetscReal, stol::$PetscReal, maxit::$PetscInt )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESNGSSetTolerances", "snes")
 
     @chk ccall(
                (:SNESNGSSetTolerances, $petsc_library),
@@ -6615,6 +6765,9 @@ function SNESNewtonALComputeFunction(petsclib::PetscLibType, snes::AbstractSNES,
 end
 
 @for_petsc function SNESNewtonALComputeFunction(petsclib::$UnionPetscLib, snes::AbstractSNES, X::AbstractPetscVec, Q::AbstractPetscVec )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESNewtonALComputeFunction", "snes")
+	X.ptr == C_NULL && throw_null_handle(X, "SNESNewtonALComputeFunction", "X")
+	Q.ptr == C_NULL && throw_null_handle(Q, "SNESNewtonALComputeFunction", "Q")
 
     @chk ccall(
                (:SNESNewtonALComputeFunction, $petsc_library),
@@ -6650,6 +6803,7 @@ function SNESNewtonALGetFunction(petsclib::PetscLibType, snes::AbstractSNES, fun
 end
 
 @for_petsc function SNESNewtonALGetFunction(petsclib::$UnionPetscLib, snes::AbstractSNES, func::Ptr{Ptr{Cvoid}}, ctx::Ptr{Cvoid} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESNewtonALGetFunction", "snes")
 
     @chk ccall(
                (:SNESNewtonALGetFunction, $petsc_library),
@@ -6686,6 +6840,7 @@ function SNESNewtonALGetLoadParameter(petsclib::PetscLibType, snes::AbstractSNES
 end
 
 @for_petsc function SNESNewtonALGetLoadParameter(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESNewtonALGetLoadParameter", "snes")
 	lambda_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -6725,6 +6880,7 @@ function SNESNewtonALSetCorrectionType(petsclib::PetscLibType, snes::AbstractSNE
 end
 
 @for_petsc function SNESNewtonALSetCorrectionType(petsclib::$UnionPetscLib, snes::AbstractSNES, ctype::SNESNewtonALCorrectionType )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESNewtonALSetCorrectionType", "snes")
 
     @chk ccall(
                (:SNESNewtonALSetCorrectionType, $petsc_library),
@@ -6757,6 +6913,7 @@ function SNESNewtonALSetDiagonalScaling(petsclib::PetscLibType, snes::AbstractSN
 end
 
 @for_petsc function SNESNewtonALSetDiagonalScaling(petsclib::$UnionPetscLib, snes::AbstractSNES, v::AbstractPetscVec )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESNewtonALSetDiagonalScaling", "snes")
 
     @chk ccall(
                (:SNESNewtonALSetDiagonalScaling, $petsc_library),
@@ -6793,6 +6950,7 @@ function SNESNewtonALSetFunction(petsclib::PetscLibType, snes::AbstractSNES, fun
 end
 
 @for_petsc function SNESNewtonALSetFunction(petsclib::$UnionPetscLib, snes::AbstractSNES, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESNewtonALSetFunction", "snes")
 
     @chk ccall(
                (:SNESNewtonALSetFunction, $petsc_library),
@@ -6920,6 +7078,7 @@ function SNESNewtonTRDCGetRhoFlag(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESNewtonTRDCGetRhoFlag(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESNewtonTRDCGetRhoFlag", "snes")
 	rho_flag_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -7139,6 +7298,7 @@ function SNESNewtonTRGetTolerances(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESNewtonTRGetTolerances(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESNewtonTRGetTolerances", "snes")
 	delta_min_ = Ref{$PetscReal}()
 	delta_max_ = Ref{$PetscReal}()
 	delta_0_ = Ref{$PetscReal}()
@@ -7185,6 +7345,7 @@ function SNESNewtonTRGetUpdateParameters(petsclib::PetscLibType, snes::AbstractS
 end
 
 @for_petsc function SNESNewtonTRGetUpdateParameters(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESNewtonTRGetUpdateParameters", "snes")
 	eta1_ = Ref{$PetscReal}()
 	eta2_ = Ref{$PetscReal}()
 	eta3_ = Ref{$PetscReal}()
@@ -7233,6 +7394,7 @@ function SNESNewtonTRPostCheck(petsclib::PetscLibType, snes::AbstractSNES, X::Ab
 end
 
 @for_petsc function SNESNewtonTRPostCheck(petsclib::$UnionPetscLib, snes::AbstractSNES, X::AbstractPetscVec, Y::AbstractPetscVec, W::AbstractPetscVec )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESNewtonTRPostCheck", "snes")
 	changed_Y_ = Ref{PetscBool}()
 	changed_W_ = Ref{PetscBool}()
 
@@ -7275,6 +7437,7 @@ function SNESNewtonTRPreCheck(petsclib::PetscLibType, snes::AbstractSNES, X::Abs
 end
 
 @for_petsc function SNESNewtonTRPreCheck(petsclib::$UnionPetscLib, snes::AbstractSNES, X::AbstractPetscVec, Y::AbstractPetscVec )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESNewtonTRPreCheck", "snes")
 	changed_Y_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -7310,6 +7473,7 @@ function SNESNewtonTRSetFallbackType(petsclib::PetscLibType, snes::AbstractSNES,
 end
 
 @for_petsc function SNESNewtonTRSetFallbackType(petsclib::$UnionPetscLib, snes::AbstractSNES, ftype::SNESNewtonTRFallbackType )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESNewtonTRSetFallbackType", "snes")
 
     @chk ccall(
                (:SNESNewtonTRSetFallbackType, $petsc_library),
@@ -7342,6 +7506,7 @@ function SNESNewtonTRSetNormType(petsclib::PetscLibType, snes::AbstractSNES, nor
 end
 
 @for_petsc function SNESNewtonTRSetNormType(petsclib::$UnionPetscLib, snes::AbstractSNES, norm::NormType )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESNewtonTRSetNormType", "snes")
 
     @chk ccall(
                (:SNESNewtonTRSetNormType, $petsc_library),
@@ -7462,6 +7627,7 @@ function SNESNewtonTRSetQNType(petsclib::PetscLibType, snes::AbstractSNES, use::
 end
 
 @for_petsc function SNESNewtonTRSetQNType(petsclib::$UnionPetscLib, snes::AbstractSNES, use::SNESNewtonTRQNType )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESNewtonTRSetQNType", "snes")
 
     @chk ccall(
                (:SNESNewtonTRSetQNType, $petsc_library),
@@ -7501,6 +7667,7 @@ function SNESNewtonTRSetTolerances(petsclib::PetscLibType, snes::AbstractSNES, d
 end
 
 @for_petsc function SNESNewtonTRSetTolerances(petsclib::$UnionPetscLib, snes::AbstractSNES, delta_min::$PetscReal, delta_max::$PetscReal, delta_0::$PetscReal )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESNewtonTRSetTolerances", "snes")
 
     @chk ccall(
                (:SNESNewtonTRSetTolerances, $petsc_library),
@@ -7544,6 +7711,7 @@ function SNESNewtonTRSetUpdateParameters(petsclib::PetscLibType, snes::AbstractS
 end
 
 @for_petsc function SNESNewtonTRSetUpdateParameters(petsclib::$UnionPetscLib, snes::AbstractSNES, eta1::$PetscReal, eta2::$PetscReal, eta3::$PetscReal, t1::$PetscReal, t2::$PetscReal )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESNewtonTRSetUpdateParameters", "snes")
 
     @chk ccall(
                (:SNESNewtonTRSetUpdateParameters, $petsc_library),
@@ -7586,6 +7754,9 @@ function SNESObjectiveComputeFunctionDefaultFD(petsclib::PetscLibType, snes::Abs
 end
 
 @for_petsc function SNESObjectiveComputeFunctionDefaultFD(petsclib::$UnionPetscLib, snes::AbstractSNES, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESObjectiveComputeFunctionDefaultFD", "snes")
+	X.ptr == C_NULL && throw_null_handle(X, "SNESObjectiveComputeFunctionDefaultFD", "X")
+	F.ptr == C_NULL && throw_null_handle(F, "SNESObjectiveComputeFunctionDefaultFD", "F")
 
     @chk ccall(
                (:SNESObjectiveComputeFunctionDefaultFD, $petsc_library),
@@ -7833,6 +8004,7 @@ function SNESPatchSetDiscretisationInfo(petsclib::PetscLibType, snes::AbstractSN
 end
 
 @for_petsc function SNESPatchSetDiscretisationInfo(petsclib::$UnionPetscLib, snes::AbstractSNES, nsubspaces::$PetscInt, dms::Vector{<:AbstractPetscDM}, bs::Vector{$PetscInt}, nodesPerCell::Vector{$PetscInt}, cellNodeMap::$PetscInt, subspaceOffsets::Vector{$PetscInt}, numGhostBcs::$PetscInt, ghostBcNodes::Vector{$PetscInt}, numGlobalBcs::$PetscInt, globalBcNodes::Vector{$PetscInt} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESPatchSetDiscretisationInfo", "snes")
 
     @chk ccall(
                (:SNESPatchSetDiscretisationInfo, $petsc_library),
@@ -7871,6 +8043,7 @@ function SNESPicardComputeFunction(petsclib::PetscLibType, snes::AbstractSNES, x
 end
 
 @for_petsc function SNESPicardComputeFunction(petsclib::$UnionPetscLib, snes::AbstractSNES, x::AbstractPetscVec, f::AbstractPetscVec, ctx::Ptr{Cvoid} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESPicardComputeFunction", "snes")
 
     @chk ccall(
                (:SNESPicardComputeFunction, $petsc_library),
@@ -7908,6 +8081,7 @@ function SNESPicardComputeJacobian(petsclib::PetscLibType, snes::AbstractSNES, x
 end
 
 @for_petsc function SNESPicardComputeJacobian(petsclib::$UnionPetscLib, snes::AbstractSNES, x1::AbstractPetscVec, J::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid} )
+	J.ptr == C_NULL && throw_null_handle(J, "SNESPicardComputeJacobian", "J")
 
     @chk ccall(
                (:SNESPicardComputeJacobian, $petsc_library),
@@ -7946,6 +8120,7 @@ function SNESPicardComputeMFFunction(petsclib::PetscLibType, snes::AbstractSNES,
 end
 
 @for_petsc function SNESPicardComputeMFFunction(petsclib::$UnionPetscLib, snes::AbstractSNES, x::AbstractPetscVec, f::AbstractPetscVec, ctx::Ptr{Cvoid} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESPicardComputeMFFunction", "snes")
 
     @chk ccall(
                (:SNESPicardComputeMFFunction, $petsc_library),
@@ -7981,6 +8156,8 @@ function SNESPruneJacobianColor(petsclib::PetscLibType, snes::AbstractSNES, J::A
 end
 
 @for_petsc function SNESPruneJacobianColor(petsclib::$UnionPetscLib, snes::AbstractSNES, J::AbstractPetscMat, B::AbstractPetscMat )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESPruneJacobianColor", "snes")
+	B.ptr == C_NULL && throw_null_handle(B, "SNESPruneJacobianColor", "B")
 
     @chk ccall(
                (:SNESPruneJacobianColor, $petsc_library),
@@ -8017,6 +8194,7 @@ function SNESPythonGetType(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESPythonGetType(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESPythonGetType", "snes")
 	pyname_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -8056,6 +8234,7 @@ function SNESPythonSetType(petsclib::PetscLibType, snes::AbstractSNES, pyname::S
 end
 
 @for_petsc function SNESPythonSetType(petsclib::$UnionPetscLib, snes::AbstractSNES, pyname::String )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESPythonSetType", "snes")
 
     @chk ccall(
                (:SNESPythonSetType, $petsc_library),
@@ -8095,6 +8274,7 @@ function SNESQNSetRestartType(petsclib::PetscLibType, snes::AbstractSNES, rtype:
 end
 
 @for_petsc function SNESQNSetRestartType(petsclib::$UnionPetscLib, snes::AbstractSNES, rtype::SNESQNRestartType )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESQNSetRestartType", "snes")
 
     @chk ccall(
                (:SNESQNSetRestartType, $petsc_library),
@@ -8132,6 +8312,7 @@ function SNESQNSetScaleType(petsclib::PetscLibType, snes::AbstractSNES, stype::S
 end
 
 @for_petsc function SNESQNSetScaleType(petsclib::$UnionPetscLib, snes::AbstractSNES, stype::SNESQNScaleType )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESQNSetScaleType", "snes")
 
     @chk ccall(
                (:SNESQNSetScaleType, $petsc_library),
@@ -8169,6 +8350,7 @@ function SNESQNSetType(petsclib::PetscLibType, snes::AbstractSNES, qtype::SNESQN
 end
 
 @for_petsc function SNESQNSetType(petsclib::$UnionPetscLib, snes::AbstractSNES, qtype::SNESQNType )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESQNSetType", "snes")
 
     @chk ccall(
                (:SNESQNSetType, $petsc_library),
@@ -8236,6 +8418,7 @@ function SNESReset(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESReset(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESReset", "snes")
 
     @chk ccall(
                (:SNESReset, $petsc_library),
@@ -8269,6 +8452,7 @@ function SNESResetCounters(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESResetCounters(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESResetCounters", "snes")
 
     @chk ccall(
                (:SNESResetCounters, $petsc_library),
@@ -8336,6 +8520,7 @@ function SNESSetAlwaysComputesFinalResidual(petsclib::PetscLibType, snes::Abstra
 end
 
 @for_petsc function SNESSetAlwaysComputesFinalResidual(petsclib::$UnionPetscLib, snes::AbstractSNES, flg::PetscBool )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetAlwaysComputesFinalResidual", "snes")
 
     @chk ccall(
                (:SNESSetAlwaysComputesFinalResidual, $petsc_library),
@@ -8370,6 +8555,7 @@ function SNESSetApplicationContext(petsclib::PetscLibType, snes::AbstractSNES, c
 end
 
 @for_petsc function SNESSetApplicationContext(petsclib::$UnionPetscLib, snes::AbstractSNES, ctx::Ptr{Cvoid} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetApplicationContext", "snes")
 
     @chk ccall(
                (:SNESSetApplicationContext, $petsc_library),
@@ -8405,6 +8591,7 @@ function SNESSetCheckJacobianDomainError(petsclib::PetscLibType, snes::AbstractS
 end
 
 @for_petsc function SNESSetCheckJacobianDomainError(petsclib::$UnionPetscLib, snes::AbstractSNES, flg::PetscBool )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetCheckJacobianDomainError", "snes")
 
     @chk ccall(
                (:SNESSetCheckJacobianDomainError, $petsc_library),
@@ -8481,6 +8668,7 @@ function SNESSetComputeInitialGuess(petsclib::PetscLibType, snes::AbstractSNES, 
 end
 
 @for_petsc function SNESSetComputeInitialGuess(petsclib::$UnionPetscLib, snes::AbstractSNES, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetComputeInitialGuess", "snes")
 
     @chk ccall(
                (:SNESSetComputeInitialGuess, $petsc_library),
@@ -8516,6 +8704,7 @@ function SNESSetConvergedReason(petsclib::PetscLibType, snes::AbstractSNES, reas
 end
 
 @for_petsc function SNESSetConvergedReason(petsclib::$UnionPetscLib, snes::AbstractSNES, reason::SNESConvergedReason )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetConvergedReason", "snes")
 
     @chk ccall(
                (:SNESSetConvergedReason, $petsc_library),
@@ -8554,6 +8743,7 @@ function SNESSetConvergenceHistory(petsclib::PetscLibType, snes::AbstractSNES, a
 end
 
 @for_petsc function SNESSetConvergenceHistory(petsclib::$UnionPetscLib, snes::AbstractSNES, a::Vector{$PetscReal}, its::Vector{$PetscInt}, na::$PetscInt, reset::PetscBool )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetConvergenceHistory", "snes")
 
     @chk ccall(
                (:SNESSetConvergenceHistory, $petsc_library),
@@ -8635,6 +8825,7 @@ function SNESSetCountersReset(petsclib::PetscLibType, snes::AbstractSNES, reset:
 end
 
 @for_petsc function SNESSetCountersReset(petsclib::$UnionPetscLib, snes::AbstractSNES, reset::PetscBool )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetCountersReset", "snes")
 
     @chk ccall(
                (:SNESSetCountersReset, $petsc_library),
@@ -8669,6 +8860,8 @@ function SNESSetDM(petsclib::PetscLibType, snes::AbstractSNES, dm::AbstractPetsc
 end
 
 @for_petsc function SNESSetDM(petsclib::$UnionPetscLib, snes::AbstractSNES, dm::AbstractPetscDM )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetDM", "snes")
+	dm.ptr == C_NULL && throw_null_handle(dm, "SNESSetDM", "dm")
 
     @chk ccall(
                (:SNESSetDM, $petsc_library),
@@ -8707,6 +8900,7 @@ function SNESSetDivergenceTolerance(petsclib::PetscLibType, snes::AbstractSNES, 
 end
 
 @for_petsc function SNESSetDivergenceTolerance(petsclib::$UnionPetscLib, snes::AbstractSNES, divtol::$PetscReal )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetDivergenceTolerance", "snes")
 
     @chk ccall(
                (:SNESSetDivergenceTolerance, $petsc_library),
@@ -8744,6 +8938,7 @@ function SNESSetErrorIfNotConverged(petsclib::PetscLibType, snes::AbstractSNES, 
 end
 
 @for_petsc function SNESSetErrorIfNotConverged(petsclib::$UnionPetscLib, snes::AbstractSNES, flg::PetscBool )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetErrorIfNotConverged", "snes")
 
     @chk ccall(
                (:SNESSetErrorIfNotConverged, $petsc_library),
@@ -8781,6 +8976,7 @@ function SNESSetForceIteration(petsclib::PetscLibType, snes::AbstractSNES, force
 end
 
 @for_petsc function SNESSetForceIteration(petsclib::$UnionPetscLib, snes::AbstractSNES, force::PetscBool )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetForceIteration", "snes")
 
     @chk ccall(
                (:SNESSetForceIteration, $petsc_library),
@@ -8859,6 +9055,7 @@ function SNESSetFromOptions(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESSetFromOptions(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetFromOptions", "snes")
 
     @chk ccall(
                (:SNESSetFromOptions, $petsc_library),
@@ -8898,6 +9095,7 @@ function SNESSetFunction(petsclib::PetscLibType, snes::AbstractSNES, r::Abstract
 end
 
 @for_petsc function SNESSetFunction(petsclib::$UnionPetscLib, snes::AbstractSNES, r::AbstractPetscVec, f::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetFunction", "snes")
 
     @chk ccall(
                (:SNESSetFunction, $petsc_library),
@@ -8934,6 +9132,7 @@ function SNESSetFunctionDomainError(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESSetFunctionDomainError(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetFunctionDomainError", "snes")
 
     @chk ccall(
                (:SNESSetFunctionDomainError, $petsc_library),
@@ -8968,6 +9167,7 @@ function SNESSetFunctionNorm(petsclib::PetscLibType, snes::AbstractSNES, norm::R
 end
 
 @for_petsc function SNESSetFunctionNorm(petsclib::$UnionPetscLib, snes::AbstractSNES, norm::$PetscReal )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetFunctionNorm", "snes")
 
     @chk ccall(
                (:SNESSetFunctionNorm, $petsc_library),
@@ -9008,6 +9208,7 @@ function SNESSetFunctionType(petsclib::PetscLibType, snes::AbstractSNES, type::S
 end
 
 @for_petsc function SNESSetFunctionType(petsclib::$UnionPetscLib, snes::AbstractSNES, type::SNESFunctionType )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetFunctionType", "snes")
 
     @chk ccall(
                (:SNESSetFunctionType, $petsc_library),
@@ -9046,6 +9247,7 @@ function SNESSetGridSequence(petsclib::PetscLibType, snes::AbstractSNES, steps::
 end
 
 @for_petsc function SNESSetGridSequence(petsclib::$UnionPetscLib, snes::AbstractSNES, steps::$PetscInt )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetGridSequence", "snes")
 
     @chk ccall(
                (:SNESSetGridSequence, $petsc_library),
@@ -9080,6 +9282,8 @@ function SNESSetInitialFunction(petsclib::PetscLibType, snes::AbstractSNES, f::A
 end
 
 @for_petsc function SNESSetInitialFunction(petsclib::$UnionPetscLib, snes::AbstractSNES, f::AbstractPetscVec )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetInitialFunction", "snes")
+	f.ptr == C_NULL && throw_null_handle(f, "SNESSetInitialFunction", "f")
 
     @chk ccall(
                (:SNESSetInitialFunction, $petsc_library),
@@ -9114,6 +9318,7 @@ function SNESSetIterationNumber(petsclib::PetscLibType, snes::AbstractSNES, iter
 end
 
 @for_petsc function SNESSetIterationNumber(petsclib::$UnionPetscLib, snes::AbstractSNES, iter::$PetscInt )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetIterationNumber", "snes")
 
     @chk ccall(
                (:SNESSetIterationNumber, $petsc_library),
@@ -9154,6 +9359,7 @@ function SNESSetJacobian(petsclib::PetscLibType, snes::AbstractSNES, Amat::Abstr
 end
 
 @for_petsc function SNESSetJacobian(petsclib::$UnionPetscLib, snes::AbstractSNES, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, J::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetJacobian", "snes")
 
     @chk ccall(
                (:SNESSetJacobian, $petsc_library),
@@ -9188,6 +9394,7 @@ function SNESSetJacobianDomainError(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESSetJacobianDomainError(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetJacobianDomainError", "snes")
 
     @chk ccall(
                (:SNESSetJacobianDomainError, $petsc_library),
@@ -9222,6 +9429,8 @@ function SNESSetKSP(petsclib::PetscLibType, snes::AbstractSNES, ksp::AbstractKSP
 end
 
 @for_petsc function SNESSetKSP(petsclib::$UnionPetscLib, snes::AbstractSNES, ksp::AbstractKSP )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetKSP", "snes")
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "SNESSetKSP", "ksp")
 
     @chk ccall(
                (:SNESSetKSP, $petsc_library),
@@ -9264,6 +9473,7 @@ function SNESSetLagJacobian(petsclib::PetscLibType, snes::AbstractSNES, lag::Int
 end
 
 @for_petsc function SNESSetLagJacobian(petsclib::$UnionPetscLib, snes::AbstractSNES, lag::$PetscInt )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetLagJacobian", "snes")
 
     @chk ccall(
                (:SNESSetLagJacobian, $petsc_library),
@@ -9304,6 +9514,7 @@ function SNESSetLagJacobianPersists(petsclib::PetscLibType, snes::AbstractSNES, 
 end
 
 @for_petsc function SNESSetLagJacobianPersists(petsclib::$UnionPetscLib, snes::AbstractSNES, flg::PetscBool )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetLagJacobianPersists", "snes")
 
     @chk ccall(
                (:SNESSetLagJacobianPersists, $petsc_library),
@@ -9346,6 +9557,7 @@ function SNESSetLagPreconditioner(petsclib::PetscLibType, snes::AbstractSNES, la
 end
 
 @for_petsc function SNESSetLagPreconditioner(petsclib::$UnionPetscLib, snes::AbstractSNES, lag::$PetscInt )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetLagPreconditioner", "snes")
 
     @chk ccall(
                (:SNESSetLagPreconditioner, $petsc_library),
@@ -9386,6 +9598,7 @@ function SNESSetLagPreconditionerPersists(petsclib::PetscLibType, snes::Abstract
 end
 
 @for_petsc function SNESSetLagPreconditionerPersists(petsclib::$UnionPetscLib, snes::AbstractSNES, flg::PetscBool )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetLagPreconditionerPersists", "snes")
 
     @chk ccall(
                (:SNESSetLagPreconditionerPersists, $petsc_library),
@@ -9420,6 +9633,7 @@ function SNESSetLineSearch(petsclib::PetscLibType, snes::AbstractSNES, linesearc
 end
 
 @for_petsc function SNESSetLineSearch(petsclib::$UnionPetscLib, snes::AbstractSNES, linesearch::SNESLineSearch )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetLineSearch", "snes")
 
     @chk ccall(
                (:SNESSetLineSearch, $petsc_library),
@@ -9458,6 +9672,7 @@ function SNESSetMaxLinearSolveFailures(petsclib::PetscLibType, snes::AbstractSNE
 end
 
 @for_petsc function SNESSetMaxLinearSolveFailures(petsclib::$UnionPetscLib, snes::AbstractSNES, maxFails::$PetscInt )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetMaxLinearSolveFailures", "snes")
 
     @chk ccall(
                (:SNESSetMaxLinearSolveFailures, $petsc_library),
@@ -9497,6 +9712,7 @@ function SNESSetMaxNonlinearStepFailures(petsclib::PetscLibType, snes::AbstractS
 end
 
 @for_petsc function SNESSetMaxNonlinearStepFailures(petsclib::$UnionPetscLib, snes::AbstractSNES, maxFails::$PetscInt )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetMaxNonlinearStepFailures", "snes")
 
     @chk ccall(
                (:SNESSetMaxNonlinearStepFailures, $petsc_library),
@@ -9531,6 +9747,7 @@ function SNESSetNGS(petsclib::PetscLibType, snes::AbstractSNES, f::Ptr{Cvoid}, c
 end
 
 @for_petsc function SNESSetNGS(petsclib::$UnionPetscLib, snes::AbstractSNES, f::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetNGS", "snes")
 
     @chk ccall(
                (:SNESSetNGS, $petsc_library),
@@ -9568,6 +9785,8 @@ function SNESSetNPC(petsclib::PetscLibType, snes::AbstractSNES, npc::AbstractSNE
 end
 
 @for_petsc function SNESSetNPC(petsclib::$UnionPetscLib, snes::AbstractSNES, npc::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetNPC", "snes")
+	npc.ptr == C_NULL && throw_null_handle(npc, "SNESSetNPC", "npc")
 
     @chk ccall(
                (:SNESSetNPC, $petsc_library),
@@ -9611,6 +9830,7 @@ function SNESSetNPCSide(petsclib::PetscLibType, snes::AbstractSNES, side::PCSide
 end
 
 @for_petsc function SNESSetNPCSide(petsclib::$UnionPetscLib, snes::AbstractSNES, side::PCSide )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetNPCSide", "snes")
 
     @chk ccall(
                (:SNESSetNPCSide, $petsc_library),
@@ -9649,6 +9869,7 @@ function SNESSetNormSchedule(petsclib::PetscLibType, snes::AbstractSNES, normsch
 end
 
 @for_petsc function SNESSetNormSchedule(petsclib::$UnionPetscLib, snes::AbstractSNES, normschedule::SNESNormSchedule )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetNormSchedule", "snes")
 
     @chk ccall(
                (:SNESSetNormSchedule, $petsc_library),
@@ -9685,6 +9906,7 @@ function SNESSetObjective(petsclib::PetscLibType, snes::AbstractSNES, obj::Ptr{C
 end
 
 @for_petsc function SNESSetObjective(petsclib::$UnionPetscLib, snes::AbstractSNES, obj::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetObjective", "snes")
 
     @chk ccall(
                (:SNESSetObjective, $petsc_library),
@@ -9721,6 +9943,7 @@ function SNESSetObjectiveDomainError(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESSetObjectiveDomainError(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetObjectiveDomainError", "snes")
 
     @chk ccall(
                (:SNESSetObjectiveDomainError, $petsc_library),
@@ -9756,6 +9979,7 @@ function SNESSetOptionsPrefix(petsclib::PetscLibType, snes::AbstractSNES, prefix
 end
 
 @for_petsc function SNESSetOptionsPrefix(petsclib::$UnionPetscLib, snes::AbstractSNES, prefix::String )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetOptionsPrefix", "snes")
 
     @chk ccall(
                (:SNESSetOptionsPrefix, $petsc_library),
@@ -9796,6 +10020,7 @@ function SNESSetPicard(petsclib::PetscLibType, snes::AbstractSNES, r::AbstractPe
 end
 
 @for_petsc function SNESSetPicard(petsclib::$UnionPetscLib, snes::AbstractSNES, r::AbstractPetscVec, bp::Ptr{Cvoid}, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, J::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetPicard", "snes")
 
     @chk ccall(
                (:SNESSetPicard, $petsc_library),
@@ -9830,6 +10055,8 @@ function SNESSetSolution(petsclib::PetscLibType, snes::AbstractSNES, u::Abstract
 end
 
 @for_petsc function SNESSetSolution(petsclib::$UnionPetscLib, snes::AbstractSNES, u::AbstractPetscVec )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetSolution", "snes")
+	u.ptr == C_NULL && throw_null_handle(u, "SNESSetSolution", "u")
 
     @chk ccall(
                (:SNESSetSolution, $petsc_library),
@@ -9875,6 +10102,7 @@ function SNESSetTolerances(petsclib::PetscLibType, snes::AbstractSNES, abstol::R
 end
 
 @for_petsc function SNESSetTolerances(petsclib::$UnionPetscLib, snes::AbstractSNES, abstol::$PetscReal, rtol::$PetscReal, stol::$PetscReal, maxit::$PetscInt, maxf::$PetscInt )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetTolerances", "snes")
 
     @chk ccall(
                (:SNESSetTolerances, $petsc_library),
@@ -9912,6 +10140,7 @@ function SNESSetType(petsclib::PetscLibType, snes::AbstractSNES, type::String)
 end
 
 @for_petsc function SNESSetType(petsclib::$UnionPetscLib, snes::AbstractSNES, type::String )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetType", "snes")
 
     @chk ccall(
                (:SNESSetType, $petsc_library),
@@ -9946,6 +10175,7 @@ function SNESSetUp(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESSetUp(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetUp", "snes")
 
     @chk ccall(
                (:SNESSetUp, $petsc_library),
@@ -9979,6 +10209,7 @@ function SNESSetUpMatrices(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESSetUpMatrices(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetUpMatrices", "snes")
 
     @chk ccall(
                (:SNESSetUpMatrices, $petsc_library),
@@ -10017,6 +10248,7 @@ function SNESSetUpdate(petsclib::PetscLibType, snes::AbstractSNES, func::Ptr{Cvo
 end
 
 @for_petsc function SNESSetUpdate(petsclib::$UnionPetscLib, snes::AbstractSNES, func::Ptr{Cvoid} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetUpdate", "snes")
 
     @chk ccall(
                (:SNESSetUpdate, $petsc_library),
@@ -10059,6 +10291,7 @@ function SNESSetUseMatrixFree(petsclib::PetscLibType, snes::AbstractSNES, mf_ope
 end
 
 @for_petsc function SNESSetUseMatrixFree(petsclib::$UnionPetscLib, snes::AbstractSNES, mf_operator::PetscBool, mf::PetscBool )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetUseMatrixFree", "snes")
 
     @chk ccall(
                (:SNESSetUseMatrixFree, $petsc_library),
@@ -10091,6 +10324,7 @@ function SNESSetWorkVecs(petsclib::PetscLibType, snes::AbstractSNES, nw::Integer
 end
 
 @for_petsc function SNESSetWorkVecs(petsclib::$UnionPetscLib, snes::AbstractSNES, nw::$PetscInt )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSetWorkVecs", "snes")
 
     @chk ccall(
                (:SNESSetWorkVecs, $petsc_library),
@@ -10127,6 +10361,7 @@ function SNESShellGetContext(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESShellGetContext(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESShellGetContext", "snes")
 	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
@@ -10163,6 +10398,7 @@ function SNESShellSetContext(petsclib::PetscLibType, snes::AbstractSNES, ctx::Pt
 end
 
 @for_petsc function SNESShellSetContext(petsclib::$UnionPetscLib, snes::AbstractSNES, ctx::Ptr{Cvoid} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESShellSetContext", "snes")
 
     @chk ccall(
                (:SNESShellSetContext, $petsc_library),
@@ -10238,6 +10474,7 @@ function SNESSolve(petsclib::PetscLibType, snes::AbstractSNES, b::Union{Ptr, Abs
 end
 
 @for_petsc function SNESSolve(petsclib::$UnionPetscLib, snes::AbstractSNES, b::Union{Ptr, AbstractPetscVec}, x::AbstractPetscVec )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESSolve", "snes")
 
     @chk ccall(
                (:SNESSolve, $petsc_library),
@@ -10276,6 +10513,9 @@ function SNESTSFormFunction(petsclib::PetscLibType, snes::AbstractSNES, U::Abstr
 end
 
 @for_petsc function SNESTSFormFunction(petsclib::$UnionPetscLib, snes::AbstractSNES, U::AbstractPetscVec, F::AbstractPetscVec, ctx::Ptr{Cvoid} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESTSFormFunction", "snes")
+	U.ptr == C_NULL && throw_null_handle(U, "SNESTSFormFunction", "U")
+	F.ptr == C_NULL && throw_null_handle(F, "SNESTSFormFunction", "F")
 
     @chk ccall(
                (:SNESTSFormFunction, $petsc_library),
@@ -10315,6 +10555,10 @@ function SNESTSFormJacobian(petsclib::PetscLibType, snes::AbstractSNES, U::Abstr
 end
 
 @for_petsc function SNESTSFormJacobian(petsclib::$UnionPetscLib, snes::AbstractSNES, U::AbstractPetscVec, A::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid} )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESTSFormJacobian", "snes")
+	U.ptr == C_NULL && throw_null_handle(U, "SNESTSFormJacobian", "U")
+	A.ptr == C_NULL && throw_null_handle(A, "SNESTSFormJacobian", "A")
+	B.ptr == C_NULL && throw_null_handle(B, "SNESTSFormJacobian", "B")
 
     @chk ccall(
                (:SNESTSFormJacobian, $petsc_library),
@@ -10352,6 +10596,7 @@ function SNESTestFunction(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESTestFunction(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESTestFunction", "snes")
 
     @chk ccall(
                (:SNESTestFunction, $petsc_library),
@@ -10393,6 +10638,7 @@ function SNESTestJacobian(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESTestJacobian(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESTestJacobian", "snes")
 	Jnorm_ = Ref{$PetscReal}()
 	diffNorm_ = Ref{$PetscReal}()
 
@@ -10430,6 +10676,7 @@ function SNESTestLocalMin(petsclib::PetscLibType, snes::AbstractSNES)
 end
 
 @for_petsc function SNESTestLocalMin(petsclib::$UnionPetscLib, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESTestLocalMin", "snes")
 
     @chk ccall(
                (:SNESTestLocalMin, $petsc_library),
@@ -10467,6 +10714,8 @@ function SNESVIComputeFunction(petsclib::PetscLibType, snes::AbstractSNES, X::Ab
 end
 
 @for_petsc function SNESVIComputeFunction(petsclib::$UnionPetscLib, snes::AbstractSNES, X::AbstractPetscVec, phi::AbstractPetscVec, functx::Ptr{Cvoid} )
+	X.ptr == C_NULL && throw_null_handle(X, "SNESVIComputeFunction", "X")
+	phi.ptr == C_NULL && throw_null_handle(phi, "SNESVIComputeFunction", "phi")
 
     @chk ccall(
                (:SNESVIComputeFunction, $petsc_library),
@@ -10503,6 +10752,9 @@ function SNESVIComputeInactiveSetFnorm(petsclib::PetscLibType, snes::AbstractSNE
 end
 
 @for_petsc function SNESVIComputeInactiveSetFnorm(petsclib::$UnionPetscLib, snes::AbstractSNES, F::AbstractPetscVec, X::AbstractPetscVec )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESVIComputeInactiveSetFnorm", "snes")
+	F.ptr == C_NULL && throw_null_handle(F, "SNESVIComputeInactiveSetFnorm", "F")
+	X.ptr == C_NULL && throw_null_handle(X, "SNESVIComputeInactiveSetFnorm", "X")
 	fnorm_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -10543,6 +10795,10 @@ function SNESVIComputeInactiveSetFtY(petsclib::PetscLibType, snes::AbstractSNES,
 end
 
 @for_petsc function SNESVIComputeInactiveSetFtY(petsclib::$UnionPetscLib, snes::AbstractSNES, F::AbstractPetscVec, X::AbstractPetscVec, Y::AbstractPetscVec )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESVIComputeInactiveSetFtY", "snes")
+	F.ptr == C_NULL && throw_null_handle(F, "SNESVIComputeInactiveSetFtY", "F")
+	X.ptr == C_NULL && throw_null_handle(X, "SNESVIComputeInactiveSetFtY", "X")
+	Y.ptr == C_NULL && throw_null_handle(Y, "SNESVIComputeInactiveSetFtY", "Y")
 	fty_ = Ref{$PetscScalar}()
 
     @chk ccall(
@@ -10580,6 +10836,7 @@ function SNESVIComputeMeritFunction(petsclib::PetscLibType, phi::AbstractPetscVe
 end
 
 @for_petsc function SNESVIComputeMeritFunction(petsclib::$UnionPetscLib, phi::AbstractPetscVec )
+	phi.ptr == C_NULL && throw_null_handle(phi, "SNESVIComputeMeritFunction", "phi")
 	merit_ = Ref{$PetscReal}()
 	phinorm_ = Ref{$PetscReal}()
 
@@ -10620,6 +10877,8 @@ function SNESVIGetActiveSetIS(petsclib::PetscLibType, snes::AbstractSNES, X::Abs
 end
 
 @for_petsc function SNESVIGetActiveSetIS(petsclib::$UnionPetscLib, snes::AbstractSNES, X::AbstractPetscVec, F::AbstractPetscVec )
+	X.ptr == C_NULL && throw_null_handle(X, "SNESVIGetActiveSetIS", "X")
+	F.ptr == C_NULL && throw_null_handle(F, "SNESVIGetActiveSetIS", "F")
 	ISact_ = Ref{CIS}()
 
     @chk ccall(
@@ -10811,6 +11070,9 @@ function SNESVISetVariableBounds(petsclib::PetscLibType, snes::AbstractSNES, xl:
 end
 
 @for_petsc function SNESVISetVariableBounds(petsclib::$UnionPetscLib, snes::AbstractSNES, xl::AbstractPetscVec, xu::AbstractPetscVec )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESVISetVariableBounds", "snes")
+	xl.ptr == C_NULL && throw_null_handle(xl, "SNESVISetVariableBounds", "xl")
+	xu.ptr == C_NULL && throw_null_handle(xu, "SNESVISetVariableBounds", "xu")
 
     @chk ccall(
                (:SNESVISetVariableBounds, $petsc_library),
@@ -10848,6 +11110,7 @@ function SNESView(petsclib::PetscLibType, snes::AbstractSNES, viewer::PetscViewe
 end
 
 @for_petsc function SNESView(petsclib::$UnionPetscLib, snes::AbstractSNES, viewer::PetscViewer )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESView", "snes")
 
     @chk ccall(
                (:SNESView, $petsc_library),
@@ -10886,6 +11149,7 @@ function SNESViewFromOptions(petsclib::PetscLibType, A::AbstractSNES, obj, name:
 end
 
 @for_petsc function SNESViewFromOptions(petsclib::$UnionPetscLib, A::AbstractSNES, obj, name::String )
+	A.ptr == C_NULL && throw_null_handle(A, "SNESViewFromOptions", "A")
 
     @chk ccall(
                (:SNESViewFromOptions, $petsc_library),

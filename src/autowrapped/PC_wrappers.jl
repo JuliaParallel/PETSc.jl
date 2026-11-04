@@ -24,6 +24,7 @@ function PCASMCreateSubdomains(petsclib::PetscLibType, A::AbstractPetscMat, n::I
 end
 
 @for_petsc function PCASMCreateSubdomains(petsclib::$UnionPetscLib, A::AbstractPetscMat, n::$PetscInt )
+	A.ptr == C_NULL && throw_null_handle(A, "PCASMCreateSubdomains", "A")
 	outis_ = Ref{Ptr{CIS}}()
 
     @chk ccall(
@@ -163,6 +164,7 @@ function PCASMGetDMSubdomains(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCASMGetDMSubdomains(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCASMGetDMSubdomains", "pc")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -205,6 +207,7 @@ function PCASMGetLocalSubdomains(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCASMGetLocalSubdomains(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCASMGetLocalSubdomains", "pc")
 	n_ = Ref{$PetscInt}()
 	is_ = Ref{Ptr{CIS}}()
 	is_local_ = Ref{Ptr{CIS}}()
@@ -250,6 +253,7 @@ function PCASMGetLocalSubmatrices(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCASMGetLocalSubmatrices(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCASMGetLocalSubmatrices", "pc")
 	n_ = Ref{$PetscInt}()
 	mat_ = Ref{Ptr{CMat}}()
 
@@ -297,6 +301,7 @@ function PCASMGetLocalType(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCASMGetLocalType(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCASMGetLocalType", "pc")
 	type_ = Ref{PCCompositeType}()
 
     @chk ccall(
@@ -339,6 +344,7 @@ function PCASMGetSubKSP(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCASMGetSubKSP(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCASMGetSubKSP", "pc")
 	n_local_ = Ref{$PetscInt}()
 	first_local_ = Ref{$PetscInt}()
 	ksp_ = Ref{Ptr{CKSP}}()
@@ -381,6 +387,7 @@ function PCASMGetSubMatType(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCASMGetSubMatType(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCASMGetSubMatType", "pc")
 	sub_mat_type_ = Ref{MatType}()
 
     @chk ccall(
@@ -430,6 +437,7 @@ function PCASMGetType(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCASMGetType(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCASMGetType", "pc")
 	type_ = Ref{PCASMType}()
 
     @chk ccall(
@@ -470,6 +478,7 @@ function PCASMSetDMSubdomains(petsclib::PetscLibType, pc::AbstractPC, flg::Petsc
 end
 
 @for_petsc function PCASMSetDMSubdomains(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCASMSetDMSubdomains", "pc")
 
     @chk ccall(
                (:PCASMSetDMSubdomains, $petsc_library),
@@ -513,6 +522,7 @@ function PCASMSetLocalSubdomains(petsclib::PetscLibType, pc::AbstractPC, n::Inte
 end
 
 @for_petsc function PCASMSetLocalSubdomains(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt, is::Vector{<:AbstractIS}, is_local::Vector{<:AbstractIS} )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCASMSetLocalSubdomains", "pc")
 
     @chk ccall(
                (:PCASMSetLocalSubdomains, $petsc_library),
@@ -554,6 +564,7 @@ function PCASMSetLocalType(petsclib::PetscLibType, pc::AbstractPC, type::PCCompo
 end
 
 @for_petsc function PCASMSetLocalType(petsclib::$UnionPetscLib, pc::AbstractPC, type::PCCompositeType )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCASMSetLocalType", "pc")
 
     @chk ccall(
                (:PCASMSetLocalType, $petsc_library),
@@ -593,6 +604,7 @@ function PCASMSetOverlap(petsclib::PetscLibType, pc::AbstractPC, ovl::Integer)
 end
 
 @for_petsc function PCASMSetOverlap(petsclib::$UnionPetscLib, pc::AbstractPC, ovl::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCASMSetOverlap", "pc")
 
     @chk ccall(
                (:PCASMSetOverlap, $petsc_library),
@@ -628,6 +640,7 @@ function PCASMSetSortIndices(petsclib::PetscLibType, pc::AbstractPC, doSort::Pet
 end
 
 @for_petsc function PCASMSetSortIndices(petsclib::$UnionPetscLib, pc::AbstractPC, doSort::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCASMSetSortIndices", "pc")
 
     @chk ccall(
                (:PCASMSetSortIndices, $petsc_library),
@@ -664,6 +677,7 @@ function PCASMSetSubMatType(petsclib::PetscLibType, pc::AbstractPC, sub_mat_type
 end
 
 @for_petsc function PCASMSetSubMatType(petsclib::$UnionPetscLib, pc::AbstractPC, sub_mat_type::String )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCASMSetSubMatType", "pc")
 
     @chk ccall(
                (:PCASMSetSubMatType, $petsc_library),
@@ -707,6 +721,7 @@ function PCASMSetTotalSubdomains(petsclib::PetscLibType, pc::AbstractPC, N::Inte
 end
 
 @for_petsc function PCASMSetTotalSubdomains(petsclib::$UnionPetscLib, pc::AbstractPC, N::$PetscInt, is::Vector{<:AbstractIS}, is_local::Vector{<:AbstractIS} )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCASMSetTotalSubdomains", "pc")
 
     @chk ccall(
                (:PCASMSetTotalSubdomains, $petsc_library),
@@ -752,6 +767,7 @@ function PCASMSetType(petsclib::PetscLibType, pc::AbstractPC, type::PCASMType)
 end
 
 @for_petsc function PCASMSetType(petsclib::$UnionPetscLib, pc::AbstractPC, type::PCASMType )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCASMSetType", "pc")
 
     @chk ccall(
                (:PCASMSetType, $petsc_library),
@@ -787,6 +803,7 @@ function PCAppendOptionsPrefix(petsclib::PetscLibType, pc::AbstractPC, prefix::S
 end
 
 @for_petsc function PCAppendOptionsPrefix(petsclib::$UnionPetscLib, pc::AbstractPC, prefix::String )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCAppendOptionsPrefix", "pc")
 
     @chk ccall(
                (:PCAppendOptionsPrefix, $petsc_library),
@@ -824,6 +841,9 @@ function PCApply(petsclib::PetscLibType, pc::AbstractPC, x::AbstractPetscVec, y:
 end
 
 @for_petsc function PCApply(petsclib::$UnionPetscLib, pc::AbstractPC, x::AbstractPetscVec, y::AbstractPetscVec )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCApply", "pc")
+	x.ptr == C_NULL && throw_null_handle(x, "PCApply", "x")
+	y.ptr == C_NULL && throw_null_handle(y, "PCApply", "y")
 
     @chk ccall(
                (:PCApply, $petsc_library),
@@ -863,6 +883,10 @@ function PCApplyBAorAB(petsclib::PetscLibType, pc::AbstractPC, side::PCSide, x::
 end
 
 @for_petsc function PCApplyBAorAB(petsclib::$UnionPetscLib, pc::AbstractPC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCApplyBAorAB", "pc")
+	x.ptr == C_NULL && throw_null_handle(x, "PCApplyBAorAB", "x")
+	y.ptr == C_NULL && throw_null_handle(y, "PCApplyBAorAB", "y")
+	work.ptr == C_NULL && throw_null_handle(work, "PCApplyBAorAB", "work")
 
     @chk ccall(
                (:PCApplyBAorAB, $petsc_library),
@@ -904,6 +928,10 @@ function PCApplyBAorABTranspose(petsclib::PetscLibType, pc::AbstractPC, side::PC
 end
 
 @for_petsc function PCApplyBAorABTranspose(petsclib::$UnionPetscLib, pc::AbstractPC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCApplyBAorABTranspose", "pc")
+	x.ptr == C_NULL && throw_null_handle(x, "PCApplyBAorABTranspose", "x")
+	y.ptr == C_NULL && throw_null_handle(y, "PCApplyBAorABTranspose", "y")
+	work.ptr == C_NULL && throw_null_handle(work, "PCApplyBAorABTranspose", "work")
 
     @chk ccall(
                (:PCApplyBAorABTranspose, $petsc_library),
@@ -951,6 +979,10 @@ function PCApplyRichardson(petsclib::PetscLibType, pc::AbstractPC, b::AbstractPe
 end
 
 @for_petsc function PCApplyRichardson(petsclib::$UnionPetscLib, pc::AbstractPC, b::AbstractPetscVec, y::AbstractPetscVec, w::AbstractPetscVec, rtol::$PetscReal, abstol::$PetscReal, dtol::$PetscReal, its::$PetscInt, guesszero::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCApplyRichardson", "pc")
+	b.ptr == C_NULL && throw_null_handle(b, "PCApplyRichardson", "b")
+	y.ptr == C_NULL && throw_null_handle(y, "PCApplyRichardson", "y")
+	w.ptr == C_NULL && throw_null_handle(w, "PCApplyRichardson", "w")
 	outits_ = Ref{$PetscInt}()
 	reason_ = Ref{PCRiCchardsonConvergedReason}()
 
@@ -992,6 +1024,7 @@ function PCApplyRichardsonExists(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCApplyRichardsonExists(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCApplyRichardsonExists", "pc")
 	exists_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -1031,6 +1064,9 @@ function PCApplySymmetricLeft(petsclib::PetscLibType, pc::AbstractPC, x::Abstrac
 end
 
 @for_petsc function PCApplySymmetricLeft(petsclib::$UnionPetscLib, pc::AbstractPC, x::AbstractPetscVec, y::AbstractPetscVec )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCApplySymmetricLeft", "pc")
+	x.ptr == C_NULL && throw_null_handle(x, "PCApplySymmetricLeft", "x")
+	y.ptr == C_NULL && throw_null_handle(y, "PCApplySymmetricLeft", "y")
 
     @chk ccall(
                (:PCApplySymmetricLeft, $petsc_library),
@@ -1068,6 +1104,9 @@ function PCApplySymmetricRight(petsclib::PetscLibType, pc::AbstractPC, x::Abstra
 end
 
 @for_petsc function PCApplySymmetricRight(petsclib::$UnionPetscLib, pc::AbstractPC, x::AbstractPetscVec, y::AbstractPetscVec )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCApplySymmetricRight", "pc")
+	x.ptr == C_NULL && throw_null_handle(x, "PCApplySymmetricRight", "x")
+	y.ptr == C_NULL && throw_null_handle(y, "PCApplySymmetricRight", "y")
 
     @chk ccall(
                (:PCApplySymmetricRight, $petsc_library),
@@ -1105,6 +1144,9 @@ function PCApplyTranspose(petsclib::PetscLibType, pc::AbstractPC, x::AbstractPet
 end
 
 @for_petsc function PCApplyTranspose(petsclib::$UnionPetscLib, pc::AbstractPC, x::AbstractPetscVec, y::AbstractPetscVec )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCApplyTranspose", "pc")
+	x.ptr == C_NULL && throw_null_handle(x, "PCApplyTranspose", "x")
+	y.ptr == C_NULL && throw_null_handle(y, "PCApplyTranspose", "y")
 
     @chk ccall(
                (:PCApplyTranspose, $petsc_library),
@@ -1141,6 +1183,7 @@ function PCApplyTransposeExists(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCApplyTransposeExists(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCApplyTransposeExists", "pc")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -1182,6 +1225,7 @@ function PCBDDCCreateFETIDPOperators(petsclib::PetscLibType, pc::AbstractPC, ful
 end
 
 @for_petsc function PCBDDCCreateFETIDPOperators(petsclib::$UnionPetscLib, pc::AbstractPC, fully_redundant::PetscBool, prefix::String )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBDDCCreateFETIDPOperators", "pc")
 	fetidp_mat_ = Ref{CMat}()
 	fetidp_pc_ = Ref{CPC}()
 
@@ -1250,6 +1294,7 @@ function PCBDDCGetDirichletBoundaries(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCBDDCGetDirichletBoundaries(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBDDCGetDirichletBoundaries", "pc")
 	DirichletBoundaries_ = Ref{CIS}()
 
     @chk ccall(
@@ -1288,6 +1333,7 @@ function PCBDDCGetDirichletBoundariesLocal(petsclib::PetscLibType, pc::AbstractP
 end
 
 @for_petsc function PCBDDCGetDirichletBoundariesLocal(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBDDCGetDirichletBoundariesLocal", "pc")
 	DirichletBoundaries_ = Ref{CIS}()
 
     @chk ccall(
@@ -1326,6 +1372,7 @@ function PCBDDCGetNeumannBoundaries(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCBDDCGetNeumannBoundaries(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBDDCGetNeumannBoundaries", "pc")
 	NeumannBoundaries_ = Ref{CIS}()
 
     @chk ccall(
@@ -1364,6 +1411,7 @@ function PCBDDCGetNeumannBoundariesLocal(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCBDDCGetNeumannBoundariesLocal(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBDDCGetNeumannBoundariesLocal", "pc")
 	NeumannBoundaries_ = Ref{CIS}()
 
     @chk ccall(
@@ -1402,6 +1450,7 @@ function PCBDDCGetPrimalVerticesIS(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCBDDCGetPrimalVerticesIS(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBDDCGetPrimalVerticesIS", "pc")
 	is_ = Ref{CIS}()
 
     @chk ccall(
@@ -1440,6 +1489,7 @@ function PCBDDCGetPrimalVerticesLocalIS(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCBDDCGetPrimalVerticesLocalIS(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBDDCGetPrimalVerticesLocalIS", "pc")
 	is_ = Ref{CIS}()
 
     @chk ccall(
@@ -1507,6 +1557,9 @@ function PCBDDCMatFETIDPGetRHS(petsclib::PetscLibType, fetidp_mat::AbstractPetsc
 end
 
 @for_petsc function PCBDDCMatFETIDPGetRHS(petsclib::$UnionPetscLib, fetidp_mat::AbstractPetscMat, standard_rhs::AbstractPetscVec, fetidp_flux_rhs::AbstractPetscVec )
+	fetidp_mat.ptr == C_NULL && throw_null_handle(fetidp_mat, "PCBDDCMatFETIDPGetRHS", "fetidp_mat")
+	standard_rhs.ptr == C_NULL && throw_null_handle(standard_rhs, "PCBDDCMatFETIDPGetRHS", "standard_rhs")
+	fetidp_flux_rhs.ptr == C_NULL && throw_null_handle(fetidp_flux_rhs, "PCBDDCMatFETIDPGetRHS", "fetidp_flux_rhs")
 
     @chk ccall(
                (:PCBDDCMatFETIDPGetRHS, $petsc_library),
@@ -1544,6 +1597,9 @@ function PCBDDCMatFETIDPGetSolution(petsclib::PetscLibType, fetidp_mat::Abstract
 end
 
 @for_petsc function PCBDDCMatFETIDPGetSolution(petsclib::$UnionPetscLib, fetidp_mat::AbstractPetscMat, fetidp_flux_sol::AbstractPetscVec, standard_sol::AbstractPetscVec )
+	fetidp_mat.ptr == C_NULL && throw_null_handle(fetidp_mat, "PCBDDCMatFETIDPGetSolution", "fetidp_mat")
+	fetidp_flux_sol.ptr == C_NULL && throw_null_handle(fetidp_flux_sol, "PCBDDCMatFETIDPGetSolution", "fetidp_flux_sol")
+	standard_sol.ptr == C_NULL && throw_null_handle(standard_sol, "PCBDDCMatFETIDPGetSolution", "standard_sol")
 
     @chk ccall(
                (:PCBDDCMatFETIDPGetSolution, $petsc_library),
@@ -1579,6 +1635,8 @@ function PCBDDCSetChangeOfBasisMat(petsclib::PetscLibType, pc::AbstractPC, chang
 end
 
 @for_petsc function PCBDDCSetChangeOfBasisMat(petsclib::$UnionPetscLib, pc::AbstractPC, change::AbstractPetscMat, interior::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBDDCSetChangeOfBasisMat", "pc")
+	change.ptr == C_NULL && throw_null_handle(change, "PCBDDCSetChangeOfBasisMat", "change")
 
     @chk ccall(
                (:PCBDDCSetChangeOfBasisMat, $petsc_library),
@@ -1616,6 +1674,7 @@ function PCBDDCSetCoarseningRatio(petsclib::PetscLibType, pc::AbstractPC, k::Int
 end
 
 @for_petsc function PCBDDCSetCoarseningRatio(petsclib::$UnionPetscLib, pc::AbstractPC, k::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBDDCSetCoarseningRatio", "pc")
 
     @chk ccall(
                (:PCBDDCSetCoarseningRatio, $petsc_library),
@@ -1650,6 +1709,8 @@ function PCBDDCSetDirichletBoundaries(petsclib::PetscLibType, pc::AbstractPC, Di
 end
 
 @for_petsc function PCBDDCSetDirichletBoundaries(petsclib::$UnionPetscLib, pc::AbstractPC, DirichletBoundaries::AbstractIS )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBDDCSetDirichletBoundaries", "pc")
+	DirichletBoundaries.ptr == C_NULL && throw_null_handle(DirichletBoundaries, "PCBDDCSetDirichletBoundaries", "DirichletBoundaries")
 
     @chk ccall(
                (:PCBDDCSetDirichletBoundaries, $petsc_library),
@@ -1684,6 +1745,8 @@ function PCBDDCSetDirichletBoundariesLocal(petsclib::PetscLibType, pc::AbstractP
 end
 
 @for_petsc function PCBDDCSetDirichletBoundariesLocal(petsclib::$UnionPetscLib, pc::AbstractPC, DirichletBoundaries::AbstractIS )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBDDCSetDirichletBoundariesLocal", "pc")
+	DirichletBoundaries.ptr == C_NULL && throw_null_handle(DirichletBoundaries, "PCBDDCSetDirichletBoundariesLocal", "DirichletBoundaries")
 
     @chk ccall(
                (:PCBDDCSetDirichletBoundariesLocal, $petsc_library),
@@ -1722,6 +1785,8 @@ function PCBDDCSetDiscreteGradient(petsclib::PetscLibType, pc::AbstractPC, G::Ab
 end
 
 @for_petsc function PCBDDCSetDiscreteGradient(petsclib::$UnionPetscLib, pc::AbstractPC, G::AbstractPetscMat, order::$PetscInt, field::$PetscInt, glob::PetscBool, conforming::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBDDCSetDiscreteGradient", "pc")
+	G.ptr == C_NULL && throw_null_handle(G, "PCBDDCSetDiscreteGradient", "G")
 
     @chk ccall(
                (:PCBDDCSetDiscreteGradient, $petsc_library),
@@ -1759,6 +1824,8 @@ function PCBDDCSetDivergenceMat(petsclib::PetscLibType, pc::AbstractPC, divudotp
 end
 
 @for_petsc function PCBDDCSetDivergenceMat(petsclib::$UnionPetscLib, pc::AbstractPC, divudotp::AbstractPetscMat, trans::PetscBool, vl2l::AbstractIS )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBDDCSetDivergenceMat", "pc")
+	divudotp.ptr == C_NULL && throw_null_handle(divudotp, "PCBDDCSetDivergenceMat", "divudotp")
 
     @chk ccall(
                (:PCBDDCSetDivergenceMat, $petsc_library),
@@ -1794,6 +1861,7 @@ function PCBDDCSetDofsSplitting(petsclib::PetscLibType, pc::AbstractPC, n_is::In
 end
 
 @for_petsc function PCBDDCSetDofsSplitting(petsclib::$UnionPetscLib, pc::AbstractPC, n_is::$PetscInt, ISForDofs::Vector{<:AbstractIS} )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBDDCSetDofsSplitting", "pc")
 
     @chk ccall(
                (:PCBDDCSetDofsSplitting, $petsc_library),
@@ -1829,6 +1897,7 @@ function PCBDDCSetDofsSplittingLocal(petsclib::PetscLibType, pc::AbstractPC, n_i
 end
 
 @for_petsc function PCBDDCSetDofsSplittingLocal(petsclib::$UnionPetscLib, pc::AbstractPC, n_is::$PetscInt, ISForDofs::Vector{<:AbstractIS} )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBDDCSetDofsSplittingLocal", "pc")
 
     @chk ccall(
                (:PCBDDCSetDofsSplittingLocal, $petsc_library),
@@ -1866,6 +1935,7 @@ function PCBDDCSetLevels(petsclib::PetscLibType, pc::AbstractPC, levels::Integer
 end
 
 @for_petsc function PCBDDCSetLevels(petsclib::$UnionPetscLib, pc::AbstractPC, levels::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBDDCSetLevels", "pc")
 
     @chk ccall(
                (:PCBDDCSetLevels, $petsc_library),
@@ -1903,6 +1973,7 @@ function PCBDDCSetLocalAdjacencyGraph(petsclib::PetscLibType, pc::AbstractPC, nv
 end
 
 @for_petsc function PCBDDCSetLocalAdjacencyGraph(petsclib::$UnionPetscLib, pc::AbstractPC, nvtxs::$PetscInt, xadj::Vector{$PetscInt}, adjncy::Vector{$PetscInt}, copymode::PetscCopyMode )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBDDCSetLocalAdjacencyGraph", "pc")
 
     @chk ccall(
                (:PCBDDCSetLocalAdjacencyGraph, $petsc_library),
@@ -1937,6 +2008,8 @@ function PCBDDCSetNeumannBoundaries(petsclib::PetscLibType, pc::AbstractPC, Neum
 end
 
 @for_petsc function PCBDDCSetNeumannBoundaries(petsclib::$UnionPetscLib, pc::AbstractPC, NeumannBoundaries::AbstractIS )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBDDCSetNeumannBoundaries", "pc")
+	NeumannBoundaries.ptr == C_NULL && throw_null_handle(NeumannBoundaries, "PCBDDCSetNeumannBoundaries", "NeumannBoundaries")
 
     @chk ccall(
                (:PCBDDCSetNeumannBoundaries, $petsc_library),
@@ -1971,6 +2044,8 @@ function PCBDDCSetNeumannBoundariesLocal(petsclib::PetscLibType, pc::AbstractPC,
 end
 
 @for_petsc function PCBDDCSetNeumannBoundariesLocal(petsclib::$UnionPetscLib, pc::AbstractPC, NeumannBoundaries::AbstractIS )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBDDCSetNeumannBoundariesLocal", "pc")
+	NeumannBoundaries.ptr == C_NULL && throw_null_handle(NeumannBoundaries, "PCBDDCSetNeumannBoundariesLocal", "NeumannBoundaries")
 
     @chk ccall(
                (:PCBDDCSetNeumannBoundariesLocal, $petsc_library),
@@ -2005,6 +2080,8 @@ function PCBDDCSetPrimalVerticesIS(petsclib::PetscLibType, pc::AbstractPC, Prima
 end
 
 @for_petsc function PCBDDCSetPrimalVerticesIS(petsclib::$UnionPetscLib, pc::AbstractPC, PrimalVertices::AbstractIS )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBDDCSetPrimalVerticesIS", "pc")
+	PrimalVertices.ptr == C_NULL && throw_null_handle(PrimalVertices, "PCBDDCSetPrimalVerticesIS", "PrimalVertices")
 
     @chk ccall(
                (:PCBDDCSetPrimalVerticesIS, $petsc_library),
@@ -2039,6 +2116,8 @@ function PCBDDCSetPrimalVerticesLocalIS(petsclib::PetscLibType, pc::AbstractPC, 
 end
 
 @for_petsc function PCBDDCSetPrimalVerticesLocalIS(petsclib::$UnionPetscLib, pc::AbstractPC, PrimalVertices::AbstractIS )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBDDCSetPrimalVerticesLocalIS", "pc")
+	PrimalVertices.ptr == C_NULL && throw_null_handle(PrimalVertices, "PCBDDCSetPrimalVerticesLocalIS", "PrimalVertices")
 
     @chk ccall(
                (:PCBDDCSetPrimalVerticesLocalIS, $petsc_library),
@@ -2123,6 +2202,7 @@ function PCBJacobiGetLocalBlocks(petsclib::PetscLibType, pc::AbstractPC, lens::U
 end
 
 @for_petsc function PCBJacobiGetLocalBlocks(petsclib::$UnionPetscLib, pc::AbstractPC, lens::Union{Ptr, AbstractArray{$PetscInt}} )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBJacobiGetLocalBlocks", "pc")
 	blocks_ = Ref{$PetscInt}()
 	lens_ = Ref{Ptr{$PetscInt}}(lens isa Ptr ? lens : pointer(lens))
 
@@ -2165,6 +2245,7 @@ function PCBJacobiGetSubKSP(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCBJacobiGetSubKSP(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBJacobiGetSubKSP", "pc")
 	n_local_ = Ref{$PetscInt}()
 	first_local_ = Ref{$PetscInt}()
 	ksp_ = Ref{Ptr{CKSP}}()
@@ -2209,6 +2290,7 @@ function PCBJacobiGetTotalBlocks(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCBJacobiGetTotalBlocks(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBJacobiGetTotalBlocks", "pc")
 	blocks_ = Ref{$PetscInt}()
 	lens_ = Ref{Ptr{$PetscInt}}()
 
@@ -2252,6 +2334,7 @@ function PCBJacobiSetLocalBlocks(petsclib::PetscLibType, pc::AbstractPC, blocks:
 end
 
 @for_petsc function PCBJacobiSetLocalBlocks(petsclib::$UnionPetscLib, pc::AbstractPC, blocks::$PetscInt, lens::Vector{$PetscInt} )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBJacobiSetLocalBlocks", "pc")
 
     @chk ccall(
                (:PCBJacobiSetLocalBlocks, $petsc_library),
@@ -2291,6 +2374,7 @@ function PCBJacobiSetTotalBlocks(petsclib::PetscLibType, pc::AbstractPC, blocks:
 end
 
 @for_petsc function PCBJacobiSetTotalBlocks(petsclib::$UnionPetscLib, pc::AbstractPC, blocks::$PetscInt, lens::Vector{$PetscInt} )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCBJacobiSetTotalBlocks", "pc")
 
     @chk ccall(
                (:PCBJacobiSetTotalBlocks, $petsc_library),
@@ -2325,6 +2409,8 @@ function PCCompositeAddPC(petsclib::PetscLibType, pc::AbstractPC, subpc::Abstrac
 end
 
 @for_petsc function PCCompositeAddPC(petsclib::$UnionPetscLib, pc::AbstractPC, subpc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCCompositeAddPC", "pc")
+	subpc.ptr == C_NULL && throw_null_handle(subpc, "PCCompositeAddPC", "subpc")
 
     @chk ccall(
                (:PCCompositeAddPC, $petsc_library),
@@ -2359,6 +2445,7 @@ function PCCompositeAddPCType(petsclib::PetscLibType, pc::AbstractPC, type::Stri
 end
 
 @for_petsc function PCCompositeAddPCType(petsclib::$UnionPetscLib, pc::AbstractPC, type::String )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCCompositeAddPCType", "pc")
 
     @chk ccall(
                (:PCCompositeAddPCType, $petsc_library),
@@ -2395,6 +2482,7 @@ function PCCompositeGetNumberPC(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCCompositeGetNumberPC(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCCompositeGetNumberPC", "pc")
 	num_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -2434,6 +2522,7 @@ function PCCompositeGetPC(petsclib::PetscLibType, pc::AbstractPC, n::Integer)
 end
 
 @for_petsc function PCCompositeGetPC(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCCompositeGetPC", "pc")
 	subpc_ = Ref{CPC}()
 
     @chk ccall(
@@ -2473,6 +2562,7 @@ function PCCompositeGetType(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCCompositeGetType(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCCompositeGetType", "pc")
 	type_ = Ref{PCCompositeType}()
 
     @chk ccall(
@@ -2513,6 +2603,7 @@ function PCCompositeSetType(petsclib::PetscLibType, pc::AbstractPC, type::PCComp
 end
 
 @for_petsc function PCCompositeSetType(petsclib::$UnionPetscLib, pc::AbstractPC, type::PCCompositeType )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCCompositeSetType", "pc")
 
     @chk ccall(
                (:PCCompositeSetType, $petsc_library),
@@ -2549,6 +2640,7 @@ function PCCompositeSpecialSetAlpha(petsclib::PetscLibType, pc::AbstractPC, alph
 end
 
 @for_petsc function PCCompositeSpecialSetAlpha(petsclib::$UnionPetscLib, pc::AbstractPC, alpha::$PetscScalar )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCCompositeSpecialSetAlpha", "pc")
 
     @chk ccall(
                (:PCCompositeSpecialSetAlpha, $petsc_library),
@@ -2584,6 +2676,7 @@ function PCCompositeSpecialSetAlphaMat(petsclib::PetscLibType, pc::AbstractPC, a
 end
 
 @for_petsc function PCCompositeSpecialSetAlphaMat(petsclib::$UnionPetscLib, pc::AbstractPC, alpha_mat::AbstractPetscMat )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCCompositeSpecialSetAlphaMat", "pc")
 
     @chk ccall(
                (:PCCompositeSpecialSetAlphaMat, $petsc_library),
@@ -2621,6 +2714,7 @@ function PCComputeOperator(petsclib::PetscLibType, pc::AbstractPC, mattype::Stri
 end
 
 @for_petsc function PCComputeOperator(petsclib::$UnionPetscLib, pc::AbstractPC, mattype::String )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCComputeOperator", "pc")
 	mat_ = Ref{CMat}()
 
     @chk ccall(
@@ -2697,6 +2791,7 @@ function PCDeflationGetCoarseKSP(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCDeflationGetCoarseKSP(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCDeflationGetCoarseKSP", "pc")
 	ksp_ = Ref{CKSP}()
 
     @chk ccall(
@@ -2735,6 +2830,7 @@ function PCDeflationGetPC(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCDeflationGetPC(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCDeflationGetPC", "pc")
 	apc_ = Ref{CPC}()
 
     @chk ccall(
@@ -2771,6 +2867,8 @@ function PCDeflationSetCoarseMat(petsclib::PetscLibType, pc::AbstractPC, mat::Ab
 end
 
 @for_petsc function PCDeflationSetCoarseMat(petsclib::$UnionPetscLib, pc::AbstractPC, mat::AbstractPetscMat )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCDeflationSetCoarseMat", "pc")
+	mat.ptr == C_NULL && throw_null_handle(mat, "PCDeflationSetCoarseMat", "mat")
 
     @chk ccall(
                (:PCDeflationSetCoarseMat, $petsc_library),
@@ -2808,6 +2906,7 @@ function PCDeflationSetCorrectionFactor(petsclib::PetscLibType, pc::AbstractPC, 
 end
 
 @for_petsc function PCDeflationSetCorrectionFactor(petsclib::$UnionPetscLib, pc::AbstractPC, fact::$PetscScalar )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCDeflationSetCorrectionFactor", "pc")
 
     @chk ccall(
                (:PCDeflationSetCorrectionFactor, $petsc_library),
@@ -2847,6 +2946,7 @@ function PCDeflationSetInitOnly(petsclib::PetscLibType, pc::AbstractPC, flg::Pet
 end
 
 @for_petsc function PCDeflationSetInitOnly(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCDeflationSetInitOnly", "pc")
 
     @chk ccall(
                (:PCDeflationSetInitOnly, $petsc_library),
@@ -2884,6 +2984,7 @@ function PCDeflationSetLevels(petsclib::PetscLibType, pc::AbstractPC, max::Integ
 end
 
 @for_petsc function PCDeflationSetLevels(petsclib::$UnionPetscLib, pc::AbstractPC, max::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCDeflationSetLevels", "pc")
 
     @chk ccall(
                (:PCDeflationSetLevels, $petsc_library),
@@ -2918,6 +3019,8 @@ function PCDeflationSetProjectionNullSpaceMat(petsclib::PetscLibType, pc::Abstra
 end
 
 @for_petsc function PCDeflationSetProjectionNullSpaceMat(petsclib::$UnionPetscLib, pc::AbstractPC, mat::AbstractPetscMat )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCDeflationSetProjectionNullSpaceMat", "pc")
+	mat.ptr == C_NULL && throw_null_handle(mat, "PCDeflationSetProjectionNullSpaceMat", "mat")
 
     @chk ccall(
                (:PCDeflationSetProjectionNullSpaceMat, $petsc_library),
@@ -2953,6 +3056,7 @@ function PCDeflationSetReductionFactor(petsclib::PetscLibType, pc::AbstractPC, r
 end
 
 @for_petsc function PCDeflationSetReductionFactor(petsclib::$UnionPetscLib, pc::AbstractPC, red::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCDeflationSetReductionFactor", "pc")
 
     @chk ccall(
                (:PCDeflationSetReductionFactor, $petsc_library),
@@ -2988,6 +3092,8 @@ function PCDeflationSetSpace(petsclib::PetscLibType, pc::AbstractPC, W::Abstract
 end
 
 @for_petsc function PCDeflationSetSpace(petsclib::$UnionPetscLib, pc::AbstractPC, W::AbstractPetscMat, transpose::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCDeflationSetSpace", "pc")
+	W.ptr == C_NULL && throw_null_handle(W, "PCDeflationSetSpace", "W")
 
     @chk ccall(
                (:PCDeflationSetSpace, $petsc_library),
@@ -3025,6 +3131,7 @@ function PCDeflationSetSpaceToCompute(petsclib::PetscLibType, pc::AbstractPC, ty
 end
 
 @for_petsc function PCDeflationSetSpaceToCompute(petsclib::$UnionPetscLib, pc::AbstractPC, type::PCDeflationSpaceType, size::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCDeflationSetSpaceToCompute", "pc")
 
     @chk ccall(
                (:PCDeflationSetSpaceToCompute, $petsc_library),
@@ -3095,6 +3202,9 @@ function PCDiagonalScaleLeft(petsclib::PetscLibType, pc::AbstractPC, in::Abstrac
 end
 
 @for_petsc function PCDiagonalScaleLeft(petsclib::$UnionPetscLib, pc::AbstractPC, in::AbstractPetscVec, out::AbstractPetscVec )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCDiagonalScaleLeft", "pc")
+	in.ptr == C_NULL && throw_null_handle(in, "PCDiagonalScaleLeft", "in")
+	out.ptr == C_NULL && throw_null_handle(out, "PCDiagonalScaleLeft", "out")
 
     @chk ccall(
                (:PCDiagonalScaleLeft, $petsc_library),
@@ -3130,6 +3240,9 @@ function PCDiagonalScaleRight(petsclib::PetscLibType, pc::AbstractPC, in::Abstra
 end
 
 @for_petsc function PCDiagonalScaleRight(petsclib::$UnionPetscLib, pc::AbstractPC, in::AbstractPetscVec, out::AbstractPetscVec )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCDiagonalScaleRight", "pc")
+	in.ptr == C_NULL && throw_null_handle(in, "PCDiagonalScaleRight", "in")
+	out.ptr == C_NULL && throw_null_handle(out, "PCDiagonalScaleRight", "out")
 
     @chk ccall(
                (:PCDiagonalScaleRight, $petsc_library),
@@ -3171,6 +3284,7 @@ function PCEisenstatGetNoDiagonalScaling(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCEisenstatGetNoDiagonalScaling(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCEisenstatGetNoDiagonalScaling", "pc")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3211,6 +3325,7 @@ function PCEisenstatGetOmega(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCEisenstatGetOmega(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCEisenstatGetOmega", "pc")
 	omega_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -3252,6 +3367,7 @@ function PCEisenstatSetNoDiagonalScaling(petsclib::PetscLibType, pc::AbstractPC,
 end
 
 @for_petsc function PCEisenstatSetNoDiagonalScaling(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCEisenstatSetNoDiagonalScaling", "pc")
 
     @chk ccall(
                (:PCEisenstatSetNoDiagonalScaling, $petsc_library),
@@ -3290,6 +3406,7 @@ function PCEisenstatSetOmega(petsclib::PetscLibType, pc::AbstractPC, omega::Real
 end
 
 @for_petsc function PCEisenstatSetOmega(petsclib::$UnionPetscLib, pc::AbstractPC, omega::$PetscReal )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCEisenstatSetOmega", "pc")
 
     @chk ccall(
                (:PCEisenstatSetOmega, $petsc_library),
@@ -3325,6 +3442,7 @@ function PCExoticSetType(petsclib::PetscLibType, pc::AbstractPC, type::PCExoticT
 end
 
 @for_petsc function PCExoticSetType(petsclib::$UnionPetscLib, pc::AbstractPC, type::PCExoticType )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCExoticSetType", "pc")
 
     @chk ccall(
                (:PCExoticSetType, $petsc_library),
@@ -3360,6 +3478,7 @@ function PCFactorGetAllowDiagonalFill(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCFactorGetAllowDiagonalFill(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFactorGetAllowDiagonalFill", "pc")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3398,6 +3517,7 @@ function PCFactorGetLevels(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCFactorGetLevels(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFactorGetLevels", "pc")
 	levels_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3437,6 +3557,7 @@ function PCFactorGetMatSolverType(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCFactorGetMatSolverType(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFactorGetMatSolverType", "pc")
 	stype_ = Ref{MatSolverType}()
 
     @chk ccall(
@@ -3477,6 +3598,7 @@ function PCFactorGetMatrix(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCFactorGetMatrix(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFactorGetMatrix", "pc")
 	mat_ = Ref{CMat}()
 
     @chk ccall(
@@ -3515,6 +3637,7 @@ function PCFactorGetShiftAmount(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCFactorGetShiftAmount(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFactorGetShiftAmount", "pc")
 	shift_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -3553,6 +3676,7 @@ function PCFactorGetShiftType(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCFactorGetShiftType(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFactorGetShiftType", "pc")
 	type_ = Ref{MatFactorShiftType}()
 
     @chk ccall(
@@ -3591,6 +3715,7 @@ function PCFactorGetUseInPlace(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCFactorGetUseInPlace(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFactorGetUseInPlace", "pc")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3629,6 +3754,7 @@ function PCFactorGetZeroPivot(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCFactorGetZeroPivot(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFactorGetZeroPivot", "pc")
 	pivot_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -3668,6 +3794,7 @@ function PCFactorReorderForNonzeroDiagonal(petsclib::PetscLibType, pc::AbstractP
 end
 
 @for_petsc function PCFactorReorderForNonzeroDiagonal(petsclib::$UnionPetscLib, pc::AbstractPC, rtol::$PetscReal )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFactorReorderForNonzeroDiagonal", "pc")
 
     @chk ccall(
                (:PCFactorReorderForNonzeroDiagonal, $petsc_library),
@@ -3704,6 +3831,7 @@ function PCFactorSetAllowDiagonalFill(petsclib::PetscLibType, pc::AbstractPC, fl
 end
 
 @for_petsc function PCFactorSetAllowDiagonalFill(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFactorSetAllowDiagonalFill", "pc")
 
     @chk ccall(
                (:PCFactorSetAllowDiagonalFill, $petsc_library),
@@ -3743,6 +3871,7 @@ function PCFactorSetColumnPivot(petsclib::PetscLibType, pc::AbstractPC, dtcol::R
 end
 
 @for_petsc function PCFactorSetColumnPivot(petsclib::$UnionPetscLib, pc::AbstractPC, dtcol::$PetscReal )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFactorSetColumnPivot", "pc")
 
     @chk ccall(
                (:PCFactorSetColumnPivot, $petsc_library),
@@ -3784,6 +3913,7 @@ function PCFactorSetDropTolerance(petsclib::PetscLibType, pc::AbstractPC, dt::Re
 end
 
 @for_petsc function PCFactorSetDropTolerance(petsclib::$UnionPetscLib, pc::AbstractPC, dt::$PetscReal, dtcol::$PetscReal, maxrowcount::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFactorSetDropTolerance", "pc")
 
     @chk ccall(
                (:PCFactorSetDropTolerance, $petsc_library),
@@ -3822,6 +3952,7 @@ function PCFactorSetFill(petsclib::PetscLibType, pc::AbstractPC, fill::Real)
 end
 
 @for_petsc function PCFactorSetFill(petsclib::$UnionPetscLib, pc::AbstractPC, fill::$PetscReal )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFactorSetFill", "pc")
 
     @chk ccall(
                (:PCFactorSetFill, $petsc_library),
@@ -3859,6 +3990,7 @@ function PCFactorSetLevels(petsclib::PetscLibType, pc::AbstractPC, levels::Integ
 end
 
 @for_petsc function PCFactorSetLevels(petsclib::$UnionPetscLib, pc::AbstractPC, levels::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFactorSetLevels", "pc")
 
     @chk ccall(
                (:PCFactorSetLevels, $petsc_library),
@@ -3897,6 +4029,7 @@ function PCFactorSetMatOrderingType(petsclib::PetscLibType, pc::AbstractPC, orde
 end
 
 @for_petsc function PCFactorSetMatOrderingType(petsclib::$UnionPetscLib, pc::AbstractPC, ordering::String )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFactorSetMatOrderingType", "pc")
 
     @chk ccall(
                (:PCFactorSetMatOrderingType, $petsc_library),
@@ -3935,6 +4068,7 @@ function PCFactorSetMatSolverType(petsclib::PetscLibType, pc::AbstractPC, stype:
 end
 
 @for_petsc function PCFactorSetMatSolverType(petsclib::$UnionPetscLib, pc::AbstractPC, stype::String )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFactorSetMatSolverType", "pc")
 
     @chk ccall(
                (:PCFactorSetMatSolverType, $petsc_library),
@@ -3973,6 +4107,7 @@ function PCFactorSetPivotInBlocks(petsclib::PetscLibType, pc::AbstractPC, pivot:
 end
 
 @for_petsc function PCFactorSetPivotInBlocks(petsclib::$UnionPetscLib, pc::AbstractPC, pivot::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFactorSetPivotInBlocks", "pc")
 
     @chk ccall(
                (:PCFactorSetPivotInBlocks, $petsc_library),
@@ -4011,6 +4146,7 @@ function PCFactorSetReuseFill(petsclib::PetscLibType, pc::AbstractPC, flag::Pets
 end
 
 @for_petsc function PCFactorSetReuseFill(petsclib::$UnionPetscLib, pc::AbstractPC, flag::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFactorSetReuseFill", "pc")
 
     @chk ccall(
                (:PCFactorSetReuseFill, $petsc_library),
@@ -4050,6 +4186,7 @@ function PCFactorSetReuseOrdering(petsclib::PetscLibType, pc::AbstractPC, flag::
 end
 
 @for_petsc function PCFactorSetReuseOrdering(petsclib::$UnionPetscLib, pc::AbstractPC, flag::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFactorSetReuseOrdering", "pc")
 
     @chk ccall(
                (:PCFactorSetReuseOrdering, $petsc_library),
@@ -4088,6 +4225,7 @@ function PCFactorSetShiftAmount(petsclib::PetscLibType, pc::AbstractPC, shiftamo
 end
 
 @for_petsc function PCFactorSetShiftAmount(petsclib::$UnionPetscLib, pc::AbstractPC, shiftamount::$PetscReal )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFactorSetShiftAmount", "pc")
 
     @chk ccall(
                (:PCFactorSetShiftAmount, $petsc_library),
@@ -4126,6 +4264,7 @@ function PCFactorSetShiftType(petsclib::PetscLibType, pc::AbstractPC, shifttype:
 end
 
 @for_petsc function PCFactorSetShiftType(petsclib::$UnionPetscLib, pc::AbstractPC, shifttype::MatFactorShiftType )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFactorSetShiftType", "pc")
 
     @chk ccall(
                (:PCFactorSetShiftType, $petsc_library),
@@ -4158,6 +4297,7 @@ function PCFactorSetUpMatSolverType(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCFactorSetUpMatSolverType(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFactorSetUpMatSolverType", "pc")
 
     @chk ccall(
                (:PCFactorSetUpMatSolverType, $petsc_library),
@@ -4193,6 +4333,7 @@ function PCFactorSetUseInPlace(petsclib::PetscLibType, pc::AbstractPC, flg::Pets
 end
 
 @for_petsc function PCFactorSetUseInPlace(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFactorSetUseInPlace", "pc")
 
     @chk ccall(
                (:PCFactorSetUseInPlace, $petsc_library),
@@ -4230,6 +4371,7 @@ function PCFactorSetZeroPivot(petsclib::PetscLibType, pc::AbstractPC, zero::Real
 end
 
 @for_petsc function PCFactorSetZeroPivot(petsclib::$UnionPetscLib, pc::AbstractPC, zero::$PetscReal )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFactorSetZeroPivot", "pc")
 
     @chk ccall(
                (:PCFactorSetZeroPivot, $petsc_library),
@@ -4266,6 +4408,7 @@ function PCFieldSplitGetDMSplits(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCFieldSplitGetDMSplits(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitGetDMSplits", "pc")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -4343,6 +4486,7 @@ function PCFieldSplitGetDiagUseAmat(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCFieldSplitGetDiagUseAmat(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitGetDiagUseAmat", "pc")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -4382,6 +4526,7 @@ function PCFieldSplitGetIS(petsclib::PetscLibType, pc::AbstractPC, splitname::St
 end
 
 @for_petsc function PCFieldSplitGetIS(petsclib::$UnionPetscLib, pc::AbstractPC, splitname::String )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitGetIS", "pc")
 	is_ = Ref{CIS}()
 
     @chk ccall(
@@ -4421,6 +4566,7 @@ function PCFieldSplitGetISByIndex(petsclib::PetscLibType, pc::AbstractPC, index:
 end
 
 @for_petsc function PCFieldSplitGetISByIndex(petsclib::$UnionPetscLib, pc::AbstractPC, index::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitGetISByIndex", "pc")
 	is_ = Ref{CIS}()
 
     @chk ccall(
@@ -4460,6 +4606,7 @@ function PCFieldSplitGetOffDiagUseAmat(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCFieldSplitGetOffDiagUseAmat(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitGetOffDiagUseAmat", "pc")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -4501,6 +4648,7 @@ function PCFieldSplitGetSchurBlocks(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCFieldSplitGetSchurBlocks(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitGetSchurBlocks", "pc")
 	A00_ = Ref{CMat}()
 	A01_ = Ref{CMat}()
 	A10_ = Ref{CMat}()
@@ -4547,6 +4695,7 @@ function PCFieldSplitGetSchurPre(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCFieldSplitGetSchurPre(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitGetSchurPre", "pc")
 	ptype_ = Ref{PCFieldSplitSchurPreType}()
 	pre_ = Ref{CMat}()
 
@@ -4588,6 +4737,7 @@ function PCFieldSplitGetSubKSP(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCFieldSplitGetSubKSP(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitGetSubKSP", "pc")
 	n_ = Ref{$PetscInt}()
 	subksp_ = Ref{Ptr{CKSP}}()
 
@@ -4629,6 +4779,7 @@ function PCFieldSplitGetType(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCFieldSplitGetType(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitGetType", "pc")
 	type_ = Ref{PCCompositeType}()
 
     @chk ccall(
@@ -4663,6 +4814,8 @@ function PCFieldSplitRestrictIS(petsclib::PetscLibType, pc::AbstractPC, isy::Abs
 end
 
 @for_petsc function PCFieldSplitRestrictIS(petsclib::$UnionPetscLib, pc::AbstractPC, isy::AbstractIS )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitRestrictIS", "pc")
+	isy.ptr == C_NULL && throw_null_handle(isy, "PCFieldSplitRestrictIS", "isy")
 
     @chk ccall(
                (:PCFieldSplitRestrictIS, $petsc_library),
@@ -4700,6 +4853,7 @@ function PCFieldSplitSchurGetS(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCFieldSplitSchurGetS(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitSchurGetS", "pc")
 	S_ = Ref{CMat}()
 
     @chk ccall(
@@ -4739,6 +4893,7 @@ function PCFieldSplitSchurGetSubKSP(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCFieldSplitSchurGetSubKSP(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitSchurGetSubKSP", "pc")
 	n_ = Ref{$PetscInt}()
 	subksp_ = Ref{Ptr{CKSP}}()
 
@@ -4777,6 +4932,7 @@ function PCFieldSplitSchurRestoreS(petsclib::PetscLibType, pc::AbstractPC, S::Ab
 end
 
 @for_petsc function PCFieldSplitSchurRestoreS(petsclib::$UnionPetscLib, pc::AbstractPC, S::AbstractPetscMat )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitSchurRestoreS", "pc")
 	S_ = Ref(S.ptr)
 
     @chk ccall(
@@ -4814,6 +4970,7 @@ function PCFieldSplitSetBlockSize(petsclib::PetscLibType, pc::AbstractPC, bs::In
 end
 
 @for_petsc function PCFieldSplitSetBlockSize(petsclib::$UnionPetscLib, pc::AbstractPC, bs::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitSetBlockSize", "pc")
 
     @chk ccall(
                (:PCFieldSplitSetBlockSize, $petsc_library),
@@ -4851,6 +5008,7 @@ function PCFieldSplitSetDMSplits(petsclib::PetscLibType, pc::AbstractPC, flg::Pe
 end
 
 @for_petsc function PCFieldSplitSetDMSplits(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitSetDMSplits", "pc")
 
     @chk ccall(
                (:PCFieldSplitSetDMSplits, $petsc_library),
@@ -4928,6 +5086,7 @@ function PCFieldSplitSetDiagUseAmat(petsclib::PetscLibType, pc::AbstractPC, flg:
 end
 
 @for_petsc function PCFieldSplitSetDiagUseAmat(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitSetDiagUseAmat", "pc")
 
     @chk ccall(
                (:PCFieldSplitSetDiagUseAmat, $petsc_library),
@@ -4970,6 +5129,7 @@ function PCFieldSplitSetFields(petsclib::PetscLibType, pc::AbstractPC, splitname
 end
 
 @for_petsc function PCFieldSplitSetFields(petsclib::$UnionPetscLib, pc::AbstractPC, splitname::String, n::$PetscInt, fields::Vector{$PetscInt}, fields_col::Vector{$PetscInt} )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitSetFields", "pc")
 
     @chk ccall(
                (:PCFieldSplitSetFields, $petsc_library),
@@ -5008,6 +5168,7 @@ function PCFieldSplitSetGKBDelay(petsclib::PetscLibType, pc::AbstractPC, delay::
 end
 
 @for_petsc function PCFieldSplitSetGKBDelay(petsclib::$UnionPetscLib, pc::AbstractPC, delay::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitSetGKBDelay", "pc")
 
     @chk ccall(
                (:PCFieldSplitSetGKBDelay, $petsc_library),
@@ -5045,6 +5206,7 @@ function PCFieldSplitSetGKBMaxit(petsclib::PetscLibType, pc::AbstractPC, maxit::
 end
 
 @for_petsc function PCFieldSplitSetGKBMaxit(petsclib::$UnionPetscLib, pc::AbstractPC, maxit::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitSetGKBMaxit", "pc")
 
     @chk ccall(
                (:PCFieldSplitSetGKBMaxit, $petsc_library),
@@ -5083,6 +5245,7 @@ function PCFieldSplitSetGKBNu(petsclib::PetscLibType, pc::AbstractPC, nu::Real)
 end
 
 @for_petsc function PCFieldSplitSetGKBNu(petsclib::$UnionPetscLib, pc::AbstractPC, nu::$PetscReal )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitSetGKBNu", "pc")
 
     @chk ccall(
                (:PCFieldSplitSetGKBNu, $petsc_library),
@@ -5120,6 +5283,7 @@ function PCFieldSplitSetGKBTol(petsclib::PetscLibType, pc::AbstractPC, tolerance
 end
 
 @for_petsc function PCFieldSplitSetGKBTol(petsclib::$UnionPetscLib, pc::AbstractPC, tolerance::$PetscReal )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitSetGKBTol", "pc")
 
     @chk ccall(
                (:PCFieldSplitSetGKBTol, $petsc_library),
@@ -5155,6 +5319,8 @@ function PCFieldSplitSetIS(petsclib::PetscLibType, pc::AbstractPC, splitname::St
 end
 
 @for_petsc function PCFieldSplitSetIS(petsclib::$UnionPetscLib, pc::AbstractPC, splitname::String, is::AbstractIS )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitSetIS", "pc")
+	is.ptr == C_NULL && throw_null_handle(is, "PCFieldSplitSetIS", "is")
 
     @chk ccall(
                (:PCFieldSplitSetIS, $petsc_library),
@@ -5193,6 +5359,7 @@ function PCFieldSplitSetOffDiagUseAmat(petsclib::PetscLibType, pc::AbstractPC, f
 end
 
 @for_petsc function PCFieldSplitSetOffDiagUseAmat(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitSetOffDiagUseAmat", "pc")
 
     @chk ccall(
                (:PCFieldSplitSetOffDiagUseAmat, $petsc_library),
@@ -5231,6 +5398,7 @@ function PCFieldSplitSetSchurFactType(petsclib::PetscLibType, pc::AbstractPC, ft
 end
 
 @for_petsc function PCFieldSplitSetSchurFactType(petsclib::$UnionPetscLib, pc::AbstractPC, ftype::PCFieldSplitSchurFactType )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitSetSchurFactType", "pc")
 
     @chk ccall(
                (:PCFieldSplitSetSchurFactType, $petsc_library),
@@ -5274,6 +5442,7 @@ function PCFieldSplitSetSchurPre(petsclib::PetscLibType, pc::AbstractPC, ptype::
 end
 
 @for_petsc function PCFieldSplitSetSchurPre(petsclib::$UnionPetscLib, pc::AbstractPC, ptype::PCFieldSplitSchurPreType, pre::AbstractPetscMat )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitSetSchurPre", "pc")
 
     @chk ccall(
                (:PCFieldSplitSetSchurPre, $petsc_library),
@@ -5311,6 +5480,7 @@ function PCFieldSplitSetSchurScale(petsclib::PetscLibType, pc::AbstractPC, scale
 end
 
 @for_petsc function PCFieldSplitSetSchurScale(petsclib::$UnionPetscLib, pc::AbstractPC, scale::$PetscScalar )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitSetSchurScale", "pc")
 
     @chk ccall(
                (:PCFieldSplitSetSchurScale, $petsc_library),
@@ -5350,6 +5520,7 @@ function PCFieldSplitSetType(petsclib::PetscLibType, pc::AbstractPC, type::PCCom
 end
 
 @for_petsc function PCFieldSplitSetType(petsclib::$UnionPetscLib, pc::AbstractPC, type::PCCompositeType )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCFieldSplitSetType", "pc")
 
     @chk ccall(
                (:PCFieldSplitSetType, $petsc_library),
@@ -5415,6 +5586,7 @@ function PCGAMGASMSetHEM(petsclib::PetscLibType, pc::AbstractPC, n::Integer)
 end
 
 @for_petsc function PCGAMGASMSetHEM(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGASMSetHEM", "pc")
 
     @chk ccall(
                (:PCGAMGASMSetHEM, $petsc_library),
@@ -5453,6 +5625,7 @@ function PCGAMGASMSetUseAggs(petsclib::PetscLibType, pc::AbstractPC, flg::PetscB
 end
 
 @for_petsc function PCGAMGASMSetUseAggs(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGASMSetUseAggs", "pc")
 
     @chk ccall(
                (:PCGAMGASMSetUseAggs, $petsc_library),
@@ -5489,6 +5662,7 @@ function PCGAMGClassicalGetType(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCGAMGClassicalGetType(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGClassicalGetType", "pc")
 	type_ = Ref{PCGAMGClassicalType}()
 
     @chk ccall(
@@ -5528,6 +5702,7 @@ function PCGAMGClassicalSetType(petsclib::PetscLibType, pc::AbstractPC, type::St
 end
 
 @for_petsc function PCGAMGClassicalSetType(petsclib::$UnionPetscLib, pc::AbstractPC, type::String )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGClassicalSetType", "pc")
 
     @chk ccall(
                (:PCGAMGClassicalSetType, $petsc_library),
@@ -5629,6 +5804,7 @@ function PCGAMGGetType(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCGAMGGetType(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGGetType", "pc")
 	type_ = Ref{PCGAMGType}()
 
     @chk ccall(
@@ -5697,6 +5873,7 @@ function PCGAMGMISkSetAggressive(petsclib::PetscLibType, pc::AbstractPC, n::Inte
 end
 
 @for_petsc function PCGAMGMISkSetAggressive(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGMISkSetAggressive", "pc")
 
     @chk ccall(
                (:PCGAMGMISkSetAggressive, $petsc_library),
@@ -5735,6 +5912,7 @@ function PCGAMGMISkSetMinDegreeOrdering(petsclib::PetscLibType, pc::AbstractPC, 
 end
 
 @for_petsc function PCGAMGMISkSetMinDegreeOrdering(petsclib::$UnionPetscLib, pc::AbstractPC, b::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGMISkSetMinDegreeOrdering", "pc")
 
     @chk ccall(
                (:PCGAMGMISkSetMinDegreeOrdering, $petsc_library),
@@ -5805,6 +5983,7 @@ function PCGAMGSetAggressiveLevels(petsclib::PetscLibType, pc::AbstractPC, n::In
 end
 
 @for_petsc function PCGAMGSetAggressiveLevels(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGSetAggressiveLevels", "pc")
 
     @chk ccall(
                (:PCGAMGSetAggressiveLevels, $petsc_library),
@@ -5842,6 +6021,7 @@ function PCGAMGSetAggressiveSquareGraph(petsclib::PetscLibType, pc::AbstractPC, 
 end
 
 @for_petsc function PCGAMGSetAggressiveSquareGraph(petsclib::$UnionPetscLib, pc::AbstractPC, b::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGSetAggressiveSquareGraph", "pc")
 
     @chk ccall(
                (:PCGAMGSetAggressiveSquareGraph, $petsc_library),
@@ -5880,6 +6060,7 @@ function PCGAMGSetCoarseEqLim(petsclib::PetscLibType, pc::AbstractPC, n::Integer
 end
 
 @for_petsc function PCGAMGSetCoarseEqLim(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGSetCoarseEqLim", "pc")
 
     @chk ccall(
                (:PCGAMGSetCoarseEqLim, $petsc_library),
@@ -5917,6 +6098,7 @@ function PCGAMGSetCoarseGridLayoutType(petsclib::PetscLibType, pc::AbstractPC, f
 end
 
 @for_petsc function PCGAMGSetCoarseGridLayoutType(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PCGAMGLayoutType )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGSetCoarseGridLayoutType", "pc")
 
     @chk ccall(
                (:PCGAMGSetCoarseGridLayoutType, $petsc_library),
@@ -5954,6 +6136,7 @@ function PCGAMGSetCpuPinCoarseGrids(petsclib::PetscLibType, pc::AbstractPC, flg:
 end
 
 @for_petsc function PCGAMGSetCpuPinCoarseGrids(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGSetCpuPinCoarseGrids", "pc")
 
     @chk ccall(
                (:PCGAMGSetCpuPinCoarseGrids, $petsc_library),
@@ -5992,6 +6175,7 @@ function PCGAMGSetEigenvalues(petsclib::PetscLibType, pc::AbstractPC, emax::Real
 end
 
 @for_petsc function PCGAMGSetEigenvalues(petsclib::$UnionPetscLib, pc::AbstractPC, emax::$PetscReal, emin::$PetscReal )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGSetEigenvalues", "pc")
 
     @chk ccall(
                (:PCGAMGSetEigenvalues, $petsc_library),
@@ -6030,6 +6214,7 @@ function PCGAMGSetGraphSymmetrize(petsclib::PetscLibType, pc::AbstractPC, b::Pet
 end
 
 @for_petsc function PCGAMGSetGraphSymmetrize(petsclib::$UnionPetscLib, pc::AbstractPC, b::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGSetGraphSymmetrize", "pc")
 
     @chk ccall(
                (:PCGAMGSetGraphSymmetrize, $petsc_library),
@@ -6068,6 +6253,7 @@ function PCGAMGSetInjectionIndex(petsclib::PetscLibType, pc::AbstractPC, n::Inte
 end
 
 @for_petsc function PCGAMGSetInjectionIndex(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt, idx::Vector{$PetscInt} )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGSetInjectionIndex", "pc")
 
     @chk ccall(
                (:PCGAMGSetInjectionIndex, $petsc_library),
@@ -6106,6 +6292,7 @@ function PCGAMGSetLowMemoryFilter(petsclib::PetscLibType, pc::AbstractPC, b::Pet
 end
 
 @for_petsc function PCGAMGSetLowMemoryFilter(petsclib::$UnionPetscLib, pc::AbstractPC, b::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGSetLowMemoryFilter", "pc")
 
     @chk ccall(
                (:PCGAMGSetLowMemoryFilter, $petsc_library),
@@ -6143,6 +6330,7 @@ function PCGAMGSetNSmooths(petsclib::PetscLibType, pc::AbstractPC, n::Integer)
 end
 
 @for_petsc function PCGAMGSetNSmooths(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGSetNSmooths", "pc")
 
     @chk ccall(
                (:PCGAMGSetNSmooths, $petsc_library),
@@ -6180,6 +6368,7 @@ function PCGAMGSetNlevels(petsclib::PetscLibType, pc::AbstractPC, n::Integer)
 end
 
 @for_petsc function PCGAMGSetNlevels(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGSetNlevels", "pc")
 
     @chk ccall(
                (:PCGAMGSetNlevels, $petsc_library),
@@ -6217,6 +6406,7 @@ function PCGAMGSetParallelCoarseGridSolve(petsclib::PetscLibType, pc::AbstractPC
 end
 
 @for_petsc function PCGAMGSetParallelCoarseGridSolve(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGSetParallelCoarseGridSolve", "pc")
 
     @chk ccall(
                (:PCGAMGSetParallelCoarseGridSolve, $petsc_library),
@@ -6254,6 +6444,7 @@ function PCGAMGSetProcEqLim(petsclib::PetscLibType, pc::AbstractPC, n::Integer)
 end
 
 @for_petsc function PCGAMGSetProcEqLim(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGSetProcEqLim", "pc")
 
     @chk ccall(
                (:PCGAMGSetProcEqLim, $petsc_library),
@@ -6292,6 +6483,7 @@ function PCGAMGSetRankReductionFactors(petsclib::PetscLibType, pc::AbstractPC, v
 end
 
 @for_petsc function PCGAMGSetRankReductionFactors(petsclib::$UnionPetscLib, pc::AbstractPC, v::Vector{$PetscInt}, n::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGSetRankReductionFactors", "pc")
 
     @chk ccall(
                (:PCGAMGSetRankReductionFactors, $petsc_library),
@@ -6329,6 +6521,7 @@ function PCGAMGSetRecomputeEstEig(petsclib::PetscLibType, pc::AbstractPC, b::Pet
 end
 
 @for_petsc function PCGAMGSetRecomputeEstEig(petsclib::$UnionPetscLib, pc::AbstractPC, b::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGSetRecomputeEstEig", "pc")
 
     @chk ccall(
                (:PCGAMGSetRecomputeEstEig, $petsc_library),
@@ -6366,6 +6559,7 @@ function PCGAMGSetRepartition(petsclib::PetscLibType, pc::AbstractPC, n::PetscBo
 end
 
 @for_petsc function PCGAMGSetRepartition(petsclib::$UnionPetscLib, pc::AbstractPC, n::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGSetRepartition", "pc")
 
     @chk ccall(
                (:PCGAMGSetRepartition, $petsc_library),
@@ -6403,6 +6597,7 @@ function PCGAMGSetReuseInterpolation(petsclib::PetscLibType, pc::AbstractPC, n::
 end
 
 @for_petsc function PCGAMGSetReuseInterpolation(petsclib::$UnionPetscLib, pc::AbstractPC, n::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGSetReuseInterpolation", "pc")
 
     @chk ccall(
                (:PCGAMGSetReuseInterpolation, $petsc_library),
@@ -6442,6 +6637,7 @@ function PCGAMGSetThreshold(petsclib::PetscLibType, pc::AbstractPC, v::AbstractV
 end
 
 @for_petsc function PCGAMGSetThreshold(petsclib::$UnionPetscLib, pc::AbstractPC, v::Vector{$PetscReal}, n::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGSetThreshold", "pc")
 
     @chk ccall(
                (:PCGAMGSetThreshold, $petsc_library),
@@ -6479,6 +6675,7 @@ function PCGAMGSetThresholdScale(petsclib::PetscLibType, pc::AbstractPC, v::Real
 end
 
 @for_petsc function PCGAMGSetThresholdScale(petsclib::$UnionPetscLib, pc::AbstractPC, v::$PetscReal )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGSetThresholdScale", "pc")
 
     @chk ccall(
                (:PCGAMGSetThresholdScale, $petsc_library),
@@ -6516,6 +6713,7 @@ function PCGAMGSetType(petsclib::PetscLibType, pc::AbstractPC, type::String)
 end
 
 @for_petsc function PCGAMGSetType(petsclib::$UnionPetscLib, pc::AbstractPC, type::String )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGSetType", "pc")
 
     @chk ccall(
                (:PCGAMGSetType, $petsc_library),
@@ -6553,6 +6751,7 @@ function PCGAMGSetUseSAEstEig(petsclib::PetscLibType, pc::AbstractPC, b::PetscBo
 end
 
 @for_petsc function PCGAMGSetUseSAEstEig(petsclib::$UnionPetscLib, pc::AbstractPC, b::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGAMGSetUseSAEstEig", "pc")
 
     @chk ccall(
                (:PCGAMGSetUseSAEstEig, $petsc_library),
@@ -6592,6 +6791,7 @@ function PCGASMCreateSubdomains(petsclib::PetscLibType, A::AbstractPetscMat, N::
 end
 
 @for_petsc function PCGASMCreateSubdomains(petsclib::$UnionPetscLib, A::AbstractPetscMat, N::$PetscInt )
+	A.ptr == C_NULL && throw_null_handle(A, "PCGASMCreateSubdomains", "A")
 	M_n_ = Ref{$PetscInt}()
 	iis_ = Ref{Ptr{CIS}}()
 
@@ -6737,6 +6937,7 @@ function PCGASMGetSubKSP(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCGASMGetSubKSP(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGASMGetSubKSP", "pc")
 	n_local_ = Ref{$PetscInt}()
 	first_local_ = Ref{$PetscInt}()
 	ksp_ = Ref{Ptr{CKSP}}()
@@ -6783,6 +6984,7 @@ function PCGASMGetSubdomains(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCGASMGetSubdomains(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGASMGetSubdomains", "pc")
 	n_ = Ref{$PetscInt}()
 	iis_ = Ref{Ptr{CIS}}()
 	ois_ = Ref{Ptr{CIS}}()
@@ -6830,6 +7032,7 @@ function PCGASMGetSubmatrices(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCGASMGetSubmatrices(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGASMGetSubmatrices", "pc")
 	n_ = Ref{$PetscInt}()
 	mat_ = Ref{Ptr{CMat}}()
 
@@ -6871,6 +7074,7 @@ function PCGASMGetUseDMSubdomains(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCGASMGetUseDMSubdomains(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGASMGetUseDMSubdomains", "pc")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -6913,6 +7117,7 @@ function PCGASMSetOverlap(petsclib::PetscLibType, pc::AbstractPC, ovl::Integer)
 end
 
 @for_petsc function PCGASMSetOverlap(petsclib::$UnionPetscLib, pc::AbstractPC, ovl::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGASMSetOverlap", "pc")
 
     @chk ccall(
                (:PCGASMSetOverlap, $petsc_library),
@@ -6948,6 +7153,7 @@ function PCGASMSetSortIndices(petsclib::PetscLibType, pc::AbstractPC, doSort::Pe
 end
 
 @for_petsc function PCGASMSetSortIndices(petsclib::$UnionPetscLib, pc::AbstractPC, doSort::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGASMSetSortIndices", "pc")
 
     @chk ccall(
                (:PCGASMSetSortIndices, $petsc_library),
@@ -6988,6 +7194,7 @@ function PCGASMSetSubdomains(petsclib::PetscLibType, pc::AbstractPC, n::Integer,
 end
 
 @for_petsc function PCGASMSetSubdomains(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt, iis::Vector{<:AbstractIS}, ois::Vector{<:AbstractIS} )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGASMSetSubdomains", "pc")
 
     @chk ccall(
                (:PCGASMSetSubdomains, $petsc_library),
@@ -7068,6 +7275,7 @@ function PCGASMSetType(petsclib::PetscLibType, pc::AbstractPC, type::PCGASMType)
 end
 
 @for_petsc function PCGASMSetType(petsclib::$UnionPetscLib, pc::AbstractPC, type::PCGASMType )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGASMSetType", "pc")
 
     @chk ccall(
                (:PCGASMSetType, $petsc_library),
@@ -7108,6 +7316,7 @@ function PCGASMSetUseDMSubdomains(petsclib::PetscLibType, pc::AbstractPC, flg::P
 end
 
 @for_petsc function PCGASMSetUseDMSubdomains(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGASMSetUseDMSubdomains", "pc")
 
     @chk ccall(
                (:PCGASMSetUseDMSubdomains, $petsc_library),
@@ -7145,6 +7354,7 @@ function PCGalerkinGetKSP(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCGalerkinGetKSP(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGalerkinGetKSP", "pc")
 	ksp_ = Ref{CKSP}()
 
     @chk ccall(
@@ -7225,6 +7435,7 @@ function PCGalerkinSetInterpolation(petsclib::PetscLibType, pc::AbstractPC, P::A
 end
 
 @for_petsc function PCGalerkinSetInterpolation(petsclib::$UnionPetscLib, pc::AbstractPC, P::AbstractPetscMat )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGalerkinSetInterpolation", "pc")
 
     @chk ccall(
                (:PCGalerkinSetInterpolation, $petsc_library),
@@ -7260,6 +7471,7 @@ function PCGalerkinSetRestriction(petsclib::PetscLibType, pc::AbstractPC, R::Abs
 end
 
 @for_petsc function PCGalerkinSetRestriction(petsclib::$UnionPetscLib, pc::AbstractPC, R::AbstractPetscMat )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGalerkinSetRestriction", "pc")
 
     @chk ccall(
                (:PCGalerkinSetRestriction, $petsc_library),
@@ -7296,6 +7508,7 @@ function PCGetApplicationContext(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCGetApplicationContext(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGetApplicationContext", "pc")
 	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
@@ -7335,6 +7548,7 @@ function PCGetCoarseOperators(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCGetCoarseOperators(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGetCoarseOperators", "pc")
 	num_levels_ = Ref{$PetscInt}()
 	coarseOperators_ = Ref{Ptr{CMat}}()
 
@@ -7376,6 +7590,7 @@ function PCGetDM(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCGetDM(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGetDM", "pc")
 	dm_ = Ref{CDM}()
 
     @chk ccall(
@@ -7415,6 +7630,7 @@ function PCGetDiagonalScale(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCGetDiagonalScale(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGetDiagonalScale", "pc")
 	flag_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -7453,6 +7669,7 @@ function PCGetFailedReason(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCGetFailedReason(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGetFailedReason", "pc")
 	reason_ = Ref{PCFailedReason}()
 
     @chk ccall(
@@ -7492,6 +7709,7 @@ function PCGetInterpolations(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCGetInterpolations(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGetInterpolations", "pc")
 	num_levels_ = Ref{$PetscInt}()
 	interpolations_ = Ref{Ptr{CMat}}()
 
@@ -7533,6 +7751,7 @@ function PCGetKSPNestLevel(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCGetKSPNestLevel(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGetKSPNestLevel", "pc")
 	level_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -7573,6 +7792,7 @@ function PCGetOperators(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCGetOperators(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGetOperators", "pc")
 	Amat_ = Ref{CMat}()
 	Pmat_ = Ref{CMat}()
 
@@ -7615,6 +7835,7 @@ function PCGetOperatorsSet(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCGetOperatorsSet(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGetOperatorsSet", "pc")
 	mat_ = Ref{PetscBool}()
 	pmat_ = Ref{PetscBool}()
 
@@ -7656,6 +7877,7 @@ function PCGetOptionsPrefix(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCGetOptionsPrefix(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGetOptionsPrefix", "pc")
 	prefix_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -7694,6 +7916,7 @@ function PCGetReusePreconditioner(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCGetReusePreconditioner(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGetReusePreconditioner", "pc")
 	flag_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -7733,6 +7956,7 @@ function PCGetType(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCGetType(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGetType", "pc")
 	type_ = Ref{PCType}()
 
     @chk ccall(
@@ -7773,6 +7997,7 @@ function PCGetUseAmat(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCGetUseAmat(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCGetUseAmat", "pc")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -7812,6 +8037,7 @@ function PCHMGSetCoarseningComponent(petsclib::PetscLibType, pc::AbstractPC, com
 end
 
 @for_petsc function PCHMGSetCoarseningComponent(petsclib::$UnionPetscLib, pc::AbstractPC, component::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCHMGSetCoarseningComponent", "pc")
 
     @chk ccall(
                (:PCHMGSetCoarseningComponent, $petsc_library),
@@ -7850,6 +8076,7 @@ function PCHMGSetInnerPCType(petsclib::PetscLibType, pc::AbstractPC, type::Strin
 end
 
 @for_petsc function PCHMGSetInnerPCType(petsclib::$UnionPetscLib, pc::AbstractPC, type::String )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCHMGSetInnerPCType", "pc")
 
     @chk ccall(
                (:PCHMGSetInnerPCType, $petsc_library),
@@ -7887,6 +8114,7 @@ function PCHMGSetReuseInterpolation(petsclib::PetscLibType, pc::AbstractPC, reus
 end
 
 @for_petsc function PCHMGSetReuseInterpolation(petsclib::$UnionPetscLib, pc::AbstractPC, reuse::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCHMGSetReuseInterpolation", "pc")
 
     @chk ccall(
                (:PCHMGSetReuseInterpolation, $petsc_library),
@@ -7924,6 +8152,7 @@ function PCHMGSetUseSubspaceCoarsening(petsclib::PetscLibType, pc::AbstractPC, s
 end
 
 @for_petsc function PCHMGSetUseSubspaceCoarsening(petsclib::$UnionPetscLib, pc::AbstractPC, subspace::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCHMGSetUseSubspaceCoarsening", "pc")
 
     @chk ccall(
                (:PCHMGSetUseSubspaceCoarsening, $petsc_library),
@@ -7961,6 +8190,7 @@ function PCHMGUseMatMAIJ(petsclib::PetscLibType, pc::AbstractPC, usematmaij::Pet
 end
 
 @for_petsc function PCHMGUseMatMAIJ(petsclib::$UnionPetscLib, pc::AbstractPC, usematmaij::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCHMGUseMatMAIJ", "pc")
 
     @chk ccall(
                (:PCHMGUseMatMAIJ, $petsc_library),
@@ -8254,6 +8484,8 @@ function PCHYPREAMSSetInteriorNodes(petsclib::PetscLibType, pc::AbstractPC, inte
 end
 
 @for_petsc function PCHYPREAMSSetInteriorNodes(petsclib::$UnionPetscLib, pc::AbstractPC, interior::AbstractPetscVec )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCHYPREAMSSetInteriorNodes", "pc")
+	interior.ptr == C_NULL && throw_null_handle(interior, "PCHYPREAMSSetInteriorNodes", "interior")
 
     @chk ccall(
                (:PCHYPREAMSSetInteriorNodes, $petsc_library),
@@ -8291,6 +8523,7 @@ function PCHYPREGetCFMarkers(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCHYPREGetCFMarkers(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCHYPREGetCFMarkers", "pc")
 	n_per_level_ = Ref{Ptr{$PetscInt}}()
 	CFMarkers_ = Ref{Ptr{PetscBT}}()
 
@@ -8329,6 +8562,7 @@ function PCHYPREGetType(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCHYPREGetType(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCHYPREGetType", "pc")
 	name_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -8365,6 +8599,8 @@ function PCHYPRESetAlphaPoissonMatrix(petsclib::PetscLibType, pc::AbstractPC, A:
 end
 
 @for_petsc function PCHYPRESetAlphaPoissonMatrix(petsclib::$UnionPetscLib, pc::AbstractPC, A::AbstractPetscMat )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCHYPRESetAlphaPoissonMatrix", "pc")
+	A.ptr == C_NULL && throw_null_handle(A, "PCHYPRESetAlphaPoissonMatrix", "A")
 
     @chk ccall(
                (:PCHYPRESetAlphaPoissonMatrix, $petsc_library),
@@ -8399,6 +8635,7 @@ function PCHYPRESetBetaPoissonMatrix(petsclib::PetscLibType, pc::AbstractPC, A::
 end
 
 @for_petsc function PCHYPRESetBetaPoissonMatrix(petsclib::$UnionPetscLib, pc::AbstractPC, A::AbstractPetscMat )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCHYPRESetBetaPoissonMatrix", "pc")
 
     @chk ccall(
                (:PCHYPRESetBetaPoissonMatrix, $petsc_library),
@@ -8433,6 +8670,8 @@ function PCHYPRESetDiscreteCurl(petsclib::PetscLibType, pc::AbstractPC, C::Abstr
 end
 
 @for_petsc function PCHYPRESetDiscreteCurl(petsclib::$UnionPetscLib, pc::AbstractPC, C::AbstractPetscMat )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCHYPRESetDiscreteCurl", "pc")
+	C.ptr == C_NULL && throw_null_handle(C, "PCHYPRESetDiscreteCurl", "C")
 
     @chk ccall(
                (:PCHYPRESetDiscreteCurl, $petsc_library),
@@ -8467,6 +8706,8 @@ function PCHYPRESetDiscreteGradient(petsclib::PetscLibType, pc::AbstractPC, G::A
 end
 
 @for_petsc function PCHYPRESetDiscreteGradient(petsclib::$UnionPetscLib, pc::AbstractPC, G::AbstractPetscMat )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCHYPRESetDiscreteGradient", "pc")
+	G.ptr == C_NULL && throw_null_handle(G, "PCHYPRESetDiscreteGradient", "G")
 
     @chk ccall(
                (:PCHYPRESetDiscreteGradient, $petsc_library),
@@ -8503,6 +8744,9 @@ function PCHYPRESetEdgeConstantVectors(petsclib::PetscLibType, pc::AbstractPC, o
 end
 
 @for_petsc function PCHYPRESetEdgeConstantVectors(petsclib::$UnionPetscLib, pc::AbstractPC, ozz::AbstractPetscVec, zoz::AbstractPetscVec, zzo::AbstractPetscVec )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCHYPRESetEdgeConstantVectors", "pc")
+	ozz.ptr == C_NULL && throw_null_handle(ozz, "PCHYPRESetEdgeConstantVectors", "ozz")
+	zoz.ptr == C_NULL && throw_null_handle(zoz, "PCHYPRESetEdgeConstantVectors", "zoz")
 
     @chk ccall(
                (:PCHYPRESetEdgeConstantVectors, $petsc_library),
@@ -8541,6 +8785,7 @@ function PCHYPRESetInterpolations(petsclib::PetscLibType, pc::AbstractPC, dim::I
 end
 
 @for_petsc function PCHYPRESetInterpolations(petsclib::$UnionPetscLib, pc::AbstractPC, dim::$PetscInt, RT_PiFull::AbstractPetscMat, RT_Pi::Vector{<:AbstractPetscMat}, ND_PiFull::AbstractPetscMat, ND_Pi::Vector{<:AbstractPetscMat} )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCHYPRESetInterpolations", "pc")
 
     @chk ccall(
                (:PCHYPRESetInterpolations, $petsc_library),
@@ -8576,6 +8821,7 @@ function PCHYPRESetType(petsclib::PetscLibType, pc::AbstractPC, name::String)
 end
 
 @for_petsc function PCHYPRESetType(petsclib::$UnionPetscLib, pc::AbstractPC, name::String )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCHYPRESetType", "pc")
 
     @chk ccall(
                (:PCHYPRESetType, $petsc_library),
@@ -8613,6 +8859,10 @@ function PCISApplyInvSchur(petsclib::PetscLibType, pc::AbstractPC, b::AbstractPe
 end
 
 @for_petsc function PCISApplyInvSchur(petsclib::$UnionPetscLib, pc::AbstractPC, b::AbstractPetscVec, x::AbstractPetscVec, vec1_N::AbstractPetscVec, vec2_N::AbstractPetscVec )
+	b.ptr == C_NULL && throw_null_handle(b, "PCISApplyInvSchur", "b")
+	x.ptr == C_NULL && throw_null_handle(x, "PCISApplyInvSchur", "x")
+	vec1_N.ptr == C_NULL && throw_null_handle(vec1_N, "PCISApplyInvSchur", "vec1_N")
+	vec2_N.ptr == C_NULL && throw_null_handle(vec2_N, "PCISApplyInvSchur", "vec2_N")
 
     @chk ccall(
                (:PCISApplyInvSchur, $petsc_library),
@@ -8651,6 +8901,10 @@ function PCISApplySchur(petsclib::PetscLibType, pc::AbstractPC, v::AbstractPetsc
 end
 
 @for_petsc function PCISApplySchur(petsclib::$UnionPetscLib, pc::AbstractPC, v::AbstractPetscVec, vec1_B::AbstractPetscVec, vec2_B::AbstractPetscVec, vec1_D::AbstractPetscVec, vec2_D::AbstractPetscVec )
+	v.ptr == C_NULL && throw_null_handle(v, "PCISApplySchur", "v")
+	vec1_B.ptr == C_NULL && throw_null_handle(vec1_B, "PCISApplySchur", "vec1_B")
+	vec1_D.ptr == C_NULL && throw_null_handle(vec1_D, "PCISApplySchur", "vec1_D")
+	vec2_D.ptr == C_NULL && throw_null_handle(vec2_D, "PCISApplySchur", "vec2_D")
 
     @chk ccall(
                (:PCISApplySchur, $petsc_library),
@@ -8756,6 +9010,7 @@ end
 
 @for_petsc function PCISScatterArrayNToVecB(petsclib::$UnionPetscLib, pc::AbstractPC, v_B::AbstractPetscVec, imode::InsertMode, smode::ScatterMode )
 	array_N_ = Ref{$PetscScalar}()
+	v_B.ptr == C_NULL && throw_null_handle(v_B, "PCISScatterArrayNToVecB", "v_B")
 
     @chk ccall(
                (:PCISScatterArrayNToVecB, $petsc_library),
@@ -8793,6 +9048,8 @@ function PCISSetSubdomainDiagonalScaling(petsclib::PetscLibType, pc::AbstractPC,
 end
 
 @for_petsc function PCISSetSubdomainDiagonalScaling(petsclib::$UnionPetscLib, pc::AbstractPC, scaling_factors::AbstractPetscVec )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCISSetSubdomainDiagonalScaling", "pc")
+	scaling_factors.ptr == C_NULL && throw_null_handle(scaling_factors, "PCISSetSubdomainDiagonalScaling", "scaling_factors")
 
     @chk ccall(
                (:PCISSetSubdomainDiagonalScaling, $petsc_library),
@@ -8829,6 +9086,7 @@ function PCISSetSubdomainScalingFactor(petsclib::PetscLibType, pc::AbstractPC, s
 end
 
 @for_petsc function PCISSetSubdomainScalingFactor(petsclib::$UnionPetscLib, pc::AbstractPC, scal::$PetscScalar )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCISSetSubdomainScalingFactor", "pc")
 
     @chk ccall(
                (:PCISSetSubdomainScalingFactor, $petsc_library),
@@ -8901,6 +9159,7 @@ function PCISSetUseStiffnessScaling(petsclib::PetscLibType, pc::AbstractPC, use:
 end
 
 @for_petsc function PCISSetUseStiffnessScaling(petsclib::$UnionPetscLib, pc::AbstractPC, use::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCISSetUseStiffnessScaling", "pc")
 
     @chk ccall(
                (:PCISSetUseStiffnessScaling, $petsc_library),
@@ -8967,6 +9226,7 @@ function PCJacobiGetDiagonal(petsclib::PetscLibType, pc::AbstractPC, diagonal::A
 end
 
 @for_petsc function PCJacobiGetDiagonal(petsclib::$UnionPetscLib, pc::AbstractPC, diagonal::AbstractPetscVec, diagonal_sqrt::AbstractPetscVec )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCJacobiGetDiagonal", "pc")
 
     @chk ccall(
                (:PCJacobiGetDiagonal, $petsc_library),
@@ -9006,6 +9266,7 @@ function PCJacobiGetFixDiagonal(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCJacobiGetFixDiagonal(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCJacobiGetFixDiagonal", "pc")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -9044,6 +9305,7 @@ function PCJacobiGetRowl1Scale(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCJacobiGetRowl1Scale(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCJacobiGetRowl1Scale", "pc")
 	scale_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -9082,6 +9344,7 @@ function PCJacobiGetType(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCJacobiGetType(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCJacobiGetType", "pc")
 	type_ = Ref{PCJacobiType}()
 
     @chk ccall(
@@ -9121,6 +9384,7 @@ function PCJacobiGetUseAbs(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCJacobiGetUseAbs(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCJacobiGetUseAbs", "pc")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -9158,6 +9422,7 @@ function PCJacobiSetFixDiagonal(petsclib::PetscLibType, pc::AbstractPC, flg::Pet
 end
 
 @for_petsc function PCJacobiSetFixDiagonal(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCJacobiSetFixDiagonal", "pc")
 
     @chk ccall(
                (:PCJacobiSetFixDiagonal, $petsc_library),
@@ -9196,6 +9461,7 @@ function PCJacobiSetRowl1Scale(petsclib::PetscLibType, pc::AbstractPC, scale::Re
 end
 
 @for_petsc function PCJacobiSetRowl1Scale(petsclib::$UnionPetscLib, pc::AbstractPC, scale::$PetscReal )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCJacobiSetRowl1Scale", "pc")
 
     @chk ccall(
                (:PCJacobiSetRowl1Scale, $petsc_library),
@@ -9234,6 +9500,7 @@ function PCJacobiSetType(petsclib::PetscLibType, pc::AbstractPC, type::PCJacobiT
 end
 
 @for_petsc function PCJacobiSetType(petsclib::$UnionPetscLib, pc::AbstractPC, type::PCJacobiType )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCJacobiSetType", "pc")
 
     @chk ccall(
                (:PCJacobiSetType, $petsc_library),
@@ -9270,6 +9537,7 @@ function PCJacobiSetUseAbs(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBoo
 end
 
 @for_petsc function PCJacobiSetUseAbs(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCJacobiSetUseAbs", "pc")
 
     @chk ccall(
                (:PCJacobiSetUseAbs, $petsc_library),
@@ -9304,6 +9572,7 @@ function PCKSPGetKSP(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCKSPGetKSP(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCKSPGetKSP", "pc")
 	ksp_ = Ref{CKSP}()
 
     @chk ccall(
@@ -9340,6 +9609,8 @@ function PCKSPSetKSP(petsclib::PetscLibType, pc::AbstractPC, ksp::AbstractKSP)
 end
 
 @for_petsc function PCKSPSetKSP(petsclib::$UnionPetscLib, pc::AbstractPC, ksp::AbstractKSP )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCKSPSetKSP", "pc")
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "PCKSPSetKSP", "ksp")
 
     @chk ccall(
                (:PCKSPSetKSP, $petsc_library),
@@ -9371,6 +9642,7 @@ function PCLMVMClearIS(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCLMVMClearIS(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCLMVMClearIS", "pc")
 
     @chk ccall(
                (:PCLMVMClearIS, $petsc_library),
@@ -9405,6 +9677,7 @@ function PCLMVMGetMatLMVM(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCLMVMGetMatLMVM(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCLMVMGetMatLMVM", "pc")
 	B_ = Ref{CMat}()
 
     @chk ccall(
@@ -9439,6 +9712,8 @@ function PCLMVMSetIS(petsclib::PetscLibType, pc::AbstractPC, inactive::AbstractI
 end
 
 @for_petsc function PCLMVMSetIS(petsclib::$UnionPetscLib, pc::AbstractPC, inactive::AbstractIS )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCLMVMSetIS", "pc")
+	inactive.ptr == C_NULL && throw_null_handle(inactive, "PCLMVMSetIS", "inactive")
 
     @chk ccall(
                (:PCLMVMSetIS, $petsc_library),
@@ -9471,6 +9746,8 @@ function PCLMVMSetMatLMVM(petsclib::PetscLibType, pc::AbstractPC, B::AbstractPet
 end
 
 @for_petsc function PCLMVMSetMatLMVM(petsclib::$UnionPetscLib, pc::AbstractPC, B::AbstractPetscMat )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCLMVMSetMatLMVM", "pc")
+	B.ptr == C_NULL && throw_null_handle(B, "PCLMVMSetMatLMVM", "B")
 
     @chk ccall(
                (:PCLMVMSetMatLMVM, $petsc_library),
@@ -9503,6 +9780,7 @@ function PCLMVMSetUpdateVec(petsclib::PetscLibType, pc::AbstractPC, X::AbstractP
 end
 
 @for_petsc function PCLMVMSetUpdateVec(petsclib::$UnionPetscLib, pc::AbstractPC, X::AbstractPetscVec )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCLMVMSetUpdateVec", "pc")
 
     @chk ccall(
                (:PCLMVMSetUpdateVec, $petsc_library),
@@ -9538,6 +9816,7 @@ function PCLoad(petsclib::PetscLibType, newdm::AbstractPC, viewer::PetscViewer)
 end
 
 @for_petsc function PCLoad(petsclib::$UnionPetscLib, newdm::AbstractPC, viewer::PetscViewer )
+	newdm.ptr == C_NULL && throw_null_handle(newdm, "PCLoad", "newdm")
 
     @chk ccall(
                (:PCLoad, $petsc_library),
@@ -9574,6 +9853,7 @@ function PCMGGalerkinGetMatProductAlgorithm(petsclib::PetscLibType, pc::Abstract
 end
 
 @for_petsc function PCMGGalerkinGetMatProductAlgorithm(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGGalerkinGetMatProductAlgorithm", "pc")
 	name_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -9613,6 +9893,7 @@ function PCMGGalerkinSetMatProductAlgorithm(petsclib::PetscLibType, pc::Abstract
 end
 
 @for_petsc function PCMGGalerkinSetMatProductAlgorithm(petsclib::$UnionPetscLib, pc::AbstractPC, name::String )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGGalerkinSetMatProductAlgorithm", "pc")
 
     @chk ccall(
                (:PCMGGalerkinSetMatProductAlgorithm, $petsc_library),
@@ -9649,6 +9930,7 @@ function PCMGGetAdaptCR(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCMGGetAdaptCR(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGGetAdaptCR", "pc")
 	cr_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -9687,6 +9969,7 @@ function PCMGGetAdaptCoarseSpaceType(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCMGGetAdaptCoarseSpaceType(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGGetAdaptCoarseSpaceType", "pc")
 	ctype_ = Ref{PCMGCoarseSpaceType}()
 
     @chk ccall(
@@ -9726,6 +10009,7 @@ function PCMGGetAdaptInterpolation(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCMGGetAdaptInterpolation(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGGetAdaptInterpolation", "pc")
 	adapt_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -9764,6 +10048,7 @@ function PCMGGetCoarseSolve(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCMGGetCoarseSolve(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGGetCoarseSolve", "pc")
 	ksp_ = Ref{CKSP}()
 
     @chk ccall(
@@ -9840,6 +10125,7 @@ function PCMGGetGalerkin(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCMGGetGalerkin(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGGetGalerkin", "pc")
 	galerkin_ = Ref{PCMGGalerkinType}()
 
     @chk ccall(
@@ -9877,6 +10163,7 @@ function PCMGGetGridComplexity(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCMGGetGridComplexity(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGGetGridComplexity", "pc")
 	gc_ = Ref{$PetscReal}()
 	oc_ = Ref{$PetscReal}()
 
@@ -9919,6 +10206,7 @@ function PCMGGetInjection(petsclib::PetscLibType, pc::AbstractPC, l::Integer)
 end
 
 @for_petsc function PCMGGetInjection(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGGetInjection", "pc")
 	mat_ = Ref{CMat}()
 
     @chk ccall(
@@ -9959,6 +10247,7 @@ function PCMGGetInterpolation(petsclib::PetscLibType, pc::AbstractPC, l::Integer
 end
 
 @for_petsc function PCMGGetInterpolation(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGGetInterpolation", "pc")
 	mat_ = Ref{CMat}()
 
     @chk ccall(
@@ -9997,6 +10286,7 @@ function PCMGGetLevels(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCMGGetLevels(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGGetLevels", "pc")
 	levels_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -10034,6 +10324,7 @@ function PCMGGetRScale(petsclib::PetscLibType, pc::AbstractPC, l::Integer, rscal
 end
 
 @for_petsc function PCMGGetRScale(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt, rscale::AbstractPetscVec )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGGetRScale", "pc")
 	rscale_ = Ref(rscale.ptr)
 
     @chk ccall(
@@ -10074,6 +10365,7 @@ function PCMGGetRestriction(petsclib::PetscLibType, pc::AbstractPC, l::Integer)
 end
 
 @for_petsc function PCMGGetRestriction(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGGetRestriction", "pc")
 	mat_ = Ref{CMat}()
 
     @chk ccall(
@@ -10114,6 +10406,7 @@ function PCMGGetSmoother(petsclib::PetscLibType, pc::AbstractPC, l::Integer)
 end
 
 @for_petsc function PCMGGetSmoother(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGGetSmoother", "pc")
 	ksp_ = Ref{CKSP}()
 
     @chk ccall(
@@ -10154,6 +10447,7 @@ function PCMGGetSmootherDown(petsclib::PetscLibType, pc::AbstractPC, l::Integer)
 end
 
 @for_petsc function PCMGGetSmootherDown(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGGetSmootherDown", "pc")
 	ksp_ = Ref{CKSP}()
 
     @chk ccall(
@@ -10194,6 +10488,7 @@ function PCMGGetSmootherUp(petsclib::PetscLibType, pc::AbstractPC, l::Integer)
 end
 
 @for_petsc function PCMGGetSmootherUp(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGGetSmootherUp", "pc")
 	ksp_ = Ref{CKSP}()
 
     @chk ccall(
@@ -10233,6 +10528,7 @@ function PCMGGetType(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCMGGetType(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGGetType", "pc")
 	type_ = Ref{PCMGType}()
 
     @chk ccall(
@@ -10273,6 +10569,8 @@ function PCMGMatResidualDefault(petsclib::PetscLibType, mat::AbstractPetscMat, b
 end
 
 @for_petsc function PCMGMatResidualDefault(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscMat, x::AbstractPetscMat, r::AbstractPetscMat )
+	b.ptr == C_NULL && throw_null_handle(b, "PCMGMatResidualDefault", "b")
+	r.ptr == C_NULL && throw_null_handle(r, "PCMGMatResidualDefault", "r")
 
     @chk ccall(
                (:PCMGMatResidualDefault, $petsc_library),
@@ -10311,6 +10609,8 @@ function PCMGMatResidualTransposeDefault(petsclib::PetscLibType, mat::AbstractPe
 end
 
 @for_petsc function PCMGMatResidualTransposeDefault(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscMat, x::AbstractPetscMat, r::AbstractPetscMat )
+	b.ptr == C_NULL && throw_null_handle(b, "PCMGMatResidualTransposeDefault", "b")
+	r.ptr == C_NULL && throw_null_handle(r, "PCMGMatResidualTransposeDefault", "r")
 
     @chk ccall(
                (:PCMGMatResidualTransposeDefault, $petsc_library),
@@ -10349,6 +10649,7 @@ function PCMGMultiplicativeSetCycles(petsclib::PetscLibType, pc::AbstractPC, n::
 end
 
 @for_petsc function PCMGMultiplicativeSetCycles(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGMultiplicativeSetCycles", "pc")
 
     @chk ccall(
                (:PCMGMultiplicativeSetCycles, $petsc_library),
@@ -10422,6 +10723,10 @@ function PCMGResidualDefault(petsclib::PetscLibType, mat::AbstractPetscMat, b::A
 end
 
 @for_petsc function PCMGResidualDefault(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec, r::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "PCMGResidualDefault", "mat")
+	b.ptr == C_NULL && throw_null_handle(b, "PCMGResidualDefault", "b")
+	x.ptr == C_NULL && throw_null_handle(x, "PCMGResidualDefault", "x")
+	r.ptr == C_NULL && throw_null_handle(r, "PCMGResidualDefault", "r")
 
     @chk ccall(
                (:PCMGResidualDefault, $petsc_library),
@@ -10460,6 +10765,10 @@ function PCMGResidualTransposeDefault(petsclib::PetscLibType, mat::AbstractPetsc
 end
 
 @for_petsc function PCMGResidualTransposeDefault(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec, r::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "PCMGResidualTransposeDefault", "mat")
+	b.ptr == C_NULL && throw_null_handle(b, "PCMGResidualTransposeDefault", "b")
+	x.ptr == C_NULL && throw_null_handle(x, "PCMGResidualTransposeDefault", "x")
+	r.ptr == C_NULL && throw_null_handle(r, "PCMGResidualTransposeDefault", "r")
 
     @chk ccall(
                (:PCMGResidualTransposeDefault, $petsc_library),
@@ -10497,6 +10806,7 @@ function PCMGSetAdaptCR(petsclib::PetscLibType, pc::AbstractPC, cr::PetscBool)
 end
 
 @for_petsc function PCMGSetAdaptCR(petsclib::$UnionPetscLib, pc::AbstractPC, cr::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGSetAdaptCR", "pc")
 
     @chk ccall(
                (:PCMGSetAdaptCR, $petsc_library),
@@ -10538,6 +10848,7 @@ function PCMGSetAdaptCoarseSpaceType(petsclib::PetscLibType, pc::AbstractPC, cty
 end
 
 @for_petsc function PCMGSetAdaptCoarseSpaceType(petsclib::$UnionPetscLib, pc::AbstractPC, ctype::PCMGCoarseSpaceType )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGSetAdaptCoarseSpaceType", "pc")
 
     @chk ccall(
                (:PCMGSetAdaptCoarseSpaceType, $petsc_library),
@@ -10572,6 +10883,7 @@ function PCMGSetAdaptInterpolation(petsclib::PetscLibType, pc::AbstractPC, adapt
 end
 
 @for_petsc function PCMGSetAdaptInterpolation(petsclib::$UnionPetscLib, pc::AbstractPC, adapt::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGSetAdaptInterpolation", "pc")
 
     @chk ccall(
                (:PCMGSetAdaptInterpolation, $petsc_library),
@@ -10610,6 +10922,7 @@ function PCMGSetCycleType(petsclib::PetscLibType, pc::AbstractPC, n::PCMGCycleTy
 end
 
 @for_petsc function PCMGSetCycleType(petsclib::$UnionPetscLib, pc::AbstractPC, n::PCMGCycleType )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGSetCycleType", "pc")
 
     @chk ccall(
                (:PCMGSetCycleType, $petsc_library),
@@ -10645,6 +10958,7 @@ function PCMGSetCycleTypeOnLevel(petsclib::PetscLibType, pc::AbstractPC, l::Inte
 end
 
 @for_petsc function PCMGSetCycleTypeOnLevel(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt, c::PCMGCycleType )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGSetCycleTypeOnLevel", "pc")
 
     @chk ccall(
                (:PCMGSetCycleTypeOnLevel, $petsc_library),
@@ -10682,6 +10996,7 @@ function PCMGSetDistinctSmoothUp(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCMGSetDistinctSmoothUp(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGSetDistinctSmoothUp", "pc")
 
     @chk ccall(
                (:PCMGSetDistinctSmoothUp, $petsc_library),
@@ -10720,6 +11035,7 @@ function PCMGSetGalerkin(petsclib::PetscLibType, pc::AbstractPC, use::PCMGGalerk
 end
 
 @for_petsc function PCMGSetGalerkin(petsclib::$UnionPetscLib, pc::AbstractPC, use::PCMGGalerkinType )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGSetGalerkin", "pc")
 
     @chk ccall(
                (:PCMGSetGalerkin, $petsc_library),
@@ -10756,6 +11072,8 @@ function PCMGSetInjection(petsclib::PetscLibType, pc::AbstractPC, l::Integer, ma
 end
 
 @for_petsc function PCMGSetInjection(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt, mat::AbstractPetscMat )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGSetInjection", "pc")
+	mat.ptr == C_NULL && throw_null_handle(mat, "PCMGSetInjection", "mat")
 
     @chk ccall(
                (:PCMGSetInjection, $petsc_library),
@@ -10792,6 +11110,7 @@ function PCMGSetInterpolation(petsclib::PetscLibType, pc::AbstractPC, l::Integer
 end
 
 @for_petsc function PCMGSetInterpolation(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt, mat::AbstractPetscMat )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGSetInterpolation", "pc")
 
     @chk ccall(
                (:PCMGSetInterpolation, $petsc_library),
@@ -10834,6 +11153,7 @@ function PCMGSetLevels(petsclib::PetscLibType, pc::AbstractPC, levels::Integer, 
 end
 
 @for_petsc function PCMGSetLevels(petsclib::$UnionPetscLib, pc::AbstractPC, levels::$PetscInt, comms::Union{Ptr, Vector{MPI_Comm}} )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGSetLevels", "pc")
 
     @chk ccall(
                (:PCMGSetLevels, $petsc_library),
@@ -10873,6 +11193,7 @@ function PCMGSetNumberSmooth(petsclib::PetscLibType, pc::AbstractPC, n::Integer)
 end
 
 @for_petsc function PCMGSetNumberSmooth(petsclib::$UnionPetscLib, pc::AbstractPC, n::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGSetNumberSmooth", "pc")
 
     @chk ccall(
                (:PCMGSetNumberSmooth, $petsc_library),
@@ -10909,6 +11230,9 @@ function PCMGSetOperators(petsclib::PetscLibType, pc::AbstractPC, l::Integer, Am
 end
 
 @for_petsc function PCMGSetOperators(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt, Amat::AbstractPetscMat, Pmat::AbstractPetscMat )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGSetOperators", "pc")
+	Amat.ptr == C_NULL && throw_null_handle(Amat, "PCMGSetOperators", "Amat")
+	Pmat.ptr == C_NULL && throw_null_handle(Pmat, "PCMGSetOperators", "Pmat")
 
     @chk ccall(
                (:PCMGSetOperators, $petsc_library),
@@ -10944,6 +11268,7 @@ function PCMGSetR(petsclib::PetscLibType, pc::AbstractPC, l::Integer, c::Abstrac
 end
 
 @for_petsc function PCMGSetR(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt, c::AbstractPetscVec )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGSetR", "pc")
 
     @chk ccall(
                (:PCMGSetR, $petsc_library),
@@ -10979,6 +11304,7 @@ function PCMGSetRScale(petsclib::PetscLibType, pc::AbstractPC, l::Integer, rscal
 end
 
 @for_petsc function PCMGSetRScale(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt, rscale::AbstractPetscVec )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGSetRScale", "pc")
 
     @chk ccall(
                (:PCMGSetRScale, $petsc_library),
@@ -11090,6 +11416,8 @@ function PCMGSetRestriction(petsclib::PetscLibType, pc::AbstractPC, l::Integer, 
 end
 
 @for_petsc function PCMGSetRestriction(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt, mat::AbstractPetscMat )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGSetRestriction", "pc")
+	mat.ptr == C_NULL && throw_null_handle(mat, "PCMGSetRestriction", "mat")
 
     @chk ccall(
                (:PCMGSetRestriction, $petsc_library),
@@ -11125,6 +11453,7 @@ function PCMGSetRhs(petsclib::PetscLibType, pc::AbstractPC, l::Integer, c::Abstr
 end
 
 @for_petsc function PCMGSetRhs(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt, c::AbstractPetscVec )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGSetRhs", "pc")
 
     @chk ccall(
                (:PCMGSetRhs, $petsc_library),
@@ -11164,6 +11493,7 @@ function PCMGSetType(petsclib::PetscLibType, pc::AbstractPC, form::PCMGType)
 end
 
 @for_petsc function PCMGSetType(petsclib::$UnionPetscLib, pc::AbstractPC, form::PCMGType )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGSetType", "pc")
 
     @chk ccall(
                (:PCMGSetType, $petsc_library),
@@ -11199,6 +11529,7 @@ function PCMGSetX(petsclib::PetscLibType, pc::AbstractPC, l::Integer, c::Abstrac
 end
 
 @for_petsc function PCMGSetX(petsclib::$UnionPetscLib, pc::AbstractPC, l::$PetscInt, c::AbstractPetscVec )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMGSetX", "pc")
 
     @chk ccall(
                (:PCMGSetX, $petsc_library),
@@ -11235,6 +11566,7 @@ function PCMPIGetKSP(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCMPIGetKSP(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMPIGetKSP", "pc")
 	innerksp_ = Ref{CKSP}()
 
     @chk ccall(
@@ -11445,6 +11777,7 @@ function PCMatGetApplyOperation(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCMatGetApplyOperation(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMatGetApplyOperation", "pc")
 	matop_ = Ref{MatOperation}()
 
     @chk ccall(
@@ -11481,6 +11814,7 @@ function PCMatSetApplyOperation(petsclib::PetscLibType, pc::AbstractPC, matop::M
 end
 
 @for_petsc function PCMatSetApplyOperation(petsclib::$UnionPetscLib, pc::AbstractPC, matop::MatOperation )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCMatSetApplyOperation", "pc")
 
     @chk ccall(
                (:PCMatSetApplyOperation, $petsc_library),
@@ -11527,6 +11861,7 @@ function PCModifySubMatrices(petsclib::PetscLibType, pc::AbstractPC, nsub::Integ
 end
 
 @for_petsc function PCModifySubMatrices(petsclib::$UnionPetscLib, pc::AbstractPC, nsub::$PetscInt, row::Vector{<:AbstractIS}, col::Vector{<:AbstractIS}, submat::Vector{<:AbstractPetscMat}, ctx::Ptr{Cvoid} )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCModifySubMatrices", "pc")
 
     @chk ccall(
                (:PCModifySubMatrices, $petsc_library),
@@ -11570,6 +11905,7 @@ function PCPARMSSetFill(petsclib::PetscLibType, pc::AbstractPC, lfil0::Integer, 
 end
 
 @for_petsc function PCPARMSSetFill(petsclib::$UnionPetscLib, pc::AbstractPC, lfil0::$PetscInt, lfil1::$PetscInt, lfil2::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCPARMSSetFill", "pc")
 
     @chk ccall(
                (:PCPARMSSetFill, $petsc_library),
@@ -11612,6 +11948,7 @@ function PCPARMSSetGlobal(petsclib::PetscLibType, pc::AbstractPC, type::PCPARMSG
 end
 
 @for_petsc function PCPARMSSetGlobal(petsclib::$UnionPetscLib, pc::AbstractPC, type::PCPARMSGlobalType )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCPARMSSetGlobal", "pc")
 
     @chk ccall(
                (:PCPARMSSetGlobal, $petsc_library),
@@ -11655,6 +11992,7 @@ function PCPARMSSetLocal(petsclib::PetscLibType, pc::AbstractPC, type::PCPARMSLo
 end
 
 @for_petsc function PCPARMSSetLocal(petsclib::$UnionPetscLib, pc::AbstractPC, type::PCPARMSLocalType )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCPARMSSetLocal", "pc")
 
     @chk ccall(
                (:PCPARMSSetLocal, $petsc_library),
@@ -11694,6 +12032,7 @@ function PCPARMSSetNonsymPerm(petsclib::PetscLibType, pc::AbstractPC, nonsym::Pe
 end
 
 @for_petsc function PCPARMSSetNonsymPerm(petsclib::$UnionPetscLib, pc::AbstractPC, nonsym::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCPARMSSetNonsymPerm", "pc")
 
     @chk ccall(
                (:PCPARMSSetNonsymPerm, $petsc_library),
@@ -11732,6 +12071,7 @@ function PCPARMSSetSolveRestart(petsclib::PetscLibType, pc::AbstractPC, restart:
 end
 
 @for_petsc function PCPARMSSetSolveRestart(petsclib::$UnionPetscLib, pc::AbstractPC, restart::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCPARMSSetSolveRestart", "pc")
 
     @chk ccall(
                (:PCPARMSSetSolveRestart, $petsc_library),
@@ -11772,6 +12112,7 @@ function PCPARMSSetSolveTolerances(petsclib::PetscLibType, pc::AbstractPC, tol::
 end
 
 @for_petsc function PCPARMSSetSolveTolerances(petsclib::$UnionPetscLib, pc::AbstractPC, tol::$PetscReal, maxits::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCPARMSSetSolveTolerances", "pc")
 
     @chk ccall(
                (:PCPARMSSetSolveTolerances, $petsc_library),
@@ -12446,6 +12787,7 @@ function PCPatchSetDiscretisationInfo(petsclib::PetscLibType, pc::AbstractPC, ns
 end
 
 @for_petsc function PCPatchSetDiscretisationInfo(petsclib::$UnionPetscLib, pc::AbstractPC, nsubspaces::$PetscInt, dms::Vector{<:AbstractPetscDM}, bs::Vector{$PetscInt}, nodesPerCell::Vector{$PetscInt}, cellNodeMap::$PetscInt, subspaceOffsets::Vector{$PetscInt}, numGhostBcs::$PetscInt, ghostBcNodes::Vector{$PetscInt}, numGlobalBcs::$PetscInt, globalBcNodes::Vector{$PetscInt} )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCPatchSetDiscretisationInfo", "pc")
 
     @chk ccall(
                (:PCPatchSetDiscretisationInfo, $petsc_library),
@@ -12616,6 +12958,8 @@ function PCPostSolve(petsclib::PetscLibType, pc::AbstractPC, ksp::AbstractKSP)
 end
 
 @for_petsc function PCPostSolve(petsclib::$UnionPetscLib, pc::AbstractPC, ksp::AbstractKSP )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCPostSolve", "pc")
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "PCPostSolve", "ksp")
 
     @chk ccall(
                (:PCPostSolve, $petsc_library),
@@ -12651,6 +12995,8 @@ function PCPreSolve(petsclib::PetscLibType, pc::AbstractPC, ksp::AbstractKSP)
 end
 
 @for_petsc function PCPreSolve(petsclib::$UnionPetscLib, pc::AbstractPC, ksp::AbstractKSP )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCPreSolve", "pc")
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "PCPreSolve", "ksp")
 
     @chk ccall(
                (:PCPreSolve, $petsc_library),
@@ -12687,6 +13033,7 @@ function PCPythonGetType(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCPythonGetType(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCPythonGetType", "pc")
 	pyname_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -12726,6 +13073,7 @@ function PCPythonSetType(petsclib::PetscLibType, pc::AbstractPC, pyname::String)
 end
 
 @for_petsc function PCPythonSetType(petsclib::$UnionPetscLib, pc::AbstractPC, pyname::String )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCPythonSetType", "pc")
 
     @chk ccall(
                (:PCPythonSetType, $petsc_library),
@@ -12762,6 +13110,7 @@ function PCRedistributeGetKSP(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCRedistributeGetKSP(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCRedistributeGetKSP", "pc")
 	innerksp_ = Ref{CKSP}()
 
     @chk ccall(
@@ -12797,6 +13146,7 @@ function PCReduceFailedReason(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCReduceFailedReason(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCReduceFailedReason", "pc")
 
     @chk ccall(
                (:PCReduceFailedReason, $petsc_library),
@@ -12833,6 +13183,7 @@ function PCRedundantGetKSP(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCRedundantGetKSP(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCRedundantGetKSP", "pc")
 	innerksp_ = Ref{CKSP}()
 
     @chk ccall(
@@ -12872,6 +13223,7 @@ function PCRedundantGetOperators(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCRedundantGetOperators(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCRedundantGetOperators", "pc")
 	mat_ = Ref{CMat}()
 	pmat_ = Ref{CMat}()
 
@@ -12911,6 +13263,7 @@ function PCRedundantSetNumber(petsclib::PetscLibType, pc::AbstractPC, nredundant
 end
 
 @for_petsc function PCRedundantSetNumber(petsclib::$UnionPetscLib, pc::AbstractPC, nredundant::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCRedundantSetNumber", "pc")
 
     @chk ccall(
                (:PCRedundantSetNumber, $petsc_library),
@@ -12948,6 +13301,7 @@ function PCRedundantSetScatter(petsclib::PetscLibType, pc::AbstractPC, in::VecSc
 end
 
 @for_petsc function PCRedundantSetScatter(petsclib::$UnionPetscLib, pc::AbstractPC, in::VecScatter, out::VecScatter )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCRedundantSetScatter", "pc")
 
     @chk ccall(
                (:PCRedundantSetScatter, $petsc_library),
@@ -13013,6 +13367,7 @@ function PCReset(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCReset(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCReset", "pc")
 
     @chk ccall(
                (:PCReset, $petsc_library),
@@ -13055,6 +13410,7 @@ function PCSORGetIterations(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCSORGetIterations(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCSORGetIterations", "pc")
 	its_ = Ref{$PetscInt}()
 	lits_ = Ref{$PetscInt}()
 
@@ -13099,6 +13455,7 @@ function PCSORGetOmega(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCSORGetOmega(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCSORGetOmega", "pc")
 	omega_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -13151,6 +13508,7 @@ function PCSORGetSymmetric(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCSORGetSymmetric(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCSORGetSymmetric", "pc")
 	flag_ = Ref{MatSORType}()
 
     @chk ccall(
@@ -13193,6 +13551,7 @@ function PCSORSetIterations(petsclib::PetscLibType, pc::AbstractPC, its::Integer
 end
 
 @for_petsc function PCSORSetIterations(petsclib::$UnionPetscLib, pc::AbstractPC, its::$PetscInt, lits::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCSORSetIterations", "pc")
 
     @chk ccall(
                (:PCSORSetIterations, $petsc_library),
@@ -13231,6 +13590,7 @@ function PCSORSetOmega(petsclib::PetscLibType, pc::AbstractPC, omega::Real)
 end
 
 @for_petsc function PCSORSetOmega(petsclib::$UnionPetscLib, pc::AbstractPC, omega::$PetscReal )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCSORSetOmega", "pc")
 
     @chk ccall(
                (:PCSORSetOmega, $petsc_library),
@@ -13280,6 +13640,7 @@ function PCSORSetSymmetric(petsclib::PetscLibType, pc::AbstractPC, flag::MatSORT
 end
 
 @for_petsc function PCSORSetSymmetric(petsclib::$UnionPetscLib, pc::AbstractPC, flag::MatSORType )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCSORSetSymmetric", "pc")
 
     @chk ccall(
                (:PCSORSetSymmetric, $petsc_library),
@@ -13569,6 +13930,7 @@ function PCSetApplicationContext(petsclib::PetscLibType, pc::AbstractPC, ctx::Pt
 end
 
 @for_petsc function PCSetApplicationContext(petsclib::$UnionPetscLib, pc::AbstractPC, ctx::Ptr{Cvoid} )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCSetApplicationContext", "pc")
 
     @chk ccall(
                (:PCSetApplicationContext, $petsc_library),
@@ -13605,6 +13967,7 @@ function PCSetCoordinates(petsclib::PetscLibType, pc::AbstractPC, dim::Integer, 
 end
 
 @for_petsc function PCSetCoordinates(petsclib::$UnionPetscLib, pc::AbstractPC, dim::$PetscInt, nloc::$PetscInt, coords::Vector{$PetscReal} )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCSetCoordinates", "pc")
 
     @chk ccall(
                (:PCSetCoordinates, $petsc_library),
@@ -13639,6 +14002,7 @@ function PCSetDM(petsclib::PetscLibType, pc::AbstractPC, dm::AbstractPetscDM)
 end
 
 @for_petsc function PCSetDM(petsclib::$UnionPetscLib, pc::AbstractPC, dm::AbstractPetscDM )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCSetDM", "pc")
 
     @chk ccall(
                (:PCSetDM, $petsc_library),
@@ -13674,6 +14038,8 @@ function PCSetDiagonalScale(petsclib::PetscLibType, pc::AbstractPC, s::AbstractP
 end
 
 @for_petsc function PCSetDiagonalScale(petsclib::$UnionPetscLib, pc::AbstractPC, s::AbstractPetscVec )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCSetDiagonalScale", "pc")
+	s.ptr == C_NULL && throw_null_handle(s, "PCSetDiagonalScale", "s")
 
     @chk ccall(
                (:PCSetDiagonalScale, $petsc_library),
@@ -13708,6 +14074,7 @@ function PCSetErrorIfFailure(petsclib::PetscLibType, pc::AbstractPC, flg::PetscB
 end
 
 @for_petsc function PCSetErrorIfFailure(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCSetErrorIfFailure", "pc")
 
     @chk ccall(
                (:PCSetErrorIfFailure, $petsc_library),
@@ -13742,6 +14109,7 @@ function PCSetFailedReason(petsclib::PetscLibType, pc::AbstractPC, reason::PCFai
 end
 
 @for_petsc function PCSetFailedReason(petsclib::$UnionPetscLib, pc::AbstractPC, reason::PCFailedReason )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCSetFailedReason", "pc")
 
     @chk ccall(
                (:PCSetFailedReason, $petsc_library),
@@ -13778,6 +14146,7 @@ function PCSetFromOptions(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCSetFromOptions(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCSetFromOptions", "pc")
 
     @chk ccall(
                (:PCSetFromOptions, $petsc_library),
@@ -13812,6 +14181,7 @@ function PCSetKSPNestLevel(petsclib::PetscLibType, pc::AbstractPC, level::Intege
 end
 
 @for_petsc function PCSetKSPNestLevel(petsclib::$UnionPetscLib, pc::AbstractPC, level::$PetscInt )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCSetKSPNestLevel", "pc")
 
     @chk ccall(
                (:PCSetKSPNestLevel, $petsc_library),
@@ -13848,6 +14218,7 @@ function PCSetModifySubMatrices(petsclib::PetscLibType, pc::AbstractPC, func::Pt
 end
 
 @for_petsc function PCSetModifySubMatrices(petsclib::$UnionPetscLib, pc::AbstractPC, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCSetModifySubMatrices", "pc")
 
     @chk ccall(
                (:PCSetModifySubMatrices, $petsc_library),
@@ -13884,6 +14255,7 @@ function PCSetOperators(petsclib::PetscLibType, pc::AbstractPC, Amat::AbstractPe
 end
 
 @for_petsc function PCSetOperators(petsclib::$UnionPetscLib, pc::AbstractPC, Amat::AbstractPetscMat, Pmat::AbstractPetscMat )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCSetOperators", "pc")
 
     @chk ccall(
                (:PCSetOperators, $petsc_library),
@@ -13919,6 +14291,7 @@ function PCSetOptionsPrefix(petsclib::PetscLibType, pc::AbstractPC, prefix::Stri
 end
 
 @for_petsc function PCSetOptionsPrefix(petsclib::$UnionPetscLib, pc::AbstractPC, prefix::String )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCSetOptionsPrefix", "pc")
 
     @chk ccall(
                (:PCSetOptionsPrefix, $petsc_library),
@@ -13990,6 +14363,7 @@ function PCSetReusePreconditioner(petsclib::PetscLibType, pc::AbstractPC, flag::
 end
 
 @for_petsc function PCSetReusePreconditioner(petsclib::$UnionPetscLib, pc::AbstractPC, flag::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCSetReusePreconditioner", "pc")
 
     @chk ccall(
                (:PCSetReusePreconditioner, $petsc_library),
@@ -14025,6 +14399,7 @@ function PCSetType(petsclib::PetscLibType, pc::AbstractPC, type::String)
 end
 
 @for_petsc function PCSetType(petsclib::$UnionPetscLib, pc::AbstractPC, type::String )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCSetType", "pc")
 
     @chk ccall(
                (:PCSetType, $petsc_library),
@@ -14059,6 +14434,7 @@ function PCSetUp(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCSetUp(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCSetUp", "pc")
 
     @chk ccall(
                (:PCSetUp, $petsc_library),
@@ -14093,6 +14469,7 @@ function PCSetUpOnBlocks(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCSetUpOnBlocks(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCSetUpOnBlocks", "pc")
 
     @chk ccall(
                (:PCSetUpOnBlocks, $petsc_library),
@@ -14133,6 +14510,7 @@ function PCSetUseAmat(petsclib::PetscLibType, pc::AbstractPC, flg::PetscBool)
 end
 
 @for_petsc function PCSetUseAmat(petsclib::$UnionPetscLib, pc::AbstractPC, flg::PetscBool )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCSetUseAmat", "pc")
 
     @chk ccall(
                (:PCSetUseAmat, $petsc_library),
@@ -14169,6 +14547,7 @@ function PCShellGetContext(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCShellGetContext(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCShellGetContext", "pc")
 	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
@@ -14208,6 +14587,7 @@ function PCShellGetName(petsclib::PetscLibType, pc::AbstractPC)
 end
 
 @for_petsc function PCShellGetName(petsclib::$UnionPetscLib, pc::AbstractPC )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCShellGetName", "pc")
 	name_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -14489,6 +14869,7 @@ function PCShellSetContext(petsclib::PetscLibType, pc::AbstractPC, ctx::Ptr{Cvoi
 end
 
 @for_petsc function PCShellSetContext(petsclib::$UnionPetscLib, pc::AbstractPC, ctx::Ptr{Cvoid} )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCShellSetContext", "pc")
 
     @chk ccall(
                (:PCShellSetContext, $petsc_library),
@@ -14639,6 +15020,7 @@ function PCShellSetName(petsclib::PetscLibType, pc::AbstractPC, name::String)
 end
 
 @for_petsc function PCShellSetName(petsclib::$UnionPetscLib, pc::AbstractPC, name::String )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCShellSetName", "pc")
 
     @chk ccall(
                (:PCShellSetName, $petsc_library),
@@ -14675,6 +15057,7 @@ function PCShellSetPostSolve(petsclib::PetscLibType, pc::AbstractPC, postsolve::
 end
 
 @for_petsc function PCShellSetPostSolve(petsclib::$UnionPetscLib, pc::AbstractPC, postsolve::Ptr{Cvoid} )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCShellSetPostSolve", "pc")
 
     @chk ccall(
                (:PCShellSetPostSolve, $petsc_library),
@@ -14711,6 +15094,7 @@ function PCShellSetPreSolve(petsclib::PetscLibType, pc::AbstractPC, presolve::Pt
 end
 
 @for_petsc function PCShellSetPreSolve(petsclib::$UnionPetscLib, pc::AbstractPC, presolve::Ptr{Cvoid} )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCShellSetPreSolve", "pc")
 
     @chk ccall(
                (:PCShellSetPreSolve, $petsc_library),
@@ -15274,6 +15658,7 @@ function PCView(petsclib::PetscLibType, pc::AbstractPC, viewer::PetscViewer)
 end
 
 @for_petsc function PCView(petsclib::$UnionPetscLib, pc::AbstractPC, viewer::PetscViewer )
+	pc.ptr == C_NULL && throw_null_handle(pc, "PCView", "pc")
 
     @chk ccall(
                (:PCView, $petsc_library),
@@ -15312,6 +15697,7 @@ function PCViewFromOptions(petsclib::PetscLibType, A::AbstractPC, obj, name::Str
 end
 
 @for_petsc function PCViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPC, obj, name::String )
+	A.ptr == C_NULL && throw_null_handle(A, "PCViewFromOptions", "A")
 
     @chk ccall(
                (:PCViewFromOptions, $petsc_library),

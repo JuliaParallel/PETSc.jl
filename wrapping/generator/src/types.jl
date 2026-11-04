@@ -31,7 +31,7 @@ function load_rules(dir::AbstractString)
     f = TOML.parsefile(joinpath(dir, "files.toml"))
     # mined rules first, hand-written rules on top (argument tables merge, hand keys win)
     a = Dict{String,Any}()
-    for f in ("args_mined.toml", "args.toml")
+    for f in ("args_required.toml", "args_mined.toml", "args.toml")
         isfile(joinpath(dir, f)) || continue
         for (fn, tab) in TOML.parsefile(joinpath(dir, f))
             dst = get!(a, fn, Dict{String,Any}())

@@ -27,6 +27,7 @@
     -sol name  solution type: quadratic (default) or trig
 
   ── Run examples ─────────────────────────────────────────────────────────────
+  Without options the example runs the first case below (see DEFAULT_OPTIONS).
 
   Common solver options (Schur-complement fieldsplit):
     SOLVER="-pc_use_amat -pc_type fieldsplit -pc_fieldsplit_type schur \
@@ -98,7 +99,16 @@ using PETSc: LibPETSc
 
 # ── PETSc / MPI init ─────────────────────────────────────────────────────────
 _args    = isinteractive() ? String[] : collect(String, ARGS)
-opts     = PETSc.parse_options(_args)
+# With no options this runs the 2D P2/P1 simplex case with the quadratic solution; options on the command line override
+# these: the saddle point needs the Schur-complement fieldsplit, not the default ILU
+const DEFAULT_OPTIONS = (
+    vel_petscspace_degree = "2", pres_petscspace_degree = "1",
+    pc_use_amat = nothing, pc_type = "fieldsplit", pc_fieldsplit_type = "schur",
+    pc_fieldsplit_schur_factorization_type = "full", pc_fieldsplit_schur_precondition = "a11",
+    fieldsplit_velocity_pc_type = "lu", fieldsplit_pressure_ksp_rtol = "1e-9",
+    fieldsplit_pressure_pc_type = "lu", ksp_rtol = "1e-9",
+)
+opts     = merge(DEFAULT_OPTIONS, PETSc.parse_options(_args))
 petsclib = PETSc.getlib(; PetscScalar = Float64)
 MPI.Initialized() || MPI.Init()
 PETSc.initialize(petsclib)

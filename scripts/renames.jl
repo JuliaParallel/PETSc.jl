@@ -204,6 +204,8 @@ const INTERNAL = Set{Symbol}([
     :state_type,
     :object_states,
     :object_states_lock,
+    :object_states_swept,
+    :release_dead!,
     :object_state_destroy,
     :object_state,
     :object_state!,
@@ -318,6 +320,8 @@ const INTERNAL = Set{Symbol}([
     :index_shaped,
     # whether a command-line argument is an option or a value
     :isoption,
+    # the array arguments of a pointwise function
+    :PtrVector,
     :check_block,
     :checkout_arrays,
     :checked_array,

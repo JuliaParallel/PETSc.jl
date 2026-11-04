@@ -1,7 +1,7 @@
 # ── @cfunction helpers for PETSc FEM pointwise callbacks ─────────────────────
 #
-# These macros generate a thin C-callable wrapper that unwraps all C pointer
-# arguments into Julia Vectors, then calls the user's pure-Julia function.
+# These macros generate a thin C-callable wrapper that hands every C pointer
+# argument to the user's pure-Julia function as a `PtrVector`, then calls it.
 #
 # The first argument names the library (a PetscLibType value or type). It is
 # evaluated when the macro expands, so it must be a global defined before the
@@ -24,6 +24,35 @@
 # The wrapper's C pointer comes from an `@eval` at run time: within a single
 # top-level block the `@cfunction` is compiled before the wrapper exists.
 
+"""
+    PtrVector{T}(ptr, n)
+
+An `AbstractVector{T}` over `n` values PETSc owns at `ptr`, as the pointwise
+macros pass each array argument. It is valid only during the call. Indexing is
+bounds-checked unless the caller uses `@inbounds`, and `pointer` and `ccall` see
+`ptr`. It does not allocate, which matters at one call per quadrature point.
+"""
+struct PtrVector{T} <: AbstractVector{T}
+    ptr::Ptr{T}
+    n::Int
+    PtrVector{T}(ptr, n) where {T} = new{T}(ptr, n)
+end
+PtrVector(ptr::Ptr{T}, n) where {T} = PtrVector{T}(ptr, n)
+
+Base.size(v::PtrVector) = (v.n,)
+Base.IndexStyle(::Type{<:PtrVector}) = IndexLinear()
+Base.@propagate_inbounds function Base.getindex(v::PtrVector, i::Int)
+    @boundscheck checkbounds(v, i)
+    return unsafe_load(v.ptr, i)
+end
+Base.@propagate_inbounds function Base.setindex!(v::PtrVector, x, i::Int)
+    @boundscheck checkbounds(v, i)
+    unsafe_store!(v.ptr, x, i)
+    return v
+end
+Base.pointer(v::PtrVector) = v.ptr
+Base.unsafe_convert(::Type{Ptr{T}}, v::PtrVector{T}) where {T} = v.ptr
+
 # Look up the PetscInt, PetscScalar and PetscReal of the library `lib` names
 # in module `mod`.
 function pointwise_types(mod::Module, lib)
@@ -45,8 +74,8 @@ petsc_subst(ex, m) =
 Generate a C-callable wrapper for `f(t, x, u, ctx)` and return its C pointer,
 matching the `PetscSimplePointFn` signature.  Arguments seen by `f`:
   - `t`   — time (`PetscReal`)
-  - `x`   — coordinates (`Vector{PetscReal}`, length `dim`)
-  - `u`   — output field values (`Vector{PetscScalar}`, length `Nc`)
+  - `x`   — coordinates (a `PtrVector{PetscReal}` of length `dim`)
+  - `u`   — output field values (a `PtrVector{PetscScalar}` of length `Nc`)
   - `ctx` — user context (`Ptr{Cvoid}`)
 
 Used by `project_function!`, `add_boundary!`, `set_exact_solution!`.
@@ -59,6 +88,7 @@ end
 
 function simple_fn_expr(f, PI, PS, PR)
     run_callback = GlobalRef(@__MODULE__, :run_callback)
+    PV = GlobalRef(@__MODULE__, :PtrVector)
     cfn = Symbol(f, :__cfn__)
     gdim = gensym("dim"); gNc = gensym("Nc")
     cfn_ptr_expr = :(Base.@cfunction($cfn, Cint,
@@ -68,8 +98,8 @@ function simple_fn_expr(f, PI, PS, PR)
             $gdim::$PI, t::$PR, xp::Ptr{$PR},
             $gNc::$PI, up::Ptr{$PS}, ctx::Ptr{Cvoid},
         )::Cint
-            x = unsafe_wrap(Vector{$PR}, xp, $gdim)
-            u = unsafe_wrap(Vector{$PS}, up, $gNc)
+            x = $PV(xp, $gdim)
+            u = $PV(up, $gNc)
             return $run_callback(() -> $(esc(f))(t, x, u, ctx), "pointwise function")
         end
         @eval $cfn_ptr_expr
@@ -80,8 +110,10 @@ end
     @residual_fn(petsclib, f, outsz)
 
 Generate a C-callable wrapper for the pure-Julia residual function `f` and
-return its C pointer, matching the `PetscPointFn` signature.  All pointer
-arguments are unwrapped into Julia Vectors before calling `f`.
+return its C pointer, matching the `PetscPointFn` signature.  Each pointer
+argument reaches `f` as a `PETSc.PtrVector`, an `AbstractVector` over
+PETSc's memory, so annotate the arguments as
+`AbstractVector` or not at all.
 
 `outsz` is an expression giving the output array length in terms of `dim_`,
 `Nf`, `NfAux`, or `numConstants` (e.g. `Nf` for `f0`-type functions,
@@ -100,6 +132,7 @@ end
 
 function residual_fn_expr(f, outsz, PI, PS, PR)
     run_callback = GlobalRef(@__MODULE__, :run_callback)
+    PV = GlobalRef(@__MODULE__, :PtrVector)
     cfn = Symbol(f, :__cfn__)
     gdim = gensym("dim"); gNf = gensym("Nf"); gNfAux = gensym("NfAux"); gnC = gensym("nC")
     m = Dict{Symbol,Any}(:dim_ => gdim, :Nf => gNf, :NfAux => gNfAux, :numConstants => gnC)
@@ -119,19 +152,21 @@ function residual_fn_expr(f, outsz, PI, PS, PR)
             t::$PR, x_p::Ptr{$PR}, $gnC::$PI, cst_p::Ptr{$PS},
             out_p::Ptr{$PS},
         )::Cvoid
-            uOff   = unsafe_wrap(Vector{$PI}, uOff_p,  $gNf + 1)
-            uOff_x = unsafe_wrap(Vector{$PI}, uOff_xp, $gNf + 1)
-            u      = unsafe_wrap(Vector{$PS}, u_p,     uOff[end])
-            u_t    = unsafe_wrap(Vector{$PS}, u_tp,    uOff[end])
-            u_x    = unsafe_wrap(Vector{$PS}, u_xp,    uOff_x[end])
-            aOff   = $gNfAux > 0 ? unsafe_wrap(Vector{$PI}, aOff_p,  $gNfAux + 1) : $PI[]
-            aOff_x = $gNfAux > 0 ? unsafe_wrap(Vector{$PI}, aOff_xp, $gNfAux + 1) : $PI[]
-            a      = $gNfAux > 0 ? unsafe_wrap(Vector{$PS}, a_p,  aOff[end])   : $PS[]
-            a_t    = $gNfAux > 0 ? unsafe_wrap(Vector{$PS}, a_tp, aOff[end])   : $PS[]
-            a_x    = $gNfAux > 0 ? unsafe_wrap(Vector{$PS}, a_xp, aOff_x[end]) : $PS[]
-            x      = unsafe_wrap(Vector{$PR}, x_p,     $gdim)
-            constants = $gnC > 0 ? unsafe_wrap(Vector{$PS}, cst_p, $gnC) : $PS[]
-            out    = unsafe_wrap(Vector{$PS}, out_p,   $outsz_s)
+            uOff   = $PV(uOff_p,  $gNf + 1)
+            uOff_x = $PV(uOff_xp, $gNf + 1)
+            u      = $PV(u_p,     uOff[end])
+            u_t    = $PV(u_tp,    uOff[end])
+            u_x    = $PV(u_xp,    uOff_x[end])
+            # with no auxiliary fields PETSc may pass null pointers: length 0
+            naux   = $gNfAux > 0 ? $gNfAux + 1 : 0
+            aOff   = $PV(aOff_p,  naux)
+            aOff_x = $PV(aOff_xp, naux)
+            a      = $PV(a_p,  naux > 0 ? aOff[end]   : 0)
+            a_t    = $PV(a_tp, naux > 0 ? aOff[end]   : 0)
+            a_x    = $PV(a_xp, naux > 0 ? aOff_x[end] : 0)
+            x      = $PV(x_p,     $gdim)
+            constants = $PV(cst_p, $gnC)
+            out    = $PV(out_p,   $outsz_s)
             $run_callback(() -> $(esc(f))($gdim, $gNf, $gNfAux, uOff, uOff_x, u, u_t, u_x,
                       aOff, aOff_x, a, a_t, a_x, t, x, $gnC, constants, out),
                 "pointwise function")
@@ -161,6 +196,7 @@ end
 
 function jacobian_fn_expr(f, outsz, PI, PS, PR)
     run_callback = GlobalRef(@__MODULE__, :run_callback)
+    PV = GlobalRef(@__MODULE__, :PtrVector)
     cfn = Symbol(f, :__cfn__)
     gdim = gensym("dim"); gNf = gensym("Nf"); gNfAux = gensym("NfAux"); gnC = gensym("nC")
     m = Dict{Symbol,Any}(:dim_ => gdim, :Nf => gNf, :NfAux => gNfAux, :numConstants => gnC)
@@ -181,19 +217,21 @@ function jacobian_fn_expr(f, outsz, PI, PS, PR)
             $gnC::$PI, cst_p::Ptr{$PS},
             out_p::Ptr{$PS},
         )::Cvoid
-            uOff   = unsafe_wrap(Vector{$PI}, uOff_p,  $gNf + 1)
-            uOff_x = unsafe_wrap(Vector{$PI}, uOff_xp, $gNf + 1)
-            u      = unsafe_wrap(Vector{$PS}, u_p,     uOff[end])
-            u_t    = unsafe_wrap(Vector{$PS}, u_tp,    uOff[end])
-            u_x    = unsafe_wrap(Vector{$PS}, u_xp,    uOff_x[end])
-            aOff   = $gNfAux > 0 ? unsafe_wrap(Vector{$PI}, aOff_p,  $gNfAux + 1) : $PI[]
-            aOff_x = $gNfAux > 0 ? unsafe_wrap(Vector{$PI}, aOff_xp, $gNfAux + 1) : $PI[]
-            a      = $gNfAux > 0 ? unsafe_wrap(Vector{$PS}, a_p,  aOff[end])   : $PS[]
-            a_t    = $gNfAux > 0 ? unsafe_wrap(Vector{$PS}, a_tp, aOff[end])   : $PS[]
-            a_x    = $gNfAux > 0 ? unsafe_wrap(Vector{$PS}, a_xp, aOff_x[end]) : $PS[]
-            x      = unsafe_wrap(Vector{$PR}, x_p,     $gdim)
-            constants = $gnC > 0 ? unsafe_wrap(Vector{$PS}, cst_p, $gnC) : $PS[]
-            out    = unsafe_wrap(Vector{$PS}, out_p,   $outsz_s)
+            uOff   = $PV(uOff_p,  $gNf + 1)
+            uOff_x = $PV(uOff_xp, $gNf + 1)
+            u      = $PV(u_p,     uOff[end])
+            u_t    = $PV(u_tp,    uOff[end])
+            u_x    = $PV(u_xp,    uOff_x[end])
+            # with no auxiliary fields PETSc may pass null pointers: length 0
+            naux   = $gNfAux > 0 ? $gNfAux + 1 : 0
+            aOff   = $PV(aOff_p,  naux)
+            aOff_x = $PV(aOff_xp, naux)
+            a      = $PV(a_p,  naux > 0 ? aOff[end]   : 0)
+            a_t    = $PV(a_tp, naux > 0 ? aOff[end]   : 0)
+            a_x    = $PV(a_xp, naux > 0 ? aOff_x[end] : 0)
+            x      = $PV(x_p,     $gdim)
+            constants = $PV(cst_p, $gnC)
+            out    = $PV(out_p,   $outsz_s)
             $run_callback(() -> $(esc(f))($gdim, $gNf, $gNfAux, uOff, uOff_x, u, u_t, u_x,
                       aOff, aOff_x, a, a_t, a_x, t, utShift, x, $gnC, constants, out),
                 "pointwise function")
@@ -224,6 +262,7 @@ end
 
 function bd_fn_expr(f, outsz, PI, PS, PR)
     run_callback = GlobalRef(@__MODULE__, :run_callback)
+    PV = GlobalRef(@__MODULE__, :PtrVector)
     cfn = Symbol(f, :__cfn__)
     gdim = gensym("dim"); gNf = gensym("Nf"); gNfAux = gensym("NfAux"); gnC = gensym("nC")
     m = Dict{Symbol,Any}(:dim_ => gdim, :Nf => gNf, :NfAux => gNfAux, :numConstants => gnC)
@@ -244,20 +283,22 @@ function bd_fn_expr(f, outsz, PI, PS, PR)
             $gnC::$PI, cst_p::Ptr{$PS},
             out_p::Ptr{$PS},
         )::Cvoid
-            uOff   = unsafe_wrap(Vector{$PI}, uOff_p,  $gNf + 1)
-            uOff_x = unsafe_wrap(Vector{$PI}, uOff_xp, $gNf + 1)
-            u      = unsafe_wrap(Vector{$PS}, u_p,     uOff[end])
-            u_t    = unsafe_wrap(Vector{$PS}, u_tp,    uOff[end])
-            u_x    = unsafe_wrap(Vector{$PS}, u_xp,    uOff_x[end])
-            aOff   = $gNfAux > 0 ? unsafe_wrap(Vector{$PI}, aOff_p,  $gNfAux + 1) : $PI[]
-            aOff_x = $gNfAux > 0 ? unsafe_wrap(Vector{$PI}, aOff_xp, $gNfAux + 1) : $PI[]
-            a      = $gNfAux > 0 ? unsafe_wrap(Vector{$PS}, a_p,  aOff[end])   : $PS[]
-            a_t    = $gNfAux > 0 ? unsafe_wrap(Vector{$PS}, a_tp, aOff[end])   : $PS[]
-            a_x    = $gNfAux > 0 ? unsafe_wrap(Vector{$PS}, a_xp, aOff_x[end]) : $PS[]
-            x      = unsafe_wrap(Vector{$PR}, x_p, $gdim)
-            n      = unsafe_wrap(Vector{$PR}, n_p, $gdim)
-            constants = $gnC > 0 ? unsafe_wrap(Vector{$PS}, cst_p, $gnC) : $PS[]
-            out    = unsafe_wrap(Vector{$PS}, out_p, $outsz_s)
+            uOff   = $PV(uOff_p,  $gNf + 1)
+            uOff_x = $PV(uOff_xp, $gNf + 1)
+            u      = $PV(u_p,     uOff[end])
+            u_t    = $PV(u_tp,    uOff[end])
+            u_x    = $PV(u_xp,    uOff_x[end])
+            # with no auxiliary fields PETSc may pass null pointers: length 0
+            naux   = $gNfAux > 0 ? $gNfAux + 1 : 0
+            aOff   = $PV(aOff_p,  naux)
+            aOff_x = $PV(aOff_xp, naux)
+            a      = $PV(a_p,  naux > 0 ? aOff[end]   : 0)
+            a_t    = $PV(a_tp, naux > 0 ? aOff[end]   : 0)
+            a_x    = $PV(a_xp, naux > 0 ? aOff_x[end] : 0)
+            x      = $PV(x_p, $gdim)
+            n      = $PV(n_p, $gdim)
+            constants = $PV(cst_p, $gnC)
+            out    = $PV(out_p, $outsz_s)
             $run_callback(() -> $(esc(f))($gdim, $gNf, $gNfAux, uOff, uOff_x, u, u_t, u_x,
                       aOff, aOff_x, a, a_t, a_x, t, x, n, $gnC, constants, out),
                 "pointwise function")

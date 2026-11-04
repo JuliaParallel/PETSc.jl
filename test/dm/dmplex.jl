@@ -93,6 +93,15 @@ function _dm_f0_throws(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
 end
 const _dm_f0_throws_ptr = PETSc.@residual_fn(_dmplex_petsclib, _dm_f0_throws, 1)
 
+# f0 = u·x₁ + ∂u/∂x₂, recording the type it was handed
+const _dm_arg_type = Ref{Any}(nothing)
+function _dm_f0_args(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
+                     aOff, aOff_x, a, a_t, a_x, t, x, nC, cst, f0)
+    _dm_arg_type[] = typeof(u_x)
+    f0[1] = u[1] * x[1] + u_x[2]
+end
+const _dm_f0_args_ptr = PETSc.@residual_fn(_dmplex_petsclib, _dm_f0_args, 1)
+
 # ─────────────────────────────────────────────────────────────────────────────
 @testset "DMPlex" begin
 
@@ -146,6 +155,35 @@ end
     @test_throws "exact solution failed" PETSc.project_function!(u, dm, 0.0, [_dm_throws_ptr];
                                                                  mode = LibPETSc.INSERT_ALL_VALUES)
     foreach(PETSc.destroy!, (u, dm))
+end
+
+# The array arguments are AbstractVectors over PETSc's memory, and a call allocates
+# nothing: PETSc makes one per quadrature point and point function
+@testset "pointwise arguments" begin
+    uOff = PetscInt[0, 1]
+    uOff_x = PetscInt[0, 2]
+    u = [2.0]
+    u_x = [1.0, 3.0]
+    x = [0.5, 0.25]
+    out = [0.0]
+    call() = ccall(_dm_f0_args_ptr, Cvoid,
+                   (PetscInt, PetscInt, PetscInt, Ptr{PetscInt}, Ptr{PetscInt},
+                    Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{PetscInt}, Ptr{PetscInt},
+                    Ptr{Float64}, Ptr{Float64}, Ptr{Float64},
+                    Float64, Ptr{Float64}, PetscInt, Ptr{Float64}, Ptr{Float64}),
+                   2, 1, 0, uOff, uOff_x, u, u, u_x, C_NULL, C_NULL, C_NULL, C_NULL, C_NULL,
+                   0.0, x, 0, C_NULL, out)
+    call()
+    @test out == [4.0]
+    @test _dm_arg_type[] <: AbstractVector{Float64}
+    @test (@allocated call()) == 0
+
+    v = PETSc.PtrVector(pointer(u_x), 2)
+    @test v == [1.0, 3.0]
+    @test pointer(v) == pointer(u_x)
+    @test_throws BoundsError v[3]
+    v[2] = 5
+    @test u_x[2] == 5
 end
 
 

@@ -118,8 +118,8 @@ MPI.Initialized() || MPI.Init()
         @test_throws "the matrix is 2x2 but x has length 3" A * PetscScalar[1, 2, 3]
         PETSc.destroy!(A)
 
-        # one MatMult, not a MatGetValues per entry: allocations do not grow with n
-        # (both sizes are large enough that Julia allocates array memory separately)
+        # one MatMult, not a MatGetValues per entry: a per-entry path allocates at least
+        # n times. The exact count differs by a few between machines, so it is bounded.
         function allocations(n)
             D = PETSc.PetscMat(petsclib, sparse(1:n, 1:n, ones(PetscScalar, n)))
             x = ones(PetscScalar, n)
@@ -128,7 +128,7 @@ MPI.Initialized() || MPI.Init()
             PETSc.destroy!(D)
             return a
         end
-        @test allocations(1000) == allocations(100_000)
+        @test allocations(100_000) < 100
     end
 
     @testset "products and solves take any vector handle" begin

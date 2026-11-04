@@ -27,7 +27,7 @@ For a saddle point, use MUMPS, or UMFPACK in serial. A fieldsplit that treats ve
 
 ## MUMPS on more than one rank
 
-With MUMPS_jll 5.9.4 and earlier, a MUMPS solve on more than one rank on Linux crashes after the factorization with `double free or corruption`, or hangs. The libraries were loaded so that MUMPS didn't recognize MPICH's `MPI_IN_PLACE`. [Yggdrasil#15135](https://github.com/JuliaPackaging/Yggdrasil/pull/15135) fixes it in MUMPS_jll 5.9.5 and MPICH_jll 5.0.2+1. A serial MUMPS solve is not affected.
+With MUMPS_jll 5.9.4 and earlier, a MUMPS solve on more than one rank on Linux crashes after the factorization with `double free or corruption`, or hangs. The libraries were loaded so that MUMPS didn't recognize MPICH's `MPI_IN_PLACE`. MPICH_jll 5.0.3 ([Yggdrasil#15137](https://github.com/JuliaPackaging/Yggdrasil/pull/15137)) and MUMPS_jll 5.9.6 ([Yggdrasil#15142](https://github.com/JuliaPackaging/Yggdrasil/pull/15142)) fix it; both are needed, and `Pkg.update()` installs them. A serial MUMPS solve is not affected.
 
 ## Wrong answers reported as converged
 

@@ -102,7 +102,7 @@ A `PetscMat` (and a `MatShell`) is an `AbstractMatrix` of the library's scalar t
 
 `A == B` compares the entries as Julia matrices do: an entry stored in only one of the two counts as zero, so an explicitly stored zero makes no difference, and `NaN != NaN`. It is collective. [`PETSc.equal(A, B)`](@ref PETSc.equal) is PETSc's own `MatEqual`, which is faster but also compares which entries are stored. `A ≈ B` compares Frobenius norms, as for Julia matrices. `collect(A)` and `Matrix(A)` give every rank the whole matrix as a dense `Matrix`, so every rank must call them and each needs memory for all entries. `sum(A)` uses `MatGetRowSum`. `hash(A)` throws, so key a `Dict` of matrices with an `IdDict`. `mapreduce`, and so `sum(f, A)`, `prod`, `maximum`, `minimum`, `extrema`, `count`, `any` and `all`, read only the stored entries of each rank's rows and count `f(0)` for the rest, as for a sparse Julia matrix; they are collective.
 
-An assembled `PetscMat` supports `copy(A)`, `copyto!(B, A)`, `A + B`, `A - B`, `-A` and `α * A`. Each returns a new matrix and is collective; `A ± B` has the union of the two nonzero patterns. On more than one rank the result has no finalizer, so call `destroy!` on it on every rank.
+An assembled `PetscMat` supports `copy(A)`, `copyto!(B, A)`, `A + B`, `A - B`, `-A`, `α * A` and `A * B` (through `MatMatMult`). Each returns a new matrix and is collective; `A ± B` has the union of the two nonzero patterns. On more than one rank the result has no finalizer, so call `destroy!` on it on every rank.
 
 `A * x` with a `PetscVec` returns a new `PetscVec`; with a Julia vector it is one `MatMult` and returns a `Vector`. That one is collective too: every rank passes the whole `x` and gets the whole product.
 

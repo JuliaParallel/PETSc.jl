@@ -155,6 +155,19 @@ dense(n, entries, T) = (D = zeros(T, n, n); foreach(((i, j, a),) -> D[i, j] = a,
             foreach(PETSc.destroy!, (x, y))
         end
 
+        @testset "matrix product ($PetscScalar)" begin
+            C = A * B
+            @test C isa PETSc.PetscMat
+            @test C.own && C.ptr ∉ (A.ptr, B.ptr)
+            @test collect(C) ≈ ref * dense(n, filter(e -> !(e[1] == e[2] == n), entries), PetscScalar)
+            @test PETSc.ownership_range(C) == PETSc.ownership_range(A)
+            # one rank: the garbage collector frees C; more ranks: the caller does
+            nranks > 1 && PETSc.destroy!(C)
+            R = petsc_mat(petsclib, MPI.COMM_SELF, n + 1, [(1, 1, PetscScalar(1))])
+            @test_throws "cannot multiply a $(n)x$(n) matrix by a $(n + 1)x$(n + 1) matrix" A * R
+            PETSc.destroy!(R)
+        end
+
         if nranks > 1
             @testset "different layouts ($PetscScalar)" begin
                 # Same size, one more row on rank 0: every rank throws

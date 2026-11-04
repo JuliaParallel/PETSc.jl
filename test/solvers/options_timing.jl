@@ -53,7 +53,25 @@ MPI.Initialized() || MPI.Init()
         @test_throws "already pushed" push!(opts)
         pop!(opts)
         @test isempty(PETSc.options_stack(typeof(petsclib)))
-        foreach(PETSc.destroy!, (ksp, opts))
+
+        # a mismatched pop is refused and pops nothing
+        other = PETSc.PetscOptions(petsclib; ksp_type = "gmres")
+        push!(opts)
+        push!(other)
+        @test_throws "pop the 1 pushed after them first" pop!(opts)
+        @test PETSc.options_stack(typeof(petsclib)) == [opts.ptr, other.ptr]
+        pop!(other)
+        pop!(opts)
+        @test isempty(PETSc.options_stack(typeof(petsclib)))
+
+        # a database pushed through LibPETSc pops without touching the mirror
+        push!(opts)
+        LibPETSc.PetscOptionsPush(petsclib, other)
+        pop!(other)
+        @test PETSc.options_stack(typeof(petsclib)) == [opts.ptr]
+        pop!(opts)
+        @test isempty(PETSc.options_stack(typeof(petsclib)))
+        foreach(PETSc.destroy!, (ksp, other, opts))
     end
 
     @testset "with_options on a solver" begin

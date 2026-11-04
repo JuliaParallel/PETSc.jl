@@ -186,10 +186,26 @@ function Base.push!(opts::AbstractPetscOptions{PetscLib}) where {PetscLib}
     return nothing
 end
 
+"""
+    pop!(opts::PetscOptions)
+
+Pop `opts` off PETSc's options stack, where `push!(opts)` put it. An
+`opts` that `push!` put below other databases throws an `ArgumentError` and pops
+nothing: pop those first. A database pushed through `LibPETSc.PetscOptionsPush`
+is popped as PETSc pops it, since only PETSc knows its place on the stack.
+Prefer [`with_options`](@ref), which pairs the two.
+
+# External Links
+$(doc_external("Sys/PetscOptionsPop"))
+"""
 function Base.pop!(opts::AbstractPetscOptions{PetscLib}) where {PetscLib}
-    LibPETSc.PetscOptionsPop(PetscLib)
     stack = options_stack(PetscLib)
-    isempty(stack) || pop!(stack)
+    i = findlast(==(opts.ptr), stack)
+    isnothing(i) || i == lastindex(stack) || throw(ArgumentError(
+        "these options are not on top of PETSc's options stack: pop the " *
+        "$(lastindex(stack) - i) pushed after them first"))
+    LibPETSc.PetscOptionsPop(PetscLib)
+    isnothing(i) || pop!(stack)
     return nothing
 end
 

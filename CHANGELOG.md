@@ -77,6 +77,8 @@
 - `with_field_views!` hands back the Vecs it has checked out when a later checkout throws. They stayed checked out.
 - `star_fd_coloring` includes the couplings across a periodic axis. They were left out of the pattern, so an FD-colored Jacobian on a periodic DMDA split over several ranks missed them without an error. A `DM_BOUNDARY_MIRROR` axis throws an `ArgumentError`.
 - An error in looking up the TS behind a `set_pre_step!` or `set_post_step!` hook comes back to PETSc as an error code instead of a Julia exception thrown through PETSc's C frames.
+- Creating many Vecs or Mats on Julia arrays, or setting many callbacks, took time quadratic in their number: each one swept the whole table of Julia state. 16 000 array-backed Vecs took 2.8 s and take 0.018 s. A destroyed Vec or Mat lets go of its Julia arrays at once.
+- `PetscMat(petsclib, comm, S::SparseMatrixCSC)` copies the matrix in one call instead of one entry at a time, about 4x faster (13 ms instead of 51 ms for 1.3 M nonzeros).
 
 ## v0.5.5
 

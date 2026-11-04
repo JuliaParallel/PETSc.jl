@@ -1,7 +1,7 @@
 using Test
 using PETSc, MPI
 using LinearAlgebra: norm, mul!, Adjoint, Transpose, issymmetric, ishermitian
-using SparseArrays: sprand, spdiagm
+using SparseArrays: sprand, spdiagm, sparse, spzeros
 using Random
 
 MPI.Initialized() || MPI.Init()
@@ -631,5 +631,21 @@ end
         end
         LibPETSc.MatDestroy(petsclib, B)
         PETSc.finalize(petsclib)
+    end
+end
+
+# The copy of a SparseMatrixCSC keeps its shape, its empty rows and its stored zeros
+@testset "PetscMat from a SparseMatrixCSC" begin
+    for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
+        S = sparse([1, 3, 3], [2, 1, 4], Float32[5, 0, 7], 4, 5)
+        A = PETSc.PetscMat(petsclib, MPI.COMM_SELF, S)
+        @test size(A) == (4, 5)
+        @test collect(A) == Matrix(S)
+        @test PETSc.LibPETSc.MatGetInfo(petsclib, A, PETSc.LibPETSc.MAT_LOCAL).nz_used == 3
+        PETSc.destroy!(A)
+        Z = PETSc.PetscMat(petsclib, MPI.COMM_SELF, spzeros(0, 0))
+        @test size(Z) == (0, 0)
+        PETSc.destroy!(Z)
     end
 end

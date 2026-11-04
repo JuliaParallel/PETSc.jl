@@ -123,3 +123,27 @@ end
 
     PETSc.finalize(petsclib)
 end
+
+# A destroyed Vec lets go of its Julia array at once, and the state table is swept
+# only now and then, so it stays within a small multiple of the live objects
+@noinline function destroyed_array_ref(petsclib)
+    a = zeros(petsclib.PetscScalar, 8)
+    v = PETSc.PetscVec(petsclib, a)
+    PETSc.destroy!(v)
+    return WeakRef(a)
+end
+
+@testset "dead object states" begin
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    ref = destroyed_array_ref(petsclib)
+    GC.gc(); GC.gc()
+    @test ref.value === nothing
+
+    live = [PETSc.PetscVec(petsclib, zeros(petsclib.PetscScalar, 2)) for _ in 1:100]
+    for _ in 1:2000
+        PETSc.destroy!(PETSc.PetscVec(petsclib, zeros(petsclib.PetscScalar, 2)))
+    end
+    @test length(PETSc.object_states[typeof(petsclib)]) <= 4 * (length(live) + 32)
+    foreach(PETSc.destroy!, live)
+end

@@ -142,16 +142,19 @@ the PETSc solvers.
 julia --project file.jl -ksp_monitor -pc_type mg -ksp_view -da_refine=1
 ```
 """
+# An option starts with '-' followed by a name; "-0.5" or "-.5" is a value, as PETSc reads it
+isoption(s) = length(s) > 1 && s[1] == '-' && !(isdigit(s[2]) || s[2] == '.')
+
 function parse_options(args::Vector{String})
     i = 1
     opts = Dict{Symbol, Union{String, Nothing}}()
     while i <= length(args)
-        (length(args[i]) > 1 && args[i][1] == '-') || throw(
+        isoption(args[i]) || throw(
             ArgumentError(
                 "expected an option starting with '-', got $(repr(args[i]))",
             ),
         )
-        if i == length(args) || args[i + 1][1] == '-'
+        if i == length(args) || isoption(args[i + 1])
             token = split(args[i][2:end], "=")
             if length(token) == 1
                 opts[Symbol(token[1])] = nothing

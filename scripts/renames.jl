@@ -312,6 +312,12 @@ const INTERNAL = Set{Symbol}([
     :TS_REASON_TEXT,
     :block_values,
     :c_vector,
+    # 1-based Julia indices to PETSc's 0-based ones, and the axes of the result
+    :indices_0b,
+    :index_axes,
+    :index_shaped,
+    # whether a command-line argument is an option or a value
+    :isoption,
     :check_block,
     :checkout_arrays,
     :checked_array,

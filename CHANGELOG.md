@@ -69,6 +69,12 @@
 - `mat_nullspace_create(petsclib, comm, vecs)` with a destroyed Vec crashed Julia with signal 11; it throws an `ArgumentError`.
 - An exception in a function made with `@simple_fn`, `@residual_fn`, `@jacobian_fn` or `@bd_fn` unwound through PETSc's C frames. It is now rethrown by the high-level call that ran it, and `project_function!` and `project_field!` rethrow it too.
 - `ksp \ b` destroys its result vector when the solve throws. `drain_destroy_queue!` and `with_destroy` keep destroying the remaining objects when one `destroy!` throws, and rethrow the first error afterwards.
+- `v[i]`, `v[r]`, `A[i, j]` and the other Vec and Mat indexing forms throw a `BoundsError` for an index outside the array. `v[0]` or `v[n + 1]` returned garbage, `v[0] = x` wrote outside the vector and crashed Julia at a later garbage collection, and `A[0, j] = x` was dropped without a word, since PETSc_jll has no checks of its own. The check costs about 2 ns on a 10 ns `A[i, j] = x`.
+- A `Bool` mask selects the entries where it is `true`, as for any `AbstractVector`: `v[[true, false, true]]` read the entries at 1 and 0 (outside the vector), and `v[mask] = x` wrote at index 0. Index vectors with offset axes work too, and the result has their axes; they threw a `MethodError`.
+- `global_vec(dm)`, `local_vec(dm)`, `PetscMat(dm)` and `IS(dm, ...)` get a finalizer on a one-rank communicator, as every other constructor does, so a dropped one is freed. They leaked: 50 dropped `PetscMat(da)` kept 36 MB.
+- `set_uniform_coordinates!` on a DMStag works with a complex library; it threw a `MethodError`.
+- `parse_options` reads a value that starts with `-`, such as `-mat_shift -0.5`, as a value, as PETSc does. It took `-0.5` for an option of its own and lost the value; an empty value threw a `BoundsError`.
+- `with_field_views!` hands back the Vecs it has checked out when a later checkout throws. They stayed checked out, so the next write to them failed.
 
 ## v0.5.5
 

@@ -75,3 +75,34 @@ end
         @info "skipped: fewer than 4 CPU threads"
     end
 end
+
+# The reference count of what `make` returns, after its handle was dropped and the
+# queue drained. One extra reference is held so the object survives to be counted.
+@noinline function held_pointer(petsclib, make)
+    obj = make()
+    PETSc.LibPETSc.PetscObjectReference(petsclib, obj)
+    return Ptr{Cvoid}(obj.ptr)
+end
+
+@testset "objects made from a DM are destroyed when dropped on one rank" begin
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    nb = PETSc.DM_BOUNDARY_NONE
+    da = PETSc.DMDA(petsclib, MPI.COMM_SELF, (nb,), (5,), 1)
+    st = PETSc.DMStag(petsclib, MPI.COMM_SELF, (nb,), (4,), (1, 1))
+    makers = (
+        global_vec = () -> PETSc.global_vec(da),
+        local_vec = () -> PETSc.local_vec(da),
+        PetscMat = () -> PETSc.PetscMat(da),
+        IS = () -> PETSc.IS(st, PETSc.element_location(st) => 0),
+    )
+    for (name, make) in pairs(makers)
+        ptr = held_pointer(petsclib, make)
+        GC.gc(); GC.gc()
+        PETSc.drain_destroy_queue!()
+        @test (name, PETSc.LibPETSc.PetscObjectGetReference(petsclib, ptr)) == (name, 1)
+        PETSc.LibPETSc.PetscObjectDereference(petsclib, ptr)
+    end
+    PETSc.destroy!(st)
+    PETSc.destroy!(da)
+end

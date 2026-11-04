@@ -969,3 +969,12 @@ end
         PETSc.finalize(petsclib)
     end
 end
+# The coordinates are real in every build; a complex library took them as complex
+@testset "DMStag set_uniform_coordinates! for every scalar type" begin
+    for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
+        dm = PETSc.DMStag(petsclib, MPI.COMM_SELF, (PETSc.DM_BOUNDARY_NONE,), (4,), (1, 1))
+        @test PETSc.set_uniform_coordinates!(dm, (0.0,), (2.0,)) === dm
+        PETSc.destroy!(dm)
+    end
+end

@@ -20,20 +20,20 @@ function set_uniform_coordinates!(
     xyzmin::NTuple,
     xyzmax::NTuple,
     ) where {PetscLib}
-    PetscInt = PetscLib.PetscInt
-    PetscScalar = PetscLib.PetscScalar
+    # The coordinates are real even in a complex build
+    PetscReal = PetscLib.PetscReal
 
-    xmin = PetscScalar(xyzmin[1])
-    xmax = PetscScalar(xyzmax[1])
+    xmin = PetscReal(xyzmin[1])
+    xmax = PetscReal(xyzmax[1])
 
     s = size(xyzmin,1)
 
-    ymin = (s > 1) ? PetscScalar(xyzmin[2]) : PetscScalar(0)
-    ymax = (s > 1) ? PetscScalar(xyzmax[2]) : PetscScalar(0)
+    ymin = (s > 1) ? PetscReal(xyzmin[2]) : PetscReal(0)
+    ymax = (s > 1) ? PetscReal(xyzmax[2]) : PetscReal(0)
 
-    zmin = (s > 2) ? PetscScalar(xyzmin[3]) : PetscScalar(0)
-    zmax = (s > 2) ? PetscScalar(xyzmax[3]) : PetscScalar(0)
-    
+    zmin = (s > 2) ? PetscReal(xyzmin[3]) : PetscReal(0)
+    zmax = (s > 2) ? PetscReal(xyzmax[3]) : PetscReal(0)
+
     petsclib=getlib(PetscLib)
     LibPETSc.DMStagSetUniformCoordinatesProduct(petsclib, dm, xmin, xmax, ymin, ymax, zmin, zmax)
 

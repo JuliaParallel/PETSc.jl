@@ -58,6 +58,9 @@ MPI.Initialized() || MPI.Init()
         # the struct matches PETSc's layout for the loaded integer width
         @test sizeof(LibPETSc.DMStagStencil) == (PetscInt === Int64 ? 40 : 20)
         @test sizeof(LibPETSc.MatStencil) == 4 * sizeof(PetscInt)
+        # PETSc's MatStencil is {k, j, i, c}
+        @test fieldnames(LibPETSc.MatStencil) == (:k, :j, :i, :c)
+        @test LibPETSc.MatStencil(1, 2, 3, 0).i == 3
 
         s = PETSc.stencil(dm2, PETSc.face_location(dm2, 1), CartesianIndex(2, 1); dof = 1)
         @test (s.loc, s.i, s.j, s.k, s.c) == (LibPETSc.DMSTAG_LEFT, 1, 0, 0, 1)

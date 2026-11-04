@@ -79,17 +79,17 @@ struct DMStagStencil
 end 
 
 struct MatStencil
-    # Must match PETSc C struct order: struct MatStencil { PetscInt i,j,k,c; };
-    i::PetscInt
-    j::PetscInt
+    # Must match PETSc C struct order: struct MatStencil { PetscInt k,j,i,c; };
     k::PetscInt
+    j::PetscInt
+    i::PetscInt
     c::PetscInt
 
     MatStencil() = new()
         
-    # Convenience constructor accepting integers in i,j,k,c order
+    # Convenience constructor accepting integers in k,j,i,c order
     # `new` converts the indices to the PetscInt width this process loads
-    MatStencil(i,j,k,c) = new(i, j, k, c)
+    MatStencil(k,j,i,c) = new(k, j, i, c)
 end 
 
 struct MatInfo

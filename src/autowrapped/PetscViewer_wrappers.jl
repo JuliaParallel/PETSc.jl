@@ -2923,7 +2923,7 @@ end
 end 
 
 """
-	varNames::Ptr{Ptr{Cchar}} = PetscViewerExodusIIGetNodalVariableNames(petsclib::PetscLibType, viewer::PetscViewer, numVars::PetscExodusIIInt) 
+	numVars::PetscExodusIIInt,varNames::Vector{String} = PetscViewerExodusIIGetNodalVariableNames(petsclib::PetscLibType, viewer::PetscViewer) 
 Gets the names of all nodal variables.
 
 Collective; No Fortran Support
@@ -2942,23 +2942,25 @@ See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscVie
 # External Links
 $(_doc_external("DMPlex/PetscViewerExodusIIGetNodalVariableNames"))
 """
-function PetscViewerExodusIIGetNodalVariableNames(petsclib::PetscLibType, viewer::PetscViewer, numVars::PetscExodusIIInt)
-    throw(MethodError(PetscViewerExodusIIGetNodalVariableNames, (petsclib, viewer, numVars)))
+function PetscViewerExodusIIGetNodalVariableNames(petsclib::PetscLibType, viewer::PetscViewer)
+    throw(MethodError(PetscViewerExodusIIGetNodalVariableNames, (petsclib, viewer)))
 end
 
-@for_petsc function PetscViewerExodusIIGetNodalVariableNames(petsclib::$UnionPetscLib, viewer::PetscViewer, numVars::PetscExodusIIInt )
+@for_petsc function PetscViewerExodusIIGetNodalVariableNames(petsclib::$UnionPetscLib, viewer::PetscViewer )
+	numVars_ = Ref{PetscExodusIIInt}()
 	varNames_ = Ref{Ptr{Ptr{Cchar}}}()
 
     @chk ccall(
                (:PetscViewerExodusIIGetNodalVariableNames, $petsc_library),
                PetscErrorCode,
                (PetscViewer, Ptr{PetscExodusIIInt}, Ptr{Ptr{Ptr{Cchar}}}),
-               viewer, numVars, varNames_,
+               viewer, numVars_, varNames_,
               )
 
-	varNames = varNames_[]
+	numVars = numVars_[]
+	varNames = varNames_[] == C_NULL ? String[] : [unsafe_string(p) for p in unsafe_wrap(Array, varNames_[], numVars; own = false)]
 
-	return varNames
+	return numVars,varNames
 end 
 
 """
@@ -3116,7 +3118,7 @@ end
 end 
 
 """
-	varNames::Ptr{Ptr{Cchar}} = PetscViewerExodusIIGetZonalVariableNames(petsclib::PetscLibType, viewer::PetscViewer, numVars::PetscExodusIIInt) 
+	numVars::PetscExodusIIInt,varNames::Vector{String} = PetscViewerExodusIIGetZonalVariableNames(petsclib::PetscLibType, viewer::PetscViewer) 
 Gets the names of all zonal variables.
 
 Collective; No Fortran Support
@@ -3135,23 +3137,25 @@ See also: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscVie
 # External Links
 $(_doc_external("DMPlex/PetscViewerExodusIIGetZonalVariableNames"))
 """
-function PetscViewerExodusIIGetZonalVariableNames(petsclib::PetscLibType, viewer::PetscViewer, numVars::PetscExodusIIInt)
-    throw(MethodError(PetscViewerExodusIIGetZonalVariableNames, (petsclib, viewer, numVars)))
+function PetscViewerExodusIIGetZonalVariableNames(petsclib::PetscLibType, viewer::PetscViewer)
+    throw(MethodError(PetscViewerExodusIIGetZonalVariableNames, (petsclib, viewer)))
 end
 
-@for_petsc function PetscViewerExodusIIGetZonalVariableNames(petsclib::$UnionPetscLib, viewer::PetscViewer, numVars::PetscExodusIIInt )
+@for_petsc function PetscViewerExodusIIGetZonalVariableNames(petsclib::$UnionPetscLib, viewer::PetscViewer )
+	numVars_ = Ref{PetscExodusIIInt}()
 	varNames_ = Ref{Ptr{Ptr{Cchar}}}()
 
     @chk ccall(
                (:PetscViewerExodusIIGetZonalVariableNames, $petsc_library),
                PetscErrorCode,
                (PetscViewer, Ptr{PetscExodusIIInt}, Ptr{Ptr{Ptr{Cchar}}}),
-               viewer, numVars, varNames_,
+               viewer, numVars_, varNames_,
               )
 
-	varNames = varNames_[]
+	numVars = numVars_[]
+	varNames = varNames_[] == C_NULL ? String[] : [unsafe_string(p) for p in unsafe_wrap(Array, varNames_[], numVars; own = false)]
 
-	return varNames
+	return numVars,varNames
 end 
 
 """

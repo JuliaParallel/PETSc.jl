@@ -317,6 +317,26 @@ MPI.Initialized() || MPI.Init()
         foreach(PETSc.destroy!, (S, da, B, A, R))
     end
 
+    @testset "add_index! and setindex! with grid indices" begin
+        # 2D DMDA, 2 dofs: grid point (x, y) = (2, 1), component 2 is row 2(x - 1) + 2 = 4
+        da = PETSc.DMDA(
+            petsclib, comm, (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE), (3, 3), 2;
+            stencil_width = 1,
+        )
+        S = PETSc.PetscMat(da)
+        p = CartesianIndex(2, 1, 1, 2)
+        # PETSc refuses to mix inserting and adding between assemblies
+        S[CartesianIndex(1, 1, 1, 1), CartesianIndex(1, 1, 1, 1)] = 7
+        PETSc.assemble!(S)
+        @test PETSc.add_index!(S, 1, p, p) === S
+        PETSc.add_index!(S, 2.5, p, p)
+        PETSc.assemble!(S)
+        @test findall(!iszero, S[:, :]) == [CartesianIndex(1, 1), CartesianIndex(4, 4)]
+        @test S[4, 4] == 3.5
+        @test S[1, 1] == 7
+        foreach(PETSc.destroy!, (S, da))
+    end
+
     @testset "PetscMat from CSR arrays of any vector type" begin
         expected = PetscScalar[5 0; 0 6]
         A = PETSc.PetscMat(petsclib, [0, 1, 2], [0, 1], PetscScalar[5, 6])

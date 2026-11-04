@@ -198,6 +198,14 @@ function memtype(vecs::AbstractPetscVec...)
     return array_type(Val(first(mtypes)))
 end
 
+"""
+    array_type(::Val{MT})
+
+The Julia array type that holds a Vec's local array when PETSc reports the
+`PetscMemType` `MT`: `Vector` for host memory. GPU extensions add a method for
+their memory type, e.g. `array_type(::Val{PETSC_MEMTYPE_DEVICE}) = CuArray`.
+Any other `MT` throws, naming the GPU package to load. [`memtype`](@ref) calls it.
+"""
 array_type(::Val{LibPETSc.PETSC_MEMTYPE_HOST}) = Vector
 array_type(::Val{MT}) where {MT} =
     error("No array type registered for PetscMemType $MT — load the corresponding GPU package (e.g. CUDA.jl)")

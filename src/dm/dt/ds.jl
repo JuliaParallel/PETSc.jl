@@ -1,6 +1,22 @@
+"""
+    AbstractPetscDS{PetscLib}
+
+Supertype of the Julia handles to a PETSc `PetscDS`, the discrete system that
+holds a DM's fields, point functions and boundary conditions.
+"""
 abstract type AbstractPetscDS{T} end
 
-# A PetscDS belongs to its DM, so a handle is borrowed (`own = false`) unless said otherwise
+"""
+    PetscDS{PetscLib}(ptr, age = getlib(PetscLib).age; own = false)
+
+Handle to a PETSc `PetscDS`, usually obtained with [`ds`](@ref) from a DM after
+[`create_ds!`](@ref). A PetscDS belongs to its DM, so the handle is borrowed by
+default (`own = false`): it isn't destroyed with the Julia object, and
+[`destroy!`](@ref) on it does nothing.
+
+# External Links
+$(doc_external("DT/PetscDS"))
+"""
 mutable struct PetscDS{PetscLib} <: AbstractPetscDS{PetscLib}
     ptr::LibPETSc.PetscDS   # Ptr{_n_PetscDS}
     age::Int

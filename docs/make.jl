@@ -20,6 +20,8 @@ write_release_notes(joinpath(@__DIR__, "..", "CHANGELOG.md"), joinpath(@__DIR__,
 include(joinpath(@__DIR__, "api_index.jl"))
 write_api_index(joinpath(@__DIR__, "src", "man", "api_index.md"))
 
+DocMeta.setdocmeta!(PETSc, :DocTestSetup, :(using PETSc, MPI); recursive = true)
+
 makedocs(;
     modules=[PETSc],
     sitename="PETSc.jl",

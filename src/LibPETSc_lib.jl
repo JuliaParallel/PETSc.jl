@@ -74,6 +74,15 @@ function initialize(libhdl::Ptr{Cvoid})
     @chk ccall(PetscInitializeNoArguments_ptr, PetscErrorCode, ())
 end
 
+"""
+    petsclibs
+
+Tuple of the PETSc libraries that are available, one [`PetscLibType`](@ref) per
+build. With the bundled binaries these are `Float64`, `Float32`, `ComplexF64`
+and `ComplexF32` scalars, all with `Int64` indices, or `Int32` after
+`set_petscint!(Int32)`. With a custom library set by `set_library!` it holds
+that one library. Pick one with `petsclibs[1]` or [`getlib`](@ref).
+"""
 const petsclibs = map(libs) do (lib, PetscScalar, PetscInt)
     return PetscLibType{PetscScalar, PetscInt}(lib[1])
 end

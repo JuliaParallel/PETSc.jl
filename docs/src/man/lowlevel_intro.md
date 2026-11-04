@@ -98,6 +98,8 @@ PETSc.finalize(petsclib)
 - You can check available precompiled libraries with `[PETSc.petsclibs...]`
 
 ```@docs
+PETSc.LibPETSc
+PETSc.LibPETSc.petsclibs
 PETSc.LibPETSc.getlib
 ```
 

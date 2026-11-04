@@ -35,7 +35,7 @@ function check_initialized(petsclib)
 end
 
 """
-   isinitialized(petsclib)
+    isinitialized(petsclib)
 
 Check if `petsclib` is initialized
 
@@ -123,10 +123,11 @@ function initialize(petsclib; log_view::Bool = false, options = String[])
 end
 
 """
-   finalize(petsclib)
+    finalize(petsclib)
+    finalize()
 
-Finalize the `petsclib`, if no `petsclib` is given then all `PETSc.petsclibs`
-will be finalized. A library that is not initialized is left alone.
+Finalize the `petsclib`, or every library in [`petsclibs`](@ref) when none is
+given. A library that is not initialized is left alone.
 
 # External Links
 $(doc_external("Sys/PetscFinalize"))
@@ -148,7 +149,7 @@ function finalize(petsclib)
 end
 
 """
-   isfinalized(petsclib)
+    isfinalized(petsclib)
 
 Check if `petsclib` is finalized
 

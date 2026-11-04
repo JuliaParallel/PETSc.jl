@@ -22,6 +22,7 @@ function TaoADMMGetDualVector(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoADMMGetDualVector(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoADMMGetDualVector", "tao")
 	Y_ = Ref{CVec}()
 
     @chk ccall(
@@ -174,6 +175,7 @@ function TaoADMMGetRegularizerType(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoADMMGetRegularizerType(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoADMMGetRegularizerType", "tao")
 	type_ = Ref{TaoADMMRegularizerType}()
 
     @chk ccall(
@@ -212,6 +214,7 @@ function TaoADMMGetSpectralPenalty(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoADMMGetSpectralPenalty(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoADMMGetSpectralPenalty", "tao")
 	mu_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -250,6 +253,7 @@ function TaoADMMGetUpdateType(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoADMMGetUpdateType(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoADMMGetUpdateType", "tao")
 	type_ = Ref{TaoADMMUpdateType}()
 
     @chk ccall(
@@ -721,6 +725,7 @@ function TaoADMMSetRegularizerType(petsclib::PetscLibType, tao::AbstractTao, typ
 end
 
 @for_petsc function TaoADMMSetRegularizerType(petsclib::$UnionPetscLib, tao::AbstractTao, type::TaoADMMRegularizerType )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoADMMSetRegularizerType", "tao")
 
     @chk ccall(
                (:TaoADMMSetRegularizerType, $petsc_library),
@@ -789,6 +794,7 @@ function TaoADMMSetUpdateType(petsclib::PetscLibType, tao::AbstractTao, type::Ta
 end
 
 @for_petsc function TaoADMMSetUpdateType(petsclib::$UnionPetscLib, tao::AbstractTao, type::TaoADMMUpdateType )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoADMMSetUpdateType", "tao")
 
     @chk ccall(
                (:TaoADMMSetUpdateType, $petsc_library),
@@ -826,6 +832,7 @@ function TaoALMMGetDualIS(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoALMMGetDualIS(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoALMMGetDualIS", "tao")
 	eq_is_ = Ref{CIS}()
 	ineq_is_ = Ref{CIS}()
 
@@ -864,6 +871,7 @@ function TaoALMMGetMultipliers(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoALMMGetMultipliers(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoALMMGetMultipliers", "tao")
 	Y_ = Ref{CVec}()
 
     @chk ccall(
@@ -902,6 +910,7 @@ function TaoALMMGetPrimalIS(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoALMMGetPrimalIS(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoALMMGetPrimalIS", "tao")
 	opt_is_ = Ref{CIS}()
 	slack_is_ = Ref{CIS}()
 
@@ -940,6 +949,7 @@ function TaoALMMGetSubsolver(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoALMMGetSubsolver(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoALMMGetSubsolver", "tao")
 	subsolver_ = Ref{CTao}()
 
     @chk ccall(
@@ -976,6 +986,7 @@ function TaoALMMGetType(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoALMMGetType(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoALMMGetType", "tao")
 	type_ = Ref{TaoALMMType}()
 
     @chk ccall(
@@ -1010,6 +1021,8 @@ function TaoALMMSetMultipliers(petsclib::PetscLibType, tao::AbstractTao, Y::Abst
 end
 
 @for_petsc function TaoALMMSetMultipliers(petsclib::$UnionPetscLib, tao::AbstractTao, Y::AbstractPetscVec )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoALMMSetMultipliers", "tao")
+	Y.ptr == C_NULL && throw_null_handle(Y, "TaoALMMSetMultipliers", "Y")
 
     @chk ccall(
                (:TaoALMMSetMultipliers, $petsc_library),
@@ -1042,6 +1055,8 @@ function TaoALMMSetSubsolver(petsclib::PetscLibType, tao::AbstractTao, subsolver
 end
 
 @for_petsc function TaoALMMSetSubsolver(petsclib::$UnionPetscLib, tao::AbstractTao, subsolver::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoALMMSetSubsolver", "tao")
+	subsolver.ptr == C_NULL && throw_null_handle(subsolver, "TaoALMMSetSubsolver", "subsolver")
 
     @chk ccall(
                (:TaoALMMSetSubsolver, $petsc_library),
@@ -1074,6 +1089,7 @@ function TaoALMMSetType(petsclib::PetscLibType, tao::AbstractTao, type::TaoALMMT
 end
 
 @for_petsc function TaoALMMSetType(petsclib::$UnionPetscLib, tao::AbstractTao, type::TaoALMMType )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoALMMSetType", "tao")
 
     @chk ccall(
                (:TaoALMMSetType, $petsc_library),
@@ -1106,6 +1122,7 @@ function TaoAddLineSearchCounts(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoAddLineSearchCounts(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoAddLineSearchCounts", "tao")
 
     @chk ccall(
                (:TaoAddLineSearchCounts, $petsc_library),
@@ -1145,6 +1162,7 @@ function TaoAddTerm(petsclib::PetscLibType, tao::AbstractTao, prefix::String, sc
 end
 
 @for_petsc function TaoAddTerm(petsclib::$UnionPetscLib, tao::AbstractTao, prefix::String, scale::$PetscReal, term::TaoTerm, params::AbstractPetscVec, map::AbstractPetscMat )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoAddTerm", "tao")
 
     @chk ccall(
                (:TaoAddTerm, $petsc_library),
@@ -1179,6 +1197,7 @@ function TaoAppendOptionsPrefix(petsclib::PetscLibType, tao::AbstractTao, p::Str
 end
 
 @for_petsc function TaoAppendOptionsPrefix(petsclib::$UnionPetscLib, tao::AbstractTao, p::String )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoAppendOptionsPrefix", "tao")
 
     @chk ccall(
                (:TaoAppendOptionsPrefix, $petsc_library),
@@ -1283,6 +1302,7 @@ function TaoBRGNGetDampingVector(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoBRGNGetDampingVector(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoBRGNGetDampingVector", "tao")
 	d_ = Ref{CVec}()
 
     @chk ccall(
@@ -1321,6 +1341,7 @@ function TaoBRGNGetRegularizationType(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoBRGNGetRegularizationType(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoBRGNGetRegularizationType", "tao")
 	type_ = Ref{TaoBRGNRegularizationType}()
 
     @chk ccall(
@@ -1357,6 +1378,7 @@ function TaoBRGNGetSubsolver(petsclib::PetscLibType, tao::AbstractTao, subsolver
 end
 
 @for_petsc function TaoBRGNGetSubsolver(petsclib::$UnionPetscLib, tao::AbstractTao, subsolver::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoBRGNGetSubsolver", "tao")
 	subsolver_ = Ref(subsolver.ptr)
 
     @chk ccall(
@@ -1391,6 +1413,7 @@ function TaoBRGNSetDictionaryMatrix(petsclib::PetscLibType, tao::AbstractTao, di
 end
 
 @for_petsc function TaoBRGNSetDictionaryMatrix(petsclib::$UnionPetscLib, tao::AbstractTao, dict::AbstractPetscMat )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoBRGNSetDictionaryMatrix", "tao")
 
     @chk ccall(
                (:TaoBRGNSetDictionaryMatrix, $petsc_library),
@@ -1425,6 +1448,7 @@ function TaoBRGNSetL1SmoothEpsilon(petsclib::PetscLibType, tao::AbstractTao, eps
 end
 
 @for_petsc function TaoBRGNSetL1SmoothEpsilon(petsclib::$UnionPetscLib, tao::AbstractTao, epsilon::$PetscReal )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoBRGNSetL1SmoothEpsilon", "tao")
 
     @chk ccall(
                (:TaoBRGNSetL1SmoothEpsilon, $petsc_library),
@@ -1459,6 +1483,7 @@ function TaoBRGNSetRegularizationType(petsclib::PetscLibType, tao::AbstractTao, 
 end
 
 @for_petsc function TaoBRGNSetRegularizationType(petsclib::$UnionPetscLib, tao::AbstractTao, type::TaoBRGNRegularizationType )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoBRGNSetRegularizationType", "tao")
 
     @chk ccall(
                (:TaoBRGNSetRegularizationType, $petsc_library),
@@ -1575,6 +1600,7 @@ function TaoBRGNSetRegularizerWeight(petsclib::PetscLibType, tao::AbstractTao, l
 end
 
 @for_petsc function TaoBRGNSetRegularizerWeight(petsclib::$UnionPetscLib, tao::AbstractTao, lambda::$PetscReal )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoBRGNSetRegularizerWeight", "tao")
 
     @chk ccall(
                (:TaoBRGNSetRegularizerWeight, $petsc_library),
@@ -1615,7 +1641,9 @@ function TaoBoundSolution(petsclib::PetscLibType, X::AbstractPetscVec, XL::Abstr
 end
 
 @for_petsc function TaoBoundSolution(petsclib::$UnionPetscLib, X::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, bound_tol::$PetscReal, Xout::AbstractPetscVec )
+	X.ptr == C_NULL && throw_null_handle(X, "TaoBoundSolution", "X")
 	nDiff_ = Ref{$PetscInt}()
+	Xout.ptr == C_NULL && throw_null_handle(Xout, "TaoBoundSolution", "Xout")
 
     @chk ccall(
                (:TaoBoundSolution, $petsc_library),
@@ -1696,6 +1724,9 @@ function TaoComputeConstraints(petsclib::PetscLibType, tao::AbstractTao, X::Abst
 end
 
 @for_petsc function TaoComputeConstraints(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, C::AbstractPetscVec )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoComputeConstraints", "tao")
+	X.ptr == C_NULL && throw_null_handle(X, "TaoComputeConstraints", "X")
+	C.ptr == C_NULL && throw_null_handle(C, "TaoComputeConstraints", "C")
 
     @chk ccall(
                (:TaoComputeConstraints, $petsc_library),
@@ -1734,6 +1765,9 @@ function TaoComputeDualVariables(petsclib::PetscLibType, tao::AbstractTao, DL::A
 end
 
 @for_petsc function TaoComputeDualVariables(petsclib::$UnionPetscLib, tao::AbstractTao, DL::AbstractPetscVec, DU::AbstractPetscVec )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoComputeDualVariables", "tao")
+	DL.ptr == C_NULL && throw_null_handle(DL, "TaoComputeDualVariables", "DL")
+	DU.ptr == C_NULL && throw_null_handle(DU, "TaoComputeDualVariables", "DU")
 
     @chk ccall(
                (:TaoComputeDualVariables, $petsc_library),
@@ -1772,6 +1806,9 @@ function TaoComputeEqualityConstraints(petsclib::PetscLibType, tao::AbstractTao,
 end
 
 @for_petsc function TaoComputeEqualityConstraints(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, CE::AbstractPetscVec )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoComputeEqualityConstraints", "tao")
+	X.ptr == C_NULL && throw_null_handle(X, "TaoComputeEqualityConstraints", "X")
+	CE.ptr == C_NULL && throw_null_handle(CE, "TaoComputeEqualityConstraints", "CE")
 
     @chk ccall(
                (:TaoComputeEqualityConstraints, $petsc_library),
@@ -1813,6 +1850,9 @@ function TaoComputeGradient(petsclib::PetscLibType, tao::AbstractTao, X::Abstrac
 end
 
 @for_petsc function TaoComputeGradient(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, G::AbstractPetscVec )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoComputeGradient", "tao")
+	X.ptr == C_NULL && throw_null_handle(X, "TaoComputeGradient", "X")
+	G.ptr == C_NULL && throw_null_handle(G, "TaoComputeGradient", "G")
 
     @chk ccall(
                (:TaoComputeGradient, $petsc_library),
@@ -1857,6 +1897,8 @@ function TaoComputeHessian(petsclib::PetscLibType, tao::AbstractTao, X::Abstract
 end
 
 @for_petsc function TaoComputeHessian(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, H::AbstractPetscMat, Hpre::AbstractPetscMat )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoComputeHessian", "tao")
+	X.ptr == C_NULL && throw_null_handle(X, "TaoComputeHessian", "X")
 
     @chk ccall(
                (:TaoComputeHessian, $petsc_library),
@@ -1895,6 +1937,9 @@ function TaoComputeInequalityConstraints(petsclib::PetscLibType, tao::AbstractTa
 end
 
 @for_petsc function TaoComputeInequalityConstraints(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, CI::AbstractPetscVec )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoComputeInequalityConstraints", "tao")
+	X.ptr == C_NULL && throw_null_handle(X, "TaoComputeInequalityConstraints", "X")
+	CI.ptr == C_NULL && throw_null_handle(CI, "TaoComputeInequalityConstraints", "CI")
 
     @chk ccall(
                (:TaoComputeInequalityConstraints, $petsc_library),
@@ -1934,6 +1979,8 @@ function TaoComputeJacobian(petsclib::PetscLibType, tao::AbstractTao, X::Abstrac
 end
 
 @for_petsc function TaoComputeJacobian(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoComputeJacobian", "tao")
+	X.ptr == C_NULL && throw_null_handle(X, "TaoComputeJacobian", "X")
 
     @chk ccall(
                (:TaoComputeJacobian, $petsc_library),
@@ -1972,6 +2019,8 @@ function TaoComputeJacobianDesign(petsclib::PetscLibType, tao::AbstractTao, X::A
 end
 
 @for_petsc function TaoComputeJacobianDesign(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoComputeJacobianDesign", "tao")
+	X.ptr == C_NULL && throw_null_handle(X, "TaoComputeJacobianDesign", "X")
 
     @chk ccall(
                (:TaoComputeJacobianDesign, $petsc_library),
@@ -2011,6 +2060,8 @@ function TaoComputeJacobianEquality(petsclib::PetscLibType, tao::AbstractTao, X:
 end
 
 @for_petsc function TaoComputeJacobianEquality(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoComputeJacobianEquality", "tao")
+	X.ptr == C_NULL && throw_null_handle(X, "TaoComputeJacobianEquality", "X")
 
     @chk ccall(
                (:TaoComputeJacobianEquality, $petsc_library),
@@ -2050,6 +2101,8 @@ function TaoComputeJacobianInequality(petsclib::PetscLibType, tao::AbstractTao, 
 end
 
 @for_petsc function TaoComputeJacobianInequality(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoComputeJacobianInequality", "tao")
+	X.ptr == C_NULL && throw_null_handle(X, "TaoComputeJacobianInequality", "X")
 
     @chk ccall(
                (:TaoComputeJacobianInequality, $petsc_library),
@@ -2090,6 +2143,8 @@ function TaoComputeJacobianState(petsclib::PetscLibType, tao::AbstractTao, X::Ab
 end
 
 @for_petsc function TaoComputeJacobianState(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat, Jinv::AbstractPetscMat )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoComputeJacobianState", "tao")
+	X.ptr == C_NULL && throw_null_handle(X, "TaoComputeJacobianState", "X")
 
     @chk ccall(
                (:TaoComputeJacobianState, $petsc_library),
@@ -2127,6 +2182,8 @@ function TaoComputeObjective(petsclib::PetscLibType, tao::AbstractTao, X::Abstra
 end
 
 @for_petsc function TaoComputeObjective(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoComputeObjective", "tao")
+	X.ptr == C_NULL && throw_null_handle(X, "TaoComputeObjective", "X")
 	f_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -2167,7 +2224,10 @@ function TaoComputeObjectiveAndGradient(petsclib::PetscLibType, tao::AbstractTao
 end
 
 @for_petsc function TaoComputeObjectiveAndGradient(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, G::AbstractPetscVec )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoComputeObjectiveAndGradient", "tao")
+	X.ptr == C_NULL && throw_null_handle(X, "TaoComputeObjectiveAndGradient", "X")
 	f_ = Ref{$PetscReal}()
+	G.ptr == C_NULL && throw_null_handle(G, "TaoComputeObjectiveAndGradient", "G")
 
     @chk ccall(
                (:TaoComputeObjectiveAndGradient, $petsc_library),
@@ -2206,6 +2266,9 @@ function TaoComputeResidual(petsclib::PetscLibType, tao::AbstractTao, X::Abstrac
 end
 
 @for_petsc function TaoComputeResidual(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, F::AbstractPetscVec )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoComputeResidual", "tao")
+	X.ptr == C_NULL && throw_null_handle(X, "TaoComputeResidual", "X")
+	F.ptr == C_NULL && throw_null_handle(F, "TaoComputeResidual", "F")
 
     @chk ccall(
                (:TaoComputeResidual, $petsc_library),
@@ -2245,6 +2308,8 @@ function TaoComputeResidualJacobian(petsclib::PetscLibType, tao::AbstractTao, X:
 end
 
 @for_petsc function TaoComputeResidualJacobian(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoComputeResidualJacobian", "tao")
+	X.ptr == C_NULL && throw_null_handle(X, "TaoComputeResidualJacobian", "X")
 
     @chk ccall(
                (:TaoComputeResidualJacobian, $petsc_library),
@@ -2279,6 +2344,7 @@ function TaoComputeVariableBounds(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoComputeVariableBounds(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoComputeVariableBounds", "tao")
 
     @chk ccall(
                (:TaoComputeVariableBounds, $petsc_library),
@@ -2362,6 +2428,8 @@ function TaoDefaultComputeGradient(petsclib::PetscLibType, tao::AbstractTao, Xin
 end
 
 @for_petsc function TaoDefaultComputeGradient(petsclib::$UnionPetscLib, tao::AbstractTao, Xin::AbstractPetscVec, G::AbstractPetscVec, dummy::Ptr{Cvoid} )
+	Xin.ptr == C_NULL && throw_null_handle(Xin, "TaoDefaultComputeGradient", "Xin")
+	G.ptr == C_NULL && throw_null_handle(G, "TaoDefaultComputeGradient", "G")
 
     @chk ccall(
                (:TaoDefaultComputeGradient, $petsc_library),
@@ -2404,6 +2472,7 @@ function TaoDefaultComputeHessian(petsclib::PetscLibType, tao::AbstractTao, V::A
 end
 
 @for_petsc function TaoDefaultComputeHessian(petsclib::$UnionPetscLib, tao::AbstractTao, V::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat, dummy::Ptr{Cvoid} )
+	V.ptr == C_NULL && throw_null_handle(V, "TaoDefaultComputeHessian", "V")
 
     @chk ccall(
                (:TaoDefaultComputeHessian, $petsc_library),
@@ -2443,6 +2512,8 @@ function TaoDefaultComputeHessianColor(petsclib::PetscLibType, tao::AbstractTao,
 end
 
 @for_petsc function TaoDefaultComputeHessianColor(petsclib::$UnionPetscLib, tao::AbstractTao, V::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid} )
+	V.ptr == C_NULL && throw_null_handle(V, "TaoDefaultComputeHessianColor", "V")
+	B.ptr == C_NULL && throw_null_handle(B, "TaoDefaultComputeHessianColor", "B")
 
     @chk ccall(
                (:TaoDefaultComputeHessianColor, $petsc_library),
@@ -2482,6 +2553,8 @@ function TaoDefaultComputeHessianMFFD(petsclib::PetscLibType, tao::AbstractTao, 
 end
 
 @for_petsc function TaoDefaultComputeHessianMFFD(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid} )
+	X.ptr == C_NULL && throw_null_handle(X, "TaoDefaultComputeHessianMFFD", "X")
+	H.ptr == C_NULL && throw_null_handle(H, "TaoDefaultComputeHessianMFFD", "H")
 
     @chk ccall(
                (:TaoDefaultComputeHessianMFFD, $petsc_library),
@@ -2517,6 +2590,7 @@ function TaoDefaultConvergenceTest(petsclib::PetscLibType, tao::AbstractTao, dum
 end
 
 @for_petsc function TaoDefaultConvergenceTest(petsclib::$UnionPetscLib, tao::AbstractTao, dummy::Ptr{Cvoid} )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoDefaultConvergenceTest", "tao")
 
     @chk ccall(
                (:TaoDefaultConvergenceTest, $petsc_library),
@@ -2598,6 +2672,10 @@ function TaoEstimateActiveBounds(petsclib::PetscLibType, X::AbstractPetscVec, XL
 end
 
 @for_petsc function TaoEstimateActiveBounds(petsclib::$UnionPetscLib, X::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, G::AbstractPetscVec, S::AbstractPetscVec, W::AbstractPetscVec, steplen::$PetscReal )
+	X.ptr == C_NULL && throw_null_handle(X, "TaoEstimateActiveBounds", "X")
+	G.ptr == C_NULL && throw_null_handle(G, "TaoEstimateActiveBounds", "G")
+	S.ptr == C_NULL && throw_null_handle(S, "TaoEstimateActiveBounds", "S")
+	W.ptr == C_NULL && throw_null_handle(W, "TaoEstimateActiveBounds", "W")
 	bound_tol_ = Ref{$PetscReal}()
 	active_lower_ = Ref{CIS}()
 	active_upper_ = Ref{CIS}()
@@ -2674,6 +2752,7 @@ function TaoGetADMMParentTao(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoGetADMMParentTao(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetADMMParentTao", "tao")
 	admm_tao_ = Ref{CTao}()
 
     @chk ccall(
@@ -2712,6 +2791,7 @@ function TaoGetApplicationContext(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoGetApplicationContext(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetApplicationContext", "tao")
 	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
@@ -2751,6 +2831,7 @@ function TaoGetConstraintTolerances(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoGetConstraintTolerances(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetConstraintTolerances", "tao")
 	catol_ = Ref{$PetscReal}()
 	crtol_ = Ref{$PetscReal}()
 
@@ -2791,6 +2872,7 @@ function TaoGetConvergedReason(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoGetConvergedReason(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetConvergedReason", "tao")
 	reason_ = Ref{TaoConvergedReason}()
 
     @chk ccall(
@@ -2833,6 +2915,7 @@ function TaoGetConvergenceHistory(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoGetConvergenceHistory(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetConvergenceHistory", "tao")
 	obj_ = Ref{Ptr{$PetscReal}}()
 	resid_ = Ref{Ptr{$PetscReal}}()
 	cnorm_ = Ref{Ptr{$PetscReal}}()
@@ -2879,6 +2962,7 @@ function TaoGetCurrentFunctionEvaluations(petsclib::PetscLibType, tao::AbstractT
 end
 
 @for_petsc function TaoGetCurrentFunctionEvaluations(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetCurrentFunctionEvaluations", "tao")
 	nfuncs_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -2917,6 +3001,7 @@ function TaoGetCurrentTrustRegionRadius(petsclib::PetscLibType, tao::AbstractTao
 end
 
 @for_petsc function TaoGetCurrentTrustRegionRadius(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetCurrentTrustRegionRadius", "tao")
 	radius_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -2956,6 +3041,7 @@ function TaoGetDualVariables(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoGetDualVariables(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetDualVariables", "tao")
 	DE_ = Ref{CVec}()
 	DI_ = Ref{CVec}()
 
@@ -3044,6 +3130,7 @@ function TaoGetFunctionLowerBound(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoGetFunctionLowerBound(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetFunctionLowerBound", "tao")
 	fmin_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -3128,6 +3215,7 @@ function TaoGetGradientNorm(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoGetGradientNorm(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetGradientNorm", "tao")
 	M_ = Ref{CMat}()
 
     @chk ccall(
@@ -3217,6 +3305,7 @@ function TaoGetHessianMatrices(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoGetHessianMatrices(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetHessianMatrices", "tao")
 	H_ = Ref{CMat}()
 	Hpre_ = Ref{CMat}()
 
@@ -3258,6 +3347,7 @@ function TaoGetInequalityBounds(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoGetInequalityBounds(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetInequalityBounds", "tao")
 	IL_ = Ref{CVec}()
 	IU_ = Ref{CVec}()
 
@@ -3344,6 +3434,7 @@ function TaoGetInitialTrustRegionRadius(petsclib::PetscLibType, tao::AbstractTao
 end
 
 @for_petsc function TaoGetInitialTrustRegionRadius(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetInitialTrustRegionRadius", "tao")
 	radius_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -3381,6 +3472,7 @@ function TaoGetIterationNumber(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoGetIterationNumber(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetIterationNumber", "tao")
 	iter_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3519,6 +3611,7 @@ function TaoGetKSP(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoGetKSP(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetKSP", "tao")
 	ksp_ = Ref{CKSP}()
 
     @chk ccall(
@@ -3594,6 +3687,7 @@ function TaoGetLineSearch(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoGetLineSearch(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetLineSearch", "tao")
 	ls_ = Ref{TaoLineSearch}()
 
     @chk ccall(
@@ -3633,6 +3727,7 @@ function TaoGetLinearSolveIterations(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoGetLinearSolveIterations(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetLinearSolveIterations", "tao")
 	lits_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3671,6 +3766,7 @@ function TaoGetMaximumFunctionEvaluations(petsclib::PetscLibType, tao::AbstractT
 end
 
 @for_petsc function TaoGetMaximumFunctionEvaluations(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetMaximumFunctionEvaluations", "tao")
 	nfcn_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3709,6 +3805,7 @@ function TaoGetMaximumIterations(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoGetMaximumIterations(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetMaximumIterations", "tao")
 	maxits_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3838,6 +3935,7 @@ function TaoGetOptionsPrefix(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoGetOptionsPrefix(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetOptionsPrefix", "tao")
 	p_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -3877,6 +3975,7 @@ function TaoGetRecycleHistory(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoGetRecycleHistory(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetRecycleHistory", "tao")
 	recycle_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3916,6 +4015,7 @@ function TaoGetResidualNorm(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoGetResidualNorm(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetResidualNorm", "tao")
 	value_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -3954,6 +4054,7 @@ function TaoGetSolution(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoGetSolution(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetSolution", "tao")
 	X_ = Ref{CVec}()
 
     @chk ccall(
@@ -3998,6 +4099,7 @@ function TaoGetSolutionStatus(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoGetSolutionStatus(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetSolutionStatus", "tao")
 	its_ = Ref{$PetscInt}()
 	f_ = Ref{$PetscReal}()
 	gnorm_ = Ref{$PetscReal}()
@@ -4051,6 +4153,7 @@ function TaoGetTerm(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoGetTerm(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetTerm", "tao")
 	scale_ = Ref{$PetscReal}()
 	term_ = Ref{TaoTerm}()
 	params_ = Ref{CVec}()
@@ -4097,6 +4200,7 @@ function TaoGetTolerances(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoGetTolerances(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetTolerances", "tao")
 	gatol_ = Ref{$PetscReal}()
 	grtol_ = Ref{$PetscReal}()
 	gttol_ = Ref{$PetscReal}()
@@ -4141,6 +4245,7 @@ function TaoGetTotalIterationNumber(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoGetTotalIterationNumber(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetTotalIterationNumber", "tao")
 	iter_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -4179,6 +4284,7 @@ function TaoGetType(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoGetType(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetType", "tao")
 	type_ = Ref{TaoType}()
 
     @chk ccall(
@@ -4218,6 +4324,7 @@ function TaoGetVariableBounds(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoGetVariableBounds(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGetVariableBounds", "tao")
 	XL_ = Ref{CVec}()
 	XU_ = Ref{CVec}()
 
@@ -4260,6 +4367,8 @@ function TaoGradientNorm(petsclib::PetscLibType, tao::AbstractTao, gradient::Abs
 end
 
 @for_petsc function TaoGradientNorm(petsclib::$UnionPetscLib, tao::AbstractTao, gradient::AbstractPetscVec, type::NormType )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoGradientNorm", "tao")
+	gradient.ptr == C_NULL && throw_null_handle(gradient, "TaoGradientNorm", "gradient")
 	gnorm_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -4331,6 +4440,7 @@ function TaoIsGradientDefined(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoIsGradientDefined(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoIsGradientDefined", "tao")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -4371,6 +4481,7 @@ function TaoIsObjectiveAndGradientDefined(petsclib::PetscLibType, tao::AbstractT
 end
 
 @for_petsc function TaoIsObjectiveAndGradientDefined(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoIsObjectiveAndGradientDefined", "tao")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -4412,6 +4523,7 @@ function TaoIsObjectiveDefined(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoIsObjectiveDefined(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoIsObjectiveDefined", "tao")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -4448,6 +4560,7 @@ function TaoKSPSetUseEW(petsclib::PetscLibType, tao::AbstractTao, flag::PetscBoo
 end
 
 @for_petsc function TaoKSPSetUseEW(petsclib::$UnionPetscLib, tao::AbstractTao, flag::PetscBool )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoKSPSetUseEW", "tao")
 
     @chk ccall(
                (:TaoKSPSetUseEW, $petsc_library),
@@ -4621,6 +4734,8 @@ function TaoMatGetSubMat(petsclib::PetscLibType, M::AbstractPetscMat, is::Abstra
 end
 
 @for_petsc function TaoMatGetSubMat(petsclib::$UnionPetscLib, M::AbstractPetscMat, is::AbstractIS, v1::AbstractPetscVec, subset_type::TaoSubsetType )
+	M.ptr == C_NULL && throw_null_handle(M, "TaoMatGetSubMat", "M")
+	is.ptr == C_NULL && throw_null_handle(is, "TaoMatGetSubMat", "is")
 	Msub_ = Ref{CMat}()
 
     @chk ccall(
@@ -4665,6 +4780,7 @@ function TaoMonitor(petsclib::PetscLibType, tao::AbstractTao, its::Integer, f::R
 end
 
 @for_petsc function TaoMonitor(petsclib::$UnionPetscLib, tao::AbstractTao, its::$PetscInt, f::$PetscReal, res::$PetscReal, cnorm::$PetscReal, steplength::$PetscReal )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoMonitor", "tao")
 
     @chk ccall(
                (:TaoMonitor, $petsc_library),
@@ -4703,6 +4819,7 @@ function TaoMonitorCancel(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoMonitorCancel(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoMonitorCancel", "tao")
 
     @chk ccall(
                (:TaoMonitorCancel, $petsc_library),
@@ -4741,6 +4858,7 @@ function TaoMonitorConstraintNorm(petsclib::PetscLibType, tao::AbstractTao, vf::
 end
 
 @for_petsc function TaoMonitorConstraintNorm(petsclib::$UnionPetscLib, tao::AbstractTao, vf::Vector{PetscViewerAndFormat} )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoMonitorConstraintNorm", "tao")
 
     @chk ccall(
                (:TaoMonitorConstraintNorm, $petsc_library),
@@ -4778,6 +4896,7 @@ function TaoMonitorDefault(petsclib::PetscLibType, tao::AbstractTao, vf::Vector{
 end
 
 @for_petsc function TaoMonitorDefault(petsclib::$UnionPetscLib, tao::AbstractTao, vf::Vector{PetscViewerAndFormat} )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoMonitorDefault", "tao")
 
     @chk ccall(
                (:TaoMonitorDefault, $petsc_library),
@@ -4815,6 +4934,7 @@ function TaoMonitorDefaultShort(petsclib::PetscLibType, tao::AbstractTao, vf::Ve
 end
 
 @for_petsc function TaoMonitorDefaultShort(petsclib::$UnionPetscLib, tao::AbstractTao, vf::Vector{PetscViewerAndFormat} )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoMonitorDefaultShort", "tao")
 
     @chk ccall(
                (:TaoMonitorDefaultShort, $petsc_library),
@@ -4852,6 +4972,7 @@ function TaoMonitorGlobalization(petsclib::PetscLibType, tao::AbstractTao, vf::V
 end
 
 @for_petsc function TaoMonitorGlobalization(petsclib::$UnionPetscLib, tao::AbstractTao, vf::Vector{PetscViewerAndFormat} )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoMonitorGlobalization", "tao")
 
     @chk ccall(
                (:TaoMonitorGlobalization, $petsc_library),
@@ -4889,6 +5010,7 @@ function TaoMonitorGradient(petsclib::PetscLibType, tao::AbstractTao, vf::Vector
 end
 
 @for_petsc function TaoMonitorGradient(petsclib::$UnionPetscLib, tao::AbstractTao, vf::Vector{PetscViewerAndFormat} )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoMonitorGradient", "tao")
 
     @chk ccall(
                (:TaoMonitorGradient, $petsc_library),
@@ -4926,6 +5048,7 @@ function TaoMonitorGradientDraw(petsclib::PetscLibType, tao::AbstractTao, ctx::P
 end
 
 @for_petsc function TaoMonitorGradientDraw(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoMonitorGradientDraw", "tao")
 
     @chk ccall(
                (:TaoMonitorGradientDraw, $petsc_library),
@@ -4963,6 +5086,7 @@ function TaoMonitorResidual(petsclib::PetscLibType, tao::AbstractTao, vf::Vector
 end
 
 @for_petsc function TaoMonitorResidual(petsclib::$UnionPetscLib, tao::AbstractTao, vf::Vector{PetscViewerAndFormat} )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoMonitorResidual", "tao")
 
     @chk ccall(
                (:TaoMonitorResidual, $petsc_library),
@@ -5085,6 +5209,7 @@ function TaoMonitorSolution(petsclib::PetscLibType, tao::AbstractTao, vf::Vector
 end
 
 @for_petsc function TaoMonitorSolution(petsclib::$UnionPetscLib, tao::AbstractTao, vf::Vector{PetscViewerAndFormat} )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoMonitorSolution", "tao")
 
     @chk ccall(
                (:TaoMonitorSolution, $petsc_library),
@@ -5123,6 +5248,7 @@ function TaoMonitorSolutionDraw(petsclib::PetscLibType, tao::AbstractTao, ctx::P
 end
 
 @for_petsc function TaoMonitorSolutionDraw(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoMonitorSolutionDraw", "tao")
 
     @chk ccall(
                (:TaoMonitorSolutionDraw, $petsc_library),
@@ -5160,6 +5286,7 @@ function TaoMonitorStep(petsclib::PetscLibType, tao::AbstractTao, vf::Vector{Pet
 end
 
 @for_petsc function TaoMonitorStep(petsclib::$UnionPetscLib, tao::AbstractTao, vf::Vector{PetscViewerAndFormat} )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoMonitorStep", "tao")
 
     @chk ccall(
                (:TaoMonitorStep, $petsc_library),
@@ -5197,6 +5324,7 @@ function TaoMonitorStepDraw(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{C
 end
 
 @for_petsc function TaoMonitorStepDraw(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoMonitorStepDraw", "tao")
 
     @chk ccall(
                (:TaoMonitorStepDraw, $petsc_library),
@@ -5268,6 +5396,7 @@ function TaoPythonGetType(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoPythonGetType(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoPythonGetType", "tao")
 	pyname_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -5307,6 +5436,7 @@ function TaoPythonSetType(petsclib::PetscLibType, tao::AbstractTao, pyname::Stri
 end
 
 @for_petsc function TaoPythonSetType(petsclib::$UnionPetscLib, tao::AbstractTao, pyname::String )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoPythonSetType", "tao")
 
     @chk ccall(
                (:TaoPythonSetType, $petsc_library),
@@ -5407,6 +5537,7 @@ function TaoResetStatistics(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoResetStatistics(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoResetStatistics", "tao")
 
     @chk ccall(
                (:TaoResetStatistics, $petsc_library),
@@ -5442,6 +5573,7 @@ function TaoSetApplicationContext(petsclib::PetscLibType, tao::AbstractTao, ctx:
 end
 
 @for_petsc function TaoSetApplicationContext(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoSetApplicationContext", "tao")
 
     @chk ccall(
                (:TaoSetApplicationContext, $petsc_library),
@@ -5481,6 +5613,7 @@ function TaoSetConstraintTolerances(petsclib::PetscLibType, tao::AbstractTao, ca
 end
 
 @for_petsc function TaoSetConstraintTolerances(petsclib::$UnionPetscLib, tao::AbstractTao, catol::$PetscReal, crtol::$PetscReal )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoSetConstraintTolerances", "tao")
 
     @chk ccall(
                (:TaoSetConstraintTolerances, $petsc_library),
@@ -5557,6 +5690,7 @@ function TaoSetConvergedReason(petsclib::PetscLibType, tao::AbstractTao, reason:
 end
 
 @for_petsc function TaoSetConvergedReason(petsclib::$UnionPetscLib, tao::AbstractTao, reason::TaoConvergedReason )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoSetConvergedReason", "tao")
 
     @chk ccall(
                (:TaoSetConvergedReason, $petsc_library),
@@ -5597,6 +5731,7 @@ function TaoSetConvergenceHistory(petsclib::PetscLibType, tao::AbstractTao, obj:
 end
 
 @for_petsc function TaoSetConvergenceHistory(petsclib::$UnionPetscLib, tao::AbstractTao, obj::Vector{$PetscReal}, resid::Vector{$PetscReal}, cnorm::Vector{$PetscReal}, lits::Vector{$PetscInt}, na::$PetscInt, reset::PetscBool )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoSetConvergenceHistory", "tao")
 
     @chk ccall(
                (:TaoSetConvergenceHistory, $petsc_library),
@@ -5743,6 +5878,7 @@ function TaoSetFromOptions(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoSetFromOptions(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoSetFromOptions", "tao")
 
     @chk ccall(
                (:TaoSetFromOptions, $petsc_library),
@@ -5782,6 +5918,7 @@ function TaoSetFunctionLowerBound(petsclib::PetscLibType, tao::AbstractTao, fmin
 end
 
 @for_petsc function TaoSetFunctionLowerBound(petsclib::$UnionPetscLib, tao::AbstractTao, fmin::$PetscReal )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoSetFunctionLowerBound", "tao")
 
     @chk ccall(
                (:TaoSetFunctionLowerBound, $petsc_library),
@@ -5859,6 +5996,8 @@ function TaoSetGradientNorm(petsclib::PetscLibType, tao::AbstractTao, M::Abstrac
 end
 
 @for_petsc function TaoSetGradientNorm(petsclib::$UnionPetscLib, tao::AbstractTao, M::AbstractPetscMat )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoSetGradientNorm", "tao")
+	M.ptr == C_NULL && throw_null_handle(M, "TaoSetGradientNorm", "M")
 
     @chk ccall(
                (:TaoSetGradientNorm, $petsc_library),
@@ -5939,6 +6078,7 @@ function TaoSetInequalityBounds(petsclib::PetscLibType, tao::AbstractTao, IL::Ab
 end
 
 @for_petsc function TaoSetInequalityBounds(petsclib::$UnionPetscLib, tao::AbstractTao, IL::AbstractPetscVec, IU::AbstractPetscVec )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoSetInequalityBounds", "tao")
 
     @chk ccall(
                (:TaoSetInequalityBounds, $petsc_library),
@@ -6018,6 +6158,7 @@ function TaoSetInitialTrustRegionRadius(petsclib::PetscLibType, tao::AbstractTao
 end
 
 @for_petsc function TaoSetInitialTrustRegionRadius(petsclib::$UnionPetscLib, tao::AbstractTao, radius::$PetscReal )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoSetInitialTrustRegionRadius", "tao")
 
     @chk ccall(
                (:TaoSetInitialTrustRegionRadius, $petsc_library),
@@ -6052,6 +6193,7 @@ function TaoSetIterationNumber(petsclib::PetscLibType, tao::AbstractTao, iter::I
 end
 
 @for_petsc function TaoSetIterationNumber(petsclib::$UnionPetscLib, tao::AbstractTao, iter::$PetscInt )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoSetIterationNumber", "tao")
 
     @chk ccall(
                (:TaoSetIterationNumber, $petsc_library),
@@ -6404,6 +6546,7 @@ function TaoSetMaximumFunctionEvaluations(petsclib::PetscLibType, tao::AbstractT
 end
 
 @for_petsc function TaoSetMaximumFunctionEvaluations(petsclib::$UnionPetscLib, tao::AbstractTao, nfcn::$PetscInt )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoSetMaximumFunctionEvaluations", "tao")
 
     @chk ccall(
                (:TaoSetMaximumFunctionEvaluations, $petsc_library),
@@ -6441,6 +6584,7 @@ function TaoSetMaximumIterations(petsclib::PetscLibType, tao::AbstractTao, maxit
 end
 
 @for_petsc function TaoSetMaximumIterations(petsclib::$UnionPetscLib, tao::AbstractTao, maxits::$PetscInt )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoSetMaximumIterations", "tao")
 
     @chk ccall(
                (:TaoSetMaximumIterations, $petsc_library),
@@ -6562,6 +6706,7 @@ function TaoSetOptionsPrefix(petsclib::PetscLibType, tao::AbstractTao, p::String
 end
 
 @for_petsc function TaoSetOptionsPrefix(petsclib::$UnionPetscLib, tao::AbstractTao, p::String )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoSetOptionsPrefix", "tao")
 
     @chk ccall(
                (:TaoSetOptionsPrefix, $petsc_library),
@@ -6601,6 +6746,7 @@ function TaoSetRecycleHistory(petsclib::PetscLibType, tao::AbstractTao, recycle:
 end
 
 @for_petsc function TaoSetRecycleHistory(petsclib::$UnionPetscLib, tao::AbstractTao, recycle::PetscBool )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoSetRecycleHistory", "tao")
 
     @chk ccall(
                (:TaoSetRecycleHistory, $petsc_library),
@@ -6682,6 +6828,7 @@ function TaoSetResidualWeights(petsclib::PetscLibType, tao::AbstractTao, sigma_v
 end
 
 @for_petsc function TaoSetResidualWeights(petsclib::$UnionPetscLib, tao::AbstractTao, sigma_v::AbstractPetscVec, n::$PetscInt )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoSetResidualWeights", "tao")
 	rows_ = Ref{$PetscInt}()
 	cols_ = Ref{$PetscInt}()
 	vals_ = Ref{$PetscReal}()
@@ -6722,6 +6869,7 @@ function TaoSetSolution(petsclib::PetscLibType, tao::AbstractTao, x0::AbstractPe
 end
 
 @for_petsc function TaoSetSolution(petsclib::$UnionPetscLib, tao::AbstractTao, x0::AbstractPetscVec )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoSetSolution", "tao")
 
     @chk ccall(
                (:TaoSetSolution, $petsc_library),
@@ -6807,6 +6955,7 @@ function TaoSetTolerances(petsclib::PetscLibType, tao::AbstractTao, gatol::Real,
 end
 
 @for_petsc function TaoSetTolerances(petsclib::$UnionPetscLib, tao::AbstractTao, gatol::$PetscReal, grtol::$PetscReal, gttol::$PetscReal )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoSetTolerances", "tao")
 
     @chk ccall(
                (:TaoSetTolerances, $petsc_library),
@@ -6841,6 +6990,7 @@ function TaoSetTotalIterationNumber(petsclib::PetscLibType, tao::AbstractTao, it
 end
 
 @for_petsc function TaoSetTotalIterationNumber(petsclib::$UnionPetscLib, tao::AbstractTao, iter::$PetscInt )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoSetTotalIterationNumber", "tao")
 
     @chk ccall(
                (:TaoSetTotalIterationNumber, $petsc_library),
@@ -6878,6 +7028,7 @@ function TaoSetType(petsclib::PetscLibType, tao::AbstractTao, type::String)
 end
 
 @for_petsc function TaoSetType(petsclib::$UnionPetscLib, tao::AbstractTao, type::String )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoSetType", "tao")
 
     @chk ccall(
                (:TaoSetType, $petsc_library),
@@ -6912,6 +7063,7 @@ function TaoSetUp(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoSetUp(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoSetUp", "tao")
 
     @chk ccall(
                (:TaoSetUp, $petsc_library),
@@ -6989,6 +7141,7 @@ function TaoSetVariableBounds(petsclib::PetscLibType, tao::AbstractTao, XL::Abst
 end
 
 @for_petsc function TaoSetVariableBounds(petsclib::$UnionPetscLib, tao::AbstractTao, XL::AbstractPetscVec, XU::AbstractPetscVec )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoSetVariableBounds", "tao")
 
     @chk ccall(
                (:TaoSetVariableBounds, $petsc_library),
@@ -7066,6 +7219,7 @@ function TaoShellGetContext(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoShellGetContext(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoShellGetContext", "tao")
 	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
@@ -7102,6 +7256,7 @@ function TaoShellSetContext(petsclib::PetscLibType, tao::AbstractTao, ctx::Ptr{C
 end
 
 @for_petsc function TaoShellSetContext(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Ptr{Cvoid} )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoShellSetContext", "tao")
 
     @chk ccall(
                (:TaoShellSetContext, $petsc_library),
@@ -7176,6 +7331,8 @@ function TaoSoftThreshold(petsclib::PetscLibType, in::AbstractPetscVec, lb::Real
 end
 
 @for_petsc function TaoSoftThreshold(petsclib::$UnionPetscLib, in::AbstractPetscVec, lb::$PetscReal, ub::$PetscReal, out::AbstractPetscVec )
+	in.ptr == C_NULL && throw_null_handle(in, "TaoSoftThreshold", "in")
+	out.ptr == C_NULL && throw_null_handle(out, "TaoSoftThreshold", "out")
 
     @chk ccall(
                (:TaoSoftThreshold, $petsc_library),
@@ -7209,6 +7366,7 @@ function TaoSolve(petsclib::PetscLibType, tao::AbstractTao)
 end
 
 @for_petsc function TaoSolve(petsclib::$UnionPetscLib, tao::AbstractTao )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoSolve", "tao")
 
     @chk ccall(
                (:TaoSolve, $petsc_library),
@@ -7324,6 +7482,8 @@ function TaoVecGetSubVec(petsclib::PetscLibType, vfull::AbstractPetscVec, is::Ab
 end
 
 @for_petsc function TaoVecGetSubVec(petsclib::$UnionPetscLib, vfull::AbstractPetscVec, is::AbstractIS, reduced_type::TaoSubsetType, maskvalue::$PetscReal )
+	vfull.ptr == C_NULL && throw_null_handle(vfull, "TaoVecGetSubVec", "vfull")
+	is.ptr == C_NULL && throw_null_handle(is, "TaoVecGetSubVec", "is")
 	vreduced_ = Ref{CVec}()
 
     @chk ccall(
@@ -7363,6 +7523,7 @@ function TaoView(petsclib::PetscLibType, tao::AbstractTao, viewer::PetscViewer)
 end
 
 @for_petsc function TaoView(petsclib::$UnionPetscLib, tao::AbstractTao, viewer::PetscViewer )
+	tao.ptr == C_NULL && throw_null_handle(tao, "TaoView", "tao")
 
     @chk ccall(
                (:TaoView, $petsc_library),
@@ -7401,6 +7562,7 @@ function TaoViewFromOptions(petsclib::PetscLibType, A::AbstractTao, obj, name::S
 end
 
 @for_petsc function TaoViewFromOptions(petsclib::$UnionPetscLib, A::AbstractTao, obj, name::String )
+	A.ptr == C_NULL && throw_null_handle(A, "TaoViewFromOptions", "A")
 
     @chk ccall(
                (:TaoViewFromOptions, $petsc_library),

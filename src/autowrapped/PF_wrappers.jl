@@ -21,6 +21,7 @@ function PFAppendOptionsPrefix(petsclib::PetscLibType, pf::AbstractPF, prefix::S
 end
 
 @for_petsc function PFAppendOptionsPrefix(petsclib::$UnionPetscLib, pf::AbstractPF, prefix::String )
+	pf.ptr == C_NULL && throw_null_handle(pf, "PFAppendOptionsPrefix", "pf")
 
     @chk ccall(
                (:PFAppendOptionsPrefix, $petsc_library),
@@ -61,6 +62,7 @@ function PFApply(petsclib::PetscLibType, pf::AbstractPF, n::Integer, x::Abstract
 end
 
 @for_petsc function PFApply(petsclib::$UnionPetscLib, pf::AbstractPF, n::$PetscInt, x::Vector{$PetscScalar} )
+	pf.ptr == C_NULL && throw_null_handle(pf, "PFApply", "pf")
 	y_ = Ref{$PetscScalar}()
 
     @chk ccall(
@@ -100,6 +102,8 @@ function PFApplyVec(petsclib::PetscLibType, pf::AbstractPF, x::AbstractPetscVec,
 end
 
 @for_petsc function PFApplyVec(petsclib::$UnionPetscLib, pf::AbstractPF, x::AbstractPetscVec, y::AbstractPetscVec )
+	pf.ptr == C_NULL && throw_null_handle(pf, "PFApplyVec", "pf")
+	y.ptr == C_NULL && throw_null_handle(y, "PFApplyVec", "y")
 
     @chk ccall(
                (:PFApplyVec, $petsc_library),
@@ -240,6 +244,7 @@ function PFGetOptionsPrefix(petsclib::PetscLibType, pf::AbstractPF)
 end
 
 @for_petsc function PFGetOptionsPrefix(petsclib::$UnionPetscLib, pf::AbstractPF )
+	pf.ptr == C_NULL && throw_null_handle(pf, "PFGetOptionsPrefix", "pf")
 	prefix_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -279,6 +284,7 @@ function PFGetType(petsclib::PetscLibType, pf::AbstractPF)
 end
 
 @for_petsc function PFGetType(petsclib::$UnionPetscLib, pf::AbstractPF )
+	pf.ptr == C_NULL && throw_null_handle(pf, "PFGetType", "pf")
 	type_ = Ref{PFType}()
 
     @chk ccall(
@@ -413,6 +419,7 @@ function PFSetFromOptions(petsclib::PetscLibType, pf::AbstractPF)
 end
 
 @for_petsc function PFSetFromOptions(petsclib::$UnionPetscLib, pf::AbstractPF )
+	pf.ptr == C_NULL && throw_null_handle(pf, "PFSetFromOptions", "pf")
 
     @chk ccall(
                (:PFSetFromOptions, $petsc_library),
@@ -448,6 +455,7 @@ function PFSetOptionsPrefix(petsclib::PetscLibType, pf::AbstractPF, prefix::Stri
 end
 
 @for_petsc function PFSetOptionsPrefix(petsclib::$UnionPetscLib, pf::AbstractPF, prefix::String )
+	pf.ptr == C_NULL && throw_null_handle(pf, "PFSetOptionsPrefix", "pf")
 
     @chk ccall(
                (:PFSetOptionsPrefix, $petsc_library),
@@ -486,6 +494,7 @@ function PFSetType(petsclib::PetscLibType, pf::AbstractPF, type::String, ctx::Pt
 end
 
 @for_petsc function PFSetType(petsclib::$UnionPetscLib, pf::AbstractPF, type::String, ctx::Ptr{Cvoid} )
+	pf.ptr == C_NULL && throw_null_handle(pf, "PFSetType", "pf")
 
     @chk ccall(
                (:PFSetType, $petsc_library),
@@ -554,6 +563,7 @@ function PFView(petsclib::PetscLibType, pf::AbstractPF, viewer::PetscViewer)
 end
 
 @for_petsc function PFView(petsclib::$UnionPetscLib, pf::AbstractPF, viewer::PetscViewer )
+	pf.ptr == C_NULL && throw_null_handle(pf, "PFView", "pf")
 
     @chk ccall(
                (:PFView, $petsc_library),
@@ -592,6 +602,7 @@ function PFViewFromOptions(petsclib::PetscLibType, A::AbstractPF, obj, name::Str
 end
 
 @for_petsc function PFViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPF, obj, name::String )
+	A.ptr == C_NULL && throw_null_handle(A, "PFViewFromOptions", "A")
 
     @chk ccall(
                (:PFViewFromOptions, $petsc_library),

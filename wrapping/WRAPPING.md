@@ -150,8 +150,9 @@ returned by any other function with `Get` in its name is built with `own = false
 it does nothing (naming.md §18.2); every other returned handle has `own = true`. A function goes on
 the list only when its manual page or source is clear, since a wrong entry destroys an object twice.
 
-`args.toml` (hand-maintained) and `args_mined.toml` (written by `bootstrap_rules.jl`, never edited;
-`args.toml` wins on conflicts): per argument, keyed `[FunctionName.argname]`:
+`args.toml` (hand-maintained), `args_mined.toml` (written by `bootstrap_rules.jl`) and `args_required.toml`
+(written by `mine_required.jl`), the last two never edited; `args.toml` wins on conflicts: per argument,
+keyed `[FunctionName.argname]`:
 
 | key | meaning |
 |---|---|
@@ -162,6 +163,7 @@ the list only when its manual page or source is clear, since a wrong entry destr
 | `prelude = "code"` | line(s) emitted before the wrap, e.g. `m, n = MatGetLocalSize(petsclib, A)` |
 | `nullinit = true` | initialise the output `Ref` with `C_NULL` |
 | `len = "expr"` | length of a caller-allocated output `Vector` |
+| `required = true` | input handle PETSc checks for NULL in a debug build: the wrapper throws an `ArgumentError` for a handle with a null pointer, where the optimized build would crash |
 
 Rules and overrides that name a function or argument absent from a new snapshot are reported
 by `generator/apidiff.jl`.
@@ -187,6 +189,7 @@ override only when no rule can express the wrapper
 | `check_callers.jl [DIR]` | every `LibPETSc.X(...)` call in `src/`, `ext/`, `test/`, `examples/` whose argument count does not match the generated stub (first thing to run after a regeneration that changed conventions) |
 | `bootstrap_rules.jl GOLDEN` | one-off: mine `rules/args_mined.toml` from a hand-edited directory |
 | `make_overrides.jl GOLDEN NAME...` | copy hand-written blocks into `overrides/` |
+| `mine_required.jl PETSC_DIR SNAPSHOT` | write `rules/args_required.toml`: the handle arguments each function validates unconditionally (`PetscValidHeaderSpecific` at the top of its body, or in a function it forwards the argument to). Rerun for a new PETSc release |
 | `check_symbols.jl` (run with `--project=.`) | wrapped functions that are not symbols of the PETSc_jll library: header inlines and macros belong in `[exclude]`, optional-package functions are fine |
 
 `.github/workflows/wrappers.yml` regenerates from the PETSc tarball on every change to

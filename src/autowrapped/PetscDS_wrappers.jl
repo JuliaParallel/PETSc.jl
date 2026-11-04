@@ -37,6 +37,7 @@ function PetscDSAddBoundary(petsclib::PetscLibType, ds::PetscDS, type::DMBoundar
 end
 
 @for_petsc function PetscDSAddBoundary(petsclib::$UnionPetscLib, ds::PetscDS, type::DMBoundaryConditionType, name::String, label::AbstractDMLabel, Nv::$PetscInt, values::Vector{$PetscInt}, field::$PetscInt, Nc::$PetscInt, comps::Vector{$PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	label.ptr == C_NULL && throw_null_handle(label, "PetscDSAddBoundary", "label")
 	bd_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -4094,6 +4095,7 @@ function PetscDSUpdateBoundaryLabels(petsclib::PetscLibType, ds::PetscDS, dm::Ab
 end
 
 @for_petsc function PetscDSUpdateBoundaryLabels(petsclib::$UnionPetscLib, ds::PetscDS, dm::AbstractPetscDM )
+	dm.ptr == C_NULL && throw_null_handle(dm, "PetscDSUpdateBoundaryLabels", "dm")
 
     @chk ccall(
                (:PetscDSUpdateBoundaryLabels, $petsc_library),

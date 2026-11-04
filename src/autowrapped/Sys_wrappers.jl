@@ -9919,6 +9919,7 @@ function PetscProbComputeKSStatistic(petsclib::PetscLibType, v::AbstractPetscVec
 end
 
 @for_petsc function PetscProbComputeKSStatistic(petsclib::$UnionPetscLib, v::AbstractPetscVec, cdf::Ptr{Cvoid} )
+	v.ptr == C_NULL && throw_null_handle(v, "PetscProbComputeKSStatistic", "v")
 	alpha_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -9958,6 +9959,7 @@ function PetscProbComputeKSStatisticMagnitude(petsclib::PetscLibType, v::Abstrac
 end
 
 @for_petsc function PetscProbComputeKSStatisticMagnitude(petsclib::$UnionPetscLib, v::AbstractPetscVec, cdf::Ptr{Cvoid} )
+	v.ptr == C_NULL && throw_null_handle(v, "PetscProbComputeKSStatisticMagnitude", "v")
 	alpha_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -9998,6 +10000,8 @@ function PetscProbComputeKSStatisticWeighted(petsclib::PetscLibType, v::Abstract
 end
 
 @for_petsc function PetscProbComputeKSStatisticWeighted(petsclib::$UnionPetscLib, v::AbstractPetscVec, w::AbstractPetscVec, cdf::Ptr{Cvoid} )
+	v.ptr == C_NULL && throw_null_handle(v, "PetscProbComputeKSStatisticWeighted", "v")
+	w.ptr == C_NULL && throw_null_handle(w, "PetscProbComputeKSStatisticWeighted", "w")
 	alpha_ = Ref{$PetscReal}()
 
     @chk ccall(

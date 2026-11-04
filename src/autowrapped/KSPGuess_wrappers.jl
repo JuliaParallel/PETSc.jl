@@ -142,6 +142,8 @@ function KSPGuessFormGuess(petsclib::PetscLibType, guess::KSPGuess, rhs::Abstrac
 end
 
 @for_petsc function KSPGuessFormGuess(petsclib::$UnionPetscLib, guess::KSPGuess, rhs::AbstractPetscVec, sol::AbstractPetscVec )
+	rhs.ptr == C_NULL && throw_null_handle(rhs, "KSPGuessFormGuess", "rhs")
+	sol.ptr == C_NULL && throw_null_handle(sol, "KSPGuessFormGuess", "sol")
 
     @chk ccall(
                (:KSPGuessFormGuess, $petsc_library),
@@ -399,6 +401,8 @@ function KSPGuessUpdate(petsclib::PetscLibType, guess::KSPGuess, rhs::AbstractPe
 end
 
 @for_petsc function KSPGuessUpdate(petsclib::$UnionPetscLib, guess::KSPGuess, rhs::AbstractPetscVec, sol::AbstractPetscVec )
+	rhs.ptr == C_NULL && throw_null_handle(rhs, "KSPGuessUpdate", "rhs")
+	sol.ptr == C_NULL && throw_null_handle(sol, "KSPGuessUpdate", "sol")
 
     @chk ccall(
                (:KSPGuessUpdate, $petsc_library),

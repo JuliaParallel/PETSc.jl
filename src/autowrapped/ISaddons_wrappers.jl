@@ -503,6 +503,7 @@ function ISLocalToGlobalMappingApplyIS(petsclib::PetscLibType, mapping::ISLocalT
 end
 
 @for_petsc function ISLocalToGlobalMappingApplyIS(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, is::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISLocalToGlobalMappingApplyIS", "is")
 	newis_ = Ref{CIS}()
 
     @chk ccall(
@@ -627,6 +628,7 @@ function ISLocalToGlobalMappingCreateIS(petsclib::PetscLibType, is::AbstractIS)
 end
 
 @for_petsc function ISLocalToGlobalMappingCreateIS(petsclib::$UnionPetscLib, is::AbstractIS )
+	is.ptr == C_NULL && throw_null_handle(is, "ISLocalToGlobalMappingCreateIS", "is")
 	mapping_ = Ref{ISLocalToGlobalMapping}()
 
     @chk ccall(

@@ -1230,6 +1230,7 @@ function PetscOptionsGetVec(petsclib::PetscLibType, options::AbstractPetscOption
 end
 
 @for_petsc function PetscOptionsGetVec(petsclib::$UnionPetscLib, options::AbstractPetscOptions, prefix::String, key::String, v::AbstractPetscVec )
+	v.ptr == C_NULL && throw_null_handle(v, "PetscOptionsGetVec", "v")
 	set_ = Ref{PetscBool}()
 
     @chk ccall(

@@ -21,6 +21,7 @@ function KSPAppendOptionsPrefix(petsclib::PetscLibType, ksp::AbstractKSP, prefix
 end
 
 @for_petsc function KSPAppendOptionsPrefix(petsclib::$UnionPetscLib, ksp::AbstractKSP, prefix::String )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPAppendOptionsPrefix", "ksp")
 
     @chk ccall(
                (:KSPAppendOptionsPrefix, $petsc_library),
@@ -210,6 +211,7 @@ function KSPBuildResidual(petsclib::PetscLibType, ksp::AbstractKSP, t::AbstractP
 end
 
 @for_petsc function KSPBuildResidual(petsclib::$UnionPetscLib, ksp::AbstractKSP, t::AbstractPetscVec, v::AbstractPetscVec, M_V::AbstractPetscVec )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPBuildResidual", "ksp")
 	M_V_ = Ref(M_V.ptr)
 
     @chk ccall(
@@ -250,6 +252,8 @@ function KSPBuildResidualDefault(petsclib::PetscLibType, ksp::AbstractKSP, t::Ab
 end
 
 @for_petsc function KSPBuildResidualDefault(petsclib::$UnionPetscLib, ksp::AbstractKSP, t::AbstractPetscVec, v::AbstractPetscVec, M_V::AbstractPetscVec )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPBuildResidualDefault", "ksp")
+	v.ptr == C_NULL && throw_null_handle(v, "KSPBuildResidualDefault", "v")
 	M_V_ = Ref(M_V.ptr)
 
     @chk ccall(
@@ -290,6 +294,7 @@ function KSPBuildSolution(petsclib::PetscLibType, ksp::AbstractKSP, v::AbstractP
 end
 
 @for_petsc function KSPBuildSolution(petsclib::$UnionPetscLib, ksp::AbstractKSP, v::AbstractPetscVec, M_V::AbstractPetscVec )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPBuildSolution", "ksp")
 	M_V_ = Ref(M_V.ptr)
 
     @chk ccall(
@@ -365,6 +370,7 @@ function KSPCGGetNormD(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPCGGetNormD(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPCGGetNormD", "ksp")
 	norm_d_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -401,6 +407,7 @@ function KSPCGGetObjFcn(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPCGGetObjFcn(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPCGGetObjFcn", "ksp")
 	o_fcn_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -437,6 +444,7 @@ function KSPCGSetObjectiveTarget(petsclib::PetscLibType, ksp::AbstractKSP, obj::
 end
 
 @for_petsc function KSPCGSetObjectiveTarget(petsclib::$UnionPetscLib, ksp::AbstractKSP, obj::$PetscReal )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPCGSetObjectiveTarget", "ksp")
 
     @chk ccall(
                (:KSPCGSetObjectiveTarget, $petsc_library),
@@ -471,6 +479,7 @@ function KSPCGSetRadius(petsclib::PetscLibType, ksp::AbstractKSP, radius::Real)
 end
 
 @for_petsc function KSPCGSetRadius(petsclib::$UnionPetscLib, ksp::AbstractKSP, radius::$PetscReal )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPCGSetRadius", "ksp")
 
     @chk ccall(
                (:KSPCGSetRadius, $petsc_library),
@@ -515,6 +524,7 @@ function KSPCGSetType(petsclib::PetscLibType, ksp::AbstractKSP, type::KSPCGType)
 end
 
 @for_petsc function KSPCGSetType(petsclib::$UnionPetscLib, ksp::AbstractKSP, type::KSPCGType )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPCGSetType", "ksp")
 
     @chk ccall(
                (:KSPCGSetType, $petsc_library),
@@ -552,6 +562,7 @@ function KSPCGUseSingleReduction(petsclib::PetscLibType, ksp::AbstractKSP, flg::
 end
 
 @for_petsc function KSPCGUseSingleReduction(petsclib::$UnionPetscLib, ksp::AbstractKSP, flg::PetscBool )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPCGUseSingleReduction", "ksp")
 
     @chk ccall(
                (:KSPCGUseSingleReduction, $petsc_library),
@@ -586,6 +597,7 @@ function KSPChebyshevEstEigGetKSP(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPChebyshevEstEigGetKSP(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPChebyshevEstEigGetKSP", "ksp")
 	kspest_ = Ref{CKSP}()
 
     @chk ccall(
@@ -626,6 +638,7 @@ function KSPChebyshevEstEigSet(petsclib::PetscLibType, ksp::AbstractKSP, a::Real
 end
 
 @for_petsc function KSPChebyshevEstEigSet(petsclib::$UnionPetscLib, ksp::AbstractKSP, a::$PetscReal, b::$PetscReal, c::$PetscReal, d::$PetscReal )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPChebyshevEstEigSet", "ksp")
 
     @chk ccall(
                (:KSPChebyshevEstEigSet, $petsc_library),
@@ -663,6 +676,7 @@ function KSPChebyshevEstEigSetUseNoisy(petsclib::PetscLibType, ksp::AbstractKSP,
 end
 
 @for_petsc function KSPChebyshevEstEigSetUseNoisy(petsclib::$UnionPetscLib, ksp::AbstractKSP, use::PetscBool )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPChebyshevEstEigSetUseNoisy", "ksp")
 
     @chk ccall(
                (:KSPChebyshevEstEigSetUseNoisy, $petsc_library),
@@ -697,6 +711,7 @@ function KSPChebyshevGetKind(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPChebyshevGetKind(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPChebyshevGetKind", "ksp")
 	kind_ = Ref{KSPChebyshevKind}()
 
     @chk ccall(
@@ -737,6 +752,7 @@ function KSPChebyshevSetEigenvalues(petsclib::PetscLibType, ksp::AbstractKSP, em
 end
 
 @for_petsc function KSPChebyshevSetEigenvalues(petsclib::$UnionPetscLib, ksp::AbstractKSP, emax::$PetscReal, emin::$PetscReal )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPChebyshevSetEigenvalues", "ksp")
 
     @chk ccall(
                (:KSPChebyshevSetEigenvalues, $petsc_library),
@@ -774,6 +790,7 @@ function KSPChebyshevSetKind(petsclib::PetscLibType, ksp::AbstractKSP, kind::KSP
 end
 
 @for_petsc function KSPChebyshevSetKind(petsclib::$UnionPetscLib, ksp::AbstractKSP, kind::KSPChebyshevKind )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPChebyshevSetKind", "ksp")
 
     @chk ccall(
                (:KSPChebyshevSetKind, $petsc_library),
@@ -810,6 +827,7 @@ function KSPCheckSolve(petsclib::PetscLibType, ksp::AbstractKSP, pc::AbstractPC,
 end
 
 @for_petsc function KSPCheckSolve(petsclib::$UnionPetscLib, ksp::AbstractKSP, pc::AbstractPC, vec::AbstractPetscVec )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPCheckSolve", "ksp")
 
     @chk ccall(
                (:KSPCheckSolve, $petsc_library),
@@ -900,6 +918,7 @@ function KSPComputeEigenvalues(petsclib::PetscLibType, ksp::AbstractKSP, n::Inte
 end
 
 @for_petsc function KSPComputeEigenvalues(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, r::Vector{$PetscReal}, c::Vector{$PetscReal} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPComputeEigenvalues", "ksp")
 	neig_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -941,6 +960,7 @@ function KSPComputeEigenvaluesExplicitly(petsclib::PetscLibType, ksp::AbstractKS
 end
 
 @for_petsc function KSPComputeEigenvaluesExplicitly(petsclib::$UnionPetscLib, ksp::AbstractKSP, nmax::$PetscInt, r::Vector{$PetscReal}, c::Vector{$PetscReal} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPComputeEigenvaluesExplicitly", "ksp")
 
     @chk ccall(
                (:KSPComputeEigenvaluesExplicitly, $petsc_library),
@@ -982,6 +1002,7 @@ function KSPComputeExtremeSingularValues(petsclib::PetscLibType, ksp::AbstractKS
 end
 
 @for_petsc function KSPComputeExtremeSingularValues(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPComputeExtremeSingularValues", "ksp")
 	emax_ = Ref{$PetscReal}()
 	emin_ = Ref{$PetscReal}()
 
@@ -1024,6 +1045,7 @@ function KSPComputeOperator(petsclib::PetscLibType, ksp::AbstractKSP, mattype::S
 end
 
 @for_petsc function KSPComputeOperator(petsclib::$UnionPetscLib, ksp::AbstractKSP, mattype::String )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPComputeOperator", "ksp")
 	mat_ = Ref{CMat}()
 
     @chk ccall(
@@ -1068,6 +1090,7 @@ function KSPComputeRitz(petsclib::PetscLibType, ksp::AbstractKSP, ritz::PetscBoo
 end
 
 @for_petsc function KSPComputeRitz(petsclib::$UnionPetscLib, ksp::AbstractKSP, ritz::PetscBool, small::PetscBool, S::Vector{<:AbstractPetscVec}, tetar::Vector{$PetscReal}, tetai::Vector{$PetscReal} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPComputeRitz", "ksp")
 	nrit_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1122,6 +1145,7 @@ function KSPConvergedDefault(petsclib::PetscLibType, ksp::AbstractKSP, n::Intege
 end
 
 @for_petsc function KSPConvergedDefault(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, ctx::Ptr{Cvoid} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPConvergedDefault", "ksp")
 	reason_ = Ref{KSPConvergedReason}()
 
     @chk ccall(
@@ -1232,6 +1256,7 @@ function KSPConvergedDefaultSetConvergedMaxits(petsclib::PetscLibType, ksp::Abst
 end
 
 @for_petsc function KSPConvergedDefaultSetConvergedMaxits(petsclib::$UnionPetscLib, ksp::AbstractKSP, flg::PetscBool )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPConvergedDefaultSetConvergedMaxits", "ksp")
 
     @chk ccall(
                (:KSPConvergedDefaultSetConvergedMaxits, $petsc_library),
@@ -1270,6 +1295,7 @@ function KSPConvergedDefaultSetUIRNorm(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPConvergedDefaultSetUIRNorm(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPConvergedDefaultSetUIRNorm", "ksp")
 
     @chk ccall(
                (:KSPConvergedDefaultSetUIRNorm, $petsc_library),
@@ -1308,6 +1334,7 @@ function KSPConvergedDefaultSetUMIRNorm(petsclib::PetscLibType, ksp::AbstractKSP
 end
 
 @for_petsc function KSPConvergedDefaultSetUMIRNorm(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPConvergedDefaultSetUMIRNorm", "ksp")
 
     @chk ccall(
                (:KSPConvergedDefaultSetUMIRNorm, $petsc_library),
@@ -1345,6 +1372,7 @@ function KSPConvergedRateView(petsclib::PetscLibType, ksp::AbstractKSP, viewer::
 end
 
 @for_petsc function KSPConvergedRateView(petsclib::$UnionPetscLib, ksp::AbstractKSP, viewer::PetscViewer )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPConvergedRateView", "ksp")
 
     @chk ccall(
                (:KSPConvergedRateView, $petsc_library),
@@ -1418,6 +1446,7 @@ function KSPConvergedReasonViewCancel(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPConvergedReasonViewCancel(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPConvergedReasonViewCancel", "ksp")
 
     @chk ccall(
                (:KSPConvergedReasonViewCancel, $petsc_library),
@@ -1493,6 +1522,7 @@ function KSPConvergedReasonViewSet(petsclib::PetscLibType, ksp::AbstractKSP, f::
 end
 
 @for_petsc function KSPConvergedReasonViewSet(petsclib::$UnionPetscLib, ksp::AbstractKSP, f::Ptr{Cvoid}, ctx::Ptr{Cvoid}, reasonviewdestroy::Ptr{Cvoid} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPConvergedReasonViewSet", "ksp")
 
     @chk ccall(
                (:KSPConvergedReasonViewSet, $petsc_library),
@@ -1537,6 +1567,7 @@ function KSPConvergedSkip(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, 
 end
 
 @for_petsc function KSPConvergedSkip(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, dtx::Ptr{Cvoid} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPConvergedSkip", "ksp")
 	reason_ = Ref{KSPConvergedReason}()
 
     @chk ccall(
@@ -1701,6 +1732,7 @@ function KSPDestroyDefault(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPDestroyDefault(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPDestroyDefault", "ksp")
 
     @chk ccall(
                (:KSPDestroyDefault, $petsc_library),
@@ -1737,6 +1769,7 @@ function KSPFCGGetMmax(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPFCGGetMmax(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPFCGGetMmax", "ksp")
 	mmax_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1775,6 +1808,7 @@ function KSPFCGGetNprealloc(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPFCGGetNprealloc(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPFCGGetNprealloc", "ksp")
 	nprealloc_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1813,6 +1847,7 @@ function KSPFCGGetTruncationType(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPFCGGetTruncationType(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPFCGGetTruncationType", "ksp")
 	truncstrat_ = Ref{KSPFCDTruncationType}()
 
     @chk ccall(
@@ -1852,6 +1887,7 @@ function KSPFCGSetMmax(petsclib::PetscLibType, ksp::AbstractKSP, mmax::Integer)
 end
 
 @for_petsc function KSPFCGSetMmax(petsclib::$UnionPetscLib, ksp::AbstractKSP, mmax::$PetscInt )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPFCGSetMmax", "ksp")
 
     @chk ccall(
                (:KSPFCGSetMmax, $petsc_library),
@@ -1889,6 +1925,7 @@ function KSPFCGSetNprealloc(petsclib::PetscLibType, ksp::AbstractKSP, nprealloc:
 end
 
 @for_petsc function KSPFCGSetNprealloc(petsclib::$UnionPetscLib, ksp::AbstractKSP, nprealloc::$PetscInt )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPFCGSetNprealloc", "ksp")
 
     @chk ccall(
                (:KSPFCGSetNprealloc, $petsc_library),
@@ -1931,6 +1968,7 @@ function KSPFCGSetTruncationType(petsclib::PetscLibType, ksp::AbstractKSP, trunc
 end
 
 @for_petsc function KSPFCGSetTruncationType(petsclib::$UnionPetscLib, ksp::AbstractKSP, truncstrat::KSPFCDTruncationType )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPFCGSetTruncationType", "ksp")
 
     @chk ccall(
                (:KSPFCGSetTruncationType, $petsc_library),
@@ -1965,6 +2003,7 @@ function KSPFETIDPGetInnerBDDC(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPFETIDPGetInnerBDDC(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPFETIDPGetInnerBDDC", "ksp")
 	pc_ = Ref{CPC}()
 
     @chk ccall(
@@ -2001,6 +2040,7 @@ function KSPFETIDPGetInnerKSP(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPFETIDPGetInnerKSP(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPFETIDPGetInnerKSP", "ksp")
 	innerksp_ = Ref{CKSP}()
 
     @chk ccall(
@@ -2037,6 +2077,8 @@ function KSPFETIDPSetInnerBDDC(petsclib::PetscLibType, ksp::AbstractKSP, pc::Abs
 end
 
 @for_petsc function KSPFETIDPSetInnerBDDC(petsclib::$UnionPetscLib, ksp::AbstractKSP, pc::AbstractPC )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPFETIDPSetInnerBDDC", "ksp")
+	pc.ptr == C_NULL && throw_null_handle(pc, "KSPFETIDPSetInnerBDDC", "pc")
 
     @chk ccall(
                (:KSPFETIDPSetInnerBDDC, $petsc_library),
@@ -2071,6 +2113,7 @@ function KSPFETIDPSetPressureOperator(petsclib::PetscLibType, ksp::AbstractKSP, 
 end
 
 @for_petsc function KSPFETIDPSetPressureOperator(petsclib::$UnionPetscLib, ksp::AbstractKSP, P::AbstractPetscMat )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPFETIDPSetPressureOperator", "ksp")
 
     @chk ccall(
                (:KSPFETIDPSetPressureOperator, $petsc_library),
@@ -2134,6 +2177,7 @@ function KSPFlexibleModifyPCKSP(petsclib::PetscLibType, ksp::AbstractKSP, total_
 end
 
 @for_petsc function KSPFlexibleModifyPCKSP(petsclib::$UnionPetscLib, ksp::AbstractKSP, total_its::$PetscInt, loc_its::$PetscInt, res_norm::$PetscReal, ctx::Ptr{Cvoid} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPFlexibleModifyPCKSP", "ksp")
 
     @chk ccall(
                (:KSPFlexibleModifyPCKSP, $petsc_library),
@@ -2205,6 +2249,7 @@ function KSPFlexibleSetModifyPC(petsclib::PetscLibType, ksp::AbstractKSP, fcn::P
 end
 
 @for_petsc function KSPFlexibleSetModifyPC(petsclib::$UnionPetscLib, ksp::AbstractKSP, fcn::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPFlexibleSetModifyPC", "ksp")
 
     @chk ccall(
                (:KSPFlexibleSetModifyPC, $petsc_library),
@@ -2316,6 +2361,7 @@ function KSPGLTRGetLambda(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGLTRGetLambda(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGLTRGetLambda", "ksp")
 	lambda_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -2354,6 +2400,7 @@ function KSPGLTRGetMinEig(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGLTRGetMinEig(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGLTRGetMinEig", "ksp")
 	e_min_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -2435,6 +2482,7 @@ function KSPGMRESGetCGSRefinementType(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGMRESGetCGSRefinementType(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGMRESGetCGSRefinementType", "ksp")
 	type_ = Ref{KSPGMRESCGSRefinementType}()
 
     @chk ccall(
@@ -2676,6 +2724,7 @@ function KSPGMRESSetCGSRefinementType(petsclib::PetscLibType, ksp::AbstractKSP, 
 end
 
 @for_petsc function KSPGMRESSetCGSRefinementType(petsclib::$UnionPetscLib, ksp::AbstractKSP, type::KSPGMRESCGSRefinementType )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGMRESSetCGSRefinementType", "ksp")
 
     @chk ccall(
                (:KSPGMRESSetCGSRefinementType, $petsc_library),
@@ -2873,6 +2922,7 @@ function KSPGetAndClearConvergenceTest(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetAndClearConvergenceTest(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetAndClearConvergenceTest", "ksp")
 	converge_ = Ref{Ptr{Cvoid}}()
 	ctx_ = Ref{Ptr{Cvoid}}()
 	destroy_ = Ref{Ptr{Cvoid}}()
@@ -2915,6 +2965,7 @@ function KSPGetApplicationContext(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetApplicationContext(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetApplicationContext", "ksp")
 	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
@@ -2955,6 +3006,7 @@ function KSPGetComputeEigenvalues(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetComputeEigenvalues(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetComputeEigenvalues", "ksp")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -2998,6 +3050,7 @@ function KSPGetComputeSingularValues(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetComputeSingularValues(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetComputeSingularValues", "ksp")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3036,6 +3089,7 @@ function KSPGetConvergedNegativeCurvature(petsclib::PetscLibType, ksp::AbstractK
 end
 
 @for_petsc function KSPGetConvergedNegativeCurvature(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetConvergedNegativeCurvature", "ksp")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3078,6 +3132,7 @@ function KSPGetConvergedReason(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetConvergedReason(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetConvergedReason", "ksp")
 	reason_ = Ref{KSPConvergedReason}()
 
     @chk ccall(
@@ -3116,6 +3171,7 @@ function KSPGetConvergedReasonString(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetConvergedReasonString(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetConvergedReasonString", "ksp")
 	strreason_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -3154,6 +3210,7 @@ function KSPGetConvergenceContext(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetConvergenceContext(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetConvergenceContext", "ksp")
 	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
@@ -3194,6 +3251,7 @@ function KSPGetConvergenceTest(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetConvergenceTest(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetConvergenceTest", "ksp")
 	converge_ = Ref{Ptr{Cvoid}}()
 	ctx_ = Ref{Ptr{Cvoid}}()
 	destroy_ = Ref{Ptr{Cvoid}}()
@@ -3236,6 +3294,7 @@ function KSPGetDM(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetDM(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetDM", "ksp")
 	dm_ = Ref{CDM}()
 
     @chk ccall(
@@ -3274,6 +3333,7 @@ function KSPGetDiagonalScale(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetDiagonalScale(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetDiagonalScale", "ksp")
 	scale_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3313,6 +3373,7 @@ function KSPGetDiagonalScaleFix(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetDiagonalScaleFix(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetDiagonalScaleFix", "ksp")
 	fix_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3352,6 +3413,7 @@ function KSPGetErrorHistory(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetErrorHistory(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetErrorHistory", "ksp")
 	a_ = Ref{Ptr{$PetscReal}}()
 	na_ = Ref{$PetscInt}()
 
@@ -3392,6 +3454,7 @@ function KSPGetErrorIfNotConverged(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetErrorIfNotConverged(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetErrorIfNotConverged", "ksp")
 	flag_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3430,6 +3493,7 @@ function KSPGetGuess(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetGuess(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetGuess", "ksp")
 	guess_ = Ref{KSPGuess}()
 
     @chk ccall(
@@ -3469,6 +3533,7 @@ function KSPGetInitialGuessKnoll(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetInitialGuessKnoll(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetInitialGuessKnoll", "ksp")
 	flag_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3508,6 +3573,7 @@ function KSPGetInitialGuessNonzero(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetInitialGuessNonzero(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetInitialGuessNonzero", "ksp")
 	flag_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3546,6 +3612,7 @@ function KSPGetIterationNumber(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetIterationNumber(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetIterationNumber", "ksp")
 	its_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3582,6 +3649,7 @@ function KSPGetMatSolveBatchSize(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetMatSolveBatchSize(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetMatSolveBatchSize", "ksp")
 	bs_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3620,6 +3688,7 @@ function KSPGetMinimumIterations(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetMinimumIterations(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetMinimumIterations", "ksp")
 	minit_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3658,6 +3727,7 @@ function KSPGetMonitorContext(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetMonitorContext(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetMonitorContext", "ksp")
 	ctx_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
@@ -3696,6 +3766,7 @@ function KSPGetNestLevel(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetNestLevel(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetNestLevel", "ksp")
 	level_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3734,6 +3805,7 @@ function KSPGetNormType(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetNormType(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetNormType", "ksp")
 	normtype_ = Ref{KSPNormType}()
 
     @chk ccall(
@@ -3774,6 +3846,7 @@ function KSPGetOperators(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetOperators(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetOperators", "ksp")
 	Amat_ = Ref{CMat}()
 	Pmat_ = Ref{CMat}()
 
@@ -3816,6 +3889,7 @@ function KSPGetOperatorsSet(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetOperatorsSet(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetOperatorsSet", "ksp")
 	mat_ = Ref{PetscBool}()
 	pmat_ = Ref{PetscBool}()
 
@@ -3857,6 +3931,7 @@ function KSPGetOptionsPrefix(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetOptionsPrefix(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetOptionsPrefix", "ksp")
 	prefix_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -3895,6 +3970,7 @@ function KSPGetPC(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetPC(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetPC", "ksp")
 	pc_ = Ref{CPC}()
 
     @chk ccall(
@@ -3938,6 +4014,7 @@ function KSPGetPCSide(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetPCSide(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetPCSide", "ksp")
 	side_ = Ref{PCSide}()
 
     @chk ccall(
@@ -3977,6 +4054,7 @@ function KSPGetResidualHistory(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetResidualHistory(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetResidualHistory", "ksp")
 	a_ = Ref{Ptr{$PetscReal}}()
 	na_ = Ref{$PetscInt}()
 
@@ -4017,6 +4095,7 @@ function KSPGetResidualNorm(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetResidualNorm(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetResidualNorm", "ksp")
 	rnorm_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -4055,6 +4134,7 @@ function KSPGetReusePreconditioner(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetReusePreconditioner(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetReusePreconditioner", "ksp")
 	flag_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -4094,6 +4174,7 @@ function KSPGetRhs(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetRhs(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetRhs", "ksp")
 	r_ = Ref{CVec}()
 
     @chk ccall(
@@ -4133,6 +4214,7 @@ function KSPGetSolution(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetSolution(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetSolution", "ksp")
 	v_ = Ref{CVec}()
 
     @chk ccall(
@@ -4175,6 +4257,7 @@ function KSPGetTolerances(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetTolerances(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetTolerances", "ksp")
 	rtol_ = Ref{$PetscReal}()
 	abstol_ = Ref{$PetscReal}()
 	dtol_ = Ref{$PetscReal}()
@@ -4219,6 +4302,7 @@ function KSPGetTotalIterations(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetTotalIterations(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetTotalIterations", "ksp")
 	its_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -4257,6 +4341,7 @@ function KSPGetType(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPGetType(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPGetType", "ksp")
 	type_ = Ref{KSPType}()
 
     @chk ccall(
@@ -4397,6 +4482,10 @@ function KSPInitialResidual(petsclib::PetscLibType, ksp::AbstractKSP, vsoln::Abs
 end
 
 @for_petsc function KSPInitialResidual(petsclib::$UnionPetscLib, ksp::AbstractKSP, vsoln::AbstractPetscVec, vt1::AbstractPetscVec, vt2::AbstractPetscVec, vres::AbstractPetscVec, vb::AbstractPetscVec )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPInitialResidual", "ksp")
+	vsoln.ptr == C_NULL && throw_null_handle(vsoln, "KSPInitialResidual", "vsoln")
+	vres.ptr == C_NULL && throw_null_handle(vres, "KSPInitialResidual", "vres")
+	vb.ptr == C_NULL && throw_null_handle(vb, "KSPInitialResidual", "vb")
 
     @chk ccall(
                (:KSPInitialResidual, $petsc_library),
@@ -4540,6 +4629,7 @@ function KSPLSQRConvergedDefault(petsclib::PetscLibType, ksp::AbstractKSP, n::In
 end
 
 @for_petsc function KSPLSQRConvergedDefault(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, ctx::Ptr{Cvoid} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPLSQRConvergedDefault", "ksp")
 	reason_ = Ref{KSPConvergedReason}()
 
     @chk ccall(
@@ -4663,6 +4753,7 @@ function KSPLSQRMonitorResidual(petsclib::PetscLibType, ksp::AbstractKSP, n::Int
 end
 
 @for_petsc function KSPLSQRMonitorResidual(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPLSQRMonitorResidual", "ksp")
 
     @chk ccall(
                (:KSPLSQRMonitorResidual, $petsc_library),
@@ -4702,6 +4793,7 @@ function KSPLSQRMonitorResidualDrawLG(petsclib::PetscLibType, ksp::AbstractKSP, 
 end
 
 @for_petsc function KSPLSQRMonitorResidualDrawLG(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPLSQRMonitorResidualDrawLG", "ksp")
 
     @chk ccall(
                (:KSPLSQRMonitorResidualDrawLG, $petsc_library),
@@ -4845,6 +4937,7 @@ function KSPLoad(petsclib::PetscLibType, newdm::AbstractKSP, viewer::PetscViewer
 end
 
 @for_petsc function KSPLoad(petsclib::$UnionPetscLib, newdm::AbstractKSP, viewer::PetscViewer )
+	newdm.ptr == C_NULL && throw_null_handle(newdm, "KSPLoad", "newdm")
 
     @chk ccall(
                (:KSPLoad, $petsc_library),
@@ -4881,6 +4974,7 @@ function KSPMINRESGetUseQLP(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPMINRESGetUseQLP(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPMINRESGetUseQLP", "ksp")
 	qlp_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -4920,6 +5014,7 @@ function KSPMINRESSetRadius(petsclib::PetscLibType, ksp::AbstractKSP, radius::Re
 end
 
 @for_petsc function KSPMINRESSetRadius(petsclib::$UnionPetscLib, ksp::AbstractKSP, radius::$PetscReal )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPMINRESSetRadius", "ksp")
 
     @chk ccall(
                (:KSPMINRESSetRadius, $petsc_library),
@@ -4954,6 +5049,7 @@ function KSPMINRESSetUseQLP(petsclib::PetscLibType, ksp::AbstractKSP, qlp::Petsc
 end
 
 @for_petsc function KSPMINRESSetUseQLP(petsclib::$UnionPetscLib, ksp::AbstractKSP, qlp::PetscBool )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPMINRESSetUseQLP", "ksp")
 
     @chk ccall(
                (:KSPMINRESSetUseQLP, $petsc_library),
@@ -5095,6 +5191,7 @@ function KSPMonitorCancel(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPMonitorCancel(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPMonitorCancel", "ksp")
 
     @chk ccall(
                (:KSPMonitorCancel, $petsc_library),
@@ -5134,6 +5231,7 @@ function KSPMonitorDynamicTolerance(petsclib::PetscLibType, ksp::AbstractKSP, it
 end
 
 @for_petsc function KSPMonitorDynamicTolerance(petsclib::$UnionPetscLib, ksp::AbstractKSP, its::$PetscInt, fnorm::$PetscReal, ctx::Ptr{Cvoid} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPMonitorDynamicTolerance", "ksp")
 
     @chk ccall(
                (:KSPMonitorDynamicTolerance, $petsc_library),
@@ -5281,6 +5379,7 @@ function KSPMonitorError(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, r
 end
 
 @for_petsc function KSPMonitorError(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPMonitorError", "ksp")
 
     @chk ccall(
                (:KSPMonitorError, $petsc_library),
@@ -5320,6 +5419,7 @@ function KSPMonitorErrorDraw(petsclib::PetscLibType, ksp::AbstractKSP, n::Intege
 end
 
 @for_petsc function KSPMonitorErrorDraw(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPMonitorErrorDraw", "ksp")
 
     @chk ccall(
                (:KSPMonitorErrorDraw, $petsc_library),
@@ -5359,6 +5459,7 @@ function KSPMonitorErrorDrawLG(petsclib::PetscLibType, ksp::AbstractKSP, n::Inte
 end
 
 @for_petsc function KSPMonitorErrorDrawLG(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPMonitorErrorDrawLG", "ksp")
 
     @chk ccall(
                (:KSPMonitorErrorDrawLG, $petsc_library),
@@ -5435,6 +5536,7 @@ function KSPMonitorLGRange(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer,
 end
 
 @for_petsc function KSPMonitorLGRange(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, monctx::Ptr{Cvoid} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPMonitorLGRange", "ksp")
 
     @chk ccall(
                (:KSPMonitorLGRange, $petsc_library),
@@ -5554,6 +5656,7 @@ function KSPMonitorResidualDrawLG(petsclib::PetscLibType, ksp::AbstractKSP, n::I
 end
 
 @for_petsc function KSPMonitorResidualDrawLG(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPMonitorResidualDrawLG", "ksp")
 
     @chk ccall(
                (:KSPMonitorResidualDrawLG, $petsc_library),
@@ -5634,6 +5737,7 @@ function KSPMonitorResidualRange(petsclib::PetscLibType, ksp::AbstractKSP, it::I
 end
 
 @for_petsc function KSPMonitorResidualRange(petsclib::$UnionPetscLib, ksp::AbstractKSP, it::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPMonitorResidualRange", "ksp")
 
     @chk ccall(
                (:KSPMonitorResidualRange, $petsc_library),
@@ -5696,6 +5800,7 @@ function KSPMonitorResidualView(petsclib::PetscLibType, ksp::AbstractKSP, n::Int
 end
 
 @for_petsc function KSPMonitorResidualView(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPMonitorResidualView", "ksp")
 
     @chk ccall(
                (:KSPMonitorResidualView, $petsc_library),
@@ -5732,6 +5837,7 @@ function KSPMonitorSAWs(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer, rn
 end
 
 @for_petsc function KSPMonitorSAWs(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, ctx::Ptr{Cvoid} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPMonitorSAWs", "ksp")
 
     @chk ccall(
                (:KSPMonitorSAWs, $petsc_library),
@@ -5842,6 +5948,7 @@ function KSPMonitorSNESResidual(petsclib::PetscLibType, ksp::AbstractKSP, n::Int
 end
 
 @for_petsc function KSPMonitorSNESResidual(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPMonitorSNESResidual", "ksp")
 
     @chk ccall(
                (:KSPMonitorSNESResidual, $petsc_library),
@@ -5881,6 +5988,7 @@ function KSPMonitorSNESResidualDrawLG(petsclib::PetscLibType, ksp::AbstractKSP, 
 end
 
 @for_petsc function KSPMonitorSNESResidualDrawLG(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPMonitorSNESResidualDrawLG", "ksp")
 
     @chk ccall(
                (:KSPMonitorSNESResidualDrawLG, $petsc_library),
@@ -5971,6 +6079,7 @@ function KSPMonitorSet(petsclib::PetscLibType, ksp::AbstractKSP, monitor::Ptr{Cv
 end
 
 @for_petsc function KSPMonitorSet(petsclib::$UnionPetscLib, ksp::AbstractKSP, monitor::Ptr{Cvoid}, ctx::Ptr{Cvoid}, monitordestroy::Ptr{Cvoid} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPMonitorSet", "ksp")
 
     @chk ccall(
                (:KSPMonitorSet, $petsc_library),
@@ -6052,6 +6161,7 @@ function KSPMonitorSingularValue(petsclib::PetscLibType, ksp::AbstractKSP, n::In
 end
 
 @for_petsc function KSPMonitorSingularValue(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPMonitorSingularValue", "ksp")
 
     @chk ccall(
                (:KSPMonitorSingularValue, $petsc_library),
@@ -6131,6 +6241,7 @@ function KSPMonitorSolution(petsclib::PetscLibType, ksp::AbstractKSP, n::Integer
 end
 
 @for_petsc function KSPMonitorSolution(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPMonitorSolution", "ksp")
 
     @chk ccall(
                (:KSPMonitorSolution, $petsc_library),
@@ -6170,6 +6281,7 @@ function KSPMonitorSolutionDraw(petsclib::PetscLibType, ksp::AbstractKSP, n::Int
 end
 
 @for_petsc function KSPMonitorSolutionDraw(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPMonitorSolutionDraw", "ksp")
 
     @chk ccall(
                (:KSPMonitorSolutionDraw, $petsc_library),
@@ -6209,6 +6321,7 @@ function KSPMonitorSolutionDrawLG(petsclib::PetscLibType, ksp::AbstractKSP, n::I
 end
 
 @for_petsc function KSPMonitorSolutionDrawLG(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPMonitorSolutionDrawLG", "ksp")
 
     @chk ccall(
                (:KSPMonitorSolutionDrawLG, $petsc_library),
@@ -6289,6 +6402,7 @@ function KSPMonitorTrueResidual(petsclib::PetscLibType, ksp::AbstractKSP, n::Int
 end
 
 @for_petsc function KSPMonitorTrueResidual(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPMonitorTrueResidual", "ksp")
 
     @chk ccall(
                (:KSPMonitorTrueResidual, $petsc_library),
@@ -6329,6 +6443,7 @@ function KSPMonitorTrueResidualDrawLG(petsclib::PetscLibType, ksp::AbstractKSP, 
 end
 
 @for_petsc function KSPMonitorTrueResidualDrawLG(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPMonitorTrueResidualDrawLG", "ksp")
 
     @chk ccall(
                (:KSPMonitorTrueResidualDrawLG, $petsc_library),
@@ -6408,6 +6523,7 @@ function KSPMonitorTrueResidualMax(petsclib::PetscLibType, ksp::AbstractKSP, n::
 end
 
 @for_petsc function KSPMonitorTrueResidualMax(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPMonitorTrueResidualMax", "ksp")
 
     @chk ccall(
                (:KSPMonitorTrueResidualMax, $petsc_library),
@@ -6448,6 +6564,7 @@ function KSPMonitorTrueResidualView(petsclib::PetscLibType, ksp::AbstractKSP, n:
 end
 
 @for_petsc function KSPMonitorTrueResidualView(petsclib::$UnionPetscLib, ksp::AbstractKSP, n::$PetscInt, rnorm::$PetscReal, vf::Vector{PetscViewerAndFormat} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPMonitorTrueResidualView", "ksp")
 
     @chk ccall(
                (:KSPMonitorTrueResidualView, $petsc_library),
@@ -6484,6 +6601,7 @@ function KSPPIPEFCGGetMmax(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPPIPEFCGGetMmax(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPPIPEFCGGetMmax", "ksp")
 	mmax_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -6522,6 +6640,7 @@ function KSPPIPEFCGGetNprealloc(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPPIPEFCGGetNprealloc(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPPIPEFCGGetNprealloc", "ksp")
 	nprealloc_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -6560,6 +6679,7 @@ function KSPPIPEFCGGetTruncationType(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPPIPEFCGGetTruncationType(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPPIPEFCGGetTruncationType", "ksp")
 	truncstrat_ = Ref{KSPFCDTruncationType}()
 
     @chk ccall(
@@ -6599,6 +6719,7 @@ function KSPPIPEFCGSetMmax(petsclib::PetscLibType, ksp::AbstractKSP, mmax::Integ
 end
 
 @for_petsc function KSPPIPEFCGSetMmax(petsclib::$UnionPetscLib, ksp::AbstractKSP, mmax::$PetscInt )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPPIPEFCGSetMmax", "ksp")
 
     @chk ccall(
                (:KSPPIPEFCGSetMmax, $petsc_library),
@@ -6636,6 +6757,7 @@ function KSPPIPEFCGSetNprealloc(petsclib::PetscLibType, ksp::AbstractKSP, npreal
 end
 
 @for_petsc function KSPPIPEFCGSetNprealloc(petsclib::$UnionPetscLib, ksp::AbstractKSP, nprealloc::$PetscInt )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPPIPEFCGSetNprealloc", "ksp")
 
     @chk ccall(
                (:KSPPIPEFCGSetNprealloc, $petsc_library),
@@ -6677,6 +6799,7 @@ function KSPPIPEFCGSetTruncationType(petsclib::PetscLibType, ksp::AbstractKSP, t
 end
 
 @for_petsc function KSPPIPEFCGSetTruncationType(petsclib::$UnionPetscLib, ksp::AbstractKSP, truncstrat::KSPFCDTruncationType )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPPIPEFCGSetTruncationType", "ksp")
 
     @chk ccall(
                (:KSPPIPEFCGSetTruncationType, $petsc_library),
@@ -6714,6 +6837,7 @@ function KSPPIPEFGMRESSetShift(petsclib::PetscLibType, ksp::AbstractKSP, shift::
 end
 
 @for_petsc function KSPPIPEFGMRESSetShift(petsclib::$UnionPetscLib, ksp::AbstractKSP, shift::$PetscScalar )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPPIPEFGMRESSetShift", "ksp")
 
     @chk ccall(
                (:KSPPIPEFGMRESSetShift, $petsc_library),
@@ -6750,6 +6874,7 @@ function KSPPIPEGCRGetMmax(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPPIPEGCRGetMmax(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPPIPEGCRGetMmax", "ksp")
 	mmax_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -6788,6 +6913,7 @@ function KSPPIPEGCRGetNprealloc(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPPIPEGCRGetNprealloc(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPPIPEGCRGetNprealloc", "ksp")
 	nprealloc_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -6830,6 +6956,7 @@ function KSPPIPEGCRGetTruncationType(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPPIPEGCRGetTruncationType(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPPIPEGCRGetTruncationType", "ksp")
 	truncstrat_ = Ref{KSPFCDTruncationType}()
 
     @chk ccall(
@@ -6868,6 +6995,7 @@ function KSPPIPEGCRGetUnrollW(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPPIPEGCRGetUnrollW(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPPIPEGCRGetUnrollW", "ksp")
 	unroll_w_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -6907,6 +7035,7 @@ function KSPPIPEGCRSetMmax(petsclib::PetscLibType, ksp::AbstractKSP, mmax::Integ
 end
 
 @for_petsc function KSPPIPEGCRSetMmax(petsclib::$UnionPetscLib, ksp::AbstractKSP, mmax::$PetscInt )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPPIPEGCRSetMmax", "ksp")
 
     @chk ccall(
                (:KSPPIPEGCRSetMmax, $petsc_library),
@@ -6944,6 +7073,7 @@ function KSPPIPEGCRSetNprealloc(petsclib::PetscLibType, ksp::AbstractKSP, npreal
 end
 
 @for_petsc function KSPPIPEGCRSetNprealloc(petsclib::$UnionPetscLib, ksp::AbstractKSP, nprealloc::$PetscInt )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPPIPEGCRSetNprealloc", "ksp")
 
     @chk ccall(
                (:KSPPIPEGCRSetNprealloc, $petsc_library),
@@ -6985,6 +7115,7 @@ function KSPPIPEGCRSetTruncationType(petsclib::PetscLibType, ksp::AbstractKSP, t
 end
 
 @for_petsc function KSPPIPEGCRSetTruncationType(petsclib::$UnionPetscLib, ksp::AbstractKSP, truncstrat::KSPFCDTruncationType )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPPIPEGCRSetTruncationType", "ksp")
 
     @chk ccall(
                (:KSPPIPEGCRSetTruncationType, $petsc_library),
@@ -7022,6 +7153,7 @@ function KSPPIPEGCRSetUnrollW(petsclib::PetscLibType, ksp::AbstractKSP, unroll_w
 end
 
 @for_petsc function KSPPIPEGCRSetUnrollW(petsclib::$UnionPetscLib, ksp::AbstractKSP, unroll_w::PetscBool )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPPIPEGCRSetUnrollW", "ksp")
 
     @chk ccall(
                (:KSPPIPEGCRSetUnrollW, $petsc_library),
@@ -7058,6 +7190,7 @@ function KSPPythonGetType(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPPythonGetType(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPPythonGetType", "ksp")
 	pyname_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -7097,6 +7230,7 @@ function KSPPythonSetType(petsclib::PetscLibType, ksp::AbstractKSP, pyname::Stri
 end
 
 @for_petsc function KSPPythonSetType(petsclib::$UnionPetscLib, ksp::AbstractKSP, pyname::String )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPPythonSetType", "ksp")
 
     @chk ccall(
                (:KSPPythonSetType, $petsc_library),
@@ -7133,6 +7267,7 @@ function KSPQCGGetQuadratic(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPQCGGetQuadratic(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPQCGGetQuadratic", "ksp")
 	quadratic_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -7172,6 +7307,7 @@ function KSPQCGGetTrialStepNorm(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPQCGGetTrialStepNorm(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPQCGGetTrialStepNorm", "ksp")
 	tsnorm_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -7211,6 +7347,7 @@ function KSPQCGSetTrustRegionRadius(petsclib::PetscLibType, ksp::AbstractKSP, de
 end
 
 @for_petsc function KSPQCGSetTrustRegionRadius(petsclib::$UnionPetscLib, ksp::AbstractKSP, delta::$PetscReal )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPQCGSetTrustRegionRadius", "ksp")
 
     @chk ccall(
                (:KSPQCGSetTrustRegionRadius, $petsc_library),
@@ -7381,6 +7518,7 @@ function KSPRichardsonSetScale(petsclib::PetscLibType, ksp::AbstractKSP, scale::
 end
 
 @for_petsc function KSPRichardsonSetScale(petsclib::$UnionPetscLib, ksp::AbstractKSP, scale::$PetscReal )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPRichardsonSetScale", "ksp")
 
     @chk ccall(
                (:KSPRichardsonSetScale, $petsc_library),
@@ -7419,6 +7557,7 @@ function KSPRichardsonSetSelfScale(petsclib::PetscLibType, ksp::AbstractKSP, sca
 end
 
 @for_petsc function KSPRichardsonSetSelfScale(petsclib::$UnionPetscLib, ksp::AbstractKSP, scale::PetscBool )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPRichardsonSetSelfScale", "ksp")
 
     @chk ccall(
                (:KSPRichardsonSetSelfScale, $petsc_library),
@@ -7453,6 +7592,7 @@ function KSPSetApplicationContext(petsclib::PetscLibType, ksp::AbstractKSP, ctx:
 end
 
 @for_petsc function KSPSetApplicationContext(petsclib::$UnionPetscLib, ksp::AbstractKSP, ctx::Ptr{Cvoid} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetApplicationContext", "ksp")
 
     @chk ccall(
                (:KSPSetApplicationContext, $petsc_library),
@@ -7488,6 +7628,7 @@ function KSPSetCheckNormIteration(petsclib::PetscLibType, ksp::AbstractKSP, it::
 end
 
 @for_petsc function KSPSetCheckNormIteration(petsclib::$UnionPetscLib, ksp::AbstractKSP, it::$PetscInt )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetCheckNormIteration", "ksp")
 
     @chk ccall(
                (:KSPSetCheckNormIteration, $petsc_library),
@@ -7524,6 +7665,7 @@ function KSPSetComputeEigenvalues(petsclib::PetscLibType, ksp::AbstractKSP, flg:
 end
 
 @for_petsc function KSPSetComputeEigenvalues(petsclib::$UnionPetscLib, ksp::AbstractKSP, flg::PetscBool )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetComputeEigenvalues", "ksp")
 
     @chk ccall(
                (:KSPSetComputeEigenvalues, $petsc_library),
@@ -7560,6 +7702,7 @@ function KSPSetComputeInitialGuess(petsclib::PetscLibType, ksp::AbstractKSP, fun
 end
 
 @for_petsc function KSPSetComputeInitialGuess(petsclib::$UnionPetscLib, ksp::AbstractKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetComputeInitialGuess", "ksp")
 
     @chk ccall(
                (:KSPSetComputeInitialGuess, $petsc_library),
@@ -7595,6 +7738,7 @@ function KSPSetComputeOperators(petsclib::PetscLibType, ksp::AbstractKSP, func::
 end
 
 @for_petsc function KSPSetComputeOperators(petsclib::$UnionPetscLib, ksp::AbstractKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetComputeOperators", "ksp")
 
     @chk ccall(
                (:KSPSetComputeOperators, $petsc_library),
@@ -7630,6 +7774,7 @@ function KSPSetComputeRHS(petsclib::PetscLibType, ksp::AbstractKSP, func::Ptr{Cv
 end
 
 @for_petsc function KSPSetComputeRHS(petsclib::$UnionPetscLib, ksp::AbstractKSP, func::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetComputeRHS", "ksp")
 
     @chk ccall(
                (:KSPSetComputeRHS, $petsc_library),
@@ -7666,6 +7811,7 @@ function KSPSetComputeRitz(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscB
 end
 
 @for_petsc function KSPSetComputeRitz(petsclib::$UnionPetscLib, ksp::AbstractKSP, flg::PetscBool )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetComputeRitz", "ksp")
 
     @chk ccall(
                (:KSPSetComputeRitz, $petsc_library),
@@ -7705,6 +7851,7 @@ function KSPSetComputeSingularValues(petsclib::PetscLibType, ksp::AbstractKSP, f
 end
 
 @for_petsc function KSPSetComputeSingularValues(petsclib::$UnionPetscLib, ksp::AbstractKSP, flg::PetscBool )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetComputeSingularValues", "ksp")
 
     @chk ccall(
                (:KSPSetComputeSingularValues, $petsc_library),
@@ -7742,6 +7889,7 @@ function KSPSetConvergedNegativeCurvature(petsclib::PetscLibType, ksp::AbstractK
 end
 
 @for_petsc function KSPSetConvergedNegativeCurvature(petsclib::$UnionPetscLib, ksp::AbstractKSP, flg::PetscBool )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetConvergedNegativeCurvature", "ksp")
 
     @chk ccall(
                (:KSPSetConvergedNegativeCurvature, $petsc_library),
@@ -7778,6 +7926,7 @@ function KSPSetConvergenceTest(petsclib::PetscLibType, ksp::AbstractKSP, converg
 end
 
 @for_petsc function KSPSetConvergenceTest(petsclib::$UnionPetscLib, ksp::AbstractKSP, converge::Ptr{Cvoid}, ctx::Ptr{Cvoid}, destroy::Ptr{Cvoid} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetConvergenceTest", "ksp")
 
     @chk ccall(
                (:KSPSetConvergenceTest, $petsc_library),
@@ -7812,6 +7961,8 @@ function KSPSetDM(petsclib::PetscLibType, ksp::AbstractKSP, dm::AbstractPetscDM)
 end
 
 @for_petsc function KSPSetDM(petsclib::$UnionPetscLib, ksp::AbstractKSP, dm::AbstractPetscDM )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetDM", "ksp")
+	dm.ptr == C_NULL && throw_null_handle(dm, "KSPSetDM", "dm")
 
     @chk ccall(
                (:KSPSetDM, $petsc_library),
@@ -7847,6 +7998,7 @@ function KSPSetDMActive(petsclib::PetscLibType, ksp::AbstractKSP, active::KSPDMA
 end
 
 @for_petsc function KSPSetDMActive(petsclib::$UnionPetscLib, ksp::AbstractKSP, active::KSPDMActive, flg::PetscBool )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetDMActive", "ksp")
 
     @chk ccall(
                (:KSPSetDMActive, $petsc_library),
@@ -7886,6 +8038,7 @@ function KSPSetDiagonalScale(petsclib::PetscLibType, ksp::AbstractKSP, scale::Pe
 end
 
 @for_petsc function KSPSetDiagonalScale(petsclib::$UnionPetscLib, ksp::AbstractKSP, scale::PetscBool )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetDiagonalScale", "ksp")
 
     @chk ccall(
                (:KSPSetDiagonalScale, $petsc_library),
@@ -7921,6 +8074,7 @@ function KSPSetDiagonalScaleFix(petsclib::PetscLibType, ksp::AbstractKSP, fix::P
 end
 
 @for_petsc function KSPSetDiagonalScaleFix(petsclib::$UnionPetscLib, ksp::AbstractKSP, fix::PetscBool )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetDiagonalScaleFix", "ksp")
 
     @chk ccall(
                (:KSPSetDiagonalScaleFix, $petsc_library),
@@ -7957,6 +8111,7 @@ function KSPSetErrorHistory(petsclib::PetscLibType, ksp::AbstractKSP, a::Abstrac
 end
 
 @for_petsc function KSPSetErrorHistory(petsclib::$UnionPetscLib, ksp::AbstractKSP, a::Vector{$PetscReal}, na::PetscCount, reset::PetscBool )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetErrorHistory", "ksp")
 
     @chk ccall(
                (:KSPSetErrorHistory, $petsc_library),
@@ -7994,6 +8149,7 @@ function KSPSetErrorIfNotConverged(petsclib::PetscLibType, ksp::AbstractKSP, flg
 end
 
 @for_petsc function KSPSetErrorIfNotConverged(petsclib::$UnionPetscLib, ksp::AbstractKSP, flg::PetscBool )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetErrorIfNotConverged", "ksp")
 
     @chk ccall(
                (:KSPSetErrorIfNotConverged, $petsc_library),
@@ -8068,6 +8224,7 @@ function KSPSetFromOptions(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPSetFromOptions(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetFromOptions", "ksp")
 
     @chk ccall(
                (:KSPSetFromOptions, $petsc_library),
@@ -8102,6 +8259,7 @@ function KSPSetGuess(petsclib::PetscLibType, ksp::AbstractKSP, guess::KSPGuess)
 end
 
 @for_petsc function KSPSetGuess(petsclib::$UnionPetscLib, ksp::AbstractKSP, guess::KSPGuess )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetGuess", "ksp")
 
     @chk ccall(
                (:KSPSetGuess, $petsc_library),
@@ -8136,6 +8294,7 @@ function KSPSetInitialGuessKnoll(petsclib::PetscLibType, ksp::AbstractKSP, flg::
 end
 
 @for_petsc function KSPSetInitialGuessKnoll(petsclib::$UnionPetscLib, ksp::AbstractKSP, flg::PetscBool )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetInitialGuessKnoll", "ksp")
 
     @chk ccall(
                (:KSPSetInitialGuessKnoll, $petsc_library),
@@ -8175,6 +8334,7 @@ function KSPSetInitialGuessNonzero(petsclib::PetscLibType, ksp::AbstractKSP, flg
 end
 
 @for_petsc function KSPSetInitialGuessNonzero(petsclib::$UnionPetscLib, ksp::AbstractKSP, flg::PetscBool )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetInitialGuessNonzero", "ksp")
 
     @chk ccall(
                (:KSPSetInitialGuessNonzero, $petsc_library),
@@ -8213,6 +8373,7 @@ function KSPSetLagNorm(petsclib::PetscLibType, ksp::AbstractKSP, flg::PetscBool)
 end
 
 @for_petsc function KSPSetLagNorm(petsclib::$UnionPetscLib, ksp::AbstractKSP, flg::PetscBool )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetLagNorm", "ksp")
 
     @chk ccall(
                (:KSPSetLagNorm, $petsc_library),
@@ -8247,6 +8408,7 @@ function KSPSetMatSolveBatchSize(petsclib::PetscLibType, ksp::AbstractKSP, bs::I
 end
 
 @for_petsc function KSPSetMatSolveBatchSize(petsclib::$UnionPetscLib, ksp::AbstractKSP, bs::$PetscInt )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetMatSolveBatchSize", "ksp")
 
     @chk ccall(
                (:KSPSetMatSolveBatchSize, $petsc_library),
@@ -8284,6 +8446,7 @@ function KSPSetMinimumIterations(petsclib::PetscLibType, ksp::AbstractKSP, minit
 end
 
 @for_petsc function KSPSetMinimumIterations(petsclib::$UnionPetscLib, ksp::AbstractKSP, minit::$PetscInt )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetMinimumIterations", "ksp")
 
     @chk ccall(
                (:KSPSetMinimumIterations, $petsc_library),
@@ -8318,6 +8481,7 @@ function KSPSetNestLevel(petsclib::PetscLibType, ksp::AbstractKSP, level::Intege
 end
 
 @for_petsc function KSPSetNestLevel(petsclib::$UnionPetscLib, ksp::AbstractKSP, level::$PetscInt )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetNestLevel", "ksp")
 
     @chk ccall(
                (:KSPSetNestLevel, $petsc_library),
@@ -8367,6 +8531,7 @@ function KSPSetNormType(petsclib::PetscLibType, ksp::AbstractKSP, normtype::KSPN
 end
 
 @for_petsc function KSPSetNormType(petsclib::$UnionPetscLib, ksp::AbstractKSP, normtype::KSPNormType )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetNormType", "ksp")
 
     @chk ccall(
                (:KSPSetNormType, $petsc_library),
@@ -8403,6 +8568,7 @@ function KSPSetOperators(petsclib::PetscLibType, ksp::AbstractKSP, Amat::Abstrac
 end
 
 @for_petsc function KSPSetOperators(petsclib::$UnionPetscLib, ksp::AbstractKSP, Amat::AbstractPetscMat, Pmat::AbstractPetscMat )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetOperators", "ksp")
 
     @chk ccall(
                (:KSPSetOperators, $petsc_library),
@@ -8438,6 +8604,7 @@ function KSPSetOptionsPrefix(petsclib::PetscLibType, ksp::AbstractKSP, prefix::S
 end
 
 @for_petsc function KSPSetOptionsPrefix(petsclib::$UnionPetscLib, ksp::AbstractKSP, prefix::String )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetOptionsPrefix", "ksp")
 
     @chk ccall(
                (:KSPSetOptionsPrefix, $petsc_library),
@@ -8473,6 +8640,7 @@ function KSPSetPC(petsclib::PetscLibType, ksp::AbstractKSP, pc::AbstractPC)
 end
 
 @for_petsc function KSPSetPC(petsclib::$UnionPetscLib, ksp::AbstractKSP, pc::AbstractPC )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetPC", "ksp")
 
     @chk ccall(
                (:KSPSetPC, $petsc_library),
@@ -8517,6 +8685,7 @@ function KSPSetPCSide(petsclib::PetscLibType, ksp::AbstractKSP, side::PCSide)
 end
 
 @for_petsc function KSPSetPCSide(petsclib::$UnionPetscLib, ksp::AbstractKSP, side::PCSide )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetPCSide", "ksp")
 
     @chk ccall(
                (:KSPSetPCSide, $petsc_library),
@@ -8552,6 +8721,7 @@ function KSPSetPostSolve(petsclib::PetscLibType, ksp::AbstractKSP, postsolve::Pt
 end
 
 @for_petsc function KSPSetPostSolve(petsclib::$UnionPetscLib, ksp::AbstractKSP, postsolve::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetPostSolve", "ksp")
 
     @chk ccall(
                (:KSPSetPostSolve, $petsc_library),
@@ -8587,6 +8757,7 @@ function KSPSetPreSolve(petsclib::PetscLibType, ksp::AbstractKSP, presolve::Ptr{
 end
 
 @for_petsc function KSPSetPreSolve(petsclib::$UnionPetscLib, ksp::AbstractKSP, presolve::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetPreSolve", "ksp")
 
     @chk ccall(
                (:KSPSetPreSolve, $petsc_library),
@@ -8626,6 +8797,7 @@ function KSPSetResidualHistory(petsclib::PetscLibType, ksp::AbstractKSP, a::Abst
 end
 
 @for_petsc function KSPSetResidualHistory(petsclib::$UnionPetscLib, ksp::AbstractKSP, a::Vector{$PetscReal}, na::PetscCount, reset::PetscBool )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetResidualHistory", "ksp")
 
     @chk ccall(
                (:KSPSetResidualHistory, $petsc_library),
@@ -8665,6 +8837,7 @@ function KSPSetReusePreconditioner(petsclib::PetscLibType, ksp::AbstractKSP, fla
 end
 
 @for_petsc function KSPSetReusePreconditioner(petsclib::$UnionPetscLib, ksp::AbstractKSP, flag::PetscBool )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetReusePreconditioner", "ksp")
 
     @chk ccall(
                (:KSPSetReusePreconditioner, $petsc_library),
@@ -8700,6 +8873,7 @@ function KSPSetSkipPCSetFromOptions(petsclib::PetscLibType, ksp::AbstractKSP, fl
 end
 
 @for_petsc function KSPSetSkipPCSetFromOptions(petsclib::$UnionPetscLib, ksp::AbstractKSP, flag::PetscBool )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetSkipPCSetFromOptions", "ksp")
 
     @chk ccall(
                (:KSPSetSkipPCSetFromOptions, $petsc_library),
@@ -8736,6 +8910,7 @@ function KSPSetSupportedNorm(petsclib::PetscLibType, ksp::AbstractKSP, normtype:
 end
 
 @for_petsc function KSPSetSupportedNorm(petsclib::$UnionPetscLib, ksp::AbstractKSP, normtype::KSPNormType, pcside::PCSide, priority::$PetscInt )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetSupportedNorm", "ksp")
 
     @chk ccall(
                (:KSPSetSupportedNorm, $petsc_library),
@@ -8780,6 +8955,7 @@ function KSPSetTolerances(petsclib::PetscLibType, ksp::AbstractKSP, rtol::Real, 
 end
 
 @for_petsc function KSPSetTolerances(petsclib::$UnionPetscLib, ksp::AbstractKSP, rtol::$PetscReal, abstol::$PetscReal, dtol::$PetscReal, maxits::$PetscInt )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetTolerances", "ksp")
 
     @chk ccall(
                (:KSPSetTolerances, $petsc_library),
@@ -8817,6 +8993,7 @@ function KSPSetType(petsclib::PetscLibType, ksp::AbstractKSP, type::String)
 end
 
 @for_petsc function KSPSetType(petsclib::$UnionPetscLib, ksp::AbstractKSP, type::String )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetType", "ksp")
 
     @chk ccall(
                (:KSPSetType, $petsc_library),
@@ -8851,6 +9028,7 @@ function KSPSetUp(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPSetUp(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetUp", "ksp")
 
     @chk ccall(
                (:KSPSetUp, $petsc_library),
@@ -8885,6 +9063,7 @@ function KSPSetUpOnBlocks(petsclib::PetscLibType, ksp::AbstractKSP)
 end
 
 @for_petsc function KSPSetUpOnBlocks(petsclib::$UnionPetscLib, ksp::AbstractKSP )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetUpOnBlocks", "ksp")
 
     @chk ccall(
                (:KSPSetUpOnBlocks, $petsc_library),
@@ -8922,6 +9101,7 @@ function KSPSetUseExplicitTranspose(petsclib::PetscLibType, ksp::AbstractKSP, fl
 end
 
 @for_petsc function KSPSetUseExplicitTranspose(petsclib::$UnionPetscLib, ksp::AbstractKSP, flg::PetscBool )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetUseExplicitTranspose", "ksp")
 
     @chk ccall(
                (:KSPSetUseExplicitTranspose, $petsc_library),
@@ -8960,6 +9140,7 @@ function KSPSetUseFischerGuess(petsclib::PetscLibType, ksp::AbstractKSP, model::
 end
 
 @for_petsc function KSPSetUseFischerGuess(petsclib::$UnionPetscLib, ksp::AbstractKSP, model::$PetscInt, size::$PetscInt )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSetUseFischerGuess", "ksp")
 
     @chk ccall(
                (:KSPSetUseFischerGuess, $petsc_library),
@@ -9049,6 +9230,7 @@ function KSPSolve(petsclib::PetscLibType, ksp::AbstractKSP, b::Union{Ptr, Abstra
 end
 
 @for_petsc function KSPSolve(petsclib::$UnionPetscLib, ksp::AbstractKSP, b::Union{Ptr, AbstractPetscVec}, x::Union{Ptr, AbstractPetscVec} )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSolve", "ksp")
 
     @chk ccall(
                (:KSPSolve, $petsc_library),
@@ -9085,6 +9267,7 @@ function KSPSolveTranspose(petsclib::PetscLibType, ksp::AbstractKSP, b::Abstract
 end
 
 @for_petsc function KSPSolveTranspose(petsclib::$UnionPetscLib, ksp::AbstractKSP, b::AbstractPetscVec, x::AbstractPetscVec )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPSolveTranspose", "ksp")
 
     @chk ccall(
                (:KSPSolveTranspose, $petsc_library),
@@ -9125,6 +9308,8 @@ function KSPUnwindPreconditioner(petsclib::PetscLibType, ksp::AbstractKSP, vsoln
 end
 
 @for_petsc function KSPUnwindPreconditioner(petsclib::$UnionPetscLib, ksp::AbstractKSP, vsoln::AbstractPetscVec, vt1::AbstractPetscVec )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPUnwindPreconditioner", "ksp")
+	vsoln.ptr == C_NULL && throw_null_handle(vsoln, "KSPUnwindPreconditioner", "vsoln")
 
     @chk ccall(
                (:KSPUnwindPreconditioner, $petsc_library),
@@ -9163,6 +9348,7 @@ function KSPView(petsclib::PetscLibType, ksp::AbstractKSP, viewer::PetscViewer)
 end
 
 @for_petsc function KSPView(petsclib::$UnionPetscLib, ksp::AbstractKSP, viewer::PetscViewer )
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "KSPView", "ksp")
 
     @chk ccall(
                (:KSPView, $petsc_library),
@@ -9202,6 +9388,7 @@ function KSPViewFromOptions(petsclib::PetscLibType, A::AbstractKSP, obj, name::S
 end
 
 @for_petsc function KSPViewFromOptions(petsclib::$UnionPetscLib, A::AbstractKSP, obj, name::String )
+	A.ptr == C_NULL && throw_null_handle(A, "KSPViewFromOptions", "A")
 
     @chk ccall(
                (:KSPViewFromOptions, $petsc_library),

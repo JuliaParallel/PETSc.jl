@@ -25,6 +25,11 @@ function VecSFischer(petsclib::PetscLibType, X::AbstractPetscVec, F::AbstractPet
 end
 
 @for_petsc function VecSFischer(petsclib::$UnionPetscLib, X::AbstractPetscVec, F::AbstractPetscVec, L::AbstractPetscVec, U::AbstractPetscVec, mu::$PetscReal, FB::AbstractPetscVec )
+	X.ptr == C_NULL && throw_null_handle(X, "VecSFischer", "X")
+	F.ptr == C_NULL && throw_null_handle(F, "VecSFischer", "F")
+	L.ptr == C_NULL && throw_null_handle(L, "VecSFischer", "L")
+	U.ptr == C_NULL && throw_null_handle(U, "VecSFischer", "U")
+	FB.ptr == C_NULL && throw_null_handle(FB, "VecSFischer", "FB")
 
     @chk ccall(
                (:VecSFischer, $petsc_library),
@@ -59,6 +64,7 @@ function VecScale(petsclib::PetscLibType, x::AbstractPetscVec, alpha::Number)
 end
 
 @for_petsc function VecScale(petsclib::$UnionPetscLib, x::AbstractPetscVec, alpha::$PetscScalar )
+	x.ptr == C_NULL && throw_null_handle(x, "VecScale", "x")
 
     @chk ccall(
                (:VecScale, $petsc_library),
@@ -98,6 +104,8 @@ function VecScatterBegin(petsclib::PetscLibType, sf::VecScatter, x::AbstractPets
 end
 
 @for_petsc function VecScatterBegin(petsclib::$UnionPetscLib, sf::VecScatter, x::AbstractPetscVec, y::AbstractPetscVec, addv::InsertMode, mode::ScatterMode )
+	x.ptr == C_NULL && throw_null_handle(x, "VecScatterBegin", "x")
+	y.ptr == C_NULL && throw_null_handle(y, "VecScatterBegin", "y")
 
     @chk ccall(
                (:VecScatterBegin, $petsc_library),
@@ -182,6 +190,8 @@ function VecScatterCreate(petsclib::PetscLibType, x::AbstractPetscVec, ix::Abstr
 end
 
 @for_petsc function VecScatterCreate(petsclib::$UnionPetscLib, x::AbstractPetscVec, ix::AbstractIS, y::AbstractPetscVec, iy::AbstractIS )
+	x.ptr == C_NULL && throw_null_handle(x, "VecScatterCreate", "x")
+	y.ptr == C_NULL && throw_null_handle(y, "VecScatterCreate", "y")
 	newsf_ = Ref{VecScatter}()
 
     @chk ccall(
@@ -222,6 +232,7 @@ function VecScatterCreateToAll(petsclib::PetscLibType, vin::AbstractPetscVec)
 end
 
 @for_petsc function VecScatterCreateToAll(petsclib::$UnionPetscLib, vin::AbstractPetscVec )
+	vin.ptr == C_NULL && throw_null_handle(vin, "VecScatterCreateToAll", "vin")
 	ctx_ = Ref{VecScatter}()
 	vout_ = Ref{CVec}()
 
@@ -265,6 +276,7 @@ function VecScatterCreateToZero(petsclib::PetscLibType, vin::AbstractPetscVec)
 end
 
 @for_petsc function VecScatterCreateToZero(petsclib::$UnionPetscLib, vin::AbstractPetscVec )
+	vin.ptr == C_NULL && throw_null_handle(vin, "VecScatterCreateToZero", "vin")
 	ctx_ = Ref{VecScatter}()
 	vout_ = Ref{CVec}()
 
@@ -341,6 +353,8 @@ function VecScatterEnd(petsclib::PetscLibType, sf::VecScatter, x::AbstractPetscV
 end
 
 @for_petsc function VecScatterEnd(petsclib::$UnionPetscLib, sf::VecScatter, x::AbstractPetscVec, y::AbstractPetscVec, addv::InsertMode, mode::ScatterMode )
+	x.ptr == C_NULL && throw_null_handle(x, "VecScatterEnd", "x")
+	y.ptr == C_NULL && throw_null_handle(y, "VecScatterEnd", "y")
 
     @chk ccall(
                (:VecScatterEnd, $petsc_library),
@@ -769,6 +783,7 @@ function VecSet(petsclib::PetscLibType, x::AbstractPetscVec, alpha::Number)
 end
 
 @for_petsc function VecSet(petsclib::$UnionPetscLib, x::AbstractPetscVec, alpha::$PetscScalar )
+	x.ptr == C_NULL && throw_null_handle(x, "VecSet", "x")
 
     @chk ccall(
                (:VecSet, $petsc_library),
@@ -801,6 +816,7 @@ function VecSetBindingPropagates(petsclib::PetscLibType, v::AbstractPetscVec, fl
 end
 
 @for_petsc function VecSetBindingPropagates(petsclib::$UnionPetscLib, v::AbstractPetscVec, flg::PetscBool )
+	v.ptr == C_NULL && throw_null_handle(v, "VecSetBindingPropagates", "v")
 
     @chk ccall(
                (:VecSetBindingPropagates, $petsc_library),
@@ -836,6 +852,7 @@ function VecSetBlockSize(petsclib::PetscLibType, v::AbstractPetscVec, bs::Intege
 end
 
 @for_petsc function VecSetBlockSize(petsclib::$UnionPetscLib, v::AbstractPetscVec, bs::$PetscInt )
+	v.ptr == C_NULL && throw_null_handle(v, "VecSetBlockSize", "v")
 
     @chk ccall(
                (:VecSetBlockSize, $petsc_library),
@@ -870,6 +887,7 @@ function VecSetDM(petsclib::PetscLibType, v::AbstractPetscVec, dm::AbstractPetsc
 end
 
 @for_petsc function VecSetDM(petsclib::$UnionPetscLib, v::AbstractPetscVec, dm::AbstractPetscDM )
+	v.ptr == C_NULL && throw_null_handle(v, "VecSetDM", "v")
 
     @chk ccall(
                (:VecSetDM, $petsc_library),
@@ -903,6 +921,7 @@ function VecSetFromOptions(petsclib::PetscLibType, vec::AbstractPetscVec)
 end
 
 @for_petsc function VecSetFromOptions(petsclib::$UnionPetscLib, vec::AbstractPetscVec )
+	vec.ptr == C_NULL && throw_null_handle(vec, "VecSetFromOptions", "vec")
 
     @chk ccall(
                (:VecSetFromOptions, $petsc_library),
@@ -937,6 +956,7 @@ function VecSetLayout(petsclib::PetscLibType, x::AbstractPetscVec, map::PetscLay
 end
 
 @for_petsc function VecSetLayout(petsclib::$UnionPetscLib, x::AbstractPetscVec, map::PetscLayout )
+	x.ptr == C_NULL && throw_null_handle(x, "VecSetLayout", "x")
 
     @chk ccall(
                (:VecSetLayout, $petsc_library),
@@ -974,6 +994,7 @@ function VecSetLocalToGlobalMapping(petsclib::PetscLibType, x::AbstractPetscVec,
 end
 
 @for_petsc function VecSetLocalToGlobalMapping(petsclib::$UnionPetscLib, x::AbstractPetscVec, mapping::ISLocalToGlobalMapping )
+	x.ptr == C_NULL && throw_null_handle(x, "VecSetLocalToGlobalMapping", "x")
 
     @chk ccall(
                (:VecSetLocalToGlobalMapping, $petsc_library),
@@ -1009,6 +1030,7 @@ function VecSetOperation(petsclib::PetscLibType, vec::AbstractPetscVec, op::VecO
 end
 
 @for_petsc function VecSetOperation(petsclib::$UnionPetscLib, vec::AbstractPetscVec, op::VecOperation, f::Ptr{Cvoid} )
+	vec.ptr == C_NULL && throw_null_handle(vec, "VecSetOperation", "vec")
 
     @chk ccall(
                (:VecSetOperation, $petsc_library),
@@ -1044,6 +1066,7 @@ function VecSetOption(petsclib::PetscLibType, x::AbstractPetscVec, op::VecOption
 end
 
 @for_petsc function VecSetOption(petsclib::$UnionPetscLib, x::AbstractPetscVec, op::VecOption, flag::PetscBool )
+	x.ptr == C_NULL && throw_null_handle(x, "VecSetOption", "x")
 
     @chk ccall(
                (:VecSetOption, $petsc_library),
@@ -1079,6 +1102,7 @@ function VecSetOptionsPrefix(petsclib::PetscLibType, v::AbstractPetscVec, prefix
 end
 
 @for_petsc function VecSetOptionsPrefix(petsclib::$UnionPetscLib, v::AbstractPetscVec, prefix::String )
+	v.ptr == C_NULL && throw_null_handle(v, "VecSetOptionsPrefix", "v")
 
     @chk ccall(
                (:VecSetOptionsPrefix, $petsc_library),
@@ -1116,6 +1140,7 @@ function VecSetPinnedMemoryMin(petsclib::PetscLibType, v::AbstractPetscVec, mbyt
 end
 
 @for_petsc function VecSetPinnedMemoryMin(petsclib::$UnionPetscLib, v::AbstractPetscVec, mbytes::Csize_t )
+	v.ptr == C_NULL && throw_null_handle(v, "VecSetPinnedMemoryMin", "v")
 
     @chk ccall(
                (:VecSetPinnedMemoryMin, $petsc_library),
@@ -1151,6 +1176,7 @@ function VecSetPreallocationCOO(petsclib::PetscLibType, x::AbstractPetscVec, nco
 end
 
 @for_petsc function VecSetPreallocationCOO(petsclib::$UnionPetscLib, x::AbstractPetscVec, ncoo::PetscCount, coo_i::Vector{$PetscInt} )
+	x.ptr == C_NULL && throw_null_handle(x, "VecSetPreallocationCOO", "x")
 
     @chk ccall(
                (:VecSetPreallocationCOO, $petsc_library),
@@ -1186,6 +1212,7 @@ function VecSetPreallocationCOOLocal(petsclib::PetscLibType, x::AbstractPetscVec
 end
 
 @for_petsc function VecSetPreallocationCOOLocal(petsclib::$UnionPetscLib, x::AbstractPetscVec, ncoo::PetscCount, coo_i::Vector{$PetscInt} )
+	x.ptr == C_NULL && throw_null_handle(x, "VecSetPreallocationCOOLocal", "x")
 
     @chk ccall(
                (:VecSetPreallocationCOOLocal, $petsc_library),
@@ -1230,6 +1257,7 @@ function VecSetRandom(petsclib::PetscLibType, x::AbstractPetscVec, rctx::PetscRa
 end
 
 @for_petsc function VecSetRandom(petsclib::$UnionPetscLib, x::AbstractPetscVec, rctx::PetscRandom )
+	x.ptr == C_NULL && throw_null_handle(x, "VecSetRandom", "x")
 
     @chk ccall(
                (:VecSetRandom, $petsc_library),
@@ -1266,6 +1294,7 @@ function VecSetRandomGaussian(petsclib::PetscLibType, v::AbstractPetscVec, rng::
 end
 
 @for_petsc function VecSetRandomGaussian(petsclib::$UnionPetscLib, v::AbstractPetscVec, rng::PetscRandom, mean::$PetscReal, std_dev::$PetscReal )
+	v.ptr == C_NULL && throw_null_handle(v, "VecSetRandomGaussian", "v")
 
     @chk ccall(
                (:VecSetRandomGaussian, $petsc_library),
@@ -1302,6 +1331,7 @@ function VecSetSizes(petsclib::PetscLibType, v::AbstractPetscVec, n::Integer, M_
 end
 
 @for_petsc function VecSetSizes(petsclib::$UnionPetscLib, v::AbstractPetscVec, n::$PetscInt, M_N::$PetscInt )
+	v.ptr == C_NULL && throw_null_handle(v, "VecSetSizes", "v")
 
     @chk ccall(
                (:VecSetSizes, $petsc_library),
@@ -1339,6 +1369,7 @@ function VecSetType(petsclib::PetscLibType, vec::AbstractPetscVec, newType::Stri
 end
 
 @for_petsc function VecSetType(petsclib::$UnionPetscLib, vec::AbstractPetscVec, newType::String )
+	vec.ptr == C_NULL && throw_null_handle(vec, "VecSetType", "vec")
 
     @chk ccall(
                (:VecSetType, $petsc_library),
@@ -1372,6 +1403,7 @@ function VecSetUp(petsclib::PetscLibType, v::AbstractPetscVec)
 end
 
 @for_petsc function VecSetUp(petsclib::$UnionPetscLib, v::AbstractPetscVec )
+	v.ptr == C_NULL && throw_null_handle(v, "VecSetUp", "v")
 
     @chk ccall(
                (:VecSetUp, $petsc_library),
@@ -1411,6 +1443,7 @@ function VecSetValues(petsclib::PetscLibType, x::AbstractPetscVec, ni::Integer, 
 end
 
 @for_petsc function VecSetValues(petsclib::$UnionPetscLib, x::AbstractPetscVec, ni::$PetscInt, ix::Vector{$PetscInt}, y::Vector{$PetscScalar}, iora::InsertMode )
+	x.ptr == C_NULL && throw_null_handle(x, "VecSetValues", "x")
 
     @chk ccall(
                (:VecSetValues, $petsc_library),
@@ -1449,6 +1482,7 @@ function VecSetValuesBlocked(petsclib::PetscLibType, x::AbstractPetscVec, ni::In
 end
 
 @for_petsc function VecSetValuesBlocked(petsclib::$UnionPetscLib, x::AbstractPetscVec, ni::$PetscInt, ix::Vector{$PetscInt}, y::Vector{$PetscScalar}, iora::InsertMode )
+	x.ptr == C_NULL && throw_null_handle(x, "VecSetValuesBlocked", "x")
 
     @chk ccall(
                (:VecSetValuesBlocked, $petsc_library),
@@ -1488,6 +1522,7 @@ function VecSetValuesBlockedLocal(petsclib::PetscLibType, x::AbstractPetscVec, n
 end
 
 @for_petsc function VecSetValuesBlockedLocal(petsclib::$UnionPetscLib, x::AbstractPetscVec, ni::$PetscInt, ix::Vector{$PetscInt}, y::Vector{$PetscScalar}, iora::InsertMode )
+	x.ptr == C_NULL && throw_null_handle(x, "VecSetValuesBlockedLocal", "x")
 
     @chk ccall(
                (:VecSetValuesBlockedLocal, $petsc_library),
@@ -1523,6 +1558,7 @@ function VecSetValuesCOO(petsclib::PetscLibType, x::AbstractPetscVec, coo_v::Abs
 end
 
 @for_petsc function VecSetValuesCOO(petsclib::$UnionPetscLib, x::AbstractPetscVec, coo_v::Vector{$PetscScalar}, imode::InsertMode )
+	x.ptr == C_NULL && throw_null_handle(x, "VecSetValuesCOO", "x")
 
     @chk ccall(
                (:VecSetValuesCOO, $petsc_library),
@@ -1562,6 +1598,7 @@ function VecSetValuesLocal(petsclib::PetscLibType, x::AbstractPetscVec, ni::Inte
 end
 
 @for_petsc function VecSetValuesLocal(petsclib::$UnionPetscLib, x::AbstractPetscVec, ni::$PetscInt, ix::Vector{$PetscInt}, y::Vector{$PetscScalar}, iora::InsertMode )
+	x.ptr == C_NULL && throw_null_handle(x, "VecSetValuesLocal", "x")
 
     @chk ccall(
                (:VecSetValuesLocal, $petsc_library),
@@ -1599,6 +1636,7 @@ function VecSetValuesSection(petsclib::PetscLibType, v::AbstractPetscVec, s::Pet
 end
 
 @for_petsc function VecSetValuesSection(petsclib::$UnionPetscLib, v::AbstractPetscVec, s::PetscSection, point::$PetscInt, values::Vector{$PetscScalar}, mode::InsertMode )
+	v.ptr == C_NULL && throw_null_handle(v, "VecSetValuesSection", "v")
 
     @chk ccall(
                (:VecSetValuesSection, $petsc_library),
@@ -1634,6 +1672,7 @@ function VecShift(petsclib::PetscLibType, v::AbstractPetscVec, shift::Number)
 end
 
 @for_petsc function VecShift(petsclib::$UnionPetscLib, v::AbstractPetscVec, shift::$PetscScalar )
+	v.ptr == C_NULL && throw_null_handle(v, "VecShift", "v")
 
     @chk ccall(
                (:VecShift, $petsc_library),
@@ -1667,6 +1706,7 @@ function VecSqrtAbs(petsclib::PetscLibType, v::AbstractPetscVec)
 end
 
 @for_petsc function VecSqrtAbs(petsclib::$UnionPetscLib, v::AbstractPetscVec )
+	v.ptr == C_NULL && throw_null_handle(v, "VecSqrtAbs", "v")
 
     @chk ccall(
                (:VecSqrtAbs, $petsc_library),
@@ -1756,6 +1796,7 @@ function VecStashSetInitialSize(petsclib::PetscLibType, vec::AbstractPetscVec, s
 end
 
 @for_petsc function VecStashSetInitialSize(petsclib::$UnionPetscLib, vec::AbstractPetscVec, size::$PetscInt, bsize::$PetscInt )
+	vec.ptr == C_NULL && throw_null_handle(vec, "VecStashSetInitialSize", "vec")
 
     @chk ccall(
                (:VecStashSetInitialSize, $petsc_library),
@@ -1790,6 +1831,7 @@ function VecStashView(petsclib::PetscLibType, v::AbstractPetscVec, viewer::Petsc
 end
 
 @for_petsc function VecStashView(petsclib::$UnionPetscLib, v::AbstractPetscVec, viewer::PetscViewer )
+	v.ptr == C_NULL && throw_null_handle(v, "VecStashView", "v")
 
     @chk ccall(
                (:VecStashView, $petsc_library),
@@ -1869,6 +1911,10 @@ function VecStepBoundInfo(petsclib::PetscLibType, X::AbstractPetscVec, DX::Abstr
 end
 
 @for_petsc function VecStepBoundInfo(petsclib::$UnionPetscLib, X::AbstractPetscVec, DX::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec )
+	X.ptr == C_NULL && throw_null_handle(X, "VecStepBoundInfo", "X")
+	DX.ptr == C_NULL && throw_null_handle(DX, "VecStepBoundInfo", "DX")
+	XL.ptr == C_NULL && throw_null_handle(XL, "VecStepBoundInfo", "XL")
+	XU.ptr == C_NULL && throw_null_handle(XU, "VecStepBoundInfo", "XU")
 	boundmin_ = Ref{$PetscReal}()
 	wolfemin_ = Ref{$PetscReal}()
 	boundmax_ = Ref{$PetscReal}()
@@ -1912,6 +1958,8 @@ function VecStepMax(petsclib::PetscLibType, X::AbstractPetscVec, DX::AbstractPet
 end
 
 @for_petsc function VecStepMax(petsclib::$UnionPetscLib, X::AbstractPetscVec, DX::AbstractPetscVec )
+	X.ptr == C_NULL && throw_null_handle(X, "VecStepMax", "X")
+	DX.ptr == C_NULL && throw_null_handle(DX, "VecStepMax", "DX")
 	step_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -1953,6 +2001,10 @@ function VecStepMaxBounded(petsclib::PetscLibType, X::AbstractPetscVec, DX::Abst
 end
 
 @for_petsc function VecStepMaxBounded(petsclib::$UnionPetscLib, X::AbstractPetscVec, DX::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec )
+	X.ptr == C_NULL && throw_null_handle(X, "VecStepMaxBounded", "X")
+	DX.ptr == C_NULL && throw_null_handle(DX, "VecStepMaxBounded", "DX")
+	XL.ptr == C_NULL && throw_null_handle(XL, "VecStepMaxBounded", "XL")
+	XU.ptr == C_NULL && throw_null_handle(XU, "VecStepMaxBounded", "XU")
 	stepmax_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -1995,6 +2047,8 @@ function VecStrideGather(petsclib::PetscLibType, v::AbstractPetscVec, start::Int
 end
 
 @for_petsc function VecStrideGather(petsclib::$UnionPetscLib, v::AbstractPetscVec, start::$PetscInt, s::AbstractPetscVec, addv::InsertMode )
+	v.ptr == C_NULL && throw_null_handle(v, "VecStrideGather", "v")
+	s.ptr == C_NULL && throw_null_handle(s, "VecStrideGather", "s")
 
     @chk ccall(
                (:VecStrideGather, $petsc_library),
@@ -2034,6 +2088,7 @@ function VecStrideGatherAll(petsclib::PetscLibType, v::AbstractPetscVec, s::Vect
 end
 
 @for_petsc function VecStrideGatherAll(petsclib::$UnionPetscLib, v::AbstractPetscVec, s::Vector{<:AbstractPetscVec}, addv::InsertMode )
+	v.ptr == C_NULL && throw_null_handle(v, "VecStrideGatherAll", "v")
 
     @chk ccall(
                (:VecStrideGatherAll, $petsc_library),
@@ -2073,6 +2128,7 @@ function VecStrideMax(petsclib::PetscLibType, v::AbstractPetscVec, start::Intege
 end
 
 @for_petsc function VecStrideMax(petsclib::$UnionPetscLib, v::AbstractPetscVec, start::$PetscInt )
+	v.ptr == C_NULL && throw_null_handle(v, "VecStrideMax", "v")
 	idex_ = Ref{$PetscInt}()
 	nrm_ = Ref{$PetscReal}()
 
@@ -2116,6 +2172,7 @@ function VecStrideMaxAll(petsclib::PetscLibType, v::AbstractPetscVec, idex::Abst
 end
 
 @for_petsc function VecStrideMaxAll(petsclib::$UnionPetscLib, v::AbstractPetscVec, idex::Vector{$PetscInt}, nrm::Vector{$PetscReal} )
+	v.ptr == C_NULL && throw_null_handle(v, "VecStrideMaxAll", "v")
 
     @chk ccall(
                (:VecStrideMaxAll, $petsc_library),
@@ -2155,6 +2212,7 @@ function VecStrideMin(petsclib::PetscLibType, v::AbstractPetscVec, start::Intege
 end
 
 @for_petsc function VecStrideMin(petsclib::$UnionPetscLib, v::AbstractPetscVec, start::$PetscInt )
+	v.ptr == C_NULL && throw_null_handle(v, "VecStrideMin", "v")
 	idex_ = Ref{$PetscInt}()
 	nrm_ = Ref{$PetscReal}()
 
@@ -2198,6 +2256,7 @@ function VecStrideMinAll(petsclib::PetscLibType, v::AbstractPetscVec, idex::Abst
 end
 
 @for_petsc function VecStrideMinAll(petsclib::$UnionPetscLib, v::AbstractPetscVec, idex::Vector{$PetscInt}, nrm::Vector{$PetscReal} )
+	v.ptr == C_NULL && throw_null_handle(v, "VecStrideMinAll", "v")
 
     @chk ccall(
                (:VecStrideMinAll, $petsc_library),
@@ -2237,6 +2296,7 @@ function VecStrideNorm(petsclib::PetscLibType, v::AbstractPetscVec, start::Integ
 end
 
 @for_petsc function VecStrideNorm(petsclib::$UnionPetscLib, v::AbstractPetscVec, start::$PetscInt, ntype::NormType )
+	v.ptr == C_NULL && throw_null_handle(v, "VecStrideNorm", "v")
 	nrm_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -2277,6 +2337,7 @@ function VecStrideNormAll(petsclib::PetscLibType, v::AbstractPetscVec, ntype::No
 end
 
 @for_petsc function VecStrideNormAll(petsclib::$UnionPetscLib, v::AbstractPetscVec, ntype::NormType, nrm::Vector{$PetscReal} )
+	v.ptr == C_NULL && throw_null_handle(v, "VecStrideNormAll", "v")
 
     @chk ccall(
                (:VecStrideNormAll, $petsc_library),
@@ -2313,6 +2374,7 @@ function VecStrideScale(petsclib::PetscLibType, v::AbstractPetscVec, start::Inte
 end
 
 @for_petsc function VecStrideScale(petsclib::$UnionPetscLib, v::AbstractPetscVec, start::$PetscInt, scale::$PetscScalar )
+	v.ptr == C_NULL && throw_null_handle(v, "VecStrideScale", "v")
 
     @chk ccall(
                (:VecStrideScale, $petsc_library),
@@ -2348,6 +2410,7 @@ function VecStrideScaleAll(petsclib::PetscLibType, v::AbstractPetscVec, scales::
 end
 
 @for_petsc function VecStrideScaleAll(petsclib::$UnionPetscLib, v::AbstractPetscVec, scales::Vector{$PetscScalar} )
+	v.ptr == C_NULL && throw_null_handle(v, "VecStrideScaleAll", "v")
 
     @chk ccall(
                (:VecStrideScaleAll, $petsc_library),
@@ -2387,6 +2450,8 @@ function VecStrideScatter(petsclib::PetscLibType, s::AbstractPetscVec, start::In
 end
 
 @for_petsc function VecStrideScatter(petsclib::$UnionPetscLib, s::AbstractPetscVec, start::$PetscInt, v::AbstractPetscVec, addv::InsertMode )
+	s.ptr == C_NULL && throw_null_handle(s, "VecStrideScatter", "s")
+	v.ptr == C_NULL && throw_null_handle(v, "VecStrideScatter", "v")
 
     @chk ccall(
                (:VecStrideScatter, $petsc_library),
@@ -2425,6 +2490,7 @@ function VecStrideScatterAll(petsclib::PetscLibType, s::Vector{<:AbstractPetscVe
 end
 
 @for_petsc function VecStrideScatterAll(petsclib::$UnionPetscLib, s::Vector{<:AbstractPetscVec}, v::AbstractPetscVec, addv::InsertMode )
+	v.ptr == C_NULL && throw_null_handle(v, "VecStrideScatterAll", "v")
 
     @chk ccall(
                (:VecStrideScatterAll, $petsc_library),
@@ -2461,6 +2527,7 @@ function VecStrideSet(petsclib::PetscLibType, v::AbstractPetscVec, start::Intege
 end
 
 @for_petsc function VecStrideSet(petsclib::$UnionPetscLib, v::AbstractPetscVec, start::$PetscInt, s::$PetscScalar )
+	v.ptr == C_NULL && throw_null_handle(v, "VecStrideSet", "v")
 
     @chk ccall(
                (:VecStrideSet, $petsc_library),
@@ -2503,6 +2570,8 @@ function VecStrideSubSetGather(petsclib::PetscLibType, v::AbstractPetscVec, nidx
 end
 
 @for_petsc function VecStrideSubSetGather(petsclib::$UnionPetscLib, v::AbstractPetscVec, nidx::$PetscInt, idxv::Vector{$PetscInt}, idxs::Vector{$PetscInt}, s::AbstractPetscVec, addv::InsertMode )
+	v.ptr == C_NULL && throw_null_handle(v, "VecStrideSubSetGather", "v")
+	s.ptr == C_NULL && throw_null_handle(s, "VecStrideSubSetGather", "s")
 
     @chk ccall(
                (:VecStrideSubSetGather, $petsc_library),
@@ -2544,6 +2613,8 @@ function VecStrideSubSetScatter(petsclib::PetscLibType, s::AbstractPetscVec, nid
 end
 
 @for_petsc function VecStrideSubSetScatter(petsclib::$UnionPetscLib, s::AbstractPetscVec, nidx::$PetscInt, idxs::Vector{$PetscInt}, idxv::Vector{$PetscInt}, v::AbstractPetscVec, addv::InsertMode )
+	s.ptr == C_NULL && throw_null_handle(s, "VecStrideSubSetScatter", "s")
+	v.ptr == C_NULL && throw_null_handle(v, "VecStrideSubSetScatter", "v")
 
     @chk ccall(
                (:VecStrideSubSetScatter, $petsc_library),
@@ -2582,6 +2653,7 @@ function VecStrideSum(petsclib::PetscLibType, v::AbstractPetscVec, start::Intege
 end
 
 @for_petsc function VecStrideSum(petsclib::$UnionPetscLib, v::AbstractPetscVec, start::$PetscInt )
+	v.ptr == C_NULL && throw_null_handle(v, "VecStrideSum", "v")
 	sum_ = Ref{$PetscScalar}()
 
     @chk ccall(
@@ -2620,6 +2692,7 @@ function VecStrideSumAll(petsclib::PetscLibType, v::AbstractPetscVec, sums::Abst
 end
 
 @for_petsc function VecStrideSumAll(petsclib::$UnionPetscLib, v::AbstractPetscVec, sums::Vector{$PetscScalar} )
+	v.ptr == C_NULL && throw_null_handle(v, "VecStrideSumAll", "v")
 
     @chk ccall(
                (:VecStrideSumAll, $petsc_library),
@@ -2656,6 +2729,7 @@ function VecSum(petsclib::PetscLibType, v::AbstractPetscVec)
 end
 
 @for_petsc function VecSum(petsclib::$UnionPetscLib, v::AbstractPetscVec )
+	v.ptr == C_NULL && throw_null_handle(v, "VecSum", "v")
 	sum_ = Ref{$PetscScalar}()
 
     @chk ccall(
@@ -2692,6 +2766,8 @@ function VecSwap(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVe
 end
 
 @for_petsc function VecSwap(petsclib::$UnionPetscLib, x::AbstractPetscVec, y::AbstractPetscVec )
+	x.ptr == C_NULL && throw_null_handle(x, "VecSwap", "x")
+	y.ptr == C_NULL && throw_null_handle(y, "VecSwap", "y")
 
     @chk ccall(
                (:VecSwap, $petsc_library),

@@ -25,6 +25,7 @@ function PetscFECompositeGetMapping(petsclib::PetscLibType, fem::AbstractPetscFE
 end
 
 @for_petsc function PetscFECompositeGetMapping(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFECompositeGetMapping", "fem")
 	numSubelements_ = Ref{$PetscInt}()
 	v0_ = Ref{Ptr{$PetscReal}}()
 	jac_ = Ref{Ptr{$PetscReal}}()
@@ -73,6 +74,7 @@ function PetscFEComputeTabulation(petsclib::PetscLibType, fem::AbstractPetscFE, 
 end
 
 @for_petsc function PetscFEComputeTabulation(petsclib::$UnionPetscLib, fem::AbstractPetscFE, npoints::$PetscInt, points::Vector{$PetscReal}, K::$PetscInt, T::PetscTabulation )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFEComputeTabulation", "fem")
 
     @chk ccall(
                (:PetscFEComputeTabulation, $petsc_library),
@@ -107,6 +109,8 @@ function PetscFECopyQuadrature(petsclib::PetscLibType, sfe::AbstractPetscFE, tfe
 end
 
 @for_petsc function PetscFECopyQuadrature(petsclib::$UnionPetscLib, sfe::AbstractPetscFE, tfe::AbstractPetscFE )
+	sfe.ptr == C_NULL && throw_null_handle(sfe, "PetscFECopyQuadrature", "sfe")
+	tfe.ptr == C_NULL && throw_null_handle(tfe, "PetscFECopyQuadrature", "tfe")
 
     @chk ccall(
                (:PetscFECopyQuadrature, $petsc_library),
@@ -181,6 +185,7 @@ function PetscFECreateBrokenElement(petsclib::PetscLibType, cgfe::AbstractPetscF
 end
 
 @for_petsc function PetscFECreateBrokenElement(petsclib::$UnionPetscLib, cgfe::AbstractPetscFE )
+	cgfe.ptr == C_NULL && throw_null_handle(cgfe, "PetscFECreateBrokenElement", "cgfe")
 	dgfe_ = Ref{CPetscFE}()
 
     @chk ccall(
@@ -264,6 +269,7 @@ function PetscFECreateCellGeometry(petsclib::PetscLibType, fe::AbstractPetscFE, 
 end
 
 @for_petsc function PetscFECreateCellGeometry(petsclib::$UnionPetscLib, fe::AbstractPetscFE, quad::PetscQuadrature )
+	fe.ptr == C_NULL && throw_null_handle(fe, "PetscFECreateCellGeometry", "fe")
 	cgeom_ = Ref{PetscFEGeom}()
 
     @chk ccall(
@@ -389,6 +395,7 @@ function PetscFECreateHeightTrace(petsclib::PetscLibType, fe::AbstractPetscFE, h
 end
 
 @for_petsc function PetscFECreateHeightTrace(petsclib::$UnionPetscLib, fe::AbstractPetscFE, height::$PetscInt )
+	fe.ptr == C_NULL && throw_null_handle(fe, "PetscFECreateHeightTrace", "fe")
 	trFE_ = Ref{CPetscFE}()
 
     @chk ccall(
@@ -518,6 +525,7 @@ function PetscFECreateTabulation(petsclib::PetscLibType, fem::AbstractPetscFE, n
 end
 
 @for_petsc function PetscFECreateTabulation(petsclib::$UnionPetscLib, fem::AbstractPetscFE, nrepl::$PetscInt, npoints::$PetscInt, points::Vector{$PetscReal}, K::$PetscInt )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFECreateTabulation", "fem")
 	T_ = Ref{PetscTabulation}()
 
     @chk ccall(
@@ -570,6 +578,7 @@ function PetscFECreateVector(petsclib::PetscLibType, scalar_fe::AbstractPetscFE,
 end
 
 @for_petsc function PetscFECreateVector(petsclib::$UnionPetscLib, scalar_fe::AbstractPetscFE, num_copies::$PetscInt, interleave_basis::PetscBool, interleave_components::PetscBool )
+	scalar_fe.ptr == C_NULL && throw_null_handle(scalar_fe, "PetscFECreateVector", "scalar_fe")
 	vector_fe_ = Ref{CPetscFE}()
 
     @chk ccall(
@@ -679,6 +688,7 @@ function PetscFEExpandFaceQuadrature(petsclib::PetscLibType, fe::AbstractPetscFE
 end
 
 @for_petsc function PetscFEExpandFaceQuadrature(petsclib::$UnionPetscLib, fe::AbstractPetscFE, fq::PetscQuadrature )
+	fe.ptr == C_NULL && throw_null_handle(fe, "PetscFEExpandFaceQuadrature", "fe")
 	efq_ = Ref{PetscQuadrature}()
 
     @chk ccall(
@@ -995,6 +1005,7 @@ function PetscFEGetBasisSpace(petsclib::PetscLibType, fem::AbstractPetscFE)
 end
 
 @for_petsc function PetscFEGetBasisSpace(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFEGetBasisSpace", "fem")
 	sp_ = Ref{PetscSpace}()
 
     @chk ccall(
@@ -1034,6 +1045,7 @@ function PetscFEGetCellTabulation(petsclib::PetscLibType, fem::AbstractPetscFE, 
 end
 
 @for_petsc function PetscFEGetCellTabulation(petsclib::$UnionPetscLib, fem::AbstractPetscFE, k::$PetscInt )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFEGetCellTabulation", "fem")
 	T_ = Ref{PetscTabulation}()
 
     @chk ccall(
@@ -1072,6 +1084,7 @@ function PetscFEGetDimension(petsclib::PetscLibType, fem::AbstractPetscFE)
 end
 
 @for_petsc function PetscFEGetDimension(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFEGetDimension", "fem")
 	dim_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1110,6 +1123,7 @@ function PetscFEGetDualSpace(petsclib::PetscLibType, fem::AbstractPetscFE)
 end
 
 @for_petsc function PetscFEGetDualSpace(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFEGetDualSpace", "fem")
 	sp_ = Ref{PetscDualSpace}()
 
     @chk ccall(
@@ -1148,6 +1162,7 @@ function PetscFEGetFaceCentroidTabulation(petsclib::PetscLibType, fem::AbstractP
 end
 
 @for_petsc function PetscFEGetFaceCentroidTabulation(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFEGetFaceCentroidTabulation", "fem")
 	Tc_ = Ref{PetscTabulation}()
 
     @chk ccall(
@@ -1186,6 +1201,7 @@ function PetscFEGetFaceQuadrature(petsclib::PetscLibType, fem::AbstractPetscFE)
 end
 
 @for_petsc function PetscFEGetFaceQuadrature(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFEGetFaceQuadrature", "fem")
 	q_ = Ref{PetscQuadrature}()
 
     @chk ccall(
@@ -1225,6 +1241,7 @@ function PetscFEGetFaceTabulation(petsclib::PetscLibType, fem::AbstractPetscFE, 
 end
 
 @for_petsc function PetscFEGetFaceTabulation(petsclib::$UnionPetscLib, fem::AbstractPetscFE, k::$PetscInt )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFEGetFaceTabulation", "fem")
 	Tf_ = Ref{PetscTabulation}()
 
     @chk ccall(
@@ -1262,6 +1279,7 @@ function PetscFEGetHeightSubspace(petsclib::PetscLibType, fe::AbstractPetscFE, h
 end
 
 @for_petsc function PetscFEGetHeightSubspace(petsclib::$UnionPetscLib, fe::AbstractPetscFE, height::$PetscInt )
+	fe.ptr == C_NULL && throw_null_handle(fe, "PetscFEGetHeightSubspace", "fe")
 	subfe_ = Ref{CPetscFE}()
 
     @chk ccall(
@@ -1300,6 +1318,7 @@ function PetscFEGetNumComponents(petsclib::PetscLibType, fem::AbstractPetscFE)
 end
 
 @for_petsc function PetscFEGetNumComponents(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFEGetNumComponents", "fem")
 	comp_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1338,6 +1357,7 @@ function PetscFEGetNumDof(petsclib::PetscLibType, fem::AbstractPetscFE)
 end
 
 @for_petsc function PetscFEGetNumDof(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFEGetNumDof", "fem")
 	numDof_ = Ref{Ptr{$PetscInt}}()
 
     @chk ccall(
@@ -1377,6 +1397,7 @@ function PetscFEGetQuadrature(petsclib::PetscLibType, fem::AbstractPetscFE)
 end
 
 @for_petsc function PetscFEGetQuadrature(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFEGetQuadrature", "fem")
 	q_ = Ref{PetscQuadrature}()
 
     @chk ccall(
@@ -1415,6 +1436,7 @@ function PetscFEGetSpatialDimension(petsclib::PetscLibType, fem::AbstractPetscFE
 end
 
 @for_petsc function PetscFEGetSpatialDimension(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFEGetSpatialDimension", "fem")
 	dim_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1456,6 +1478,7 @@ function PetscFEGetTileSizes(petsclib::PetscLibType, fem::AbstractPetscFE)
 end
 
 @for_petsc function PetscFEGetTileSizes(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFEGetTileSizes", "fem")
 	blockSize_ = Ref{$PetscInt}()
 	numBlocks_ = Ref{$PetscInt}()
 	batchSize_ = Ref{$PetscInt}()
@@ -1500,6 +1523,7 @@ function PetscFEGetType(petsclib::PetscLibType, fem::AbstractPetscFE)
 end
 
 @for_petsc function PetscFEGetType(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFEGetType", "fem")
 	name_ = Ref{PetscFEType}()
 
     @chk ccall(
@@ -1933,6 +1957,7 @@ function PetscFELimitDegree(petsclib::PetscLibType, fe::AbstractPetscFE, minDegr
 end
 
 @for_petsc function PetscFELimitDegree(petsclib::$UnionPetscLib, fe::AbstractPetscFE, minDegree::$PetscInt, maxDegree::$PetscInt )
+	fe.ptr == C_NULL && throw_null_handle(fe, "PetscFELimitDegree", "fe")
 	newfe_ = Ref{CPetscFE}()
 
     @chk ccall(
@@ -1969,6 +1994,7 @@ function PetscFEOpenCLGetRealType(petsclib::PetscLibType, fem::AbstractPetscFE)
 end
 
 @for_petsc function PetscFEOpenCLGetRealType(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFEOpenCLGetRealType", "fem")
 	realType_ = Ref{PetscDataType}()
 
     @chk ccall(
@@ -2003,6 +2029,7 @@ function PetscFEOpenCLSetRealType(petsclib::PetscLibType, fem::AbstractPetscFE, 
 end
 
 @for_petsc function PetscFEOpenCLSetRealType(petsclib::$UnionPetscLib, fem::AbstractPetscFE, realType::PetscDataType )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFEOpenCLSetRealType", "fem")
 
     @chk ccall(
                (:PetscFEOpenCLSetRealType, $petsc_library),
@@ -2151,6 +2178,7 @@ function PetscFERefine(petsclib::PetscLibType, fe::AbstractPetscFE)
 end
 
 @for_petsc function PetscFERefine(petsclib::$UnionPetscLib, fe::AbstractPetscFE )
+	fe.ptr == C_NULL && throw_null_handle(fe, "PetscFERefine", "fe")
 	feRef_ = Ref{CPetscFE}()
 
     @chk ccall(
@@ -2219,6 +2247,7 @@ function PetscFESetBasisSpace(petsclib::PetscLibType, fem::AbstractPetscFE, sp::
 end
 
 @for_petsc function PetscFESetBasisSpace(petsclib::$UnionPetscLib, fem::AbstractPetscFE, sp::PetscSpace )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFESetBasisSpace", "fem")
 
     @chk ccall(
                (:PetscFESetBasisSpace, $petsc_library),
@@ -2253,6 +2282,7 @@ function PetscFESetDualSpace(petsclib::PetscLibType, fem::AbstractPetscFE, sp::P
 end
 
 @for_petsc function PetscFESetDualSpace(petsclib::$UnionPetscLib, fem::AbstractPetscFE, sp::PetscDualSpace )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFESetDualSpace", "fem")
 
     @chk ccall(
                (:PetscFESetDualSpace, $petsc_library),
@@ -2287,6 +2317,7 @@ function PetscFESetFaceQuadrature(petsclib::PetscLibType, fem::AbstractPetscFE, 
 end
 
 @for_petsc function PetscFESetFaceQuadrature(petsclib::$UnionPetscLib, fem::AbstractPetscFE, q::PetscQuadrature )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFESetFaceQuadrature", "fem")
 
     @chk ccall(
                (:PetscFESetFaceQuadrature, $petsc_library),
@@ -2324,6 +2355,7 @@ function PetscFESetFromOptions(petsclib::PetscLibType, fem::AbstractPetscFE)
 end
 
 @for_petsc function PetscFESetFromOptions(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFESetFromOptions", "fem")
 
     @chk ccall(
                (:PetscFESetFromOptions, $petsc_library),
@@ -2358,6 +2390,7 @@ function PetscFESetName(petsclib::PetscLibType, fe::AbstractPetscFE, name::Strin
 end
 
 @for_petsc function PetscFESetName(petsclib::$UnionPetscLib, fe::AbstractPetscFE, name::String )
+	fe.ptr == C_NULL && throw_null_handle(fe, "PetscFESetName", "fe")
 
     @chk ccall(
                (:PetscFESetName, $petsc_library),
@@ -2392,6 +2425,7 @@ function PetscFESetNumComponents(petsclib::PetscLibType, fem::AbstractPetscFE, c
 end
 
 @for_petsc function PetscFESetNumComponents(petsclib::$UnionPetscLib, fem::AbstractPetscFE, comp::$PetscInt )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFESetNumComponents", "fem")
 
     @chk ccall(
                (:PetscFESetNumComponents, $petsc_library),
@@ -2426,6 +2460,7 @@ function PetscFESetQuadrature(petsclib::PetscLibType, fem::AbstractPetscFE, q::P
 end
 
 @for_petsc function PetscFESetQuadrature(petsclib::$UnionPetscLib, fem::AbstractPetscFE, q::PetscQuadrature )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFESetQuadrature", "fem")
 
     @chk ccall(
                (:PetscFESetQuadrature, $petsc_library),
@@ -2463,6 +2498,7 @@ function PetscFESetTileSizes(petsclib::PetscLibType, fem::AbstractPetscFE, block
 end
 
 @for_petsc function PetscFESetTileSizes(petsclib::$UnionPetscLib, fem::AbstractPetscFE, blockSize::$PetscInt, numBlocks::$PetscInt, batchSize::$PetscInt, numBatches::$PetscInt )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFESetTileSizes", "fem")
 
     @chk ccall(
                (:PetscFESetTileSizes, $petsc_library),
@@ -2500,6 +2536,7 @@ function PetscFESetType(petsclib::PetscLibType, fem::AbstractPetscFE, name::Stri
 end
 
 @for_petsc function PetscFESetType(petsclib::$UnionPetscLib, fem::AbstractPetscFE, name::String )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFESetType", "fem")
 
     @chk ccall(
                (:PetscFESetType, $petsc_library),
@@ -2533,6 +2570,7 @@ function PetscFESetUp(petsclib::PetscLibType, fem::AbstractPetscFE)
 end
 
 @for_petsc function PetscFESetUp(petsclib::$UnionPetscLib, fem::AbstractPetscFE )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFESetUp", "fem")
 
     @chk ccall(
                (:PetscFESetUp, $petsc_library),
@@ -2567,6 +2605,7 @@ function PetscFEView(petsclib::PetscLibType, fem::AbstractPetscFE, viewer::Petsc
 end
 
 @for_petsc function PetscFEView(petsclib::$UnionPetscLib, fem::AbstractPetscFE, viewer::PetscViewer )
+	fem.ptr == C_NULL && throw_null_handle(fem, "PetscFEView", "fem")
 
     @chk ccall(
                (:PetscFEView, $petsc_library),
@@ -2605,6 +2644,7 @@ function PetscFEViewFromOptions(petsclib::PetscLibType, A::AbstractPetscFE, obj,
 end
 
 @for_petsc function PetscFEViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPetscFE, obj, name::String )
+	A.ptr == C_NULL && throw_null_handle(A, "PetscFEViewFromOptions", "A")
 
     @chk ccall(
                (:PetscFEViewFromOptions, $petsc_library),

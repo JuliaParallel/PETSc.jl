@@ -116,6 +116,14 @@ for petsclib in PETSc.petsclibs
             # A wrapper that never held an object is still a valid argument
             # meaning "no object"; so is a borrowed one after its owner's destroy!.
             @test PETSc.LibPETSc.VecDestroy(petsclib, PETSc.PetscVec(petsclib)) === nothing
+            # ... except where PETSc requires an object, which the optimized build doesn't check
+            @test_throws "VecScale needs a PetscVec for `x`, got one with a null pointer" LibPETSc.VecScale(petsclib, PETSc.PetscVec(petsclib), PetscScalar(2))
+            @test_throws "MatMult needs a PetscMat for `mat`" LibPETSc.MatMult(petsclib, PETSc.PetscMat(petsclib), PETSc.PetscVec(petsclib), PETSc.PetscVec(petsclib))
+            # the preconditioning matrix is optional: NULL means "the same as Amat"
+            A2 = PETSc.PetscMat(petsclib, 4, 4, 1)
+            ksp2 = PETSc.KSP(A2)
+            @test LibPETSc.KSPSetOperators(petsclib, ksp2, A2, PETSc.PetscMat(petsclib)) === nothing
+            foreach(PETSc.destroy!, (ksp2, A2))
 
             v2 = PETSc.PetscVec(petsclib, PetscScalar[1, 2, 3, 4])
             borrowed = PETSc.PetscVec(petsclib, v2.ptr; own = false)

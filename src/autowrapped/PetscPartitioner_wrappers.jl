@@ -64,6 +64,7 @@ function PetscPartitionerDMPlexPartition(petsclib::PetscLibType, part::PetscPart
 end
 
 @for_petsc function PetscPartitionerDMPlexPartition(petsclib::$UnionPetscLib, part::PetscPartitioner, dm::AbstractPetscDM, targetSection::PetscSection, partSection::PetscSection )
+	dm.ptr == C_NULL && throw_null_handle(dm, "PetscPartitionerDMPlexPartition", "dm")
 	partition_ = Ref{CIS}()
 
     @chk ccall(

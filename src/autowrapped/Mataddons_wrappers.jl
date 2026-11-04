@@ -322,6 +322,7 @@ function MatCoarsenSetAdjacency(petsclib::PetscLibType, agg::MatCoarsen, adj::Ab
 end
 
 @for_petsc function MatCoarsenSetAdjacency(petsclib::$UnionPetscLib, agg::MatCoarsen, adj::AbstractPetscMat )
+	adj.ptr == C_NULL && throw_null_handle(adj, "MatCoarsenSetAdjacency", "adj")
 
     @chk ccall(
                (:MatCoarsenSetAdjacency, $petsc_library),
@@ -736,6 +737,7 @@ function MatColoringCreate(petsclib::PetscLibType, m::AbstractPetscMat)
 end
 
 @for_petsc function MatColoringCreate(petsclib::$UnionPetscLib, m::AbstractPetscMat )
+	m.ptr == C_NULL && throw_null_handle(m, "MatColoringCreate", "m")
 	mcptr_ = Ref{MatColoring}()
 
     @chk ccall(
@@ -851,6 +853,7 @@ function MatColoringGetDegrees(petsclib::PetscLibType, G::AbstractPetscMat, dist
 end
 
 @for_petsc function MatColoringGetDegrees(petsclib::$UnionPetscLib, G::AbstractPetscMat, distance::$PetscInt )
+	G.ptr == C_NULL && throw_null_handle(G, "MatColoringGetDegrees", "G")
 	degrees_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -969,6 +972,7 @@ function MatColoringPatch(petsclib::PetscLibType, mat::AbstractPetscMat, ncolors
 end
 
 @for_petsc function MatColoringPatch(petsclib::$UnionPetscLib, mat::AbstractPetscMat, ncolors::$PetscInt, n::$PetscInt, colorarray::Vector{ISColoringValue} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatColoringPatch", "mat")
 	iscoloring_ = Ref{ISColoring}()
 
     @chk ccall(
@@ -1304,6 +1308,8 @@ function MatFDColoringApply(petsclib::PetscLibType, J::AbstractPetscMat, colorin
 end
 
 @for_petsc function MatFDColoringApply(petsclib::$UnionPetscLib, J::AbstractPetscMat, coloring::MatFDColoring, x1::AbstractPetscVec, sctx::Ptr{Cvoid} )
+	J.ptr == C_NULL && throw_null_handle(J, "MatFDColoringApply", "J")
+	x1.ptr == C_NULL && throw_null_handle(x1, "MatFDColoringApply", "x1")
 
     @chk ccall(
                (:MatFDColoringApply, $petsc_library),
@@ -1344,6 +1350,7 @@ function MatFDColoringCreate(petsclib::PetscLibType, mat::AbstractPetscMat, isco
 end
 
 @for_petsc function MatFDColoringCreate(petsclib::$UnionPetscLib, mat::AbstractPetscMat, iscoloring::ISColoring )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatFDColoringCreate", "mat")
 	color_ = Ref{MatFDColoring}()
 
     @chk ccall(
@@ -1727,6 +1734,7 @@ function MatFDColoringSetUp(petsclib::PetscLibType, mat::AbstractPetscMat, iscol
 end
 
 @for_petsc function MatFDColoringSetUp(petsclib::$UnionPetscLib, mat::AbstractPetscMat, iscoloring::ISColoring, color::MatFDColoring )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatFDColoringSetUp", "mat")
 
     @chk ccall(
                (:MatFDColoringSetUp, $petsc_library),
@@ -1763,6 +1771,7 @@ function MatFDColoringSetValues(petsclib::PetscLibType, J::AbstractPetscMat, col
 end
 
 @for_petsc function MatFDColoringSetValues(petsclib::$UnionPetscLib, J::AbstractPetscMat, coloring::MatFDColoring, y::Vector{$PetscScalar} )
+	J.ptr == C_NULL && throw_null_handle(J, "MatFDColoringSetValues", "J")
 
     @chk ccall(
                (:MatFDColoringSetValues, $petsc_library),
@@ -1869,6 +1878,8 @@ function MatMFFDCheckPositivity(petsclib::PetscLibType, dummy::Ptr{Cvoid}, U::Ab
 end
 
 @for_petsc function MatMFFDCheckPositivity(petsclib::$UnionPetscLib, dummy::Ptr{Cvoid}, U::AbstractPetscVec, a::AbstractPetscVec )
+	U.ptr == C_NULL && throw_null_handle(U, "MatMFFDCheckPositivity", "U")
+	a.ptr == C_NULL && throw_null_handle(a, "MatMFFDCheckPositivity", "a")
 	h_ = Ref{$PetscScalar}()
 
     @chk ccall(
@@ -1914,6 +1925,7 @@ function MatMFFDComputeJacobian(petsclib::PetscLibType, snes::AbstractSNES, x::A
 end
 
 @for_petsc function MatMFFDComputeJacobian(petsclib::$UnionPetscLib, snes::AbstractSNES, x::AbstractPetscVec, jac::AbstractPetscMat, B::AbstractPetscMat, dummy::Ptr{Cvoid} )
+	jac.ptr == C_NULL && throw_null_handle(jac, "MatMFFDComputeJacobian", "jac")
 
     @chk ccall(
                (:MatMFFDComputeJacobian, $petsc_library),
@@ -1948,6 +1960,7 @@ function MatMFFDDSSetUmin(petsclib::PetscLibType, A::AbstractPetscMat, umin::Rea
 end
 
 @for_petsc function MatMFFDDSSetUmin(petsclib::$UnionPetscLib, A::AbstractPetscMat, umin::$PetscReal )
+	A.ptr == C_NULL && throw_null_handle(A, "MatMFFDDSSetUmin", "A")
 
     @chk ccall(
                (:MatMFFDDSSetUmin, $petsc_library),
@@ -2013,6 +2026,7 @@ function MatMFFDGetH(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatMFFDGetH(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatMFFDGetH", "mat")
 	h_ = Ref{$PetscScalar}()
 
     @chk ccall(
@@ -2112,6 +2126,7 @@ function MatMFFDResetHHistory(petsclib::PetscLibType, J::AbstractPetscMat)
 end
 
 @for_petsc function MatMFFDResetHHistory(petsclib::$UnionPetscLib, J::AbstractPetscMat )
+	J.ptr == C_NULL && throw_null_handle(J, "MatMFFDResetHHistory", "J")
 
     @chk ccall(
                (:MatMFFDResetHHistory, $petsc_library),
@@ -2148,6 +2163,8 @@ function MatMFFDSetBase(petsclib::PetscLibType, J::AbstractPetscMat, U::Abstract
 end
 
 @for_petsc function MatMFFDSetBase(petsclib::$UnionPetscLib, J::AbstractPetscMat, U::AbstractPetscVec, F::AbstractPetscVec )
+	J.ptr == C_NULL && throw_null_handle(J, "MatMFFDSetBase", "J")
+	U.ptr == C_NULL && throw_null_handle(U, "MatMFFDSetBase", "U")
 
     @chk ccall(
                (:MatMFFDSetBase, $petsc_library),
@@ -2187,6 +2204,7 @@ function MatMFFDSetCheckh(petsclib::PetscLibType, J::AbstractPetscMat, fun::Ptr{
 end
 
 @for_petsc function MatMFFDSetCheckh(petsclib::$UnionPetscLib, J::AbstractPetscMat, fun::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	J.ptr == C_NULL && throw_null_handle(J, "MatMFFDSetCheckh", "J")
 
     @chk ccall(
                (:MatMFFDSetCheckh, $petsc_library),
@@ -2223,6 +2241,7 @@ function MatMFFDSetFunction(petsclib::PetscLibType, mat::AbstractPetscMat, func:
 end
 
 @for_petsc function MatMFFDSetFunction(petsclib::$UnionPetscLib, mat::AbstractPetscMat, func::Ptr{Cvoid}, funcctx::Ptr{Cvoid} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatMFFDSetFunction", "mat")
 
     @chk ccall(
                (:MatMFFDSetFunction, $petsc_library),
@@ -2261,6 +2280,7 @@ function MatMFFDSetFunctionError(petsclib::PetscLibType, mat::AbstractPetscMat, 
 end
 
 @for_petsc function MatMFFDSetFunctionError(petsclib::$UnionPetscLib, mat::AbstractPetscMat, error::$PetscReal )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatMFFDSetFunctionError", "mat")
 
     @chk ccall(
                (:MatMFFDSetFunctionError, $petsc_library),
@@ -2296,6 +2316,7 @@ function MatMFFDSetFunctioni(petsclib::PetscLibType, mat::AbstractPetscMat, func
 end
 
 @for_petsc function MatMFFDSetFunctioni(petsclib::$UnionPetscLib, mat::AbstractPetscMat, funci::Ptr{Cvoid} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatMFFDSetFunctioni", "mat")
 
     @chk ccall(
                (:MatMFFDSetFunctioni, $petsc_library),
@@ -2331,6 +2352,7 @@ function MatMFFDSetFunctioniBase(petsclib::PetscLibType, mat::AbstractPetscMat, 
 end
 
 @for_petsc function MatMFFDSetFunctioniBase(petsclib::$UnionPetscLib, mat::AbstractPetscMat, func::Ptr{Cvoid} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatMFFDSetFunctioniBase", "mat")
 
     @chk ccall(
                (:MatMFFDSetFunctioniBase, $petsc_library),
@@ -2369,6 +2391,7 @@ function MatMFFDSetHHistory(petsclib::PetscLibType, J::AbstractPetscMat, history
 end
 
 @for_petsc function MatMFFDSetHHistory(petsclib::$UnionPetscLib, J::AbstractPetscMat, history::Vector{$PetscScalar}, nhistory::$PetscInt )
+	J.ptr == C_NULL && throw_null_handle(J, "MatMFFDSetHHistory", "J")
 
     @chk ccall(
                (:MatMFFDSetHHistory, $petsc_library),
@@ -2402,6 +2425,7 @@ function MatMFFDSetOptionsPrefix(petsclib::PetscLibType, mat::AbstractPetscMat, 
 end
 
 @for_petsc function MatMFFDSetOptionsPrefix(petsclib::$UnionPetscLib, mat::AbstractPetscMat, prefix::String )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatMFFDSetOptionsPrefix", "mat")
 
     @chk ccall(
                (:MatMFFDSetOptionsPrefix, $petsc_library),
@@ -2440,6 +2464,7 @@ function MatMFFDSetPeriod(petsclib::PetscLibType, mat::AbstractPetscMat, period:
 end
 
 @for_petsc function MatMFFDSetPeriod(petsclib::$UnionPetscLib, mat::AbstractPetscMat, period::$PetscInt )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatMFFDSetPeriod", "mat")
 
     @chk ccall(
                (:MatMFFDSetPeriod, $petsc_library),
@@ -2474,6 +2499,7 @@ function MatMFFDSetType(petsclib::PetscLibType, mat::AbstractPetscMat, ftype::St
 end
 
 @for_petsc function MatMFFDSetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, ftype::String )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatMFFDSetType", "mat")
 
     @chk ccall(
                (:MatMFFDSetType, $petsc_library),
@@ -2512,6 +2538,7 @@ function MatMFFDWPSetComputeNormU(petsclib::PetscLibType, A::AbstractPetscMat, f
 end
 
 @for_petsc function MatMFFDWPSetComputeNormU(petsclib::$UnionPetscLib, A::AbstractPetscMat, flag::PetscBool )
+	A.ptr == C_NULL && throw_null_handle(A, "MatMFFDWPSetComputeNormU", "A")
 
     @chk ccall(
                (:MatMFFDWPSetComputeNormU, $petsc_library),
@@ -2592,6 +2619,7 @@ function MatNullSpaceCreateRigidBody(petsclib::PetscLibType, coords::AbstractPet
 end
 
 @for_petsc function MatNullSpaceCreateRigidBody(petsclib::$UnionPetscLib, coords::AbstractPetscVec )
+	coords.ptr == C_NULL && throw_null_handle(coords, "MatNullSpaceCreateRigidBody", "coords")
 	sp_ = Ref{CMatNullSpace}()
 
     @chk ccall(
@@ -2667,6 +2695,7 @@ function MatNullSpaceGetVecs(petsclib::PetscLibType, sp::AbstractMatNullSpace)
 end
 
 @for_petsc function MatNullSpaceGetVecs(petsclib::$UnionPetscLib, sp::AbstractMatNullSpace )
+	sp.ptr == C_NULL && throw_null_handle(sp, "MatNullSpaceGetVecs", "sp")
 	has_const_ = Ref{PetscBool}()
 	n_ = Ref{$PetscInt}()
 	vecs_ = Ref{Ptr{CVec}}()
@@ -2707,6 +2736,7 @@ function MatNullSpaceRemove(petsclib::PetscLibType, sp::AbstractMatNullSpace, ve
 end
 
 @for_petsc function MatNullSpaceRemove(petsclib::$UnionPetscLib, sp::AbstractMatNullSpace, vec::AbstractPetscVec )
+	vec.ptr == C_NULL && throw_null_handle(vec, "MatNullSpaceRemove", "vec")
 
     @chk ccall(
                (:MatNullSpaceRemove, $petsc_library),
@@ -2743,6 +2773,7 @@ function MatNullSpaceSetFunction(petsclib::PetscLibType, sp::AbstractMatNullSpac
 end
 
 @for_petsc function MatNullSpaceSetFunction(petsclib::$UnionPetscLib, sp::AbstractMatNullSpace, rem::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
+	sp.ptr == C_NULL && throw_null_handle(sp, "MatNullSpaceSetFunction", "sp")
 
     @chk ccall(
                (:MatNullSpaceSetFunction, $petsc_library),
@@ -2780,6 +2811,8 @@ function MatNullSpaceTest(petsclib::PetscLibType, sp::AbstractMatNullSpace, mat:
 end
 
 @for_petsc function MatNullSpaceTest(petsclib::$UnionPetscLib, sp::AbstractMatNullSpace, mat::AbstractPetscMat )
+	sp.ptr == C_NULL && throw_null_handle(sp, "MatNullSpaceTest", "sp")
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatNullSpaceTest", "mat")
 	isNull_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -2816,6 +2849,7 @@ function MatNullSpaceView(petsclib::PetscLibType, sp::AbstractMatNullSpace, view
 end
 
 @for_petsc function MatNullSpaceView(petsclib::$UnionPetscLib, sp::AbstractMatNullSpace, viewer::PetscViewer )
+	sp.ptr == C_NULL && throw_null_handle(sp, "MatNullSpaceView", "sp")
 
     @chk ccall(
                (:MatNullSpaceView, $petsc_library),
@@ -4170,6 +4204,7 @@ function MatPartitioningSetAdjacency(petsclib::PetscLibType, part::MatPartitioni
 end
 
 @for_petsc function MatPartitioningSetAdjacency(petsclib::$UnionPetscLib, part::MatPartitioning, adj::AbstractPetscMat )
+	adj.ptr == C_NULL && throw_null_handle(adj, "MatPartitioningSetAdjacency", "adj")
 
     @chk ccall(
                (:MatPartitioningSetAdjacency, $petsc_library),
@@ -4537,6 +4572,7 @@ function MatPartitioningViewImbalance(petsclib::PetscLibType, matp::MatPartition
 end
 
 @for_petsc function MatPartitioningViewImbalance(petsclib::$UnionPetscLib, matp::MatPartitioning, partitioning::AbstractIS )
+	partitioning.ptr == C_NULL && throw_null_handle(partitioning, "MatPartitioningViewImbalance", "partitioning")
 
     @chk ccall(
                (:MatPartitioningViewImbalance, $petsc_library),

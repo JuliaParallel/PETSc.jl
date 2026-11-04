@@ -25,6 +25,9 @@ function MatADot(petsclib::PetscLibType, mat::AbstractPetscMat, x::AbstractPetsc
 end
 
 @for_petsc function MatADot(petsclib::$UnionPetscLib, mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatADot", "mat")
+	x.ptr == C_NULL && throw_null_handle(x, "MatADot", "x")
+	y.ptr == C_NULL && throw_null_handle(y, "MatADot", "y")
 	val_ = Ref{$PetscScalar}()
 
     @chk ccall(
@@ -103,6 +106,8 @@ function MatANorm(petsclib::PetscLibType, mat::AbstractPetscMat, x::AbstractPets
 end
 
 @for_petsc function MatANorm(petsclib::$UnionPetscLib, mat::AbstractPetscMat, x::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatANorm", "mat")
+	x.ptr == C_NULL && throw_null_handle(x, "MatANorm", "x")
 	val_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -141,6 +146,8 @@ function MatAXPY(petsclib::PetscLibType, Y::AbstractPetscMat, a::Number, X::Abst
 end
 
 @for_petsc function MatAXPY(petsclib::$UnionPetscLib, Y::AbstractPetscMat, a::$PetscScalar, X::AbstractPetscMat, str::MatStructure )
+	Y.ptr == C_NULL && throw_null_handle(Y, "MatAXPY", "Y")
+	X.ptr == C_NULL && throw_null_handle(X, "MatAXPY", "X")
 
     @chk ccall(
                (:MatAXPY, $petsc_library),
@@ -177,6 +184,8 @@ function MatAYPX(petsclib::PetscLibType, Y::AbstractPetscMat, a::Number, X::Abst
 end
 
 @for_petsc function MatAYPX(petsclib::$UnionPetscLib, Y::AbstractPetscMat, a::$PetscScalar, X::AbstractPetscMat, str::MatStructure )
+	Y.ptr == C_NULL && throw_null_handle(Y, "MatAYPX", "Y")
+	X.ptr == C_NULL && throw_null_handle(X, "MatAYPX", "X")
 
     @chk ccall(
                (:MatAYPX, $petsc_library),
@@ -212,6 +221,7 @@ function MatAppendOptionsPrefix(petsclib::PetscLibType, A::AbstractPetscMat, pre
 end
 
 @for_petsc function MatAppendOptionsPrefix(petsclib::$UnionPetscLib, A::AbstractPetscMat, prefix::String )
+	A.ptr == C_NULL && throw_null_handle(A, "MatAppendOptionsPrefix", "A")
 
     @chk ccall(
                (:MatAppendOptionsPrefix, $petsc_library),
@@ -249,6 +259,7 @@ function MatAppendOptionsPrefixFactor(petsclib::PetscLibType, A::AbstractPetscMa
 end
 
 @for_petsc function MatAppendOptionsPrefixFactor(petsclib::$UnionPetscLib, A::AbstractPetscMat, prefix::String )
+	A.ptr == C_NULL && throw_null_handle(A, "MatAppendOptionsPrefixFactor", "A")
 
     @chk ccall(
                (:MatAppendOptionsPrefixFactor, $petsc_library),
@@ -286,6 +297,7 @@ function MatAssembled(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatAssembled(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatAssembled", "mat")
 	assembled_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -323,6 +335,7 @@ function MatAssemblyBegin(petsclib::PetscLibType, mat::AbstractPetscMat, type::M
 end
 
 @for_petsc function MatAssemblyBegin(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::MatAssemblyType )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatAssemblyBegin", "mat")
 
     @chk ccall(
                (:MatAssemblyBegin, $petsc_library),
@@ -362,6 +375,7 @@ function MatAssemblyEnd(petsclib::PetscLibType, mat::AbstractPetscMat, type::Mat
 end
 
 @for_petsc function MatAssemblyEnd(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::MatAssemblyType )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatAssemblyEnd", "mat")
 
     @chk ccall(
                (:MatAssemblyEnd, $petsc_library),
@@ -400,6 +414,9 @@ function MatBackwardSolve(petsclib::PetscLibType, mat::AbstractPetscMat, b::Abst
 end
 
 @for_petsc function MatBackwardSolve(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatBackwardSolve", "mat")
+	b.ptr == C_NULL && throw_null_handle(b, "MatBackwardSolve", "b")
+	x.ptr == C_NULL && throw_null_handle(x, "MatBackwardSolve", "x")
 
     @chk ccall(
                (:MatBackwardSolve, $petsc_library),
@@ -434,6 +451,7 @@ function MatBindToCPU(petsclib::PetscLibType, A::AbstractPetscMat, flg::PetscBoo
 end
 
 @for_petsc function MatBindToCPU(petsclib::$UnionPetscLib, A::AbstractPetscMat, flg::PetscBool )
+	A.ptr == C_NULL && throw_null_handle(A, "MatBindToCPU", "A")
 
     @chk ccall(
                (:MatBindToCPU, $petsc_library),
@@ -508,6 +526,7 @@ function MatBoundToCPU(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatBoundToCPU(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatBoundToCPU", "A")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -593,6 +612,7 @@ function MatCholeskyFactor(petsclib::PetscLibType, mat::AbstractPetscMat, perm::
 end
 
 @for_petsc function MatCholeskyFactor(petsclib::$UnionPetscLib, mat::AbstractPetscMat, perm::AbstractIS, info::Vector{MatFactorInfo} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatCholeskyFactor", "mat")
 
     @chk ccall(
                (:MatCholeskyFactor, $petsc_library),
@@ -630,6 +650,8 @@ function MatCholeskyFactorNumeric(petsclib::PetscLibType, fact::AbstractPetscMat
 end
 
 @for_petsc function MatCholeskyFactorNumeric(petsclib::$UnionPetscLib, fact::AbstractPetscMat, mat::AbstractPetscMat, info::Vector{MatFactorInfo} )
+	fact.ptr == C_NULL && throw_null_handle(fact, "MatCholeskyFactorNumeric", "fact")
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatCholeskyFactorNumeric", "mat")
 
     @chk ccall(
                (:MatCholeskyFactorNumeric, $petsc_library),
@@ -673,6 +695,8 @@ function MatCholeskyFactorSymbolic(petsclib::PetscLibType, fact::AbstractPetscMa
 end
 
 @for_petsc function MatCholeskyFactorSymbolic(petsclib::$UnionPetscLib, fact::AbstractPetscMat, mat::AbstractPetscMat, perm::AbstractIS, info::Vector{MatFactorInfo} )
+	fact.ptr == C_NULL && throw_null_handle(fact, "MatCholeskyFactorSymbolic", "fact")
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatCholeskyFactorSymbolic", "mat")
 
     @chk ccall(
                (:MatCholeskyFactorSymbolic, $petsc_library),
@@ -707,6 +731,8 @@ function MatCompositeAddMat(petsclib::PetscLibType, mat::AbstractPetscMat, smat:
 end
 
 @for_petsc function MatCompositeAddMat(petsclib::$UnionPetscLib, mat::AbstractPetscMat, smat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatCompositeAddMat", "mat")
+	smat.ptr == C_NULL && throw_null_handle(smat, "MatCompositeAddMat", "smat")
 
     @chk ccall(
                (:MatCompositeAddMat, $petsc_library),
@@ -744,6 +770,7 @@ function MatCompositeGetMat(petsclib::PetscLibType, mat::AbstractPetscMat, i::In
 end
 
 @for_petsc function MatCompositeGetMat(petsclib::$UnionPetscLib, mat::AbstractPetscMat, i::$PetscInt )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatCompositeGetMat", "mat")
 	Ai_ = Ref{CMat}()
 
     @chk ccall(
@@ -782,6 +809,7 @@ function MatCompositeGetMatStructure(petsclib::PetscLibType, mat::AbstractPetscM
 end
 
 @for_petsc function MatCompositeGetMatStructure(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatCompositeGetMatStructure", "mat")
 	str_ = Ref{MatStructure}()
 
     @chk ccall(
@@ -820,6 +848,7 @@ function MatCompositeGetNumberMat(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatCompositeGetNumberMat(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatCompositeGetNumberMat", "mat")
 	nmat_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -858,6 +887,7 @@ function MatCompositeGetType(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatCompositeGetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatCompositeGetType", "mat")
 	type_ = Ref{MatCompositeType}()
 
     @chk ccall(
@@ -898,6 +928,7 @@ function MatCompositeMerge(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatCompositeMerge(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatCompositeMerge", "mat")
 
     @chk ccall(
                (:MatCompositeMerge, $petsc_library),
@@ -932,6 +963,7 @@ function MatCompositeSetMatStructure(petsclib::PetscLibType, mat::AbstractPetscM
 end
 
 @for_petsc function MatCompositeSetMatStructure(petsclib::$UnionPetscLib, mat::AbstractPetscMat, str::MatStructure )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatCompositeSetMatStructure", "mat")
 
     @chk ccall(
                (:MatCompositeSetMatStructure, $petsc_library),
@@ -967,6 +999,7 @@ function MatCompositeSetMergeType(petsclib::PetscLibType, mat::AbstractPetscMat,
 end
 
 @for_petsc function MatCompositeSetMergeType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::MatCompositeMergeType )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatCompositeSetMergeType", "mat")
 
     @chk ccall(
                (:MatCompositeSetMergeType, $petsc_library),
@@ -1001,6 +1034,7 @@ function MatCompositeSetScalings(petsclib::PetscLibType, mat::AbstractPetscMat, 
 end
 
 @for_petsc function MatCompositeSetScalings(petsclib::$UnionPetscLib, mat::AbstractPetscMat, scalings::Vector{$PetscScalar} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatCompositeSetScalings", "mat")
 
     @chk ccall(
                (:MatCompositeSetScalings, $petsc_library),
@@ -1036,6 +1070,7 @@ function MatCompositeSetType(petsclib::PetscLibType, mat::AbstractPetscMat, type
 end
 
 @for_petsc function MatCompositeSetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::MatCompositeType )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatCompositeSetType", "mat")
 
     @chk ccall(
                (:MatCompositeSetType, $petsc_library),
@@ -1073,6 +1108,7 @@ function MatComputeBandwidth(petsclib::PetscLibType, A::AbstractPetscMat, fracti
 end
 
 @for_petsc function MatComputeBandwidth(petsclib::$UnionPetscLib, A::AbstractPetscMat, fraction::$PetscReal )
+	A.ptr == C_NULL && throw_null_handle(A, "MatComputeBandwidth", "A")
 	bw_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1112,6 +1148,7 @@ function MatComputeOperator(petsclib::PetscLibType, inmat::AbstractPetscMat, mat
 end
 
 @for_petsc function MatComputeOperator(petsclib::$UnionPetscLib, inmat::AbstractPetscMat, mattype::String )
+	inmat.ptr == C_NULL && throw_null_handle(inmat, "MatComputeOperator", "inmat")
 	mat_ = Ref{CMat}()
 
     @chk ccall(
@@ -1152,6 +1189,7 @@ function MatComputeOperatorTranspose(petsclib::PetscLibType, inmat::AbstractPets
 end
 
 @for_petsc function MatComputeOperatorTranspose(petsclib::$UnionPetscLib, inmat::AbstractPetscMat, mattype::String )
+	inmat.ptr == C_NULL && throw_null_handle(inmat, "MatComputeOperatorTranspose", "inmat")
 	mat_ = Ref{CMat}()
 
     @chk ccall(
@@ -1188,6 +1226,7 @@ function MatComputeVariableBlockEnvelope(petsclib::PetscLibType, mat::AbstractPe
 end
 
 @for_petsc function MatComputeVariableBlockEnvelope(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatComputeVariableBlockEnvelope", "mat")
 
     @chk ccall(
                (:MatComputeVariableBlockEnvelope, $petsc_library),
@@ -1221,6 +1260,7 @@ function MatConjugate(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatConjugate(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatConjugate", "mat")
 
     @chk ccall(
                (:MatConjugate, $petsc_library),
@@ -1301,6 +1341,7 @@ function MatConvert(petsclib::PetscLibType, mat::AbstractPetscMat, newtype::Stri
 end
 
 @for_petsc function MatConvert(petsclib::$UnionPetscLib, mat::AbstractPetscMat, newtype::String, reuse::MatReuse )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatConvert", "mat")
 	M_ = Ref{CMat}()
 
     @chk ccall(
@@ -1340,6 +1381,8 @@ function MatCopy(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMa
 end
 
 @for_petsc function MatCopy(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, str::MatStructure )
+	A.ptr == C_NULL && throw_null_handle(A, "MatCopy", "A")
+	B.ptr == C_NULL && throw_null_handle(B, "MatCopy", "B")
 
     @chk ccall(
                (:MatCopy, $petsc_library),
@@ -1382,6 +1425,7 @@ function MatCopyHashToXAIJ(petsclib::PetscLibType, A::AbstractPetscMat, B::Abstr
 end
 
 @for_petsc function MatCopyHashToXAIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatCopyHashToXAIJ", "A")
 
     @chk ccall(
                (:MatCopyHashToXAIJ, $petsc_library),
@@ -2146,6 +2190,7 @@ function MatCreateDiagonal(petsclib::PetscLibType, diag::AbstractPetscVec)
 end
 
 @for_petsc function MatCreateDiagonal(petsclib::$UnionPetscLib, diag::AbstractPetscVec )
+	diag.ptr == C_NULL && throw_null_handle(diag, "MatCreateDiagonal", "diag")
 	J_ = Ref{CMat}()
 
     @chk ccall(
@@ -2285,6 +2330,7 @@ function MatCreateGraph(petsclib::PetscLibType, A::AbstractPetscMat, sym::PetscB
 end
 
 @for_petsc function MatCreateGraph(petsclib::$UnionPetscLib, A::AbstractPetscMat, sym::PetscBool, scale::PetscBool, filter::$PetscReal, num_idx::$PetscInt, index::Vector{$PetscInt} )
+	A.ptr == C_NULL && throw_null_handle(A, "MatCreateGraph", "A")
 	graph_ = Ref{CMat}()
 
     @chk ccall(
@@ -2374,6 +2420,7 @@ function MatCreateHermitianTranspose(petsclib::PetscLibType, A::AbstractPetscMat
 end
 
 @for_petsc function MatCreateHermitianTranspose(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatCreateHermitianTranspose", "A")
 	N_ = Ref{CMat}()
 
     @chk ccall(
@@ -3089,6 +3136,7 @@ function MatCreateLRC(petsclib::PetscLibType, A::AbstractPetscMat, U::AbstractPe
 end
 
 @for_petsc function MatCreateLRC(petsclib::$UnionPetscLib, A::AbstractPetscMat, U::AbstractPetscMat, c::Union{Ptr, AbstractPetscVec}, V::AbstractPetscMat )
+	U.ptr == C_NULL && throw_null_handle(U, "MatCreateLRC", "U")
 	N_ = Ref{CMat}()
 
     @chk ccall(
@@ -3127,6 +3175,7 @@ function MatCreateLaplacian(petsclib::PetscLibType, A::AbstractPetscMat, tol::Re
 end
 
 @for_petsc function MatCreateLaplacian(petsclib::$UnionPetscLib, A::AbstractPetscMat, tol::$PetscReal, weighted::PetscBool )
+	A.ptr == C_NULL && throw_null_handle(A, "MatCreateLaplacian", "A")
 	L_ = Ref{CMat}()
 
     @chk ccall(
@@ -3167,6 +3216,8 @@ function MatCreateLocalRef(petsclib::PetscLibType, A::AbstractPetscMat, isrow::A
 end
 
 @for_petsc function MatCreateLocalRef(petsclib::$UnionPetscLib, A::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS )
+	A.ptr == C_NULL && throw_null_handle(A, "MatCreateLocalRef", "A")
+	isrow.ptr == C_NULL && throw_null_handle(isrow, "MatCreateLocalRef", "isrow")
 	newmat_ = Ref{CMat}()
 
     @chk ccall(
@@ -3597,6 +3648,7 @@ function MatCreateMPIAIJSumSeqAIJNumeric(petsclib::PetscLibType, seqmat::Abstrac
 end
 
 @for_petsc function MatCreateMPIAIJSumSeqAIJNumeric(petsclib::$UnionPetscLib, seqmat::AbstractPetscMat, mpimat::AbstractPetscMat )
+	mpimat.ptr == C_NULL && throw_null_handle(mpimat, "MatCreateMPIAIJSumSeqAIJNumeric", "mpimat")
 
     @chk ccall(
                (:MatCreateMPIAIJSumSeqAIJNumeric, $petsc_library),
@@ -3637,6 +3689,7 @@ function MatCreateMPIAIJSumSeqAIJSymbolic(petsclib::PetscLibType, comm::MPI_Comm
 end
 
 @for_petsc function MatCreateMPIAIJSumSeqAIJSymbolic(petsclib::$UnionPetscLib, comm::MPI_Comm, seqmat::AbstractPetscMat, m::$PetscInt, n::$PetscInt )
+	seqmat.ptr == C_NULL && throw_null_handle(seqmat, "MatCreateMPIAIJSumSeqAIJSymbolic", "seqmat")
 	mpimat_ = Ref{CMat}()
 
     @chk ccall(
@@ -3730,6 +3783,7 @@ function MatCreateMPIAIJWithSeqAIJ(petsclib::PetscLibType, comm::MPI_Comm, M::In
 end
 
 @for_petsc function MatCreateMPIAIJWithSeqAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, M::$PetscInt, N::$PetscInt, A::AbstractPetscMat, B::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatCreateMPIAIJWithSeqAIJ", "A")
 	garray_ = Ref{$PetscInt}()
 	mat_ = Ref{CMat}()
 
@@ -4052,6 +4106,7 @@ function MatCreateNormal(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatCreateNormal(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatCreateNormal", "A")
 	N_ = Ref{CMat}()
 
     @chk ccall(
@@ -4090,6 +4145,7 @@ function MatCreateNormalHermitian(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatCreateNormalHermitian(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatCreateNormalHermitian", "A")
 	N_ = Ref{CMat}()
 
     @chk ccall(
@@ -4131,6 +4187,7 @@ function MatCreateRedundantMatrix(petsclib::PetscLibType, mat::AbstractPetscMat,
 end
 
 @for_petsc function MatCreateRedundantMatrix(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nsubcomm::$PetscInt, subcomm::MPI_Comm, reuse::MatReuse )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatCreateRedundantMatrix", "mat")
 	matredundant_ = Ref{CMat}()
 
     @chk ccall(
@@ -4472,6 +4529,7 @@ function MatCreateSNESMFMore(petsclib::PetscLibType, snes::AbstractSNES, x::Abst
 end
 
 @for_petsc function MatCreateSNESMFMore(petsclib::$UnionPetscLib, snes::AbstractSNES, x::AbstractPetscVec )
+	x.ptr == C_NULL && throw_null_handle(x, "MatCreateSNESMFMore", "x")
 	J_ = Ref{CMat}()
 
     @chk ccall(
@@ -4602,6 +4660,10 @@ function MatCreateSchurComplement(petsclib::PetscLibType, A00::AbstractPetscMat,
 end
 
 @for_petsc function MatCreateSchurComplement(petsclib::$UnionPetscLib, A00::AbstractPetscMat, Ap00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat )
+	A00.ptr == C_NULL && throw_null_handle(A00, "MatCreateSchurComplement", "A00")
+	Ap00.ptr == C_NULL && throw_null_handle(Ap00, "MatCreateSchurComplement", "Ap00")
+	A01.ptr == C_NULL && throw_null_handle(A01, "MatCreateSchurComplement", "A01")
+	A10.ptr == C_NULL && throw_null_handle(A10, "MatCreateSchurComplement", "A10")
 	S_ = Ref{CMat}()
 
     @chk ccall(
@@ -4646,6 +4708,7 @@ function MatCreateSchurComplementPmat(petsclib::PetscLibType, A00::AbstractPetsc
 end
 
 @for_petsc function MatCreateSchurComplementPmat(petsclib::$UnionPetscLib, A00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat, ainvtype::MatSchurComplementAinvType, preuse::MatReuse )
+	A00.ptr == C_NULL && throw_null_handle(A00, "MatCreateSchurComplementPmat", "A00")
 	Sp_ = Ref{CMat}()
 
     @chk ccall(
@@ -5668,6 +5731,7 @@ function MatCreateSubMatrix(petsclib::PetscLibType, mat::AbstractPetscMat, isrow
 end
 
 @for_petsc function MatCreateSubMatrix(petsclib::$UnionPetscLib, mat::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS, cll::MatReuse )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatCreateSubMatrix", "mat")
 	newmat_ = Ref{CMat}()
 
     @chk ccall(
@@ -5709,6 +5773,7 @@ function MatCreateSubMatrixFree(petsclib::PetscLibType, mat::AbstractPetscMat, R
 end
 
 @for_petsc function MatCreateSubMatrixFree(petsclib::$UnionPetscLib, mat::AbstractPetscMat, Rows::AbstractIS, Cols::AbstractIS )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatCreateSubMatrixFree", "mat")
 	J_ = Ref{CMat}()
 
     @chk ccall(
@@ -5749,6 +5814,9 @@ function MatCreateSubMatrixVirtual(petsclib::PetscLibType, A::AbstractPetscMat, 
 end
 
 @for_petsc function MatCreateSubMatrixVirtual(petsclib::$UnionPetscLib, A::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS )
+	A.ptr == C_NULL && throw_null_handle(A, "MatCreateSubMatrixVirtual", "A")
+	isrow.ptr == C_NULL && throw_null_handle(isrow, "MatCreateSubMatrixVirtual", "isrow")
+	iscol.ptr == C_NULL && throw_null_handle(iscol, "MatCreateSubMatrixVirtual", "iscol")
 	newmat_ = Ref{CMat}()
 
     @chk ccall(
@@ -5788,6 +5856,7 @@ function MatCreateTranspose(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatCreateTranspose(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatCreateTranspose", "A")
 	N_ = Ref{CMat}()
 
     @chk ccall(
@@ -5831,6 +5900,7 @@ function MatCreateVecs(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatCreateVecs(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatCreateVecs", "mat")
 	right_ = Ref{CVec}()
 	left_ = Ref{CVec}()
 
@@ -5927,6 +5997,15 @@ function MatDFischer(petsclib::PetscLibType, jac::AbstractPetscMat, X::AbstractP
 end
 
 @for_petsc function MatDFischer(petsclib::$UnionPetscLib, jac::AbstractPetscMat, X::AbstractPetscVec, Con::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, T1::AbstractPetscVec, T2::AbstractPetscVec, Da::AbstractPetscVec, Db::AbstractPetscVec )
+	jac.ptr == C_NULL && throw_null_handle(jac, "MatDFischer", "jac")
+	X.ptr == C_NULL && throw_null_handle(X, "MatDFischer", "X")
+	Con.ptr == C_NULL && throw_null_handle(Con, "MatDFischer", "Con")
+	XL.ptr == C_NULL && throw_null_handle(XL, "MatDFischer", "XL")
+	XU.ptr == C_NULL && throw_null_handle(XU, "MatDFischer", "XU")
+	T1.ptr == C_NULL && throw_null_handle(T1, "MatDFischer", "T1")
+	T2.ptr == C_NULL && throw_null_handle(T2, "MatDFischer", "T2")
+	Da.ptr == C_NULL && throw_null_handle(Da, "MatDFischer", "Da")
+	Db.ptr == C_NULL && throw_null_handle(Db, "MatDFischer", "Db")
 
     @chk ccall(
                (:MatDFischer, $petsc_library),
@@ -6286,6 +6365,7 @@ function MatDenseGetArrayAndMemType(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatDenseGetArrayAndMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatDenseGetArrayAndMemType", "A")
 	array_ = Ref{Ptr{$PetscScalar}}()
 	mtype_ = Ref{PetscMemType}()
 
@@ -6368,6 +6448,7 @@ function MatDenseGetArrayReadAndMemType(petsclib::PetscLibType, A::AbstractPetsc
 end
 
 @for_petsc function MatDenseGetArrayReadAndMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatDenseGetArrayReadAndMemType", "A")
 	array_ = Ref{Ptr{$PetscScalar}}()
 	mtype_ = Ref{PetscMemType}()
 
@@ -6450,6 +6531,7 @@ function MatDenseGetArrayWriteAndMemType(petsclib::PetscLibType, A::AbstractPets
 end
 
 @for_petsc function MatDenseGetArrayWriteAndMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatDenseGetArrayWriteAndMemType", "A")
 	array_ = Ref{Ptr{$PetscScalar}}()
 	mtype_ = Ref{PetscMemType}()
 
@@ -6492,6 +6574,7 @@ function MatDenseGetColumn(petsclib::PetscLibType, A::AbstractPetscMat, col::Int
 end
 
 @for_petsc function MatDenseGetColumn(petsclib::$UnionPetscLib, A::AbstractPetscMat, col::$PetscInt )
+	A.ptr == C_NULL && throw_null_handle(A, "MatDenseGetColumn", "A")
 	vals_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -6531,6 +6614,7 @@ function MatDenseGetColumnVec(petsclib::PetscLibType, A::AbstractPetscMat, col::
 end
 
 @for_petsc function MatDenseGetColumnVec(petsclib::$UnionPetscLib, A::AbstractPetscMat, col::$PetscInt )
+	A.ptr == C_NULL && throw_null_handle(A, "MatDenseGetColumnVec", "A")
 	v_ = Ref{CVec}()
 
     @chk ccall(
@@ -6570,6 +6654,7 @@ function MatDenseGetColumnVecRead(petsclib::PetscLibType, A::AbstractPetscMat, c
 end
 
 @for_petsc function MatDenseGetColumnVecRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, col::$PetscInt )
+	A.ptr == C_NULL && throw_null_handle(A, "MatDenseGetColumnVecRead", "A")
 	v_ = Ref{CVec}()
 
     @chk ccall(
@@ -6609,6 +6694,7 @@ function MatDenseGetColumnVecWrite(petsclib::PetscLibType, A::AbstractPetscMat, 
 end
 
 @for_petsc function MatDenseGetColumnVecWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat, col::$PetscInt )
+	A.ptr == C_NULL && throw_null_handle(A, "MatDenseGetColumnVecWrite", "A")
 	v_ = Ref{CVec}()
 
     @chk ccall(
@@ -6647,6 +6733,7 @@ function MatDenseGetLDA(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatDenseGetLDA(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatDenseGetLDA", "A")
 	lda_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -6684,6 +6771,7 @@ function MatDenseGetLocalMatrix(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatDenseGetLocalMatrix(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatDenseGetLocalMatrix", "A")
 	B_ = Ref{CMat}()
 
     @chk ccall(
@@ -6726,6 +6814,7 @@ function MatDenseGetSubMatrix(petsclib::PetscLibType, A::AbstractPetscMat, rbegi
 end
 
 @for_petsc function MatDenseGetSubMatrix(petsclib::$UnionPetscLib, A::AbstractPetscMat, rbegin::$PetscInt, rend::$PetscInt, cbegin::$PetscInt, cend::$PetscInt )
+	A.ptr == C_NULL && throw_null_handle(A, "MatDenseGetSubMatrix", "A")
 	v_ = Ref{CMat}()
 
     @chk ccall(
@@ -7001,6 +7090,7 @@ function MatDensePlaceArray(petsclib::PetscLibType, mat::AbstractPetscMat, array
 end
 
 @for_petsc function MatDensePlaceArray(petsclib::$UnionPetscLib, mat::AbstractPetscMat, array::Vector{$PetscScalar} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatDensePlaceArray", "mat")
 
     @chk ccall(
                (:MatDensePlaceArray, $petsc_library),
@@ -7037,6 +7127,7 @@ function MatDenseReplaceArray(petsclib::PetscLibType, mat::AbstractPetscMat, arr
 end
 
 @for_petsc function MatDenseReplaceArray(petsclib::$UnionPetscLib, mat::AbstractPetscMat, array::Vector{$PetscScalar} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatDenseReplaceArray", "mat")
 
     @chk ccall(
                (:MatDenseReplaceArray, $petsc_library),
@@ -7073,6 +7164,7 @@ function MatDenseReplaceArrayWithMemType(petsclib::PetscLibType, mat::AbstractPe
 end
 
 @for_petsc function MatDenseReplaceArrayWithMemType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, mtype::PetscMemType, array::Vector{$PetscScalar} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatDenseReplaceArrayWithMemType", "mat")
 
     @chk ccall(
                (:MatDenseReplaceArrayWithMemType, $petsc_library),
@@ -7106,6 +7198,7 @@ function MatDenseResetArray(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatDenseResetArray(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatDenseResetArray", "mat")
 
     @chk ccall(
                (:MatDenseResetArray, $petsc_library),
@@ -7175,6 +7268,7 @@ function MatDenseRestoreArrayAndMemType(petsclib::PetscLibType, A::AbstractPetsc
 end
 
 @for_petsc function MatDenseRestoreArrayAndMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::Union{Ptr, AbstractArray{$PetscScalar}} )
+	A.ptr == C_NULL && throw_null_handle(A, "MatDenseRestoreArrayAndMemType", "A")
 	array_ = Ref{Ptr{$PetscScalar}}(array isa Ptr ? array : pointer(array))
 
     @chk ccall(
@@ -7245,6 +7339,7 @@ function MatDenseRestoreArrayReadAndMemType(petsclib::PetscLibType, A::AbstractP
 end
 
 @for_petsc function MatDenseRestoreArrayReadAndMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::Union{Ptr, AbstractArray{$PetscScalar}} )
+	A.ptr == C_NULL && throw_null_handle(A, "MatDenseRestoreArrayReadAndMemType", "A")
 	array_ = Ref{Ptr{$PetscScalar}}(array isa Ptr ? array : pointer(array))
 
     @chk ccall(
@@ -7315,6 +7410,7 @@ function MatDenseRestoreArrayWriteAndMemType(petsclib::PetscLibType, A::Abstract
 end
 
 @for_petsc function MatDenseRestoreArrayWriteAndMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::Union{Ptr, AbstractArray{$PetscScalar}} )
+	A.ptr == C_NULL && throw_null_handle(A, "MatDenseRestoreArrayWriteAndMemType", "A")
 	array_ = Ref{Ptr{$PetscScalar}}(array isa Ptr ? array : pointer(array))
 
     @chk ccall(
@@ -7350,6 +7446,7 @@ function MatDenseRestoreColumn(petsclib::PetscLibType, A::AbstractPetscMat, vals
 end
 
 @for_petsc function MatDenseRestoreColumn(petsclib::$UnionPetscLib, A::AbstractPetscMat, vals::Union{Ptr, AbstractArray{$PetscScalar}} )
+	A.ptr == C_NULL && throw_null_handle(A, "MatDenseRestoreColumn", "A")
 	vals_ = Ref{Ptr{$PetscScalar}}(vals isa Ptr ? vals : pointer(vals))
 
     @chk ccall(
@@ -7386,6 +7483,7 @@ function MatDenseRestoreColumnVec(petsclib::PetscLibType, A::AbstractPetscMat, c
 end
 
 @for_petsc function MatDenseRestoreColumnVec(petsclib::$UnionPetscLib, A::AbstractPetscMat, col::$PetscInt, v::AbstractPetscVec )
+	A.ptr == C_NULL && throw_null_handle(A, "MatDenseRestoreColumnVec", "A")
 	v_ = Ref(v.ptr)
 
     @chk ccall(
@@ -7423,6 +7521,7 @@ function MatDenseRestoreColumnVecRead(petsclib::PetscLibType, A::AbstractPetscMa
 end
 
 @for_petsc function MatDenseRestoreColumnVecRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, col::$PetscInt, v::AbstractPetscVec )
+	A.ptr == C_NULL && throw_null_handle(A, "MatDenseRestoreColumnVecRead", "A")
 	v_ = Ref(v.ptr)
 
     @chk ccall(
@@ -7460,6 +7559,7 @@ function MatDenseRestoreColumnVecWrite(petsclib::PetscLibType, A::AbstractPetscM
 end
 
 @for_petsc function MatDenseRestoreColumnVecWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat, col::$PetscInt, v::AbstractPetscVec )
+	A.ptr == C_NULL && throw_null_handle(A, "MatDenseRestoreColumnVecWrite", "A")
 	v_ = Ref(v.ptr)
 
     @chk ccall(
@@ -7496,6 +7596,7 @@ function MatDenseRestoreSubMatrix(petsclib::PetscLibType, A::AbstractPetscMat, v
 end
 
 @for_petsc function MatDenseRestoreSubMatrix(petsclib::$UnionPetscLib, A::AbstractPetscMat, v::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatDenseRestoreSubMatrix", "A")
 	v_ = Ref(v.ptr)
 
     @chk ccall(
@@ -7532,6 +7633,7 @@ function MatDenseSetLDA(petsclib::PetscLibType, A::AbstractPetscMat, lda::Intege
 end
 
 @for_petsc function MatDenseSetLDA(petsclib::$UnionPetscLib, A::AbstractPetscMat, lda::$PetscInt )
+	A.ptr == C_NULL && throw_null_handle(A, "MatDenseSetLDA", "A")
 
     @chk ccall(
                (:MatDenseSetLDA, $petsc_library),
@@ -7720,6 +7822,7 @@ function MatDiagonalGetDiagonal(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatDiagonalGetDiagonal(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatDiagonalGetDiagonal", "A")
 	diag_ = Ref{CVec}()
 
     @chk ccall(
@@ -7756,6 +7859,7 @@ function MatDiagonalGetInverseDiagonal(petsclib::PetscLibType, A::AbstractPetscM
 end
 
 @for_petsc function MatDiagonalGetInverseDiagonal(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatDiagonalGetInverseDiagonal", "A")
 	inv_diag_ = Ref{CVec}()
 
     @chk ccall(
@@ -7790,6 +7894,7 @@ function MatDiagonalRestoreDiagonal(petsclib::PetscLibType, A::AbstractPetscMat,
 end
 
 @for_petsc function MatDiagonalRestoreDiagonal(petsclib::$UnionPetscLib, A::AbstractPetscMat, diag::AbstractPetscVec )
+	A.ptr == C_NULL && throw_null_handle(A, "MatDiagonalRestoreDiagonal", "A")
 	diag_ = Ref(diag.ptr)
 
     @chk ccall(
@@ -7824,6 +7929,7 @@ function MatDiagonalRestoreInverseDiagonal(petsclib::PetscLibType, A::AbstractPe
 end
 
 @for_petsc function MatDiagonalRestoreInverseDiagonal(petsclib::$UnionPetscLib, A::AbstractPetscMat, inv_diag::AbstractPetscVec )
+	A.ptr == C_NULL && throw_null_handle(A, "MatDiagonalRestoreInverseDiagonal", "A")
 	inv_diag_ = Ref(inv_diag.ptr)
 
     @chk ccall(
@@ -7863,6 +7969,7 @@ function MatDiagonalScale(petsclib::PetscLibType, mat::AbstractPetscMat, l::Unio
 end
 
 @for_petsc function MatDiagonalScale(petsclib::$UnionPetscLib, mat::AbstractPetscMat, l::Union{Ptr, AbstractPetscVec}, r::Union{Ptr, AbstractPetscVec} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatDiagonalScale", "mat")
 
     @chk ccall(
                (:MatDiagonalScale, $petsc_library),
@@ -7898,6 +8005,8 @@ function MatDiagonalScaleLocal(petsclib::PetscLibType, mat::AbstractPetscMat, di
 end
 
 @for_petsc function MatDiagonalScaleLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, diag::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatDiagonalScaleLocal", "mat")
+	diag.ptr == C_NULL && throw_null_handle(diag, "MatDiagonalScaleLocal", "diag")
 
     @chk ccall(
                (:MatDiagonalScaleLocal, $petsc_library),
@@ -7935,6 +8044,8 @@ function MatDiagonalSet(petsclib::PetscLibType, Y::AbstractPetscMat, D::Abstract
 end
 
 @for_petsc function MatDiagonalSet(petsclib::$UnionPetscLib, Y::AbstractPetscMat, D::AbstractPetscVec, is::InsertMode )
+	Y.ptr == C_NULL && throw_null_handle(Y, "MatDiagonalSet", "Y")
+	D.ptr == C_NULL && throw_null_handle(D, "MatDiagonalSet", "D")
 
     @chk ccall(
                (:MatDiagonalSet, $petsc_library),
@@ -7971,6 +8082,8 @@ function MatDiagonalSetDiagonal(petsclib::PetscLibType, J::AbstractPetscMat, dia
 end
 
 @for_petsc function MatDiagonalSetDiagonal(petsclib::$UnionPetscLib, J::AbstractPetscMat, diag::AbstractPetscVec )
+	J.ptr == C_NULL && throw_null_handle(J, "MatDiagonalSetDiagonal", "J")
+	diag.ptr == C_NULL && throw_null_handle(diag, "MatDiagonalSetDiagonal", "diag")
 
     @chk ccall(
                (:MatDiagonalSetDiagonal, $petsc_library),
@@ -8009,6 +8122,7 @@ function MatDuplicate(petsclib::PetscLibType, mat::AbstractPetscMat, op::MatDupl
 end
 
 @for_petsc function MatDuplicate(petsclib::$UnionPetscLib, mat::AbstractPetscMat, op::MatDuplicateOption )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatDuplicate", "mat")
 	M_ = Ref{CMat}()
 
     @chk ccall(
@@ -8046,6 +8160,7 @@ function MatEliminateZeros(petsclib::PetscLibType, A::AbstractPetscMat, keep::Pe
 end
 
 @for_petsc function MatEliminateZeros(petsclib::$UnionPetscLib, A::AbstractPetscMat, keep::PetscBool )
+	A.ptr == C_NULL && throw_null_handle(A, "MatEliminateZeros", "A")
 
     @chk ccall(
                (:MatEliminateZeros, $petsc_library),
@@ -8083,6 +8198,8 @@ function MatEqual(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscM
 end
 
 @for_petsc function MatEqual(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatEqual", "A")
+	B.ptr == C_NULL && throw_null_handle(B, "MatEqual", "B")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -8119,6 +8236,7 @@ function MatFactorClearError(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatFactorClearError(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatFactorClearError", "mat")
 
     @chk ccall(
                (:MatFactorClearError, $petsc_library),
@@ -8154,6 +8272,7 @@ function MatFactorCreateSchurComplement(petsclib::PetscLibType, F::AbstractPetsc
 end
 
 @for_petsc function MatFactorCreateSchurComplement(petsclib::$UnionPetscLib, F::AbstractPetscMat )
+	F.ptr == C_NULL && throw_null_handle(F, "MatFactorCreateSchurComplement", "F")
 	S_ = Ref{CMat}()
 	status_ = Ref{MatFactorSchurStatus}()
 
@@ -8191,6 +8310,7 @@ function MatFactorFactorizeSchurComplement(petsclib::PetscLibType, F::AbstractPe
 end
 
 @for_petsc function MatFactorFactorizeSchurComplement(petsclib::$UnionPetscLib, F::AbstractPetscMat )
+	F.ptr == C_NULL && throw_null_handle(F, "MatFactorFactorizeSchurComplement", "F")
 
     @chk ccall(
                (:MatFactorFactorizeSchurComplement, $petsc_library),
@@ -8266,6 +8386,7 @@ function MatFactorGetError(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatFactorGetError(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatFactorGetError", "mat")
 	err_ = Ref{MatFactorError}()
 
     @chk ccall(
@@ -8308,6 +8429,7 @@ function MatFactorGetErrorZeroPivot(petsclib::PetscLibType, mat::AbstractPetscMa
 end
 
 @for_petsc function MatFactorGetErrorZeroPivot(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatFactorGetErrorZeroPivot", "mat")
 	pivot_ = Ref{$PetscReal}()
 	row_ = Ref{$PetscInt}()
 
@@ -8386,6 +8508,7 @@ function MatFactorGetSchurComplement(petsclib::PetscLibType, F::AbstractPetscMat
 end
 
 @for_petsc function MatFactorGetSchurComplement(petsclib::$UnionPetscLib, F::AbstractPetscMat, S::Union{Ptr, AbstractPetscMat} )
+	F.ptr == C_NULL && throw_null_handle(F, "MatFactorGetSchurComplement", "F")
 	S_ = Ref(S.ptr)
 	status_ = Ref{MatFactorSchurStatus}()
 
@@ -8426,6 +8549,7 @@ function MatFactorGetSolverType(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatFactorGetSolverType(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatFactorGetSolverType", "mat")
 	type_ = Ref{MatSolverType}()
 
     @chk ccall(
@@ -8495,6 +8619,7 @@ function MatFactorInvertSchurComplement(petsclib::PetscLibType, F::AbstractPetsc
 end
 
 @for_petsc function MatFactorInvertSchurComplement(petsclib::$UnionPetscLib, F::AbstractPetscMat )
+	F.ptr == C_NULL && throw_null_handle(F, "MatFactorInvertSchurComplement", "F")
 
     @chk ccall(
                (:MatFactorInvertSchurComplement, $petsc_library),
@@ -8530,6 +8655,7 @@ function MatFactorRestoreSchurComplement(petsclib::PetscLibType, F::AbstractPets
 end
 
 @for_petsc function MatFactorRestoreSchurComplement(petsclib::$UnionPetscLib, F::AbstractPetscMat, S::AbstractPetscMat, status::MatFactorSchurStatus )
+	F.ptr == C_NULL && throw_null_handle(F, "MatFactorRestoreSchurComplement", "F")
 	S_ = Ref(S.ptr)
 
     @chk ccall(
@@ -8567,6 +8693,8 @@ function MatFactorSetSchurIS(petsclib::PetscLibType, mat::AbstractPetscMat, is::
 end
 
 @for_petsc function MatFactorSetSchurIS(petsclib::$UnionPetscLib, mat::AbstractPetscMat, is::AbstractIS )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatFactorSetSchurIS", "mat")
+	is.ptr == C_NULL && throw_null_handle(is, "MatFactorSetSchurIS", "is")
 
     @chk ccall(
                (:MatFactorSetSchurIS, $petsc_library),
@@ -8602,6 +8730,9 @@ function MatFactorSolveSchurComplement(petsclib::PetscLibType, F::AbstractPetscM
 end
 
 @for_petsc function MatFactorSolveSchurComplement(petsclib::$UnionPetscLib, F::AbstractPetscMat, rhs::AbstractPetscVec, sol::AbstractPetscVec )
+	F.ptr == C_NULL && throw_null_handle(F, "MatFactorSolveSchurComplement", "F")
+	rhs.ptr == C_NULL && throw_null_handle(rhs, "MatFactorSolveSchurComplement", "rhs")
+	sol.ptr == C_NULL && throw_null_handle(sol, "MatFactorSolveSchurComplement", "sol")
 
     @chk ccall(
                (:MatFactorSolveSchurComplement, $petsc_library),
@@ -8637,6 +8768,9 @@ function MatFactorSolveSchurComplementTranspose(petsclib::PetscLibType, F::Abstr
 end
 
 @for_petsc function MatFactorSolveSchurComplementTranspose(petsclib::$UnionPetscLib, F::AbstractPetscMat, rhs::AbstractPetscVec, sol::AbstractPetscVec )
+	F.ptr == C_NULL && throw_null_handle(F, "MatFactorSolveSchurComplementTranspose", "F")
+	rhs.ptr == C_NULL && throw_null_handle(rhs, "MatFactorSolveSchurComplementTranspose", "rhs")
+	sol.ptr == C_NULL && throw_null_handle(sol, "MatFactorSolveSchurComplementTranspose", "sol")
 
     @chk ccall(
                (:MatFactorSolveSchurComplementTranspose, $petsc_library),
@@ -8733,6 +8867,7 @@ function MatFindNonzeroRows(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatFindNonzeroRows(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatFindNonzeroRows", "mat")
 	keptrows_ = Ref{CIS}()
 
     @chk ccall(
@@ -8771,6 +8906,7 @@ function MatFindOffBlockDiagonalEntries(petsclib::PetscLibType, mat::AbstractPet
 end
 
 @for_petsc function MatFindOffBlockDiagonalEntries(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatFindOffBlockDiagonalEntries", "mat")
 	is_ = Ref{CIS}()
 
     @chk ccall(
@@ -8809,6 +8945,7 @@ function MatFindZeroDiagonals(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatFindZeroDiagonals(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatFindZeroDiagonals", "mat")
 	is_ = Ref{CIS}()
 
     @chk ccall(
@@ -8845,6 +8982,7 @@ function MatFindZeroRows(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatFindZeroRows(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatFindZeroRows", "mat")
 	zerorows_ = Ref{CIS}()
 
     @chk ccall(
@@ -8885,6 +9023,9 @@ function MatForwardSolve(petsclib::PetscLibType, mat::AbstractPetscMat, b::Abstr
 end
 
 @for_petsc function MatForwardSolve(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatForwardSolve", "mat")
+	b.ptr == C_NULL && throw_null_handle(b, "MatForwardSolve", "b")
+	x.ptr == C_NULL && throw_null_handle(x, "MatForwardSolve", "x")
 
     @chk ccall(
                (:MatForwardSolve, $petsc_library),
@@ -8969,6 +9110,7 @@ function MatGetBindingPropagates(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatGetBindingPropagates(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatGetBindingPropagates", "A")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -9007,6 +9149,7 @@ function MatGetBlockSize(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatGetBlockSize(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetBlockSize", "mat")
 	bs_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -9046,6 +9189,7 @@ function MatGetBlockSizes(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatGetBlockSizes(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetBlockSizes", "mat")
 	rbs_ = Ref{$PetscInt}()
 	cbs_ = Ref{$PetscInt}()
 
@@ -9090,6 +9234,7 @@ function MatGetBrowsOfAcols(petsclib::PetscLibType, A::AbstractPetscMat, B::Abst
 end
 
 @for_petsc function MatGetBrowsOfAcols(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, scall::MatReuse )
+	B.ptr == C_NULL && throw_null_handle(B, "MatGetBrowsOfAcols", "B")
 	rowb_ = Ref{CIS}()
 	colb_ = Ref{CIS}()
 	B_seq_ = Ref{CMat}()
@@ -9191,6 +9336,7 @@ function MatGetColumnMeans(petsclib::PetscLibType, A::AbstractPetscMat, means::A
 end
 
 @for_petsc function MatGetColumnMeans(petsclib::$UnionPetscLib, A::AbstractPetscMat, means::Vector{$PetscScalar} )
+	A.ptr == C_NULL && throw_null_handle(A, "MatGetColumnMeans", "A")
 
     @chk ccall(
                (:MatGetColumnMeans, $petsc_library),
@@ -9225,6 +9371,7 @@ function MatGetColumnMeansImaginaryPart(petsclib::PetscLibType, A::AbstractPetsc
 end
 
 @for_petsc function MatGetColumnMeansImaginaryPart(petsclib::$UnionPetscLib, A::AbstractPetscMat, means::Vector{$PetscReal} )
+	A.ptr == C_NULL && throw_null_handle(A, "MatGetColumnMeansImaginaryPart", "A")
 
     @chk ccall(
                (:MatGetColumnMeansImaginaryPart, $petsc_library),
@@ -9259,6 +9406,7 @@ function MatGetColumnMeansRealPart(petsclib::PetscLibType, A::AbstractPetscMat, 
 end
 
 @for_petsc function MatGetColumnMeansRealPart(petsclib::$UnionPetscLib, A::AbstractPetscMat, means::Vector{$PetscReal} )
+	A.ptr == C_NULL && throw_null_handle(A, "MatGetColumnMeansRealPart", "A")
 
     @chk ccall(
                (:MatGetColumnMeansRealPart, $petsc_library),
@@ -9294,6 +9442,7 @@ function MatGetColumnNorms(petsclib::PetscLibType, A::AbstractPetscMat, type::No
 end
 
 @for_petsc function MatGetColumnNorms(petsclib::$UnionPetscLib, A::AbstractPetscMat, type::NormType, norms::Vector{$PetscReal} )
+	A.ptr == C_NULL && throw_null_handle(A, "MatGetColumnNorms", "A")
 
     @chk ccall(
                (:MatGetColumnNorms, $petsc_library),
@@ -9330,6 +9479,7 @@ function MatGetColumnReductions(petsclib::PetscLibType, A::AbstractPetscMat, typ
 end
 
 @for_petsc function MatGetColumnReductions(petsclib::$UnionPetscLib, A::AbstractPetscMat, type::$PetscInt, reductions::Vector{$PetscReal} )
+	A.ptr == C_NULL && throw_null_handle(A, "MatGetColumnReductions", "A")
 
     @chk ccall(
                (:MatGetColumnReductions, $petsc_library),
@@ -9364,6 +9514,7 @@ function MatGetColumnSums(petsclib::PetscLibType, A::AbstractPetscMat, sums::Abs
 end
 
 @for_petsc function MatGetColumnSums(petsclib::$UnionPetscLib, A::AbstractPetscMat, sums::Vector{$PetscScalar} )
+	A.ptr == C_NULL && throw_null_handle(A, "MatGetColumnSums", "A")
 
     @chk ccall(
                (:MatGetColumnSums, $petsc_library),
@@ -9398,6 +9549,7 @@ function MatGetColumnSumsImaginaryPart(petsclib::PetscLibType, A::AbstractPetscM
 end
 
 @for_petsc function MatGetColumnSumsImaginaryPart(petsclib::$UnionPetscLib, A::AbstractPetscMat, sums::Vector{$PetscReal} )
+	A.ptr == C_NULL && throw_null_handle(A, "MatGetColumnSumsImaginaryPart", "A")
 
     @chk ccall(
                (:MatGetColumnSumsImaginaryPart, $petsc_library),
@@ -9432,6 +9584,7 @@ function MatGetColumnSumsRealPart(petsclib::PetscLibType, A::AbstractPetscMat, s
 end
 
 @for_petsc function MatGetColumnSumsRealPart(petsclib::$UnionPetscLib, A::AbstractPetscMat, sums::Vector{$PetscReal} )
+	A.ptr == C_NULL && throw_null_handle(A, "MatGetColumnSumsRealPart", "A")
 
     @chk ccall(
                (:MatGetColumnSumsRealPart, $petsc_library),
@@ -9467,6 +9620,8 @@ function MatGetColumnVector(petsclib::PetscLibType, A::AbstractPetscMat, yy::Abs
 end
 
 @for_petsc function MatGetColumnVector(petsclib::$UnionPetscLib, A::AbstractPetscMat, yy::AbstractPetscVec, col::$PetscInt )
+	A.ptr == C_NULL && throw_null_handle(A, "MatGetColumnVector", "A")
+	yy.ptr == C_NULL && throw_null_handle(yy, "MatGetColumnVector", "yy")
 
     @chk ccall(
                (:MatGetColumnVector, $petsc_library),
@@ -9503,6 +9658,7 @@ function MatGetCurrentMemType(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatGetCurrentMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatGetCurrentMemType", "A")
 	m_ = Ref{PetscMemType}()
 
     @chk ccall(
@@ -9541,6 +9697,7 @@ function MatGetDM(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatGetDM(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatGetDM", "A")
 	dm_ = Ref{CDM}()
 
     @chk ccall(
@@ -9579,6 +9736,8 @@ function MatGetDiagonal(petsclib::PetscLibType, mat::AbstractPetscMat, v::Abstra
 end
 
 @for_petsc function MatGetDiagonal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetDiagonal", "mat")
+	v.ptr == C_NULL && throw_null_handle(v, "MatGetDiagonal", "v")
 
     @chk ccall(
                (:MatGetDiagonal, $petsc_library),
@@ -9615,6 +9774,7 @@ function MatGetDiagonalBlock(petsclib::PetscLibType, A::AbstractPetscMat, M_a::A
 end
 
 @for_petsc function MatGetDiagonalBlock(petsclib::$UnionPetscLib, A::AbstractPetscMat, M_a::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatGetDiagonalBlock", "A")
 	M_a_ = Ref(M_a.ptr)
 
     @chk ccall(
@@ -9666,6 +9826,7 @@ function MatGetFactor(petsclib::PetscLibType, mat::AbstractPetscMat, type::Strin
 end
 
 @for_petsc function MatGetFactor(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::String, ftype::MatFactorType )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetFactor", "mat")
 	f_ = Ref{CMat}()
 
     @chk ccall(
@@ -9707,6 +9868,7 @@ function MatGetFactorAvailable(petsclib::PetscLibType, mat::AbstractPetscMat, ty
 end
 
 @for_petsc function MatGetFactorAvailable(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::String, ftype::MatFactorType )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetFactorAvailable", "mat")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -9746,6 +9908,7 @@ function MatGetFactorType(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatGetFactorType(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetFactorType", "mat")
 	t_ = Ref{MatFactorType}()
 
     @chk ccall(
@@ -9785,6 +9948,7 @@ function MatGetGhosts(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatGetGhosts(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetGhosts", "mat")
 	nghosts_ = Ref{$PetscInt}()
 	ghosts_ = Ref{Ptr{$PetscInt}}()
 
@@ -9828,6 +9992,7 @@ function MatGetInertia(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatGetInertia(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetInertia", "mat")
 	nneg_ = Ref{$PetscInt}()
 	nzero_ = Ref{$PetscInt}()
 	npos_ = Ref{$PetscInt}()
@@ -9875,6 +10040,7 @@ function MatGetInfo(petsclib::PetscLibType, mat::AbstractPetscMat, flag::MatInfo
 end
 
 @for_petsc function MatGetInfo(petsclib::$UnionPetscLib, mat::AbstractPetscMat, flag::MatInfoType )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetInfo", "mat")
 	info_ = Ref{MatInfo}()
 
     @chk ccall(
@@ -9914,6 +10080,7 @@ function MatGetLayouts(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatGetLayouts(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatGetLayouts", "A")
 	rmap_ = Ref{PetscLayout}()
 	cmap_ = Ref{PetscLayout}()
 
@@ -9956,6 +10123,7 @@ function MatGetLocalSize(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatGetLocalSize(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetLocalSize", "mat")
 	m_ = Ref{$PetscInt}()
 	n_ = Ref{$PetscInt}()
 
@@ -9998,6 +10166,9 @@ function MatGetLocalSubMatrix(petsclib::PetscLibType, mat::AbstractPetscMat, isr
 end
 
 @for_petsc function MatGetLocalSubMatrix(petsclib::$UnionPetscLib, mat::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetLocalSubMatrix", "mat")
+	isrow.ptr == C_NULL && throw_null_handle(isrow, "MatGetLocalSubMatrix", "isrow")
+	iscol.ptr == C_NULL && throw_null_handle(iscol, "MatGetLocalSubMatrix", "iscol")
 	submat_ = Ref{CMat}()
 
     @chk ccall(
@@ -10037,6 +10208,7 @@ function MatGetLocalToGlobalMapping(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatGetLocalToGlobalMapping(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatGetLocalToGlobalMapping", "A")
 	rmapping_ = Ref{ISLocalToGlobalMapping}()
 	cmapping_ = Ref{ISLocalToGlobalMapping}()
 
@@ -10118,6 +10290,7 @@ function MatGetNearNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatGetNearNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetNearNullSpace", "mat")
 	nullsp_ = Ref{CMatNullSpace}()
 
     @chk ccall(
@@ -10157,6 +10330,7 @@ function MatGetNonzeroState(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatGetNonzeroState(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetNonzeroState", "mat")
 	state_ = Ref{PetscObjectState}()
 
     @chk ccall(
@@ -10193,6 +10367,7 @@ function MatGetNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::
 end
 
 @for_petsc function MatGetNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::AbstractMatNullSpace )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetNullSpace", "mat")
 	nullsp_ = Ref(nullsp.ptr)
 
     @chk ccall(
@@ -10272,6 +10447,7 @@ function MatGetOperation(petsclib::PetscLibType, mat::AbstractPetscMat, op::MatO
 end
 
 @for_petsc function MatGetOperation(petsclib::$UnionPetscLib, mat::AbstractPetscMat, op::MatOperation )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetOperation", "mat")
 	f_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
@@ -10312,6 +10488,7 @@ function MatGetOption(petsclib::PetscLibType, mat::AbstractPetscMat, op::MatOpti
 end
 
 @for_petsc function MatGetOption(petsclib::$UnionPetscLib, mat::AbstractPetscMat, op::MatOption )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetOption", "mat")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -10351,6 +10528,7 @@ function MatGetOptionsPrefix(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatGetOptionsPrefix(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatGetOptionsPrefix", "A")
 	prefix_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -10405,6 +10583,7 @@ function MatGetOrdering(petsclib::PetscLibType, mat::AbstractPetscMat, type::Str
 end
 
 @for_petsc function MatGetOrdering(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::String )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetOrdering", "mat")
 	rperm_ = Ref{CIS}()
 	cperm_ = Ref{CIS}()
 
@@ -10481,6 +10660,7 @@ function MatGetOwnershipIS(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatGetOwnershipIS(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatGetOwnershipIS", "A")
 	rows_ = Ref{CIS}()
 	cols_ = Ref{CIS}()
 
@@ -10524,6 +10704,7 @@ function MatGetOwnershipRange(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatGetOwnershipRange(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetOwnershipRange", "mat")
 	m_ = Ref{$PetscInt}()
 	n_ = Ref{$PetscInt}()
 
@@ -10567,6 +10748,7 @@ function MatGetOwnershipRangeColumn(petsclib::PetscLibType, mat::AbstractPetscMa
 end
 
 @for_petsc function MatGetOwnershipRangeColumn(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetOwnershipRangeColumn", "mat")
 	m_ = Ref{$PetscInt}()
 	n_ = Ref{$PetscInt}()
 
@@ -10611,6 +10793,7 @@ function MatGetOwnershipRanges(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatGetOwnershipRanges(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetOwnershipRanges", "mat")
 	ranges_ = Ref{Ptr{$PetscInt}}()
 
     @chk ccall(
@@ -10653,6 +10836,7 @@ function MatGetOwnershipRangesColumn(petsclib::PetscLibType, mat::AbstractPetscM
 end
 
 @for_petsc function MatGetOwnershipRangesColumn(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetOwnershipRangesColumn", "mat")
 	ranges_ = Ref{Ptr{$PetscInt}}()
 
     @chk ccall(
@@ -10697,6 +10881,7 @@ function MatGetRow(petsclib::PetscLibType, mat::AbstractPetscMat, row::Integer)
 end
 
 @for_petsc function MatGetRow(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::$PetscInt )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetRow", "mat")
 	ncols_ = Ref{$PetscInt}()
 	cols_ = Ref{Ptr{$PetscInt}}()
 	vals_ = Ref{Ptr{$PetscScalar}}()
@@ -10804,6 +10989,8 @@ function MatGetRowMax(petsclib::PetscLibType, mat::AbstractPetscMat, v::Abstract
 end
 
 @for_petsc function MatGetRowMax(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v::AbstractPetscVec, idx::Vector{$PetscInt} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetRowMax", "mat")
+	v.ptr == C_NULL && throw_null_handle(v, "MatGetRowMax", "v")
 
     @chk ccall(
                (:MatGetRowMax, $petsc_library),
@@ -10842,6 +11029,8 @@ function MatGetRowMaxAbs(petsclib::PetscLibType, mat::AbstractPetscMat, v::Abstr
 end
 
 @for_petsc function MatGetRowMaxAbs(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v::AbstractPetscVec, idx::Vector{$PetscInt} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetRowMaxAbs", "mat")
+	v.ptr == C_NULL && throw_null_handle(v, "MatGetRowMaxAbs", "v")
 
     @chk ccall(
                (:MatGetRowMaxAbs, $petsc_library),
@@ -10881,6 +11070,8 @@ function MatGetRowMin(petsclib::PetscLibType, mat::AbstractPetscMat, v::Abstract
 end
 
 @for_petsc function MatGetRowMin(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v::AbstractPetscVec, idx::Vector{$PetscInt} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetRowMin", "mat")
+	v.ptr == C_NULL && throw_null_handle(v, "MatGetRowMin", "v")
 
     @chk ccall(
                (:MatGetRowMin, $petsc_library),
@@ -10919,6 +11110,8 @@ function MatGetRowMinAbs(petsclib::PetscLibType, mat::AbstractPetscMat, v::Abstr
 end
 
 @for_petsc function MatGetRowMinAbs(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v::AbstractPetscVec, idx::Vector{$PetscInt} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetRowMinAbs", "mat")
+	v.ptr == C_NULL && throw_null_handle(v, "MatGetRowMinAbs", "v")
 
     @chk ccall(
                (:MatGetRowMinAbs, $petsc_library),
@@ -10955,6 +11148,8 @@ function MatGetRowSum(petsclib::PetscLibType, mat::AbstractPetscMat, v::Abstract
 end
 
 @for_petsc function MatGetRowSum(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetRowSum", "mat")
+	v.ptr == C_NULL && throw_null_handle(v, "MatGetRowSum", "v")
 
     @chk ccall(
                (:MatGetRowSum, $petsc_library),
@@ -10993,6 +11188,8 @@ function MatGetRowSumAbs(petsclib::PetscLibType, mat::AbstractPetscMat, v::Abstr
 end
 
 @for_petsc function MatGetRowSumAbs(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetRowSumAbs", "mat")
+	v.ptr == C_NULL && throw_null_handle(v, "MatGetRowSumAbs", "v")
 
     @chk ccall(
                (:MatGetRowSumAbs, $petsc_library),
@@ -11027,6 +11224,7 @@ function MatGetRowUpperTriangular(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatGetRowUpperTriangular(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetRowUpperTriangular", "mat")
 
     @chk ccall(
                (:MatGetRowUpperTriangular, $petsc_library),
@@ -11072,6 +11270,11 @@ function MatGetSchurComplement(petsclib::PetscLibType, A::AbstractPetscMat, isro
 end
 
 @for_petsc function MatGetSchurComplement(petsclib::$UnionPetscLib, A::AbstractPetscMat, isrow0::AbstractIS, iscol0::AbstractIS, isrow1::AbstractIS, iscol1::AbstractIS, mreuse::MatReuse, ainvtype::MatSchurComplementAinvType, preuse::MatReuse )
+	A.ptr == C_NULL && throw_null_handle(A, "MatGetSchurComplement", "A")
+	isrow0.ptr == C_NULL && throw_null_handle(isrow0, "MatGetSchurComplement", "isrow0")
+	iscol0.ptr == C_NULL && throw_null_handle(iscol0, "MatGetSchurComplement", "iscol0")
+	isrow1.ptr == C_NULL && throw_null_handle(isrow1, "MatGetSchurComplement", "isrow1")
+	iscol1.ptr == C_NULL && throw_null_handle(iscol1, "MatGetSchurComplement", "iscol1")
 	S_ = Ref{CMat}()
 	Sp_ = Ref{CMat}()
 
@@ -11112,6 +11315,7 @@ function MatGetSeqNonzeroStructure(petsclib::PetscLibType, mat::AbstractPetscMat
 end
 
 @for_petsc function MatGetSeqNonzeroStructure(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetSeqNonzeroStructure", "mat")
 	matstruct_ = Ref{CMat}()
 
     @chk ccall(
@@ -11151,6 +11355,7 @@ function MatGetSize(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatGetSize(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetSize", "mat")
 	m_ = Ref{$PetscInt}()
 	n_ = Ref{$PetscInt}()
 
@@ -11191,6 +11396,7 @@ function MatGetState(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatGetState(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatGetState", "A")
 	state_ = Ref{PetscObjectState}()
 
     @chk ccall(
@@ -11229,6 +11435,7 @@ function MatGetTrace(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatGetTrace(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetTrace", "mat")
 	trace_ = Ref{$PetscScalar}()
 
     @chk ccall(
@@ -11265,6 +11472,7 @@ function MatGetTransposeNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat,
 end
 
 @for_petsc function MatGetTransposeNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::AbstractMatNullSpace )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetTransposeNullSpace", "mat")
 	nullsp_ = Ref(nullsp.ptr)
 
     @chk ccall(
@@ -11346,6 +11554,7 @@ function MatGetValues(petsclib::PetscLibType, mat::AbstractPetscMat, m::Integer,
 end
 
 @for_petsc function MatGetValues(petsclib::$UnionPetscLib, mat::AbstractPetscMat, m::$PetscInt, idxm::Vector{$PetscInt}, n::$PetscInt, idxn::Vector{$PetscInt}, v::Vector{$PetscScalar} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetValues", "mat")
 
     @chk ccall(
                (:MatGetValues, $petsc_library),
@@ -11389,6 +11598,7 @@ function MatGetValuesLocal(petsclib::PetscLibType, mat::AbstractPetscMat, nrow::
 end
 
 @for_petsc function MatGetValuesLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nrow::$PetscInt, irow::Vector{$PetscInt}, ncol::$PetscInt, icol::Vector{$PetscInt}, y::Vector{$PetscScalar} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetValuesLocal", "mat")
 
     @chk ccall(
                (:MatGetValuesLocal, $petsc_library),
@@ -11426,6 +11636,7 @@ function MatGetVariableBlockSizes(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatGetVariableBlockSizes(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetVariableBlockSizes", "mat")
 	nblocks_ = Ref{$PetscInt}()
 	bsizes_ = Ref{Ptr{$PetscInt}}()
 
@@ -11466,6 +11677,7 @@ function MatGetVecType(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatGetVecType(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatGetVecType", "mat")
 	vtype_ = Ref{VecType}()
 
     @chk ccall(
@@ -11740,6 +11952,7 @@ function MatHYPREGetParCSR(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatHYPREGetParCSR(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatHYPREGetParCSR", "A")
 	parcsr_ = Ref{Ptr{hypre_ParCSRMatrix}}()
 
     @chk ccall(
@@ -11790,6 +12003,7 @@ function MatHYPRESetPreallocation(petsclib::PetscLibType, A::AbstractPetscMat, d
 end
 
 @for_petsc function MatHYPRESetPreallocation(petsclib::$UnionPetscLib, A::AbstractPetscMat, dnz::$PetscInt, dnnz::Vector{$PetscInt}, onz::$PetscInt, onnz::Vector{$PetscInt} )
+	A.ptr == C_NULL && throw_null_handle(A, "MatHYPRESetPreallocation", "A")
 
     @chk ccall(
                (:MatHYPRESetPreallocation, $petsc_library),
@@ -11826,6 +12040,7 @@ function MatHasCongruentLayouts(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatHasCongruentLayouts(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatHasCongruentLayouts", "mat")
 	cong_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -11865,6 +12080,7 @@ function MatHasOperation(petsclib::PetscLibType, mat::AbstractPetscMat, op::MatO
 end
 
 @for_petsc function MatHasOperation(petsclib::$UnionPetscLib, mat::AbstractPetscMat, op::MatOperation )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatHasOperation", "mat")
 	has_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -11901,6 +12117,7 @@ function MatHeaderMerge(petsclib::PetscLibType, A::AbstractPetscMat, C::Abstract
 end
 
 @for_petsc function MatHeaderMerge(petsclib::$UnionPetscLib, A::AbstractPetscMat, C::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatHeaderMerge", "A")
 	C_ = Ref(C.ptr)
 
     @chk ccall(
@@ -11935,6 +12152,7 @@ function MatHeaderReplace(petsclib::PetscLibType, A::AbstractPetscMat, C::Abstra
 end
 
 @for_petsc function MatHeaderReplace(petsclib::$UnionPetscLib, A::AbstractPetscMat, C::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatHeaderReplace", "A")
 	C_ = Ref(C.ptr)
 
     @chk ccall(
@@ -12012,6 +12230,7 @@ function MatHermitianTransposeGetMat(petsclib::PetscLibType, A::AbstractPetscMat
 end
 
 @for_petsc function MatHermitianTransposeGetMat(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatHermitianTransposeGetMat", "A")
 	M_ = Ref{CMat}()
 
     @chk ccall(
@@ -12168,6 +12387,7 @@ function MatICCFactor(petsclib::PetscLibType, mat::AbstractPetscMat, row::Abstra
 end
 
 @for_petsc function MatICCFactor(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::AbstractIS, info::Vector{MatFactorInfo} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatICCFactor", "mat")
 
     @chk ccall(
                (:MatICCFactor, $petsc_library),
@@ -12210,6 +12430,7 @@ function MatICCFactorSymbolic(petsclib::PetscLibType, fact::AbstractPetscMat, ma
 end
 
 @for_petsc function MatICCFactorSymbolic(petsclib::$UnionPetscLib, fact::AbstractPetscMat, mat::AbstractPetscMat, perm::AbstractIS, info::Vector{MatFactorInfo} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatICCFactorSymbolic", "mat")
 
     @chk ccall(
                (:MatICCFactorSymbolic, $petsc_library),
@@ -12252,6 +12473,7 @@ function MatILUFactor(petsclib::PetscLibType, mat::AbstractPetscMat, row::Abstra
 end
 
 @for_petsc function MatILUFactor(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, info::Vector{MatFactorInfo} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatILUFactor", "mat")
 
     @chk ccall(
                (:MatILUFactor, $petsc_library),
@@ -12298,6 +12520,7 @@ function MatILUFactorSymbolic(petsclib::PetscLibType, fact::AbstractPetscMat, ma
 end
 
 @for_petsc function MatILUFactorSymbolic(petsclib::$UnionPetscLib, fact::AbstractPetscMat, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, info::Vector{MatFactorInfo} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatILUFactorSymbolic", "mat")
 
     @chk ccall(
                (:MatILUFactorSymbolic, $petsc_library),
@@ -12332,6 +12555,7 @@ function MatISFixLocalEmpty(petsclib::PetscLibType, A::AbstractPetscMat, fix::Pe
 end
 
 @for_petsc function MatISFixLocalEmpty(petsclib::$UnionPetscLib, A::AbstractPetscMat, fix::PetscBool )
+	A.ptr == C_NULL && throw_null_handle(A, "MatISFixLocalEmpty", "A")
 
     @chk ccall(
                (:MatISFixLocalEmpty, $petsc_library),
@@ -12368,6 +12592,7 @@ function MatISGetAllowRepeated(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatISGetAllowRepeated(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatISGetAllowRepeated", "A")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -12406,6 +12631,7 @@ function MatISGetLocalMat(petsclib::PetscLibType, mat::AbstractPetscMat, loc::Ab
 end
 
 @for_petsc function MatISGetLocalMat(petsclib::$UnionPetscLib, mat::AbstractPetscMat, loc::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatISGetLocalMat", "mat")
 	loc_ = Ref(loc.ptr)
 
     @chk ccall(
@@ -12445,6 +12671,7 @@ function MatISGetLocalToGlobalMapping(petsclib::PetscLibType, A::AbstractPetscMa
 end
 
 @for_petsc function MatISGetLocalToGlobalMapping(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatISGetLocalToGlobalMapping", "A")
 	rmapping_ = Ref{ISLocalToGlobalMapping}()
 	cmapping_ = Ref{ISLocalToGlobalMapping}()
 
@@ -12483,6 +12710,7 @@ function MatISRestoreLocalMat(petsclib::PetscLibType, mat::AbstractPetscMat, loc
 end
 
 @for_petsc function MatISRestoreLocalMat(petsclib::$UnionPetscLib, mat::AbstractPetscMat, loc::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatISRestoreLocalMat", "mat")
 	loc_ = Ref(loc.ptr)
 
     @chk ccall(
@@ -12519,6 +12747,7 @@ function MatISSetAllowRepeated(petsclib::PetscLibType, A::AbstractPetscMat, flg:
 end
 
 @for_petsc function MatISSetAllowRepeated(petsclib::$UnionPetscLib, A::AbstractPetscMat, flg::PetscBool )
+	A.ptr == C_NULL && throw_null_handle(A, "MatISSetAllowRepeated", "A")
 
     @chk ccall(
                (:MatISSetAllowRepeated, $petsc_library),
@@ -12553,6 +12782,7 @@ function MatISSetLocalMat(petsclib::PetscLibType, mat::AbstractPetscMat, loc::Ab
 end
 
 @for_petsc function MatISSetLocalMat(petsclib::$UnionPetscLib, mat::AbstractPetscMat, loc::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatISSetLocalMat", "mat")
 
     @chk ccall(
                (:MatISSetLocalMat, $petsc_library),
@@ -12587,6 +12817,7 @@ function MatISSetLocalMatType(petsclib::PetscLibType, mat::AbstractPetscMat, mty
 end
 
 @for_petsc function MatISSetLocalMatType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, mtype::String )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatISSetLocalMatType", "mat")
 
     @chk ccall(
                (:MatISSetLocalMatType, $petsc_library),
@@ -12637,6 +12868,7 @@ function MatISSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat, d_nz
 end
 
 @for_petsc function MatISSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, d_nz::$PetscInt, d_nnz::Union{Ptr, Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr, Vector{$PetscInt}} )
+	B.ptr == C_NULL && throw_null_handle(B, "MatISSetPreallocation", "B")
 
     @chk ccall(
                (:MatISSetPreallocation, $petsc_library),
@@ -12671,6 +12903,7 @@ function MatISStoreL2L(petsclib::PetscLibType, A::AbstractPetscMat, store::Petsc
 end
 
 @for_petsc function MatISStoreL2L(petsclib::$UnionPetscLib, A::AbstractPetscMat, store::PetscBool )
+	A.ptr == C_NULL && throw_null_handle(A, "MatISStoreL2L", "A")
 
     @chk ccall(
                (:MatISStoreL2L, $petsc_library),
@@ -12704,6 +12937,7 @@ function MatImaginaryPart(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatImaginaryPart(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatImaginaryPart", "mat")
 
     @chk ccall(
                (:MatImaginaryPart, $petsc_library),
@@ -12745,6 +12979,7 @@ function MatIncreaseOverlap(petsclib::PetscLibType, mat::AbstractPetscMat, n::In
 end
 
 @for_petsc function MatIncreaseOverlap(petsclib::$UnionPetscLib, mat::AbstractPetscMat, n::$PetscInt, is::Vector{<:AbstractIS}, ov::$PetscInt )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatIncreaseOverlap", "mat")
 
     @chk ccall(
                (:MatIncreaseOverlap, $petsc_library),
@@ -12786,6 +13021,7 @@ function MatIncreaseOverlapSplit(petsclib::PetscLibType, mat::AbstractPetscMat, 
 end
 
 @for_petsc function MatIncreaseOverlapSplit(petsclib::$UnionPetscLib, mat::AbstractPetscMat, n::$PetscInt, is::Vector{<:AbstractIS}, ov::$PetscInt )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatIncreaseOverlapSplit", "mat")
 
     @chk ccall(
                (:MatIncreaseOverlapSplit, $petsc_library),
@@ -12939,6 +13175,9 @@ function MatInterpolate(petsclib::PetscLibType, A::AbstractPetscMat, x::Abstract
 end
 
 @for_petsc function MatInterpolate(petsclib::$UnionPetscLib, A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec )
+	A.ptr == C_NULL && throw_null_handle(A, "MatInterpolate", "A")
+	x.ptr == C_NULL && throw_null_handle(x, "MatInterpolate", "x")
+	y.ptr == C_NULL && throw_null_handle(y, "MatInterpolate", "y")
 
     @chk ccall(
                (:MatInterpolate, $petsc_library),
@@ -12978,6 +13217,10 @@ function MatInterpolateAdd(petsclib::PetscLibType, A::AbstractPetscMat, x::Abstr
 end
 
 @for_petsc function MatInterpolateAdd(petsclib::$UnionPetscLib, A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec, w::AbstractPetscVec )
+	A.ptr == C_NULL && throw_null_handle(A, "MatInterpolateAdd", "A")
+	x.ptr == C_NULL && throw_null_handle(x, "MatInterpolateAdd", "x")
+	y.ptr == C_NULL && throw_null_handle(y, "MatInterpolateAdd", "y")
+	w.ptr == C_NULL && throw_null_handle(w, "MatInterpolateAdd", "w")
 
     @chk ccall(
                (:MatInterpolateAdd, $petsc_library),
@@ -13014,6 +13257,7 @@ function MatInvertBlockDiagonal(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatInvertBlockDiagonal(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatInvertBlockDiagonal", "mat")
 	values_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -13050,6 +13294,8 @@ function MatInvertBlockDiagonalMat(petsclib::PetscLibType, A::AbstractPetscMat, 
 end
 
 @for_petsc function MatInvertBlockDiagonalMat(petsclib::$UnionPetscLib, A::AbstractPetscMat, C::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatInvertBlockDiagonalMat", "A")
+	C.ptr == C_NULL && throw_null_handle(C, "MatInvertBlockDiagonalMat", "C")
 
     @chk ccall(
                (:MatInvertBlockDiagonalMat, $petsc_library),
@@ -13088,6 +13334,7 @@ function MatInvertVariableBlockDiagonal(petsclib::PetscLibType, mat::AbstractPet
 end
 
 @for_petsc function MatInvertVariableBlockDiagonal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nblocks::$PetscInt, bsizes::Vector{$PetscInt}, values::Vector{$PetscScalar} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatInvertVariableBlockDiagonal", "mat")
 
     @chk ccall(
                (:MatInvertVariableBlockDiagonal, $petsc_library),
@@ -13125,6 +13372,7 @@ function MatInvertVariableBlockEnvelope(petsclib::PetscLibType, A::AbstractPetsc
 end
 
 @for_petsc function MatInvertVariableBlockEnvelope(petsclib::$UnionPetscLib, A::AbstractPetscMat, reuse::MatReuse )
+	A.ptr == C_NULL && throw_null_handle(A, "MatInvertVariableBlockEnvelope", "A")
 	C_ = Ref{CMat}()
 
     @chk ccall(
@@ -13165,6 +13413,7 @@ function MatIsHermitian(petsclib::PetscLibType, A::AbstractPetscMat, tol::Real)
 end
 
 @for_petsc function MatIsHermitian(petsclib::$UnionPetscLib, A::AbstractPetscMat, tol::$PetscReal )
+	A.ptr == C_NULL && throw_null_handle(A, "MatIsHermitian", "A")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -13204,6 +13453,7 @@ function MatIsHermitianKnown(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatIsHermitianKnown(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatIsHermitianKnown", "A")
 	set_ = Ref{PetscBool}()
 	flg_ = Ref{PetscBool}()
 
@@ -13246,6 +13496,8 @@ function MatIsHermitianTranspose(petsclib::PetscLibType, A::AbstractPetscMat, B:
 end
 
 @for_petsc function MatIsHermitianTranspose(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, tol::$PetscReal )
+	A.ptr == C_NULL && throw_null_handle(A, "MatIsHermitianTranspose", "A")
+	B.ptr == C_NULL && throw_null_handle(B, "MatIsHermitianTranspose", "B")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -13285,6 +13537,7 @@ function MatIsLinear(petsclib::PetscLibType, A::AbstractPetscMat, n::Integer)
 end
 
 @for_petsc function MatIsLinear(petsclib::$UnionPetscLib, A::AbstractPetscMat, n::$PetscInt )
+	A.ptr == C_NULL && throw_null_handle(A, "MatIsLinear", "A")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -13324,6 +13577,7 @@ function MatIsSPDKnown(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatIsSPDKnown(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatIsSPDKnown", "A")
 	set_ = Ref{PetscBool}()
 	flg_ = Ref{PetscBool}()
 
@@ -13362,6 +13616,7 @@ function MatIsShell(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatIsShell(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatIsShell", "mat")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -13400,6 +13655,7 @@ function MatIsStructurallySymmetric(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatIsStructurallySymmetric(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatIsStructurallySymmetric", "A")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -13439,6 +13695,7 @@ function MatIsStructurallySymmetricKnown(petsclib::PetscLibType, A::AbstractPets
 end
 
 @for_petsc function MatIsStructurallySymmetricKnown(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatIsStructurallySymmetricKnown", "A")
 	set_ = Ref{PetscBool}()
 	flg_ = Ref{PetscBool}()
 
@@ -13481,6 +13738,7 @@ function MatIsSymmetric(petsclib::PetscLibType, A::AbstractPetscMat, tol::Real)
 end
 
 @for_petsc function MatIsSymmetric(petsclib::$UnionPetscLib, A::AbstractPetscMat, tol::$PetscReal )
+	A.ptr == C_NULL && throw_null_handle(A, "MatIsSymmetric", "A")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -13520,6 +13778,7 @@ function MatIsSymmetricKnown(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatIsSymmetricKnown(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatIsSymmetricKnown", "A")
 	set_ = Ref{PetscBool}()
 	flg_ = Ref{PetscBool}()
 
@@ -13563,6 +13822,8 @@ function MatIsTranspose(petsclib::PetscLibType, A::AbstractPetscMat, B::Abstract
 end
 
 @for_petsc function MatIsTranspose(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, tol::$PetscReal )
+	A.ptr == C_NULL && throw_null_handle(A, "MatIsTranspose", "A")
+	B.ptr == C_NULL && throw_null_handle(B, "MatIsTranspose", "B")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -14098,6 +14359,9 @@ function MatLMVMAllocate(petsclib::PetscLibType, B::AbstractPetscMat, X::Abstrac
 end
 
 @for_petsc function MatLMVMAllocate(petsclib::$UnionPetscLib, B::AbstractPetscMat, X::AbstractPetscVec, F::AbstractPetscVec )
+	B.ptr == C_NULL && throw_null_handle(B, "MatLMVMAllocate", "B")
+	X.ptr == C_NULL && throw_null_handle(X, "MatLMVMAllocate", "X")
+	F.ptr == C_NULL && throw_null_handle(F, "MatLMVMAllocate", "F")
 
     @chk ccall(
                (:MatLMVMAllocate, $petsc_library),
@@ -14135,6 +14399,8 @@ function MatLMVMApplyJ0Fwd(petsclib::PetscLibType, B::AbstractPetscMat, X::Abstr
 end
 
 @for_petsc function MatLMVMApplyJ0Fwd(petsclib::$UnionPetscLib, B::AbstractPetscMat, X::AbstractPetscVec, Y::AbstractPetscVec )
+	X.ptr == C_NULL && throw_null_handle(X, "MatLMVMApplyJ0Fwd", "X")
+	Y.ptr == C_NULL && throw_null_handle(Y, "MatLMVMApplyJ0Fwd", "Y")
 
     @chk ccall(
                (:MatLMVMApplyJ0Fwd, $petsc_library),
@@ -14204,6 +14470,7 @@ function MatLMVMClearJ0(petsclib::PetscLibType, B::AbstractPetscMat)
 end
 
 @for_petsc function MatLMVMClearJ0(petsclib::$UnionPetscLib, B::AbstractPetscMat )
+	B.ptr == C_NULL && throw_null_handle(B, "MatLMVMClearJ0", "B")
 
     @chk ccall(
                (:MatLMVMClearJ0, $petsc_library),
@@ -14245,6 +14512,7 @@ function MatLMVMDenseSetType(petsclib::PetscLibType, B::AbstractPetscMat, type::
 end
 
 @for_petsc function MatLMVMDenseSetType(petsclib::$UnionPetscLib, B::AbstractPetscMat, type::MatLMVMDenseType )
+	B.ptr == C_NULL && throw_null_handle(B, "MatLMVMDenseSetType", "B")
 
     @chk ccall(
                (:MatLMVMDenseSetType, $petsc_library),
@@ -14281,6 +14549,7 @@ function MatLMVMGetHistorySize(petsclib::PetscLibType, B::AbstractPetscMat)
 end
 
 @for_petsc function MatLMVMGetHistorySize(petsclib::$UnionPetscLib, B::AbstractPetscMat )
+	B.ptr == C_NULL && throw_null_handle(B, "MatLMVMGetHistorySize", "B")
 	hist_size_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -14317,6 +14586,7 @@ function MatLMVMGetJ0(petsclib::PetscLibType, B::AbstractPetscMat)
 end
 
 @for_petsc function MatLMVMGetJ0(petsclib::$UnionPetscLib, B::AbstractPetscMat )
+	B.ptr == C_NULL && throw_null_handle(B, "MatLMVMGetJ0", "B")
 	J0_ = Ref{CMat}()
 
     @chk ccall(
@@ -14354,6 +14624,7 @@ function MatLMVMGetJ0KSP(petsclib::PetscLibType, B::AbstractPetscMat)
 end
 
 @for_petsc function MatLMVMGetJ0KSP(petsclib::$UnionPetscLib, B::AbstractPetscMat )
+	B.ptr == C_NULL && throw_null_handle(B, "MatLMVMGetJ0KSP", "B")
 	J0ksp_ = Ref{CKSP}()
 
     @chk ccall(
@@ -14391,6 +14662,7 @@ function MatLMVMGetJ0PC(petsclib::PetscLibType, B::AbstractPetscMat)
 end
 
 @for_petsc function MatLMVMGetJ0PC(petsclib::$UnionPetscLib, B::AbstractPetscMat )
+	B.ptr == C_NULL && throw_null_handle(B, "MatLMVMGetJ0PC", "B")
 	J0pc_ = Ref{CPC}()
 
     @chk ccall(
@@ -14430,6 +14702,7 @@ function MatLMVMGetLastUpdate(petsclib::PetscLibType, B::AbstractPetscMat)
 end
 
 @for_petsc function MatLMVMGetLastUpdate(petsclib::$UnionPetscLib, B::AbstractPetscMat )
+	B.ptr == C_NULL && throw_null_handle(B, "MatLMVMGetLastUpdate", "B")
 	x_prev_ = Ref{CVec}()
 	f_prev_ = Ref{CVec}()
 
@@ -14470,6 +14743,7 @@ function MatLMVMGetMultAlgorithm(petsclib::PetscLibType, B::AbstractPetscMat)
 end
 
 @for_petsc function MatLMVMGetMultAlgorithm(petsclib::$UnionPetscLib, B::AbstractPetscMat )
+	B.ptr == C_NULL && throw_null_handle(B, "MatLMVMGetMultAlgorithm", "B")
 	alg_ = Ref{MatLMVMMultAlgorithm}()
 
     @chk ccall(
@@ -14507,6 +14781,7 @@ function MatLMVMGetRejectCount(petsclib::PetscLibType, B::AbstractPetscMat)
 end
 
 @for_petsc function MatLMVMGetRejectCount(petsclib::$UnionPetscLib, B::AbstractPetscMat )
+	B.ptr == C_NULL && throw_null_handle(B, "MatLMVMGetRejectCount", "B")
 	nrejects_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -14543,6 +14818,7 @@ function MatLMVMGetUpdateCount(petsclib::PetscLibType, B::AbstractPetscMat)
 end
 
 @for_petsc function MatLMVMGetUpdateCount(petsclib::$UnionPetscLib, B::AbstractPetscMat )
+	B.ptr == C_NULL && throw_null_handle(B, "MatLMVMGetUpdateCount", "B")
 	nupdates_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -14580,6 +14856,7 @@ function MatLMVMIsAllocated(petsclib::PetscLibType, B::AbstractPetscMat)
 end
 
 @for_petsc function MatLMVMIsAllocated(petsclib::$UnionPetscLib, B::AbstractPetscMat )
+	B.ptr == C_NULL && throw_null_handle(B, "MatLMVMIsAllocated", "B")
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -14615,6 +14892,7 @@ function MatLMVMReset(petsclib::PetscLibType, B::AbstractPetscMat, destructive::
 end
 
 @for_petsc function MatLMVMReset(petsclib::$UnionPetscLib, B::AbstractPetscMat, destructive::PetscBool )
+	B.ptr == C_NULL && throw_null_handle(B, "MatLMVMReset", "B")
 
     @chk ccall(
                (:MatLMVMReset, $petsc_library),
@@ -14646,6 +14924,7 @@ function MatLMVMResetShift(petsclib::PetscLibType, B::AbstractPetscMat)
 end
 
 @for_petsc function MatLMVMResetShift(petsclib::$UnionPetscLib, B::AbstractPetscMat )
+	B.ptr == C_NULL && throw_null_handle(B, "MatLMVMResetShift", "B")
 
     @chk ccall(
                (:MatLMVMResetShift, $petsc_library),
@@ -14682,6 +14961,7 @@ function MatLMVMSetHistorySize(petsclib::PetscLibType, B::AbstractPetscMat, hist
 end
 
 @for_petsc function MatLMVMSetHistorySize(petsclib::$UnionPetscLib, B::AbstractPetscMat, hist_size::$PetscInt )
+	B.ptr == C_NULL && throw_null_handle(B, "MatLMVMSetHistorySize", "B")
 
     @chk ccall(
                (:MatLMVMSetHistorySize, $petsc_library),
@@ -14715,6 +14995,8 @@ function MatLMVMSetJ0(petsclib::PetscLibType, B::AbstractPetscMat, J0::AbstractP
 end
 
 @for_petsc function MatLMVMSetJ0(petsclib::$UnionPetscLib, B::AbstractPetscMat, J0::AbstractPetscMat )
+	B.ptr == C_NULL && throw_null_handle(B, "MatLMVMSetJ0", "B")
+	J0.ptr == C_NULL && throw_null_handle(J0, "MatLMVMSetJ0", "J0")
 
     @chk ccall(
                (:MatLMVMSetJ0, $petsc_library),
@@ -14748,6 +15030,8 @@ function MatLMVMSetJ0Diag(petsclib::PetscLibType, B::AbstractPetscMat, V::Abstra
 end
 
 @for_petsc function MatLMVMSetJ0Diag(petsclib::$UnionPetscLib, B::AbstractPetscMat, V::AbstractPetscVec )
+	B.ptr == C_NULL && throw_null_handle(B, "MatLMVMSetJ0Diag", "B")
+	V.ptr == C_NULL && throw_null_handle(V, "MatLMVMSetJ0Diag", "V")
 
     @chk ccall(
                (:MatLMVMSetJ0Diag, $petsc_library),
@@ -14781,6 +15065,7 @@ function MatLMVMSetJ0KSP(petsclib::PetscLibType, B::AbstractPetscMat, J0ksp::Abs
 end
 
 @for_petsc function MatLMVMSetJ0KSP(petsclib::$UnionPetscLib, B::AbstractPetscMat, J0ksp::AbstractKSP )
+	B.ptr == C_NULL && throw_null_handle(B, "MatLMVMSetJ0KSP", "B")
 
     @chk ccall(
                (:MatLMVMSetJ0KSP, $petsc_library),
@@ -14813,6 +15098,8 @@ function MatLMVMSetJ0PC(petsclib::PetscLibType, B::AbstractPetscMat, J0pc::Abstr
 end
 
 @for_petsc function MatLMVMSetJ0PC(petsclib::$UnionPetscLib, B::AbstractPetscMat, J0pc::AbstractPC )
+	B.ptr == C_NULL && throw_null_handle(B, "MatLMVMSetJ0PC", "B")
+	J0pc.ptr == C_NULL && throw_null_handle(J0pc, "MatLMVMSetJ0PC", "J0pc")
 
     @chk ccall(
                (:MatLMVMSetJ0PC, $petsc_library),
@@ -14846,6 +15133,7 @@ function MatLMVMSetJ0Scale(petsclib::PetscLibType, B::AbstractPetscMat, scale::R
 end
 
 @for_petsc function MatLMVMSetJ0Scale(petsclib::$UnionPetscLib, B::AbstractPetscMat, scale::$PetscReal )
+	B.ptr == C_NULL && throw_null_handle(B, "MatLMVMSetJ0Scale", "B")
 
     @chk ccall(
                (:MatLMVMSetJ0Scale, $petsc_library),
@@ -14880,6 +15168,7 @@ function MatLMVMSetMultAlgorithm(petsclib::PetscLibType, B::AbstractPetscMat, al
 end
 
 @for_petsc function MatLMVMSetMultAlgorithm(petsclib::$UnionPetscLib, B::AbstractPetscMat, alg::MatLMVMMultAlgorithm )
+	B.ptr == C_NULL && throw_null_handle(B, "MatLMVMSetMultAlgorithm", "B")
 
     @chk ccall(
                (:MatLMVMSetMultAlgorithm, $petsc_library),
@@ -15046,6 +15335,7 @@ function MatLMVMSymBroydenSetDelta(petsclib::PetscLibType, B::AbstractPetscMat, 
 end
 
 @for_petsc function MatLMVMSymBroydenSetDelta(petsclib::$UnionPetscLib, B::AbstractPetscMat, delta::$PetscScalar )
+	B.ptr == C_NULL && throw_null_handle(B, "MatLMVMSymBroydenSetDelta", "B")
 
     @chk ccall(
                (:MatLMVMSymBroydenSetDelta, $petsc_library),
@@ -15128,6 +15418,7 @@ function MatLMVMSymBroydenSetScaleType(petsclib::PetscLibType, B::AbstractPetscM
 end
 
 @for_petsc function MatLMVMSymBroydenSetScaleType(petsclib::$UnionPetscLib, B::AbstractPetscMat, stype::MatLMVMSymBroydenScaleType )
+	B.ptr == C_NULL && throw_null_handle(B, "MatLMVMSymBroydenSetScaleType", "B")
 
     @chk ccall(
                (:MatLMVMSymBroydenSetScaleType, $petsc_library),
@@ -15161,6 +15452,9 @@ function MatLMVMUpdate(petsclib::PetscLibType, B::AbstractPetscMat, X::AbstractP
 end
 
 @for_petsc function MatLMVMUpdate(petsclib::$UnionPetscLib, B::AbstractPetscMat, X::AbstractPetscVec, F::AbstractPetscVec )
+	B.ptr == C_NULL && throw_null_handle(B, "MatLMVMUpdate", "B")
+	X.ptr == C_NULL && throw_null_handle(X, "MatLMVMUpdate", "X")
+	F.ptr == C_NULL && throw_null_handle(F, "MatLMVMUpdate", "F")
 
     @chk ccall(
                (:MatLMVMUpdate, $petsc_library),
@@ -15245,6 +15539,8 @@ function MatLRCSetMats(petsclib::PetscLibType, N::AbstractPetscMat, A::AbstractP
 end
 
 @for_petsc function MatLRCSetMats(petsclib::$UnionPetscLib, N::AbstractPetscMat, A::AbstractPetscMat, U::AbstractPetscMat, c::AbstractPetscVec, V::AbstractPetscMat )
+	N.ptr == C_NULL && throw_null_handle(N, "MatLRCSetMats", "N")
+	U.ptr == C_NULL && throw_null_handle(U, "MatLRCSetMats", "U")
 
     @chk ccall(
                (:MatLRCSetMats, $petsc_library),
@@ -15287,6 +15583,7 @@ function MatLUFactor(petsclib::PetscLibType, mat::AbstractPetscMat, row::Abstrac
 end
 
 @for_petsc function MatLUFactor(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, info::Vector{MatFactorInfo} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatLUFactor", "mat")
 
     @chk ccall(
                (:MatLUFactor, $petsc_library),
@@ -15323,6 +15620,8 @@ function MatLUFactorNumeric(petsclib::PetscLibType, fact::AbstractPetscMat, mat:
 end
 
 @for_petsc function MatLUFactorNumeric(petsclib::$UnionPetscLib, fact::AbstractPetscMat, mat::AbstractPetscMat, info::Vector{MatFactorInfo} )
+	fact.ptr == C_NULL && throw_null_handle(fact, "MatLUFactorNumeric", "fact")
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatLUFactorNumeric", "mat")
 
     @chk ccall(
                (:MatLUFactorNumeric, $petsc_library),
@@ -15365,6 +15664,8 @@ function MatLUFactorSymbolic(petsclib::PetscLibType, fact::AbstractPetscMat, mat
 end
 
 @for_petsc function MatLUFactorSymbolic(petsclib::$UnionPetscLib, fact::AbstractPetscMat, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, info::Vector{MatFactorInfo} )
+	fact.ptr == C_NULL && throw_null_handle(fact, "MatLUFactorSymbolic", "fact")
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatLUFactorSymbolic", "mat")
 
     @chk ccall(
                (:MatLUFactorSymbolic, $petsc_library),
@@ -15406,6 +15707,7 @@ function MatLoad(petsclib::PetscLibType, mat::AbstractPetscMat, viewer::PetscVie
 end
 
 @for_petsc function MatLoad(petsclib::$UnionPetscLib, mat::AbstractPetscMat, viewer::PetscViewer )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatLoad", "mat")
 
     @chk ccall(
                (:MatLoad, $petsc_library),
@@ -15561,6 +15863,7 @@ function MatMPIAIJGetLocalMatCondensed(petsclib::PetscLibType, A::AbstractPetscM
 end
 
 @for_petsc function MatMPIAIJGetLocalMatCondensed(petsclib::$UnionPetscLib, A::AbstractPetscMat, scall::MatReuse, row::AbstractIS, col::AbstractIS )
+	A.ptr == C_NULL && throw_null_handle(A, "MatMPIAIJGetLocalMatCondensed", "A")
 	row_ = Ref(row.ptr)
 	col_ = Ref(col.ptr)
 	A_loc_ = Ref{CMat}()
@@ -15744,6 +16047,7 @@ function MatMPIAIJSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat, 
 end
 
 @for_petsc function MatMPIAIJSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, d_nz::$PetscInt, d_nnz::Union{Ptr, Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr, Vector{$PetscInt}} )
+	B.ptr == C_NULL && throw_null_handle(B, "MatMPIAIJSetPreallocation", "B")
 
     @chk ccall(
                (:MatMPIAIJSetPreallocation, $petsc_library),
@@ -15852,6 +16156,7 @@ function MatMPIAdjCreateNonemptySubcommMat(petsclib::PetscLibType, A::AbstractPe
 end
 
 @for_petsc function MatMPIAdjCreateNonemptySubcommMat(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatMPIAdjCreateNonemptySubcommMat", "A")
 	B_ = Ref{CMat}()
 
     @chk ccall(
@@ -16106,6 +16411,7 @@ function MatMPIBAIJSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat,
 end
 
 @for_petsc function MatMPIBAIJSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, bs::$PetscInt, d_nz::$PetscInt, d_nnz::Union{Ptr, Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr, Vector{$PetscInt}} )
+	B.ptr == C_NULL && throw_null_handle(B, "MatMPIBAIJSetPreallocation", "B")
 
     @chk ccall(
                (:MatMPIBAIJSetPreallocation, $petsc_library),
@@ -16143,6 +16449,7 @@ function MatMPIBAIJSetPreallocationCSR(petsclib::PetscLibType, B::AbstractPetscM
 end
 
 @for_petsc function MatMPIBAIJSetPreallocationCSR(petsclib::$UnionPetscLib, B::AbstractPetscMat, bs::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, v::Union{Ptr, Vector{$PetscScalar}} )
+	B.ptr == C_NULL && throw_null_handle(B, "MatMPIBAIJSetPreallocationCSR", "B")
 
     @chk ccall(
                (:MatMPIBAIJSetPreallocationCSR, $petsc_library),
@@ -16178,6 +16485,7 @@ function MatMPIDenseSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat
 end
 
 @for_petsc function MatMPIDenseSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat )
+	B.ptr == C_NULL && throw_null_handle(B, "MatMPIDenseSetPreallocation", "B")
 	data_ = Ref{$PetscScalar}()
 
     @chk ccall(
@@ -16234,6 +16542,7 @@ function MatMPISBAIJSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat
 end
 
 @for_petsc function MatMPISBAIJSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, bs::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
+	B.ptr == C_NULL && throw_null_handle(B, "MatMPISBAIJSetPreallocation", "B")
 
     @chk ccall(
                (:MatMPISBAIJSetPreallocation, $petsc_library),
@@ -16312,6 +16621,7 @@ function MatMPISELLGetLocalMatCondensed(petsclib::PetscLibType, A::AbstractPetsc
 end
 
 @for_petsc function MatMPISELLGetLocalMatCondensed(petsclib::$UnionPetscLib, A::AbstractPetscMat, scall::MatReuse, row::Union{Ptr, AbstractIS}, col::Union{Ptr, AbstractIS} )
+	A.ptr == C_NULL && throw_null_handle(A, "MatMPISELLGetLocalMatCondensed", "A")
 	row_ = Ref(row.ptr)
 	col_ = Ref(col.ptr)
 	A_loc_ = Ref{CMat}()
@@ -16481,6 +16791,7 @@ function MatMPISELLSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat,
 end
 
 @for_petsc function MatMPISELLSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
+	B.ptr == C_NULL && throw_null_handle(B, "MatMPISELLSetPreallocation", "B")
 
     @chk ccall(
                (:MatMPISELLSetPreallocation, $petsc_library),
@@ -16518,6 +16829,8 @@ function MatMatInterpolate(petsclib::PetscLibType, A::AbstractPetscMat, x::Abstr
 end
 
 @for_petsc function MatMatInterpolate(petsclib::$UnionPetscLib, A::AbstractPetscMat, x::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatMatInterpolate", "A")
+	x.ptr == C_NULL && throw_null_handle(x, "MatMatInterpolate", "x")
 	y_ = Ref{CMat}()
 
     @chk ccall(
@@ -16558,6 +16871,8 @@ function MatMatInterpolateAdd(petsclib::PetscLibType, A::AbstractPetscMat, x::Ab
 end
 
 @for_petsc function MatMatInterpolateAdd(petsclib::$UnionPetscLib, A::AbstractPetscMat, x::AbstractPetscMat, w::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatMatInterpolateAdd", "A")
+	x.ptr == C_NULL && throw_null_handle(x, "MatMatInterpolateAdd", "x")
 	y_ = Ref{CMat}()
 
     @chk ccall(
@@ -16721,6 +17036,8 @@ function MatMatRestrict(petsclib::PetscLibType, A::AbstractPetscMat, x::Abstract
 end
 
 @for_petsc function MatMatRestrict(petsclib::$UnionPetscLib, A::AbstractPetscMat, x::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatMatRestrict", "A")
+	x.ptr == C_NULL && throw_null_handle(x, "MatMatRestrict", "x")
 	y_ = Ref{CMat}()
 
     @chk ccall(
@@ -16760,6 +17077,9 @@ function MatMatSolve(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPet
 end
 
 @for_petsc function MatMatSolve(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, X::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatMatSolve", "A")
+	B.ptr == C_NULL && throw_null_handle(B, "MatMatSolve", "B")
+	X.ptr == C_NULL && throw_null_handle(X, "MatMatSolve", "X")
 
     @chk ccall(
                (:MatMatSolve, $petsc_library),
@@ -16797,6 +17117,9 @@ function MatMatSolveTranspose(petsclib::PetscLibType, A::AbstractPetscMat, B::Ab
 end
 
 @for_petsc function MatMatSolveTranspose(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, X::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatMatSolveTranspose", "A")
+	B.ptr == C_NULL && throw_null_handle(B, "MatMatSolveTranspose", "B")
+	X.ptr == C_NULL && throw_null_handle(X, "MatMatSolveTranspose", "X")
 
     @chk ccall(
                (:MatMatSolveTranspose, $petsc_library),
@@ -16921,6 +17244,9 @@ function MatMatTransposeSolve(petsclib::PetscLibType, A::AbstractPetscMat, Bt::A
 end
 
 @for_petsc function MatMatTransposeSolve(petsclib::$UnionPetscLib, A::AbstractPetscMat, Bt::AbstractPetscMat, X::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatMatTransposeSolve", "A")
+	Bt.ptr == C_NULL && throw_null_handle(Bt, "MatMatTransposeSolve", "Bt")
+	X.ptr == C_NULL && throw_null_handle(X, "MatMatTransposeSolve", "X")
 
     @chk ccall(
                (:MatMatTransposeSolve, $petsc_library),
@@ -16998,6 +17324,9 @@ function MatMult(petsclib::PetscLibType, mat::AbstractPetscMat, x::AbstractPetsc
 end
 
 @for_petsc function MatMult(petsclib::$UnionPetscLib, mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatMult", "mat")
+	x.ptr == C_NULL && throw_null_handle(x, "MatMult", "x")
+	y.ptr == C_NULL && throw_null_handle(y, "MatMult", "y")
 
     @chk ccall(
                (:MatMult, $petsc_library),
@@ -17036,6 +17365,10 @@ function MatMultAdd(petsclib::PetscLibType, mat::AbstractPetscMat, v1::AbstractP
 end
 
 @for_petsc function MatMultAdd(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v1::AbstractPetscVec, v2::AbstractPetscVec, v3::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatMultAdd", "mat")
+	v1.ptr == C_NULL && throw_null_handle(v1, "MatMultAdd", "v1")
+	v2.ptr == C_NULL && throw_null_handle(v2, "MatMultAdd", "v2")
+	v3.ptr == C_NULL && throw_null_handle(v3, "MatMultAdd", "v3")
 
     @chk ccall(
                (:MatMultAdd, $petsc_library),
@@ -17113,6 +17446,9 @@ function MatMultDiagonalBlock(petsclib::PetscLibType, mat::AbstractPetscMat, x::
 end
 
 @for_petsc function MatMultDiagonalBlock(petsclib::$UnionPetscLib, mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatMultDiagonalBlock", "mat")
+	x.ptr == C_NULL && throw_null_handle(x, "MatMultDiagonalBlock", "x")
+	y.ptr == C_NULL && throw_null_handle(y, "MatMultDiagonalBlock", "y")
 
     @chk ccall(
                (:MatMultDiagonalBlock, $petsc_library),
@@ -17190,6 +17526,9 @@ function MatMultHermitianTranspose(petsclib::PetscLibType, mat::AbstractPetscMat
 end
 
 @for_petsc function MatMultHermitianTranspose(petsclib::$UnionPetscLib, mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatMultHermitianTranspose", "mat")
+	x.ptr == C_NULL && throw_null_handle(x, "MatMultHermitianTranspose", "x")
+	y.ptr == C_NULL && throw_null_handle(y, "MatMultHermitianTranspose", "y")
 
     @chk ccall(
                (:MatMultHermitianTranspose, $petsc_library),
@@ -17228,6 +17567,10 @@ function MatMultHermitianTransposeAdd(petsclib::PetscLibType, mat::AbstractPetsc
 end
 
 @for_petsc function MatMultHermitianTransposeAdd(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v1::AbstractPetscVec, v2::AbstractPetscVec, v3::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatMultHermitianTransposeAdd", "mat")
+	v1.ptr == C_NULL && throw_null_handle(v1, "MatMultHermitianTransposeAdd", "v1")
+	v2.ptr == C_NULL && throw_null_handle(v2, "MatMultHermitianTransposeAdd", "v2")
+	v3.ptr == C_NULL && throw_null_handle(v3, "MatMultHermitianTransposeAdd", "v3")
 
     @chk ccall(
                (:MatMultHermitianTransposeAdd, $petsc_library),
@@ -17345,6 +17688,9 @@ function MatMultTranspose(petsclib::PetscLibType, mat::AbstractPetscMat, x::Abst
 end
 
 @for_petsc function MatMultTranspose(petsclib::$UnionPetscLib, mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatMultTranspose", "mat")
+	x.ptr == C_NULL && throw_null_handle(x, "MatMultTranspose", "x")
+	y.ptr == C_NULL && throw_null_handle(y, "MatMultTranspose", "y")
 
     @chk ccall(
                (:MatMultTranspose, $petsc_library),
@@ -17383,6 +17729,10 @@ function MatMultTransposeAdd(petsclib::PetscLibType, mat::AbstractPetscMat, v1::
 end
 
 @for_petsc function MatMultTransposeAdd(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v1::AbstractPetscVec, v2::AbstractPetscVec, v3::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatMultTransposeAdd", "mat")
+	v1.ptr == C_NULL && throw_null_handle(v1, "MatMultTransposeAdd", "v1")
+	v2.ptr == C_NULL && throw_null_handle(v2, "MatMultTransposeAdd", "v2")
+	v3.ptr == C_NULL && throw_null_handle(v3, "MatMultTransposeAdd", "v3")
 
     @chk ccall(
                (:MatMultTransposeAdd, $petsc_library),
@@ -17769,6 +18119,7 @@ function MatMumpsGetOocTmpDir(petsclib::PetscLibType, F::AbstractPetscMat)
 end
 
 @for_petsc function MatMumpsGetOocTmpDir(petsclib::$UnionPetscLib, F::AbstractPetscMat )
+	F.ptr == C_NULL && throw_null_handle(F, "MatMumpsGetOocTmpDir", "F")
 	tmpdir_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -17995,6 +18346,7 @@ function MatMumpsSetOocTmpDir(petsclib::PetscLibType, F::AbstractPetscMat, tmpdi
 end
 
 @for_petsc function MatMumpsSetOocTmpDir(petsclib::$UnionPetscLib, F::AbstractPetscMat, tmpdir::String )
+	F.ptr == C_NULL && throw_null_handle(F, "MatMumpsSetOocTmpDir", "F")
 
     @chk ccall(
                (:MatMumpsSetOocTmpDir, $petsc_library),
@@ -18033,6 +18385,7 @@ function MatNestGetISs(petsclib::PetscLibType, A::AbstractPetscMat, rows::Vector
 end
 
 @for_petsc function MatNestGetISs(petsclib::$UnionPetscLib, A::AbstractPetscMat, rows::Vector{<:AbstractIS}, cols::Vector{<:AbstractIS} )
+	A.ptr == C_NULL && throw_null_handle(A, "MatNestGetISs", "A")
 
     @chk ccall(
                (:MatNestGetISs, $petsc_library),
@@ -18071,6 +18424,7 @@ function MatNestGetLocalISs(petsclib::PetscLibType, A::AbstractPetscMat, rows::V
 end
 
 @for_petsc function MatNestGetLocalISs(petsclib::$UnionPetscLib, A::AbstractPetscMat, rows::Vector{<:AbstractIS}, cols::Vector{<:AbstractIS} )
+	A.ptr == C_NULL && throw_null_handle(A, "MatNestGetLocalISs", "A")
 
     @chk ccall(
                (:MatNestGetLocalISs, $petsc_library),
@@ -18109,6 +18463,7 @@ function MatNestGetSize(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatNestGetSize(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatNestGetSize", "A")
 	M_ = Ref{$PetscInt}()
 	N_ = Ref{$PetscInt}()
 
@@ -18152,6 +18507,7 @@ function MatNestGetSubMat(petsclib::PetscLibType, A::AbstractPetscMat, idxm::Int
 end
 
 @for_petsc function MatNestGetSubMat(petsclib::$UnionPetscLib, A::AbstractPetscMat, idxm::$PetscInt, jdxm::$PetscInt )
+	A.ptr == C_NULL && throw_null_handle(A, "MatNestGetSubMat", "A")
 	sub_ = Ref{CMat}()
 
     @chk ccall(
@@ -18193,6 +18549,7 @@ function MatNestGetSubMats(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatNestGetSubMats(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatNestGetSubMats", "A")
 	M_ = Ref{$PetscInt}()
 	N_ = Ref{$PetscInt}()
 	mat_ = Ref{CMat}()
@@ -18236,6 +18593,7 @@ function MatNestSetSubMat(petsclib::PetscLibType, A::AbstractPetscMat, idxm::Int
 end
 
 @for_petsc function MatNestSetSubMat(petsclib::$UnionPetscLib, A::AbstractPetscMat, idxm::$PetscInt, jdxm::$PetscInt, sub::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatNestSetSubMat", "A")
 
     @chk ccall(
                (:MatNestSetSubMat, $petsc_library),
@@ -18308,6 +18666,7 @@ function MatNestSetVecType(petsclib::PetscLibType, A::AbstractPetscMat, vtype::S
 end
 
 @for_petsc function MatNestSetVecType(petsclib::$UnionPetscLib, A::AbstractPetscMat, vtype::String )
+	A.ptr == C_NULL && throw_null_handle(A, "MatNestSetVecType", "A")
 
     @chk ccall(
                (:MatNestSetVecType, $petsc_library),
@@ -18345,6 +18704,7 @@ function MatNorm(petsclib::PetscLibType, mat::AbstractPetscMat, type::NormType)
 end
 
 @for_petsc function MatNorm(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::NormType )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatNorm", "mat")
 	nrm_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -18383,6 +18743,7 @@ function MatNormalGetMat(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatNormalGetMat(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatNormalGetMat", "A")
 	M_ = Ref{CMat}()
 
     @chk ccall(
@@ -18421,6 +18782,7 @@ function MatNormalHermitianGetMat(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatNormalHermitianGetMat(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatNormalHermitianGetMat", "A")
 	M_ = Ref{CMat}()
 
     @chk ccall(
@@ -18496,6 +18858,9 @@ function MatPermute(petsclib::PetscLibType, mat::AbstractPetscMat, row::Abstract
 end
 
 @for_petsc function MatPermute(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatPermute", "mat")
+	row.ptr == C_NULL && throw_null_handle(row, "MatPermute", "row")
+	col.ptr == C_NULL && throw_null_handle(col, "MatPermute", "col")
 	B_ = Ref{CMat}()
 
     @chk ccall(
@@ -18529,6 +18894,8 @@ function MatPreallocatorPreallocate(petsclib::PetscLibType, mat::AbstractPetscMa
 end
 
 @for_petsc function MatPreallocatorPreallocate(petsclib::$UnionPetscLib, mat::AbstractPetscMat, fill::PetscBool, A::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatPreallocatorPreallocate", "mat")
+	A.ptr == C_NULL && throw_null_handle(A, "MatPreallocatorPreallocate", "A")
 
     @chk ccall(
                (:MatPreallocatorPreallocate, $petsc_library),
@@ -18565,6 +18932,7 @@ function MatProductClear(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatProductClear(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatProductClear", "mat")
 
     @chk ccall(
                (:MatProductClear, $petsc_library),
@@ -18617,6 +18985,8 @@ function MatProductCreate(petsclib::PetscLibType, A::AbstractPetscMat, B::Abstra
 end
 
 @for_petsc function MatProductCreate(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, C::Union{Ptr, AbstractPetscMat} )
+	A.ptr == C_NULL && throw_null_handle(A, "MatProductCreate", "A")
+	B.ptr == C_NULL && throw_null_handle(B, "MatProductCreate", "B")
 	D_ = Ref{CMat}()
 
     @chk ccall(
@@ -18656,6 +19026,9 @@ function MatProductCreateWithMat(petsclib::PetscLibType, A::AbstractPetscMat, B:
 end
 
 @for_petsc function MatProductCreateWithMat(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, C::Union{Ptr, AbstractPetscMat}, D::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatProductCreateWithMat", "A")
+	B.ptr == C_NULL && throw_null_handle(B, "MatProductCreateWithMat", "B")
+	D.ptr == C_NULL && throw_null_handle(D, "MatProductCreateWithMat", "D")
 
     @chk ccall(
                (:MatProductCreateWithMat, $petsc_library),
@@ -18692,6 +19065,7 @@ function MatProductGetAlgorithm(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatProductGetAlgorithm(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatProductGetAlgorithm", "mat")
 	alg_ = Ref{MatProductAlgorithm}()
 
     @chk ccall(
@@ -18732,6 +19106,7 @@ function MatProductGetMats(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatProductGetMats(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatProductGetMats", "mat")
 	A_ = Ref{CMat}()
 	B_ = Ref{CMat}()
 	C_ = Ref{CMat}()
@@ -18774,6 +19149,7 @@ function MatProductGetType(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatProductGetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatProductGetType", "mat")
 	mtype_ = Ref{MatProductType}()
 
     @chk ccall(
@@ -18809,6 +19185,7 @@ function MatProductNumeric(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatProductNumeric(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatProductNumeric", "mat")
 
     @chk ccall(
                (:MatProductNumeric, $petsc_library),
@@ -18882,6 +19259,7 @@ function MatProductSetAlgorithm(petsclib::PetscLibType, mat::AbstractPetscMat, a
 end
 
 @for_petsc function MatProductSetAlgorithm(petsclib::$UnionPetscLib, mat::AbstractPetscMat, alg::String )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatProductSetAlgorithm", "mat")
 
     @chk ccall(
                (:MatProductSetAlgorithm, $petsc_library),
@@ -18917,6 +19295,7 @@ function MatProductSetFill(petsclib::PetscLibType, mat::AbstractPetscMat, fill::
 end
 
 @for_petsc function MatProductSetFill(petsclib::$UnionPetscLib, mat::AbstractPetscMat, fill::$PetscReal )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatProductSetFill", "mat")
 
     @chk ccall(
                (:MatProductSetFill, $petsc_library),
@@ -18957,6 +19336,7 @@ function MatProductSetFromOptions(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatProductSetFromOptions(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatProductSetFromOptions", "mat")
 
     @chk ccall(
                (:MatProductSetFromOptions, $petsc_library),
@@ -18993,6 +19373,7 @@ function MatProductSetType(petsclib::PetscLibType, mat::AbstractPetscMat, produc
 end
 
 @for_petsc function MatProductSetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, productype::MatProductType )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatProductSetType", "mat")
 
     @chk ccall(
                (:MatProductSetType, $petsc_library),
@@ -19027,6 +19408,7 @@ function MatProductSymbolic(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatProductSymbolic(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatProductSymbolic", "mat")
 
     @chk ccall(
                (:MatProductSymbolic, $petsc_library),
@@ -19061,6 +19443,7 @@ function MatProductView(petsclib::PetscLibType, mat::AbstractPetscMat, viewer::P
 end
 
 @for_petsc function MatProductView(petsclib::$UnionPetscLib, mat::AbstractPetscMat, viewer::PetscViewer )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatProductView", "mat")
 
     @chk ccall(
                (:MatProductView, $petsc_library),
@@ -19095,6 +19478,8 @@ function MatPropagateSymmetryOptions(petsclib::PetscLibType, A::AbstractPetscMat
 end
 
 @for_petsc function MatPropagateSymmetryOptions(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatPropagateSymmetryOptions", "A")
+	B.ptr == C_NULL && throw_null_handle(B, "MatPropagateSymmetryOptions", "B")
 
     @chk ccall(
                (:MatPropagateSymmetryOptions, $petsc_library),
@@ -19257,6 +19642,7 @@ function MatPythonGetType(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatPythonGetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatPythonGetType", "mat")
 	pyname_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -19296,6 +19682,7 @@ function MatPythonSetType(petsclib::PetscLibType, mat::AbstractPetscMat, pyname:
 end
 
 @for_petsc function MatPythonSetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, pyname::String )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatPythonSetType", "mat")
 
     @chk ccall(
                (:MatPythonSetType, $petsc_library),
@@ -19337,6 +19724,7 @@ function MatQRFactor(petsclib::PetscLibType, mat::AbstractPetscMat, col::Abstrac
 end
 
 @for_petsc function MatQRFactor(petsclib::$UnionPetscLib, mat::AbstractPetscMat, col::AbstractIS, info::Vector{MatFactorInfo} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatQRFactor", "mat")
 
     @chk ccall(
                (:MatQRFactor, $petsc_library),
@@ -19373,6 +19761,8 @@ function MatQRFactorNumeric(petsclib::PetscLibType, fact::AbstractPetscMat, mat:
 end
 
 @for_petsc function MatQRFactorNumeric(petsclib::$UnionPetscLib, fact::AbstractPetscMat, mat::AbstractPetscMat, info::Vector{MatFactorInfo} )
+	fact.ptr == C_NULL && throw_null_handle(fact, "MatQRFactorNumeric", "fact")
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatQRFactorNumeric", "mat")
 
     @chk ccall(
                (:MatQRFactorNumeric, $petsc_library),
@@ -19415,6 +19805,8 @@ function MatQRFactorSymbolic(petsclib::PetscLibType, fact::AbstractPetscMat, mat
 end
 
 @for_petsc function MatQRFactorSymbolic(petsclib::$UnionPetscLib, fact::AbstractPetscMat, mat::AbstractPetscMat, col::AbstractIS, info::Vector{MatFactorInfo} )
+	fact.ptr == C_NULL && throw_null_handle(fact, "MatQRFactorSymbolic", "fact")
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatQRFactorSymbolic", "mat")
 
     @chk ccall(
                (:MatQRFactorSymbolic, $petsc_library),
@@ -19531,6 +19923,7 @@ function MatRealPart(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatRealPart(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatRealPart", "mat")
 
     @chk ccall(
                (:MatRealPart, $petsc_library),
@@ -19673,6 +20066,7 @@ function MatReorderingSeqSBAIJ(petsclib::PetscLibType, A::AbstractPetscMat, perm
 end
 
 @for_petsc function MatReorderingSeqSBAIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat, perm::AbstractIS )
+	perm.ptr == C_NULL && throw_null_handle(perm, "MatReorderingSeqSBAIJ", "perm")
 
     @chk ccall(
                (:MatReorderingSeqSBAIJ, $petsc_library),
@@ -19706,6 +20100,7 @@ function MatResetHash(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatResetHash(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatResetHash", "A")
 
     @chk ccall(
                (:MatResetHash, $petsc_library),
@@ -19739,6 +20134,7 @@ function MatResetPreallocation(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatResetPreallocation(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatResetPreallocation", "A")
 
     @chk ccall(
                (:MatResetPreallocation, $petsc_library),
@@ -19777,6 +20173,10 @@ function MatResidual(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractP
 end
 
 @for_petsc function MatResidual(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec, r::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatResidual", "mat")
+	b.ptr == C_NULL && throw_null_handle(b, "MatResidual", "b")
+	x.ptr == C_NULL && throw_null_handle(x, "MatResidual", "x")
+	r.ptr == C_NULL && throw_null_handle(r, "MatResidual", "r")
 
     @chk ccall(
                (:MatResidual, $petsc_library),
@@ -19860,6 +20260,9 @@ function MatRestoreLocalSubMatrix(petsclib::PetscLibType, mat::AbstractPetscMat,
 end
 
 @for_petsc function MatRestoreLocalSubMatrix(petsclib::$UnionPetscLib, mat::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS, submat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatRestoreLocalSubMatrix", "mat")
+	isrow.ptr == C_NULL && throw_null_handle(isrow, "MatRestoreLocalSubMatrix", "isrow")
+	iscol.ptr == C_NULL && throw_null_handle(iscol, "MatRestoreLocalSubMatrix", "iscol")
 	submat_ = Ref(submat.ptr)
 
     @chk ccall(
@@ -19936,6 +20339,7 @@ function MatRestoreRow(petsclib::PetscLibType, mat::AbstractPetscMat, row::Integ
 end
 
 @for_petsc function MatRestoreRow(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::$PetscInt, ncols::$PetscInt, cols::Union{Ptr, AbstractArray{$PetscInt}}, vals::Union{Ptr, AbstractArray{$PetscScalar}} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatRestoreRow", "mat")
 	ncols_ = Ref{$PetscInt}(ncols)
 	cols_ = Ref{Ptr{$PetscInt}}(cols isa Ptr ? cols : pointer(cols))
 	vals_ = Ref{Ptr{$PetscScalar}}(vals isa Ptr ? vals : pointer(vals))
@@ -20019,6 +20423,7 @@ function MatRestoreRowUpperTriangular(petsclib::PetscLibType, mat::AbstractPetsc
 end
 
 @for_petsc function MatRestoreRowUpperTriangular(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatRestoreRowUpperTriangular", "mat")
 
     @chk ccall(
                (:MatRestoreRowUpperTriangular, $petsc_library),
@@ -20056,6 +20461,9 @@ function MatRestrict(petsclib::PetscLibType, A::AbstractPetscMat, x::AbstractPet
 end
 
 @for_petsc function MatRestrict(petsclib::$UnionPetscLib, A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec )
+	A.ptr == C_NULL && throw_null_handle(A, "MatRestrict", "A")
+	x.ptr == C_NULL && throw_null_handle(x, "MatRestrict", "x")
+	y.ptr == C_NULL && throw_null_handle(y, "MatRestrict", "y")
 
     @chk ccall(
                (:MatRestrict, $petsc_library),
@@ -20089,6 +20497,7 @@ function MatRetrieveValues(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatRetrieveValues(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatRetrieveValues", "mat")
 
     @chk ccall(
                (:MatRetrieveValues, $petsc_library),
@@ -20127,6 +20536,7 @@ function MatSNESMFGetReuseBase(petsclib::PetscLibType, J::AbstractPetscMat)
 end
 
 @for_petsc function MatSNESMFGetReuseBase(petsclib::$UnionPetscLib, J::AbstractPetscMat )
+	J.ptr == C_NULL && throw_null_handle(J, "MatSNESMFGetReuseBase", "J")
 	use_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -20165,6 +20575,7 @@ function MatSNESMFGetSNES(petsclib::PetscLibType, J::AbstractPetscMat)
 end
 
 @for_petsc function MatSNESMFGetSNES(petsclib::$UnionPetscLib, J::AbstractPetscMat )
+	J.ptr == C_NULL && throw_null_handle(J, "MatSNESMFGetSNES", "J")
 	snes_ = Ref{CSNES}()
 
     @chk ccall(
@@ -20209,6 +20620,7 @@ function MatSNESMFMoreSetParameters(petsclib::PetscLibType, mat::AbstractPetscMa
 end
 
 @for_petsc function MatSNESMFMoreSetParameters(petsclib::$UnionPetscLib, mat::AbstractPetscMat, error::$PetscReal, umin::$PetscReal, h::$PetscReal )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSNESMFMoreSetParameters", "mat")
 
     @chk ccall(
                (:MatSNESMFMoreSetParameters, $petsc_library),
@@ -20245,6 +20657,7 @@ function MatSNESMFSetReuseBase(petsclib::PetscLibType, J::AbstractPetscMat, use:
 end
 
 @for_petsc function MatSNESMFSetReuseBase(petsclib::$UnionPetscLib, J::AbstractPetscMat, use::PetscBool )
+	J.ptr == C_NULL && throw_null_handle(J, "MatSNESMFSetReuseBase", "J")
 
     @chk ccall(
                (:MatSNESMFSetReuseBase, $petsc_library),
@@ -20298,6 +20711,9 @@ function MatSOR(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscV
 end
 
 @for_petsc function MatSOR(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, omega::$PetscReal, flag::MatSORType, shift::$PetscReal, its::$PetscInt, lits::$PetscInt, x::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSOR", "mat")
+	b.ptr == C_NULL && throw_null_handle(b, "MatSOR", "b")
+	x.ptr == C_NULL && throw_null_handle(x, "MatSOR", "x")
 
     @chk ccall(
                (:MatSOR, $petsc_library),
@@ -20335,6 +20751,7 @@ function MatSTRUMPACKGetColPerm(petsclib::PetscLibType, F::AbstractPetscMat)
 end
 
 @for_petsc function MatSTRUMPACKGetColPerm(petsclib::$UnionPetscLib, F::AbstractPetscMat )
+	F.ptr == C_NULL && throw_null_handle(F, "MatSTRUMPACKGetColPerm", "F")
 	cperm_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -20373,6 +20790,7 @@ function MatSTRUMPACKGetCompAbsTol(petsclib::PetscLibType, F::AbstractPetscMat)
 end
 
 @for_petsc function MatSTRUMPACKGetCompAbsTol(petsclib::$UnionPetscLib, F::AbstractPetscMat )
+	F.ptr == C_NULL && throw_null_handle(F, "MatSTRUMPACKGetCompAbsTol", "F")
 	atol_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -20412,6 +20830,7 @@ function MatSTRUMPACKGetCompButterflyLevels(petsclib::PetscLibType, F::AbstractP
 end
 
 @for_petsc function MatSTRUMPACKGetCompButterflyLevels(petsclib::$UnionPetscLib, F::AbstractPetscMat )
+	F.ptr == C_NULL && throw_null_handle(F, "MatSTRUMPACKGetCompButterflyLevels", "F")
 	bfly_lvls_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -20450,6 +20869,7 @@ function MatSTRUMPACKGetCompLeafSize(petsclib::PetscLibType, F::AbstractPetscMat
 end
 
 @for_petsc function MatSTRUMPACKGetCompLeafSize(petsclib::$UnionPetscLib, F::AbstractPetscMat )
+	F.ptr == C_NULL && throw_null_handle(F, "MatSTRUMPACKGetCompLeafSize", "F")
 	leaf_size_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -20488,6 +20908,7 @@ function MatSTRUMPACKGetCompLossyPrecision(petsclib::PetscLibType, F::AbstractPe
 end
 
 @for_petsc function MatSTRUMPACKGetCompLossyPrecision(petsclib::$UnionPetscLib, F::AbstractPetscMat )
+	F.ptr == C_NULL && throw_null_handle(F, "MatSTRUMPACKGetCompLossyPrecision", "F")
 	lossy_prec_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -20526,6 +20947,7 @@ function MatSTRUMPACKGetCompMinSepSize(petsclib::PetscLibType, F::AbstractPetscM
 end
 
 @for_petsc function MatSTRUMPACKGetCompMinSepSize(petsclib::$UnionPetscLib, F::AbstractPetscMat )
+	F.ptr == C_NULL && throw_null_handle(F, "MatSTRUMPACKGetCompMinSepSize", "F")
 	min_sep_size_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -20564,6 +20986,7 @@ function MatSTRUMPACKGetCompRelTol(petsclib::PetscLibType, F::AbstractPetscMat)
 end
 
 @for_petsc function MatSTRUMPACKGetCompRelTol(petsclib::$UnionPetscLib, F::AbstractPetscMat )
+	F.ptr == C_NULL && throw_null_handle(F, "MatSTRUMPACKGetCompRelTol", "F")
 	rtol_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -20600,6 +21023,7 @@ function MatSTRUMPACKGetCompression(petsclib::PetscLibType, F::AbstractPetscMat)
 end
 
 @for_petsc function MatSTRUMPACKGetCompression(petsclib::$UnionPetscLib, F::AbstractPetscMat )
+	F.ptr == C_NULL && throw_null_handle(F, "MatSTRUMPACKGetCompression", "F")
 	comp_ = Ref{MatSTRUMPACKCompressionType}()
 
     @chk ccall(
@@ -20639,6 +21063,7 @@ function MatSTRUMPACKGetGPU(petsclib::PetscLibType, F::AbstractPetscMat)
 end
 
 @for_petsc function MatSTRUMPACKGetGPU(petsclib::$UnionPetscLib, F::AbstractPetscMat )
+	F.ptr == C_NULL && throw_null_handle(F, "MatSTRUMPACKGetGPU", "F")
 	gpu_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -20677,6 +21102,7 @@ function MatSTRUMPACKGetReordering(petsclib::PetscLibType, F::AbstractPetscMat)
 end
 
 @for_petsc function MatSTRUMPACKGetReordering(petsclib::$UnionPetscLib, F::AbstractPetscMat )
+	F.ptr == C_NULL && throw_null_handle(F, "MatSTRUMPACKGetReordering", "F")
 	reordering_ = Ref{MatSTRUMPACKReordering}()
 
     @chk ccall(
@@ -20717,6 +21143,7 @@ function MatSTRUMPACKSetColPerm(petsclib::PetscLibType, F::AbstractPetscMat, cpe
 end
 
 @for_petsc function MatSTRUMPACKSetColPerm(petsclib::$UnionPetscLib, F::AbstractPetscMat, cperm::PetscBool )
+	F.ptr == C_NULL && throw_null_handle(F, "MatSTRUMPACKSetColPerm", "F")
 
     @chk ccall(
                (:MatSTRUMPACKSetColPerm, $petsc_library),
@@ -20754,6 +21181,7 @@ function MatSTRUMPACKSetCompAbsTol(petsclib::PetscLibType, F::AbstractPetscMat, 
 end
 
 @for_petsc function MatSTRUMPACKSetCompAbsTol(petsclib::$UnionPetscLib, F::AbstractPetscMat, atol::$PetscReal )
+	F.ptr == C_NULL && throw_null_handle(F, "MatSTRUMPACKSetCompAbsTol", "F")
 
     @chk ccall(
                (:MatSTRUMPACKSetCompAbsTol, $petsc_library),
@@ -20793,6 +21221,7 @@ function MatSTRUMPACKSetCompButterflyLevels(petsclib::PetscLibType, F::AbstractP
 end
 
 @for_petsc function MatSTRUMPACKSetCompButterflyLevels(petsclib::$UnionPetscLib, F::AbstractPetscMat, bfly_lvls::$PetscInt )
+	F.ptr == C_NULL && throw_null_handle(F, "MatSTRUMPACKSetCompButterflyLevels", "F")
 
     @chk ccall(
                (:MatSTRUMPACKSetCompButterflyLevels, $petsc_library),
@@ -20830,6 +21259,7 @@ function MatSTRUMPACKSetCompLeafSize(petsclib::PetscLibType, F::AbstractPetscMat
 end
 
 @for_petsc function MatSTRUMPACKSetCompLeafSize(petsclib::$UnionPetscLib, F::AbstractPetscMat, leaf_size::$PetscInt )
+	F.ptr == C_NULL && throw_null_handle(F, "MatSTRUMPACKSetCompLeafSize", "F")
 
     @chk ccall(
                (:MatSTRUMPACKSetCompLeafSize, $petsc_library),
@@ -20867,6 +21297,7 @@ function MatSTRUMPACKSetCompLossyPrecision(petsclib::PetscLibType, F::AbstractPe
 end
 
 @for_petsc function MatSTRUMPACKSetCompLossyPrecision(petsclib::$UnionPetscLib, F::AbstractPetscMat, lossy_prec::$PetscInt )
+	F.ptr == C_NULL && throw_null_handle(F, "MatSTRUMPACKSetCompLossyPrecision", "F")
 
     @chk ccall(
                (:MatSTRUMPACKSetCompLossyPrecision, $petsc_library),
@@ -20904,6 +21335,7 @@ function MatSTRUMPACKSetCompMinSepSize(petsclib::PetscLibType, F::AbstractPetscM
 end
 
 @for_petsc function MatSTRUMPACKSetCompMinSepSize(petsclib::$UnionPetscLib, F::AbstractPetscMat, min_sep_size::$PetscInt )
+	F.ptr == C_NULL && throw_null_handle(F, "MatSTRUMPACKSetCompMinSepSize", "F")
 
     @chk ccall(
                (:MatSTRUMPACKSetCompMinSepSize, $petsc_library),
@@ -20941,6 +21373,7 @@ function MatSTRUMPACKSetCompRelTol(petsclib::PetscLibType, F::AbstractPetscMat, 
 end
 
 @for_petsc function MatSTRUMPACKSetCompRelTol(petsclib::$UnionPetscLib, F::AbstractPetscMat, rtol::$PetscReal )
+	F.ptr == C_NULL && throw_null_handle(F, "MatSTRUMPACKSetCompRelTol", "F")
 
     @chk ccall(
                (:MatSTRUMPACKSetCompRelTol, $petsc_library),
@@ -20976,6 +21409,7 @@ function MatSTRUMPACKSetCompression(petsclib::PetscLibType, F::AbstractPetscMat,
 end
 
 @for_petsc function MatSTRUMPACKSetCompression(petsclib::$UnionPetscLib, F::AbstractPetscMat, comp::MatSTRUMPACKCompressionType )
+	F.ptr == C_NULL && throw_null_handle(F, "MatSTRUMPACKSetCompression", "F")
 
     @chk ccall(
                (:MatSTRUMPACKSetCompression, $petsc_library),
@@ -21014,6 +21448,7 @@ function MatSTRUMPACKSetGPU(petsclib::PetscLibType, F::AbstractPetscMat, gpu::Pe
 end
 
 @for_petsc function MatSTRUMPACKSetGPU(petsclib::$UnionPetscLib, F::AbstractPetscMat, gpu::PetscBool )
+	F.ptr == C_NULL && throw_null_handle(F, "MatSTRUMPACKSetGPU", "F")
 
     @chk ccall(
                (:MatSTRUMPACKSetGPU, $petsc_library),
@@ -21052,6 +21487,7 @@ function MatSTRUMPACKSetGeometricComponents(petsclib::PetscLibType, F::AbstractP
 end
 
 @for_petsc function MatSTRUMPACKSetGeometricComponents(petsclib::$UnionPetscLib, F::AbstractPetscMat, nc::$PetscInt )
+	F.ptr == C_NULL && throw_null_handle(F, "MatSTRUMPACKSetGeometricComponents", "F")
 
     @chk ccall(
                (:MatSTRUMPACKSetGeometricComponents, $petsc_library),
@@ -21088,6 +21524,7 @@ function MatSTRUMPACKSetGeometricNxyz(petsclib::PetscLibType, F::AbstractPetscMa
 end
 
 @for_petsc function MatSTRUMPACKSetGeometricNxyz(petsclib::$UnionPetscLib, F::AbstractPetscMat, nx::$PetscInt, ny::$PetscInt, nz::$PetscInt )
+	F.ptr == C_NULL && throw_null_handle(F, "MatSTRUMPACKSetGeometricNxyz", "F")
 
     @chk ccall(
                (:MatSTRUMPACKSetGeometricNxyz, $petsc_library),
@@ -21125,6 +21562,7 @@ function MatSTRUMPACKSetGeometricWidth(petsclib::PetscLibType, F::AbstractPetscM
 end
 
 @for_petsc function MatSTRUMPACKSetGeometricWidth(petsclib::$UnionPetscLib, F::AbstractPetscMat, w::$PetscInt )
+	F.ptr == C_NULL && throw_null_handle(F, "MatSTRUMPACKSetGeometricWidth", "F")
 
     @chk ccall(
                (:MatSTRUMPACKSetGeometricWidth, $petsc_library),
@@ -21162,6 +21600,7 @@ function MatSTRUMPACKSetReordering(petsclib::PetscLibType, F::AbstractPetscMat, 
 end
 
 @for_petsc function MatSTRUMPACKSetReordering(petsclib::$UnionPetscLib, F::AbstractPetscMat, reordering::MatSTRUMPACKReordering )
+	F.ptr == C_NULL && throw_null_handle(F, "MatSTRUMPACKSetReordering", "F")
 
     @chk ccall(
                (:MatSTRUMPACKSetReordering, $petsc_library),
@@ -21200,6 +21639,7 @@ function MatScaLAPACKGetBlockSizes(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatScaLAPACKGetBlockSizes(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatScaLAPACKGetBlockSizes", "A")
 	mb_ = Ref{$PetscInt}()
 	nb_ = Ref{$PetscInt}()
 
@@ -21240,6 +21680,7 @@ function MatScaLAPACKSetBlockSizes(petsclib::PetscLibType, A::AbstractPetscMat, 
 end
 
 @for_petsc function MatScaLAPACKSetBlockSizes(petsclib::$UnionPetscLib, A::AbstractPetscMat, mb::$PetscInt, nb::$PetscInt )
+	A.ptr == C_NULL && throw_null_handle(A, "MatScaLAPACKSetBlockSizes", "A")
 
     @chk ccall(
                (:MatScaLAPACKSetBlockSizes, $petsc_library),
@@ -21274,6 +21715,7 @@ function MatScale(petsclib::PetscLibType, mat::AbstractPetscMat, a::Number)
 end
 
 @for_petsc function MatScale(petsclib::$UnionPetscLib, mat::AbstractPetscMat, a::$PetscScalar )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatScale", "mat")
 
     @chk ccall(
                (:MatScale, $petsc_library),
@@ -21310,6 +21752,7 @@ function MatScatterGetVecScatter(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatScatterGetVecScatter(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatScatterGetVecScatter", "mat")
 	scatter_ = Ref{VecScatter}()
 
     @chk ccall(
@@ -21346,6 +21789,7 @@ function MatScatterSetVecScatter(petsclib::PetscLibType, mat::AbstractPetscMat, 
 end
 
 @for_petsc function MatScatterSetVecScatter(petsclib::$UnionPetscLib, mat::AbstractPetscMat, scatter::VecScatter )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatScatterSetVecScatter", "mat")
 
     @chk ccall(
                (:MatScatterSetVecScatter, $petsc_library),
@@ -21382,6 +21826,7 @@ function MatSchurComplementComputeExplicitOperator(petsclib::PetscLibType, A::Ab
 end
 
 @for_petsc function MatSchurComplementComputeExplicitOperator(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatSchurComplementComputeExplicitOperator", "A")
 	S_ = Ref{CMat}()
 
     @chk ccall(
@@ -21421,6 +21866,7 @@ function MatSchurComplementGetAinvType(petsclib::PetscLibType, S::AbstractPetscM
 end
 
 @for_petsc function MatSchurComplementGetAinvType(petsclib::$UnionPetscLib, S::AbstractPetscMat )
+	S.ptr == C_NULL && throw_null_handle(S, "MatSchurComplementGetAinvType", "S")
 	ainvtype_ = Ref{MatSchurComplementAinvType}()
 
     @chk ccall(
@@ -21459,6 +21905,7 @@ function MatSchurComplementGetKSP(petsclib::PetscLibType, S::AbstractPetscMat)
 end
 
 @for_petsc function MatSchurComplementGetKSP(petsclib::$UnionPetscLib, S::AbstractPetscMat )
+	S.ptr == C_NULL && throw_null_handle(S, "MatSchurComplementGetKSP", "S")
 	ksp_ = Ref{CKSP}()
 
     @chk ccall(
@@ -21498,6 +21945,7 @@ function MatSchurComplementGetPmat(petsclib::PetscLibType, S::AbstractPetscMat, 
 end
 
 @for_petsc function MatSchurComplementGetPmat(petsclib::$UnionPetscLib, S::AbstractPetscMat, preuse::MatReuse )
+	S.ptr == C_NULL && throw_null_handle(S, "MatSchurComplementGetPmat", "S")
 	Sp_ = Ref{CMat}()
 
     @chk ccall(
@@ -21540,6 +21988,7 @@ function MatSchurComplementGetSubMatrices(petsclib::PetscLibType, S::AbstractPet
 end
 
 @for_petsc function MatSchurComplementGetSubMatrices(petsclib::$UnionPetscLib, S::AbstractPetscMat )
+	S.ptr == C_NULL && throw_null_handle(S, "MatSchurComplementGetSubMatrices", "S")
 	A00_ = Ref{CMat}()
 	Ap00_ = Ref{CMat}()
 	A01_ = Ref{CMat}()
@@ -21588,6 +22037,7 @@ function MatSchurComplementSetAinvType(petsclib::PetscLibType, S::AbstractPetscM
 end
 
 @for_petsc function MatSchurComplementSetAinvType(petsclib::$UnionPetscLib, S::AbstractPetscMat, ainvtype::MatSchurComplementAinvType )
+	S.ptr == C_NULL && throw_null_handle(S, "MatSchurComplementSetAinvType", "S")
 
     @chk ccall(
                (:MatSchurComplementSetAinvType, $petsc_library),
@@ -21622,6 +22072,8 @@ function MatSchurComplementSetKSP(petsclib::PetscLibType, S::AbstractPetscMat, k
 end
 
 @for_petsc function MatSchurComplementSetKSP(petsclib::$UnionPetscLib, S::AbstractPetscMat, ksp::AbstractKSP )
+	S.ptr == C_NULL && throw_null_handle(S, "MatSchurComplementSetKSP", "S")
+	ksp.ptr == C_NULL && throw_null_handle(ksp, "MatSchurComplementSetKSP", "ksp")
 
     @chk ccall(
                (:MatSchurComplementSetKSP, $petsc_library),
@@ -21660,6 +22112,11 @@ function MatSchurComplementSetSubMatrices(petsclib::PetscLibType, S::AbstractPet
 end
 
 @for_petsc function MatSchurComplementSetSubMatrices(petsclib::$UnionPetscLib, S::AbstractPetscMat, A00::AbstractPetscMat, Ap00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat )
+	S.ptr == C_NULL && throw_null_handle(S, "MatSchurComplementSetSubMatrices", "S")
+	A00.ptr == C_NULL && throw_null_handle(A00, "MatSchurComplementSetSubMatrices", "A00")
+	Ap00.ptr == C_NULL && throw_null_handle(Ap00, "MatSchurComplementSetSubMatrices", "Ap00")
+	A01.ptr == C_NULL && throw_null_handle(A01, "MatSchurComplementSetSubMatrices", "A01")
+	A10.ptr == C_NULL && throw_null_handle(A10, "MatSchurComplementSetSubMatrices", "A10")
 
     @chk ccall(
                (:MatSchurComplementSetSubMatrices, $petsc_library),
@@ -21698,6 +22155,11 @@ function MatSchurComplementUpdateSubMatrices(petsclib::PetscLibType, S::Abstract
 end
 
 @for_petsc function MatSchurComplementUpdateSubMatrices(petsclib::$UnionPetscLib, S::AbstractPetscMat, A00::AbstractPetscMat, Ap00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat )
+	S.ptr == C_NULL && throw_null_handle(S, "MatSchurComplementUpdateSubMatrices", "S")
+	A00.ptr == C_NULL && throw_null_handle(A00, "MatSchurComplementUpdateSubMatrices", "A00")
+	Ap00.ptr == C_NULL && throw_null_handle(Ap00, "MatSchurComplementUpdateSubMatrices", "Ap00")
+	A01.ptr == C_NULL && throw_null_handle(A01, "MatSchurComplementUpdateSubMatrices", "A01")
+	A10.ptr == C_NULL && throw_null_handle(A10, "MatSchurComplementUpdateSubMatrices", "A10")
 
     @chk ccall(
                (:MatSchurComplementUpdateSubMatrices, $petsc_library),
@@ -21733,6 +22195,8 @@ function MatSelectVariableBlockSizes(petsclib::PetscLibType, subA::AbstractPetsc
 end
 
 @for_petsc function MatSelectVariableBlockSizes(petsclib::$UnionPetscLib, subA::AbstractPetscMat, A::AbstractPetscMat, isrow::AbstractIS )
+	subA.ptr == C_NULL && throw_null_handle(subA, "MatSelectVariableBlockSizes", "subA")
+	isrow.ptr == C_NULL && throw_null_handle(isrow, "MatSelectVariableBlockSizes", "isrow")
 
     @chk ccall(
                (:MatSelectVariableBlockSizes, $petsc_library),
@@ -22363,6 +22827,8 @@ function MatSeqAIJKron(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractP
 end
 
 @for_petsc function MatSeqAIJKron(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, reuse::MatReuse )
+	A.ptr == C_NULL && throw_null_handle(A, "MatSeqAIJKron", "A")
+	B.ptr == C_NULL && throw_null_handle(B, "MatSeqAIJKron", "B")
 	C_ = Ref{CMat}()
 
     @chk ccall(
@@ -22541,6 +23007,7 @@ function MatSeqAIJSetColumnIndices(petsclib::PetscLibType, mat::AbstractPetscMat
 end
 
 @for_petsc function MatSeqAIJSetColumnIndices(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSeqAIJSetColumnIndices", "mat")
 	indices_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -22587,6 +23054,7 @@ function MatSeqAIJSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat, 
 end
 
 @for_petsc function MatSeqAIJSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, nz::$PetscInt, nnz::Union{Ptr, Vector{$PetscInt}} )
+	B.ptr == C_NULL && throw_null_handle(B, "MatSeqAIJSetPreallocation", "B")
 
     @chk ccall(
                (:MatSeqAIJSetPreallocation, $petsc_library),
@@ -22621,6 +23089,7 @@ function MatSeqAIJSetPreallocationCSR(petsclib::PetscLibType, B::AbstractPetscMa
 end
 
 @for_petsc function MatSeqAIJSetPreallocationCSR(petsclib::$UnionPetscLib, B::AbstractPetscMat, i::Vector{$PetscInt}, j::Vector{$PetscInt}, v::Vector{$PetscScalar} )
+	B.ptr == C_NULL && throw_null_handle(B, "MatSeqAIJSetPreallocationCSR", "B")
 
     @chk ccall(
                (:MatSeqAIJSetPreallocationCSR, $petsc_library),
@@ -22690,6 +23159,7 @@ function MatSeqAIJSetType(petsclib::PetscLibType, mat::AbstractPetscMat, matype:
 end
 
 @for_petsc function MatSeqAIJSetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, matype::String )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSeqAIJSetType", "mat")
 
     @chk ccall(
                (:MatSeqAIJSetType, $petsc_library),
@@ -22835,6 +23305,7 @@ function MatSeqBAIJSetColumnIndices(petsclib::PetscLibType, mat::AbstractPetscMa
 end
 
 @for_petsc function MatSeqBAIJSetColumnIndices(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSeqBAIJSetColumnIndices", "mat")
 	indices_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -22882,6 +23353,7 @@ function MatSeqBAIJSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat,
 end
 
 @for_petsc function MatSeqBAIJSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, bs::$PetscInt, nz::$PetscInt, nnz::Union{Ptr, Vector{$PetscInt}} )
+	B.ptr == C_NULL && throw_null_handle(B, "MatSeqBAIJSetPreallocation", "B")
 
     @chk ccall(
                (:MatSeqBAIJSetPreallocation, $petsc_library),
@@ -22919,6 +23391,7 @@ function MatSeqBAIJSetPreallocationCSR(petsclib::PetscLibType, B::AbstractPetscM
 end
 
 @for_petsc function MatSeqBAIJSetPreallocationCSR(petsclib::$UnionPetscLib, B::AbstractPetscMat, bs::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, v::Union{Ptr, Vector{$PetscScalar}} )
+	B.ptr == C_NULL && throw_null_handle(B, "MatSeqBAIJSetPreallocationCSR", "B")
 
     @chk ccall(
                (:MatSeqBAIJSetPreallocationCSR, $petsc_library),
@@ -22952,6 +23425,7 @@ function MatSeqDenseInvert(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatSeqDenseInvert(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatSeqDenseInvert", "A")
 
     @chk ccall(
                (:MatSeqDenseInvert, $petsc_library),
@@ -22986,6 +23460,7 @@ function MatSeqDenseSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat
 end
 
 @for_petsc function MatSeqDenseSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, data::Vector{$PetscScalar} )
+	B.ptr == C_NULL && throw_null_handle(B, "MatSeqDenseSetPreallocation", "B")
 
     @chk ccall(
                (:MatSeqDenseSetPreallocation, $petsc_library),
@@ -23092,6 +23567,7 @@ function MatSeqSBAIJSetColumnIndices(petsclib::PetscLibType, mat::AbstractPetscM
 end
 
 @for_petsc function MatSeqSBAIJSetColumnIndices(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSeqSBAIJSetColumnIndices", "mat")
 	indices_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -23139,6 +23615,7 @@ function MatSeqSBAIJSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat
 end
 
 @for_petsc function MatSeqSBAIJSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, bs::$PetscInt, nz::$PetscInt, nnz::Vector{$PetscInt} )
+	B.ptr == C_NULL && throw_null_handle(B, "MatSeqSBAIJSetPreallocation", "B")
 
     @chk ccall(
                (:MatSeqSBAIJSetPreallocation, $petsc_library),
@@ -23174,6 +23651,7 @@ function MatSeqSBAIJSetPreallocationCSR(petsclib::PetscLibType, B::AbstractPetsc
 end
 
 @for_petsc function MatSeqSBAIJSetPreallocationCSR(petsclib::$UnionPetscLib, B::AbstractPetscMat, bs::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, v::Vector{$PetscScalar} )
+	B.ptr == C_NULL && throw_null_handle(B, "MatSeqSBAIJSetPreallocationCSR", "B")
 
     @chk ccall(
                (:MatSeqSBAIJSetPreallocationCSR, $petsc_library),
@@ -23363,6 +23841,7 @@ function MatSeqSELLSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat,
 end
 
 @for_petsc function MatSeqSELLSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, rlenmax::$PetscInt, rlen::Vector{$PetscInt} )
+	B.ptr == C_NULL && throw_null_handle(B, "MatSeqSELLSetPreallocation", "B")
 
     @chk ccall(
                (:MatSeqSELLSetPreallocation, $petsc_library),
@@ -23427,6 +23906,7 @@ function MatSetBindingPropagates(petsclib::PetscLibType, A::AbstractPetscMat, fl
 end
 
 @for_petsc function MatSetBindingPropagates(petsclib::$UnionPetscLib, A::AbstractPetscMat, flg::PetscBool )
+	A.ptr == C_NULL && throw_null_handle(A, "MatSetBindingPropagates", "A")
 
     @chk ccall(
                (:MatSetBindingPropagates, $petsc_library),
@@ -23461,6 +23941,7 @@ function MatSetBlockSize(petsclib::PetscLibType, mat::AbstractPetscMat, bs::Inte
 end
 
 @for_petsc function MatSetBlockSize(petsclib::$UnionPetscLib, mat::AbstractPetscMat, bs::$PetscInt )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSetBlockSize", "mat")
 
     @chk ccall(
                (:MatSetBlockSize, $petsc_library),
@@ -23496,6 +23977,7 @@ function MatSetBlockSizes(petsclib::PetscLibType, mat::AbstractPetscMat, rbs::In
 end
 
 @for_petsc function MatSetBlockSizes(petsclib::$UnionPetscLib, mat::AbstractPetscMat, rbs::$PetscInt, cbs::$PetscInt )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSetBlockSizes", "mat")
 
     @chk ccall(
                (:MatSetBlockSizes, $petsc_library),
@@ -23531,6 +24013,9 @@ function MatSetBlockSizesFromMats(petsclib::PetscLibType, mat::AbstractPetscMat,
 end
 
 @for_petsc function MatSetBlockSizesFromMats(petsclib::$UnionPetscLib, mat::AbstractPetscMat, fromRow::AbstractPetscMat, fromCol::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSetBlockSizesFromMats", "mat")
+	fromRow.ptr == C_NULL && throw_null_handle(fromRow, "MatSetBlockSizesFromMats", "fromRow")
+	fromCol.ptr == C_NULL && throw_null_handle(fromCol, "MatSetBlockSizesFromMats", "fromCol")
 
     @chk ccall(
                (:MatSetBlockSizesFromMats, $petsc_library),
@@ -23565,6 +24050,7 @@ function MatSetDM(petsclib::PetscLibType, A::AbstractPetscMat, dm::AbstractPetsc
 end
 
 @for_petsc function MatSetDM(petsclib::$UnionPetscLib, A::AbstractPetscMat, dm::AbstractPetscDM )
+	A.ptr == C_NULL && throw_null_handle(A, "MatSetDM", "A")
 
     @chk ccall(
                (:MatSetDM, $petsc_library),
@@ -23599,6 +24085,7 @@ function MatSetErrorIfFailure(petsclib::PetscLibType, mat::AbstractPetscMat, flg
 end
 
 @for_petsc function MatSetErrorIfFailure(petsclib::$UnionPetscLib, mat::AbstractPetscMat, flg::PetscBool )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSetErrorIfFailure", "mat")
 
     @chk ccall(
                (:MatSetErrorIfFailure, $petsc_library),
@@ -23634,6 +24121,7 @@ function MatSetFactorType(petsclib::PetscLibType, mat::AbstractPetscMat, t::MatF
 end
 
 @for_petsc function MatSetFactorType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, t::MatFactorType )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSetFactorType", "mat")
 
     @chk ccall(
                (:MatSetFactorType, $petsc_library),
@@ -23684,6 +24172,7 @@ function MatSetFromOptions(petsclib::PetscLibType, B::AbstractPetscMat)
 end
 
 @for_petsc function MatSetFromOptions(petsclib::$UnionPetscLib, B::AbstractPetscMat )
+	B.ptr == C_NULL && throw_null_handle(B, "MatSetFromOptions", "B")
 
     @chk ccall(
                (:MatSetFromOptions, $petsc_library),
@@ -23718,6 +24207,7 @@ function MatSetHPL(petsclib::PetscLibType, A::AbstractPetscMat, iseed::Cint)
 end
 
 @for_petsc function MatSetHPL(petsclib::$UnionPetscLib, A::AbstractPetscMat, iseed::Cint )
+	A.ptr == C_NULL && throw_null_handle(A, "MatSetHPL", "A")
 
     @chk ccall(
                (:MatSetHPL, $petsc_library),
@@ -23786,6 +24276,7 @@ function MatSetLayouts(petsclib::PetscLibType, A::AbstractPetscMat, rmap::PetscL
 end
 
 @for_petsc function MatSetLayouts(petsclib::$UnionPetscLib, A::AbstractPetscMat, rmap::PetscLayout, cmap::PetscLayout )
+	A.ptr == C_NULL && throw_null_handle(A, "MatSetLayouts", "A")
 
     @chk ccall(
                (:MatSetLayouts, $petsc_library),
@@ -23823,6 +24314,7 @@ function MatSetLocalToGlobalMapping(petsclib::PetscLibType, x::AbstractPetscMat,
 end
 
 @for_petsc function MatSetLocalToGlobalMapping(petsclib::$UnionPetscLib, x::AbstractPetscMat, rmapping::ISLocalToGlobalMapping, cmapping::ISLocalToGlobalMapping )
+	x.ptr == C_NULL && throw_null_handle(x, "MatSetLocalToGlobalMapping", "x")
 
     @chk ccall(
                (:MatSetLocalToGlobalMapping, $petsc_library),
@@ -23858,6 +24350,7 @@ function MatSetNearNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, null
 end
 
 @for_petsc function MatSetNearNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::AbstractMatNullSpace )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSetNearNullSpace", "mat")
 
     @chk ccall(
                (:MatSetNearNullSpace, $petsc_library),
@@ -23893,6 +24386,7 @@ function MatSetNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::
 end
 
 @for_petsc function MatSetNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::AbstractMatNullSpace )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSetNullSpace", "mat")
 
     @chk ccall(
                (:MatSetNullSpace, $petsc_library),
@@ -23928,6 +24422,7 @@ function MatSetOperation(petsclib::PetscLibType, mat::AbstractPetscMat, op::MatO
 end
 
 @for_petsc function MatSetOperation(petsclib::$UnionPetscLib, mat::AbstractPetscMat, op::MatOperation, f::Ptr{Cvoid} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSetOperation", "mat")
 
     @chk ccall(
                (:MatSetOperation, $petsc_library),
@@ -24001,6 +24496,7 @@ function MatSetOption(petsclib::PetscLibType, mat::AbstractPetscMat, op::MatOpti
 end
 
 @for_petsc function MatSetOption(petsclib::$UnionPetscLib, mat::AbstractPetscMat, op::MatOption, flg::PetscBool )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSetOption", "mat")
 
     @chk ccall(
                (:MatSetOption, $petsc_library),
@@ -24036,6 +24532,7 @@ function MatSetOptionsPrefix(petsclib::PetscLibType, A::AbstractPetscMat, prefix
 end
 
 @for_petsc function MatSetOptionsPrefix(petsclib::$UnionPetscLib, A::AbstractPetscMat, prefix::String )
+	A.ptr == C_NULL && throw_null_handle(A, "MatSetOptionsPrefix", "A")
 
     @chk ccall(
                (:MatSetOptionsPrefix, $petsc_library),
@@ -24071,6 +24568,7 @@ function MatSetOptionsPrefixFactor(petsclib::PetscLibType, A::AbstractPetscMat, 
 end
 
 @for_petsc function MatSetOptionsPrefixFactor(petsclib::$UnionPetscLib, A::AbstractPetscMat, prefix::String )
+	A.ptr == C_NULL && throw_null_handle(A, "MatSetOptionsPrefixFactor", "A")
 
     @chk ccall(
                (:MatSetOptionsPrefixFactor, $petsc_library),
@@ -24109,6 +24607,7 @@ function MatSetPreallocationCOO(petsclib::PetscLibType, A::AbstractPetscMat, nco
 end
 
 @for_petsc function MatSetPreallocationCOO(petsclib::$UnionPetscLib, A::AbstractPetscMat, ncoo::PetscCount, coo_i::Vector{$PetscInt}, coo_j::Vector{$PetscInt} )
+	A.ptr == C_NULL && throw_null_handle(A, "MatSetPreallocationCOO", "A")
 
     @chk ccall(
                (:MatSetPreallocationCOO, $petsc_library),
@@ -24147,6 +24646,7 @@ function MatSetPreallocationCOOLocal(petsclib::PetscLibType, A::AbstractPetscMat
 end
 
 @for_petsc function MatSetPreallocationCOOLocal(petsclib::$UnionPetscLib, A::AbstractPetscMat, ncoo::PetscCount, coo_i::Vector{$PetscInt}, coo_j::Vector{$PetscInt} )
+	A.ptr == C_NULL && throw_null_handle(A, "MatSetPreallocationCOOLocal", "A")
 
     @chk ccall(
                (:MatSetPreallocationCOOLocal, $petsc_library),
@@ -24189,6 +24689,7 @@ function MatSetRandom(petsclib::PetscLibType, x::AbstractPetscMat, rctx::Union{P
 end
 
 @for_petsc function MatSetRandom(petsclib::$UnionPetscLib, x::AbstractPetscMat, rctx::Union{Ptr, PetscRandom} )
+	x.ptr == C_NULL && throw_null_handle(x, "MatSetRandom", "x")
 
     @chk ccall(
                (:MatSetRandom, $petsc_library),
@@ -24227,6 +24728,7 @@ function MatSetSizes(petsclib::PetscLibType, A::AbstractPetscMat, m::Integer, n:
 end
 
 @for_petsc function MatSetSizes(petsclib::$UnionPetscLib, A::AbstractPetscMat, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt )
+	A.ptr == C_NULL && throw_null_handle(A, "MatSetSizes", "A")
 
     @chk ccall(
                (:MatSetSizes, $petsc_library),
@@ -24266,6 +24768,7 @@ function MatSetStencil(petsclib::PetscLibType, mat::AbstractPetscMat, dim::Integ
 end
 
 @for_petsc function MatSetStencil(petsclib::$UnionPetscLib, mat::AbstractPetscMat, dim::$PetscInt, dims::Vector{$PetscInt}, starts::Vector{$PetscInt}, dof::$PetscInt )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSetStencil", "mat")
 
     @chk ccall(
                (:MatSetStencil, $petsc_library),
@@ -24300,6 +24803,7 @@ function MatSetTransposeNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat,
 end
 
 @for_petsc function MatSetTransposeNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::AbstractMatNullSpace )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSetTransposeNullSpace", "mat")
 
     @chk ccall(
                (:MatSetTransposeNullSpace, $petsc_library),
@@ -24337,6 +24841,7 @@ function MatSetType(petsclib::PetscLibType, mat::AbstractPetscMat, matype::Strin
 end
 
 @for_petsc function MatSetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, matype::String )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSetType", "mat")
 
     @chk ccall(
                (:MatSetType, $petsc_library),
@@ -24370,6 +24875,7 @@ function MatSetUnfactored(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatSetUnfactored(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSetUnfactored", "mat")
 
     @chk ccall(
                (:MatSetUnfactored, $petsc_library),
@@ -24403,6 +24909,7 @@ function MatSetUp(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatSetUp(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatSetUp", "A")
 
     @chk ccall(
                (:MatSetUp, $petsc_library),
@@ -24446,6 +24953,7 @@ function MatSetValues(petsclib::PetscLibType, mat::AbstractPetscMat, m::Integer,
 end
 
 @for_petsc function MatSetValues(petsclib::$UnionPetscLib, mat::AbstractPetscMat, m::$PetscInt, idxm::Vector{$PetscInt}, n::$PetscInt, idxn::Vector{$PetscInt}, v::Vector{$PetscScalar}, addv::InsertMode )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSetValues", "mat")
 
     @chk ccall(
                (:MatSetValues, $petsc_library),
@@ -24485,6 +24993,7 @@ function MatSetValuesBatch(petsclib::PetscLibType, mat::AbstractPetscMat, nb::In
 end
 
 @for_petsc function MatSetValuesBatch(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nb::$PetscInt, bs::$PetscInt, rows::Vector{$PetscInt}, v::Vector{$PetscScalar} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSetValuesBatch", "mat")
 
     @chk ccall(
                (:MatSetValuesBatch, $petsc_library),
@@ -24525,6 +25034,7 @@ function MatSetValuesBlocked(petsclib::PetscLibType, mat::AbstractPetscMat, m::I
 end
 
 @for_petsc function MatSetValuesBlocked(petsclib::$UnionPetscLib, mat::AbstractPetscMat, m::$PetscInt, idxm::Vector{$PetscInt}, n::$PetscInt, idxn::Vector{$PetscInt}, v::Vector{$PetscScalar}, addv::InsertMode )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSetValuesBlocked", "mat")
 
     @chk ccall(
                (:MatSetValuesBlocked, $petsc_library),
@@ -24567,6 +25077,7 @@ function MatSetValuesBlockedLocal(petsclib::PetscLibType, mat::AbstractPetscMat,
 end
 
 @for_petsc function MatSetValuesBlockedLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nrow::$PetscInt, irow::Vector{$PetscInt}, ncol::$PetscInt, icol::Vector{$PetscInt}, v::Vector{$PetscScalar}, addv::InsertMode )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSetValuesBlockedLocal", "mat")
 
     @chk ccall(
                (:MatSetValuesBlockedLocal, $petsc_library),
@@ -24610,6 +25121,7 @@ function MatSetValuesBlockedStencil(petsclib::PetscLibType, mat::AbstractPetscMa
 end
 
 @for_petsc function MatSetValuesBlockedStencil(petsclib::$UnionPetscLib, mat::AbstractPetscMat, m::$PetscInt, idxm::Vector{MatStencil}, n::$PetscInt, idxn::Vector{MatStencil}, v::Vector{$PetscScalar}, addv::InsertMode )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSetValuesBlockedStencil", "mat")
 
     @chk ccall(
                (:MatSetValuesBlockedStencil, $petsc_library),
@@ -24645,6 +25157,7 @@ function MatSetValuesCOO(petsclib::PetscLibType, A::AbstractPetscMat, coo_v::Abs
 end
 
 @for_petsc function MatSetValuesCOO(petsclib::$UnionPetscLib, A::AbstractPetscMat, coo_v::Vector{$PetscScalar}, imode::InsertMode )
+	A.ptr == C_NULL && throw_null_handle(A, "MatSetValuesCOO", "A")
 
     @chk ccall(
                (:MatSetValuesCOO, $petsc_library),
@@ -24686,6 +25199,9 @@ function MatSetValuesIS(petsclib::PetscLibType, mat::AbstractPetscMat, ism::Abst
 end
 
 @for_petsc function MatSetValuesIS(petsclib::$UnionPetscLib, mat::AbstractPetscMat, ism::AbstractIS, isn::AbstractIS, v::Vector{$PetscScalar}, addv::InsertMode )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSetValuesIS", "mat")
+	ism.ptr == C_NULL && throw_null_handle(ism, "MatSetValuesIS", "ism")
+	isn.ptr == C_NULL && throw_null_handle(isn, "MatSetValuesIS", "isn")
 
     @chk ccall(
                (:MatSetValuesIS, $petsc_library),
@@ -24728,6 +25244,7 @@ function MatSetValuesLocal(petsclib::PetscLibType, mat::AbstractPetscMat, nrow::
 end
 
 @for_petsc function MatSetValuesLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nrow::$PetscInt, irow::Vector{$PetscInt}, ncol::$PetscInt, icol::Vector{$PetscInt}, v::Vector{$PetscScalar}, addv::InsertMode )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSetValuesLocal", "mat")
 
     @chk ccall(
                (:MatSetValuesLocal, $petsc_library),
@@ -24764,6 +25281,7 @@ function MatSetValuesRow(petsclib::PetscLibType, mat::AbstractPetscMat, row::Int
 end
 
 @for_petsc function MatSetValuesRow(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::$PetscInt, v::Vector{$PetscScalar} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSetValuesRow", "mat")
 
     @chk ccall(
                (:MatSetValuesRow, $petsc_library),
@@ -24800,6 +25318,7 @@ function MatSetValuesRowLocal(petsclib::PetscLibType, mat::AbstractPetscMat, row
 end
 
 @for_petsc function MatSetValuesRowLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::$PetscInt, v::Vector{$PetscScalar} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSetValuesRowLocal", "mat")
 
     @chk ccall(
                (:MatSetValuesRowLocal, $petsc_library),
@@ -24842,6 +25361,7 @@ function MatSetValuesStencil(petsclib::PetscLibType, mat::AbstractPetscMat, m::I
 end
 
 @for_petsc function MatSetValuesStencil(petsclib::$UnionPetscLib, mat::AbstractPetscMat, m::$PetscInt, idxm::Vector{MatStencil}, n::$PetscInt, idxn::Vector{MatStencil}, v::Vector{$PetscScalar}, addv::InsertMode )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSetValuesStencil", "mat")
 
     @chk ccall(
                (:MatSetValuesStencil, $petsc_library),
@@ -24878,6 +25398,7 @@ function MatSetVariableBlockSizes(petsclib::PetscLibType, mat::AbstractPetscMat,
 end
 
 @for_petsc function MatSetVariableBlockSizes(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nblocks::$PetscInt, bsizes::Vector{$PetscInt} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSetVariableBlockSizes", "mat")
 
     @chk ccall(
                (:MatSetVariableBlockSizes, $petsc_library),
@@ -24915,6 +25436,7 @@ function MatSetVecType(petsclib::PetscLibType, mat::AbstractPetscMat, vtype::Str
 end
 
 @for_petsc function MatSetVecType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, vtype::String )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSetVecType", "mat")
 
     @chk ccall(
                (:MatSetVecType, $petsc_library),
@@ -24990,6 +25512,7 @@ function MatShellGetOperation(petsclib::PetscLibType, mat::AbstractPetscMat, op:
 end
 
 @for_petsc function MatShellGetOperation(petsclib::$UnionPetscLib, mat::AbstractPetscMat, op::MatOperation )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatShellGetOperation", "mat")
 	g_ = Ref{Ptr{Cvoid}}()
 
     @chk ccall(
@@ -25026,6 +25549,7 @@ function MatShellSetContext(petsclib::PetscLibType, mat::AbstractPetscMat, ctx::
 end
 
 @for_petsc function MatShellSetContext(petsclib::$UnionPetscLib, mat::AbstractPetscMat, ctx::Ptr{Cvoid} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatShellSetContext", "mat")
 
     @chk ccall(
                (:MatShellSetContext, $petsc_library),
@@ -25061,6 +25585,7 @@ function MatShellSetContextDestroy(petsclib::PetscLibType, mat::AbstractPetscMat
 end
 
 @for_petsc function MatShellSetContextDestroy(petsclib::$UnionPetscLib, mat::AbstractPetscMat, f::Ptr{Cvoid} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatShellSetContextDestroy", "mat")
 
     @chk ccall(
                (:MatShellSetContextDestroy, $petsc_library),
@@ -25095,6 +25620,7 @@ function MatShellSetManageScalingShifts(petsclib::PetscLibType, A::AbstractPetsc
 end
 
 @for_petsc function MatShellSetManageScalingShifts(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatShellSetManageScalingShifts", "A")
 
     @chk ccall(
                (:MatShellSetManageScalingShifts, $petsc_library),
@@ -25324,6 +25850,7 @@ function MatShift(petsclib::PetscLibType, Y::AbstractPetscMat, a::Number)
 end
 
 @for_petsc function MatShift(petsclib::$UnionPetscLib, Y::AbstractPetscMat, a::$PetscScalar )
+	Y.ptr == C_NULL && throw_null_handle(Y, "MatShift", "Y")
 
     @chk ccall(
                (:MatShift, $petsc_library),
@@ -25361,6 +25888,9 @@ function MatSolve(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPets
 end
 
 @for_petsc function MatSolve(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSolve", "mat")
+	b.ptr == C_NULL && throw_null_handle(b, "MatSolve", "b")
+	x.ptr == C_NULL && throw_null_handle(x, "MatSolve", "x")
 
     @chk ccall(
                (:MatSolve, $petsc_library),
@@ -25399,6 +25929,10 @@ function MatSolveAdd(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractP
 end
 
 @for_petsc function MatSolveAdd(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, y::AbstractPetscVec, x::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSolveAdd", "mat")
+	b.ptr == C_NULL && throw_null_handle(b, "MatSolveAdd", "b")
+	y.ptr == C_NULL && throw_null_handle(y, "MatSolveAdd", "y")
+	x.ptr == C_NULL && throw_null_handle(x, "MatSolveAdd", "x")
 
     @chk ccall(
                (:MatSolveAdd, $petsc_library),
@@ -25436,6 +25970,9 @@ function MatSolveTranspose(petsclib::PetscLibType, mat::AbstractPetscMat, b::Abs
 end
 
 @for_petsc function MatSolveTranspose(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSolveTranspose", "mat")
+	b.ptr == C_NULL && throw_null_handle(b, "MatSolveTranspose", "b")
+	x.ptr == C_NULL && throw_null_handle(x, "MatSolveTranspose", "x")
 
     @chk ccall(
                (:MatSolveTranspose, $petsc_library),
@@ -25475,6 +26012,10 @@ function MatSolveTransposeAdd(petsclib::PetscLibType, mat::AbstractPetscMat, b::
 end
 
 @for_petsc function MatSolveTransposeAdd(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, y::AbstractPetscVec, x::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSolveTransposeAdd", "mat")
+	b.ptr == C_NULL && throw_null_handle(b, "MatSolveTransposeAdd", "b")
+	y.ptr == C_NULL && throw_null_handle(y, "MatSolveTransposeAdd", "y")
+	x.ptr == C_NULL && throw_null_handle(x, "MatSolveTransposeAdd", "x")
 
     @chk ccall(
                (:MatSolveTransposeAdd, $petsc_library),
@@ -25597,6 +26138,7 @@ function MatSolves(petsclib::PetscLibType, mat::AbstractPetscMat, b::Vecs, x::Ve
 end
 
 @for_petsc function MatSolves(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::Vecs, x::Vecs )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatSolves", "mat")
 
     @chk ccall(
                (:MatSolves, $petsc_library),
@@ -25686,6 +26228,7 @@ function MatStashSetInitialSize(petsclib::PetscLibType, mat::AbstractPetscMat, s
 end
 
 @for_petsc function MatStashSetInitialSize(petsclib::$UnionPetscLib, mat::AbstractPetscMat, size::$PetscInt, bsize::$PetscInt )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatStashSetInitialSize", "mat")
 
     @chk ccall(
                (:MatStashSetInitialSize, $petsc_library),
@@ -25720,6 +26263,7 @@ function MatStoreValues(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatStoreValues(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatStoreValues", "mat")
 
     @chk ccall(
                (:MatStoreValues, $petsc_library),
@@ -25756,6 +26300,10 @@ function MatSubMatrixVirtualUpdate(petsclib::PetscLibType, N::AbstractPetscMat, 
 end
 
 @for_petsc function MatSubMatrixVirtualUpdate(petsclib::$UnionPetscLib, N::AbstractPetscMat, A::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS )
+	N.ptr == C_NULL && throw_null_handle(N, "MatSubMatrixVirtualUpdate", "N")
+	A.ptr == C_NULL && throw_null_handle(A, "MatSubMatrixVirtualUpdate", "A")
+	isrow.ptr == C_NULL && throw_null_handle(isrow, "MatSubMatrixVirtualUpdate", "isrow")
+	iscol.ptr == C_NULL && throw_null_handle(iscol, "MatSubMatrixVirtualUpdate", "iscol")
 
     @chk ccall(
                (:MatSubMatrixVirtualUpdate, $petsc_library),
@@ -25794,6 +26342,7 @@ function MatSubdomainsCreateCoalesce(petsclib::PetscLibType, A::AbstractPetscMat
 end
 
 @for_petsc function MatSubdomainsCreateCoalesce(petsclib::$UnionPetscLib, A::AbstractPetscMat, N::$PetscInt )
+	A.ptr == C_NULL && throw_null_handle(A, "MatSubdomainsCreateCoalesce", "A")
 	M_n_ = Ref{$PetscInt}()
 	iss_ = Ref{Ptr{CIS}}()
 
@@ -25835,6 +26384,7 @@ function MatSuperluDistGetDiagU(petsclib::PetscLibType, F::AbstractPetscMat)
 end
 
 @for_petsc function MatSuperluDistGetDiagU(petsclib::$UnionPetscLib, F::AbstractPetscMat )
+	F.ptr == C_NULL && throw_null_handle(F, "MatSuperluDistGetDiagU", "F")
 	diagU_ = Ref{$PetscScalar}()
 
     @chk ccall(
@@ -25874,6 +26424,7 @@ function MatSuperluSetILUDropTol(petsclib::PetscLibType, F::AbstractPetscMat, dt
 end
 
 @for_petsc function MatSuperluSetILUDropTol(petsclib::$UnionPetscLib, F::AbstractPetscMat, dtol::$PetscReal )
+	F.ptr == C_NULL && throw_null_handle(F, "MatSuperluSetILUDropTol", "F")
 
     @chk ccall(
                (:MatSuperluSetILUDropTol, $petsc_library),
@@ -25914,6 +26465,8 @@ function MatTransColoringApplyDenToSp(petsclib::PetscLibType, matcoloring::MatTr
 end
 
 @for_petsc function MatTransColoringApplyDenToSp(petsclib::$UnionPetscLib, matcoloring::MatTransposeColoring, Cden::AbstractPetscMat, Csp::AbstractPetscMat )
+	Cden.ptr == C_NULL && throw_null_handle(Cden, "MatTransColoringApplyDenToSp", "Cden")
+	Csp.ptr == C_NULL && throw_null_handle(Csp, "MatTransColoringApplyDenToSp", "Csp")
 
     @chk ccall(
                (:MatTransColoringApplyDenToSp, $petsc_library),
@@ -25953,6 +26506,8 @@ function MatTransColoringApplySpToDen(petsclib::PetscLibType, coloring::MatTrans
 end
 
 @for_petsc function MatTransColoringApplySpToDen(petsclib::$UnionPetscLib, coloring::MatTransposeColoring, B::AbstractPetscMat, Btdense::AbstractPetscMat )
+	B.ptr == C_NULL && throw_null_handle(B, "MatTransColoringApplySpToDen", "B")
+	Btdense.ptr == C_NULL && throw_null_handle(Btdense, "MatTransColoringApplySpToDen", "Btdense")
 
     @chk ccall(
                (:MatTransColoringApplySpToDen, $petsc_library),
@@ -26029,6 +26584,7 @@ function MatTransposeGetMat(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatTransposeGetMat(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatTransposeGetMat", "A")
 	M_ = Ref{CMat}()
 
     @chk ccall(
@@ -26150,6 +26706,7 @@ function MatTransposeSetPrecursor(petsclib::PetscLibType, mat::AbstractPetscMat,
 end
 
 @for_petsc function MatTransposeSetPrecursor(petsclib::$UnionPetscLib, mat::AbstractPetscMat, B::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatTransposeSetPrecursor", "mat")
 
     @chk ccall(
                (:MatTransposeSetPrecursor, $petsc_library),
@@ -26187,6 +26744,7 @@ function MatTransposeSymbolic(petsclib::PetscLibType, A::AbstractPetscMat)
 end
 
 @for_petsc function MatTransposeSymbolic(petsclib::$UnionPetscLib, A::AbstractPetscMat )
+	A.ptr == C_NULL && throw_null_handle(A, "MatTransposeSymbolic", "A")
 	B_ = Ref{CMat}()
 
     @chk ccall(
@@ -26224,6 +26782,7 @@ function MatUpdateMPIAIJWithArray(petsclib::PetscLibType, mat::AbstractPetscMat,
 end
 
 @for_petsc function MatUpdateMPIAIJWithArray(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v::Vector{$PetscScalar} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatUpdateMPIAIJWithArray", "mat")
 
     @chk ccall(
                (:MatUpdateMPIAIJWithArray, $petsc_library),
@@ -26271,6 +26830,7 @@ function MatUpdateMPIAIJWithArrays(petsclib::PetscLibType, mat::AbstractPetscMat
 end
 
 @for_petsc function MatUpdateMPIAIJWithArrays(petsclib::$UnionPetscLib, mat::AbstractPetscMat, m::$PetscInt, n::$PetscInt, M_M::$PetscInt, M_N::$PetscInt, Ii::Vector{$PetscInt}, J::Vector{$PetscInt}, v::Vector{$PetscScalar} )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatUpdateMPIAIJWithArrays", "mat")
 
     @chk ccall(
                (:MatUpdateMPIAIJWithArrays, $petsc_library),
@@ -26320,6 +26880,7 @@ function MatView(petsclib::PetscLibType, mat::AbstractPetscMat, viewer::PetscVie
 end
 
 @for_petsc function MatView(petsclib::$UnionPetscLib, mat::AbstractPetscMat, viewer::PetscViewer )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatView", "mat")
 
     @chk ccall(
                (:MatView, $petsc_library),
@@ -26358,6 +26919,7 @@ function MatViewFromOptions(petsclib::PetscLibType, A::AbstractPetscMat, obj, na
 end
 
 @for_petsc function MatViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPetscMat, obj, name::String )
+	A.ptr == C_NULL && throw_null_handle(A, "MatViewFromOptions", "A")
 
     @chk ccall(
                (:MatViewFromOptions, $petsc_library),
@@ -26398,6 +26960,7 @@ function MatXAIJSetPreallocation(petsclib::PetscLibType, A::AbstractPetscMat, bs
 end
 
 @for_petsc function MatXAIJSetPreallocation(petsclib::$UnionPetscLib, A::AbstractPetscMat, bs::$PetscInt, dnnz::Union{Ptr, Vector{$PetscInt}}, onnz::Union{Ptr, Vector{$PetscInt}}, dnnzu::Union{Ptr, Vector{$PetscInt}}, onnzu::Union{Ptr, Vector{$PetscInt}} )
+	A.ptr == C_NULL && throw_null_handle(A, "MatXAIJSetPreallocation", "A")
 
     @chk ccall(
                (:MatXAIJSetPreallocation, $petsc_library),
@@ -26432,6 +26995,7 @@ function MatZeroEntries(petsclib::PetscLibType, mat::AbstractPetscMat)
 end
 
 @for_petsc function MatZeroEntries(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatZeroEntries", "mat")
 
     @chk ccall(
                (:MatZeroEntries, $petsc_library),
@@ -26472,6 +27036,7 @@ function MatZeroRows(petsclib::PetscLibType, mat::AbstractPetscMat, numRows::Int
 end
 
 @for_petsc function MatZeroRows(petsclib::$UnionPetscLib, mat::AbstractPetscMat, numRows::$PetscInt, rows::Vector{$PetscInt}, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatZeroRows", "mat")
 
     @chk ccall(
                (:MatZeroRows, $petsc_library),
@@ -26512,6 +27077,7 @@ function MatZeroRowsColumns(petsclib::PetscLibType, mat::AbstractPetscMat, numRo
 end
 
 @for_petsc function MatZeroRowsColumns(petsclib::$UnionPetscLib, mat::AbstractPetscMat, numRows::$PetscInt, rows::Vector{$PetscInt}, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatZeroRowsColumns", "mat")
 
     @chk ccall(
                (:MatZeroRowsColumns, $petsc_library),
@@ -26551,6 +27117,8 @@ function MatZeroRowsColumnsIS(petsclib::PetscLibType, mat::AbstractPetscMat, is:
 end
 
 @for_petsc function MatZeroRowsColumnsIS(petsclib::$UnionPetscLib, mat::AbstractPetscMat, is::AbstractIS, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatZeroRowsColumnsIS", "mat")
+	is.ptr == C_NULL && throw_null_handle(is, "MatZeroRowsColumnsIS", "is")
 
     @chk ccall(
                (:MatZeroRowsColumnsIS, $petsc_library),
@@ -26591,6 +27159,7 @@ function MatZeroRowsColumnsLocal(petsclib::PetscLibType, mat::AbstractPetscMat, 
 end
 
 @for_petsc function MatZeroRowsColumnsLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, numRows::$PetscInt, rows::Vector{$PetscInt}, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatZeroRowsColumnsLocal", "mat")
 
     @chk ccall(
                (:MatZeroRowsColumnsLocal, $petsc_library),
@@ -26630,6 +27199,8 @@ function MatZeroRowsColumnsLocalIS(petsclib::PetscLibType, mat::AbstractPetscMat
 end
 
 @for_petsc function MatZeroRowsColumnsLocalIS(petsclib::$UnionPetscLib, mat::AbstractPetscMat, is::AbstractIS, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatZeroRowsColumnsLocalIS", "mat")
+	is.ptr == C_NULL && throw_null_handle(is, "MatZeroRowsColumnsLocalIS", "is")
 
     @chk ccall(
                (:MatZeroRowsColumnsLocalIS, $petsc_library),
@@ -26670,6 +27241,7 @@ function MatZeroRowsColumnsStencil(petsclib::PetscLibType, mat::AbstractPetscMat
 end
 
 @for_petsc function MatZeroRowsColumnsStencil(petsclib::$UnionPetscLib, mat::AbstractPetscMat, numRows::$PetscInt, rows::Vector{MatStencil}, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatZeroRowsColumnsStencil", "mat")
 
     @chk ccall(
                (:MatZeroRowsColumnsStencil, $petsc_library),
@@ -26709,6 +27281,7 @@ function MatZeroRowsIS(petsclib::PetscLibType, mat::AbstractPetscMat, is::Union{
 end
 
 @for_petsc function MatZeroRowsIS(petsclib::$UnionPetscLib, mat::AbstractPetscMat, is::Union{Ptr, AbstractIS}, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatZeroRowsIS", "mat")
 
     @chk ccall(
                (:MatZeroRowsIS, $petsc_library),
@@ -26749,6 +27322,7 @@ function MatZeroRowsLocal(petsclib::PetscLibType, mat::AbstractPetscMat, numRows
 end
 
 @for_petsc function MatZeroRowsLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, numRows::$PetscInt, rows::Vector{$PetscInt}, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatZeroRowsLocal", "mat")
 
     @chk ccall(
                (:MatZeroRowsLocal, $petsc_library),
@@ -26788,6 +27362,8 @@ function MatZeroRowsLocalIS(petsclib::PetscLibType, mat::AbstractPetscMat, is::A
 end
 
 @for_petsc function MatZeroRowsLocalIS(petsclib::$UnionPetscLib, mat::AbstractPetscMat, is::AbstractIS, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatZeroRowsLocalIS", "mat")
+	is.ptr == C_NULL && throw_null_handle(is, "MatZeroRowsLocalIS", "is")
 
     @chk ccall(
                (:MatZeroRowsLocalIS, $petsc_library),
@@ -26828,6 +27404,7 @@ function MatZeroRowsStencil(petsclib::PetscLibType, mat::AbstractPetscMat, numRo
 end
 
 @for_petsc function MatZeroRowsStencil(petsclib::$UnionPetscLib, mat::AbstractPetscMat, numRows::$PetscInt, rows::Vector{MatStencil}, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
+	mat.ptr == C_NULL && throw_null_handle(mat, "MatZeroRowsStencil", "mat")
 
     @chk ccall(
                (:MatZeroRowsStencil, $petsc_library),

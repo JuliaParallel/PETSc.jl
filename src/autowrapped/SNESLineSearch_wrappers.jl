@@ -69,7 +69,10 @@ function SNESLineSearchApply(petsclib::PetscLibType, linesearch::SNESLineSearch,
 end
 
 @for_petsc function SNESLineSearchApply(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, X::AbstractPetscVec, F::AbstractPetscVec, Y::AbstractPetscVec )
+	X.ptr == C_NULL && throw_null_handle(X, "SNESLineSearchApply", "X")
+	F.ptr == C_NULL && throw_null_handle(F, "SNESLineSearchApply", "F")
 	fnorm_ = Ref{$PetscReal}()
+	Y.ptr == C_NULL && throw_null_handle(Y, "SNESLineSearchApply", "Y")
 
     @chk ccall(
                (:SNESLineSearchApply, $petsc_library),
@@ -1141,6 +1144,7 @@ function SNESLineSearchPreCheckPicard(petsclib::PetscLibType, linesearch::SNESLi
 end
 
 @for_petsc function SNESLineSearchPreCheckPicard(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, X::AbstractPetscVec, Y::AbstractPetscVec, ctx::Ptr{Cvoid} )
+	Y.ptr == C_NULL && throw_null_handle(Y, "SNESLineSearchPreCheckPicard", "Y")
 	changed_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -1675,6 +1679,7 @@ function SNESLineSearchSetSNES(petsclib::PetscLibType, linesearch::SNESLineSearc
 end
 
 @for_petsc function SNESLineSearchSetSNES(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, snes::AbstractSNES )
+	snes.ptr == C_NULL && throw_null_handle(snes, "SNESLineSearchSetSNES", "snes")
 
     @chk ccall(
                (:SNESLineSearchSetSNES, $petsc_library),

@@ -74,7 +74,9 @@
 - `global_vec(dm)`, `local_vec(dm)`, `PetscMat(dm)` and `IS(dm, ...)` get a finalizer on a one-rank communicator, as every other constructor does, so a dropped one is freed. They leaked: 50 dropped `PetscMat(da)` kept 36 MB.
 - `set_uniform_coordinates!` on a DMStag works with a complex library; it threw a `MethodError`.
 - `parse_options` reads a value that starts with `-`, such as `-mat_shift -0.5`, as a value, as PETSc does. It took `-0.5` for an option of its own and lost the value; an empty value threw a `BoundsError`.
-- `with_field_views!` hands back the Vecs it has checked out when a later checkout throws. They stayed checked out, so the next write to them failed.
+- `with_field_views!` hands back the Vecs it has checked out when a later checkout throws. They stayed checked out.
+- `star_fd_coloring` includes the couplings across a periodic axis. They were left out of the pattern, so an FD-colored Jacobian on a periodic DMDA split over several ranks missed them without an error. A `DM_BOUNDARY_MIRROR` axis throws an `ArgumentError`.
+- An error in looking up the TS behind a `set_pre_step!` or `set_post_step!` hook comes back to PETSc as an error code instead of a Julia exception thrown through PETSc's C frames.
 
 ## v0.5.5
 

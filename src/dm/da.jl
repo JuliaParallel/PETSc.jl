@@ -224,7 +224,9 @@ stencil, using `IS_COLORING_LOCAL` and ghost-local COO indexing.
 
 `petsclib` is not an argument: the `DMDA` carries it as a type parameter
 (docs/src/man/naming.md §8). A DMDA of another dimension, or with a BOX
-stencil, throws an `ArgumentError`: the coloring would leave out entries.
+stencil, throws an `ArgumentError`: the coloring would leave out entries. So does a
+`DM_BOUNDARY_MIRROR` axis. A periodic axis works when its two ends are on different
+ranks; on one rank PETSc's `DMCreateColoring` refuses it.
 
 Specifically, this function:
 1. Creates an `IS_COLORING_LOCAL` `ISColoring` via `DMCreateColoring` and
@@ -264,6 +266,10 @@ function star_fd_coloring(da::DMDA{PetscLib, N}) where {PetscLib, N}
     N == 2 || throw(ArgumentError("star_fd_coloring needs a 2-D DMDA, got a $N-D one"))
     info(da).stencil_type == LibPETSc.DMDA_STENCIL_STAR || throw(ArgumentError(
         "star_fd_coloring needs a DMDA with a STAR stencil, got a BOX stencil"))
+    # A mirrored ghost stands for an interior point, which the ghost-local
+    # indices below cannot express
+    any(==(LibPETSc.DM_BOUNDARY_MIRROR), info(da).boundary_type) && throw(ArgumentError(
+        "star_fd_coloring does not support DM_BOUNDARY_MIRROR"))
     petsclib = getlib(PetscLib)
     CPetscInt = petsclib.PetscInt
 
@@ -293,6 +299,10 @@ function star_fd_coloring(da::DMDA{PetscLib, N}) where {PetscLib, N}
     ox_coo  = xs_da  - xsg_da   # ghost offset in x (grid nodes)
     oy_coo  = ys_da  - ysg_da   # ghost offset in y (grid nodes)
     n_local_dofs = nx_own * ny_own * dof_per_node
+    # On a periodic axis the ghost layout holds the wrapped neighbors, so a node
+    # at the edge of the domain has all four
+    px = da_info.boundary_type[1] == LibPETSc.DM_BOUNDARY_PERIODIC
+    py = da_info.boundary_type[2] == LibPETSc.DM_BOUNDARY_PERIODIC
 
     # col_colors_mat[d+1, ix_ghost+1, iy_ghost+1] → color of that ghost DOF
     col_colors_mat = reshape(col_colors_local, dof_per_node, nx_g_da, ny_g_da)
@@ -305,10 +315,10 @@ function star_fd_coloring(da::DMDA{PetscLib, N}) where {PetscLib, N}
     # by index rather than growing via push! (avoids O(nnz) realloc+copy work).
     # Each owned node contributes dof² entries per STAR neighbor it has.
     # Interior nodes have 5 neighbors (self + 4); boundary nodes have fewer.
-    nbr_left   = xs_da == 1  ? nx_own - 1 : nx_own   # columns with a left neighbor
-    nbr_right  = xe_da == mx ? nx_own - 1 : nx_own   # columns with a right neighbor
-    nbr_bottom = ys_da == 1  ? ny_own - 1 : ny_own   # rows with a bottom neighbor
-    nbr_top    = ye_da == my ? ny_own - 1 : ny_own   # rows with a top neighbor
+    nbr_left   = xs_da == 1  && !px ? nx_own - 1 : nx_own   # columns with a left neighbor
+    nbr_right  = xe_da == mx && !px ? nx_own - 1 : nx_own   # columns with a right neighbor
+    nbr_bottom = ys_da == 1  && !py ? ny_own - 1 : ny_own   # rows with a bottom neighbor
+    nbr_top    = ye_da == my && !py ? ny_own - 1 : ny_own   # rows with a top neighbor
     total_nbr_pairs = nx_own * ny_own +               # self
                       nbr_left   * ny_own +
                       nbr_right  * ny_own +
@@ -353,13 +363,13 @@ function star_fd_coloring(da::DMDA{PetscLib, N}) where {PetscLib, N}
         # self
         k = fill_nbr!(k, ix_gh, iy_gh, ix_ow, iy_ow, ix_gh, iy_gh)
         # left
-        ii > 1  && (k = fill_nbr!(k, ix_gh, iy_gh, ix_ow, iy_ow, ix_gh - 1, iy_gh))
+        (ii > 1  || px) && (k = fill_nbr!(k, ix_gh, iy_gh, ix_ow, iy_ow, ix_gh - 1, iy_gh))
         # right
-        ii < mx && (k = fill_nbr!(k, ix_gh, iy_gh, ix_ow, iy_ow, ix_gh + 1, iy_gh))
+        (ii < mx || px) && (k = fill_nbr!(k, ix_gh, iy_gh, ix_ow, iy_ow, ix_gh + 1, iy_gh))
         # bottom
-        jj > 1  && (k = fill_nbr!(k, ix_gh, iy_gh, ix_ow, iy_ow, ix_gh, iy_gh - 1))
+        (jj > 1  || py) && (k = fill_nbr!(k, ix_gh, iy_gh, ix_ow, iy_ow, ix_gh, iy_gh - 1))
         # top
-        jj < my && (k = fill_nbr!(k, ix_gh, iy_gh, ix_ow, iy_ow, ix_gh, iy_gh + 1))
+        (jj < my || py) && (k = fill_nbr!(k, ix_gh, iy_gh, ix_ow, iy_ow, ix_gh, iy_gh + 1))
     end
 
     # ── Per-color index arrays ────────────────────────────────────────────────

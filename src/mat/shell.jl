@@ -203,27 +203,3 @@ end
 _mul!(y, obj::Function, x) = obj(y, x)
 _mul!(y, obj, x) = LinearAlgebra.mul!(y, obj, x)
 
-
-# A PETSc vector takes the PETSc path, not the Julia-array one below
-Base.:*(M::MatShell{PetscLib}, x::AbstractPetscVec{PetscLib}) where {PetscLib} =
-    invoke(*, Tuple{AbstractPetscMat{PetscLib}, AbstractPetscVec{PetscLib}}, M, x)
-
-# Matrix-vector multiplication for MatShell with Julia arrays
-function Base.:*(M::MatShell{PetscLib}, x::AbstractVector) where {PetscLib}
-    PetscScalar = scalartype(PetscLib)
-    PetscInt = inttype(PetscLib)
-    
-    # Get matrix dimensions
-    m, n = size(M)
-    
-    # Create PETSc vectors wrapping the Julia arrays
-    petsclib = getlib(PetscLib)
-    # PETSc works on this copy of `x` in place, so it must outlive the product
-    x_copy = PetscScalar.(x)
-    return GC.@preserve x_copy with_destroy() do list
-        petsc_x = track!(list, seq_vec_with_array(petsclib, MPI.COMM_SELF, PetscInt(1), PetscInt(n), x_copy))
-        petsc_y = track!(list, LibPETSc.VecCreateSeq(petsclib, MPI.COMM_SELF, PetscInt(m)))
-        mul!(petsc_y, M, petsc_x)
-        petsc_y[:]
-    end
-end

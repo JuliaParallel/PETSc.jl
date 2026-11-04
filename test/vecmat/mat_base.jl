@@ -149,6 +149,9 @@ dense(n, entries, T) = (D = zeros(T, n, n); foreach(((i, j, a),) -> D[i, j] = a,
             @test collect(y) ≈ ref * ones(PetscScalar, n)
             mul!(y, A, x)
             @test collect(y) ≈ ref * ones(PetscScalar, n)
+            # a Julia vector: the whole of it on every rank, the whole product back
+            xj = PetscScalar.(1:n)
+            @test A * xj ≈ ref * xj
             foreach(PETSc.destroy!, (x, y))
         end
 

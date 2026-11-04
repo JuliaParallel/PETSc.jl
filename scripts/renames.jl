@@ -310,6 +310,7 @@ const INTERNAL = Set{Symbol}([
     :KSP_REASON_TEXT,
     :SNES_REASON_TEXT,
     :TS_REASON_TEXT,
+    :block_values,
     :c_vector,
     :check_block,
     :checkout_arrays,

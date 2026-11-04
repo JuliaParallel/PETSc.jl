@@ -22,7 +22,7 @@ jobs:
   test:
     # The examples (23 scripts, each in its own Julia process) take about as long as the rest of the
     # suite, so they run as a job of their own, in parallel with it.
-    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ github.event_name }}${{ matrix.group == 'examples' && ' - examples' || '' }}
+    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.group == 'examples' && 'examples' || 'tests' }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 75
     strategy:

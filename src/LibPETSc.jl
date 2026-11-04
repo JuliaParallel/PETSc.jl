@@ -1,3 +1,11 @@
+"""
+    PETSc.LibPETSc
+
+The low-level interface: Julia wrappers generated from the PETSc C headers,
+named as in C (`VecSetValues`, `KSPSolve`, ...) and taking the library
+(a [`PetscLibType`](@ref)) as first argument. See the
+"Low-level interface (LibPETSc)" pages of the manual.
+"""
 module LibPETSc
 
 import PETSc: _doc_external

@@ -1,5 +1,5 @@
 # define common PETSc constants
-# this excludes configurable constants (e.g. PetscScalar) which are set in lib.jl
+# this excludes configurable constants (e.g. PetscScalar) which are set in LibPETSc_lib.jl
 
 const PetscErrorCode = Cint
 

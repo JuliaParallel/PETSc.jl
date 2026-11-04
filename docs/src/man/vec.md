@@ -10,6 +10,31 @@ PETSc vectors support:
 - **Ghost points**: For communication in stencil operations
 - **Julia array interface**: a `PetscVec` is an `AbstractVector`, with bulk indexing, broadcasting and reductions
 
+## Example
+
+```jldoctest vec
+julia> using PETSc, LinearAlgebra
+
+julia> petsclib = PETSc.petsclibs[1];
+
+julia> PETSc.initialize(petsclib)
+
+julia> v = PetscVec(petsclib, [1.0, 2.0, 3.0]);
+
+julia> w = 2 .* v;
+
+julia> dot(v, w)
+28.0
+
+julia> w[:]
+3-element Vector{Float64}:
+ 2.0
+ 4.0
+ 6.0
+
+julia> PETSc.destroy!(w); PETSc.destroy!(v);
+```
+
 ## Creating Vectors
 
 ### Sequential Vectors

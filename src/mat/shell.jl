@@ -1,3 +1,12 @@
+"""
+    MatOp{PetscLib, Op}()
+
+Callable that runs the shell-matrix operation `Op` (a `MatOperation` such as
+`MATOP_MULT`) on a [`MatShell`](@ref). `MatShell` wraps it in a `@cfunction`
+and registers it with `MatShellSetOperation`; users don't call it directly.
+Methods exist for `MATOP_MULT`, `MATOP_MULT_TRANSPOSE`, `MATOP_GET_DIAGONAL` and
+`MATOP_MULT_ADD`.
+"""
 struct MatOp{PetscLib, Op} end
 
 function (::MatOp{PetscLib, LibPETSc.MATOP_MULT})(

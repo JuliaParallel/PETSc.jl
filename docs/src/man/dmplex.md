@@ -27,7 +27,7 @@ advection).
 ### From a Gmsh file
 
 ```julia
-using PETSc, MPI
+using PETSc, MPI, LinearAlgebra
 MPI.Init()
 petsclib = PETSc.getlib(; PetscScalar = Float64)
 PETSc.initialize(petsclib)
@@ -42,7 +42,7 @@ Useful options include `-dm_refine N` (uniform refinement) and
 ### Box mesh (built-in)
 
 ```julia
-dm = PETSc.DMPlex(petsclib, MPI.COMM_WORLD, 2, true, (10, 10))
+dm = PETSc.DMPlex(petsclib, MPI.COMM_WORLD, 2, true, [10, 10])
 #                                            ^dim  ^simplex  ^faces
 ```
 
@@ -56,7 +56,7 @@ quads / hexahedra.
 ### Creating FE spaces
 
 ```julia
-dim     = LibPETSc.DMGetDimension(petsclib, dm)
+dim     = ndims(dm)
 simplex = PETSc.issimplex(dm)
 
 # P2 velocity (dim components, degree 2)
@@ -64,11 +64,10 @@ fe_vel = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, dim, simplex;
                                   degree = 2, prefix = "vel_")
 
 # Discontinuous P1 pressure (1 component, degree 1)
-let opts = PETSc.PetscOptions(petsclib; pres_petscdualspace_lagrange_continuity = 0)
-    push!(opts)
-    global fe_pres = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, 1, simplex;
-                                              degree = 1, prefix = "pres_")
-    pop!(opts)
+opts = PETSc.PetscOptions(petsclib; pres_petscdualspace_lagrange_continuity = 0)
+fe_pres = PETSc.with_options(opts) do
+    PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, 1, simplex;
+                            degree = 1, prefix = "pres_")
 end
 
 # Lagrange P1 (explicit degree, no PetscOptions lookup)
@@ -89,7 +88,7 @@ PETSc.create_ds!(dm)               # finalise the PetscDS
 ### Naming objects
 
 ```julia
-LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_vel), "velocity")
+PETSc.set_name!(fe_vel, "velocity")
 PETSc.set_name!(dm, "stokes")
 ```
 
@@ -121,7 +120,7 @@ const bg_vel_ptr = PETSc.@simple_fn(petsclib, bg_vel)
 
 Signature: full PETSc pointwise signature with `dim_`, `Nf`, `NfAux`,
 `uOff`, `uOff_x`, `u`, `u_t`, `u_x`, `aOff`, `aOff_x`, `a`, `a_t`, `a_x`,
-`t`, `x`, `nC`, `cst`, `out`.  The second argument is the number of output
+`t`, `x`, `nC`, `cst`, `out`.  The third argument is the number of output
 components.
 
 ```julia
@@ -222,8 +221,7 @@ PETSc.create_ds!(dm_aux)
 aux_vec = PETSc.global_vec(dm_aux)
 
 # Attach aux_vec so callbacks see it via `a`
-LibPETSc.DMSetAuxiliaryVec(petsclib, dm,
-    LibPETSc.DMLabel(petsclib), PetscInt(0), PetscInt(0), aux_vec)
+PETSc.set_auxiliary_vec!(dm, aux_vec)
 ```
 
 ---
@@ -327,7 +325,7 @@ PETSc.project_field!(vel_p1, dm_p1, 0.0, u, [copy_vel_ptr]; mode = LibPETSc.INSE
 
 # Move each mesh node by dt * v (the coordinate vector is owned by the DM)
 coords = LibPETSc.DMGetCoordinates(petsclib, dm)
-LibPETSc.VecAXPY(petsclib, coords, PetscScalar(dt), vel_p1)
+axpy!(dt, vel_p1, coords)
 ```
 
 !!! warning "Mesh distortion"

@@ -500,7 +500,7 @@ The result is dimension-correct (§12): there is no padding to three entries.
 
 # External Links
 $(doc_external("DMDA/DMDAGetInfo"))
-$(doc_external("DMSTAG/DMStagGetGlobalSizes"))
+$(doc_external("DMStag/DMStagGetGlobalSizes"))
 """
 function Base.size(dm::DMDA{PetscLib, N}) where {PetscLib, N}
     _, M, Ny, P, _ = LibPETSc.DMDAGetInfo(PetscLib, dm)

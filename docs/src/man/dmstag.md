@@ -181,9 +181,9 @@ length(flow)    # the global number of indices
 
 ```julia
 # Set uniform coordinates
-PETSc.set_uniform_coordinates!(dm, xmin, xmax)                           # 1D
-PETSc.set_uniform_coordinates!(dm, xmin, xmax, ymin, ymax)               # 2D
-PETSc.set_uniform_coordinates!(dm, xmin, xmax, ymin, ymax, zmin, zmax)   # 3D
+PETSc.set_uniform_coordinates!(dm, (xmin,), (xmax,))                             # 1D
+PETSc.set_uniform_coordinates!(dm, (xmin, ymin), (xmax, ymax))                   # 2D
+PETSc.set_uniform_coordinates!(dm, (xmin, ymin, zmin), (xmax, ymax, zmax))       # 3D
 
 # Local coordinates as an array addressed with global indices, valid inside the block
 PETSc.with_local_coordinate_array(dm) do coords
@@ -217,7 +217,7 @@ dm = DMStag(
     stencil_type = PETSc.DMSTAG_STENCIL_BOX,
 )
 
-PETSc.set_uniform_coordinates!(dm, 0.0, 1.0, 0.0, 1.0)
+PETSc.set_uniform_coordinates!(dm, (0.0, 0.0), (1.0, 1.0))
 
 # Create vectors and matrix
 x = PETSc.global_vec(dm)

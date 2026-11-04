@@ -10,6 +10,30 @@ KSP provides:
 - **Runtime configuration**: Choose methods via command-line options
 - **Convergence monitoring**: Built-in residual tracking
 
+## Example
+
+```jldoctest ksp
+julia> using PETSc, SparseArrays
+
+julia> petsclib = PETSc.petsclibs[1];
+
+julia> PETSc.initialize(petsclib)
+
+julia> A = PetscMat(petsclib, sparse([2.0 -1 0; -1 2 -1; 0 -1 2]));
+
+julia> ksp = KSP(A; ksp_type = "cg", pc_type = "jacobi", ksp_rtol = 1e-12);
+
+julia> x = ksp \ [1.0, 0.0, 1.0];
+
+julia> x ≈ [1, 1, 1]
+true
+
+julia> PETSc.type_name(ksp)
+:cg
+
+julia> PETSc.destroy!(ksp); PETSc.destroy!(A);
+```
+
 ## Creating a KSP Solver
 
 ### From a Matrix
@@ -194,7 +218,7 @@ PETSc.set_post_setup!(p) do p
 end
 ```
 
-It runs again whenever the operator changes, and the options given to a `SNES` are applied again on every `solve!`, so write it so that a second run is harmless. With a Schur split, set the factorization type in code (`LibPETSc.PCFieldSplitSetType`) before `LibPETSc.PCFieldSplitSetSchurPre` with a user matrix: when the type comes only from the options, PETSc drops the user matrix without saying so. [`set_pre_solve!`](@ref PETSc.set_pre_solve!) is the matching hook on the `KSP`; it runs at the start of every solve, before the preconditioner is set up.
+It runs again whenever the operator changes, so write it so that a second run is harmless. With a Schur split, set the factorization type in code (`LibPETSc.PCFieldSplitSetType`) before `LibPETSc.PCFieldSplitSetSchurPre` with a user matrix: when the type comes only from the options, PETSc drops the user matrix without saying so. [`set_pre_solve!`](@ref PETSc.set_pre_solve!) is the matching hook on the `KSP`; it runs at the start of every solve, before the preconditioner is set up.
 
 A `LibPETSc.PC` is also what every low-level `PC*` function takes, so anything without a high-level verb is one call away: `LibPETSc.PCFieldSplitSetType(petsclib, p, LibPETSc.PC_COMPOSITE_SCHUR)`.
 

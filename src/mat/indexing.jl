@@ -201,6 +201,41 @@ function Base.setindex!(
     return M
 end
 
+"""
+    add_index!(M::AbstractPetscMat, val, i::CartesianIndex{N}, j::CartesianIndex{N})
+
+Add `val` to the entry of `M` at grid row `i` and grid column `j`, for a matrix
+created from a DM such as `PetscMat(da)`. The indices are 1-based global grid
+indices `(x, y, z, component)`, of which the first `N` are given and the rest
+are taken as 1, so a 2D DMDA with several dofs per point needs
+`CartesianIndex(x, y, 1, component)`. `M[i, j] = val` with the same indices
+inserts instead of adding; PETSc needs an [`assemble!`](@ref) between inserting
+and adding, and before `M` is read.
+
+```jldoctest
+julia> petsclib = PETSc.petsclibs[1];
+
+julia> PETSc.initialize(petsclib)
+
+julia> da = PETSc.DMDA(petsclib, MPI.COMM_SELF, (PETSc.DM_BOUNDARY_NONE,), (3,), 1);
+
+julia> A = PETSc.PetscMat(da);
+
+julia> PETSc.add_index!(A, 1.0, CartesianIndex(2), CartesianIndex(2));
+
+julia> PETSc.add_index!(A, 2.5, CartesianIndex(2), CartesianIndex(2));
+
+julia> PETSc.assemble!(A);
+
+julia> A[2, 2]
+3.5
+
+julia> PETSc.destroy!(A); PETSc.destroy!(da);
+```
+
+# External Links
+$(doc_external("Mat/MatSetValuesStencil"))
+"""
 function add_index!(
     M::AbstractPetscMat{PetscLib},
     val,

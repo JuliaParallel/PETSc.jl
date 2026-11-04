@@ -20,6 +20,8 @@ write_release_notes(joinpath(@__DIR__, "..", "CHANGELOG.md"), joinpath(@__DIR__,
 include(joinpath(@__DIR__, "api_index.jl"))
 write_api_index(joinpath(@__DIR__, "src", "man", "api_index.md"))
 
+DocMeta.setdocmeta!(PETSc, :DocTestSetup, :(using PETSc, MPI); recursive = true)
+
 makedocs(;
     modules=[PETSc],
     sitename="PETSc.jl",
@@ -86,7 +88,7 @@ makedocs(;
         "Utilities" => "man/utilities.md",
         "Performance" => "man/performance.md",
         "Running on HPC Systems" => "man/hpc.md",
-        "GPU Support (CUDA)" => "man/gpu.md",
+        "GPU Support (CUDA, HIP)" => "man/gpu.md",
         "FAQ"  => "man/FAQ.md",
         "Naming Conventions" => "man/naming.md",
         "Contributing"  => "man/contributing.md",

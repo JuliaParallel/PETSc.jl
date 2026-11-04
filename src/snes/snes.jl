@@ -47,25 +47,10 @@ end
 
 Create a PETSc nonlinear solver (SNES) context on the communicator `comm`.
 
-`options_at` decides when the options are applied, through `SNESSetFromOptions`:
-
-- `:first_solve` (the default): once, at the first [`setup!`](@ref) or `solve!`,
-  once the DM and the callbacks are attached. A setting made in code after that
-  overrides them.
-- `:each_solve`: at the start of every [`solve!`](@ref). They override a setting
-  made in code for the same option, including a preconditioner configured
-  between solves.
-- `:construction`: here, once. A DM or callback attached afterwards is not
-  visible to them.
-
-PETSc's options database (`PETSc.initialize(; options)`, the `PETSC_OPTIONS`
-environment variable) is read at the same point and wins on a key both set, so
-the constructor options are defaults it can override. A solver built without
-options reads the database too.
-
-The options stay in effect during `solve!`, and during `setup!` too unless
-`options_at = :each_solve`, so the sub-solvers PETSc creates during setup read
-them (see [`with_options`](@ref)).
+`options_at` says when the options are applied, through `SNESSetFromOptions`: at the first
+`setup!` or `solve!` (`:first_solve`, the default), at every `solve!`
+(`:each_solve`) or in the constructor (`:construction`). PETSc's options database
+wins on a key both set. See [When the options apply](@ref) for the details.
 
 # Arguments
 - `petsclib`: The PETSc library instance

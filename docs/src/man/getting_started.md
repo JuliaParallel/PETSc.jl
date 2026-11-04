@@ -13,48 +13,63 @@ Lets consider the following elliptic equation:
 \end{aligned}
 ```
 
-```julia
+```jldoctest getting_started
 julia> using PETSc
-julia> petsclib = PETSc.petsclibs[1]
+
+julia> petsclib = PETSc.petsclibs[1];
+
 julia> PETSc.initialize(petsclib, log_view=false)
 ```
 Note that if you initialize the PETSc library with the option `log_view=true` you will get a detailed overview of your simulation once you close the library with `PETSc.finalize(petsclib)` (note that it's set to `false` by default). 
 Next, lets define the number of gridpoints and the spacing between them with:
-```julia
-julia> n   =  11
-julia> Δx  =  1. / (n - 1)
+```jldoctest getting_started
+julia> n   =  11;
+
+julia> Δx  =  1. / (n - 1);
 ```
 
 Let's first define the matrix with coefficients:
-```julia
+```jldoctest getting_started
 julia> nnz =  ones(Int64,n); nnz[2:n-1] .= 3;
+
 julia> A   =  PETSc.PetscMat(petsclib,n,n,nnz);
+
 julia> for i=2:n-1
-            A[i,i-1] =  1/Δx^2
-            A[i,i  ] = -2/Δx^2
-            A[i,i+1] =  1/Δx^2
-       end;
+           A[i,i-1] =  1/Δx^2
+           A[i,i  ] = -2/Δx^2
+           A[i,i+1] =  1/Δx^2
+       end
+
 julia> A[1,1]=1; A[n,n]=1;  # boundary conditions (Dirichlet)
-julia> PETSc.assemble!(A)   # Assemble the matrix
+
+julia> PETSc.assemble!(A);  # Assemble the matrix
 ```
 This creates a sequential matrix (on one processor):
-```julia
+```jldoctest getting_started
 julia> A
 PETSc seqaij Mat of size (11, 11)
 ```
 Now, lets define the right-hand-size vector `rhs` as a julia vector:
-```julia
+```jldoctest getting_started
 julia> rhs = zeros(n); rhs[1]=1; rhs[11]=11;
 ```
 
 Next, we define the linear solver for the matrix `A`, which is done by setting a `KSP` solver: 
-```julia
-julia> ksp = PETSc.KSP(A; ksp_rtol=1e-8, pc_type="jacobi", ksp_monitor=true)
+```jldoctest getting_started
+julia> ksp = PETSc.KSP(A; ksp_rtol=1e-8, pc_type="jacobi");
 ```
 Note that you can specify all PETSc command-line options as keywords here.
 
 Solving the system of equations is simple:
+```jldoctest getting_started
+julia> sol = ksp\rhs;
+
+julia> sol ≈ 1:11
+true
+```
+With `ksp_monitor=true`, PETSc prints the residual norm at each iteration:
 ```julia
+julia> ksp = PETSc.KSP(A; ksp_rtol=1e-8, pc_type="jacobi", ksp_monitor=true);
 julia> sol = ksp\rhs
   0 KSP Residual norm 1.104536101719e+01 
   1 KSP Residual norm 4.939635614091e+00 
@@ -171,20 +186,21 @@ r = \binom{ x^2 + x y  - 3} {x y + y^2  - 6}
 ```
 
 We start by initializing PETSc:
-```julia
+```jldoctest getting_started
 julia> using PETSc, MPI
-julia> petsclib = PETSc.petsclibs[1]
+
+julia> petsclib = PETSc.petsclibs[1];
+
 julia> PETSc.initialize(petsclib, log_view=false)
-julia> PetscScalar = petsclib.PetscScalar
-julia> PetscInt = petsclib.PetscInt
+
+julia> PetscScalar = petsclib.PetscScalar;
 ```
 In order to solve this, we need to provide a residual function that computes ``r``:
-```julia
+```jldoctest getting_started
 julia> function Residual!(rx, snes, x)
-            rx[1] = x[1]^2 + x[1] * x[2] - 3
-            rx[2] = x[1] * x[2] + x[2]^2 - 6
-            return PetscInt(0)  # petsc success
-        end
+           rx[1] = x[1]^2 + x[1] * x[2] - 3
+           rx[2] = x[1] * x[2] + x[2]^2 - 6
+       end;
 ```
 
 In addition, we need to provide the Jacobian:
@@ -201,41 +217,45 @@ y & x + 2y  \\
 \end{pmatrix}
 ```
 In Julia, this is:
-```julia
+```jldoctest getting_started
 julia> function updateJ!(J, snes, x)
-            J[1, 1] = 2x[1] + x[2]
-            J[1, 2] = x[1]
-            J[2, 1] = x[2]
-            J[2, 2] = x[1] + 2x[2]
-
-            PETSc.assemble!(J)
-            return PetscInt(0)
-        end
+           J[1, 1] = 2x[1] + x[2]
+           J[1, 2] = x[1]
+           J[2, 1] = x[2]
+           J[2, 2] = x[1] + 2x[2]
+           PETSc.assemble!(J)
+       end;
 ```
 In order to solve this using the PETSc nonlinear equation solvers, you first define the `SNES` solver together with the jacobian and residual functions as 
-```julia
-julia> snes = PETSc.SNES(petsclib,MPI.COMM_SELF; ksp_rtol=1e-4, pc_type="none")
-julia> r = PETSc.PetscVec(petsclib, zeros(PetscScalar, 2))
-julia> PETSc.set_function!(Residual!, snes, r)
-julia> J = zeros(2,2)
-julia> PJ = PETSc.PetscMat(petsclib,J)
-julia> PETSc.set_snes_jacobian!(updateJ!, snes, PJ)
+```jldoctest getting_started
+julia> snes = PETSc.SNES(petsclib,MPI.COMM_SELF; ksp_rtol=1e-4, pc_type="none");
+
+julia> r = PETSc.PetscVec(petsclib, zeros(PetscScalar, 2));
+
+julia> PETSc.set_function!(Residual!, snes, r);
+
+julia> J = zeros(2,2);
+
+julia> PJ = PETSc.PetscMat(petsclib,J);
+
+julia> PETSc.set_snes_jacobian!(updateJ!, snes, PJ);
 ```
 
 You can solve this as:
-```julia
-julia> x = PETSc.PetscVec(petsclib, [2.0, 3.0])
-julia> b = PETSc.PetscVec(petsclib, [0.0, 0.0])
-julia> PETSc.solve!(x, snes, b)
-julia> x[:]
-2-element Vector{Float64}:
- 1.000000003259629
- 1.999999998137355
+```jldoctest getting_started
+julia> x = PETSc.PetscVec(petsclib, [2.0, 3.0]);
+
+julia> b = PETSc.PetscVec(petsclib, [0.0, 0.0]);
+
+julia> PETSc.solve!(x, snes, b);
+
+julia> isapprox(x[:], [1, 2]; atol = 1e-6)
+true
 ```
 which indeed recovers the analytical solution ``(x=1, y=2)``.
 
 If we are done, finalize it with:
-```julia
+```jldoctest getting_started
 julia> PETSc.finalize(petsclib)
 ```
 

@@ -1,5 +1,4 @@
-# these are julia-specific PETSc functions, which makes PETSc a bit easier to use
-# a (nearly) full wrapper is in wrapping/
+# The generated wrappers are in src/autowrapped/.
 
 # Custom display for REPL
 function Base.show(io::IO, v::AbstractPetscVec{PetscLib}) where {PetscLib}

@@ -221,24 +221,10 @@ end
 
 Create a PETSc time stepper on the communicator `comm`.
 
-`options_at` decides when the options are applied, through `TSSetFromOptions`:
-
-- `:first_solve` (the default): once, at the first [`setup!`](@ref), `solve!` or
-  [`step!`](@ref), once the DM and the callbacks are attached. A setting made in
-  code after that overrides them.
-- `:each_solve`: at the start of every [`solve!`](@ref). They override a setting
-  made in code for the same option.
-- `:construction`: here, once. A DM or callback attached afterwards is not
-  visible to them.
-
-PETSc's options database (`PETSc.initialize(; options)`, the `PETSC_OPTIONS`
-environment variable) is read at the same point and wins on a key both set, so
-the constructor options are defaults it can override. A solver built without
-options reads the database too.
-
-The options stay in effect during `solve!`, and during `setup!` and `step!` too unless
-`options_at = :each_solve`, so the sub-solvers PETSc creates during setup read
-them (see [`with_options`](@ref)).
+`options_at` says when the options are applied, through `TSSetFromOptions`: at the first
+`setup!`, `solve!` or `step!` (`:first_solve`, the default), at every `solve!`
+(`:each_solve`) or in the constructor (`:construction`). PETSc's options database
+wins on a key both set. See [When the options apply](@ref) for the details.
 
 `exact_final_time` defaults to `TS_EXACTFINALTIME_MATCHSTEP`, so the last step
 lands on the time set by [`set_max_time!`](@ref). 
@@ -1235,7 +1221,7 @@ end
 """
     set_monitor!(f, ts::AbstractTS)
 
-Call `f` once after every accepted step.
+Call `f` before the first step and after every accepted step.
 
 `f` is called as `f(ts, step, t, u)`, where `step` counts the steps taken, `t`
 is the time reached and `u` holds the solution there.

@@ -1,11 +1,12 @@
 # PETSc.jl
 
-[![Build Status](https://github.com/JuliaParallel/PETSc.jl/workflows/CI/badge.svg)](https://github.com/JuliaParallel/PETSc.jl/actions/workflows/ci.yml)
+[![CI](https://github.com/JuliaParallel/PETSc.jl/actions/workflows/ci.yml/badge.svg)](https://github.com/JuliaParallel/PETSc.jl/actions/workflows/ci.yml)
+[![version](https://juliahub.com/docs/General/PETSc/stable/version.svg)](https://juliahub.com/ui/Packages/General/PETSc)
 [![doc stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://juliaparallel.github.io/PETSc.jl/stable/)
 [![doc dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://juliaparallel.github.io/PETSc.jl/dev/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18274809.svg)](https://doi.org/10.5281/zenodo.18274809)
 
-> **PETSc.jl 0.5 is a breaking release.** Code written for 0.4 needs changes: see [Upgrading from 0.4](https://juliaparallel.github.io/PETSc.jl/stable/man/upgrading/) and the [release notes](CHANGELOG.md).
+> Coming from 0.4? See [Upgrading from 0.4](https://juliaparallel.github.io/PETSc.jl/stable/man/upgrading/) and the [release notes](CHANGELOG.md).
 
 `PETSc.jl` provides an interface to the Portable, Extensible Toolkit for Scientific Computation ([PETSc](https://petsc.org)) library, allowing the combination of Julia features (such as automatic differentiation) with the PETSc's infrastructure, including linear, nonlinear, and optimization solvers, timesteppers, domain management (DM), and more, in a distributed-memory (MPI) environment. 
 
@@ -14,7 +15,7 @@ This package comprises two main components:
 1. An automatically generated, low-level interface for large parts of the PETSc API (see `PETSc.LibPETSc`).
 2. A curated, high-level, more Julianic interface for selected functionality.
 
-The low-level interface covers nearly the entire PETSc API, but may be awkward to work with and likely requires previous experience with PETSc to use effectively. The high level interface is designed to be more familiar and convenient for Julia users, and allows, for example, to set matrix entries with `A[1,2] = 3.0`, rather than having to call `LibPETSc.MatSetValue`. It, however, exposes only a small portion of the functionality of the underlying library. 
+The low-level interface covers nearly the entire PETSc API, but may be awkward to work with and likely requires previous experience with PETSc to use effectively. The high level interface is designed to be more familiar and convenient for Julia users, and allows, for example, to set matrix entries with `A[1,2] = 3.0`, rather than calling `LibPETSc.MatSetValues`. It, however, exposes only a small portion of the functionality of the underlying library. 
 
 ## Installation
 This package can be added with the julia command:
@@ -50,6 +51,33 @@ julia>[PETSc.petsclibs...]
 Since PETSc_jll 3.25.4 the Windows binaries are built with MPI (MicrosoftMPI), and the package and its test suite, including the MPI tests, run natively on Windows. One limitation of PETSc 3.25.x on Windows: `Tao` objects can only be created before the first `PETSc.finalize`, see `PETSc.tao_usable_after_reinitialize()`.
 
 ## Getting started
-Have a look at the [documentation](https://juliaparallel.org/PETSc.jl/stable/), at the [examples](./examples/) directory or at the tests in the [test](./test) directory. We do keep the tests up to date, so that is a good starting point. 
+Solve a 1D Laplacian with conjugate gradients and a Jacobi preconditioner:
+
+```julia
+using PETSc
+petsclib = PETSc.petsclibs[1]
+PETSc.initialize(petsclib)
+
+# 1D Laplacian, at most 3 nonzeros per row
+n = 10
+A = PETSc.PetscMat(petsclib, n, n, 3)
+for i in 1:n
+    A[i, i] = 2
+    i > 1 && (A[i, i-1] = -1)
+    i < n && (A[i, i+1] = -1)
+end
+PETSc.assemble!(A)
+
+ksp = PETSc.KSP(A; ksp_type = "cg", pc_type = "jacobi", ksp_rtol = 1e-10)
+x = ksp \ ones(n)
+
+PETSc.destroy!(ksp)
+PETSc.destroy!(A)
+PETSc.finalize(petsclib)
+```
+
+Any PETSc command-line option can be passed as a keyword, as in `ksp_type = "cg"`.
+
+For more, have a look at the [documentation](https://juliaparallel.github.io/PETSc.jl/stable/), at the [examples](./examples/) directory or at the tests in the [test](./test) directory. We do keep the tests up to date, so that is a good starting point. 
 
 Note that we do not have tests in place for the whole library at this stage. The best supported parts are `DMDA`, `DMStag`, `DMPlex`, `KSP`, `SNES`, `Vec`, and `Mat`. Other DM types (DMForest, DMNetwork, DMSwarm) do not yet have a high-level interface; users will have to rely on the low-level `LibPETSc` interface for those.

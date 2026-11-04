@@ -156,7 +156,7 @@ with the degrees of freedom per stratum given by `dof_per_node`. The keywords
 work as in the other `DMStag` constructor.
 
 # External Links
-$(doc_external("DMSTAG/DMStagCreateCompatibleDMStag"))
+$(doc_external("DMStag/DMStagCreateCompatibleDMStag"))
 """
 function DMStag(
     dm::DMStag{PetscLib, N},
@@ -196,7 +196,7 @@ The result is dimension-correct (§12): `lower` and `upper` are
 to three entries.
 
 # External Links
-$(doc_external("DMSTAG/DMStagGetCorners"))
+$(doc_external("DMStag/DMStagGetCorners"))
 """
 function corners(dm::DMStag{PetscLib, N}) where {PetscLib, N}
     x, y, z, m, n, p, nex, ney, nez = LibPETSc.DMStagGetCorners(PetscLib, dm)
@@ -224,7 +224,7 @@ partial elements. Ask [`corners`](@ref) for `nextra`.
 Dimension-correct like [`corners`](@ref): `CartesianIndex{N}` and `NTuple{N,Int}`.
 
 # External Links
-$(doc_external("DMSTAG/DMStagGetGhostCorners"))
+$(doc_external("DMStag/DMStagGetGhostCorners"))
 """
 function ghost_corners(dm::DMStag{PetscLib, N}) where {PetscLib, N}
     x, y, z, m, n, p = LibPETSc.DMStagGetGhostCorners(PetscLib, dm)

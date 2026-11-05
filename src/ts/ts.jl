@@ -1304,12 +1304,12 @@ function set_post_step! end
 # is found from the TS pointer
 mutable struct TSStepHookFn{PetscLib, Hook} end
 function (::TSStepHookFn{PetscLib, Hook})(ts_ptr::CTS) where {PetscLib, Hook}
-    actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age; own = false)
-    state = object_state(actual_ts)::TSState
-    f! = getfield(state, Hook)
-    # the return value is ignored: these hooks never took an error code
+    # the return value is ignored: these hooks never took an error code. The
+    # lookup is inside run_callback too, so that nothing throws through PETSc.
     run_callback(String(Hook)) do
-        f!(actual_ts)
+        actual_ts = TS{PetscLib}(ts_ptr, getlib(PetscLib).age; own = false)
+        state = object_state(actual_ts)::TSState
+        getfield(state, Hook)(actual_ts)
         return nothing
     end
 end

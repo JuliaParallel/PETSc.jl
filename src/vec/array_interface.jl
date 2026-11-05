@@ -49,17 +49,37 @@ Base.similar(v::AbstractPetscVec{PetscLib}) where {PetscLib} =
     finalize_if_serial!(LibPETSc.VecDuplicate(getlib(PetscLib), v))
 Base.similar(v::AbstractPetscVec{PetscLib, T}, ::Type{T}) where {PetscLib, T} = similar(v)
 
+# The 0-based PETSc indices of the 1-based indices `r`, as a `Vector{PetscInt}`
+# whatever the axes of `r`. A Bool mask gives the positions of its `true` entries.
+# The caller checks `r` against the array first: PETSc_jll does not.
+indices_0b(::Type{PetscInt}, r::AbstractVector{Bool}) where {PetscInt} = indices_0b(PetscInt, findall(r))
+indices_0b(::Type{PetscInt}, r::AbstractVector{<:Integer}) where {PetscInt} =
+    c_vector(PetscInt, r) .- one(PetscInt)
+
+# The axes Base gives `A[r...]`: those of each index vector, or `1:count(r)` for a mask.
+index_axes(r::AbstractVector{Bool}) = Base.OneTo(count(r))
+index_axes(r::AbstractVector) = only(axes(r))
+
+# `vals`, read from PETSc into a plain array, with the axes of `A[rs...]`.
+function index_shaped(vals, rs...)
+    ax = map(index_axes, rs)
+    axes(vals) == ax && return vals
+    return copyto!(similar(Array{eltype(vals)}, ax), vals)
+end
+
 function Base.getindex(v::AbstractPetscVec{PetscLib}, i::Integer) where {PetscLib}
+    checkbounds(v, i)
     PetscInt = inttype(PetscLib)
     val = LibPETSc.VecGetValues(PetscLib, v, PetscInt(1), PetscInt[i - 1])
     return val[1]
 end
 
-# Range or index-vector indexing
+# Range, index-vector or Bool-mask indexing
 function Base.getindex(v::AbstractPetscVec{PetscLib}, r::AbstractVector{<:Integer}) where {PetscLib}
-    PetscInt = inttype(PetscLib)
-    val = LibPETSc.VecGetValues(PetscLib, v, PetscInt(length(r)), PetscInt[i - 1 for i in r])
-    return val
+    checkbounds(v, r)
+    idx = indices_0b(inttype(PetscLib), r)
+    val = LibPETSc.VecGetValues(PetscLib, v, inttype(PetscLib)(length(idx)), idx)
+    return index_shaped(val, r)
 end
 
 # Get all values
@@ -69,6 +89,7 @@ function Base.getindex(v::AbstractPetscVec{PetscLib}, ::Colon) where {PetscLib}
 end
 
 function Base.setindex!(v::AbstractPetscVec{PetscLib}, val, i::Integer) where {PetscLib}
+    checkbounds(v, i)
     PetscInt = inttype(PetscLib)
     PetscScalar = scalartype(PetscLib)
     LibPETSc.VecSetValues(PetscLib, v, PetscInt(1), PetscInt[i - 1],
@@ -78,17 +99,19 @@ end
 
 # A scalar is broadcast over `r`; an array must have one entry per index.
 function Base.setindex!(v::AbstractPetscVec{PetscLib}, vals, r::AbstractVector{<:Integer}) where {PetscLib}
+    checkbounds(v, r)
     PetscInt = inttype(PetscLib)
     PetscScalar = scalartype(PetscLib)
+    idx = indices_0b(PetscInt, r)
     petsc_vals = if vals isa AbstractArray
-        length(vals) == length(r) || throw(
-            DimensionMismatch("tried to assign $(length(vals)) values to $(length(r)) indices"),
+        length(vals) == length(idx) || throw(
+            DimensionMismatch("tried to assign $(length(vals)) values to $(length(idx)) indices"),
         )
         PetscScalar[vals...]
     else
-        fill(PetscScalar(vals), length(r))
+        fill(PetscScalar(vals), length(idx))
     end
-    LibPETSc.VecSetValues(PetscLib, v, PetscInt(length(r)), PetscInt[i - 1 for i in r],
+    LibPETSc.VecSetValues(PetscLib, v, PetscInt(length(idx)), idx,
                           petsc_vals, PETSc.INSERT_VALUES)
     return v
 end

@@ -261,6 +261,13 @@ end
     @test PETSc.parse_options(["-pc_type", "mg"]) === (pc_type = "mg",)
 end
 
+# A value that starts with '-' is a negative number, as PETSc reads it
+@testset "parse_options keeps negative and empty values" begin
+    o = PETSc.parse_options(["-mat_shift", "-0.5", "-ksp_monitor", "-x0", "-.5"])
+    @test Dict(pairs(o)) == Dict(:mat_shift => "-0.5", :ksp_monitor => nothing, :x0 => "-.5")
+    @test PETSc.parse_options(["-prefix", ""]) === (prefix = "",)
+end
+
 @testset "a DM constructor that throws leaves the options stack as it was" begin
     petsclib = PETSc.petsclibs[1]
     PETSc.initialize(petsclib)

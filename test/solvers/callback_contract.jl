@@ -105,5 +105,11 @@ end
     @test code(() -> PETSc.KSPComputeOperatorsFn{PetscLib, PetscInt}()(C_NULL, C_NULL, C_NULL, ctx)) != 0
     @test code(() -> PETSc.TSSetRHSFunctionFn{PetscLib, PetscReal}()(C_NULL, PetscReal(0), C_NULL, C_NULL, ctx)) != 0
     @test code(() -> PETSc.TSSetIFunctionFn{PetscLib, PetscReal}()(C_NULL, PetscReal(0), C_NULL, C_NULL, C_NULL, ctx)) != 0
+    # The step hooks get no context: the state is looked up from the TS, here one
+    # PETSc.jl never made
+    ts = PETSc.LibPETSc.TSCreate(petsclib, MPI.COMM_SELF)
+    @test code(() -> PETSc.TSStepHookFn{PetscLib, :pre_step!}()(ts.ptr)) != 0
+    @test code(() -> PETSc.TSStepHookFn{PetscLib, :post_step!}()(ts.ptr)) != 0
+    PETSc.destroy!(ts)
     PETSc.finalize(petsclib)
 end

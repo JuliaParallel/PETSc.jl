@@ -8,6 +8,11 @@ using MPI
 
 MPI.Initialized() || MPI.Init()
 
+# A backend that counts hand-backs: every one calls `synchronize_device` first
+struct CountingBackend <: PETSc.AbstractPetscMemBackend end
+const handed_back = Ref(0)
+PETSc.synchronize_device(::CountingBackend) = (handed_back[] += 1; nothing)
+
 @testset "with_field_views!" begin
     petsclib = PETSc.petsclibs[1]
     PETSc.initialize(petsclib)
@@ -136,6 +141,23 @@ MPI.Initialized() || MPI.Init()
         l2 = PETSc.local_vec(dm2)
         @test_throws ArgumentError PETSc.with_field_views!(A -> nothing, dm, l2)
         foreach(PETSc.destroy!, (l2, dm2, g, l, dm))
+    end
+
+    @testset "a failed checkout hands back the vectors already checked out" begin
+        dm = stag((3,), (1, 1))
+        a = PETSc.local_vec(dm)
+        b = PETSc.local_vec(dm)
+        handed_back[] = 0
+        # the second checkout fails, as for a device Vec with no GPU package loaded
+        function acquire(v; read, write)
+            v === b && error("checkout failed")
+            arr, cpu_arr, _ = PETSc.acquire_local_array(v; read, write)
+            return arr, cpu_arr, CountingBackend()
+        end
+        @test_throws "checkout failed" PETSc.with_field_views!(
+            A -> nothing, dm, (a, b), nothing, (true, true), (false, false), acquire)
+        @test handed_back[] == 1
+        foreach(PETSc.destroy!, (b, a, dm))
     end
 
     PETSc.finalize(petsclib)

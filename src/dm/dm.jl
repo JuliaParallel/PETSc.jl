@@ -283,14 +283,16 @@ end
 
 Returns a local vector `v` from the `dm` object.
 """
-local_vec(dm::AbstractPetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMCreateLocalVector(getlib(PetscLib), dm)
+local_vec(dm::AbstractPetscDM{PetscLib}) where {PetscLib} =
+    own_serial!(LibPETSc.DMCreateLocalVector(getlib(PetscLib), dm), comm(dm))
 
 """
     v::PetscVec = global_vec(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
 
 Returns a global vector `v` from the `dm` object.
 """
-global_vec(dm::AbstractPetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMCreateGlobalVector(getlib(PetscLib), dm)
+global_vec(dm::AbstractPetscDM{PetscLib}) where {PetscLib} =
+    own_serial!(LibPETSc.DMCreateGlobalVector(getlib(PetscLib), dm), comm(dm))
 
 """
     local_to_global!(gvec, dm, lvec; mode = INSERT_VALUES)
@@ -535,8 +537,7 @@ A `PetscMat` object compatible with vectors from the DM.
 $(doc_external("DM/DMCreateMatrix"))
 """
 function LibPETSc.PetscMat(da::AbstractPetscDM{PetscLib}) where {PetscLib}
-    J = LibPETSc.DMCreateMatrix(getlib(PetscLib), da)
-    return J
+    return own_serial!(LibPETSc.DMCreateMatrix(getlib(PetscLib), da), comm(da))
 end
 
 """

@@ -1,33 +1,25 @@
 # Matrix indexing - set single value
 function Base.setindex!(m::AbstractPetscMat{PetscLib}, val, i::Integer, j::Integer) where {PetscLib}
+    checkbounds(m, i, j)
     PetscInt = inttype(PetscLib)
     PetscScalar = scalartype(PetscLib)
-    
-    # Convert to 0-based indexing for PETSc (Julia uses 1-based)
-    row = PetscInt(i - 1)
-    col = PetscInt(j - 1)
-    value = PetscScalar(val)
-    
-    # Use MatSetValues for single entry
-    # MatSetValues(mat, m, idxm, n, idxn, y, INSERT_VALUES)
-    LibPETSc.MatSetValues(PetscLib, m, PetscInt(1), [row], PetscInt(1), [col], [value], LibPETSc.INSERT_VALUES)
-    
+    LibPETSc.MatSetValues(PetscLib, m, PetscInt(1), PetscInt[i - 1], PetscInt(1), PetscInt[j - 1],
+                          PetscScalar[val], LibPETSc.INSERT_VALUES)
     return m
 end
 
-# Matrix indexing - set multiple values with vectors of indices  
+# Matrix indexing - set multiple values with vectors of indices
 function Base.setindex!(m::AbstractPetscMat{PetscLib}, vals::AbstractMatrix, rows::AbstractVector{<:Integer}, cols::AbstractVector{<:Integer}) where {PetscLib}
+    checkbounds(m, rows, cols)
     PetscInt = inttype(PetscLib)
     PetscScalar = scalartype(PetscLib)
-    
-    # Convert to 0-based indexing for PETSc
-    petsc_rows = PetscInt[r - 1 for r in rows]
-    petsc_cols = PetscInt[c - 1 for c in cols]
+    petsc_rows = indices_0b(PetscInt, rows)
+    petsc_cols = indices_0b(PetscInt, cols)
 
-    size(vals) == (length(rows), length(cols)) || throw(
+    size(vals) == (length(petsc_rows), length(petsc_cols)) || throw(
         DimensionMismatch(
             "block is $(size(vals)) but the index ranges are " *
-            "$(length(rows))x$(length(cols))",
+            "$(length(petsc_rows))x$(length(petsc_cols))",
         ),
     )
 
@@ -37,125 +29,82 @@ function Base.setindex!(m::AbstractPetscMat{PetscLib}, vals::AbstractMatrix, row
 
     nrows = PetscInt(length(petsc_rows))
     ncols = PetscInt(length(petsc_cols))
-
     LibPETSc.MatSetValues(PetscLib, m, nrows, petsc_rows, ncols, petsc_cols, petsc_vals, LibPETSc.INSERT_VALUES)
-
     return m
 end
 
 # Matrix indexing - set row with vector of values
 function Base.setindex!(m::AbstractPetscMat{PetscLib}, vals::AbstractVector, i::Integer, cols::AbstractVector{<:Integer}) where {PetscLib}
+    checkbounds(m, i, cols)
     PetscInt = inttype(PetscLib)
     PetscScalar = scalartype(PetscLib)
-    
-    # Convert to 0-based indexing
-    row = PetscInt(i - 1)
-    petsc_cols = PetscInt[c - 1 for c in cols]
-    length(vals) == length(cols) || throw(
-        DimensionMismatch("tried to assign $(length(vals)) values to $(length(cols)) columns"),
+    petsc_cols = indices_0b(PetscInt, cols)
+    length(vals) == length(petsc_cols) || throw(
+        DimensionMismatch("tried to assign $(length(vals)) values to $(length(petsc_cols)) columns"),
     )
-    petsc_vals = PetscScalar.(vals)
-    
-    ncols = PetscInt.(length(petsc_cols))
-    LibPETSc.MatSetValues(PetscLib, m, PetscInt(1), [row], ncols, petsc_cols, petsc_vals, LibPETSc.INSERT_VALUES)
-    
+    petsc_vals = c_vector(PetscScalar, vals)
+    LibPETSc.MatSetValues(PetscLib, m, PetscInt(1), PetscInt[i - 1], PetscInt(length(petsc_cols)),
+                          petsc_cols, petsc_vals, LibPETSc.INSERT_VALUES)
     return m
 end
 
-# Matrix indexing - set column with vector of values  
+# Matrix indexing - set column with vector of values
 function Base.setindex!(m::AbstractPetscMat{PetscLib}, vals::AbstractVector, rows::AbstractVector{<:Integer}, j::Integer) where {PetscLib}
+    checkbounds(m, rows, j)
     PetscInt = inttype(PetscLib)
     PetscScalar = scalartype(PetscLib)
-    
-    # Convert to 0-based indexing
-    petsc_rows = PetscInt[r - 1 for r in rows]
-    col = PetscInt(j - 1)
-    length(vals) == length(rows) || throw(
-        DimensionMismatch("tried to assign $(length(vals)) values to $(length(rows)) rows"),
+    petsc_rows = indices_0b(PetscInt, rows)
+    length(vals) == length(petsc_rows) || throw(
+        DimensionMismatch("tried to assign $(length(vals)) values to $(length(petsc_rows)) rows"),
     )
-    petsc_vals = PetscScalar.(vals)
-    
-    nrows = PetscInt.(length(petsc_rows))
-    LibPETSc.MatSetValues(PetscLib, m, nrows, petsc_rows, PetscInt(1), [col], petsc_vals, LibPETSc.INSERT_VALUES)
-    
+    petsc_vals = c_vector(PetscScalar, vals)
+    LibPETSc.MatSetValues(PetscLib, m, PetscInt(length(petsc_rows)), petsc_rows, PetscInt(1),
+                          PetscInt[j - 1], petsc_vals, LibPETSc.INSERT_VALUES)
     return m
 end
 
 # Matrix indexing - get single value
 function Base.getindex(m::AbstractPetscMat{PetscLib}, i::Integer, j::Integer) where {PetscLib}
+    checkbounds(m, i, j)
     PetscInt = inttype(PetscLib)
-    PetscScalar = scalartype(PetscLib)
-    
-    # Convert to 0-based indexing for PETSc (Julia uses 1-based)
-    row = PetscInt(i - 1)
-    col = PetscInt(j - 1)
-    
-    # Use MatGetValues for single entry
-    values = Vector{PetscScalar}(undef, 1)
-    LibPETSc.MatGetValues(PetscLib, m, PetscInt(1), [row], PetscInt(1), [col], values)
-    
+    values = Vector{scalartype(PetscLib)}(undef, 1)
+    LibPETSc.MatGetValues(PetscLib, m, PetscInt(1), PetscInt[i - 1], PetscInt(1), PetscInt[j - 1], values)
     return values[1]
 end
 
 # Matrix indexing - get block of values
 function Base.getindex(m::AbstractPetscMat{PetscLib}, rows::AbstractVector{<:Integer}, cols::AbstractVector{<:Integer}) where {PetscLib}
+    checkbounds(m, rows, cols)
     PetscInt = inttype(PetscLib)
-    PetscScalar = scalartype(PetscLib)
-    
-    # Convert to 0-based indexing for PETSc
-    petsc_rows = PetscInt[r - 1 for r in rows]
-    petsc_cols = PetscInt[c - 1 for c in cols]
-    
-    # Use MatGetValues for block of entries
-    nrows = PetscInt.(length(petsc_rows))
-    ncols = PetscInt.(length(petsc_cols))
+    petsc_rows = indices_0b(PetscInt, rows)
+    petsc_cols = indices_0b(PetscInt, cols)
+    nrows = length(petsc_rows)
+    ncols = length(petsc_cols)
 
-    # PETSc returns values in row-major order
-    values = Vector{PetscScalar}(undef, nrows * ncols)
-    LibPETSc.MatGetValues(PetscLib, m, nrows, petsc_rows, ncols, petsc_cols, values)
-    
-    # Reshape to Julia matrix (column-major)
-    result = Matrix{PetscScalar}(undef, nrows, ncols)
-    for i in 1:nrows
-        for j in 1:ncols
-            # Convert from PETSc row-major to Julia column-major
-            petsc_idx = (i-1) * ncols + (j-1) + 1
-            result[i, j] = values[petsc_idx]
-        end
-    end
-    
-    return result
+    # PETSc returns the block row by row; Julia stores a matrix column by column.
+    values = Vector{scalartype(PetscLib)}(undef, nrows * ncols)
+    LibPETSc.MatGetValues(PetscLib, m, PetscInt(nrows), petsc_rows, PetscInt(ncols), petsc_cols, values)
+    return index_shaped(permutedims(reshape(values, ncols, nrows)), rows, cols)
 end
 
 # Matrix indexing - get row values at specified columns
 function Base.getindex(m::AbstractPetscMat{PetscLib}, i::Integer, cols::AbstractVector{<:Integer}) where {PetscLib}
+    checkbounds(m, i, cols)
     PetscInt = inttype(PetscLib)
-    PetscScalar = scalartype(PetscLib)
-    
-    # Convert to 0-based indexing
-    row = PetscInt(i - 1)
-    petsc_cols = PetscInt[c - 1 for c in cols]
-
-    ncols = PetscInt.(length(petsc_cols))
-    values = Vector{PetscScalar}(undef, ncols)
-    LibPETSc.MatGetValues(PetscLib, m, PetscInt(1), [row], ncols, petsc_cols, values)
-    
-    return values
+    petsc_cols = indices_0b(PetscInt, cols)
+    values = Vector{scalartype(PetscLib)}(undef, length(petsc_cols))
+    LibPETSc.MatGetValues(PetscLib, m, PetscInt(1), PetscInt[i - 1], PetscInt(length(petsc_cols)), petsc_cols, values)
+    return index_shaped(values, cols)
 end
 
 # Matrix indexing - get column values at specified rows
 function Base.getindex(m::AbstractPetscMat{PetscLib}, rows::AbstractVector{<:Integer}, j::Integer) where {PetscLib}
+    checkbounds(m, rows, j)
     PetscInt = inttype(PetscLib)
-    PetscScalar = scalartype(PetscLib)
-    
-    # Convert to 0-based indexing
-    petsc_rows = PetscInt[r - 1 for r in rows]
-    col = PetscInt(j - 1)
-    
-    nrows = length(petsc_rows)
-    values = Vector{PetscScalar}(undef, nrows)
-    LibPETSc.MatGetValues(PetscLib, m, nrows, petsc_rows, PetscInt(1), [col], values)
-    return values
+    petsc_rows = indices_0b(PetscInt, rows)
+    values = Vector{scalartype(PetscLib)}(undef, length(petsc_rows))
+    LibPETSc.MatGetValues(PetscLib, m, PetscInt(length(petsc_rows)), petsc_rows, PetscInt(1), PetscInt[j - 1], values)
+    return index_shaped(values, rows)
 end
 
 # Matrix indexing - get entire row

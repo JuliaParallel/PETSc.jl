@@ -103,27 +103,11 @@ function LibPETSc.PetscMat(
     with_arrays && return mat_seqaij_with_arrays(petsclib, comm, S)
 
     PetscInt = petsclib.PetscInt
-
-    # Set values from sparse matrix into PETSc Mat
     m, n = size(S)
-    
-    # Calculate non-zeros per row
-    nnz = zeros(PetscInt, m)
-
-    for r in S.rowval
-        nnz[r] += 1
-    end
-    M = LibPETSc.MatCreateSeqAIJ(petsclib, comm, 
-                PetscInt(m), 
-                PetscInt(n), 
-                PetscInt(0), nnz)
-
-    for j in 1:n
-        for ii in S.colptr[j]:(S.colptr[j + 1] - 1)
-            i = S.rowval[ii]
-            M[i, j] = S.nzval[ii]
-        end
-    end
+    rowptr, colval, nzval = csr_from_csc(petsclib, S)
+    M = LibPETSc.MatCreateSeqAIJ(petsclib, comm, PetscInt(m), PetscInt(n), PetscInt(0), diff(rowptr))
+    # One call copies the pattern and the values
+    LibPETSc.MatSeqAIJSetPreallocationCSR(petsclib, M, rowptr, colval, nzval)
     assemble!(M)
     # The garbage collector can only destroy it when no other rank takes part
     if MPI.Comm_size(comm) == 1

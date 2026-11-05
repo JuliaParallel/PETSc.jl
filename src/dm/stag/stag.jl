@@ -347,7 +347,8 @@ function LibPETSc.IS(dm::DMStag{PetscLib}, pairs::AbstractVector{<:Pair}) where 
     stencils = LibPETSc.DMStagStencil[
         LibPETSc.DMStagStencil(loc, zero(T), zero(T), zero(T), T(dof)) for (loc, dof) in pairs
     ]
-    return LibPETSc.DMStagCreateISFromStencils(getlib(PetscLib), dm, T(length(stencils)), stencils)
+    is = LibPETSc.DMStagCreateISFromStencils(getlib(PetscLib), dm, T(length(stencils)), stencils)
+    return own_serial!(is, comm(dm))
 end
 
 function Base.size(dm::DMStag{PetscLib, N}) where {PetscLib, N}

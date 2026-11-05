@@ -96,9 +96,8 @@ function with_field_views!(
             ArgumentError("with_field_views! takes local vectors of the DMStag (local_vec(dm))"),
         )
     end
-    acquired = map(vecs, read, write) do v, r, w
-        acquire(v; read = r, write = w)
-    end
+    # acquire_each releases what it checked out if a later checkout throws
+    acquired = acquire_each(vecs, read, write, acquire)
     try
         return call_with_views(f, map(first, acquired), dims, offsets, slots)
     finally

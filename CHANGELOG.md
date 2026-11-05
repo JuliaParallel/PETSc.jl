@@ -4,6 +4,7 @@
 
 ### Breaking
 
+- The array arguments of a function made with `@simple_fn`, `@residual_fn`, `@jacobian_fn` or `@bd_fn` (`u`, `u_x`, `x`, `out` and the rest) are `PETSc.PtrVector`s, `AbstractVector`s over PETSc's memory, instead of `Vector`s. A call allocates nothing: a residual call takes 16 ns instead of 95 ns and 640 bytes, and PETSc makes one per quadrature point. Indexing, broadcasting, `@inbounds` loops, `view`, `reshape`, `sum`, `dot`, ForwardDiff, `pointer` and `ccall` work as before. A point function or helper that annotates an argument `::Vector`, `::DenseVector` or `::StridedVector`, or annotates a `reshape` of one as `::Matrix`, throws a `MethodError`: annotate `::AbstractVector` (or `::AbstractMatrix`), or leave the annotation out.
 - Every 0.5 deprecation is removed: the 0.4 names (`getcorners`, `setfunction!`, `VecSeq`, `PetscKSP`, `@petsc_residual_fn` and the rest of the rename table), the argument orders and positional options 0.5.4 replaced, `local_arrays` with `restore_local_arrays!`, `local_coordinate_array`, the pointwise macros without a library, `set_type!(obj, ::String)`, `ownership_range(A, base_one)`, the DM constructor keywords `setfromoptions`, `dmsetup` and `dmsetfromoptions`, and the `comm` keyword of the CSR `PetscMat`. A call that warned on 0.5.5 is an `UndefVarError` or `MethodError` now, so run on 0.5.5 first and fix the warnings (see the upgrading guide).
 - A callback's return value is ignored. A nonzero `Integer` no longer fails the call as a PETSc error code; throw an exception to report a failure. `return PetscInt(0)` keeps working. The warning printed since 0.5.1 is gone.
 - `set_convergence_test!` passes the norms to the callback as `PetscReal`, not `Float64`. This matters only for a Float32 library with a callback whose arguments are annotated `Float64`.
@@ -69,6 +70,16 @@
 - `mat_nullspace_create(petsclib, comm, vecs)` with a destroyed Vec crashed Julia with signal 11; it throws an `ArgumentError`.
 - An exception in a function made with `@simple_fn`, `@residual_fn`, `@jacobian_fn` or `@bd_fn` unwound through PETSc's C frames. It is now rethrown by the high-level call that ran it, and `project_function!` and `project_field!` rethrow it too.
 - `ksp \ b` destroys its result vector when the solve throws. `drain_destroy_queue!` and `with_destroy` keep destroying the remaining objects when one `destroy!` throws, and rethrow the first error afterwards.
+- `v[i]`, `v[r]`, `A[i, j]` and the other Vec and Mat indexing forms throw a `BoundsError` for an index outside the array. `v[0]` or `v[n + 1]` returned garbage, `v[0] = x` wrote outside the vector and crashed Julia at a later garbage collection, and `A[0, j] = x` was dropped without a word, since PETSc_jll has no checks of its own. The check costs about 2 ns on a 10 ns `A[i, j] = x`.
+- A `Bool` mask selects the entries where it is `true`, as for any `AbstractVector`: `v[[true, false, true]]` read the entries at 1 and 0 (outside the vector), and `v[mask] = x` wrote at index 0. Index vectors with offset axes work too, and the result has their axes; they threw a `MethodError`.
+- `global_vec(dm)`, `local_vec(dm)`, `PetscMat(dm)` and `IS(dm, ...)` get a finalizer on a one-rank communicator, as every other constructor does, so a dropped one is freed. They leaked: 50 dropped `PetscMat(da)` kept 36 MB.
+- `set_uniform_coordinates!` on a DMStag works with a complex library; it threw a `MethodError`.
+- `parse_options` reads a value that starts with `-`, such as `-mat_shift -0.5`, as a value, as PETSc does. It took `-0.5` for an option of its own and lost the value; an empty value threw a `BoundsError`.
+- `with_field_views!` hands back the Vecs it has checked out when a later checkout throws. They stayed checked out.
+- `star_fd_coloring` includes the couplings across a periodic axis. They were left out of the pattern, so an FD-colored Jacobian on a periodic DMDA split over several ranks missed them without an error. A `DM_BOUNDARY_MIRROR` axis throws an `ArgumentError`.
+- An error in looking up the TS behind a `set_pre_step!` or `set_post_step!` hook comes back to PETSc as an error code instead of a Julia exception thrown through PETSc's C frames.
+- Creating many Vecs or Mats on Julia arrays, or setting many callbacks, took time quadratic in their number: each one swept the whole table of Julia state. 16 000 array-backed Vecs took 2.8 s and take 0.018 s. A destroyed Vec or Mat lets go of its Julia arrays at once.
+- `PetscMat(petsclib, comm, S::SparseMatrixCSC)` copies the matrix in one call instead of one entry at a time, about 4x faster (13 ms instead of 51 ms for 1.3 M nonzeros).
 
 ## v0.5.5
 

@@ -8,8 +8,9 @@
 # goes in one state object per PETSc object, attached to it through a
 # PetscContainer: PETSc destroys the container with the object, and the
 # container's destroy function marks the state dead. `object_states` roots
-# every state for the GC. Dead states are dropped on the next attach, never in
-# the destroy function, which can run from a GC finalizer; `finalize` drops a
+# every state for the GC. Dead states are dropped by an attach once the table
+# has doubled since the last sweep, so an attach costs O(1) on average; never in
+# the destroy function, which can run from a GC finalizer. `finalize` drops a
 # library's states once none of its objects can call back.
 
 # Concrete subtypes are mutable, hold the Julia side of one kind of object, have
@@ -22,11 +23,14 @@ function state_type end
 # PetscLib => (PETSc object address => its state)
 const object_states = Dict{Any, Dict{Ptr{Cvoid}, ObjectState}}()
 const object_states_lock = ReentrantLock()
+# PetscLib => size of its table after the last sweep
+const object_states_swept = Dict{Any, Int}()
 
 # PetscCtxDestroyFn: PETSc passes the address of the container's pointer
 function object_state_destroy(ctx::Ptr{Ptr{Cvoid}})
     state = unsafe_pointer_to_objref(unsafe_load(ctx))::ObjectState
     state.alive = false
+    release_dead!(state)
     return LibPETSc.PetscErrorCode(0)
 end
 
@@ -62,7 +66,10 @@ function object_state!(obj::T) where {T}
     state = state_type(T)()
     lock(object_states_lock) do
         states = get!(Dict{Ptr{Cvoid}, ObjectState}, object_states, PetscLib)
-        filter!(kv -> kv.second.alive, states)
+        if length(states) >= 2 * get(object_states_swept, PetscLib, 32)
+            filter!(kv -> kv.second.alive, states)
+            object_states_swept[PetscLib] = length(states)
+        end
         states[ptr] = state
     end
     container = LibPETSc.PetscContainerCreate(petsclib, LibPETSc.PetscObjectGetComm(petsclib, ptr))
@@ -81,6 +88,7 @@ state_pointer(obj) = pointer_from_objref(object_state!(obj))
 function drop_object_states!(::Type{PetscLib}) where {PetscLib}
     lock(object_states_lock) do
         delete!(object_states, PetscLib)
+        delete!(object_states_swept, PetscLib)
     end
     return nothing
 end
@@ -100,6 +108,11 @@ mutable struct WrappedArrays <: ObjectState
     alive::Bool
 end
 WrappedArrays() = WrappedArrays(nothing, true)
+
+# What a dead state lets go of at once rather than at the next sweep: the arrays
+# of a destroyed Vec or Mat, which may be large
+release_dead!(::ObjectState) = nothing
+release_dead!(state::WrappedArrays) = (state.arrays = nothing; nothing)
 state_type(::Type{<:LibPETSc.AbstractPetscVec}) = WrappedArrays
 state_type(::Type{<:LibPETSc.AbstractPetscMat}) = WrappedArrays
 

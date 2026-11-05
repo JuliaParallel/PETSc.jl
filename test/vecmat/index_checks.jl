@@ -4,6 +4,7 @@ MPI.Initialized() || MPI.Init()
 using PETSc
 using LinearAlgebra: mul!, I
 using SparseArrays: sparse
+using OffsetArrays: OffsetVector
 
 # Index ranges and vector lengths that do not match throw before PETSc reads past
 # a buffer, and range assignment converts to the scalar type like Julia's setindex!
@@ -24,6 +25,42 @@ using SparseArrays: sparse
             @test_throws DimensionMismatch v[1:3] = [1, 2]
             @test_throws DimensionMismatch v[1:2] = [1, 2, 3]
             PETSc.destroy!(v)
+        end
+
+        # PETSc_jll has no bounds checks of its own: an index outside the array read
+        # or wrote arbitrary memory, and a Bool mask was read as the integers 1 and 0
+        @testset "Vec bounds, masks and offset indices ($PetscScalar)" begin
+            v = PETSc.PetscVec(petsclib, PetscScalar[1, 2, 3])
+            @test_throws BoundsError v[0]
+            @test_throws BoundsError v[4]
+            @test_throws BoundsError v[[1, 4]]
+            @test_throws BoundsError v[0] = 1
+            @test_throws BoundsError v[2:4] = 1
+            @test_throws BoundsError v[[true, false]]
+            @test v[[true, false, true]] == PetscScalar[1, 3]
+            v[[false, true, false]] = 9
+            PETSc.assemble!(v)
+            @test v[:] == PetscScalar[1, 9, 3]
+            # the result takes the axes of the index vector, as for any AbstractVector
+            r = OffsetVector([3, 1], 0:1)
+            @test v[r] == OffsetVector(PetscScalar[3, 1], 0:1)
+            v[r] = [7, 8]
+            PETSc.assemble!(v)
+            @test v[:] == PetscScalar[8, 9, 7]
+            PETSc.destroy!(v)
+        end
+
+        @testset "Mat bounds, masks and offset indices ($PetscScalar)" begin
+            A = PETSc.PetscMat(petsclib, comm, sparse(PetscScalar[1 2; 3 4]))
+            @test_throws BoundsError A[0, 1]
+            @test_throws BoundsError A[1, 3]
+            @test_throws BoundsError A[0, 1] = 5
+            @test_throws BoundsError A[1:3, 1]
+            @test_throws BoundsError A[1, [true, false, true]]
+            @test A[[false, true], [true, true]] == PetscScalar[3 4]
+            @test A[1, [false, true]] == PetscScalar[2]
+            @test A[OffsetVector([2, 1], 0:1), 1] == OffsetVector(PetscScalar[3, 1], 0:1)
+            PETSc.destroy!(A)
         end
 
         @testset "Mat row and column assignment ($PetscScalar)" begin

@@ -204,6 +204,8 @@ const INTERNAL = Set{Symbol}([
     :state_type,
     :object_states,
     :object_states_lock,
+    :object_states_swept,
+    :release_dead!,
     :object_state_destroy,
     :object_state,
     :object_state!,
@@ -312,6 +314,14 @@ const INTERNAL = Set{Symbol}([
     :TS_REASON_TEXT,
     :block_values,
     :c_vector,
+    # 1-based Julia indices to PETSc's 0-based ones, and the axes of the result
+    :indices_0b,
+    :index_axes,
+    :index_shaped,
+    # whether a command-line argument is an option or a value
+    :isoption,
+    # the array arguments of a pointwise function
+    :PtrVector,
     :check_block,
     :checkout_arrays,
     :checked_array,

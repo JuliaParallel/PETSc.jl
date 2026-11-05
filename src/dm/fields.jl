@@ -61,10 +61,10 @@ also returns the number PETSc gives the boundary.  `label` is a `DMLabel` from
 [`label`](@ref).  `bcfunc_ptr` / `bcfunc_t_ptr` are `@cfunction(...)` results
 matching PETSc's boundary callback signature.
 
-`petsclib` is not an argument: the `dm` carries it as a type parameter (§8).
+`petsclib` is not an argument: the `dm` carries it as a type parameter.
 
 The `values` are label values PETSc issued and `field` is the number
-[`set_field!`](@ref) gave the field, so both keep PETSc's numbering (§12.1).
+[`set_field!`](@ref) gave the field, so both keep PETSc's numbering.
 
 # External Links
 $(doc_external("DM/DMAddBoundary"))
@@ -105,7 +105,7 @@ end
 Project a collection of pointwise functions into the global vector `X` and
 return `X`.
 
-The written vector comes first and `petsclib` is not an argument (§8).
+The written vector comes first and `petsclib` is not an argument.
 
 `funcs` holds one `@cfunction` pointer per field, matching PETSc's
 `PetscSimplePointFn` signature. `ctxs` is a matching vector of context pointers,
@@ -146,7 +146,7 @@ functions `funcs` (one per field, matching `PetscSimplePointFn` signature).
 `ctxs` is a matching vector of context pointers, or `nothing` to use `C_NULL`
 for every field.  Requires that [`set_exact_solution!`](@ref) has been called.
 
-`petsclib` is not an argument: the `dm` carries it as a type parameter (§8).
+`petsclib` is not an argument: the `dm` carries it as a type parameter.
 
 # External Links
 $(doc_external("DM/DMComputeL2Diff"))
@@ -207,7 +207,7 @@ end
 Project a function of the fields in the input vector `U` into the FE space of `dm`,
 writing the result into `X`, and return `X`.
 
-The written vector comes first and `petsclib` is not an argument (§8).
+The written vector comes first and `petsclib` is not an argument.
 
 `funcs` is a vector of `Ptr{Cvoid}` function pointers
 (one per field in `dm`), each with the `PetscPointFn` / `@residual_fn` signature.
@@ -253,7 +253,7 @@ PetscWeakFormSetIndexBdResidual(wf, label, val, field, 0, 0, f0, 0, NULL);
 the boundary integrand (`PetscBdPointFn` signature, with the outward normal `n[]`
 between `x[]` and `numConstants`).
 
-`petsclib` is not an argument: the `dm` carries it as a type parameter (§8).
+`petsclib` is not an argument: the `dm` carries it as a type parameter.
 
 # External Links
 $(doc_external("DM/DMAddBoundary"))

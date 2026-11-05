@@ -45,8 +45,8 @@ diagonal entries and return `A`. With `x` and `b` given, also set
 `b[i] = diag * x[i]` for each zeroed row `i`, so that a solve keeps the values
 of `x` there: the usual way to impose a Dirichlet condition.
 
-`rows_0b` are 0-based global row numbers, as PETSc takes them (docs/src/man/naming.md
-§12.1). Collective: every process calls it, each with its own rows, possibly none.
+`rows_0b` are 0-based global row numbers, as PETSc takes them.
+Collective: every process calls it, each with its own rows, possibly none.
 [`zero_rows_local!`](@ref) takes local numbers instead.
 
 # External Links
@@ -152,8 +152,8 @@ library's scalar type go to PETSc as they are, and so does a prefix view
 `view(buf, 1:n)` of one; anything else is copied first.
 
 The `_0b` suffix says what the base is: a bulk index array handed to C keeps
-PETSc's base rather than being rebuilt on a hot path (docs/src/man/naming.md
-§12.1). `A[i, j] = v` is the 1-based route.
+PETSc's base rather than being rebuilt on a hot path.
+`A[i, j] = v` is the 1-based route.
 
 `mode` is `INSERT_VALUES` or `ADD_VALUES`. If the keyword arguments `num_rows` or
 `num_cols` is specified then only the first `num_rows * num_cols` values of
@@ -252,8 +252,8 @@ other than a matrix) of its scalar type for the values, go to PETSc as they are,
 so does a prefix view `view(buf, 1:n)` of one; anything else is copied first.
 
 The `_0b` suffix says what the base is: a bulk index array handed to C keeps
-PETSc's base rather than being rebuilt on a hot path (docs/src/man/naming.md
-§12.1). `A[i, j] = v` is the 1-based route.
+PETSc's base rather than being rebuilt on a hot path.
+`A[i, j] = v` is the 1-based route.
 
 `mode` is `INSERT_VALUES` or `ADD_VALUES`. If the keyword arguments `num_rows` or
 `num_cols` is specified then only the first `num_rows * num_cols` values of

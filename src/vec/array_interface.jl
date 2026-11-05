@@ -22,7 +22,7 @@ PetscVecStyle(::Val{N}) where {N} = Broadcast.DefaultArrayStyle{N}()
 
 # The library a wrapper carries in its type parameter, as a value. Used where a
 # call has to recover `petsclib` from an object rather than take it as an
-# argument (§8), for instance `save_vtk(vecs, filename)`.
+# argument, for instance `save_vtk(vecs, filename)`.
 petsclib_of(::AbstractPetscVec{PetscLib}) where {PetscLib} = getlib(PetscLib)
 
 # Array interface - size and length

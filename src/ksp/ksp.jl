@@ -222,7 +222,7 @@ It runs before the preconditioner is set up for that solve, so the parts of a
 composite preconditioner aren't configured yet. To change those, use
 [`set_post_setup!`](@ref) on the preconditioner.
 
-The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax works.
+The callback comes first, so `do` block syntax works.
 
 $(doc_callback())
 
@@ -361,8 +361,7 @@ $(doc_callback())
 # External Links
 $(doc_external("KSP/KSPSetComputeRHS"))
 
-The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
-works.
+The callback comes first, so `do` block syntax works.
 """
 function set_compute_rhs! end
 # We have to use the macro here because of the @cfunction
@@ -413,8 +412,7 @@ $(doc_callback())
 # External Links
 $(doc_external("KSP/KSPSetComputeOperators"))
 
-The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
-works.
+The callback comes first, so `do` block syntax works.
 """
 function set_compute_operators! end
 # We have to use the macro here because of the @cfunction
@@ -449,7 +447,7 @@ solution(ksp::AbstractKSP{PetscLib}) where {PetscLib} =
     type_name(ksp::AbstractKSP)
 
 The name PETSc knows this solver by, as a `Symbol` (`:gmres`, `:cg`, …), or
-`nothing` when no type has been set yet (docs/src/man/naming.md §3.1).
+`nothing` when no type has been set yet.
 
 # External Links
 $(doc_external("KSP/KSPGetType"))

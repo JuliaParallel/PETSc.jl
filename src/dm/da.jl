@@ -15,7 +15,7 @@ function points_per_proc_arrays(::Type{PetscLib}, points_per_proc, comm) where {
     end
 end
 
-# `stencil_type` is a PETSc enum (§3.1's enum rule), and naming.md also spells
+# `stencil_type` is a PETSc enum, and the docs also spell
 # it as a `Symbol` in the constructor examples. Both work: the Symbol is mapped
 # here, the enum passes through.
 stencil_type_enum(::Type{DMDAStencilType}, t::DMDAStencilType) = t
@@ -178,7 +178,7 @@ function reshape_local_array(
         ),
     )
 
-    # `N + 1` axes: the dof axis, then one axis per dimension of the DM (§12).
+    # `N + 1` axes: the dof axis, then one axis per dimension of the DM.
     return OffsetArray(
         reshape(Arr, Int64(ndof), ntuple(i -> Int64(c.size[i]), Val(N))...),
         1:Int64(ndof),
@@ -214,8 +214,8 @@ end
 Build all data needed for manual FD coloring of a **2-D** DMDA with a STAR
 stencil, using `IS_COLORING_LOCAL` and ghost-local COO indexing.
 
-`petsclib` is not an argument: the `DMDA` carries it as a type parameter
-(docs/src/man/naming.md §8). A DMDA of another dimension, or with a BOX
+`petsclib` is not an argument: the `DMDA` carries it as a type parameter.
+A DMDA of another dimension, or with a BOX
 stencil, throws an `ArgumentError`: the coloring would leave out entries. So does a
 `DM_BOUNDARY_MIRROR` axis. A periodic axis works when its two ends are on different
 ranks; on one rank PETSc's `DMCreateColoring` refuses it.
@@ -228,8 +228,8 @@ Specifically, this function:
 3. Builds per-color index arrays (`perturb_cols_1b`, `coo_idxs_1b`, `local_rows_1b`)
    ready for use in an FD coloring Newton loop.
 
-Returns a `NamedTuple`. The index vectors carry the base they use in their name
-(§12.1), because this function returns both: the COO arrays go straight to
+Returns a `NamedTuple`. The index vectors carry the base they use in their name,
+because this function returns both: the COO arrays go straight to
 `LibPETSc.MatSetPreallocationCOOLocal` and keep PETSc's base, while the rest
 index Julia arrays and are 1-based.
 - `n_colors`         — number of colors
@@ -413,7 +413,7 @@ Get information about a DMDA.
 # Returns
 
 A `NamedTuple` with the following fields, all of them `N`-dimensional for an
-`N`-dimensional `DMDA` (docs/src/man/naming.md §12):
+`N`-dimensional `DMDA`:
 - `dim`: Dimension of the `DMDA` (1, 2, or 3)
 - `global_size`: `NTuple{N,Int}` with the global dimensions in each direction
 - `procs`: `NTuple{N,Int}` with the number of MPI processes in each direction
@@ -449,7 +449,7 @@ end
 Returns a `NamedTuple` with the global indices (excluding ghost points) of the
 `lower` and `upper` corners as well as the `size`.
 
-The result is dimension-correct (§12): `lower` and `upper` are
+The result is dimension-correct: `lower` and `upper` are
 `CartesianIndex{N}` and `size` is an `NTuple{N,Int}`, with no padding to three
 entries.
 
@@ -498,7 +498,7 @@ end
 
 Return the global size of the DM as an `NTuple{N,Int}`.
 
-The result is dimension-correct (§12): there is no padding to three entries.
+The result is dimension-correct: there is no padding to three entries.
 
 # External Links
 $(doc_external("DMDA/DMDAGetInfo"))

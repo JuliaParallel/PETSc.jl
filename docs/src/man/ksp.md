@@ -116,10 +116,10 @@ PETSc.destroy!(ksp)
 
 `KSP` is the type, not a factory function: `ksp isa PETSc.KSP` holds, and
 `PETSc.dm(ksp)` hands back the DM it was built on as a **borrowed** handle —
-`destroy!` on it is a no-op ([naming conventions](naming.md), §3.3).
+`destroy!` on it is a no-op.
 
 Type names are `Symbol` at the Julia API: `PETSc.set_type!(ksp, :cg)` and
-`PETSc.type_name(ksp) === :cg` (§3.1).
+`PETSc.type_name(ksp) === :cg`.
 
 ## A nested solver
 
@@ -185,7 +185,7 @@ ksp = KSP(dm;
 `PETSc.pc(ksp)` hands back the preconditioner as a borrowed `LibPETSc.PC`. It takes the same `set_type!`/`type_name` pair as the solver, and is how a split preconditioner gets its index sets, which options alone cannot supply:
 
 ```julia
-p = PETSc.pc(ksp)                         # not pc = pc(ksp), see naming.md §3.2
+p = PETSc.pc(ksp)                         # not pc = pc(ksp)
 PETSc.set_type!(p, :fieldsplit)
 PETSc.set_fieldsplit_is!(p, "u", is_u)    # rows of the first split, 0-based
 PETSc.set_fieldsplit_is!(p, "p", is_p)    # options prefix -fieldsplit_p_
@@ -207,7 +207,7 @@ PETSc.set_shell_apply!(p) do y, p, x
 end
 ```
 
-The closures are kept with the PETSc preconditioner, not with the wrapper `p`, so `p` can be dropped. An exception thrown inside either one comes out of the solve that ran it, as itself: a `DomainError` in `apply!` makes `ksp \ b` throw that `DomainError` ([naming conventions](naming.md), §18.4).
+The closures are kept with the PETSc preconditioner, not with the wrapper `p`, so `p` can be dropped. An exception thrown inside either one comes out of the solve that ran it, as itself: a `DomainError` in `apply!` makes `ksp \ b` throw that `DomainError`.
 
 The solvers of a `:fieldsplit`'s splits exist only once the preconditioner has been set up, inside the first solve. [`set_post_setup!`](@ref PETSc.set_post_setup!) runs a closure at the end of every setup, which is where to configure them:
 

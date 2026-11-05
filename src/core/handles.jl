@@ -138,7 +138,7 @@ function own_solver!(configure!, obj, comm)
 end
 
 # ----------------------------------------------------------------------------
-# Type names (docs/src/man/naming.md §3.1)
+# Type names
 #
 # PETSc registers type names at runtime as strings, so they cannot become enums.
 # They are `Symbol` at the Julia API and `String` at the C boundary, and the
@@ -146,8 +146,8 @@ end
 #
 # The generated `*GetType` wrappers answer `""` (and `MatGetType` answers
 # `"(not set)"`) when PETSc has no type for the object yet. A reader that can
-# decline to answer is documented rather than papered over with a default
-# (§15.1), so both spellings come back as `nothing`.
+# decline to answer is documented rather than papered over with a default,
+# so both spellings come back as `nothing`.
 # ----------------------------------------------------------------------------
 
 type_name_symbol(s::AbstractString) =
@@ -159,7 +159,7 @@ type_name_symbol(s::AbstractString) =
 Set the PETSc implementation `obj` uses, for example `set_type!(ksp, :gmres)`.
 
 Defined for `PetscVec`, `PetscMat`, `KSP`, `PC`, `SNES`, `TS` and `AbstractPetscDM`.
-The `Symbol` is converted to a `String` at the C boundary (§3.1).
+The `Symbol` is converted to a `String` at the C boundary.
 """
 function set_type! end
 

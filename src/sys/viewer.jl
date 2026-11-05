@@ -12,7 +12,7 @@ separate point-data array in one file.  The field name shown in ParaView/VisIt
 comes from the name set on the vector via [`set_name!`](@ref).
 
 Neither `petsclib` nor `comm` is an argument: the vector carries the library as
-a type parameter and PETSc is asked for its communicator (§8).
+a type parameter and PETSc is asked for its communicator.
 
 # External Links
 $(doc_external("Viewer/PetscViewerVTKOpen"))

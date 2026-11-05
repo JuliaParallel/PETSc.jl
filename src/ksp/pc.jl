@@ -24,7 +24,7 @@ destroy!(p::AbstractPC{PetscLib}) where {PetscLib} =
     pc(ksp::AbstractKSP)
 
 The preconditioner `ksp` applies. Inside the package, bind it as `p = pc(ksp)`,
-not `pc = pc(ksp)` (docs/src/man/naming.md §3.2).
+not `pc = pc(ksp)`.
 
 $(doc_borrowed())
 
@@ -91,7 +91,7 @@ end
 #   Shell preconditioner
 # ============================================================================
 
-# The Julia side of a PC, kept with the PETSc object (naming.md §18.3). PETSc
+# The Julia side of a PC, kept with the PETSc object. PETSc
 # also gets its address as the shell context, so the trampolines find it
 # without a lookup.
 mutable struct PCState <: ObjectState
@@ -132,7 +132,7 @@ Returns `p`.
 Throws an `ArgumentError` unless `p` is already of type `:shell`: PETSc would
 otherwise ignore the call without saying so.
 
-The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax works.
+The callback comes first, so `do` block syntax works.
 
 $(doc_callback())
 
@@ -169,7 +169,7 @@ Make `setup!` the setup step of the `:shell` preconditioner `p`, called as
 operator changes. The `:shell` requirement is as for [`set_shell_apply!`](@ref).
 Returns `p`.
 
-The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax works.
+The callback comes first, so `do` block syntax works.
 
 $(doc_callback())
 
@@ -213,7 +213,7 @@ write it so that a second run is harmless.
 A second call replaces the first callback. Any PC type works, unlike
 [`set_shell_setup!`](@ref), which is the setup of a `:shell` preconditioner itself.
 
-The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax works.
+The callback comes first, so `do` block syntax works.
 
 $(doc_callback())
 

@@ -1,4 +1,4 @@
-# The Julia side of a SNES, kept with the PETSc object (naming.md §18.3)
+# The Julia side of a SNES, kept with the PETSc object
 mutable struct SNESState <: ObjectState
     f!::Any
     updateJ!::Any
@@ -87,7 +87,7 @@ end
     type_name(snes::AbstractSNES)
 
 The name PETSc knows this solver by, as a `Symbol` (`:newtonls`, `:fas`, …), or
-`nothing` when no type has been set yet (docs/src/man/naming.md §3.1).
+`nothing` when no type has been set yet.
 
 # External Links
 $(doc_external("SNES/SNESGetType"))
@@ -113,8 +113,7 @@ end
 
 Set the residual function `f!` for the nonlinear solver `snes`.
 
-The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
-works.
+The callback comes first, so `do` block syntax works.
 
 The function `f!` will be called as `f!(fx, snes, x)` where:
 - `fx`: Output vector to store the residual F(x)
@@ -189,8 +188,7 @@ $(doc_callback())
 # External Links
 $(doc_external("SNES/SNESSetJacobian"))
 
-The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
-works.
+The callback comes first, so `do` block syntax works.
 """
 function set_snes_jacobian! end
 
@@ -259,8 +257,7 @@ $(doc_callback("its return value is the `SNESConvergedReason` it decides"))
 # External Links
 $(doc_external("SNES/SNESSetConvergenceTest"))
 
-The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
-works.
+The callback comes first, so `do` block syntax works.
 """
 function set_convergence_test! end
 

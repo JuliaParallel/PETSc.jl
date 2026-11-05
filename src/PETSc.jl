@@ -77,9 +77,9 @@ import .LibPETSc: AbstractPC, CPC, PC
 import .LibPETSc: AbstractSNES, CSNES, SNES
 import .LibPETSc: AbstractTS, CTS, TS
 
-# Only types, construction entry points and `petsclibs` are exported (§13); every
+# Only types, construction entry points and `petsclibs` are exported; every
 # verb and accessor stays qualified (`PETSc.set_library!`). The rest of the API is
-# marked with `public` in src/public_names.jl (§13.1).
+# marked with `public` in src/public_names.jl.
 export LibPETSc
 export DMDA, DMStag, DMPlex
 export PetscVec, PetscMat, PetscOptions

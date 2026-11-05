@@ -1,19 +1,19 @@
 # ─────────────────────────────────────────────────────────────────────────────
-# The typed DM hierarchy (docs/src/man/naming.md §5.3)
+# The typed DM hierarchy
 #
 # `PetscDM{PetscLib}` stays the low-level handle, because `LibPETSc.DMCreate`
-# and friends must return something before the flavour is known (§5.4). The
+# and friends must return something before the flavour is known. The
 # high-level API uses the three types below, which carry the flavour — and, for
 # DMDA and DMStag, the dimension — in the type, so that `corners`,
 # `local_indices` and the coordinate handling dispatch instead of comparing the
 # string `DMGetType` returns. Giving flavour a type is what deletes the nine
-# `@assert type_name(dm) == "stag"` checks (§14).
+# `@assert type_name(dm) == "stag"` checks.
 #
 # DMPlex has no dimension parameter: nothing in dmplex.jl dispatches on it, and
 # neither constructor could supply one honestly, since `DMPlex(petsclib, comm)`
-# leaves the dimension unset until setup (§5.3).
+# leaves the dimension unset until setup.
 #
-# `own` is the ownership flag of §3.3: `true` for a constructor result, `false`
+# `own` is the ownership flag: `true` for a constructor result, `false`
 # for a borrowed handle produced by `narrow`.
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -75,7 +75,7 @@ const TypedPetscDM{PetscLib} =
     Union{DMDA{PetscLib}, DMStag{PetscLib}, DMPlex{PetscLib}}
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Dimension-correct returns (docs/src/man/naming.md §12)
+# Dimension-correct returns
 #
 # Every index-shaped return is built from the DM's type parameter `N` with
 # `ntuple(..., Val(N))`, never by splatting a `Vector`: splatting hides the
@@ -290,7 +290,7 @@ global_vec(dm::AbstractPetscDM{PetscLib}) where {PetscLib} =
 Transfer values from the local vector `lvec` to the global vector `gvec`
 associated with the `dm` object.
 
-The written vector comes first and the `dm` follows it (§8).
+The written vector comes first and the `dm` follows it.
 
 # Arguments
 - `gvec::AbstractPetscVec`: Global vector (destination, written)
@@ -320,7 +320,7 @@ Transfer values from the global vector `gvec` to the local vector `lvec`
 associated with the `dm` object, including ghost point values from neighboring
 processes.
 
-The written vector comes first and the `dm` follows it (§8).
+The written vector comes first and the `dm` follows it.
 
 # Arguments
 - `lvec::AbstractPetscVec`: Local vector (destination, written)
@@ -475,8 +475,7 @@ end
     type_name(dm::AbstractPetscDM)
 
 The name PETSc knows this DM's flavour by, as a `Symbol` (`:da`, `:stag`,
-`:plex`, …), or `nothing` when no type has been set yet
-(docs/src/man/naming.md §3.1).
+`:plex`, …), or `nothing` when no type has been set yet.
 
 The flavour is a type parameter ([`DMDA`](@ref), [`DMStag`](@ref),
 [`DMPlex`](@ref)), so dispatch, not this reader, is the way to branch on it.

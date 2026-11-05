@@ -1,9 +1,4 @@
-# EXCLUDE FROM TESTING
-# MPI subprocess tests for examples/dmplex/ex62.jl — covers correctness across element types and 3D.
-# Excluded from CI: each spawn compiles the full DMPlex/SNES stack; too slow on Linux runners.
-# Run manually: julia --project=examples examples/dmplex/ex62_mpi_test.jl
-# Excluded from CI (each test spawns a new Julia process; 10 tests ≈ 60 min on Linux).
-# Run manually: julia --project examples/dmplex/ex62_mpi_test.jl
+# MPI subprocess tests for examples/dmplex/ex62.jl: correctness across element types and 3D.
 #
 # Run via:
 #   julia --project examples/dmplex/ex62_mpi_test.jl

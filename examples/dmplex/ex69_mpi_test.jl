@@ -1,7 +1,4 @@
-# EXCLUDE FROM TESTING
 # MPI subprocess tests for examples/dmplex/ex69.jl.
-# Excluded from CI: each spawn compiles the full DMPlex/SNES stack; too slow on Linux runners.
-# Run manually: julia --project=examples examples/dmplex/ex69_mpi_test.jl
 # Each test launches ex69.jl under multiple MPI ranks and checks L² error.
 #
 # Run via:
@@ -94,9 +91,12 @@ end
                    "-fetidp_bddc_pc_bddc_symmetric",
                    "-fetidp_bddc_pc_bddc_vertex_size","3",
                    "-fetidp_bddc_pc_bddc_graph_maxcount","2",
-                   "-fetidp_bddc_pc_bddc_coarse_redundant_pc_type","svd"]
+                   "-fetidp_bddc_pc_bddc_coarse_redundant_pc_type","svd",
+                   # the local problems are saddle points, which LU without pivoting fails on
+                   "-fetidp_bddc_pc_bddc_dirichlet_pc_type","svd",
+                   "-fetidp_bddc_pc_bddc_neumann_pc_type","svd"]
 
-    @testset "FETI-DP q2p1fetidp aij (L²≈0.097)" begin
+    @testset "FETI-DP q2p1fetidp aij (L²≈0.025)" begin
       @test run_ex69_mpi(2, FETIDP_QUAD...,
         "-mat_is_localmat_type","aij"; tol = 0.15)
     end
@@ -127,7 +127,7 @@ end
 
     # ── BDDC benign-trick ─────────────────────────────────────────────────────
 
-    @testset "BDDC q2p1bddc benign card (L²≈0.097)" begin
+    @testset "BDDC q2p1bddc benign card (L²≈0.025)" begin
       @test run_ex69_mpi(2,
         "-dm_plex_simplex","0","-dm_plex_separate_marker",
         "-petscpartitioner_type","simple",

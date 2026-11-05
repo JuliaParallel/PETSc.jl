@@ -83,6 +83,7 @@
 - `PetscMat(petsclib, comm, S::SparseMatrixCSC)` copies the matrix in one call instead of one entry at a time, about 4x faster (13 ms instead of 51 ms for 1.3 M nonzeros).
 - `DMStag(...; points_per_proc)` with an array of the wrong integer type throws an `ArgumentError` naming the argument and the `PetscInt` it needs, as `DMDA` does, instead of a `MethodError` from the C wrapper.
 - `set_values!(A, rows, cols, vals)` on prefix views of reused buffers (`view(buf, 1:n)`) passes the buffers to PETSc without copying them: 23 ns and no allocations for a 2×2 block, where it took 49 ns and 6 allocations.
+- The DMPlex examples (`ex12`, `ex17`, `ex62`, `ex62b`, `ex69`) pass their command line to `PETSc.initialize`, so the options of a `PetscFE`, such as `-pres_petscdualspace_lagrange_continuity 0` or `-displacement_petscspace_degree 2`, take effect. They were ignored, since a `PetscFE` reads only PETSc's options database: ex69's FETI-DP and BDDC cases ran with a continuous pressure and failed. ex17's option prefixes are `displacement_` and `stress_`, as in ex17.c; without the underscore its `-displacement_petscspace_degree` never matched. The pressure null space that ex62 and ex69 register with `DMSetNullSpaceConstructor` is the constant pressure on a fieldsplit's pressure-only subDM too, as in ex62.c; it was a zero vector there, which broke the pressure solve of ex62's GMG case once its `-petscds_jac_pre 0` took effect. Both now run in CI, as does `ex62_mpi_test`.
 
 ## v0.5.5
 

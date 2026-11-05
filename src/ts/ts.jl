@@ -13,14 +13,13 @@ LibPETSc.@for_petsc function LibPETSc.TSSetRHSFunction(
     fptr::Ptr{Cvoid},
     ctx::Ptr{Cvoid} = C_NULL,
 )
-    typed_fptr = fptr
     LibPETSc.@chk ccall(
         (:TSSetRHSFunction, $petsc_library),
         LibPETSc.PetscErrorCode,
         (LibPETSc.CTS, LibPETSc.CVec, Ptr{Cvoid}, Ptr{Cvoid}),
         ts,
         C_NULL,
-        typed_fptr,
+        fptr,
         ctx,
     )
     return nothing
@@ -41,14 +40,13 @@ LibPETSc.@for_petsc function LibPETSc.TSSetIFunction(
     fptr::Ptr{Cvoid},
     ctx::Ptr{Cvoid} = C_NULL,
 )
-    typed_fptr = fptr
     LibPETSc.@chk ccall(
         (:TSSetIFunction, $petsc_library),
         LibPETSc.PetscErrorCode,
         (LibPETSc.CTS, LibPETSc.CVec, Ptr{Cvoid}, Ptr{Cvoid}),
         ts,
         C_NULL,
-        typed_fptr,
+        fptr,
         ctx,
     )
     return nothing
@@ -308,17 +306,6 @@ function destroy!(ts::AbstractTS{PetscLib}) where {PetscLib}
     owns(ts) && destroy_options!(ts)
     return destroy_handle!(LibPETSc.TSDestroy, ts, PetscLib)
 end
-
-"""
-    comm(ts::AbstractTS)
-
-The MPI communicator `ts` was built on.
-
-# External Links
-$(doc_external("Sys/PetscObjectGetComm"))
-"""
-comm(ts::AbstractTS{PetscLib}) where {PetscLib} =
-    LibPETSc.PetscObjectGetComm(PetscLib, ts)
 
 """
     type_name(obj)

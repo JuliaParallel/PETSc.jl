@@ -2,10 +2,6 @@
 #   Coordinates
 # ============================================================================
 
-#Base.size(dm::AbstractDMStag) = DMStagGetGlobalSizes(dm)
-#globalsize(dm::AbstractDMStag) = DMStagGetGlobalSizes(dm::AbstractDMStag)
-#boundarytypes(dm::AbstractDMStag)  = DMStagGetBoundaryTypes(dm::AbstractDMStag) 
-
 """
     set_uniform_coordinates!(dm::DMStag, xyzmin, xyzmax)
 

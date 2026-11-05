@@ -347,7 +347,9 @@ args     = isinteractive() ? repl_opts : collect(String, ARGS)
 opts     = PETSc.parse_options(args)
 petsclib = PETSc.getlib(; PetscScalar = Float64)
 MPI.Initialized() || MPI.Init()
-PETSc.initialize(petsclib)
+# The command line goes into the options database too: objects built without
+# options keywords, such as the PetscFEs, read their options from there.
+PETSc.initialize(petsclib; options = args)
 
 @isdefined(PetscInt)    || const PetscInt    = petsclib.PetscInt
 @isdefined(PetscScalar) || const PetscScalar = Float64

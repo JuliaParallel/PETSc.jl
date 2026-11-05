@@ -186,14 +186,6 @@ function l2diff(
     return l2diff(dm, time, fptrs, cptrs, X)
 end
 
-# `dm_create_global_vec`/`dm_create_local_vec` here and `DMGlobalVec`/`DMLocalVec` in
-# dm.jl were the same two calls under two names. Both pairs collapse onto
-# `global_vec`/`local_vec`, defined once in src/dm.jl.
-
-# `global_to_local!(dm, gvec, lvec; mode)` lived here as a second shape of the
-# same call. §8 collapses both onto `global_to_local!(lvec, dm, gvec; mode)`,
-# defined once in src/dm.jl.
-
 """
     set_auxiliary_vec!(dm, aux_local)
 

@@ -125,7 +125,9 @@ own_solver = haskey(cli_opts, :pc_type) || haskey(cli_opts, :ksp_type)
 opts     = merge(DEFAULT_DISCRETIZATION, own_solver ? (;) : DEFAULT_SOLVER, cli_opts)
 petsclib = PETSc.getlib(; PetscScalar = Float64)
 MPI.Initialized() || MPI.Init()
-PETSc.initialize(petsclib)
+# The command line goes into the options database too: objects built without
+# options keywords, such as the PetscFEs, read their options from there.
+PETSc.initialize(petsclib; options = _args)
 
 const PetscInt    = petsclib.PetscInt
 
@@ -295,13 +297,17 @@ exact_pres_ptr = sol_type == "quadratic" ? quadratic_pres_ptr : trig_pres_ptr
 
 # ── Pressure null space constructor ───────────────────────────────────────────
 function pressure_nsp_constructor(
-    dm_ptr::Ptr{Cvoid}, ::PetscInt, ::PetscInt,
+    dm_ptr::Ptr{Cvoid}, ::PetscInt, field::PetscInt,
     nsp_pp::Ptr{LibPETSc.CMatNullSpace},
 )::PetscInt
     PL   = typeof(petsclib)
     dm_w = LibPETSc.PetscDM{PL}(dm_ptr)
     nvec = PETSc.global_vec(dm_w)
-    PETSc.project_function!(nvec, dm_w, 0.0, [zero_vel_ptr, one_pres_ptr]; mode = LibPETSc.INSERT_ALL_VALUES)
+    # `field` is the pressure's index in `dm_w`: 0 on the pressure-only subDM
+    # that a fieldsplit builds, 1 on the full DM
+    funcs = [zero_vel_ptr, zero_vel_ptr]
+    funcs[field + 1] = one_pres_ptr
+    PETSc.project_function!(nvec, dm_w, 0.0, funcs; mode = LibPETSc.INSERT_ALL_VALUES)
     LibPETSc.VecNormalize(petsclib, nvec)
     GC.@preserve nvec begin
         nsp = PETSc.mat_nullspace_create(petsclib, MPI.COMM_WORLD, (nvec,))

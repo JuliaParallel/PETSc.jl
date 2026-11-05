@@ -28,14 +28,8 @@ end
 
 # A new Vec or Mat gets a finalizer only on one rank, as from its constructor:
 # its Destroy is collective, and a GC finalizer runs at an arbitrary point
-function finalize_if_serial!(
-    obj::Union{AbstractPetscVec{PetscLib}, LibPETSc.AbstractPetscMat{PetscLib}},
-) where {PetscLib}
-    if MPI.Comm_size(LibPETSc.PetscObjectGetComm(getlib(PetscLib), obj)) == 1
-        destroy_at_gc!(obj)
-    end
-    return obj
-end
+finalize_if_serial!(obj::Union{AbstractPetscVec, LibPETSc.AbstractPetscMat}) =
+    own_serial!(obj, comm(obj))
 
 function check_same_length(x::AbstractPetscVec, y::AbstractPetscVec)
     length(x) == length(y) ||
@@ -213,17 +207,12 @@ function entrywise_isapprox(v::AbstractPetscVec{PetscLib}, w::AbstractPetscVec{P
     ok = with_local_array!((v, w); write = false) do a, b
         all(isapprox.(a, b; kwargs...))
     end
-    comm = LibPETSc.PetscObjectGetComm(getlib(PetscLib), v)
-    return MPI.Allreduce(Int(ok), min, comm) == 1
+    return MPI.Allreduce(Int(ok), min, comm(v)) == 1
 end
-
-# The communicator of `v`
-comm_of(v::AbstractPetscVec{PetscLib}) where {PetscLib} =
-    LibPETSc.PetscObjectGetComm(getlib(PetscLib), v)
 
 # `f` applied to the local array of `v`, combined over the ranks with `op`
 reduce_owned(f, op, v::AbstractPetscVec) =
-    MPI.Allreduce(with_local_array!(f, v; write = false), op, comm_of(v))
+    MPI.Allreduce(with_local_array!(f, v; write = false), op, comm(v))
 
 # `cmp` over the owned entries of `v` and `w`, with the same answer on every rank.
 # Vectors of one length but different layouts can't be compared entry by entry; the
@@ -233,7 +222,7 @@ function compare_owned(cmp, v::AbstractPetscVec, w::AbstractPetscVec)
     r = with_local_array!((v, w); write = false) do a, b
         length(a) == length(b) ? Int(cmp(a, b)) : -1
     end
-    r = MPI.Allreduce(r, min, comm_of(v))
+    r = MPI.Allreduce(r, min, comm(v))
     r < 0 && throw(ArgumentError("the vectors have the same length but different parallel layouts"))
     return r == 1
 end
@@ -301,7 +290,7 @@ function Base.mapreduce(f, op, v::AbstractPetscVec; init = Base._InitialValue())
     partial = with_local_array!(v; write = false) do a
         isempty(a) ? nothing : mapreduce(f, op, a)
     end
-    parts = gather_partials(partial, R, comm_of(v))
+    parts = gather_partials(partial, R, comm(v))
     isempty(parts) && return reduce_empty_result(f, op, eltype(v), init)
     return with_init(op, init, foldl(op, parts))
 end
@@ -360,7 +349,7 @@ each rank.
 $(doc_external("Vec/VecScatterCreateToAll"))
 """
 function Base.collect(v::AbstractPetscVec{PetscLib}) where {PetscLib}
-    MPI.Comm_size(comm_of(v)) == 1 && return v[:]
+    MPI.Comm_size(comm(v)) == 1 && return v[:]
     petsclib = getlib(PetscLib)
     ctx, w = LibPETSc.VecScatterCreateToAll(petsclib, v)
     try

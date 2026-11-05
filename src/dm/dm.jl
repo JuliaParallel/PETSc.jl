@@ -94,16 +94,6 @@ axis_names(::Val{3}) = (:x, :y, :z)
 @inline axis_ranges(f::F, ::Val{N}) where {F, N} =
     NamedTuple{axis_names(Val(N))}(ntuple(f, Val(N)))
 
-# Wrap a handle a LibPETSc creator returned, taking ownership of it. The
-# finalizer is only attached on a serial communicator: `DMDestroy` is
-# collective and a GC finalizer runs at an arbitrary point.
-function own_dm!(dm::TypedPetscDM{PetscLib}, comm) where {PetscLib}
-    if MPI.Comm_size(comm) == 1
-        destroy_at_gc!(dm)
-    end
-    return dm
-end
-
 # What every DM constructor does once PETSc has created the DM: set the options
 # prefix, apply `set_from_options!` with the constructor's leftover keywords
 # layered under PETSc's options database, call `setup!`, and take ownership. If any of that throws,
@@ -130,7 +120,7 @@ function finish_dm!(
         destroy!(dm)
         rethrow()
     end
-    return own_dm!(dm, comm)
+    return own_serial!(dm, comm)
 end
 
 # The DM constructor keywords before 0.5.4. Left in `options...` they would become
@@ -184,7 +174,7 @@ function narrow(dm::AbstractPetscDM{PetscLib}; own::Bool = false) where {PetscLi
     else
         return dm
     end
-    own && own_dm!(out, LibPETSc.PetscObjectGetComm(getlib(PetscLib), out))
+    own && own_serial!(out, LibPETSc.PetscObjectGetComm(getlib(PetscLib), out))
     return out
 end
 

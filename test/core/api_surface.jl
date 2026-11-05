@@ -1,4 +1,4 @@
-# The API surface is fully accounted for by the register (naming.md §1.1).
+# The API surface is fully accounted for by the register.
 #
 # This is `scripts/api_surface.jl --check`, run from the test suite so that a new
 # high-level binding cannot land without an entry in `scripts/renames.jl`. The

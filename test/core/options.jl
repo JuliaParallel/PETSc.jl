@@ -254,7 +254,7 @@ end
           Float64.(opt.tup)
 end
 
-# naming.md §14: a malformed command line is user input, so `ArgumentError`.
+# a malformed command line is user input, so `ArgumentError`.
 @testset "parse_options rejects malformed arguments" begin
     @test_throws ArgumentError PETSc.parse_options(["ksp_monitor"])
     @test_throws ArgumentError PETSc.parse_options(["-a=b=c"])

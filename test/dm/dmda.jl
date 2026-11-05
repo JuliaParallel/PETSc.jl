@@ -65,8 +65,8 @@ MPI.Initialized() || MPI.Init()
                 @test da_info.stencil_type == PETSc.DMDA_STENCIL_BOX
                 @test da_info.stencil_width == stencil_width
 
-                # Dimension-correct returns (naming.md §12): a 1D DMDA answers
-                # with `CartesianIndex{1}` and 1-tuples, not the v0.4 padding.
+                # Dimension-correct returns: a 1D DMDA answers
+                # with `CartesianIndex{1}` and 1-tuples, with no padding to three entries.
                 corners = PETSc.corners(da)
                 @test corners.lower ==
                       CartesianIndex(proc_global_offsets[mpirank + 1] + 1)
@@ -373,7 +373,7 @@ end
             #j = i + CartesianIndex(d == 1, d == 2, d == 3)
             #mat[i, j] = 1
 
-                        # `corners` is dimension-correct (naming.md §12), so the unit
+                        # `corners` is dimension-correct, so the unit
             # offset has to be `dim`-dimensional too.
             unit(d) = CartesianIndex(ntuple(k -> k == d ? 1 : 0, dim))
 
@@ -551,8 +551,7 @@ end
             x = PETSc.reshape_local_array(l_x, da_2D)
             @test 2 == size(x, 1)
 
-            # A 2D DMDA reshapes to `(dof, nx, ny)`: three axes, not four
-            # (naming.md §12).
+            # A 2D DMDA reshapes to `(dof, nx, ny)`: three axes, not four.
             @test ndims(x) == 3
 
             Array_1 = @view x[1, :, :]

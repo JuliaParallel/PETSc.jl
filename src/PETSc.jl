@@ -57,8 +57,8 @@ function doc_callback(returns::AbstractString = "")
 end
 
 # `_doc_external` is interpolated into several thousand docstrings in
-# src/autowrapped/, which the generator in wrapping/ emits verbatim. Keeping the
-# old spelling as an alias leaves those files untouched by the rename.
+# src/autowrapped/, which the generator in wrapping/ emits verbatim. The alias
+# keeps that spelling working without regenerating them.
 const _doc_external = doc_external
 
 include("LibPETSc.jl")

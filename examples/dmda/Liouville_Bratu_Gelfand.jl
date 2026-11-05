@@ -50,8 +50,8 @@ bcs = ntuple(_ -> PETSc.DM_BOUNDARY_NONE, dim)
 # Set parameter
 λ = PetscScalar(6)
 
-# `corners`, `info` and `reshape_local_array` are dimension-correct
-# (docs/src/man/naming.md §12): on a `dim`-dimensional DMDA they answer with
+# `corners`, `info` and `reshape_local_array` are dimension-correct:
+# on a `dim`-dimensional DMDA they answer with
 # `dim`-tuples and `CartesianIndex{dim}`, and the reshaped local array has
 # `1 + dim` axes. These three helpers are what the example needs as a result.
 

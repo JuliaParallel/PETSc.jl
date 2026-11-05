@@ -78,8 +78,8 @@ const TypedPetscDM{PetscLib} =
 #
 # Every index-shaped return is built from the DM's type parameter `N` with
 # `ntuple(..., Val(N))`, never by splatting a `Vector`: splatting hides the
-# length from the compiler, so `lower` and `upper` used to infer as `Any` and
-# cost three allocations per call.
+# length from the compiler, so `lower` and `upper` would infer as `Any` and
+# allocate on every call.
 #
 # `axis_names` is three methods rather than `(:x, :y, :z)[1:N]` so the tuple is
 # a compile-time constant and `local_indices(dm2d).center` infers concretely as

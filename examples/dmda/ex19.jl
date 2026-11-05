@@ -414,9 +414,8 @@ end
 # Builds the IS_COLORING_LOCAL coloring for da's STAR stencil, ghost-local COO
 # (row, col) pairs, and per-color owned-column / COO-entry index arrays.
 # 2-D DMDA STAR stencil only; see PETSc.star_fd_coloring for 3-D notes.
-# `star_fd_coloring` takes no `petsclib` (naming.md §8) and names the base of
-# every index vector it returns (§12.1), so the hand renaming this example used
-# to do on receipt is gone.
+# `star_fd_coloring` takes no `petsclib`, and the name of each index vector it
+# returns says its base (`_0b` or `_1b`).
 coloring         = PETSc.star_fd_coloring(da)
 n_colors         = coloring.n_colors
 n_local_dofs     = coloring.n_local_dofs

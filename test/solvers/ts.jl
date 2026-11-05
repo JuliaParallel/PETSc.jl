@@ -509,7 +509,7 @@ MPI.Initialized() || MPI.Init()
             PETSc.set_max_time!(ts, 1.0)
 
             # The trampoline stores the exception and reports failure to PETSc,
-            # which unwinds; solve! then rethrows the original (naming.md §18.4).
+            # which unwinds; solve! then rethrows the original.
             # PETSc's own traceback is silenced to keep the test output readable.
             @test_throws DomainError redirect_stderr(devnull) do
                 PETSc.solve!(u, ts)

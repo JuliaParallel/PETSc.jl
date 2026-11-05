@@ -59,8 +59,7 @@ gvec = PETSc.global_vec(dm)
 lvec = PETSc.local_vec(dm)
 ```
 
-`PetscVec` replaces v0.4's `VecSeq` and `as_petsc_vec`: construction goes
-through the type.
+Every vector is built with a `PetscVec` constructor. The [v0.5 release notes](release_notes.md#v0.5.0) list the v0.4 functions it replaces.
 
 ## Julia Array Interface
 

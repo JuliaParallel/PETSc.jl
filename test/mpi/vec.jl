@@ -32,7 +32,7 @@ using LinearAlgebra: norm
 
                 # check the data ownership
                 rng = n0:n1
-                # `ownership_range` is 1-based only (naming.md §12.1); this
+                # `ownership_range` is 1-based only; this
                 # test wants PETSc's own numbering.
                 @test rng == PETSc.ownership_range(petsc_x) .- 1
             else

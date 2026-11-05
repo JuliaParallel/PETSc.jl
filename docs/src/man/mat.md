@@ -10,8 +10,7 @@ PETSc matrices support:
 - **Parallel distribution**: Row-based distribution across MPI processes
 - **Matrix-free operations**: Via MatShell for custom operators
 
-`PetscMat` is the one constructor: it replaces v0.4's `MatSeqAIJ`,
-`MatSeqDense`, `MatCreateSeqAIJ`, `MatSeqAIJWithArrays` and `MatAIJ`.
+Every matrix type is built with a `PetscMat` constructor. The [v0.5 release notes](release_notes.md#v0.5.0) list the v0.4 functions it replaces.
 
 ## Example
 

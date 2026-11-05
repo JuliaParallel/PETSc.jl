@@ -27,7 +27,7 @@
     Q1/P0 quad:  ~2× per refinement  (O(h)  dominated by velocity)
 
   ── Run examples ─────────────────────────────────────────────────────────────
-  Without options the example runs the first case below (see DEFAULT_OPTIONS).
+  Without options the example runs the first case below (see DEFAULT_SOLVER).
 
   Common solver options (Schur-complement fieldsplit, quad mesh):
     SOLVER="-pc_use_amat -pc_type fieldsplit -pc_fieldsplit_type schur \
@@ -139,17 +139,32 @@ using PETSc: LibPETSc
 
 # ── PETSc / MPI init ─────────────────────────────────────────────────────────
 _args    = isinteractive() ? String[] : collect(String, ARGS)
-# With no options this runs the Q2/Q1 quad case with SolKx; options on the command line override
-# these: the saddle point needs the Schur-complement fieldsplit, not the default ILU
-const DEFAULT_OPTIONS = (
-    dm_plex_simplex = "0", dm_plex_separate_marker = nothing,
-    vel_petscspace_degree = "2", pres_petscspace_degree = "1",
-    pc_use_amat = nothing, pc_type = "fieldsplit", pc_fieldsplit_type = "schur",
-    pc_fieldsplit_schur_factorization_type = "full", pc_fieldsplit_schur_precondition = "a11",
-    fieldsplit_velocity_pc_type = "lu", fieldsplit_pressure_ksp_rtol = "1e-9",
-    fieldsplit_pressure_pc_type = "lu", ksp_rtol = "1e-9",
+# With no options this runs the Q2/Q1 quad case with SolKx. Options on the command line override
+# the discretization one by one. The solver defaults, a Schur-complement
+# fieldsplit (the saddle point defeats the default ILU), apply only when the
+# command line sets neither `-pc_type` nor `-ksp_type`, so a run that picks its
+# own solver gets exactly that: a flag such as `-pc_use_amat` cannot be switched
+# off. Monitors and other output options keep the defaults.
+const DEFAULT_DISCRETIZATION = (
+    dm_plex_simplex = "0", 
+    dm_plex_separate_marker = nothing,
+    vel_petscspace_degree   = "2", 
+    pres_petscspace_degree  = "1",
 )
-opts     = merge(DEFAULT_OPTIONS, PETSc.parse_options(_args))
+const DEFAULT_SOLVER = (
+    pc_use_amat = nothing, 
+    pc_type = "fieldsplit", 
+    pc_fieldsplit_type = "schur",
+    pc_fieldsplit_schur_factorization_type = "full", 
+    pc_fieldsplit_schur_precondition = "a11",
+    fieldsplit_velocity_pc_type  = "lu", 
+    fieldsplit_pressure_ksp_rtol = "1e-9",
+    fieldsplit_pressure_pc_type  = "lu", 
+    ksp_rtol = "1e-9",
+)
+cli_opts = PETSc.parse_options(_args)
+own_solver = haskey(cli_opts, :pc_type) || haskey(cli_opts, :ksp_type)
+opts     = merge(DEFAULT_DISCRETIZATION, own_solver ? (;) : DEFAULT_SOLVER, cli_opts)
 petsclib = PETSc.getlib(; PetscScalar = Float64)
 MPI.Initialized() || MPI.Init()
 PETSc.initialize(petsclib)

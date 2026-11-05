@@ -27,9 +27,7 @@ function mat_from_ptr(petsclib::PetscLib, ptr::CMat, own::Bool) where {PetscLib 
     m = LibPETSc.PetscMat{PetscLib}(ptr, petsclib.age; own)
     # Short-circuits on a borrowed handle, which is the hot path: callbacks wrap
     # PETSc-owned matrices on every invocation and never need the communicator.
-    if own && MPI.Comm_size(LibPETSc.PetscObjectGetComm(getlib(PetscLib), m)) == 1
-        destroy_at_gc!(m)
-    end
+    own && finalize_if_serial!(m)
     return m
 end
 """
@@ -109,11 +107,7 @@ function LibPETSc.PetscMat(
     # One call copies the pattern and the values
     LibPETSc.MatSeqAIJSetPreallocationCSR(petsclib, M, rowptr, colval, nzval)
     assemble!(M)
-    # The garbage collector can only destroy it when no other rank takes part
-    if MPI.Comm_size(comm) == 1
-        destroy_at_gc!(M)
-    end
-    return M
+    return own_serial!(M, comm)
 end
 
 """
@@ -164,9 +158,7 @@ function LibPETSc.PetscMat(
                 PetscInt(0), PetscInt.(nonzeros))    
     end
 
-    destroy_at_gc!(mat)
-
-    return mat
+    return own_serial!(mat, comm)
 end
 
 """
@@ -200,9 +192,7 @@ function LibPETSc.PetscMat(
     data = vec(A)
     mat = LibPETSc.MatCreateSeqDense(petsclib, comm, PetscInt(size(A, 1)), PetscInt(size(A, 2)), data)
     keep_alive!(mat, data)
-
-    destroy_at_gc!(mat)
-    return mat
+    return own_serial!(mat, comm)
 end
 
 """
@@ -238,8 +228,7 @@ function LibPETSc.PetscMat(
             PetscInt(num_cols),
             C_NULL,
         )
-        destroy_at_gc!(mat)
-        return mat
+        return own_serial!(mat, comm)
     elseif type === :seqaij || type === :aij
         return LibPETSc.PetscMat(petsclib, num_rows, num_cols, 0)
     else
@@ -391,11 +380,7 @@ function LibPETSc.PetscMat(
     )
 
     keep_alive!(mat, (row_ptr, col_idx, values))
-    # The garbage collector can only destroy it when no other rank takes part
-    if MPI.Comm_size(comm) == 1
-        destroy_at_gc!(mat)
-    end
-    return mat
+    return own_serial!(mat, comm)
 end
 
 """

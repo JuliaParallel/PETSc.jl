@@ -127,21 +127,36 @@ f(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
 `petsclib` is as in `@simple_fn`.
 """
 macro residual_fn(lib, f, outsz)
-    return residual_fn_expr(f, outsz, pointwise_types(__module__, lib)...)
+    return pointwise_fn_expr(f, outsz, pointwise_types(__module__, lib)..., :none)
 end
 
-function residual_fn_expr(f, outsz, PI, PS, PR)
+# One generator for the three point-function signatures. They differ only after
+# `t`: a Jacobian takes the shift `u_tShift` before `x` (`extra = :shift`), a
+# boundary function the outward normal `n` after it (`extra = :normal`).
+function pointwise_fn_expr(f, outsz, PI, PS, PR, extra::Symbol)
+    extra in (:none, :shift, :normal) || throw(ArgumentError("unknown point-function form $extra"))
     run_callback = GlobalRef(@__MODULE__, :run_callback)
     PV = GlobalRef(@__MODULE__, :PtrVector)
     cfn = Symbol(f, :__cfn__)
     gdim = gensym("dim"); gNf = gensym("Nf"); gNfAux = gensym("NfAux"); gnC = gensym("nC")
     m = Dict{Symbol,Any}(:dim_ => gdim, :Nf => gNf, :NfAux => gNfAux, :numConstants => gnC)
     outsz_s = petsc_subst(outsz, m)
-    cfn_ptr_expr = :(Base.@cfunction($cfn, Cvoid,
-        ($PI, $PI, $PI, Ptr{$PI}, Ptr{$PI},
-         Ptr{$PS}, Ptr{$PS}, Ptr{$PS}, Ptr{$PI}, Ptr{$PI},
-         Ptr{$PS}, Ptr{$PS}, Ptr{$PS},
-         $PR, Ptr{$PR}, $PI, Ptr{$PS}, Ptr{$PS})))
+
+    # The arguments after `t`: (C argument, its C type, what `f` receives)
+    tail = Any[]
+    extra === :shift && push!(tail, (:utShift, PR, :utShift))
+    push!(tail, (:x_p, :(Ptr{$PR}), :x))
+    extra === :normal && push!(tail, (:n_p, :(Ptr{$PR}), :n))
+    tail_args = [:($(name)::$(T)) for (name, T, _) in tail]
+    tail_ctypes = [T for (_, T, _) in tail]
+    tail_passed = [passed for (_, _, passed) in tail]
+    normal = extra === :normal ? :(n = $PV(n_p, $gdim)) : nothing
+
+    ctypes = Expr(:tuple, PI, PI, PI, :(Ptr{$PI}), :(Ptr{$PI}),
+                  :(Ptr{$PS}), :(Ptr{$PS}), :(Ptr{$PS}), :(Ptr{$PI}), :(Ptr{$PI}),
+                  :(Ptr{$PS}), :(Ptr{$PS}), :(Ptr{$PS}),
+                  PR, tail_ctypes..., PI, :(Ptr{$PS}), :(Ptr{$PS}))
+    cfn_ptr_expr = :(Base.@cfunction($cfn, Cvoid, $ctypes))
     quote
         function $(esc(cfn))(
             $gdim::$PI, $gNf::$PI, $gNfAux::$PI,
@@ -149,7 +164,7 @@ function residual_fn_expr(f, outsz, PI, PS, PR)
             u_p::Ptr{$PS}, u_tp::Ptr{$PS}, u_xp::Ptr{$PS},
             aOff_p::Ptr{$PI}, aOff_xp::Ptr{$PI},
             a_p::Ptr{$PS}, a_tp::Ptr{$PS}, a_xp::Ptr{$PS},
-            t::$PR, x_p::Ptr{$PR}, $gnC::$PI, cst_p::Ptr{$PS},
+            t::$PR, $(tail_args...), $gnC::$PI, cst_p::Ptr{$PS},
             out_p::Ptr{$PS},
         )::Cvoid
             uOff   = $PV(uOff_p,  $gNf + 1)
@@ -165,10 +180,11 @@ function residual_fn_expr(f, outsz, PI, PS, PR)
             a_t    = $PV(a_tp, naux > 0 ? aOff[end]   : 0)
             a_x    = $PV(a_xp, naux > 0 ? aOff_x[end] : 0)
             x      = $PV(x_p,     $gdim)
+            $normal
             constants = $PV(cst_p, $gnC)
             out    = $PV(out_p,   $outsz_s)
             $run_callback(() -> $(esc(f))($gdim, $gNf, $gNfAux, uOff, uOff_x, u, u_t, u_x,
-                      aOff, aOff_x, a, a_t, a_x, t, x, $gnC, constants, out),
+                      aOff, aOff_x, a, a_t, a_x, t, $(tail_passed...), $gnC, constants, out),
                 "pointwise function")
             return
         end
@@ -191,54 +207,7 @@ f(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
 `petsclib` is as in `@simple_fn`.
 """
 macro jacobian_fn(lib, f, outsz)
-    return jacobian_fn_expr(f, outsz, pointwise_types(__module__, lib)...)
-end
-
-function jacobian_fn_expr(f, outsz, PI, PS, PR)
-    run_callback = GlobalRef(@__MODULE__, :run_callback)
-    PV = GlobalRef(@__MODULE__, :PtrVector)
-    cfn = Symbol(f, :__cfn__)
-    gdim = gensym("dim"); gNf = gensym("Nf"); gNfAux = gensym("NfAux"); gnC = gensym("nC")
-    m = Dict{Symbol,Any}(:dim_ => gdim, :Nf => gNf, :NfAux => gNfAux, :numConstants => gnC)
-    outsz_s = petsc_subst(outsz, m)
-    cfn_ptr_expr = :(Base.@cfunction($cfn, Cvoid,
-        ($PI, $PI, $PI, Ptr{$PI}, Ptr{$PI},
-         Ptr{$PS}, Ptr{$PS}, Ptr{$PS}, Ptr{$PI}, Ptr{$PI},
-         Ptr{$PS}, Ptr{$PS}, Ptr{$PS},
-         $PR, $PR, Ptr{$PR}, $PI, Ptr{$PS}, Ptr{$PS})))
-    quote
-        function $(esc(cfn))(
-            $gdim::$PI, $gNf::$PI, $gNfAux::$PI,
-            uOff_p::Ptr{$PI}, uOff_xp::Ptr{$PI},
-            u_p::Ptr{$PS}, u_tp::Ptr{$PS}, u_xp::Ptr{$PS},
-            aOff_p::Ptr{$PI}, aOff_xp::Ptr{$PI},
-            a_p::Ptr{$PS}, a_tp::Ptr{$PS}, a_xp::Ptr{$PS},
-            t::$PR, utShift::$PR, x_p::Ptr{$PR},
-            $gnC::$PI, cst_p::Ptr{$PS},
-            out_p::Ptr{$PS},
-        )::Cvoid
-            uOff   = $PV(uOff_p,  $gNf + 1)
-            uOff_x = $PV(uOff_xp, $gNf + 1)
-            u      = $PV(u_p,     uOff[end])
-            u_t    = $PV(u_tp,    uOff[end])
-            u_x    = $PV(u_xp,    uOff_x[end])
-            # with no auxiliary fields PETSc may pass null pointers: length 0
-            naux   = $gNfAux > 0 ? $gNfAux + 1 : 0
-            aOff   = $PV(aOff_p,  naux)
-            aOff_x = $PV(aOff_xp, naux)
-            a      = $PV(a_p,  naux > 0 ? aOff[end]   : 0)
-            a_t    = $PV(a_tp, naux > 0 ? aOff[end]   : 0)
-            a_x    = $PV(a_xp, naux > 0 ? aOff_x[end] : 0)
-            x      = $PV(x_p,     $gdim)
-            constants = $PV(cst_p, $gnC)
-            out    = $PV(out_p,   $outsz_s)
-            $run_callback(() -> $(esc(f))($gdim, $gNf, $gNfAux, uOff, uOff_x, u, u_t, u_x,
-                      aOff, aOff_x, a, a_t, a_x, t, utShift, x, $gnC, constants, out),
-                "pointwise function")
-            return
-        end
-        @eval $cfn_ptr_expr
-    end
+    return pointwise_fn_expr(f, outsz, pointwise_types(__module__, lib)..., :shift)
 end
 
 """
@@ -257,53 +226,6 @@ f(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
 `petsclib` is as in `@simple_fn`.
 """
 macro bd_fn(lib, f, outsz)
-    return bd_fn_expr(f, outsz, pointwise_types(__module__, lib)...)
+    return pointwise_fn_expr(f, outsz, pointwise_types(__module__, lib)..., :normal)
 end
 
-function bd_fn_expr(f, outsz, PI, PS, PR)
-    run_callback = GlobalRef(@__MODULE__, :run_callback)
-    PV = GlobalRef(@__MODULE__, :PtrVector)
-    cfn = Symbol(f, :__cfn__)
-    gdim = gensym("dim"); gNf = gensym("Nf"); gNfAux = gensym("NfAux"); gnC = gensym("nC")
-    m = Dict{Symbol,Any}(:dim_ => gdim, :Nf => gNf, :NfAux => gNfAux, :numConstants => gnC)
-    outsz_s = petsc_subst(outsz, m)
-    cfn_ptr_expr = :(Base.@cfunction($cfn, Cvoid,
-        ($PI, $PI, $PI, Ptr{$PI}, Ptr{$PI},
-         Ptr{$PS}, Ptr{$PS}, Ptr{$PS}, Ptr{$PI}, Ptr{$PI},
-         Ptr{$PS}, Ptr{$PS}, Ptr{$PS},
-         $PR, Ptr{$PR}, Ptr{$PR}, $PI, Ptr{$PS}, Ptr{$PS})))
-    quote
-        function $(esc(cfn))(
-            $gdim::$PI, $gNf::$PI, $gNfAux::$PI,
-            uOff_p::Ptr{$PI}, uOff_xp::Ptr{$PI},
-            u_p::Ptr{$PS}, u_tp::Ptr{$PS}, u_xp::Ptr{$PS},
-            aOff_p::Ptr{$PI}, aOff_xp::Ptr{$PI},
-            a_p::Ptr{$PS}, a_tp::Ptr{$PS}, a_xp::Ptr{$PS},
-            t::$PR, x_p::Ptr{$PR}, n_p::Ptr{$PR},
-            $gnC::$PI, cst_p::Ptr{$PS},
-            out_p::Ptr{$PS},
-        )::Cvoid
-            uOff   = $PV(uOff_p,  $gNf + 1)
-            uOff_x = $PV(uOff_xp, $gNf + 1)
-            u      = $PV(u_p,     uOff[end])
-            u_t    = $PV(u_tp,    uOff[end])
-            u_x    = $PV(u_xp,    uOff_x[end])
-            # with no auxiliary fields PETSc may pass null pointers: length 0
-            naux   = $gNfAux > 0 ? $gNfAux + 1 : 0
-            aOff   = $PV(aOff_p,  naux)
-            aOff_x = $PV(aOff_xp, naux)
-            a      = $PV(a_p,  naux > 0 ? aOff[end]   : 0)
-            a_t    = $PV(a_tp, naux > 0 ? aOff[end]   : 0)
-            a_x    = $PV(a_xp, naux > 0 ? aOff_x[end] : 0)
-            x      = $PV(x_p, $gdim)
-            n      = $PV(n_p, $gdim)
-            constants = $PV(cst_p, $gnC)
-            out    = $PV(out_p, $outsz_s)
-            $run_callback(() -> $(esc(f))($gdim, $gNf, $gNfAux, uOff, uOff_x, u, u_t, u_x,
-                      aOff, aOff_x, a, a_t, a_x, t, x, n, $gnC, constants, out),
-                "pointwise function")
-            return
-        end
-        @eval $cfn_ptr_expr
-    end
-end

@@ -134,8 +134,7 @@ function own_solver!(configure!, obj, comm)
         destroy!(obj)
         rethrow()
     end
-    MPI.Comm_size(comm) == 1 && destroy_at_gc!(obj)
-    return obj
+    return own_serial!(obj, comm)
 end
 
 # ----------------------------------------------------------------------------

@@ -199,10 +199,7 @@ LibPETSc.@for_petsc function create_matshell(
         LibPETSc.MatShellSetOperation(petsclib, mat, LibPETSc.MATOP_MULT_ADD, ptr)
     end
 
-    # The garbage collector can only destroy it when no other rank takes part
-    if MPI.Comm_size(comm) == 1
-        destroy_at_gc!(mat)
-    end
+    own_serial!(mat, comm)
 
     return mat
 end

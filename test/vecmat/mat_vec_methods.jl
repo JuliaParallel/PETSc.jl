@@ -317,6 +317,28 @@ MPI.Initialized() || MPI.Init()
         foreach(PETSc.destroy!, (S, da, B, A, R))
     end
 
+    # A prefix view of a reused buffer goes to PETSc without a copy; its own
+    # length, not the buffer's, is what must cover the block
+    @testset "set_values! with prefix views of a scratch buffer" begin
+        PetscInt = petsclib.PetscInt
+        A = PETSc.PetscMat(petsclib, 3, 3, 3)
+        idx = PetscInt[0, 2, 1, 1]
+        vals = PetscScalar[1, 2, 3, 4, 9, 9]
+        PETSc.set_values!(A, view(idx, 1:2), view(idx, 1:2), view(vals, 1:4))
+        PETSc.assemble!(A)
+        @test A[:, :] == PetscScalar[1 0 2; 0 0 0; 3 0 4]
+        @test_throws "needs 4 values, got 2" PETSc.set_values!(
+            A, view(idx, 1:2), view(idx, 1:2), view(vals, 1:2))
+        PETSc.destroy!(A)
+    end
+
+    @testset "PetscVec on a Julia array with a block size" begin
+        v = PETSc.PetscVec(petsclib, comm, PetscScalar[1, 2, 3, 4]; blocksize = 2)
+        @test PETSc.LibPETSc.VecGetBlockSize(petsclib, v) == 2
+        @test v[:] == PetscScalar[1, 2, 3, 4]
+        PETSc.destroy!(v)
+    end
+
     @testset "add_index! and setindex! with grid indices" begin
         # 2D DMDA, 2 dofs: grid point (x, y) = (2, 1), component 2 is row 2(x - 1) + 2 = 4
         da = PETSc.DMDA(

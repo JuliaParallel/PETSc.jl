@@ -14,13 +14,16 @@ end
 const EX62 = joinpath(@__DIR__, "ex62.jl")
 const JL   = `$(Base.julia_cmd()) --startup-file=no --project=$(Base.active_project())`
 
+# `redundant` gathers a block on every rank and factors it with sequential LU, so
+# the tests need no parallel direct solver: a PETSc built from source with 64-bit
+# BLAS indices, as scripts/build_petsc.sh builds it, cannot have SuperLU_DIST.
 const SOLVER = ["-pc_use_amat",
                 "-pc_type","fieldsplit","-pc_fieldsplit_type","schur",
                 "-pc_fieldsplit_schur_factorization_type","full",
                 "-pc_fieldsplit_schur_precondition","a11",
-                "-fieldsplit_velocity_pc_type","lu",
+                "-fieldsplit_velocity_pc_type","redundant",
                 "-fieldsplit_pressure_ksp_rtol","1e-9",
-                "-fieldsplit_pressure_pc_type","lu",
+                "-fieldsplit_pressure_pc_type","redundant",
                 "-ksp_rtol","1e-9"]
 
 function run_ex62_mpi(nranks::Int, args...; tol::Union{Float64, Nothing} = nothing)
@@ -68,7 +71,7 @@ end
     @test run_ex62_mpi(2,
       "-sol","quadratic","-dm_refine","1","-petscpartitioner_type","simple",
       "-vel_petscspace_degree","2","-pres_petscspace_degree","1",
-      "-dmsnes_check","0.0001"; tol = 1e-8)
+      "-dmsnes_check","0.0001", SOLVER...; tol = 1e-8)
   end
 
   # ── Solver variants ──────────────────────────────────────────────────────
@@ -98,7 +101,7 @@ end
       "-snes_error_if_not_converged",
       "-ksp_type","fgmres","-ksp_gmres_restart","100","-ksp_rtol","1.0e-9","-ksp_error_if_not_converged",
       "-pc_type","fieldsplit","-pc_fieldsplit_type","schur","-pc_fieldsplit_schur_factorization_type","full",
-      "-fieldsplit_velocity_pc_type","lu","-fieldsplit_pressure_ksp_rtol","1e-10","-fieldsplit_pressure_pc_type","jacobi",
+      "-fieldsplit_velocity_pc_type","redundant","-fieldsplit_pressure_ksp_rtol","1e-10","-fieldsplit_pressure_pc_type","jacobi",
       "-fieldsplit_pressure_inner_ksp_type","preonly","-fieldsplit_pressure_inner_pc_type","jacobi",
       "-fieldsplit_pressure_upper_ksp_type","preonly","-fieldsplit_pressure_upper_pc_type","jacobi"; tol = 1e-5)
   end
@@ -129,7 +132,7 @@ end
       "-pc_type","fieldsplit","-pc_fieldsplit_type","schur",
       "-pc_fieldsplit_schur_factorization_type","full",
       "-pc_fieldsplit_schur_precondition","a11",
-      "-fieldsplit_velocity_pc_type","lu",
+      "-fieldsplit_velocity_pc_type","redundant",
       "-fieldsplit_pressure_ksp_rtol","1e-9",
       "-fieldsplit_pressure_pc_type","gamg",
       "-ksp_rtol","1e-9"; tol = 0.8)

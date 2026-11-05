@@ -15,13 +15,16 @@ end
 const EX69 = joinpath(@__DIR__, "ex69.jl")
 const JL   = `$(Base.julia_cmd()) --startup-file=no --project=$(Base.active_project())`
 
+# `redundant` gathers a block on every rank and factors it with sequential LU, so
+# the tests need no parallel direct solver: a PETSc built from source with 64-bit
+# BLAS indices, as scripts/build_petsc.sh builds it, cannot have SuperLU_DIST.
 const SOLVER = ["-pc_use_amat",
                 "-pc_type","fieldsplit","-pc_fieldsplit_type","schur",
                 "-pc_fieldsplit_schur_factorization_type","full",
                 "-pc_fieldsplit_schur_precondition","a11",
-                "-fieldsplit_velocity_pc_type","lu",
+                "-fieldsplit_velocity_pc_type","redundant",
                 "-fieldsplit_pressure_ksp_rtol","1e-9",
-                "-fieldsplit_pressure_pc_type","lu",
+                "-fieldsplit_pressure_pc_type","redundant",
                 "-ksp_rtol","1e-9"]
 
 """

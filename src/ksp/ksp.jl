@@ -317,7 +317,7 @@ end
 """
     dm(ksp::AbstractKSP)
 
-The DM attached to `ksp`, [`narrow`](@ref)ed to its flavour.
+The DM attached to `ksp`, [`narrow`](@ref)ed to its DM type.
 
 $(doc_borrowed())
 

@@ -23,7 +23,7 @@ da = DMDA(
     stencil_type = PETSc.DMDA_STENCIL_STAR,
 )
 
-da isa PETSc.DMDA{typeof(petsclib), 2}   # true: the flavour and the dimension
+da isa PETSc.DMDA{typeof(petsclib), 2}   # true: the DM type and the dimension
 ```
 
 `DMDA` is a Julia type rather than a factory function, so the dimension is in

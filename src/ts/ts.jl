@@ -405,7 +405,7 @@ end
 """
     dm(ts::AbstractTS)
 
-The DM attached to `ts`, [`narrow`](@ref)ed to its flavour.
+The DM attached to `ts`, [`narrow`](@ref)ed to its DM type.
 
 $(doc_borrowed())
 

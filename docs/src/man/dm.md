@@ -22,24 +22,24 @@ PETSc provides several DM implementations for different mesh types:
 | **DMStag** | Staggered grids for finite volume/difference methods | ✅ Full support |
 | **DMPlex** | Unstructured meshes + full FEM workflow (Gmsh, FE spaces, callbacks, VTK) | ✅ Full support |
 
-### Flavour is a type
+### The DM type is a Julia type
 
 `DMDA`, `DMStag` and `DMPlex` are Julia types, and constructing one returns that
 type:
 
 ```julia
 da = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (10,), 1; stencil_width = 1)
-da isa PETSc.DMDA{typeof(petsclib), 1}     # true: flavour and dimension
+da isa PETSc.DMDA{typeof(petsclib), 1}     # true: DM type and dimension
 ```
 
 All three are subtypes of `LibPETSc.AbstractPetscDM`, which is what a function
 working on any DM takes. `corners`, `ghost_corners`, `local_indices`,
-`set_uniform_coordinates!` and `Base.size` differ by flavour, so they are
+`set_uniform_coordinates!` and `Base.size` differ by DM type, so they are
 ordinary methods on `DMDA` and `DMStag` rather than one function comparing the
 string `DMGetType` returns.
 
 `LibPETSc.PetscDM` remains the low-level handle: `LibPETSc.DMCreate` and friends
-have to return something before the flavour is known. Turn one into a typed
+have to return something before the DM type is known. Turn one into a typed
 handle with [`PETSc.narrow`](@ref):
 
 ```julia

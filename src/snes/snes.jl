@@ -377,7 +377,7 @@ end
 """
     d = dm(snes::AbstractSNES)
 
-The DM attached to `snes`, [`narrow`](@ref)ed to its flavour.
+The DM attached to `snes`, [`narrow`](@ref)ed to its DM type.
 
 $(doc_borrowed())
 

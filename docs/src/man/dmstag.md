@@ -46,7 +46,7 @@ dm = DMStag(
     stencil_type = PETSc.DMSTAG_STENCIL_BOX,
 )
 
-dm isa PETSc.DMStag{typeof(petsclib), 2}   # true: the flavour and the dimension
+dm isa PETSc.DMStag{typeof(petsclib), 2}   # true: the DM type and the dimension
 
 # 3D staggered grid
 dm = DMStag(

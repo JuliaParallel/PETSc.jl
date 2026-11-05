@@ -201,7 +201,7 @@ An empty PETSc matrix of the given size.
 
 `type` is the PETSc implementation name as a `Symbol`:
 `:seqaij` (the default) preallocates nothing,
-`:seqdense` (spelled `:dense` as well) allocates the dense storage. Flavour is a
+`:seqdense` (spelled `:dense` as well) allocates the dense storage. The type is a
 keyword rather than a type parameter because it only affects construction, and
 every variant returns a `PetscMat`.
 

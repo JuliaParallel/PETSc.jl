@@ -37,7 +37,7 @@ makedocs(;
         "Home" => "index.md",
         "Installation" => "man/installation.md",
         "Getting Started" => "man/getting_started.md",
-        "Upgrading from 0.4" => "man/upgrading.md",
+        "Upgrading" => "man/upgrading.md",
         "Release notes" => "man/release_notes.md",
         "High-level interface" => Any[
             "Vec" =>  "man/vec.md",

@@ -1,0 +1,38 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using these metadata."
+type: software
+title: "PETSc.jl: Julia bindings for PETSc"
+authors:
+  - family-names: Kaus
+    given-names: Boris J.P.
+    affiliation: "Johannes Gutenberg University Mainz, Germany"
+    orcid: "https://orcid.org/0000-0002-0247-8660"
+  - family-names: Shah
+    given-names: Viral B.
+    affiliation: "Julia Computing, USA"
+    orcid: "https://orcid.org/0000-0001-9602-4012"
+  - family-names: Kozdon
+    given-names: Jeremy E.
+    affiliation: "NextSilicon, USA"
+    orcid: "https://orcid.org/0000-0002-2493-4292"
+  - family-names: Churavy
+    given-names: Valentin
+    affiliation: "Johannes Gutenberg University Mainz, Germany"
+    orcid: "https://orcid.org/0000-0002-9033-165X"
+  - family-names: Ranocha
+    given-names: Hendrik
+    affiliation: "Johannes Gutenberg University Mainz, Germany"
+    orcid: "https://orcid.org/0000-0002-3456-2277"
+  - family-names: Schnetter
+    given-names: Erik
+    affiliation: "Perimeter Institute, Canada"
+    orcid: "https://orcid.org/0000-0002-4518-9017"
+  - family-names: Byrne
+    given-names: Simon
+    affiliation: "NVIDIA, USA"
+    orcid: "https://orcid.org/0000-0001-8048-6810"
+license: MIT
+repository-code: "https://github.com/JuliaParallel/PETSc.jl"
+doi: 10.5281/zenodo.18274809
+version: 0.6.0
+date-released: 2026-11-06

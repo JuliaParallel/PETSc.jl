@@ -12,6 +12,9 @@ You can thus help in many ways:
 7) Keep the precompiled binaries in [PETSc_jll](https://github.com/JuliaBinaryWrappers/PETSc_jll.jl) up to date.
 
 
+#### Reporting bugs and asking questions
+Bug reports and feature requests go to the [GitHub issue tracker](https://github.com/JuliaParallel/PETSc.jl/issues). Questions can be asked there or on the [Julia Discourse](https://discourse.julialang.org) under the "Numerics" category.
+
 #### Autowrappers
 The low-level `LibPETSc` wrappers are generated, once per PETSc release, by the maintainer-only generator in `wrapping/generator/`; see `wrapping/WRAPPING.md` for how it works and what to watch for. Never edit files in `src/autowrapped/` by hand.
 

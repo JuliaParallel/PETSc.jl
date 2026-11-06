@@ -1,6 +1,6 @@
-# Upgrading from 0.4
+# Upgrading from 0.4 and 0.5
 
-PETSc.jl 0.5 is a breaking release. Most of the high-level API has new names, the low-level `LibPETSc` functions return their outputs, and the package needs Julia 1.12 and PETSc 3.25. This page is the order in which to update code written for 0.4. 0.6 removes the 0.5 warnings that name each replacement, so upgrade to 0.5.5 first, follow this page, and then move to 0.6. Every change is listed in the [Release notes](release_notes.md), and every renamed function in the rename table at the end of [Naming Conventions](naming.md).
+PETSc.jl 0.5 is a breaking release. Most of the high-level API has new names, the low-level `LibPETSc` functions return their outputs, and the package needs Julia 1.12 and PETSc 3.25. This page is the order in which to update code written for 0.4. 0.6 removes the 0.5 warnings that name each replacement, so upgrade to 0.5.5 first, follow this page, and then move to 0.6 as described in [Upgrading from 0.5 to 0.6](@ref). Every change is listed in the [Release notes](release_notes.md), and every renamed function in the rename table at the end of [Naming Conventions](naming.md).
 
 ## 1. Requirements
 
@@ -145,25 +145,35 @@ The [Release notes](release_notes.md) list the remaining changes, and [`wrapping
 
 ### What changes in 0.6 without a warning
 
-These can't warn without firing on correct code, so check them now. The [release notes](release_notes.md) give the detail under "Coming in v0.6".
-
-- **Options are applied once**, at the first `setup!` or `solve!` of a KSP, SNES or TS. This is the default in 0.6; pass `options_at = :first_solve` on 0.5.5 to get it there.
-- **Solves throw on divergence.** This is the default in 0.6; pass `check = true` to `solve!` on 0.5.5 to get it there, and `check = false` where the code reads `converged_reason` after a failed solve.
-- **`w = 2 .* x` returns a `PetscVec`**, not a `Vector`, and works on a distributed vector. Destroy the result like any other Vec. A broadcast that gives `Bool` (`x .> 0`) throws; broadcast over `x[:]` for it. `2 * x` already returns a `PetscVec`.
-- **`set_convergence_test!` passes `PetscReal` norms**, not `Float64`. This matters only for a Float32 library with a callback whose arguments are annotated `Float64`.
-- **A callback's return value is ignored**, a nonzero `Integer` too. 0.5.5 warns once per callback that returns one; throw an exception to report a failure.
-- **`size(v)` is a tuple.** `size(v) == n` is `false` from 0.6 and raises no error; use `length(v) == n`. `length(v)` is an `Int`.
-- **`copy_disc!(dst, src)`** takes the destination first.
-- **`distribute(dm)` on one rank returns a clone of `dm`** with its fields, not a DM with a null pointer, so `d = distribute(dm); destroy!(dm); dm = d` needs no special case. A `d.ptr == C_NULL` check is now always false.
-- **`LibPETSc.MatStencil` fields are `k, j, i, c`**, as in PETSc's C struct. Positional construction is unchanged; `s.i` reads the third field, where it read the first.
-- **`A * B` of two `PetscMat`s is a `PetscMat`**, not a dense `Matrix`. Reading entries and comparing still work; code that needs a Julia matrix calls `collect(A * B)`, and on more than one rank the product must be destroyed with `destroy!`.
-- **A matrix of values in `set_values!(A, rows_0b, cols_0b, vals)` is the block**, as in `A[rows, cols] = vals`, and must have `length(rows_0b)` × `length(cols_0b)` entries. On 0.5 a matrix was read in Julia's column-major order, so a non-symmetric block landed transposed. Code that passed `permutedims(B)` to get the right result now passes `B`; a vector of values is still read row by row.
-- **FE, label and null-space functions lose `petsclib`.** The handles carry the library, so `set_name!(obj, name)`, `copy_quadrature!(dst_fe, src_fe)` (destination first, it was `(petsclib, src, dst)`), `compose_constant_nullspace!(fe)` and `destroy!(nullspace)` take no `petsclib` or communicator. `label(dm, name)` returns a `DMLabel`, or `nothing` where it returned `C_NULL`: `c_label != C_NULL` is now always true without an error, so test `isnothing(c_label)`. `set_field!`, `add_boundary!` and `add_natural_boundary!` take a `PetscFE` and a `DMLabel` where they took `Ptr`s; `set_field!(dm, i, fe; label = C_NULL)` is `label = nothing` (the default).
-- **`wrap_local_array` and `unsafe_local_array` are removed.** They handed out a local array that went back to PETSc when the array's finalizer ran, so the Vec stayed checked out until the garbage collector got to it, on whichever thread that was. Use `with_local_array!(f!, v)` (`memtype = :host` for a host array on a device Vec), or `acquire_local_array(v; read, write)` with `release_local_array(cpu_arr, backend, v; read, write)` for an explicit pair.
-- **`PetscVec <: AbstractVector`.** Generic Julia code accepts a PetscVec. `==` compares the entries (collective) and `hash` throws, on PetscVecs and PetscMats; `collect(v)` gives every rank the whole vector. **`PetscMat <: AbstractMatrix`** as well: `A == B` compares values, so a stored zero no longer makes two matrices unequal; `PETSc.equal(A, B)` is the old `MatEqual` test.
+These can't warn without firing on correct code, so check them now: see [Upgrading from 0.5 to 0.6](@ref) below. On 0.5.5, `options_at = :first_solve` and `check = true` on `solve!` give the 0.6 defaults early.
 
 ## 8. Looking up a name
 
 - **An old high-level name:** the rename table at the end of [Naming Conventions](naming.md).
 - **A PETSc C function:** the [C to Julia name index](api_index.md).
 - **Why a name is what it is:** the rules in [Naming Conventions](naming.md).
+
+## Upgrading from 0.5 to 0.6
+
+0.6 removes every 0.5 deprecation and changes some behavior without a warning. The changes below give no error, or an error that does not name the fix. The [Release notes](release_notes.md) list all of them.
+
+- **Removed deprecations.** Every name, argument order and keyword that warned on 0.5.5 is an `UndefVarError` or `MethodError` on 0.6. Run your code on 0.5.5 first and fix every warning (step 2).
+- **Pointwise functions get `PtrVector`s.** The array arguments of a function made with `@simple_fn`, `@residual_fn`, `@jacobian_fn` or `@bd_fn` are `PETSc.PtrVector`s, not `Vector`s. An argument annotated `::Vector`, `::DenseVector` or `::StridedVector`, or a `reshape` annotated `::Matrix`, throws a `MethodError`. Annotate `::AbstractVector` (or `::AbstractMatrix`), or leave the annotation out.
+- **A callback's return value is ignored**, a nonzero `Integer` too. Throw an exception to report a failure.
+- **`user_ctx` is removed**, with `set_user_ctx!` and the SNES and TS callbacks that take a trailing context. A callback with only the trailing-context method throws a `MethodError` when called. Let a closure carry the context.
+- **`solve!` and `step!` throw a `ConvergenceError`** when the solver stops without converging. Pass `check = false` where the code reads `converged_reason` after a failed solve.
+- **Options are applied at the first `setup!` or `solve!`** of a KSP, SNES or TS, not in the constructor or at every solve. Until then a KSP has no type: code that needs it earlier, such as `set_fieldsplit_is!` on a PC chosen by `pc_type`, calls `set_type!` itself or passes `options_at = :construction`. Pass `options_at = :each_solve` to re-read them at every solve.
+- **The options database wins over constructor keywords.** KSP, SNES, TS and the DM constructors read `PETSC_OPTIONS` and the options given to `PETSc.initialize` together with their keywords, and the database wins on a key both set. Remove the key from the database where the keyword should apply.
+- **`w = 2 .* x` returns a `PetscVec`**, not a `Vector`. On more than one rank, destroy it with `destroy!`. Code that used the `Vector` (`2 .* x == y_julia`, `findall(x .> 0)`) indexes with `x[:]` first.
+- **`size(v)` is the tuple `(n,)`.** `size(v) == n` is `false` without an error; write `length(v) == n`.
+- **`v == w` compares the entries** of two PetscVecs, collectively, and `hash` throws on a PetscVec or PetscMat. Compare handles with `===`, and key a `Dict` of handles with an `IdDict`.
+- **`A == B` compares the entries** of two PetscMats, so a stored zero no longer makes them unequal. `PETSc.equal(A, B)` is the old `MatEqual` test.
+- **`copy_disc!(dst, src)` takes the destination first.** A call in the old order runs and copies the wrong way: swap the arguments.
+- **A matrix of values in `set_values!(A, rows_0b, cols_0b, vals)` is the block**, as in `A[rows, cols] = vals`. On 0.5 a non-symmetric block landed transposed. Code that passed `permutedims(B)` now passes `B`.
+- **`LibPETSc.MatStencil` fields are `k, j, i, c`.** Positional construction is unchanged, but `s.i` now reads the third field. Write `s.k` where the code read `s.i`, and the reverse.
+- **`A * B` of two `PetscMat`s is a `PetscMat`**, not a `Matrix`. Call `collect(A * B)` for a Julia matrix, and `destroy!` the product on more than one rank.
+- **`unsafe_local_array` and `wrap_local_array` are removed.** Use `with_local_array!(f!, v)`, or `acquire_local_array` with `release_local_array`.
+- **`set_convergence_test!` passes `PetscReal` norms**, not `Float64`. This matters only for a Float32 library with a callback whose arguments are annotated `Float64`.
+- **`distribute(dm)` on one rank returns a clone of `dm`** with its fields, not a DM with a null pointer, so `d = distribute(dm); destroy!(dm); dm = d` needs no special case. A `d.ptr == C_NULL` check is now always false.
+- **FE, label and null-space functions lose `petsclib`.** The handles carry the library, so `set_name!(obj, name)`, `copy_quadrature!(dst_fe, src_fe)` (destination first, it was `(petsclib, src, dst)`), `compose_constant_nullspace!(fe)` and `destroy!(nullspace)` take no `petsclib` or communicator. `label(dm, name)` returns a `DMLabel`, or `nothing` where it returned `C_NULL`: `c_label != C_NULL` is now always true without an error, so test `isnothing(c_label)`. `set_field!`, `add_boundary!` and `add_natural_boundary!` take a `PetscFE` and a `DMLabel` where they took `Ptr`s; `set_field!(dm, i, fe; label = C_NULL)` is `label = nothing` (the default).
+- **`isapprox(v, w)` compares norms**, ‖v − w‖ ≤ max(atol, rtol·max(‖v‖, ‖w‖)), as for Julia arrays, instead of entry by entry. For the old test write `all(isapprox.(v[:], w[:]))`.

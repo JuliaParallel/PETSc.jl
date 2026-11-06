@@ -6,7 +6,7 @@
 [![doc dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://juliaparallel.github.io/PETSc.jl/dev/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18274809.svg)](https://doi.org/10.5281/zenodo.18274809)
 
-> Coming from 0.4? See [Upgrading from 0.4](https://juliaparallel.github.io/PETSc.jl/stable/man/upgrading/) and the [release notes](CHANGELOG.md).
+> Coming from 0.4 or 0.5? 0.5 and 0.6 are breaking releases; see [Upgrading](https://juliaparallel.github.io/PETSc.jl/stable/man/upgrading/) and the [release notes](CHANGELOG.md).
 
 `PETSc.jl` provides an interface to the Portable, Extensible Toolkit for Scientific Computation ([PETSc](https://petsc.org)) library, allowing the combination of Julia features (such as automatic differentiation) with the PETSc's infrastructure, including linear, nonlinear, and optimization solvers, timesteppers, domain management (DM), and more, in a distributed-memory (MPI) environment. 
 
@@ -81,3 +81,9 @@ Any PETSc command-line option can be passed as a keyword, as in `ksp_type = "cg"
 For more, have a look at the [documentation](https://juliaparallel.github.io/PETSc.jl/stable/), at the [examples](./examples/) directory or at the tests in the [test](./test) directory. We do keep the tests up to date, so that is a good starting point. 
 
 Note that we do not have tests in place for the whole library at this stage. The best supported parts are `DMDA`, `DMStag`, `DMPlex`, `KSP`, `SNES`, `Vec`, and `Mat`. Other DM types (DMForest, DMNetwork, DMSwarm) do not yet have a high-level interface; users will have to rely on the low-level `LibPETSc` interface for those.
+
+## Citing
+If you use PETSc.jl in your work, please cite it via the Zenodo DOI above; a BibTeX entry is in [CITATION.bib](CITATION.bib), and GitHub's "Cite this repository" button uses [CITATION.cff](CITATION.cff).
+
+## Contributing and support
+Bug reports and feature requests go to the [GitHub issue tracker](https://github.com/JuliaParallel/PETSc.jl/issues). Questions can be asked there or on the [Julia Discourse](https://discourse.julialang.org) under the "Numerics" category. Contributions are welcome; see the [Contributing](https://juliaparallel.github.io/PETSc.jl/stable/man/contributing/) page of the documentation.

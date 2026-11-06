@@ -1,6 +1,6 @@
 # PETSc.jl
 
-[![Build Status](https://github.com/JuliaParallel/PETSc.jl/workflows/CI/badge.svg)](https://github.com/JuliaParallel/PETSc.jl/actions/workflows/ci.yml)
+[![Build Status](https://github.com/JuliaParallel/PETSc.jl/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/JuliaParallel/PETSc.jl/actions/workflows/ci.yml)
 [![doc stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://juliaparallel.github.io/PETSc.jl/stable/)
 [![doc dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://juliaparallel.github.io/PETSc.jl/dev/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18274809.svg)](https://doi.org/10.5281/zenodo.18274809)

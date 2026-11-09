@@ -1,7 +1,7 @@
-# The rename register for the v0.5 high-level API (docs/src/man/naming.md §1.1).
+# The rename register for the v0.5 high-level API (docs/src/man/conventions.md, "The register").
 #
 # This file is plain data and is edited by hand. src/public_names.jl, the `public`
-# declaration (§13.1), is generated from it so that the two cannot drift apart.
+# declaration ("The `public` keyword"), is generated from it so that the two cannot drift apart.
 # scripts/audit.jl reads its creator and destroyer name sets.
 #
 # Run `julia --project=. scripts/generate_renames.jl` after editing.
@@ -16,7 +16,7 @@
 
 # ---------------------------------------------------------------------------
 # Renamed bindings, v0.4 => v0.5. The old names have no shims from v0.6; the
-# new names are public. The rename table in docs/src/man/naming.md follows it.
+# new names are public. The rename appendix of docs/src/man/upgrading.md follows it.
 # ---------------------------------------------------------------------------
 
 const RENAMES = Pair{Symbol, Symbol}[
@@ -72,7 +72,7 @@ const RENAMES = Pair{Symbol, Symbol}[
     :mat_null_space_destroy! => :destroy!,
     :vtk_save! => :save_vtk,
     :vtk_save_fields! => :save_vtk,
-    :save_vtk! => :save_vtk,       # v0.5.1: it writes a file and mutates no argument (§7)
+    :save_vtk! => :save_vtk,       # v0.5.1: it writes a file and mutates no argument ("Mutation")
     :setfield! => :set_field!,
     :dmclone => :clone,
     :plex_set_snes_local_fem! => :set_snes_local_fem!,
@@ -95,7 +95,7 @@ const RENAMES = Pair{Symbol, Symbol}[
     :setjacobian! => :set_snes_jacobian!,
     :setconvergencetest! => :set_convergence_test!,
 
-    # vec.jl, mat.jl: construction goes through the type (§5.1, §6)
+    # vec.jl, mat.jl: construction goes through the type ("Types", "Constructors")
     :VecSeq => :PetscVec,
     :MatSeqAIJ => :PetscMat,
     :MatSeqDense => :PetscMat,
@@ -127,7 +127,7 @@ const RENAMES = Pair{Symbol, Symbol}[
 const BASE_TARGETS = Set{Symbol}([:ndims])
 
 # ---------------------------------------------------------------------------
-# Internal helpers: renamed freely, not part of the API (§1.1).
+# Internal helpers: renamed freely, not part of the API ("The register").
 # ---------------------------------------------------------------------------
 
 const INTERNAL = Set{Symbol}([
@@ -150,7 +150,7 @@ const INTERNAL = Set{Symbol}([
     :simple_fn_expr,
     :pointwise_fn_expr,
     :pointwise_types,
-    # leading underscore dropped (naming.md "Internals")
+    # leading underscore dropped (conventions.md, "The register")
     :petsc_link,
     :petsc_subst,
     :build_petsc_options,
@@ -198,7 +198,7 @@ const INTERNAL = Set{Symbol}([
     :_local_arrays,
     :_restore_local_arrays!,
     # kept as they are
-    # state kept with the PETSc object, and running callbacks (naming.md §18.3, §18.4)
+    # state kept with the PETSc object, and running callbacks (conventions.md, "Callback state lives with the PETSc object" and "Exceptions in callbacks")
     :ObjectState,
     :state_type,
     :object_states,
@@ -228,7 +228,7 @@ const INTERNAL = Set{Symbol}([
     :keep_alive!,
     :shell_state,
     :DM_ACTIVE_PARTS,
-    :PCShellSetApplyFn,      # a trampoline type (§18.6)
+    :PCShellSetApplyFn,      # a trampoline type ("Public surface")
     :PCShellSetSetUpFn,
     :PCSetPostSetUpFn,
     :KSPSetPreSolveFn,
@@ -370,7 +370,7 @@ const UNCHANGED_PUBLIC = Symbol[
     :set_residual!,
     :set_jacobian!,
     :set_jacobian_preconditioner!,
-    # handle types, defined in LibPETSc (naming.md §5.2, §5.5); new in v0.5.4
+    # handle types, defined in LibPETSc (conventions.md, "Prefixes" and "Abstract, callback and wrapper types"); new in v0.5.4
     :AbstractPetscVec,
     :AbstractPetscMat,
     :AbstractPetscDM,
@@ -488,7 +488,7 @@ const UNCHANGED_PUBLIC = Symbol[
     :parse_options,
 ]
 
-# Names `PETSc` exports (§13): the nine types
+# Names `PETSc` exports ("Exports"): the nine types
 # and construction entry points, `petsclibs`, and the `LibPETSc` submodule.
 # A name cannot be both exported and `public`, so these are subtracted from the
 # generated `public` declaration. The twelve v0.4 exports are gone.
@@ -507,7 +507,7 @@ const EXPORTED = Symbol[
 ]
 
 # ---------------------------------------------------------------------------
-# Names scripts/audit.jl matches against (naming.md "Two consequences worth knowing").
+# Names scripts/audit.jl matches against (conventions.md, "The register").
 # ---------------------------------------------------------------------------
 
 # Type constructors: the name is also the kind of object.

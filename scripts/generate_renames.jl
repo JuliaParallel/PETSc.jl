@@ -3,7 +3,7 @@
 #   julia --project=. scripts/generate_renames.jl
 #
 # Reads scripts/renames.jl and writes src/public_names.jl, the `public`
-# declaration (§13.1). The file is not edited by hand.
+# declaration ("The `public` keyword"). The file is not edited by hand.
 
 include(joinpath(@__DIR__, "renames.jl"))
 
@@ -58,7 +58,7 @@ function write_public(path)
         io,
         """
 #
-# The high-level API that is not exported (docs/src/man/naming.md §13.1).
+# The high-level API that is not exported (docs/src/man/conventions.md, "The `public` keyword").
 # Julia 1.12 is the minimum supported version, so this is unconditional.
 
 """,

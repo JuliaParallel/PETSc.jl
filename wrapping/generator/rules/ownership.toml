@@ -1,4 +1,4 @@
-# Who owns a handle a generated function returns (docs/src/man/naming.md §18.2).
+# Who owns a handle a generated function returns (docs/src/man/conventions.md, "Ownership").
 #
 # A handle returned by a function whose name contains `Get` is borrowed: PETSc's
 # convention is that `XGetY` hands out a reference the caller must not destroy,

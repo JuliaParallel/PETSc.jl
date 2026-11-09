@@ -256,7 +256,7 @@ These change what working code does or remove a name. The ones marked "warns" pr
 
 ## v0.5.1
 
-0.5.1 settles how a wrapper relates to its PETSc object and what happens when PETSc calls back into Julia (docs/src/man/naming.md §18), fixes a use-after-free, and adds what a nested or logged solve needs. Working code is most likely to notice the four behaviour changes below; each replaces behaviour that was unsafe or contradicted the docs.
+0.5.1 settles how a wrapper relates to its PETSc object and what happens when PETSc calls back into Julia, fixes a use-after-free, and adds what a nested or logged solve needs. Working code is most likely to notice the four behaviour changes below; each replaces behaviour that was unsafe or contradicted the docs.
 
 ### Behaviour changes
 
@@ -269,7 +269,7 @@ These change what working code does or remove a name. The ones marked "warns" pr
 
 - **Use-after-free:** `PetscVec(petsclib, array)` and `PetscVec(petsclib, comm, array)` did not keep `array` alive, so after a garbage collection the vector could use reclaimed memory. `ksp \ b` with a Julia vector and `M * x` with a `MatShell` had the same bug. The same applied to matrices built on CSR arrays once a solver outlived the handle.
 - An exception in a SNES, KSP or `MatShell` callback unwound through PETSc's C code, which is undefined behaviour. `solve!`, `step!` and `setup!` now rethrow the original exception; a solve started through `LibPETSc` logs it and throws `PetscError`.
-- A callback set through a borrowed handle, such as `set_function!(f!, snes(ts), r)`, could be garbage-collected while the solver still used it. Callbacks, the user context and constructor options now live with the PETSc object (naming.md §18.3); the old fields such as `snes.user_ctx` still work.
+- A callback set through a borrowed handle, such as `set_function!(f!, snes(ts), r)`, could be garbage-collected while the solver still used it. Callbacks, the user context and constructor options now live with the PETSc object; the old fields such as `snes.user_ctx` still work.
 - `set_convergence_test!` overwrote `snes.user_ctx`.
 - `KSP(petsclib, comm, S::SparseMatrixCSC)` leaked its matrix.
 - `TSIRK` types (`-ts_irk_type gauss`, …) were lost after `finalize` and `initialize`.
@@ -287,7 +287,7 @@ These change what working code does or remove a name. The ones marked "warns" pr
 
 ### Changed
 
-- Every `!` function returns the object it mutates (naming.md §7), for example `set_type!(ksp, :cg)` returns `ksp` and `solve!(x, ksp, b)` returns `x`; about 60 returned `nothing`. The exceptions are `destroy!` and other releases, which return `nothing`, and `with_local_array!`, which returns its block's result.
+- Every `!` function returns the object it mutates, for example `set_type!(ksp, :cg)` returns `ksp` and `solve!(x, ksp, b)` returns `x`; about 60 returned `nothing`. The exceptions are `destroy!` and other releases, which return `nothing`, and `with_local_array!`, which returns its block's result.
 - A callback's return value is ignored: it fails by throwing. Until v0.6, a nonzero `Integer` still fails the call and warns.
 - `KSP`, `MatShell` and the CSR and `SparseMatrixCSC` `PetscMat` constructors attach a finalizer on one process, like `SNES` and `TS`.
 - `save_vtk!` and `vtk_merge_tensor!` are now `save_vtk` and `vtk_merge_tensor`, since they mutate no argument; the old names warn until v0.6.
@@ -315,7 +315,7 @@ PETSc.jl 0.5 wraps PETSc 3.25.4 (PETSc_jll 3.25) and requires Julia 1.12. The lo
 
 ### High-level API renamed (naming conventions)
 
-The high-level interface follows `docs/src/man/naming.md` from v0.5 on. Roughly a hundred names change, and the full rename table is at the end of that page — what follows is what the changes are and how to move.
+The high-level interface follows the [API conventions](docs/src/man/conventions.md) from v0.5 on. Roughly a hundred names change, and the full rename table is in the [Upgrading](docs/src/man/upgrading.md) guide — what follows is what the changes are and how to move.
 
 **The register and the shims.** `scripts/renames.jl` is the register: a plain list of `old => new` pairs plus the internal and unchanged-public sets. `src/deprecations.jl`, `src/public_names.jl`, `src/audit_names.jl` and `test/test_deprecations.jl` are generated from it by `scripts/generate_renames.jl`, so they cannot drift apart, and `scripts/api_surface.jl --check` (run by the test suite) fails if a binding is in none of its sets.
 Every renamed name keeps a forwarding shim that **warns once per call site** — through `@warn`, not `Base.depwarn`, so it prints whatever `--depwarn` is set to — and the shims are **removed in v0.6**.
@@ -335,7 +335,7 @@ No shim can help here: the replacements are not exported either, so `using PETSc
 
 **Construction goes through the type.** `PetscVec(petsclib, …)` replaces `VecSeq` and `as_petsc_vec`; `PetscMat(petsclib, …)` replaces `MatSeqAIJ`, `MatSeqDense`, `MatCreateSeqAIJ`, `MatSeqAIJWithArrays` and `MatAIJ`; `PetscOptions` replaces `Options`; `PetscLibType(path; …)` replaces `set_petsclib`. `KSP`, `SNES` and `TS` are types rather than factory functions, so `ksp isa PETSc.KSP` holds.
 
-**A typed DM hierarchy.** `DMDA{L,N}`, `DMStag{L,N}` and `DMPlex{L}` are concrete types under `LibPETSc.AbstractPetscDM`, not one type with a runtime string flavour. Code annotated `::PetscDM` no longer matches — use `AbstractPetscDM`. `PETSc.narrow(dm)` turns a low-level handle into the typed one; it queries PETSc, so its return type is a wide `Union` and hot code should narrow once behind a function barrier. The nine DM-flavour `@assert`s are gone: dispatch enforces what they checked.
+**A typed DM hierarchy.** `DMDA{L,N}`, `DMStag{L,N}` and `DMPlex{L}` are concrete types under `LibPETSc.AbstractPetscDM`, not one type whose DM type is a runtime string. Code annotated `::PetscDM` no longer matches — use `AbstractPetscDM`. `PETSc.narrow(dm)` turns a low-level handle into the typed one; it queries PETSc, so its return type is a wide `Union` and hot code should narrow once behind a function barrier. The nine DM-type `@assert`s are gone: dispatch enforces what they checked.
 
 **Borrowed handles.** A reader that hands back a PETSc object owned by another object — `dm(ksp)`, `solution(snes)`, `local_coordinates(dm)`, `tolerances(ts)`'s vectors — returns a borrowed handle: no finalizer, and `destroy!` on it is a no-op (`PETSc.owns` tells the two apart). Nothing changed at runtime; destroying such a handle was corrupting the owner's already. `destroy` is now `destroy!`, per the mutation convention.
 
@@ -351,7 +351,7 @@ No shim can help here: the replacements are not exported either, so `using PETSc
 
 **Smaller changes.** `library_info()` returns `(; source, path, scalar, int, real)` and prints its old report from a `show` method. Argument problems raise `ArgumentError`, `DimensionMismatch` or `PetscNotInitialized` rather than `AssertionError` or a bare `error`. `PETSc.KSP(…)` / `PETSc.SNES(…)` construct the `LibPETSc.KSP` / `LibPETSc.SNES` types.
 
-The rename table, and the reasoning behind each rule, are in [`docs/src/man/naming.md`](docs/src/man/naming.md); the C-function-to-Julia-name lookup is the generated "C to Julia name index" page in the manual.
+The rename table is in the [Upgrading](docs/src/man/upgrading.md) guide and the reasoning behind each rule in the [API conventions](docs/src/man/conventions.md); the C-function-to-Julia-name lookup is the generated "C to Julia name index" page in the manual.
 
 ### Changed
 

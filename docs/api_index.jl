@@ -1,4 +1,4 @@
-# The C-name-to-Julia-name index page (docs/src/man/naming.md §15).
+# The C-name-to-Julia-name index page (docs/src/man/conventions.md, "Docstrings").
 #
 # Renaming a thin wrapper costs discoverability: someone who knows
 # `PetscFECopyQuadrature` cannot grep for it once it is `copy_quadrature!`. Every
@@ -123,7 +123,7 @@ function write_api_index(
             io,
             """
             The high-level interface renames PETSc's C functions to Julia
-            conventions (see [the naming conventions](naming.md)), which costs
+            conventions (see the [API conventions](conventions.md)), which costs
             discoverability: someone who knows `PetscFECopyQuadrature` cannot
             grep for it once it is `copy_quadrature!`. This page is the lookup
             table in the other direction.

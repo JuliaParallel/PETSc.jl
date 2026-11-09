@@ -147,7 +147,7 @@ replacement), `[[handles]]` (C name, Julia struct, abstract type, C alias), `[re
 
 `ownership.toml`: `owned` lists the `Get` functions that hand the caller a new reference. A handle
 returned by any other function with `Get` in its name is built with `own = false`, so `destroy!` on
-it does nothing (naming.md §18.2); every other returned handle has `own = true`. A function goes on
+it does nothing (conventions.md, "Ownership"); every other returned handle has `own = true`. A function goes on
 the list only when its manual page or source is clear, since a wrong entry destroys an object twice.
 
 `args.toml` (hand-maintained), `args_mined.toml` (written by `bootstrap_rules.jl`) and `args_required.toml`

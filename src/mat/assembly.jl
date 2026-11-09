@@ -148,7 +148,8 @@ Set values of the matrix `M` with base-0 row and column indices `rows_0b` and
 `cols_0b`. A matrix `rowvals` is the block itself, of size `num_rows`×`num_cols`,
 as for `A[rows, cols] = B`; any other array is read row by row in linear order.
 A `Vector{MatStencil}` and a `Vector` (or `Array` other than a matrix) of the
-library's scalar type go to PETSc as they are; anything else is copied first.
+library's scalar type go to PETSc as they are, and so does a prefix view
+`view(buf, 1:n)` of one; anything else is copied first.
 
 The `_0b` suffix says what the base is: a bulk index array handed to C keeps
 PETSc's base rather than being rebuilt on a hot path (docs/src/man/naming.md
@@ -172,14 +173,14 @@ function set_values!(
 ) where {PetscLib}
     PetscInt = PetscLib.PetscInt
     vals = block_values(PetscLib.PetscScalar, rowvals, num_rows, num_cols)
-    check_block(num_rows, num_cols, length(rows_0b), length(cols_0b), length(vals))
+    check_block(num_rows, num_cols, length(rows_0b), length(cols_0b), length(rowvals))
     LibPETSc.MatSetValuesStencil(
         PetscLib,
         M,
         PetscInt(num_rows),
-        c_vector(MatStencil, rows_0b),
+        c_prefix(MatStencil, rows_0b),
         PetscInt(num_cols),
-        c_vector(MatStencil, cols_0b),
+        c_prefix(MatStencil, cols_0b),
         vals,
         mode,
     )
@@ -193,9 +194,18 @@ c_vector(::Type{T}, v::Vector{T}) where {T} = v
 c_vector(::Type{T}, v::Array{T}) where {T} = vec(v)
 c_vector(::Type{T}, v::AbstractArray) where {T} = copyto!(Vector{T}(undef, length(v)), v)
 
+# For a C call that also takes the count: a `Vector{T}` whose first `length(v)`
+# entries are `v`. The parent of a prefix view `view(buf, 1:n)` of a `Vector{T}`
+# passes without a copy, so a reused scratch buffer costs nothing; anything else
+# goes through `c_vector`. Size checks use `length(v)`, never the parent's.
+const PrefixView{T} = SubArray{T, 1, Vector{T}, Tuple{UnitRange{Int}}, true}
+c_prefix(::Type{T}, v::AbstractArray) where {T} = c_vector(T, v)
+c_prefix(::Type{T}, v::PrefixView{T}) where {T} =
+    first(parentindices(v)[1]) == 1 ? parent(v) : c_vector(T, v)
+
 # The values in the row-major order MatSetValues reads. A matrix is the block
 # and is transposed into a copy, since Julia stores it column by column.
-block_values(::Type{T}, vals::AbstractArray, num_rows, num_cols) where {T} = c_vector(T, vals)
+block_values(::Type{T}, vals::AbstractArray, num_rows, num_cols) where {T} = c_prefix(T, vals)
 function block_values(::Type{T}, vals::AbstractMatrix, num_rows, num_cols) where {T}
     size(vals) == (num_rows, num_cols) || throw(
         DimensionMismatch(
@@ -238,8 +248,8 @@ Set values of the matrix `M` with base-0 row and column indices `rows_0b` and
 `cols_0b`. A matrix `rowvals` is the block itself, of size `num_rows`×`num_cols`,
 as for `A[rows, cols] = B`; any other array is read row by row in linear order.
 A `Vector` of the library's integer type for the indices, and a `Vector` (or `Array`
-other than a matrix) of its scalar type for the values, go to PETSc as they are;
-anything else is copied first.
+other than a matrix) of its scalar type for the values, go to PETSc as they are, and
+so does a prefix view `view(buf, 1:n)` of one; anything else is copied first.
 
 The `_0b` suffix says what the base is: a bulk index array handed to C keeps
 PETSc's base rather than being rebuilt on a hot path (docs/src/man/naming.md
@@ -263,14 +273,14 @@ function set_values!(
 ) where {PetscLib}
     PetscInt = PetscLib.PetscInt
     vals = block_values(PetscLib.PetscScalar, rowvals, num_rows, num_cols)
-    check_block(num_rows, num_cols, length(rows_0b), length(cols_0b), length(vals))
+    check_block(num_rows, num_cols, length(rows_0b), length(cols_0b), length(rowvals))
     LibPETSc.MatSetValues(
         PetscLib,
         M,
         PetscInt(num_rows),
-        c_vector(PetscInt, rows_0b),
+        c_prefix(PetscInt, rows_0b),
         PetscInt(num_cols),
-        c_vector(PetscInt, cols_0b),
+        c_prefix(PetscInt, cols_0b),
         vals,
         mode,
     )

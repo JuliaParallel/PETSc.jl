@@ -1,8 +1,8 @@
 """
     comm(obj)
 
-The MPI communicator `obj` lives on: a vector, matrix, DM, `KSP`, `SNES`, `PC` or
-index set (`TS` has a method of its own).
+The MPI communicator `obj` lives on: a vector, matrix, DM, `KSP`, `SNES`, `TS`, `PC`
+or index set.
 
 # External Links
 $(doc_external("Sys/PetscObjectGetComm"))
@@ -13,6 +13,7 @@ function comm(
         AbstractPetscMat{PetscLib},
         AbstractKSP{PetscLib},
         AbstractSNES{PetscLib},
+        LibPETSc.AbstractTS{PetscLib},
         AbstractPetscDM{PetscLib},
         LibPETSc.AbstractPC{PetscLib},
         LibPETSc.AbstractIS{PetscLib},

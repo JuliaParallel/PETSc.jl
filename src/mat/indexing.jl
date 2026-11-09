@@ -1,66 +1,40 @@
+# The setters are `set_values!` with 1-based indices, checked against `m` first:
+# PETSc_jll has no bounds checks of its own
+
 # Matrix indexing - set single value
 function Base.setindex!(m::AbstractPetscMat{PetscLib}, val, i::Integer, j::Integer) where {PetscLib}
     checkbounds(m, i, j)
     PetscInt = inttype(PetscLib)
-    PetscScalar = scalartype(PetscLib)
-    LibPETSc.MatSetValues(PetscLib, m, PetscInt(1), PetscInt[i - 1], PetscInt(1), PetscInt[j - 1],
-                          PetscScalar[val], LibPETSc.INSERT_VALUES)
-    return m
+    return set_values!(m, PetscInt[i - 1], PetscInt[j - 1], scalartype(PetscLib)[val])
 end
 
 # Matrix indexing - set multiple values with vectors of indices
 function Base.setindex!(m::AbstractPetscMat{PetscLib}, vals::AbstractMatrix, rows::AbstractVector{<:Integer}, cols::AbstractVector{<:Integer}) where {PetscLib}
     checkbounds(m, rows, cols)
     PetscInt = inttype(PetscLib)
-    PetscScalar = scalartype(PetscLib)
-    petsc_rows = indices_0b(PetscInt, rows)
-    petsc_cols = indices_0b(PetscInt, cols)
-
-    size(vals) == (length(petsc_rows), length(petsc_cols)) || throw(
-        DimensionMismatch(
-            "block is $(size(vals)) but the index ranges are " *
-            "$(length(petsc_rows))x$(length(petsc_cols))",
-        ),
-    )
-
-    # MatSetValues reads its value array row by row, so the block is transposed
-    # before it is flattened: Julia lays a matrix out column by column.
-    petsc_vals = vec(permutedims(PetscScalar.(vals)))
-
-    nrows = PetscInt(length(petsc_rows))
-    ncols = PetscInt(length(petsc_cols))
-    LibPETSc.MatSetValues(PetscLib, m, nrows, petsc_rows, ncols, petsc_cols, petsc_vals, LibPETSc.INSERT_VALUES)
-    return m
+    return set_values!(m, indices_0b(PetscInt, rows), indices_0b(PetscInt, cols), vals)
 end
 
 # Matrix indexing - set row with vector of values
 function Base.setindex!(m::AbstractPetscMat{PetscLib}, vals::AbstractVector, i::Integer, cols::AbstractVector{<:Integer}) where {PetscLib}
     checkbounds(m, i, cols)
     PetscInt = inttype(PetscLib)
-    PetscScalar = scalartype(PetscLib)
     petsc_cols = indices_0b(PetscInt, cols)
     length(vals) == length(petsc_cols) || throw(
         DimensionMismatch("tried to assign $(length(vals)) values to $(length(petsc_cols)) columns"),
     )
-    petsc_vals = c_vector(PetscScalar, vals)
-    LibPETSc.MatSetValues(PetscLib, m, PetscInt(1), PetscInt[i - 1], PetscInt(length(petsc_cols)),
-                          petsc_cols, petsc_vals, LibPETSc.INSERT_VALUES)
-    return m
+    return set_values!(m, PetscInt[i - 1], petsc_cols, vals)
 end
 
 # Matrix indexing - set column with vector of values
 function Base.setindex!(m::AbstractPetscMat{PetscLib}, vals::AbstractVector, rows::AbstractVector{<:Integer}, j::Integer) where {PetscLib}
     checkbounds(m, rows, j)
     PetscInt = inttype(PetscLib)
-    PetscScalar = scalartype(PetscLib)
     petsc_rows = indices_0b(PetscInt, rows)
     length(vals) == length(petsc_rows) || throw(
         DimensionMismatch("tried to assign $(length(vals)) values to $(length(petsc_rows)) rows"),
     )
-    petsc_vals = c_vector(PetscScalar, vals)
-    LibPETSc.MatSetValues(PetscLib, m, PetscInt(length(petsc_rows)), petsc_rows, PetscInt(1),
-                          PetscInt[j - 1], petsc_vals, LibPETSc.INSERT_VALUES)
-    return m
+    return set_values!(m, petsc_rows, PetscInt[j - 1], vals)
 end
 
 # Matrix indexing - get single value
@@ -126,28 +100,21 @@ function Base.getindex(m::AbstractPetscMat{PetscLib}, ::Colon, ::Colon) where {P
 end
 
 
+# The 0-based MatStencil of the 1-based grid index `(x, y, z, component)`; the
+# entries `I` leaves out are 1. MatStencil's fields are in the order (k, j, i, c).
+function grid_stencil(::Type{PetscInt}, I::CartesianIndex{N}) where {PetscInt, N}
+    at(d) = d <= N ? PetscInt(I[d] - 1) : PetscInt(0)
+    return MatStencil(at(3), at(2), at(1), at(4))
+end
+
 function Base.setindex!(
     M::AbstractPetscMat{PetscLib},
     val,
     i::CartesianIndex{N},
     j::CartesianIndex{N},
 ) where {PetscLib, N}
-    PetscInt = PetscLib.PetscInt
-    PetscScalar = PetscLib.PetscScalar
-     ms_i = MatStencil(
-        N < 3 ? PetscInt(0) : PetscInt(i[3] - 1),
-        N < 2 ? PetscInt(0) : PetscInt(i[2] - 1),
-        PetscInt(i[1] - 1),
-        N < 4 ? PetscInt(0) : PetscInt(i[4] - 1),
-    )
-    ms_j = MatStencil(
-        N < 3 ? PetscInt(0) : PetscInt(j[3] - 1),
-        N < 2 ? PetscInt(0) : PetscInt(j[2] - 1),
-        PetscInt(j[1] - 1),
-        N < 4 ? PetscInt(0) : PetscInt(j[4] - 1),
-    )
-    set_values!(M, [ms_i], [ms_j], [PetscScalar(val)]; mode = INSERT_VALUES)
-    return M
+    return set_values!(M, [grid_stencil(PetscLib.PetscInt, i)], [grid_stencil(PetscLib.PetscInt, j)],
+                       [PetscLib.PetscScalar(val)]; mode = INSERT_VALUES)
 end
 
 """
@@ -191,20 +158,6 @@ function add_index!(
     i::CartesianIndex{N},
     j::CartesianIndex{N},
 ) where {PetscLib, N}
-    PetscInt = PetscLib.PetscInt
-    PetscScalar = PetscLib.PetscScalar
-    ms_i = MatStencil(
-        N < 3 ? PetscInt(0) : PetscInt(i[3] - 1),
-        N < 2 ? PetscInt(0) : PetscInt(i[2] - 1),
-        PetscInt(i[1] - 1),
-        N < 4 ? PetscInt(0) : PetscInt(i[4] - 1),
-    )
-    ms_j = MatStencil(
-        N < 3 ? PetscInt(0) : PetscInt(j[3] - 1),
-        N < 2 ? PetscInt(0) : PetscInt(j[2] - 1),
-        PetscInt(j[1] - 1),
-        N < 4 ? PetscInt(0) : PetscInt(j[4] - 1),
-    )
-    set_values!(M, [ms_i], [ms_j], [PetscScalar(val)]; mode = ADD_VALUES)
-    return M
+    return set_values!(M, [grid_stencil(PetscLib.PetscInt, i)], [grid_stencil(PetscLib.PetscInt, j)],
+                       [PetscLib.PetscScalar(val)]; mode = ADD_VALUES)
 end

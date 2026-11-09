@@ -69,9 +69,8 @@ if selected("core")
     include("core/performance.jl")      # allocations per call, flat in the problem size
     include("core/api_surface.jl")      # scripts/api_surface.jl --check: the register covers the surface
     @testset "method ambiguities do not grow" begin
-        # 130 with the regenerated wrappers (all in the high-level layer); regenerate or rename
-        # without adding new ones
-        @test length(detect_ambiguities(PETSc; recursive = true)) <= 130
+        # all in the high-level layer; regenerate or rename without adding new ones
+        @test length(detect_ambiguities(PETSc; recursive = true)) <= 6
     end
 end
 

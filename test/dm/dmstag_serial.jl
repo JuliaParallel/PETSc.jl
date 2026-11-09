@@ -978,3 +978,15 @@ end
         PETSc.destroy!(dm)
     end
 end
+
+# DMDA and DMStag check `points_per_proc` the same way
+@testset "points_per_proc of the wrong element type" begin
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    nb = (PETSc.DM_BOUNDARY_NONE,)
+    wrong = (Int32[4],)
+    @test_throws "points_per_proc[1] must be an Array{Int64}" PETSc.DMStag(
+        petsclib, MPI.COMM_SELF, nb, (4,), (1, 1); points_per_proc = wrong)
+    @test_throws "points_per_proc[1] must be an Array{Int64}" PETSc.DMDA(
+        petsclib, MPI.COMM_SELF, nb, (4,), 1; points_per_proc = wrong)
+end

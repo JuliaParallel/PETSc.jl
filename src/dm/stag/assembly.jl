@@ -32,9 +32,9 @@ function set_values!(
     T = inttype(PetscLib)
     LibPETSc.DMStagMatSetValuesStencil(
         getlib(PetscLib), dm, J,
-        T(length(rows)), stencil_vector(rows),
-        T(length(cols)), stencil_vector(cols),
-        value_vector(PetscLib, vals), mode,
+        T(length(rows)), c_prefix(LibPETSc.DMStagStencil, rows),
+        T(length(cols)), c_prefix(LibPETSc.DMStagStencil, cols),
+        c_prefix(scalartype(PetscLib), vals), mode,
     )
     return J
 end
@@ -61,7 +61,7 @@ function set_values!(
     )
     LibPETSc.DMStagVecSetValuesStencil(
         getlib(PetscLib), dm, v, inttype(PetscLib)(length(positions)),
-        stencil_vector(positions), value_vector(PetscLib, vals), mode,
+        c_prefix(LibPETSc.DMStagStencil, positions), c_prefix(scalartype(PetscLib), vals), mode,
     )
     return v
 end
@@ -85,25 +85,7 @@ function zero_rows_local!(
 ) where {PetscLib, N}
     T = inttype(PetscLib)
     rows_0b = LibPETSc.DMStagStencilToIndexLocal(
-        getlib(PetscLib), dm, T(N), T(length(rows)), stencil_vector(rows),
+        getlib(PetscLib), dm, T(N), T(length(rows)), c_prefix(LibPETSc.DMStagStencil, rows),
     )
     return zero_rows_local!(J, rows_0b; diag, x, b)
 end
-
-# The C calls take a `Vector` and a count, so a `Vector` passes as it is, and so does
-# the parent of a prefix view `view(buf, 1:n)`, the count being `n`. Any other vector
-# is copied into one.
-const PrefixView{T} = SubArray{T, 1, Vector{T}, Tuple{UnitRange{Int}}, true}
-
-stencil_vector(v::Vector{LibPETSc.DMStagStencil}) = v
-stencil_vector(v::PrefixView{LibPETSc.DMStagStencil}) =
-    first(parentindices(v)[1]) == 1 ? parent(v) : collect(v)
-stencil_vector(v::AbstractVector{LibPETSc.DMStagStencil}) = collect(v)
-
-value_vector(::Type{PetscLib}, v::Vector) where {PetscLib} =
-    eltype(v) === scalartype(PetscLib) ? v : Vector{scalartype(PetscLib)}(v)
-value_vector(::Type{PetscLib}, v::PrefixView) where {PetscLib} =
-    eltype(v) === scalartype(PetscLib) && first(parentindices(v)[1]) == 1 ? parent(v) :
-    Vector{scalartype(PetscLib)}(v)
-value_vector(::Type{PetscLib}, v::AbstractVector) where {PetscLib} =
-    Vector{scalartype(PetscLib)}(v)

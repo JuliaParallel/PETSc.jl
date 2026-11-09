@@ -30,9 +30,7 @@ function vec_from_ptr(petsclib::PetscLib, ptr::CVec, own::Bool) where {PetscLib 
     v = LibPETSc.PetscVec{PetscLib}(ptr, petsclib.age; own)
     # Short-circuits on a borrowed handle, which is the hot path: callbacks wrap
     # PETSc-owned vectors on every invocation and never need the communicator.
-    if own && MPI.Comm_size(LibPETSc.PetscObjectGetComm(getlib(PetscLib), v)) == 1
-        destroy_at_gc!(v)
-    end
+    own && finalize_if_serial!(v)
     return v
 end
 
@@ -75,8 +73,7 @@ function LibPETSc.PetscVec(petsclib::PetscLib, n::Integer) where {PetscLib <: Pe
     check_initialized(petsclib)
     PetscInt = petsclib.PetscInt
     v = LibPETSc.VecCreateSeq(petsclib, comm, PetscInt(n))
-    destroy_at_gc!(v)
-    return v
+    return own_serial!(v, comm)
 end
 
 """
@@ -100,10 +97,7 @@ function LibPETSc.PetscVec(
     check_initialized(petsclib)
     PetscInt = petsclib.PetscInt
     v = LibPETSc.VecCreateMPI(petsclib, comm, PetscInt(local_size), PetscInt(n))
-    if MPI.Comm_size(comm) == 1
-        destroy_at_gc!(v)
-    end
-    return v
+    return own_serial!(v, comm)
 end
 
 
@@ -126,25 +120,8 @@ performed automatically
 # External Links
 $(doc_external("Vec/VecCreateSeqWithArray"))
 """
-function LibPETSc.PetscVec(
-    petsclib::PetscLib,
-    array::Vector{PetscScalar};
-    blocksize = 1,
-) where {PetscLib <: PetscLibType, PetscScalar}
-    comm = MPI.COMM_SELF
-    check_initialized(petsclib)
-    PetscScalar === petsclib.PetscScalar || throw(
-        ArgumentError(
-            "array has element type $PetscScalar, " *
-            "but the library uses $(petsclib.PetscScalar)",
-        ),
-    )
-    PetscInt = petsclib.PetscInt
-    v = seq_vec_with_array(petsclib, comm, PetscInt(blocksize), PetscInt(length(array)), array)
-    keep_alive!(v, array)
-    destroy_at_gc!(v)
-    return v
-end
+LibPETSc.PetscVec(petsclib::PetscLibType, array::Vector; blocksize = 1) =
+    LibPETSc.PetscVec(petsclib, MPI.COMM_SELF, array; blocksize)
 
 
 # A sequential Vec on the Julia array `array`, without a copy. PETSc starts it at
@@ -212,29 +189,30 @@ destroy!(m::AbstractPetscVec{PetscLib}) where {PetscLib} =
     destroy_handle!(LibPETSc.VecDestroy, m, PetscLib)
 
 """
-    v = PetscVec(petsclib, comm, array::Vector)
+    v = PetscVec(petsclib, comm, array::Vector; blocksize = 1)
 
-Creates a sequential PETSc vector on the communicator `comm` that uses `array` as its
+Creates a sequential PETSc vector on the communicator `comm`, which must have one
+rank, that uses `array` as its
 storage and keeps it alive. The element type of `array` must be the library's scalar
 type, which throws an `ArgumentError` otherwise: PETSc reads the memory as it is.
 
 # External Links
 $(doc_external("Vec/VecCreateSeqWithArray"))
 """
-function LibPETSc.PetscVec(petsclib::PetscLib, comm, x::Vector) where {PetscLib <: PetscLibType}
+function LibPETSc.PetscVec(petsclib::PetscLibType, comm::MPI.Comm, x::Vector; blocksize = 1)
     check_initialized(petsclib)
     eltype(x) === petsclib.PetscScalar || throw(
         ArgumentError(
             "array has element type $(eltype(x)), but the library uses $(petsclib.PetscScalar)",
         ),
     )
+    MPI.Comm_size(comm) == 1 || throw(ArgumentError(
+        "a PetscVec on a Julia array is sequential: its communicator must have one rank, " *
+        "this one has $(MPI.Comm_size(comm))"))
     PetscInt = petsclib.PetscInt
-
-    v = seq_vec_with_array(petsclib, comm, PetscInt(1), PetscInt(length(x)), x)
+    v = seq_vec_with_array(petsclib, comm, PetscInt(blocksize), PetscInt(length(x)), x)
     keep_alive!(v, x)
-    destroy_at_gc!(v)
-
-    return v
+    return own_serial!(v, comm)
 end
 
 

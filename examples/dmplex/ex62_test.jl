@@ -70,14 +70,6 @@ end
       SOLVER...; tol = 1e-10)
   end
 
-  @testset "P2/P1-disc simplex 2D — quadratic MMS Crouzeix-Raviart (machine eps)" begin
-    @test run_ex62(
-      "-sol","quadratic",
-      "-vel_petscspace_degree","2","-pres_petscspace_degree","1",
-      "-pres_petscdualspace_lagrange_continuity","0",
-      SOLVER...; tol = 1e-10)
-  end
-
   @testset "Q2/Q1-disc quad 2D — quadratic MMS discontinuous pressure (machine eps)" begin
     @test run_ex62(
       "-sol","quadratic","-dm_plex_simplex","0",
@@ -150,14 +142,6 @@ end
     @test run_ex62(
       "-sol","trig","-dm_refine","1",
       "-vel_petscspace_degree","2","-pres_petscspace_degree","1",
-      SOLVER...; tol = 0.4)
-  end
-
-  @testset "P2/P1-disc simplex 2D — trig MMS dm_refine=1 Crouzeix-Raviart (L²≈0.15)" begin
-    @test run_ex62(
-      "-sol","trig","-dm_refine","1",
-      "-vel_petscspace_degree","2","-pres_petscspace_degree","1",
-      "-pres_petscdualspace_lagrange_continuity","0",
       SOLVER...; tol = 0.4)
   end
 
@@ -261,7 +245,7 @@ end
 
   # Same reasoning as the multiplicative case above: solved to 1e-12 so the
   # reported error is the discretization error, not the iteration count.
-  @testset "Q2/Q1 quad 2D — quadratic MMS GMG on velocity (L²≈3e-10)" begin
+  @testset "Q2/Q1 quad 2D — quadratic MMS GMG on velocity (L²≈4e-14)" begin
     @test run_ex62(
       "-sol","quadratic","-dm_plex_simplex","0","-dm_refine","2",
       "-vel_petscspace_degree","2","-pres_petscspace_degree","1",

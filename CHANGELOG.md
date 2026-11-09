@@ -50,6 +50,7 @@
 - `mapreduce` on a PetscMat, and through it `sum(f, A)`, `prod`, `maximum`, `minimum`, `extrema`, `count`, `any` and `all`: collective, and they read only the stored entries of each rank's rows, counting `f(0)` for the entries that are not stored, as SparseArrays does for a `SparseMatrixCSC`.
 - `collect(v)`, `Vector(v)` and `copyto!(::Vector, v)` on a PetscVec give every rank the whole vector (`VecScatterCreateToAll`); every rank must call them. On one rank they are `v[:]`.
 - Host code runs on device Vecs (CUDA or HIP), so callbacks can stay on the CPU while the solve runs on the GPU. Without CUDA.jl or AMDGPU.jl loaded, `with_local_array!`, `with_local_arrays!`, `with_field_views!` and broadcasting give host arrays, where they threw "No GPU backend loaded". With a GPU package loaded, `memtype = :host` on the first three does the same. PETSc copies the data between host and device as needed; see the GPU page. `memtype(v)` returns `Vector` while no GPU package is loaded. The default `:native` follows the packages loaded in the session, so code that must stay on the host passes `memtype = :host`.
+- `PetscVec(petsclib, array; blocksize)` and `PetscVec(petsclib, comm, array; blocksize)` set the block size of a vector on a Julia array. The `comm` form throws an `ArgumentError` on a communicator of more than one rank, since the vector is sequential.
 
 ### Fixed
 
@@ -80,6 +81,9 @@
 - An error in looking up the TS behind a `set_pre_step!` or `set_post_step!` hook comes back to PETSc as an error code instead of a Julia exception thrown through PETSc's C frames.
 - Creating many Vecs or Mats on Julia arrays, or setting many callbacks, took time quadratic in their number: each one swept the whole table of Julia state. 16 000 array-backed Vecs took 2.8 s and take 0.018 s. A destroyed Vec or Mat lets go of its Julia arrays at once.
 - `PetscMat(petsclib, comm, S::SparseMatrixCSC)` copies the matrix in one call instead of one entry at a time, about 4x faster (13 ms instead of 51 ms for 1.3 M nonzeros).
+- `DMStag(...; points_per_proc)` with an array of the wrong integer type throws an `ArgumentError` naming the argument and the `PetscInt` it needs, as `DMDA` does, instead of a `MethodError` from the C wrapper.
+- `set_values!(A, rows, cols, vals)` on prefix views of reused buffers (`view(buf, 1:n)`) passes the buffers to PETSc without copying them: 23 ns and no allocations for a 2×2 block, where it took 49 ns and 6 allocations.
+- The DMPlex examples (`ex12`, `ex17`, `ex62`, `ex62b`, `ex69`) pass their command line to `PETSc.initialize`, so the options of a `PetscFE`, such as `-pres_petscdualspace_lagrange_continuity 0` or `-displacement_petscspace_degree 2`, take effect. They were ignored, since a `PetscFE` reads only PETSc's options database: ex69's FETI-DP and BDDC cases ran with a continuous pressure and failed. ex17's option prefixes are `displacement_` and `stress_`, as in ex17.c; without the underscore its `-displacement_petscspace_degree` never matched. The pressure null space that ex62 and ex69 register with `DMSetNullSpaceConstructor` is the constant pressure on a fieldsplit's pressure-only subDM too, as in ex62.c; it was a zero vector there, which broke the pressure solve of ex62's GMG case once its `-petscds_jac_pre 0` took effect. Both now run in CI, as does `ex62_mpi_test`.
 
 ## v0.5.5
 

@@ -1,3 +1,20 @@
+# The `points_per_proc` keyword of the DMDA and DMStag constructors as the
+# creators take it: per dimension `C_NULL` (let PETSc decide) or an
+# `Array{PetscInt}` with one entry per rank
+function points_per_proc_arrays(::Type{PetscLib}, points_per_proc, comm) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+    return ntuple(length(points_per_proc)) do d
+        p = points_per_proc[d]
+        (isnothing(p) || p == PETSC_DECIDE) && return C_NULL
+        p isa Array{PetscInt} || throw(ArgumentError(
+            "points_per_proc[$d] must be an Array{$PetscInt}, got $(typeof(p))"))
+        length(p) == MPI.Comm_size(comm) || throw(DimensionMismatch(
+            "points_per_proc[$d] has $(length(p)) entries, " *
+            "but the communicator has $(MPI.Comm_size(comm)) ranks"))
+        return p
+    end
+end
+
 # `stencil_type` is a PETSc enum (§3.1's enum rule), and naming.md also spells
 # it as a `Symbol` in the constructor examples. Both work: the Symbol is mapped
 # here, the enum passes through.
@@ -85,25 +102,7 @@ function DMDA(
         processors = ntuple(_ -> PETSC_DECIDE, N)
     end
 
-    ref_points_per_proc = ntuple(N) do d
-        if isnothing(points_per_proc[d]) || points_per_proc[d] == PETSC_DECIDE
-            C_NULL
-        else
-            points_per_proc[d] isa Array{PetscLib.PetscInt} || throw(
-                ArgumentError(
-                    "points_per_proc[$d] must be an Array{$(PetscLib.PetscInt)}, " *
-                    "got $(typeof(points_per_proc[d]))",
-                ),
-            )
-            length(points_per_proc[d]) == MPI.Comm_size(comm) || throw(
-                DimensionMismatch(
-                    "points_per_proc[$d] has $(length(points_per_proc[d])) entries, " *
-                    "but the communicator has $(MPI.Comm_size(comm)) ranks",
-                ),
-            )
-            points_per_proc[d]
-        end
-    end
+    ref_points_per_proc = points_per_proc_arrays(PetscLib, points_per_proc, comm)
     
     if N==1  
         da = LibPETSc.DMDACreate1d(petsclib,
@@ -149,19 +148,12 @@ end
 """
     ndofs(da::DMDA)
 
-Return the number of dofs in for `da`
+Return the number of dofs per grid point of `da`.
 
 # External Links
 $(doc_external("DMDA/DMDAGetDof"))
 """
-function ndofs(da::DMDA{PetscLib}) where PetscLib
-    PetscInt = PetscLib.PetscInt
-    ndof = [PetscInt(0)]
-
-    # number of DOF that the DMDA has
-    ndof = LibPETSc.DMDAGetDof(PetscLib, da)
-    return @inbounds ndof[1]
-end
+ndofs(da::DMDA{PetscLib}) where {PetscLib} = LibPETSc.DMDAGetDof(PetscLib, da)
 
 
 """

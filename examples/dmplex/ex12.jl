@@ -127,7 +127,9 @@ _args    = isinteractive() ? String[] : collect(String, ARGS)
 opts     = PETSc.parse_options(["-snes_monitor"; _args])
 petsclib = PETSc.getlib(; PetscScalar = Float64)
 MPI.Initialized() || MPI.Init()
-PETSc.initialize(petsclib)
+# The command line goes into the options database too: objects built without
+# options keywords, such as the PetscFEs, read their options from there.
+PETSc.initialize(petsclib; options = _args)
 
 const PetscInt    = petsclib.PetscInt
 

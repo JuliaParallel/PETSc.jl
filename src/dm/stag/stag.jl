@@ -1,6 +1,3 @@
-# Helper to convert points_per_proc tuples to PetscInt
-to_petscint_tuple(t::Tuple, PetscInt) = map(arr -> PetscInt.(arr), t)
-
 """
     da = DMStag(
         petsclib::PetscLib
@@ -78,26 +75,7 @@ function DMStag(
         processors = ntuple(_ -> PETSC_DECIDE, N)
     end
 
-    ref_points_per_proc = ntuple(N) do d
-        if isnothing(points_per_proc[d]) || points_per_proc[d] == PETSC_DECIDE
-            C_NULL
-        else
-            points_per_proc[d] isa Array || throw(
-                ArgumentError(
-                    "points_per_proc[$d] must be an Array, " *
-                    "got $(typeof(points_per_proc[d]))",
-                ),
-            )
-            length(points_per_proc[d]) == MPI.Comm_size(comm) || throw(
-                DimensionMismatch(
-                    "points_per_proc[$d] has $(length(points_per_proc[d])) entries, " *
-                    "but the communicator has $(MPI.Comm_size(comm)) ranks",
-                ),
-            )
-            points_per_proc[d]
-        end
-    end
-   # ref_points_per_proc = to_petscint_tuple(ref_points_per_proc, PetscInt)  
+    ref_points_per_proc = points_per_proc_arrays(PetscLib, points_per_proc, comm)
 
     if N==1  
         da = LibPETSc.DMStagCreate1d(petsclib,

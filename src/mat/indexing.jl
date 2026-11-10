@@ -113,8 +113,8 @@ function Base.setindex!(
     i::CartesianIndex{N},
     j::CartesianIndex{N},
 ) where {PetscLib, N}
-    return set_values!(M, [grid_stencil(PetscLib.PetscInt, i)], [grid_stencil(PetscLib.PetscInt, j)],
-                       [PetscLib.PetscScalar(val)]; mode = INSERT_VALUES)
+    return set_values!(M, [grid_stencil(inttype(PetscLib), i)], [grid_stencil(inttype(PetscLib), j)],
+                       [scalartype(PetscLib)(val)]; mode = INSERT_VALUES)
 end
 
 """
@@ -158,6 +158,6 @@ function add_index!(
     i::CartesianIndex{N},
     j::CartesianIndex{N},
 ) where {PetscLib, N}
-    return set_values!(M, [grid_stencil(PetscLib.PetscInt, i)], [grid_stencil(PetscLib.PetscInt, j)],
-                       [PetscLib.PetscScalar(val)]; mode = ADD_VALUES)
+    return set_values!(M, [grid_stencil(inttype(PetscLib), i)], [grid_stencil(inttype(PetscLib), j)],
+                       [scalartype(PetscLib)(val)]; mode = ADD_VALUES)
 end

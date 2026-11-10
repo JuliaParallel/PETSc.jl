@@ -1,251 +1,212 @@
 # INCLUDE IN MPI TEST
-# Translation of PETSc's ex45.c to PETSc.jl
+#=
+  ex45.jl: −∇²u = f on the unit cube with CG and geometric multigrid
+  Port of PETSc ksp/tutorials/ex45.c
+
+  The exact solution is u = sin(2πx) sin(2πy) sin(2πz), so f = 12π² u, with
+  u = 0 on the boundary. The 7-point Laplacian is assembled on every multigrid
+  level, and the error against u is printed at the end.
+
+  Usage (from the examples/ directory):
+    julia --project dmda/ex45.jl -N 33 -ksp_type cg -pc_type mg -pc_mg_levels 3
+
+    # Non-cubic grid on 4 ranks, with PETSc's performance log
+    mpiexec -n 4 julia --project dmda/ex45.jl -Nx 65 -Ny 65 -Nz 129 \
+        -ksp_type cg -pc_type mg -pc_mg_levels 4 -log_view
+
+    # One GPU per rank. Needs PETSc built with CUDA (e.g. PETSc.set_library!(:cuda))
+    # and CUDA.jl, or `-gpu hip` with HIP and AMDGPU.jl. The smoothers must run
+    # on the GPU too, so Chebyshev/Jacobi instead of SOR.
+    julia --project dmda/ex45.jl -gpu cuda -N 129 \
+        -ksp_type cg -pc_type mg -pc_mg_levels 5 \
+        -mg_levels_ksp_type chebyshev -mg_levels_pc_type jacobi
+
+  The right-hand side and the exact solution are filled by a broadcast, so the
+  same code fills host and device vectors. `Setup time` covers the operator assembly on all levels and the multigrid
+  setup, `Solve time` only the CG iterations.
+=#
 using PETSc, MPI, Printf
+using LinearAlgebra: norm, axpy!
+using PETSc: LibPETSc
 
-# boundary data and forcing  
+const gpu = Symbol(get(PETSc.parse_options(ARGS), :gpu, "none"))
+gpu in (:none, :cuda, :hip) || throw(ArgumentError("-gpu takes cuda or hip, got $gpu"))
+
+if gpu === :cuda
+    using CUDA
+elseif gpu === :hip
+    using AMDGPU
+end
+
+# Vec and Mat types for the DM and, through it, every multigrid level
+const gpu_options = (;
+    none = (;),
+    cuda = (; dm_vec_type = "cuda", dm_mat_type = "aijcusparse" ),
+    hip  = (; dm_vec_type = "hip" , dm_mat_type = "aijhipsparse"),
+)[gpu]
+
 exact(x, y, z) = sin(2π * x) * sin(2π * y) * sin(2π * z)
-# The discrete operator is -∇², so forcing = -∇²(exact)
-# For exact(x,y,z) = sin(2πx)sin(2πy)sin(2πz), we have ∇²u = -3(2π)²sin(2πx)sin(2πy)sin(2πz)
-# So forcing = -∇²u = 12π²sin(2πx)sin(2πy)sin(2πz)
-forcing(x, y, z) = 12 * π^2 * sin(2π * x) * sin(2π * y) * sin(2π * z)
+forcing(x, y, z) = 12π^2 * exact(x, y, z)
 
-# Get the PETSc lib with our chosen `PetscScalar` type
 petsclib = PETSc.getlib(; PetscScalar = Float64)
 
-# If we want to use a custom PETSc library, we can set it with `PETSc.set_library!` before calling `PETSc.getlib`. For example:
-#=
-using PETSc
-PETSc.set_library!(
-    "/path/to/custom/libpetsc.so";
-    PetscScalar = Float64,
-    PetscInt    = Int64,
-)
-# Restart Julia — PETSc_jll is not loaded and your library is used automatically.
-=#
-# This creates a LocalPreferences.toml file. 
-#petsclib = PETSc.getlib(; PetscScalar = Float64, PetscInt = Int64)
-
-
-# Initialize PETSc
-PETSc.initialize(petsclib)
-
-function solve_ex45(N=7; da_grid_x=7, da_grid_y=7, da_grid_z=7, kwargs...)
-    comm = MPI.COMM_WORLD
-
-    cli_opts = PETSc.parse_options(ARGS)
-    cli = Dict{Symbol,Any}()
-    for (k, v) in pairs(cli_opts)
-        cli[k] = v
+# Each rank uses the GPU (node-local rank) mod (GPUs per node). PETSc picks up
+# the device selected here, so this runs before PETSc.initialize.
+function select_device()
+    MPI.Initialized() || MPI.Init()
+    node = MPI.Comm_split_type(MPI.COMM_WORLD, MPI.COMM_TYPE_SHARED, 0)
+    r = MPI.Comm_rank(node)
+    MPI.free(node)
+    if gpu === :cuda
+        CUDA.device!(r % length(CUDA.devices()))
+    else
+        devs = AMDGPU.devices()
+        AMDGPU.device!(devs[r % length(devs) + 1])
     end
-    for (k, v) in pairs(kwargs)
-        cli[k] = v
-    end
+    return nothing
+end
+gpu === :none || select_device()
 
-    function _as_int(x, default)
-        if x === nothing
-            return default
-        elseif x isa Integer
-            return Int(x)
+# The command line goes into the options database, so -log_view and the like apply
+PETSc.initialize(petsclib; options = isinteractive() ? String[] : collect(String, ARGS))
+
+on_boundary(g, N) = any(g .== 1) || any(g .== N)
+
+# The 7-point Laplacian of the rows this rank owns, as CSR arrays (0-based row
+# offsets, sorted global column indices), with identity rows on the boundary.
+# Scaled by the cell volume HxHyHz so that the entries are O(h) on every
+# multigrid level instead of O(1/h²).
+function laplacian_csr(dm)
+    own = PETSc.corners(dm)
+    ghost = PETSc.ghost_corners(dm)
+    N = PETSc.info(dm).global_size
+    H = 1 ./ (N .- 1)
+    c = prod(H) ./ H .^ 2    # (HyHz/Hx, HxHz/Hy, HxHy/Hz)
+    neighbors = (
+        (CartesianIndex(-1, 0, 0), -c[1]), (CartesianIndex(1, 0, 0), -c[1]),
+        (CartesianIndex(0, -1, 0), -c[2]), (CartesianIndex(0, 1, 0), -c[2]),
+        (CartesianIndex(0, 0, -1), -c[3]), (CartesianIndex(0, 0, 1), -c[3]),
+    )
+    # Grid index → global row number, through the DM's ghosted local numbering
+    ltog = LibPETSc.DMGetLocalToGlobalMapping(petsclib, dm)
+    to_global = LibPETSc.ISLocalToGlobalMappingGetIndices(petsclib, ltog)
+    ghost_linear = LinearIndices(ghost.size)
+    global_index(I) = to_global[ghost_linear[I - ghost.lower + oneunit(I)]]
+
+    PetscInt = petsclib.PetscInt
+    nrows = prod(own.size)
+    rowptr, cols, vals = PetscInt[0], PetscInt[], Float64[]
+    sizehint!(rowptr, nrows + 1); sizehint!(cols, 7nrows); sizehint!(vals, 7nrows)
+    row = Tuple{PetscInt, Float64}[]
+    for I in own.lower:own.upper
+        empty!(row)
+        if on_boundary(Tuple(I), N)
+            push!(row, (global_index(I), 1.0))
         else
-            return parse(Int, string(x))
+            push!(row, (global_index(I), 2 * sum(c)))
+            for (d, v) in neighbors
+                push!(row, (global_index(I + d), v))
+            end
+            sort!(row; by = first)
         end
+        for (j, v) in row
+            push!(cols, j); push!(vals, v)
+        end
+        push!(rowptr, length(cols))
     end
+    LibPETSc.ISLocalToGlobalMappingRestoreIndices(petsclib, ltog, to_global)
+    return rowptr, cols, vals
+end
 
-    N   = _as_int(get(cli, :N,   N),   N)
-    dim = _as_int(get(cli, :dim, 3),   3)
-    Nx  = _as_int(get(cli, :Nx,  N),   N)
-    Ny  = _as_int(get(cli, :Ny,  N),   N)
-    Nz  = _as_int(get(cli, :Nz,  N),   N)
+# f(x, y, z, on_boundary) at the local grid point I; `lo` is the global grid
+# index of local point (1, 1, 1) and H the grid spacing
+function grid_value(f, I, lo, N, H)
+    g = Tuple(I) .+ lo .- 1
+    x, y, z = (g .- 1) .* H
+    return f(x, y, z, on_boundary(g, N))
+end
 
-    opts = (; [(k => cli[k]) for k in keys(cli)]...)
-
-    boundary    = Tuple(fill(PETSc.DM_BOUNDARY_NONE, dim))
-    stencil     = PETSc.DMDA_STENCIL_STAR
-    global_size = dim == 3 ? (Nx, Ny, Nz) : (Nx, Ny, 1)
-    da = PETSc.DMDA(petsclib, comm, boundary, global_size, 1; stencil_width = 1, stencil_type = stencil, opts...)
-
-    final_grid = PETSc.info(da).global_size
-    if MPI.Comm_rank(comm) == 0
-        @printf("Solving on %d × %d × %d grid\n", final_grid[1], final_grid[2], final_grid[3])
+# Fill the global vector `v` of the DMDA `dm` with f(x, y, z, on_boundary).
+# A broadcast, so it runs on the device for a device Vec.
+function grid_eval!(v, dm, f)
+    own = PETSc.corners(dm)
+    N = PETSc.info(dm).global_size
+    H = 1 ./ (N .- 1)
+    # A device array for a device Vec once CUDA.jl or AMDGPU.jl is loaded
+    PETSc.with_local_array!(v; read = false) do a
+        a3 = reshape(a, own.size)
+        a3 .= grid_value.(Ref(f), CartesianIndices(a3), Ref(Tuple(own.lower)), Ref(N), Ref(H))
     end
+    return v
+end
 
+toint(n::Integer) = Int(n)
+toint(n::AbstractString) = parse(Int, n)
+
+"""
+    solve_ex45(N = 7; Nx = N, Ny = N, Nz = N, opts...)
+
+Solve the Poisson problem on an `Nx × Ny × Nz` grid; `opts` are PETSc options
+for the DMDA and the KSP. Sizes may be given as strings, as on the command line.
+Returns `(; norm, final_grid, niter, setup_time, solve_time, L2, global_max)`.
+"""
+function solve_ex45(N = 7; Nx = N, Ny = N, Nz = N, opts...)
+    comm = MPI.COMM_WORLD
+    opts = (; opts..., gpu_options...)
+    da = PETSc.DMDA(
+        petsclib, comm, ntuple(_ -> PETSc.DM_BOUNDARY_NONE, 3), toint.((Nx, Ny, Nz)), 1;
+        stencil_width = 1, stencil_type = PETSc.DMDA_STENCIL_STAR, opts...,
+    )
     ksp = PETSc.KSP(da; opts...)
 
-    PETSc.set_compute_operators!(ksp) do J, jac, ksp
-        dm      = PETSc.dm(ksp)
-        corners = PETSc.corners(dm)
-        info    = PETSc.info(dm)
-        N       = info.global_size
-
-        # Grid spacings (uniform)
-        Hx, Hy, Hz = 1.0 ./ (N .- 1)
-
-        # Scale entire system by Hx*Hy*Hz (= h³ for uniform grid) so that
-        # matrix entries are O(h) ~ O(1/N) rather than O(1/h²) ~ O(N²).
-        # This keeps MG smoothers well-conditioned regardless of resolution.
-        #
-        # Scaled operator: (Hx*Hy*Hz) * (-∇²_h)
-        # For uniform h: scaled diagonal  = 6h³/h² = 6h
-        #                scaled off-diag  = -h³/h² = -h
-        # All entries O(h) → matrix is well-scaled for MG.
-        scale = Hx * Hy * Hz
-
-        # Scaled coefficients
-        cx = scale / (Hx * Hx)   # = Hy*Hz/Hx
-        cy = scale / (Hy * Hy)   # = Hx*Hz/Hy
-        cz = scale / (Hz * Hz)   # = Hx*Hy/Hz
-        diag3d = 2.0 * (cx + cy + cz)
-        diag2d = 2.0 * (cx + cy)
-
-        for k in corners.lower[3]:corners.upper[3]
-            for j in corners.lower[2]:corners.upper[2]
-                for i in corners.lower[1]:corners.upper[1]
-                    idx = CartesianIndex(i, j, k)
-                    is_boundary = (i == 1 || j == 1 || k == 1 ||
-                                   i == N[1] || j == N[2] || k == N[3])
-                    if dim == 3
-                        if is_boundary
-                            jac[idx, idx] = 1.0
-                        else
-                            jac[idx, idx + CartesianIndex(-1,  0,  0)] = -cx
-                            jac[idx, idx + CartesianIndex( 1,  0,  0)] = -cx
-                            jac[idx, idx + CartesianIndex( 0, -1,  0)] = -cy
-                            jac[idx, idx + CartesianIndex( 0,  1,  0)] = -cy
-                            jac[idx, idx + CartesianIndex( 0,  0, -1)] = -cz
-                            jac[idx, idx + CartesianIndex( 0,  0,  1)] = -cz
-                            jac[idx, idx]                               =  diag3d
-                        end
-                    elseif dim == 2
-                        if is_boundary
-                            jac[idx, idx] = 1.0
-                        else
-                            jac[idx, idx + CartesianIndex(-1, 0, 0)] = -cx
-                            jac[idx, idx + CartesianIndex( 1, 0, 0)] = -cx
-                            jac[idx, idx + CartesianIndex( 0,-1, 0)] = -cy
-                            jac[idx, idx + CartesianIndex( 0, 1, 0)] = -cy
-                            jac[idx, idx]                             =  diag2d
-                        end
-                    end
-                end
-            end
-        end
-        PETSc.assemble!(jac)
+    # Called once per multigrid level, with that level's DM
+    PETSc.set_compute_operators!(ksp) do _, jac, ksp
+        rowptr, cols, vals = laplacian_csr(PETSc.dm(ksp))
+        # Copies the CSR arrays into the matrix and assembles it; unlike COO
+        # assembly this keeps no index maps on the GPU. Only the call matching
+        # the matrix type (one rank or several) has an effect.
+        LibPETSc.MatSeqAIJSetPreallocationCSR(petsclib, jac, rowptr, cols, vals)
+        LibPETSc.MatMPIAIJSetPreallocationCSR(petsclib, jac, rowptr, cols, vals)
         return 0
     end
 
-    PETSc.set_compute_rhs!(ksp) do b_vec, ksp
-        dm      = PETSc.dm(ksp)
-        corners = PETSc.corners(dm)
-        info    = PETSc.info(dm)
-        N       = info.global_size
-
-        Hx, Hy, Hz = 1.0 ./ (N .- 1)
-        scale = Hx * Hy * Hz   # same scaling as matrix
-
-        g_x = range(0, length = N[1], stop = 1)
-        g_y = range(0, length = N[2], stop = 1)
-        g_z = range(0, length = N[3], stop = 1)
-
-        l_x = g_x[(corners.lower[1]):(corners.upper[1])]
-        l_y = g_y[(corners.lower[2]):(corners.upper[2])]
-        l_z = g_z[(corners.lower[3]):(corners.upper[3])]
-
-        PETSc.with_local_array!(b_vec; read=false) do b
-            sz = corners.size
-
-            if dim == 3
-                b3 = reshape(b, sz...)
-                for kk = 1:sz[3], jj = 1:sz[2], ii = 1:sz[1]
-                    x, y, z = l_x[ii], l_y[jj], l_z[kk]
-                    gi = corners.lower[1] + (ii - 1)
-                    gj = corners.lower[2] + (jj - 1)
-                    gk = corners.lower[3] + (kk - 1)
-                    if gi == 1 || gj == 1 || gk == 1 ||
-                       gi == N[1] || gj == N[2] || gk == N[3]
-                        # Dirichlet BC: identity row in matrix → RHS = exact value
-                        b3[ii, jj, kk] = exact(x, y, z)
-                    else
-                        # Scale forcing by same factor as matrix
-                        b3[ii, jj, kk] = forcing(x, y, z) * scale
-                    end
-                end
-            elseif dim == 2
-                b2 = reshape(b, sz...)
-                for jj = 1:sz[2], ii = 1:sz[1]
-                    x, y = l_x[ii], l_y[jj]
-                    gi = corners.lower[1] + (ii - 1)
-                    gj = corners.lower[2] + (jj - 1)
-                    if gi == 1 || gj == 1 || gi == N[1] || gj == N[2]
-                        b2[ii, jj, 1] = exact(x, y, 0.0)
-                    else
-                        b2[ii, jj, 1] = forcing(x, y, 0.0) * scale
-                    end
-                end
-            end
-        end
-        PETSc.assemble!(b_vec)
-        return 0
-    end
-
-    solve_time = @elapsed PETSc.solve!(ksp)
-    niter      = LibPETSc.KSPGetIterationNumber(petsclib, ksp)
     final_grid = PETSc.info(da).global_size
+    vol = prod(1 ./ (final_grid .- 1))
+    # Boundary rows are identity rows, so b holds u there; inside it is f scaled like the matrix
+    b = grid_eval!(PETSc.global_vec(da), da, (x, y, z, bnd) -> bnd ? exact(x, y, z) : vol * forcing(x, y, z))
+    x = PETSc.global_vec(da)
 
-    x    = LibPETSc.KSPGetSolution(petsclib, ksp)
-    norm = LibPETSc.KSPGetResidualNorm(petsclib, ksp)
+    setup_time = @elapsed PETSc.setup!(ksp)
+    solve_time = @elapsed PETSc.solve!(x, ksp, b)
+    niter = LibPETSc.KSPGetIterationNumber(petsclib, ksp)
+    res_norm = LibPETSc.KSPGetResidualNorm(petsclib, ksp)
 
-    # Compute L2 and max error against analytic solution
-    info  = PETSc.info(da)
-    Nglob = info.global_size
-    Hx, Hy, Hz = 1.0 ./ (Nglob .- 1)
-    vol = Hx * Hy * Hz
+    # err = u − x; ‖err‖₂ √vol approximates the L² norm on the cube
+    err = grid_eval!(PETSc.global_vec(da), da, (x, y, z, _) -> exact(x, y, z))
+    axpy!(-1, x, err)
+    L2 = sqrt(vol) * norm(err, 2)
+    global_max = norm(err, Inf)
 
-    local_err2 = 0.0
-    local_max  = 0.0
-    PETSc.with_local_array!(x; read=true) do xu
-        corners = PETSc.corners(da)
-        dims    = corners.size
-        uas     = reshape(xu, dims...)
-        for kk = 1:dims[3], jj = 1:dims[2], ii = 1:dims[1]
-            gi = corners.lower[1] + (ii - 1)
-            gj = corners.lower[2] + (jj - 1)
-            gk = corners.lower[3] + (kk - 1)
-            xc = (gi - 1) * Hx
-            yc = (gj - 1) * Hy
-            zc = (gk - 1) * Hz
-            u_num = uas[ii, jj, kk]
-            u_ex  = exact(xc, yc, zc)
-            err   = u_num - u_ex
-            local_err2 += err^2 * vol
-            local_max   = max(local_max, abs(err))
-        end
-    end
-
-    global_err2 = MPI.Allreduce(local_err2, MPI.SUM, comm)
-    global_max  = MPI.Allreduce(local_max,  MPI.MAX, comm)
-    L2 = sqrt(global_err2)
-
-    if MPI.Comm_rank(MPI.COMM_WORLD) == 0
+    # One value per line: examples/scalability_tests/parse_scaling.jl reads these
+    if MPI.Comm_rank(comm) == 0
+        @printf("Fine grid resolution: %d × %d × %d\n", final_grid...)
+        @printf("Outer KSP iterations: %d\n", niter)
+        @printf("Final residual norm %g\n", res_norm)
+        @printf("Setup time: %.6f seconds\n", setup_time)
+        @printf("Solve time: %.6f seconds\n", solve_time)
         @printf("L2 error: %.6e\n", L2)
         @printf("Max error: %.6e\n", global_max)
-        @printf("Residual norm %g\n", norm)
-        @printf("Solve time: %.6f seconds\n", solve_time)
+        flush(stdout)    # before PETSc's -log_view summary, which the parser expects after these
     end
 
+    PETSc.destroy!.((err, x, b))
     PETSc.destroy!(ksp)
-    return (; norm, final_grid, niter, solve_time, L2, global_max)
+    PETSc.destroy!(da)
+    return (; norm = res_norm, final_grid, niter, setup_time, solve_time, L2, global_max)
 end
 
 if !isinteractive() && abspath(PROGRAM_FILE) == @__FILE__
-    res = solve_ex45()
-    if MPI.Comm_rank(MPI.COMM_WORLD) == 0
-        @printf("Final residual norm %g\n", res.norm)
-        @printf("Fine grid resolution: %d × %d × %d\n",
-                res.final_grid[1], res.final_grid[2], res.final_grid[3])
-        @printf("Outer KSP iterations: %d\n", res.niter)
-        @printf("Solve time: %.6f seconds\n", res.solve_time)
-        @printf("L2 error: %.6e\n", res.L2)
-        @printf("Max error: %.6e\n", res.global_max)
-    end
+    opts = PETSc.parse_options(ARGS)
+    solve_ex45(get(opts, :N, 7); opts...)
     PETSc.finalize(petsclib)
 end

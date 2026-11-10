@@ -2,7 +2,7 @@
 # creators take it: per dimension `C_NULL` (let PETSc decide) or an
 # `Array{PetscInt}` with one entry per rank
 function points_per_proc_arrays(::Type{PetscLib}, points_per_proc, comm) where {PetscLib}
-    PetscInt = PetscLib.PetscInt
+    PetscInt = inttype(PetscLib)
     return ntuple(length(points_per_proc)) do d
         p = points_per_proc[d]
         (isnothing(p) || p == PETSC_DECIDE) && return C_NULL

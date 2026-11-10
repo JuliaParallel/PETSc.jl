@@ -69,6 +69,17 @@ PETSc.initialize(petsclib, log_view=true)
 PETSc.finalize(petsclib)
 ```
 
+## GPU support
+
+For NVIDIA GPUs on x86_64 Linux, `PETSc_CUDA_jll` provides a PETSc built with CUDA; it is a dependency of PETSc.jl and downloads its binaries only when selected:
+
+```julia
+using PETSc
+PETSc.set_library!(:cuda)   # restart Julia
+```
+
+Other GPU setups need a custom build. See [GPU Support](gpu.md) for both.
+
 ## HPC systems
 
 On many high-performance clusters, you will need to use the cluster's MPI installation. There are a number of options to do so - see the [Running on HPC Systems](hpc.md) page for details.

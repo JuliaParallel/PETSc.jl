@@ -4,20 +4,25 @@ Julia has outstanding support for GPUs as it compiles machine code for the parti
 
 PETSc has also added GPU support in recent years, and PETSc vector and matrix objects, along with many of the solvers, can be moved to the GPU.
 
-GPU support in PETSc.jl requires a **locally built PETSc** with CUDA or HIP enabled: the precompiled `PETSc_jll` binaries do not include GPU support. See [Installation](@ref) for instructions on pointing PETSc.jl to a local library.
+GPU support needs a PETSc built with CUDA or HIP; the `PETSc_jll` binaries are CPU-only. For NVIDIA GPUs on x86_64 Linux, `PETSc_CUDA_jll` provides one, selected with `PETSc.set_library!(:cuda)`. On other machines (AMD GPUs, or aarch64 such as Grace Hopper) build PETSc yourself, see [Using a custom PETSc build](@ref).
 
 NVIDIA GPUs go through CUDA.jl (`PETScCUDAExt`), AMD GPUs through AMDGPU.jl (`PETScAMDGPUExt`). The examples below use CUDA; for AMD, load AMDGPU instead, use PETSc's HIP types (`-vec_type hip`, `-mat_type aijhipsparse`) and expect `ROCArray` where the text says `CuArray`.
 
 ## Prerequisites
 
-1. **PETSc built with CUDA or HIP**: configure with `--with-cuda=1` (and the matching `--with-cuda-dir`), or `--with-hip=1 --with-hip-dir=$ROCM_DIR --with-hip-arch=gfx1100` (your GPU's architecture). Confirm with:
-   ```bash
-   grep -i -e cuda -e hip $PETSC_DIR/$PETSC_ARCH/include/petscconf.h
-   # should show: #define PETSC_HAVE_CUDA 1  (or PETSC_HAVE_HIP 1)
-   ```
-   PETSc and the Julia GPU package must use the same GPU runtime: for HIP, AMDGPU.jl loads the system ROCm, so build PETSc against that ROCm. CUDA.jl downloads its own CUDA runtime by default; point it at the toolkit PETSc was built with by running `CUDA.set_runtime_version!(local_toolkit = true)` once in your environment, then restarting Julia.
-
-   A PETSc built with CUDA stops at startup with "your MPI is not GPU-aware" when MPI.jl uses its default MPI (MPICH_jll), which cannot pass device memory. On one rank that costs nothing; turn the check off with the option `-use_gpu_aware_mpi 0`, for example `PETSC_OPTIONS="-use_gpu_aware_mpi 0"` in the environment. On several ranks, use a GPU-aware system MPI instead (see [Running on HPC Systems](hpc.md)).
+1. **A PETSc with GPU support**, one of:
+   - `PETSc_CUDA_jll`, a dependency of PETSc.jl, for NVIDIA GPUs on x86_64 Linux. It has `PetscScalar = Float64`, `PetscInt = Int64` or `Int32`, and needs `MPICH_jll` (MPI.jl's default) or `MPIABI_jll` as MPI. It uses the CUDA runtime CUDA.jl uses, so there is no toolkit to set up:
+     ```julia
+     using PETSc
+     PETSc.set_library!(:cuda)   # stored in LocalPreferences.toml; restart Julia
+     ```
+     `PETSc.unset_library!()` returns to `PETSc_jll`.
+   - A local build: configure with `--with-cuda=1` (and the matching `--with-cuda-dir`), or `--with-hip=1 --with-hip-dir=$ROCM_DIR --with-hip-arch=gfx1100` (your GPU's architecture), and select it with `PETSc.set_library!(path)`. Confirm with:
+     ```bash
+     grep -i -e cuda -e hip $PETSC_DIR/$PETSC_ARCH/include/petscconf.h
+     # should show: #define PETSC_HAVE_CUDA 1  (or PETSC_HAVE_HIP 1)
+     ```
+     PETSc and the Julia GPU package must use the same GPU runtime: for HIP, AMDGPU.jl loads the system ROCm, so build PETSc against that ROCm. CUDA.jl downloads its own CUDA runtime by default; point it at the toolkit PETSc was built with by running `CUDA.set_runtime_version!(local_toolkit = true)` once in your environment, then restarting Julia.
 
 2. **CUDA.jl** or **AMDGPU.jl** in your Julia environment:
    ```julia
@@ -29,6 +34,44 @@ NVIDIA GPUs go through CUDA.jl (`PETScCUDAExt`), AMD GPUs through AMDGPU.jl (`PE
    ```julia
    pkg> add KernelAbstractions
    ```
+
+## Several ranks and GPUs
+
+### One GPU per rank
+
+PETSc uses the GPU that CUDA.jl or AMDGPU.jl has selected when `PETSc.initialize` runs. That is device 0 unless the program picks another, so without a choice all ranks of a node share one GPU. Give each rank its own before initializing:
+
+```julia
+using MPI, CUDA, PETSc
+MPI.Init()
+comm = MPI.COMM_WORLD
+node = MPI.Comm_split_type(comm, MPI.COMM_TYPE_SHARED, MPI.Comm_rank(comm))
+CUDA.device!(MPI.Comm_rank(node) % length(CUDA.devices()))   # AMDGPU.device!(AMDGPU.devices()[…]) for AMD
+PETSc.initialize(petsclib)
+```
+
+A scheduler that hands each rank one GPU (`CUDA_VISIBLE_DEVICES`, or `--gpus-per-task=1` on SLURM) has the same effect. The option `-device_select_cuda n` (`-device_select_hip n`) overrides the choice.
+
+### GPU-aware MPI
+
+A PETSc built with CUDA checks at startup whether MPI can send device memory, and stops with "your MPI is not GPU-aware" when it cannot. `MPICH_jll` and `MPIABI_jll`, the MPIs PETSc.jl uses by default, cannot. Turn the check off with the option `-use_gpu_aware_mpi 0`, for example `PETSC_OPTIONS="-use_gpu_aware_mpi 0"` in the environment. PETSc then copies the halo values through host memory, which works on any number of ranks and GPUs.
+
+A GPU-aware MPI sends device memory directly. On a cluster that is the system MPI, see [Running on HPC Systems](hpc.md). On a workstation, `MPICH_CUDA_jll` is MPICH built with CUDA; it shares MPICH's ABI, so it pairs with the `MPICH_jll` builds of `PETSc_jll` and `PETSc_CUDA_jll`. MPIPreferences does not list it as a binary, so select it as a system MPI:
+
+```julia
+using MPICH_CUDA_jll, MPIPreferences
+MPIPreferences.use_system_binary(;
+    library_names = [MPICH_CUDA_jll.get_libmpi_path()],
+    mpiexec = MPICH_CUDA_jll.get_mpiexec_path())
+```
+
+and, before starting Julia:
+
+- put the directory of CUDA_Runtime_jll's `libcudart` on `LD_LIBRARY_PATH`, since a library selected this way does not load the libraries its package depends on;
+- if the NVIDIA driver is older than the CUDA runtime CUDA.jl picks, pin CUDA.jl to one the driver supports, e.g. `CUDA.set_runtime_version!(v"12.2")`: MPICH uses the system driver;
+- on a node whose GPUs cannot access each other's memory (`CUDA.can_access_peer(a, b)` is `false` for two of its devices), set `MPIR_CVAR_CH4_IPC_MAP_REPEAT_ADDR=0` and `MPIR_CVAR_CH4_IPC_GPU_P2P_THRESHOLD=2147483647`. Otherwise MPICH sends repeated or large messages between those GPUs through a path that delivers wrong values (NaN) without an error. The same two settings let CUDA.jl keep its memory pool; without them, MPICH fails on pool memory unless `JULIA_CUDA_MEMORY_POOL=none`.
+
+On two GPUs without that access, GPU-aware MPI was slower than `-use_gpu_aware_mpi 0` for `examples/dmda/ex19.jl`, since MPICH copies through host memory as well.
 
 ## How it works
 
@@ -126,18 +169,18 @@ The same kernel runs on CPU (when Vecs are host-resident) and GPU (when Vecs are
 To run it on a GPU:
 
 1. Set `const gpu = :cuda` (or `:hip`) near the top of `ex19.jl`.
-2. Ensure your local PETSc build has CUDA (or HIP) support and is linked via `PETSc.set_library!`.
+2. Select a PETSc with GPU support, see [Prerequisites](#Prerequisites).
 3. Launch:
    ```bash
-   julia --project ex19.jl -da_grid_x 257 -da_grid_y 257 \
+   PETSC_OPTIONS="-use_gpu_aware_mpi 0" julia --project ex19.jl -da_grid_x 257 -da_grid_y 257 \
        -pc_type mg -pc_mg_levels 4 \
        -mg_levels_ksp_type chebyshev -mg_levels_pc_type jacobi \
        -snes_monitor -ksp_monitor
    ```
+   On several ranks, start it with `mpiexec -n 2 julia …` and give each rank its own GPU, see [One GPU per rank](#One-GPU-per-rank).
 
-> [!NOTE]
-> The `PetscInt` type in your `LocalPreferences.toml` must match the PETSc build.
-> Check with `grep sizeof_PetscInt $PETSC_DIR/$PETSC_ARCH/include/petscconf.h`.
+!!! note
+    With a local build, the `PetscInt` type in your `LocalPreferences.toml` must match it. Check with `grep sizeof_PetscInt $PETSC_DIR/$PETSC_ARCH/include/petscconf.h`.
 
 
 ## Profiling
@@ -162,7 +205,7 @@ We performed tests in which we doubled the resolution in `x` and `y` while incre
 
 The results of the full solve include booting up Julia and computing the coloring pattern (which doesn't scale well).
 
-Below we report results for the inner solve itself (KSPSolve) on a GPU (with 1 MPI rank, which is a requirement of PETSc), and compare that with the results on CPU on 1 core and on 32 cores
+Below we report results for the inner solve itself (KSPSolve) on a GPU (with 1 MPI rank), and compare that with the results on CPU on 1 core and on 32 cores
 
 
 **KSPSolve** — time and throughput:

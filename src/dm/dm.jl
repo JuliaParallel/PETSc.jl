@@ -405,7 +405,7 @@ function set_uniform_coordinates!(
     xyzmin::NTuple{N, Real},
     xyzmax::NTuple{N, Real},
 ) where {N, PetscLib}
-    PetscReal = PetscLib.PetscReal
+    PetscReal = realtype(PetscLib)
     xmin = PetscReal(xyzmin[1])
     xmax = PetscReal(xyzmax[1])
 

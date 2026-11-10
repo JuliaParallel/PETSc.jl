@@ -427,7 +427,7 @@ The range is **1-based**, always: an index into Julia data is 1-based
 $(doc_external("Mat/MatGetOwnershipRange"))
 """
 function ownership_range(mat::AbstractPetscMat{PetscLib}) where {PetscLib}
-    PetscInt = PetscLib.PetscInt
+    PetscInt = inttype(PetscLib)
     # The wrapper returns two plain integers, not `Ref`s.
     r_lo, r_hi = LibPETSc.MatGetOwnershipRange(PetscLib, mat)
     return (r_lo + PetscInt(1)):r_hi

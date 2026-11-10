@@ -117,7 +117,7 @@ function Base.setindex!(v::AbstractPetscVec{PetscLib}, vals, r::AbstractVector{<
 end
 
 function Base.fill!(v::AbstractPetscVec{PetscLib}, val) where {PetscLib}
-    LibPETSc.VecSet(PetscLib, v, PetscLib.PetscScalar(val))
+    LibPETSc.VecSet(PetscLib, v, scalartype(PetscLib)(val))
     return v
 end
 

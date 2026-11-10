@@ -48,7 +48,7 @@ function set_residual!(
     f1_ptr::Ptr{Cvoid},
 ) where {PetscLib}
     petsclib = getlib(PetscLib)
-    LibPETSc.PetscDSSetResidual(petsclib, ds.ptr, PetscLib.PetscInt(field), f0_ptr, f1_ptr)
+    LibPETSc.PetscDSSetResidual(petsclib, ds.ptr, inttype(PetscLib)(field), f0_ptr, f1_ptr)
     return ds
 end
 
@@ -71,7 +71,7 @@ function set_jacobian!(
     g3_ptr::Ptr{Cvoid},
 ) where {PetscLib}
     petsclib = getlib(PetscLib)
-    LibPETSc.PetscDSSetJacobian(petsclib, ds.ptr, PetscLib.PetscInt(fieldI), PetscLib.PetscInt(fieldJ),
+    LibPETSc.PetscDSSetJacobian(petsclib, ds.ptr, inttype(PetscLib)(fieldI), inttype(PetscLib)(fieldJ),
                                 g0_ptr, g1_ptr, g2_ptr, g3_ptr)
     return ds
 end
@@ -94,7 +94,7 @@ function set_jacobian_preconditioner!(
 ) where {PetscLib}
     LibPETSc.PetscDSSetJacobianPreconditioner(
         getlib(PetscLib), ds.ptr,
-        PetscLib.PetscInt(field_i), PetscLib.PetscInt(field_j),
+        inttype(PetscLib)(field_i), inttype(PetscLib)(field_j),
         g0, g1, g2, g3,
     )
     return ds
@@ -119,7 +119,7 @@ function set_exact_solution!(
     ctx::Ptr{Cvoid} = C_NULL,
 ) where {PetscLib}
     petsclib = getlib(PetscLib)
-    LibPETSc.PetscDSSetExactSolution(petsclib, ds.ptr, PetscLib.PetscInt(field), sol_ptr, ctx)
+    LibPETSc.PetscDSSetExactSolution(petsclib, ds.ptr, inttype(PetscLib)(field), sol_ptr, ctx)
     return ds
 end
 
@@ -135,7 +135,7 @@ $(doc_external("DT/PetscDSSetConstants"))
 """
 function set_constants!(ds::PetscDS{PetscLib}, constants::AbstractVector) where {PetscLib}
     petsclib = getlib(PetscLib)
-    cst_v = collect(PetscLib.PetscScalar, constants)
-    LibPETSc.PetscDSSetConstants(petsclib, ds.ptr, PetscLib.PetscInt(length(cst_v)), cst_v)
+    cst_v = collect(scalartype(PetscLib), constants)
+    LibPETSc.PetscDSSetConstants(petsclib, ds.ptr, inttype(PetscLib)(length(cst_v)), cst_v)
     return ds
 end

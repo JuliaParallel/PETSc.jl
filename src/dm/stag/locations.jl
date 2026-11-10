@@ -10,7 +10,7 @@ Note that the returned `slot` is 1-based for Julia compatibility.
 `dof` is PETSc's 0-based component number at that location, as in [`stencil`](@ref).
 """
 function dof_slot(dm::DMStag{PetscLib}, loc::LibPETSc.DMStagStencilLocation, dof::Integer) where {PetscLib}
-    slot = LibPETSc.DMStagGetLocationSlot(getlib(PetscLib), dm, loc, PetscLib.PetscInt(dof))
+    slot = LibPETSc.DMStagGetLocationSlot(getlib(PetscLib), dm, loc, inttype(PetscLib)(dof))
     return slot+1
 end
 

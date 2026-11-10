@@ -72,11 +72,11 @@ PETSc.initialize(petsclib; options = isinteractive() ? String[] : collect(String
 
 on_boundary(g, N) = any(g .== 1) || any(g .== N)
 
-# The 7-point Laplacian of the rows this rank owns, as COO triplets in the DM's
-# ghosted local numbering (0-based), with identity rows on the boundary.
+# The 7-point Laplacian of the rows this rank owns, as CSR arrays (0-based row
+# offsets, sorted global column indices), with identity rows on the boundary.
 # Scaled by the cell volume HxHyHz so that the entries are O(h) on every
 # multigrid level instead of O(1/h²).
-function laplacian_coo(dm)
+function laplacian_csr(dm)
     own = PETSc.corners(dm)
     ghost = PETSc.ghost_corners(dm)
     N = PETSc.info(dm).global_size
@@ -87,28 +87,35 @@ function laplacian_coo(dm)
         (CartesianIndex(0, -1, 0), -c[2]), (CartesianIndex(0, 1, 0), -c[2]),
         (CartesianIndex(0, 0, -1), -c[3]), (CartesianIndex(0, 0, 1), -c[3]),
     )
-    # Global grid index → 0-based position in the ghosted local array
+    # Grid index → global row number, through the DM's ghosted local numbering
+    ltog = LibPETSc.DMGetLocalToGlobalMapping(petsclib, dm)
+    to_global = LibPETSc.ISLocalToGlobalMappingGetIndices(petsclib, ltog)
     ghost_linear = LinearIndices(ghost.size)
-    local_index(I) = ghost_linear[I - ghost.lower + oneunit(I)] - 1
+    global_index(I) = to_global[ghost_linear[I - ghost.lower + oneunit(I)]]
 
     PetscInt = petsclib.PetscInt
-    rows, cols, vals = PetscInt[], PetscInt[], Float64[]
-    function add!(i, j, v)
-        push!(rows, local_index(i))
-        push!(cols, local_index(j))
-        push!(vals, v)
-    end
+    nrows = prod(own.size)
+    rowptr, cols, vals = PetscInt[0], PetscInt[], Float64[]
+    sizehint!(rowptr, nrows + 1); sizehint!(cols, 7nrows); sizehint!(vals, 7nrows)
+    row = Tuple{PetscInt, Float64}[]
     for I in own.lower:own.upper
+        empty!(row)
         if on_boundary(Tuple(I), N)
-            add!(I, I, 1.0)
+            push!(row, (global_index(I), 1.0))
         else
+            push!(row, (global_index(I), 2 * sum(c)))
             for (d, v) in neighbors
-                add!(I, I + d, v)
+                push!(row, (global_index(I + d), v))
             end
-            add!(I, I, 2 * sum(c))
+            sort!(row; by = first)
         end
+        for (j, v) in row
+            push!(cols, j); push!(vals, v)
+        end
+        push!(rowptr, length(cols))
     end
-    return rows, cols, vals
+    LibPETSc.ISLocalToGlobalMappingRestoreIndices(petsclib, ltog, to_global)
+    return rowptr, cols, vals
 end
 
 # f(x, y, z, on_boundary) at the local grid point I; `lo` is the global grid
@@ -154,10 +161,12 @@ function solve_ex45(N = 7; Nx = N, Ny = N, Nz = N, opts...)
 
     # Called once per multigrid level, with that level's DM
     PETSc.set_compute_operators!(ksp) do _, jac, ksp
-        rows, cols, vals = laplacian_coo(PETSc.dm(ksp))
-        LibPETSc.MatSetPreallocationCOOLocal(petsclib, jac, LibPETSc.PetscCount(length(rows)), rows, cols)
-        LibPETSc.MatSetValuesCOO(petsclib, jac, vals, LibPETSc.INSERT_VALUES)
-        PETSc.assemble!(jac)
+        rowptr, cols, vals = laplacian_csr(PETSc.dm(ksp))
+        # Copies the CSR arrays into the matrix and assembles it; unlike COO
+        # assembly this keeps no index maps on the GPU. Only the call matching
+        # the matrix type (one rank or several) has an effect.
+        LibPETSc.MatSeqAIJSetPreallocationCSR(petsclib, jac, rowptr, cols, vals)
+        LibPETSc.MatMPIAIJSetPreallocationCSR(petsclib, jac, rowptr, cols, vals)
         return 0
     end
 

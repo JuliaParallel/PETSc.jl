@@ -285,8 +285,8 @@ function Base.:\(ksp::KSP{PetscLib}, b::AbstractVector) where {PetscLib}
             "but its communicator spans $(MPI.Comm_size(c)) ranks",
         ),
     )
-    PetscInt = PetscLib.PetscInt
-    PetscScalar = PetscLib.PetscScalar
+    PetscInt = inttype(PetscLib)
+    PetscScalar = scalartype(PetscLib)
 
     # PETSc works on this copy of `b` in place, so it must outlive the solve
     b_copy = copyto!(Vector{PetscScalar}(undef, length(b)), b)
@@ -531,10 +531,10 @@ function set_tolerances!(
     LibPETSc.KSPSetTolerances(
         petsclib,
         ksp,
-        PetscLib.PetscReal(something(rtol, cur.rtol)),
-        PetscLib.PetscReal(something(atol, cur.atol)),
-        PetscLib.PetscReal(something(divtol, cur.divtol)),
-        PetscLib.PetscInt(something(max_it, cur.max_it)),
+        realtype(PetscLib)(something(rtol, cur.rtol)),
+        realtype(PetscLib)(something(atol, cur.atol)),
+        realtype(PetscLib)(something(divtol, cur.divtol)),
+        inttype(PetscLib)(something(max_it, cur.max_it)),
     )
     return ksp
 end

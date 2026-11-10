@@ -494,7 +494,7 @@ Set the current time of `ts`.
 $(doc_external("TS/TSSetTime"))
 """
 function set_time!(ts::AbstractTS{PetscLib}, t) where {PetscLib}
-    LibPETSc.TSSetTime(getlib(PetscLib), ts, PetscLib.PetscReal(t))
+    LibPETSc.TSSetTime(getlib(PetscLib), ts, realtype(PetscLib)(t))
     return ts
 end
 
@@ -518,7 +518,7 @@ Set the step size.
 $(doc_external("TS/TSSetTimeStep"))
 """
 function set_timestep!(ts::AbstractTS{PetscLib}, dt) where {PetscLib}
-    LibPETSc.TSSetTimeStep(getlib(PetscLib), ts, PetscLib.PetscReal(dt))
+    LibPETSc.TSSetTimeStep(getlib(PetscLib), ts, realtype(PetscLib)(dt))
     return ts
 end
 
@@ -542,7 +542,7 @@ Set the time at which integration stops.
 $(doc_external("TS/TSSetMaxTime"))
 """
 function set_max_time!(ts::AbstractTS{PetscLib}, t) where {PetscLib}
-    LibPETSc.TSSetMaxTime(getlib(PetscLib), ts, PetscLib.PetscReal(t))
+    LibPETSc.TSSetMaxTime(getlib(PetscLib), ts, realtype(PetscLib)(t))
     return ts
 end
 
@@ -566,7 +566,7 @@ Set the step count at which integration stops.
 $(doc_external("TS/TSSetMaxSteps"))
 """
 function set_max_steps!(ts::AbstractTS{PetscLib}, n) where {PetscLib}
-    LibPETSc.TSSetMaxSteps(getlib(PetscLib), ts, PetscLib.PetscInt(n))
+    LibPETSc.TSSetMaxSteps(getlib(PetscLib), ts, inttype(PetscLib)(n))
     return ts
 end
 
@@ -585,7 +585,7 @@ it rejects the step, which [`set_max_step_rejections!`](@ref) limits.
 $(doc_external("TS/TSSetMaxSNESFailures"))
 """
 function set_max_snes_failures!(ts::AbstractTS{PetscLib}, n::Integer) where {PetscLib}
-    LibPETSc.TSSetMaxSNESFailures(getlib(PetscLib), ts, PetscLib.PetscInt(n))
+    LibPETSc.TSSetMaxSNESFailures(getlib(PetscLib), ts, inttype(PetscLib)(n))
     return ts
 end
 
@@ -600,7 +600,7 @@ Allow the adaptor to reject `n` attempts at a single step before
 $(doc_external("TS/TSSetMaxStepRejections"))
 """
 function set_max_step_rejections!(ts::AbstractTS{PetscLib}, n::Integer) where {PetscLib}
-    LibPETSc.TSSetMaxStepRejections(getlib(PetscLib), ts, PetscLib.PetscInt(n))
+    LibPETSc.TSSetMaxStepRejections(getlib(PetscLib), ts, inttype(PetscLib)(n))
     return ts
 end
 
@@ -642,7 +642,7 @@ Set the time with [`set_time!`](@ref) alongside it. Returns `ts`.
 $(doc_external("TS/TSSetStepNumber"))
 """
 function set_step_number!(ts::AbstractTS{PetscLib}, n::Integer) where {PetscLib}
-    LibPETSc.TSSetStepNumber(getlib(PetscLib), ts, PetscLib.PetscInt(n))
+    LibPETSc.TSSetStepNumber(getlib(PetscLib), ts, inttype(PetscLib)(n))
     return ts
 end
 
@@ -684,7 +684,7 @@ function set_tolerances!(
     vrtol::Union{Nothing, AbstractPetscVec{PetscLib}} = nothing,
 ) where {PetscLib}
     petsclib = getlib(PetscLib)
-    PetscReal = PetscLib.PetscReal
+    PetscReal = realtype(PetscLib)
     cur_atol, _, cur_rtol, _ = LibPETSc.TSGetTolerances(petsclib, ts)
     null_vec = LibPETSc.PetscVec(petsclib)
     LibPETSc.TSSetTolerances(
@@ -956,7 +956,7 @@ function interpolate!(
     ts::AbstractTS{PetscLib},
     t,
 ) where {PetscLib}
-    LibPETSc.TSInterpolate(getlib(PetscLib), ts, PetscLib.PetscReal(t), u)
+    LibPETSc.TSInterpolate(getlib(PetscLib), ts, realtype(PetscLib)(t), u)
     return u
 end
 

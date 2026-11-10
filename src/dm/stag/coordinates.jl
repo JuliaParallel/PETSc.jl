@@ -17,7 +17,7 @@ function set_uniform_coordinates!(
     xyzmax::NTuple,
     ) where {PetscLib}
     # The coordinates are real even in a complex build
-    PetscReal = PetscLib.PetscReal
+    PetscReal = realtype(PetscLib)
 
     xmin = PetscReal(xyzmin[1])
     xmax = PetscReal(xyzmax[1])

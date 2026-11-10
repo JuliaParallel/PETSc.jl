@@ -155,7 +155,7 @@ LibPETSc.@for_petsc function set_function!(
     ) 
 
     ctx = state_pointer(snes)
-    PetscInt = $PetscLib.PetscInt
+    PetscInt = inttype($PetscLib)
     fptr = @cfunction(
         SNESSetFunctionFn{$PetscLib}(),
         LibPETSc.PetscErrorCode,
@@ -537,11 +537,11 @@ function set_tolerances!(
     LibPETSc.SNESSetTolerances(
         petsclib,
         snes,
-        PetscLib.PetscReal(something(atol, cur.atol)),
-        PetscLib.PetscReal(something(rtol, cur.rtol)),
-        PetscLib.PetscReal(something(stol, cur.stol)),
-        PetscLib.PetscInt(something(max_it, cur.max_it)),
-        PetscLib.PetscInt(something(max_funcs, cur.max_funcs)),
+        realtype(PetscLib)(something(atol, cur.atol)),
+        realtype(PetscLib)(something(rtol, cur.rtol)),
+        realtype(PetscLib)(something(stol, cur.stol)),
+        inttype(PetscLib)(something(max_it, cur.max_it)),
+        inttype(PetscLib)(something(max_funcs, cur.max_funcs)),
     )
     return snes
 end

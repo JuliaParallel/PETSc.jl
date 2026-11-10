@@ -59,10 +59,10 @@ function zero_rows!(
     x = nothing,
     b = nothing,
 ) where {PetscLib}
-    PetscInt = PetscLib.PetscInt
+    PetscInt = inttype(PetscLib)
     xv, bv = _zero_rows_vecs(PetscLib, x, b)
     LibPETSc.MatZeroRows(PetscLib, A, PetscInt(length(rows_0b)), Vector{PetscInt}(rows_0b),
-        PetscLib.PetscScalar(diag), xv, bv)
+        scalartype(PetscLib)(diag), xv, bv)
     return A
 end
 
@@ -83,10 +83,10 @@ function zero_rows_local!(
     x = nothing,
     b = nothing,
 ) where {PetscLib}
-    PetscInt = PetscLib.PetscInt
+    PetscInt = inttype(PetscLib)
     xv, bv = _zero_rows_vecs(PetscLib, x, b)
     LibPETSc.MatZeroRowsLocal(PetscLib, A, PetscInt(length(rows_0b)), Vector{PetscInt}(rows_0b),
-        PetscLib.PetscScalar(diag), xv, bv)
+        scalartype(PetscLib)(diag), xv, bv)
     return A
 end
 
@@ -114,8 +114,8 @@ function Base.copyto!(
     S::SparseMatrixCSC,
 ) where {PetscLib}
     row_rng = LibPETSc.MatGetOwnershipRange(PetscLib,M)
-    PetscInt = PetscLib.PetscInt
-    PetscScalar = PetscLib.PetscScalar
+    PetscInt = inttype(PetscLib)
+    PetscScalar = scalartype(PetscLib)
     row_start = row_rng[1]
     m, n = size(S)
     m <= row_rng[2] - row_start && row_start + n <= size(M, 2) || throw(
@@ -171,8 +171,8 @@ function set_values!(
     num_rows = length(rows_0b),
     num_cols = length(cols_0b),
 ) where {PetscLib}
-    PetscInt = PetscLib.PetscInt
-    vals = block_values(PetscLib.PetscScalar, rowvals, num_rows, num_cols)
+    PetscInt = inttype(PetscLib)
+    vals = block_values(scalartype(PetscLib), rowvals, num_rows, num_cols)
     check_block(num_rows, num_cols, length(rows_0b), length(cols_0b), length(rowvals))
     LibPETSc.MatSetValuesStencil(
         PetscLib,
@@ -271,8 +271,8 @@ function set_values!(
     num_rows = length(rows_0b),
     num_cols = length(cols_0b),
 ) where {PetscLib}
-    PetscInt = PetscLib.PetscInt
-    vals = block_values(PetscLib.PetscScalar, rowvals, num_rows, num_cols)
+    PetscInt = inttype(PetscLib)
+    vals = block_values(scalartype(PetscLib), rowvals, num_rows, num_cols)
     check_block(num_rows, num_cols, length(rows_0b), length(cols_0b), length(rowvals))
     LibPETSc.MatSetValues(
         PetscLib,

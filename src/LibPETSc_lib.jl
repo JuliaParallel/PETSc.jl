@@ -25,7 +25,7 @@ function getlib(; PetscScalar = Float64, PetscInt = Int64)
     return PetscLibType{PetscScalar, PetscInt}()
 end
 
-function Base.getproperty(petsclib::UnionPetscLibType, name::Symbol)
+function Base.getproperty(petsclib::PetscLibType, name::Symbol)
     if name == :PetscScalar
         return scalartype(petsclib)
     elseif name == :PetscReal

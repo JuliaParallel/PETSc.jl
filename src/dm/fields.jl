@@ -196,7 +196,7 @@ function set_auxiliary_vec!(dm::AbstractPetscDM{PetscLib}, aux_local) where {Pet
     petsclib = getlib(PetscLib)
     LibPETSc.DMSetAuxiliaryVec(petsclib, dm,
         Ptr{Cvoid}(C_NULL),
-        PetscLib.PetscInt(0), PetscLib.PetscInt(0),
+        inttype(PetscLib)(0), inttype(PetscLib)(0),
         aux_local)
     return dm
 end
@@ -232,7 +232,7 @@ function project_field!(
     fptrs = Ptr{Cvoid}[Ptr{Cvoid}(f) for f in funcs]
     GC.@preserve fptrs capture_callback_errors() do
         LibPETSc.DMProjectField(
-            getlib(PetscLib), dm, PetscLib.PetscReal(time), U, pointer(fptrs), mode, X,
+            getlib(PetscLib), dm, realtype(PetscLib)(time), U, pointer(fptrs), mode, X,
         )
     end
     return X

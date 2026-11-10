@@ -14,8 +14,17 @@ struct CUDAMemBackend <: AbstractPetscMemBackend end
 PETSc.memtype_backend(::Val{PETSC_MEMTYPE_DEVICE}) = CUDAMemBackend()
 PETSc.array_type(::Val{PETSC_MEMTYPE_DEVICE}) = CuArray
 
+# PETSc uses the device CUDA.jl has selected, so that the device memory it hands
+# out belongs to the context CUDA.jl launches kernels in.
+device_options() = CUDA.functional() ?
+    ["-device_select_cuda" => string(CUDA.deviceid(CUDA.device()))] : Pair{String, String}[]
+
 # With the extension loaded, `memtype = :native` checkouts wrap device memory.
-__init__() = push!(PETSc.device_memtypes, PETSC_MEMTYPE_DEVICE)
+function __init__()
+    push!(PETSc.device_memtypes, PETSC_MEMTYPE_DEVICE)
+    push!(PETSc.device_option_hooks, device_options)
+    return nothing
+end
 
 # CUDA.jl launches kernels on its own stream, PETSc reads on its own.
 PETSc.synchronize_device(::CUDAMemBackend) = CUDA.synchronize()

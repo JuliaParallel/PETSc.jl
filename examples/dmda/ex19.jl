@@ -501,15 +501,6 @@ if MPI.Comm_rank(comm) == 0
 end
 
 # ── Cleanup ───────────────────────────────────────────────────────────────────
-# Destroy the PETSc options database stored on the SNES explicitly.  Its GC
-# finalizer calls PetscOptionsDestroy (which touches MPI internally); if GC
-# runs it after PETSc/MPI are finalized the process crashes.  Destroying here
-# while PETSc is still active is always safe.
-if !isnothing(snes.opts)
-    PETSc.destroy!(snes.opts)
-    snes.opts = nothing
-end
-
 # Run a full GC so any remaining PETSc-object finalizers fire while PETSc is
 # still active.
 GC.gc(true)

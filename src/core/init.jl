@@ -116,6 +116,7 @@ function initialize(petsclib; log_view::Bool = false, options = String[])
     if !isinitialized(petsclib)
         ensure_mpi_initialized()
         petsclib.age += 1
+        set_device_options(petsclib)
         LibPETSc.PetscInitialize(petsclib, build_petsc_options(log_view, options))
         post_initialize(petsclib)
     end
@@ -170,6 +171,22 @@ function build_petsc_options(log_view::Bool, options)
     end
     push!(args, "-no_signal_handler")
     return args
+end
+
+# Functions the GPU extensions register, each returning `name => value` option
+# pairs that make PETSc use the device the Julia GPU package has selected.
+# PETSc otherwise picks a device per rank by itself, and the arrays it
+# hands out then live on a device the Julia kernels do not run on.
+const device_option_hooks = Function[]
+
+# Set before `PetscInitialize`, which reads `PETSC_OPTIONS` and the command line
+# afterwards: a device chosen there overrides these.
+function set_device_options(petsclib)
+    db = LibPETSc.PetscOptions{typeof(petsclib)}(C_NULL, petsclib.age; own = false)
+    for hook in device_option_hooks, (name, value) in hook()
+        LibPETSc.PetscOptionsSetValue(petsclib, db, name, value)
+    end
+    return nothing
 end
 
 function ensure_mpi_initialized()

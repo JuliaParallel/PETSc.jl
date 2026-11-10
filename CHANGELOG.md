@@ -43,6 +43,7 @@
 
 ### Added
 
+- `PETSc.set_library!(:cuda)` uses the CUDA build of PETSc from `PETSc_CUDA_jll` (x86_64 Linux, Float64, Int64 or Int32, with `MPICH_jll` or `MPIABI_jll`), with no local PETSc build. It loads like `PETSc_jll`, including the libraries the build depends on, and follows updates of the package. `PETSc_CUDA_jll` is a new dependency; its binaries download only when selected.
 - `A * x` for any `PetscMat` and a Julia vector `x` is one `MatMult` and returns a `Vector`. It is collective and works on any number of ranks: every rank passes the whole `x` and gets the whole product. A `MatShell` uses the same method.
 - `sum`, `maximum`, `minimum` on a PetscVec, through `VecSum`, `VecMax` and `VecMin`, and `any`, `all`, `count` and `mapreduce` (so `sum(f, v)`, `prod`, `extrema` and `reduce`) with a function. All are collective and give every rank the global answer; the function runs on the entries each rank owns, and the results of `mapreduce` combine in rank order. `similar(v, eltype(v))` returns a PetscVec, as `similar(v)` does.
 - `PETSc.equal(A, B)` and `PETSc.equal(v, w)`: PETSc's own `MatEqual` and `VecEqual`, faster than `==` but comparing what is stored (the pattern for a Mat, the bits for a Vec).
@@ -54,6 +55,8 @@
 
 ### Fixed
 
+- PETSc uses the GPU that CUDA.jl or AMDGPU.jl has selected. It picked one per rank by itself, so with several GPUs per node a rank could get device memory from one GPU while its Julia kernels ran on another, and crash with an illegal memory access. Select one GPU per rank with `CUDA.device!` (or `AMDGPU.device!`) before `PETSc.initialize`; `-device_select_cuda` or `-device_select_hip` still overrides it.
+- `examples/dmda/ex19.jl` crashed at exit when given command-line options.
 - A `LibPETSc` call given a handle with a null pointer (`PetscVec(petsclib)`, never created) where PETSc requires an object throws an `ArgumentError` naming the function and argument. It crashed the process with signal 11, since PETSc_jll is built without PETSc's own checks. Optional arguments, where NULL means "none", still take such a handle.
 - `LibPETSc.PetscSFGetGraphLayout(petsclib, sf)` returns `(layout, nleaves, ilocal, gremote)`: the new `PetscLayout` (destroy it with `PetscLayoutDestroy`), the leaf locations as `PetscSFGetGraph` gives them, and the global root indices as a Julia `Vector`. It took the layout as an input and threw an `UndefVarError` on every call.
 - `similar(v)` on a PetscVec returned a vector with no finalizer, so its memory was never freed. That includes the vector `ksp \ b` returns and any Base code that calls `similar` on a PetscVec: 1500 calls on a 1.5 MiB vector grew the process by 2.2 GiB. The vector now has a finalizer on a one-rank communicator, as `copy(v)` does; on more ranks call `destroy!` on it on every rank.

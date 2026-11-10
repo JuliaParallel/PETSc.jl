@@ -14,8 +14,18 @@ struct HIPMemBackend <: AbstractPetscMemBackend end
 PETSc.memtype_backend(::Val{PETSC_MEMTYPE_HIP}) = HIPMemBackend()
 PETSc.array_type(::Val{PETSC_MEMTYPE_HIP}) = ROCArray
 
+# PETSc uses the device AMDGPU.jl has selected, so that the device memory it
+# hands out is on the device AMDGPU.jl launches kernels on.
+# AMDGPU.jl counts devices from 1, HIP from 0.
+device_options() = AMDGPU.functional() ?
+    ["-device_select_hip" => string(AMDGPU.device_id(AMDGPU.device()) - 1)] : Pair{String, String}[]
+
 # With the extension loaded, `memtype = :native` checkouts wrap device memory.
-__init__() = push!(PETSc.device_memtypes, PETSC_MEMTYPE_HIP)
+function __init__()
+    push!(PETSc.device_memtypes, PETSC_MEMTYPE_HIP)
+    push!(PETSc.device_option_hooks, device_options)
+    return nothing
+end
 
 # AMDGPU.jl launches kernels on its own stream, PETSc reads on its own.
 PETSc.synchronize_device(::HIPMemBackend) = AMDGPU.synchronize()

@@ -101,7 +101,7 @@ Report the PETSc library configuration as a `NamedTuple` (§12).
 
 | Field | Meaning |
 |---|---|
-| `source` | `:preferences` if `LocalPreferences.toml` names a library, `:jll` for the bundled `PETSc_jll` binaries |
+| `source` | `:preferences` if `LocalPreferences.toml` names a library path, `:cuda_jll` for the CUDA binaries of `PETSc_CUDA_jll` (`set_library!(:cuda)`), `:jll` for the bundled `PETSc_jll` binaries |
 | `path` | the library path in use |
 | `scalar` | `PetscScalar` of the preferred library |
 | `int` | `PetscInt` of the preferred library |
@@ -126,7 +126,8 @@ function library_info()
     pref_path = @load_preference("library_path", nothing)
     lib = isempty(petsclibs) ? nothing : petsclibs[1]
 
-    source = pref_path === nothing ? :jll : :preferences
+    source = @load_preference("library", nothing) == "PETSc_CUDA_jll" ? :cuda_jll :
+             pref_path === nothing ? :jll : :preferences
     path = pref_path !== nothing ? pref_path :
            lib === nothing ? nothing : library_path_string(lib)
 
@@ -178,18 +179,57 @@ function set_library!(path; PetscScalar::Type=Float64, PetscInt::Type=Int64)
         "PetscScalar"  => string(PetscScalar),
         "PetscInt"     => string(PetscInt),
     )
+    @delete_preferences!("library")
     @info "PETSc library configured — restart Julia to use the new library." path PetscScalar PetscInt
+    return nothing
+end
+
+const PETSc_CUDA_jll_id = Base.PkgId(Base.UUID("d68ba6a2-680a-542a-8c53-8e2da8b9c186"), "PETSc_CUDA_jll")
+
+"""
+    set_library!(:cuda; PetscInt = Int64)
+
+Persistently configure PETSc.jl to use the CUDA build of PETSc from
+`PETSc_CUDA_jll`, a dependency of PETSc.jl, and take effect on the next Julia
+session.
+
+That build has `PetscScalar = Float64`; `PetscInt` is `Int64` or `Int32`. It
+exists for x86_64 Linux with an NVIDIA driver, and for `MPICH_jll` or
+`MPIABI_jll` as MPI. On another machine this throws an `ArgumentError`.
+[`unset_library!`](@ref) reverts to `PETSc_jll`.
+
+```julia
+PETSc.set_library!(:cuda)
+# Restart Julia. GPU arrays need CUDA.jl loaded, see the GPU manual page.
+```
+"""
+function set_library!(name::Symbol; PetscScalar::Type = Float64, PetscInt::Type = Int64)
+    name === :cuda || throw(ArgumentError("unknown PETSc build :$name, the one available is :cuda (PETSc_CUDA_jll)"))
+    PetscScalar === Float64 ||
+        throw(ArgumentError("PETSc_CUDA_jll is built with PetscScalar = Float64 only, got $PetscScalar"))
+    PetscInt in (Int32, Int64) || throw(ArgumentError("PetscInt must be Int32 or Int64, got $PetscInt"))
+    jll = Base.require(PETSc_CUDA_jll_id)
+    Base.invokelatest(jll.is_available) || throw(ArgumentError(
+        "PETSc_CUDA_jll has no build for this machine: it needs x86_64 Linux, an NVIDIA " *
+        "driver, and MPICH_jll or MPIABI_jll as MPI (see MPIPreferences)"))
+    @set_preferences!(
+        "library"     => "PETSc_CUDA_jll",
+        "PetscScalar" => "Float64",
+        "PetscInt"    => string(PetscInt),
+    )
+    @delete_preferences!("library_path")
+    @info "PETSc library configured — restart Julia to use the new library." library = "PETSc_CUDA_jll" PetscInt
     return nothing
 end
 
 """
     unset_library!()
 
-Remove the persistent custom-library preference set by [`set_library!`](@ref),
+Remove the persistent library preference set by [`set_library!`](@ref),
 reverting to the default `PETSc_jll` binaries on the next Julia session.
 """
 function unset_library!()
-    @delete_preferences!("library_path", "PetscScalar", "PetscInt")
+    @delete_preferences!("library", "library_path", "PetscScalar", "PetscInt")
     @info "PETSc library preference removed — restart Julia to revert to PETSc_jll."
     return nothing
 end

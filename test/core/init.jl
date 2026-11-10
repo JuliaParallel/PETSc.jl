@@ -191,7 +191,7 @@ using PETSc
         info = PETSc.library_info()
         @test info isa NamedTuple
         @test keys(info) === (:source, :path, :scalar, :int, :real)
-        @test info.source in (:preferences, :jll)
+        @test info.source in (:preferences, :cuda_jll, :jll)
         @test info.scalar === PETSc.petsclibs[1].PetscScalar
         @test info.int === PETSc.petsclibs[1].PetscInt
         @test info.real === real(PETSc.petsclibs[1].PetscScalar)
@@ -251,6 +251,14 @@ using PETSc
         @test_throws ArgumentError PETSc.set_library!(
             joinpath(mktempdir(), "no-such-libpetsc.so"),
         )
+        @test_throws "unknown PETSc build :rocm" PETSc.set_library!(:rocm)
+        @test_throws "PetscScalar = Float64 only" PETSc.set_library!(:cuda; PetscScalar = Float32)
+        @test_throws "PetscInt must be Int32 or Int64" PETSc.set_library!(:cuda; PetscInt = Int16)
+        # Only where there is no CUDA build: elsewhere the call would set the preference
+        cuda_jll = Base.require(PETSc.PETSc_CUDA_jll_id)
+        if !Base.invokelatest(cuda_jll.is_available)
+            @test_throws "PETSc_CUDA_jll has no build for this machine" PETSc.set_library!(:cuda)
+        end
     end
 end
 

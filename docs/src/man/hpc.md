@@ -143,7 +143,7 @@ A program that starts MPI processes itself through MPI.jl's `mpiexec` with a JLL
 
 This section summarises weak scalability results for a 3D Laplacian benchmark ([`ex45.jl`](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/dmda/ex45.jl)) using a CG solver with geometric multigrid preconditioning (`-pc_type mg`). The problem size is scaled proportionally with the number of MPI ranks so that the work per rank stays constant.
 
-We have performed these simulations on LUMI-C (Finnland) and provide job submission scripts (`submit_scaling.sh`, `job.sh`), along with a parsing file that collects and summarizes the results (`parse_scaling.jl`). 
+We have performed these simulations on LUMI-C (Finland) and provide job submission scripts (`submit_scaling.sh`, `job.sh`), along with a parsing file that collects and summarizes the results (`parse_scaling.jl`). 
 All files are uploaded under [PETSc.jl/examples/scalability_tests](https://github.com/JuliaParallel/PETSc.jl/tree/main/examples/scalability_tests), and can be started with
 ```bash
 $ ./submit_scaling.sh 512 1025 1025 1025 6 16
@@ -156,7 +156,7 @@ We consider 3 cases:
 - Using a C-compiled version of `ex45_julia.c`  ("native")
 
 #### Results
-Here the collected results (all simulations, except the largest ones, where done 3 times; I only show the fastest ones here). 
+Every case except the largest was run up to three times.
 
 | JobID | Ntasks | MG | NC | Grid | Backend | SolveTime (s) | KSPSolve (s) | TotGFlops | GFlops/s | KSP | L2 error | Max error | Residual | Converged |
 |-------|--------|----|----|------|---------|--------------|-------------|-----------|----------|-----|----------|-----------|----------|-----------|
@@ -248,25 +248,13 @@ If we compare the case on 4096 cores with a 2049³ grid, for 3D Poisson, 64 node
 | **L2 error** | 2.7738e-07 | 2.7738e-07 | 2.7738e-07 |
 | **Converged** | ✅ | ✅ | ✅ |
 
-Relative to the means of the native runs, the means above give:
+- **The numerical results are identical** on all backends: same iterations, same L2 and max error.
+- **The efficiency drops at high core counts** for the native build as much as for PETSc.jl, so it comes from the multigrid setup and the coarse-grid solve, not from PETSc.jl.
+- **The local build is faster than `_jll`** at 4096 tasks (35.9 s vs 39.3 s mean KSPSolve).
 
-| Backend | SolveTime overhead | KSPSolve overhead |
-|---------|--------------------|-------------------|
-| native C | reference | reference |
-| PETSc.jl (`_jll`) | +75% | +35% |
-| local lib | +58% | +23% |
+These runs used an earlier `ex45.jl`, whose KSPSolve time included assembling the operators of every multigrid level in Julia, entry by entry, and compiling that code. The KSPSolve gap to native C therefore does not measure the solve itself. The current `ex45.jl` assembles the operators before the solve and reports the setup and solve times separately; a rerun with it is pending.
 
-From this we can conclude:
-- **Numerical results are identical** across all backends — same iterations, same L2/Max error.
-- **KSPSolve gap vs native** is ~6s for local lib and ~10s for `_jll` — much of this is MG setup overhead inside the solver
-- **SolveTime gap vs native** (~25s for local lib, ~32s for `_jll`) includes Julia setup: mesh construction, matrix assembly, MG hierarchy setup
-- **local lib** is faster than `_jll` at 4096 tasks (35.9s vs 39.3s mean KSPSolve) — likely because it uses the system Cray libsci BLAS directly without MPItrampoline overhead.
-- There is a (significant) drop in performance for high core counts. this is likely related to the multigrid setup and coarse grid solvers and not to PETSc.jl as we see a similar behavior for the native compilation as well.
-
-Overall it shows that there is overhead in using the Julia interface to `PETSc.jl` compared to native C-code. 
-On the other hand, this is done in a higher level language and can thus seemlessly integrate with the full Julia ecosystem. It should also be kept in mind that the residual routines etc. are all written in julia. 
-
-As a start one can use the precompiled binaries with the system MPI, which doesn't require any PETSc installation. For the last bit of performance one can configure a native PETSc installation and use that instead.
+The precompiled binaries with the system MPI need no PETSc installation and are the easiest start. A local PETSc build is somewhat faster.
 
 #### Weak scalability plot
 Results can be summarized in the plot below:

@@ -186,7 +186,7 @@ using PETSc
         end
     end
 
-    # naming.md §12: `library_info` returns its values as a plain NamedTuple
+    # `library_info` returns its values as a plain NamedTuple
     @testset "library_info" begin
         info = PETSc.library_info()
         @test info isa NamedTuple
@@ -246,7 +246,7 @@ using PETSc
         @test length(Base.atexit_hooks) == hooks
     end
 
-    # naming.md §14: user input raises `ArgumentError`, not a bare `error`.
+    # user input raises `ArgumentError`, not a bare `error`.
     @testset "ArgumentError on user input" begin
         @test_throws ArgumentError PETSc.set_library!(
             joinpath(mktempdir(), "no-such-libpetsc.so"),

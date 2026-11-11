@@ -33,7 +33,7 @@ Pkg.test("PETSc"; test_args = ["dm", "mpi"])
 #### Adding new functionality
 Please open a pull request to add any of the above contributions.
 
-New high-level functions must follow the [naming conventions](naming.md). The low-level `LibPETSc` layer is exempt: it keeps the PETSc C names verbatim.
+New high-level functions must follow the [API conventions](conventions.md). The low-level `LibPETSc` layer is exempt: it keeps the PETSc C names verbatim.
 #### Where the code lives
 The high-level code in `src/` has one directory per PETSc family, as in PETSc's own `src/`, so a new object gets a new file and existing files don't need splitting. Three rules place the code:
 

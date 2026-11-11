@@ -90,9 +90,11 @@ makedocs(;
         "Running on HPC Systems" => "man/hpc.md",
         "GPU Support (CUDA, HIP)" => "man/gpu.md",
         "FAQ"  => "man/FAQ.md",
-        "Naming Conventions" => "man/naming.md",
-        "Contributing"  => "man/contributing.md",
-        "Regenerating the wrappers" => "man/wrapping.md",
+        "Contributing" => Any[
+            "Contributing"  => "man/contributing.md",
+            "API conventions" => "man/conventions.md",
+            "Regenerating the wrappers" => "man/wrapping.md",
+        ],
         "Funding" => "man/funding.md",
     ],
 )

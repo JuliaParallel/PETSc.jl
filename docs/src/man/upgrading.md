@@ -1,6 +1,6 @@
 # Upgrading from 0.4 and 0.5
 
-PETSc.jl 0.5 is a breaking release. Most of the high-level API has new names, the low-level `LibPETSc` functions return their outputs, and the package needs Julia 1.12 and PETSc 3.25. This page is the order in which to update code written for 0.4. 0.6 removes the 0.5 warnings that name each replacement, so upgrade to 0.5.5 first, follow this page, and then move to 0.6 as described in [Upgrading from 0.5 to 0.6](@ref). Every change is listed in the [Release notes](release_notes.md), and every renamed function in the rename table at the end of [Naming Conventions](naming.md).
+PETSc.jl 0.5 is a breaking release. Most of the high-level API has new names, the low-level `LibPETSc` functions return their outputs, and the package needs Julia 1.12 and PETSc 3.25. This page is the order in which to update code written for 0.4. 0.6 removes the 0.5 warnings that name each replacement, so upgrade to 0.5.5 first, follow this page, and then move to 0.6 as described in [Upgrading from 0.5 to 0.6](@ref). Every change is listed in the [Release notes](release_notes.md), and every renamed function in the rename [appendix](#Appendix:-the-0.4-to-0.5-renames) below.
 
 ## 1. Requirements
 
@@ -149,9 +149,9 @@ These can't warn without firing on correct code, so check them now: see [Upgradi
 
 ## 8. Looking up a name
 
-- **An old high-level name:** the rename table at the end of [Naming Conventions](naming.md).
+- **An old high-level name:** the [Appendix: the 0.4 to 0.5 renames](@ref) below.
 - **A PETSc C function:** the [C to Julia name index](api_index.md).
-- **Why a name is what it is:** the rules in [Naming Conventions](naming.md).
+- **Why a name is what it is:** the [API conventions](conventions.md).
 
 ## Upgrading from 0.5 to 0.6
 
@@ -177,3 +177,225 @@ These can't warn without firing on correct code, so check them now: see [Upgradi
 - **`distribute(dm)` on one rank returns a clone of `dm`** with its fields, not a DM with a null pointer, so `d = distribute(dm); destroy!(dm); dm = d` needs no special case. A `d.ptr == C_NULL` check is now always false.
 - **FE, label and null-space functions lose `petsclib`.** The handles carry the library, so `set_name!(obj, name)`, `copy_quadrature!(dst_fe, src_fe)` (destination first, it was `(petsclib, src, dst)`), `compose_constant_nullspace!(fe)` and `destroy!(nullspace)` take no `petsclib` or communicator. `label(dm, name)` returns a `DMLabel`, or `nothing` where it returned `C_NULL`: `c_label != C_NULL` is now always true without an error, so test `isnothing(c_label)`. `set_field!`, `add_boundary!` and `add_natural_boundary!` take a `PetscFE` and a `DMLabel` where they took `Ptr`s; `set_field!(dm, i, fe; label = C_NULL)` is `label = nothing` (the default).
 - **`isapprox(v, w)` compares norms**, ‖v − w‖ ≤ max(atol, rtol·max(‖v‖, ‖w‖)), as for Julia arrays, instead of entry by entry. For the old test write `all(isapprox.(v[:], w[:]))`.
+- **`PetscVec` is an `AbstractVector` and `PetscMat` an `AbstractMatrix`.** Your methods for `AbstractVector` or `AbstractMatrix` now receive them. If such a method reads entry by entry, each read is a C call, and an entry owned by another rank is an error: work on the local part with `with_local_array!`, or add a method for `PetscVec`.
+- **`PetscInt`, `PetscScalar` and `PetscReal` are properties of a library, not of its type.** `typeof(petsclib).PetscInt` throws an error; use `PETSc.inttype(T)`, `PETSc.scalartype(T)` and `PETSc.realtype(T)`, which take a library or its type.
+- **The positional constructors that took callbacks are removed**, such as `SNES{PetscLib}(ptr, age, f!, …)` and `KSP{PetscLib}(ptr, age, computerhs!, …)`. Wrap the pointer with `SNES{PetscLib}(ptr, age)` and set the callbacks with `set_function!`, `set_compute_rhs!` and the other setters.
+- **`audit_file` is removed** from the package. The leak audit is the script `scripts/audit.jl` in the repository: `julia scripts/audit.jl file.jl`.
+
+## Appendix: the 0.4 to 0.5 renames
+
+What each 0.4 high-level name became in 0.5, by the file that defined it. On 0.5.5 every old name still works and warns with its replacement; on 0.6 it is gone.
+
+### `dm.jl`
+
+| v0.4 | v0.5 |
+|---|---|
+| `destroy` | `destroy!` |
+| `getinfo` | `info` (drops the duplicate `s` field, `dof` becomes `ndofs` and `mpi_proc_size` becomes `procs`) |
+| `getcorners`, `getcorners_dmda` | `corners` |
+| `getghostcorners`, `getghostcorners_dmda` | `ghost_corners` |
+| `dm_local_to_global`, `dm_local_to_global!` | `local_to_global`, `local_to_global!` |
+| `dm_global_to_local`, `dm_global_to_local!` | `global_to_local`, `global_to_local!` |
+| `setuniformcoordinates_dmda!` | `set_uniform_coordinates!` |
+| `coordinatesDMLocalVec` | `local_coordinates` |
+| `getlocalcoordinatearray` | `local_coordinate_array`; removed in 0.6, use `with_local_coordinate_array(f, dm)` |
+| `MatAIJ` | `PetscMat` constructor |
+| `DMGlobalVec` | `global_vec` (merged, see below) |
+| `DMLocalVec` | `local_vec` (merged, see below) |
+| `getdimension` | `Base.ndims` |
+| `setfromoptions!` | `set_from_options!` |
+
+`DMGlobalVec` in `dm.jl` and `dm_create_global_vec` in `dmplex.jl` both call `DMCreateGlobalVector`; the local pair duplicates likewise.
+Each pair collapses to one name, so two shims point at each replacement.
+
+### `dmstag.jl`
+
+| v0.4 | v0.5 |
+|---|---|
+| `getcorners_dmstag` | `corners` (method on `DMStag`) |
+| `getghostcorners_dmstag` | `ghost_corners` (method on `DMStag`; it has no `nextra` field, which `DMStagGetGhostCorners` never reported although the v0.4 docstring promised it) |
+| `local_indices_dmstag` | `local_indices` |
+| `global_indices_dmstag` | `global_indices` |
+| `setuniformcoordinates_stag!` | `set_uniform_coordinates!` |
+| `DMStagDOF_Slot` | `dof_slot` |
+
+### `dmda.jl`
+
+| v0.4 | v0.5 |
+|---|---|
+| `reshapelocalarray` | `reshape_local_array` |
+| `localinteriorlinearindex` | `local_interior_linear_index` |
+| `dmda_star_fd_coloring` | `star_fd_coloring(da::DMDA{L,2})` (drops `petsclib`, loses its export, and every index field gains a `_0b` or `_1b` suffix) |
+| `ndofs` | unchanged (closed list) |
+
+### `dmplex.jl`
+
+| v0.4 | v0.5 |
+|---|---|
+| `isplexsimplex` | `issimplex` |
+| `plexdistribute!` | `distribute` |
+| `petsc_setname!` | `set_name!` |
+| `getds` | `ds` |
+| `createds!` | `create_ds!` |
+| `getlabel` | `label` |
+| `dm_project_function!` | `project_function!` |
+| `dm_project_field!` | `project_field!` |
+| `dm_compute_l2diff` | `l2diff` |
+| `dm_create_global_vec` | `global_vec` |
+| `dm_create_local_vec` | `local_vec` |
+| `dm_set_auxiliary_vec!` | `set_auxiliary_vec!` |
+| `dm_coarsen_hook_add!` | `add_coarsen_hook!` |
+| `dm_copy_disc!` | `copy_disc!` |
+| `dm_get_coarse` | `coarse_dm` |
+| `fe_copy_quadrature!` | `copy_quadrature!` |
+| `mat_null_space_create` | `mat_nullspace_create` (free function, prefix kept) |
+| `mat_set_null_space!` | `set_nullspace!` |
+| `mat_null_space_destroy!` | `destroy!` |
+| `fe_create_default`, `fe_create_lagrange` | unchanged (free functions) |
+| `vtk_save!`, `vtk_save_fields!` | `save_vtk!` (drops `petsclib`); `save_vtk` from 0.5.1 |
+| `vtk_merge_tensor!` | unchanged (free function, no PETSc object); `vtk_merge_tensor` from 0.5.1; deprecated in 0.5.5, removed in 0.6 (a copy is in examples/dmplex/vtk_tensor.jl) |
+| `setfield!` | `set_field!` (resolves the `Base.setfield!` shadow) |
+| `dmclone` | `clone` |
+| `plex_set_snes_local_fem!` | `set_snes_local_fem!` |
+| `snes_set_jacobian_null_space!` | `set_jacobian_nullspace!` |
+| `fe_compose_constant_null_space!` | `compose_constant_nullspace!` |
+| `add_boundary!`, `add_natural_boundary!` | unchanged |
+| `create_split_boundary_labels!` | unchanged; deprecated in 0.5.5, removed in 0.6 (a copy is in examples/dmplex/ex69.jl) |
+| `set_constants!`, `set_exact_solution!` | unchanged |
+| `set_residual!`, `set_jacobian!`, `set_jacobian_preconditioner!` | unchanged |
+| `@petsc_residual_fn`, `@petsc_jacobian_fn` | `@residual_fn`, `@jacobian_fn` |
+| `@petsc_bd_fn`, `@petsc_simple_fn` | `@bd_fn`, `@simple_fn` |
+
+### `ksp.jl`, `snes.jl`
+
+| v0.4 | v0.5 |
+|---|---|
+| `PetscKSP`, `PetscSNES` (types) | `KSP`, `SNES` |
+| `KSP(…)`, `SNES(…)` (factories) | type constructors |
+| `getDM` | `dm` |
+| `setDM!` | `set_dm!` |
+| `get_solution` | `solution` |
+| `gettype` | `type_name` |
+| `destroy` | `destroy!` |
+| `setcomputeoperators!` | `set_compute_operators!` |
+| `setcomputerhs!` | `set_compute_rhs!` |
+| `setfunction!` | `set_function!` |
+| `setjacobian!` | `set_snes_jacobian!` (see note) |
+| `setconvergencetest!` | `set_convergence_test!` (callback first) |
+| `Fn_SNESSetConvergenceTest` | `SNESSetConvergenceTestFn`; internal and without the old spelling from 0.6 |
+| — | `narrow`, new |
+| — | `set_type!(obj, ::Symbol)` for Vec, Mat, KSP, SNES and DM, new: v0.4 had it on TS only |
+
+`setjacobian!` and `dmplex.jl`'s `set_jacobian!` share an English word and nothing else. They stay separate names under the prefix rule, because the callback-first rule puts the callback in argument 1 and so leaves `snes` unable to carry the name.
+
+`setfunction!` and `setjacobian!` each ship two argument orders in v0.4 (`src/snes.jl`), subject-first and callback-first. Only callback-first survives, which is a break with no shim: see [Changes that print no warning](#4.-Changes-that-print-no-warning).
+
+### `ts.jl`
+
+No v0.4 column: PETSc.jl had no high-level TS, so every name here is new and written to these rules from the start.
+They are listed because the rename table is the register of what is public, not only of what changed.
+
+| v0.5 | Kind |
+|---|---|
+| `TS` | type, exported |
+| `set_rhs_function!`, `set_rhs_jacobian!` | callback setters, callback first |
+| `set_ifunction!`, `set_ijacobian!` | callback setters, likewise |
+| `set_monitor!` | callback setter, likewise |
+| `set_user_ctx!`, `user_ctx` | writer and reader; deprecated in 0.5.5, removed in 0.6 |
+| `set_solution!` | writer |
+| `set_time!`, `set_timestep!`, `set_max_time!`, `set_max_steps!` | writers |
+| `current_time`, `timestep`, `max_time`, `max_steps` | noun readers |
+| `set_tolerances!`, `tolerances` | writer and reader, on `TS`, `KSP` and `SNES`. On a `TS` `tolerances` returns `(; atol, rtol, vatol, vrtol)`, PETSc parameter names, and its two vectors are **borrowed**; on a `KSP` `(; rtol, atol, divtol, max_it)` and on a `SNES` `(; atol, rtol, stol, max_it, max_funcs)` |
+| `set_type!`, `type_name` | shared with `ksp.jl` and `snes.jl`, `Symbol`. `type_name` replaces `ts.jl`'s v0.4 spelling `type`, the one name in this file the document did change |
+| `set_adapt_type!` | writer, `Symbol`. Prefixed: the target is the `TSAdapt` fetched inside, not the `TS` |
+| `set_problem_type!`, `set_exact_final_time!` | writers taking PETSc **enums** (`TSProblemType`, `TSExactFinalTimeOption`), per the enum rule, not `Symbol` |
+| `solve!`, `step!`, `interpolate!`, `reset!` | mutation |
+| `converged_reason`, `solve_time`, `step_number` | noun readers |
+| `snes_iterations`, `ksp_iterations`, `snes_failures` | noun readers, prefixed: the counts belong to the sub-solver |
+| `step_rejections` | noun reader, count, belongs to the `TS` itself |
+| `snes`, `ksp`, `dm`, `solution` | readers returning **borrowed** handles |
+| `destroy!` | mutation, shared |
+
+### `vec.jl`, `mat.jl`
+
+| v0.4 | v0.5 |
+|---|---|
+| `VecSeq` | `PetscVec` constructor |
+| `MatCreateSeqAIJ`, `MatSeqAIJ`, `MatSeqDense`, `MatSeqAIJWithArrays`, `MatAIJ` | `PetscMat` constructor |
+| `VecPtr`, `MatPtr` | removed in 0.6: `PetscVec(petsclib, ptr; own)` and `PetscMat(petsclib, ptr; own)` wrap a raw handle, borrowed by default |
+| `unsafe_localarray`, `unsafe_local_array` | removed in 0.6: `with_local_array!`, or `acquire_local_array` with `release_local_array` |
+| `wrap_localarray` | removed in 0.6, as above |
+| `acquire_petsc_local_array` | `acquire_local_array` |
+| `release_petsc_local_array` | `release_local_array` |
+| `get_petsc_arrays` | `local_arrays`; removed in 0.6, use `with_local_arrays!(f!, g_fx, l_x)` |
+| `restore_petsc_arrays` | `restore_local_arrays!`; removed in 0.6 with `local_arrays` |
+| `withlocalarray!` | `with_local_array!` |
+| `ghostupdate!` | `ghost_update!` |
+| `ghostupdatebegin!`, `ghostupdateend!` | `ghost_update_begin!`, `ghost_update_end!` |
+| `ownershiprange` | `ownership_range` (drops the positional `base_one`) |
+| `setvalues!` | `set_values!` (stays 0-based; `row0idxs`/`col0idxs` become `rows_0b`/`cols_0b`) |
+| `addindex!` | `add_index!` |
+| `determine_memtype` | `memtype` |
+| `as_petsc_vec` | `PetscVec` constructor |
+| `array_type`, `memtype_backend` | unchanged |
+| `assemble!`, `setup!` | unchanged |
+| — | `owns`, new: it answers whether the wrapper owns its handle, which is what `destroy!` consults |
+| `destroy` | `destroy!` |
+
+### `init.jl`
+
+| v0.4 | v0.5 |
+|---|---|
+| `initialized` | `isinitialized` |
+| `finalized` | `isfinalized` |
+| `check_petsc_wrappers_version` | `check_wrappers_version` (returns a `NamedTuple`) |
+| `scalartype`, `inttype` | unchanged (closed list) |
+| `initialize`, `finalize` | unchanged, not exported |
+| `tao_usable_after_reinitialize` | unchanged (a platform predicate, not a PETSc accessor) |
+| — | `equal(A, B)`, new in 0.6.0: PETSc's `MatEqual` and `VecEqual`, since `==` compares values as for Julia arrays |
+| — | `with_destroy(f)`, `track!`, `untrack!`, new in 0.5.3: destroy a group of objects together, in reverse order, when a block ends |
+
+### Types
+
+| v0.4 | v0.5 |
+|---|---|
+| `AbstractPetscKSP`, `AbstractPetscSNES` | `AbstractKSP`, `AbstractSNES` |
+| `AbstractPETScMemBackend` | `AbstractPetscMemBackend` |
+| `Fn_KSPComputeRHS`, `Fn_KSPComputeOperators` | `KSPComputeRHSFn`, `KSPComputeOperatorsFn`; internal and without the old spellings from 0.6 |
+| `Fn_SNESSetFunction`, `Fn_SNESSetJacobian` | `SNESSetFunctionFn`, `SNESSetJacobianFn`; internal and without the old spellings from 0.6 |
+| `TSSetRHSFunctionFn`, `TSSetRHSJacobianFn`, `TSSetIFunctionFn`, `TSSetIJacobianFn`, `TSMonitorSetFn` | internal from 0.6 |
+| `MatAT` | deleted (no uses; it would have been `MatOrTranspose`) |
+| `MatShell`, `MatOp` | unchanged |
+| `AbstractPetscDS`, `PetscDS` | unchanged |
+| `DMStagGetIndices` | removed (already deprecated in v0.4) |
+
+### `options.jl`, `sys.jl`
+
+| v0.4 | v0.5 |
+|---|---|
+| `Options` (factory) | `PetscOptions` constructor |
+| `getcomm` | `comm` |
+| `typedget` | `parse_option` |
+| `parse_options` | unchanged |
+| — | `with_options(f, obj)` and `with_options(f, opts)`, new in 0.5.3: run `f` with options pushed, callback first, returning the block's result |
+| — | `options_at = :construction \| :each_solve \| :first_solve` on the `KSP`, `SNES` and `TS` constructors, new in 0.5.3: a `Symbol` keyword |
+
+`typedget` operates on a plain `NamedTuple`, not on `PetscOptions`, and coerces the looked-up value to the type of the supplied default.
+`parse_option` names that, and pairs with `parse_options(args)` in the same file.
+
+### `library.jl`, `audit.jl`
+
+| v0.4 | v0.5 |
+|---|---|
+| `set_petsclib` | `PetscLibType` constructor |
+| `library_info` | returns a `NamedTuple` |
+| `audit_petsc_file` | `audit_file` |
+| `set_library!`, `unset_library!` | unchanged |
+
+`library_info` printed a report and returned `nothing`, so its name promised data it never handed back.
+It now returns the values, so code and tests can read them:
+
+```julia
+info = library_info()
+info.scalar          # Float64
+```

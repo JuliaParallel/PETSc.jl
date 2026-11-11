@@ -401,7 +401,7 @@ end
         @test corners.upper[1] == 20
         @test corners.size[1]  == 20
         @test corners.nextra[1] == 1
-        # A 1D DMStag answers with 1-tuples (naming.md §12).
+        # A 1D DMStag answers with 1-tuples.
         @test corners.size isa NTuple{1, Int}
 
         @test ghost_corners.lower[1] == 1
@@ -445,7 +445,7 @@ end
 
         ind = PETSc.local_indices(dm_ghosted);
         @test ind.center.x[3] == 5
-        # A 1D DMStag keys `center`/`vertex` by `x` only (naming.md §12).
+        # A 1D DMStag keys `center`/`vertex` by `x` only.
         @test keys(ind.center) === (:x,)
 
     

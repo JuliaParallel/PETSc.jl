@@ -85,4 +85,4 @@ High-level code adapted for the return convention: `dm.jl` (`DMGetCoordinatesLoc
 `AbstractPetscSNES` -> `AbstractSNES` (prologue and `rules/types.toml`), and
 `AbstractPETScMemBackend` -> `AbstractPetscMemBackend` (high-level). The old names remain as
 aliases until v0.6. The high-level `KSP(...)`/`SNES(...)` factories are now constructor methods of
-the LibPETSc types, as §5.1 of the naming document asks.
+the LibPETSc types, as the "Types" section of docs/src/man/conventions.md asks.

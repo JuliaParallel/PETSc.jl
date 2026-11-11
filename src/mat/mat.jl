@@ -35,7 +35,7 @@ end
 
 Wrap a raw PETSc `Mat` handle.
 
-`own = false`, the default, is the borrowed case of docs/src/man/naming.md §3.3: no
+`own = false`, the default, borrows the handle: no
 finalizer is attached and `destroy!` is a no-op. With `own = true` a finalizer
 is attached, but only on a serial communicator, since `MatDestroy` is collective
 and a GC finalizer runs at an arbitrary point.
@@ -49,8 +49,7 @@ Base.size(m::AbstractPetscMat{PetscLib}) where {PetscLib} = map(Int, LibPETSc.Ma
     type_name(A::AbstractPetscMat)
 
 The name PETSc knows this matrix's implementation by, as a `Symbol`
-(`:seqaij`, `:mpiaij`, …), or `nothing` when the matrix has no type yet
-(docs/src/man/naming.md §3.1).
+(`:seqaij`, `:mpiaij`, …), or `nothing` when the matrix has no type yet.
 
 # External Links
 $(doc_external("Mat/MatGetType"))
@@ -200,11 +199,11 @@ end
 
 An empty PETSc matrix of the given size.
 
-`type` is the PETSc implementation name as a `Symbol`
-(docs/src/man/naming.md §3.1): `:seqaij` (the default) preallocates nothing,
-`:seqdense` (spelled `:dense` as well) allocates the dense storage. Flavour is a
+`type` is the PETSc implementation name as a `Symbol`:
+`:seqaij` (the default) preallocates nothing,
+`:seqdense` (spelled `:dense` as well) allocates the dense storage. The type is a
 keyword rather than a type parameter because it only affects construction, and
-every variant returns a `PetscMat` (§9).
+every variant returns a `PetscMat`.
 
 # External Links
 $(doc_external("Mat/MatCreateSeqAIJ"))
@@ -333,8 +332,8 @@ Arrays that are already `Vector`s of the library's integer and scalar types are
 borrowed rather than copied; 
 any other vector (another element type, a view, an offset array) is copied once.
 
-`rowptr` and `colval` are 0-based, PETSc's own base for bulk index arrays
-(docs/src/man/naming.md §12.1). The number of rows is `length(rowptr) - 1`;
+`rowptr` and `colval` are 0-based, PETSc's own base for bulk index arrays.
+The number of rows is `length(rowptr) - 1`;
 `ncols` defaults to one past the largest column index.
 
 The matrix keeps the arrays alive for as long as it exists, including when a
@@ -416,8 +415,7 @@ The range of row indices owned by this processor, assuming that the `mat` is
 laid out with the first `n1` rows on the first processor, next `n2` rows on the
 second, etc. For certain parallel layouts this range may not be well defined.
 
-The range is **1-based**, always: an index into Julia data is 1-based
-(docs/src/man/naming.md §12.1).
+The range is **1-based**, always: an index into Julia data is 1-based.
 
 !!! note
 

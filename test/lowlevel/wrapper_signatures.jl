@@ -10,8 +10,8 @@ MPI.Initialized() || MPI.Init()
 #
 # A wrapper reads its inputs through `unsafe_convert`, so it has no reason to
 # demand the plain wrapper struct. Annotating the abstract supertype lets a
-# borrowed handle, a shell matrix, or a DM carrying its flavour in
-# the type reach the same method.
+# borrowed handle, a shell matrix, or a DM carrying its DM type in
+# the Julia type reach the same method.
 #
 # A regeneration that reverts this fails silently: the wrappers keep working
 # for the plain types and only reject the subtypes, so the test checks the

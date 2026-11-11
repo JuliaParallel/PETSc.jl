@@ -169,7 +169,7 @@ Returns a `NamedTuple` with the global indices (excluding ghost points) of the
 `lower` and `upper` corners as well as the `size`. Also included is `nextra`,
 the number of extra partial elements in each direction.
 
-The result is dimension-correct (§12): `lower` and `upper` are
+The result is dimension-correct: `lower` and `upper` are
 `CartesianIndex{N}`, `size` and `nextra` are `NTuple{N,Int}`, with no padding
 to three entries.
 
@@ -230,7 +230,7 @@ A `NamedTuple` with:
 - `center`: `NamedTuple` of ranges keyed `x`, `y`, `z` for cell-centered indices
 - `vertex`: `NamedTuple` of ranges keyed `x`, `y`, `z` for vertex indices
 
-Both are dimension-correct (§12): a 2D `DMStag` yields `(x = …, y = …)` with no
+Both are dimension-correct: a 2D `DMStag` yields `(x = …, y = …)` with no
 `z`.
 
 # Note
@@ -276,7 +276,7 @@ A `NamedTuple` with:
 - `center`: `NamedTuple` of ranges keyed `x`, `y`, `z` for cell-centered indices
 - `vertex`: `NamedTuple` of ranges keyed `x`, `y`, `z` for vertex indices
 
-Both are dimension-correct (§12): a 2D `DMStag` yields `(x = …, y = …)` with no
+Both are dimension-correct: a 2D `DMStag` yields `(x = …, y = …)` with no
 `z`.
 
 # Note

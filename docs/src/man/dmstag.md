@@ -46,7 +46,7 @@ dm = DMStag(
     stencil_type = PETSc.DMSTAG_STENCIL_BOX,
 )
 
-dm isa PETSc.DMStag{typeof(petsclib), 2}   # true: the flavour and the dimension
+dm isa PETSc.DMStag{typeof(petsclib), 2}   # true: the DM type and the dimension
 
 # 3D staggered grid
 dm = DMStag(
@@ -69,7 +69,7 @@ dm = DMStag(
 c = PETSc.corners(dm)
 # (; lower, upper, size, nextra). `lower` and `upper` are CartesianIndex{N},
 # `size` and `nextra` are NTuple{N,Int}: the returns are dimension-correct, so a
-# 2D DM answers with 2-tuples and `c.size[3]` is a BoundsError (naming.md §12)
+# 2D DM answers with 2-tuples and `c.size[3]` is a BoundsError
 
 # Get local grid extent (with ghost points): (; lower, upper, size), no nextra
 gc = PETSc.ghost_corners(dm)
@@ -83,7 +83,7 @@ gvec = PETSc.global_vec(dm)
 lvec = PETSc.local_vec(dm)
 
 # Transfer data between global and local
-# The written vector comes first, the DM follows it (naming.md §8)
+# The written vector comes first, the DM follows it
 PETSc.global_to_local!(lvec, dm, gvec; mode = PETSc.INSERT_VALUES)
 PETSc.local_to_global!(gvec, dm, lvec; mode = PETSc.ADD_VALUES)
 
@@ -97,7 +97,7 @@ PETSc.local_to_local!(lvec, dm)
 # Get indices (ghost-aware) for accessing specific DOF locations in a local array
 indices = PETSc.local_indices(dm)
 # `indices.center` and `indices.vertex` are NamedTuples keyed by axis, and a 2D
-# DM yields (x = …, y = …) with no `z` (naming.md §12)
+# DM yields (x = …, y = …) with no `z`
 
 # Get indices (no ghosts) for accessing specific DOF locations in a global array
 indices = PETSc.global_indices(dm)

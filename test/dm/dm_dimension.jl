@@ -2,13 +2,13 @@ using Test
 using PETSc, MPI
 MPI.Initialized() || MPI.Init()
 
-# Dimension-correct returns (docs/src/man/naming.md §12).
+# Dimension-correct returns.
 #
 # The point of building these with `ntuple(..., Val(N))` from the DM's type
 # parameter rather than by splatting a `Vector` is that the result infers
-# concretely and costs nothing: v0.4's `getcorners_dmda` hid the length from the
-# compiler, so `lower` and `upper` inferred as `Any` and every call allocated.
-# These tests are what stops that coming back.
+# concretely and costs nothing. Splatting a `Vector` hides the length from the
+# compiler, so `lower` and `upper` would infer as `Any` and every call would
+# allocate; these tests catch that.
 
 @testset "dimension-correct DM returns" begin
     comm = MPI.COMM_SELF
@@ -35,7 +35,7 @@ MPI.Initialized() || MPI.Init()
             ntuple(i -> 8 + i, N),
             ntuple(_ -> 1, N + 1);
             stencil_width = 1,
-            stencil_type = :box,       # §3.1: the Symbol spelling of the stencil type
+            stencil_type = :box,       # the Symbol spelling of the stencil type
         )
     end
 
@@ -89,7 +89,7 @@ MPI.Initialized() || MPI.Init()
     end
 
     @testset "inference" begin
-        # The 2D DMDA is the case §12 calls out by name.
+        # The 2D DMDA is the common case.
         da2, stag2 = dmda[2], dmstag[2]
         @test @inferred(PETSc.corners(da2)).lower isa CartesianIndex{2}
         @test @inferred(PETSc.ghost_corners(da2)).size isa NTuple{2, Int}
@@ -106,8 +106,7 @@ MPI.Initialized() || MPI.Init()
     end
 
     @testset "allocations" begin
-        # A handful of words for the `Ref`s the generated wrappers use; v0.4
-        # allocated a `Vector` per call on top of that.
+        # A handful of words for the `Ref`s the generated wrappers use.
         budget = 128
         for N in 2:3
             da, stag = dmda[N], dmstag[N]

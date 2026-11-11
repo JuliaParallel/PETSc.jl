@@ -193,7 +193,7 @@ for petsclib in PETSc.petsclibs
 
         # ── borrowed DM handles ──────────────────────────────────────────────
         # `narrow` and every reader returning a DM hand back a second handle
-        # onto one PETSc object (docs/src/man/naming.md §3.3, §5.4). Destroying
+        # onto one PETSc object. Destroying
         # it would invalidate the owner's copy, so `destroy!` consults `own`.
         # A constructor result owns its handle and really is destroyed.
         @testset "borrowed DM handles" begin
@@ -259,8 +259,7 @@ for petsclib in PETSc.petsclibs
         end
 
         # ── what a LibPETSc Get hands back ───────────────────────────────────
-        # A `Get` returns a reference its owner keeps (docs/src/man/naming.md
-        # §18.2), so the wrapper is borrowed and `destroy!` leaves the object
+        # A `Get` returns a reference its owner keeps, so the wrapper is borrowed and `destroy!` leaves the object
         # alone. The `Get` functions listed in wrapping/generator/rules/
         # ownership.toml hand out a new reference and return an owner.
         @testset "Get results" begin

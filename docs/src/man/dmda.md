@@ -23,13 +23,12 @@ da = DMDA(
     stencil_type = PETSc.DMDA_STENCIL_STAR,
 )
 
-da isa PETSc.DMDA{typeof(petsclib), 2}   # true: the flavour and the dimension
+da isa PETSc.DMDA{typeof(petsclib), 2}   # true: the DM type and the dimension
 ```
 
 `DMDA` is a Julia type rather than a factory function, so the dimension is in
 the type and the returns are dimension-correct: `PETSc.corners(da).size` is a
-2-tuple for the grid above, and `PETSc.info(da)` reports `ndofs` and `procs`
-([naming conventions](naming.md), §5.3 and §12).
+2-tuple for the grid above, and `PETSc.info(da)` reports `ndofs` and `procs`.
 
 ## Reading the local extent
 
@@ -43,7 +42,7 @@ ndims(da)                      # the dimension, as Base spells it
 ## Colouring for a finite-difference Jacobian
 
 ```julia
-# Takes no `petsclib`, and every index field says its base (naming.md §12.1)
+# Takes no `petsclib`, and every index field says its base
 c = PETSc.star_fd_coloring(da)
 c.row_coo_local_0b     # straight to MatSetPreallocationCOOLocal
 c.perturb_cols_1b      # indexes Julia arrays

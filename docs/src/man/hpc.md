@@ -1,71 +1,45 @@
 # Running on HPC Systems
 
-PETSc.jl can be used on HPC clusters in two main configurations: using precompiled binaries via MPITrampoline, or by pointing to a locally installed PETSc build.
+PETSc.jl runs on clusters with the cluster's MPI in two ways: the precompiled `PETSc_jll` binaries with the system MPI selected at run time, or a PETSc built on the cluster.
 
-## 1. Use precompiled binaries via MPITrampoline
+## 1. Use the precompiled binaries with the system MPI
 
-The main reason that it is challenging to run applications on HPC systems is that MPI is implemented in a different way by different vendors. This will change in the future as there is now the MPI ABI (application Binary Interface) and our precompiled PETSc binaries are already compatible with that.
+`PETSc_jll` comes in builds for several MPI ABIs (the standard MPI ABI, MPICH, Open MPI, MPItrampoline) and loads the one that matches the MPI that MPI.jl is configured to use. Pointing MPI.jl at the system MPI with MPIPreferences is therefore all it takes; nothing has to be compiled on the cluster. The default JLL MPIs talk over TCP, so a run across nodes needs the system MPI to use the cluster's network.
 
-Yet, until all MPI implementations fully support this, we recommend using [MPITrampoline](https://github.com/eschnett/MPITrampoline) instead, which is a MPI wrapper layer that lets MPI-linked binaries be redirected to any system MPI at runtime. The `PETSc_jll` binaries distributed with PETSc.jl are built against MPITrampoline, which means they can be used on clusters by simply configuring `MPI.jl` to use the system MPI.
-Doing this requires you to compile a small code on the HPC system that is linked versus the local MPI implementation.
+#### 1.1 Select the system MPI
 
-Here step-by-step instructions (for Linux, as that is what essentially all HPC systems use):
-
-#### 1.1 Install MPIwrapper 
-
-* Download [MPIwrapper](https://github.com/eschnett/MPIwrapper): 
-```bash
-git clone https://github.com/eschnett/MPIwrapper.git 
-cd MPIwrapper
-```
-
-* Install it after making sure that `mpiexec` points to the one you want (you may have to load some modules, depending on your system):
-```bash
-cmake -S . -B build -DMPIEXEC_EXECUTABLE=/full/path/to/mpiexec -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=$HOME/mpiwrapper
-cmake --build build
-cmake --install build
-```
-> [!IMPORTANT]  
-> You need to specify the full path to `mpiexec` (or equivalent, such as `srun` or `mpirun`, depending oin your system) and not just the name. If you don't know that, you can determine this with
-> `which mpiexec`
- 
-At this stage, `MPIwrapper` is installed in `$HOME/mpiwrapper`
-
-#### 1.2 Set the correct wrappers
-Next, you need to specify these environmental variables:
-```
-export MPITRAMPOLINE_LIB=$HOME/mpiwrapper/lib64/libmpiwrapper.so
-export MPITRAMPOLINE_MPIEXEC=$HOME/MPIwrapper/mpiwrapper/bin/mpiwrapperexec 
-```
-Depending on the system it may be called `lib` instead of `lib64` (check!).
-
-
-#### 1.3 Install the `MPI` and `MPIPreferences` packages:
-Install packages the usual way:
+Install the packages the usual way:
 ```julia
-julia
 julia> ]
-pkg>add MPI, MPIPreferences
+pkg> add MPI, MPIPreferences
 ```
 
-Set the preference to use `MPItrampoline`:
-```julia
-julia> using MPIPreferences; MPIPreferences.use_jll_binary("MPItrampoline_jll")
-┌ Info: MPIPreferences unchanged
-└   binary = "MPItrampoline_jll"
-```
+Then pick the case that matches the cluster's MPI (load its module first, so that its library and `mpiexec` are found):
 
-Load `MPI` and verify it is the correct one:
+- **An MPI with the standard ABI.** MPI 5.0 defines a standard ABI, which MPICH 5 implements when configured with `--enable-mpi-abi` (it installs `libmpi_abi.so`). Give the ABI explicitly; the automatic detection reports the implementation's own ABI:
+  ```julia
+  using MPIPreferences
+  MPIPreferences.use_system_binary(; library_names = ["libmpi_abi"], abi = "MPIABI", mpiexec = "srun")
+  ```
+  `PETSc_jll` then loads its `mpiabi` build.
+- **An MPICH-compatible MPI** (Cray MPICH, Intel MPI, MVAPICH, MPICH without the standard ABI). MPIPreferences detects the ABI:
+  ```julia
+  using MPIPreferences
+  MPIPreferences.use_system_binary(; mpiexec = "srun")   # on Cray systems add vendor = "cray"
+  ```
+  `PETSc_jll` then loads its `mpich` build.
+- **Open MPI**: the same call; `PETSc_jll` loads its `openmpi` build.
+
+`mpiexec` names the launcher of the cluster (`srun` on SLURM, `mpiexec` elsewhere). If none of these fits, [MPItrampoline](https://github.com/eschnett/MPItrampoline) with `MPIPreferences.use_jll_binary("MPItrampoline_jll")` forwards to any MPI through a small wrapper library that you compile on the cluster.
+
+Restart Julia, then check that MPI.jl loads the system library:
 ```julia
 julia> using MPI
 julia> MPI.Get_library_version()
-"MPIwrapper 2.10.3, using MPIABI 2.9.0, wrapping:\nOpen MPI v4.1.4, package: Open MPI boris@Pluton Distribution, ident: 4.1.4, repo rev: v4.1.4, May 26, 2022"
 ```
-After this, restart julia (this only needs to be done once, next time all is fine).
 
-#### 1.4 Test `MPI`:
+#### 1.2 Test MPI
 
-If you want you can run a test case with:
 ```julia
 julia> using MPI
 julia> mpiexec(cmd -> run(`$cmd -n 3 echo hello world`));
@@ -74,28 +48,23 @@ hello world
 hello world
 ```
 
-#### 1.5 Install and use `PETSc.jl`:
-Now install `PETSc.jl`:
-```julia
-julia> using MPI,PETSc
-```
-At this stage you can use PETSc.jl as normal — no changes to your script needed:
+#### 1.3 Use PETSc.jl
+
+No change to your script is needed:
 ```julia
 using PETSc, MPI
 petsclib = PETSc.getlib(; PetscScalar = Float64, PetscInt = Int64)
 PETSc.initialize(petsclib)
 # ...
 ```
-
-1. Launch via the cluster's MPI:
+and launch through the cluster's MPI:
 ```bash
-mpiexec -n 128 julia --project myScript.jl
+srun julia --project myScript.jl
 ```
-This is the easiest path for most clusters and requires no custom PETSc compilation.
 
 ## 2. Use a locally installed PETSc build
 
-If you need a PETSc build with specific options (external packages, GPU support, custom BLAS, etc.), you can point `PETSc.jl` directly to your local installation.
+If you need a PETSc build with specific options (external packages, GPU support, custom BLAS, etc.), you can point `PETSc.jl` directly to your local installation. This is also the way to GPU support on machines that `PETSc_CUDA_jll` has no build for, such as aarch64 (Grace Hopper) or AMD GPUs; see [GPU Support](gpu.md).
 The local PETSc must be compiled as a **shared library** (`--with-shared-libraries=1`) and linked against the **same MPI** that `MPI.jl` is configured to use (i.e. the one that you should use on your HPC machine).
 
 #### 2.1 Link `PETSc` to the local library  
@@ -116,15 +85,13 @@ julia> MPI.Get_library_version()
 
 ### 3. Typical HPC job script
 
-A typical slurm submissions script to run PETSc code using `MPITrampoline` binaries can look like:
+A typical SLURM submission script, with MPI.jl configured for the system MPI as in section 1, looks like:
 
 ```bash
 #!/bin/bash
 #SBATCH --nodes=8
 #SBATCH --ntasks-per-node=128
 
-
-export MPITRAMPOLINE_LIB=/users/kausbori/mpiwrapper/lib64/libmpiwrapper.so
 export JULIA_CPU_TARGET="generic"
 
 srun julia --project ex45.jl \
@@ -155,22 +122,20 @@ module load craype
 module load gcc-native/13.2
 module load cray-mpich/8.1.32
 
-export HOME=/users/kausbori
-export JULIA_DEPOT_PATH=/users/kausbori/.julia
-export MPITRAMPOLINE_LIB=/users/kausbori/mpiwrapper/lib64/libmpiwrapper.so
 export JULIA_CPU_TARGET="generic"
 
-JULIA=/users/kausbori/.julia/juliaup/julia-1.12.6+0.x64.linux.gnu/bin/julia
-
 # Clear stale cache
-rm -rf /users/kausbori/.julia/compiled/v1.12/PETSc/
-rm -rf /users/kausbori/.julia/compiled/v1.12/PETSc_jll/
-rm -rf /users/kausbori/.julia/compiled/v1.12/MPI/
+rm -rf $HOME/.julia/compiled/v1.12/PETSc/
+rm -rf $HOME/.julia/compiled/v1.12/PETSc_jll/
+rm -rf $HOME/.julia/compiled/v1.12/MPI/
 
 # Precompile
-$JULIA --project=/users/kausbori/PETSc_jl_scalability \
-    -e 'using PETSc; println("OK")'
+julia --project=$HOME/myproject -e 'using PETSc; println("OK")'
 ```
+
+#### `mpiexec` from Julia inside a SLURM allocation
+
+A program that starts MPI processes itself through MPI.jl's `mpiexec` with a JLL MPI (`MPICH_jll`, `MPIABI_jll`), such as PETSc.jl's own test suite, hangs inside `srun` or `salloc` until the time limit: MPICH's launcher tries to start a SLURM job step, which waits for the resources the allocation already holds. Set `HYDRA_LAUNCHER=fork` so that it starts the processes directly.
 
 ---
 
@@ -178,7 +143,7 @@ $JULIA --project=/users/kausbori/PETSc_jl_scalability \
 
 This section summarises weak scalability results for a 3D Laplacian benchmark ([`ex45.jl`](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/dmda/ex45.jl)) using a CG solver with geometric multigrid preconditioning (`-pc_type mg`). The problem size is scaled proportionally with the number of MPI ranks so that the work per rank stays constant.
 
-We have performed these simulations on LUMI-C (Finnland) and provide job submission scripts (`submit_scaling.sh`, `job.sh`), along with a parsing file that collects and summarizes the results (`parse_scaling.jl`). 
+We have performed these simulations on LUMI-C (Finland) and provide job submission scripts (`submit_scaling.sh`, `job.sh`), along with a parsing file that collects and summarizes the results (`parse_scaling.jl`). 
 All files are uploaded under [PETSc.jl/examples/scalability_tests](https://github.com/JuliaParallel/PETSc.jl/tree/main/examples/scalability_tests), and can be started with
 ```bash
 $ ./submit_scaling.sh 512 1025 1025 1025 6 16
@@ -186,12 +151,12 @@ $ ./submit_scaling.sh 512 1025 1025 1025 6 16
 which will start a 1025³ simulation on 512 cores, with 6 multigrid levels and the coarse grid solver being solved on 16 cores.
 
 We consider 3 cases:
-- Using `PETSc.jl` with MPITrampoline linked to the local MPI ("PETSc.jl"). This is generally the easiest setup
+- Using `PETSc.jl` with the precompiled binaries, through MPITrampoline linked to the local MPI ("PETSc.jl")
 - Using `PETSc.jl` linked to our locally build PETSc version ("local lib")
 - Using a C-compiled version of `ex45_julia.c`  ("native")
 
 #### Results
-Here the collected results (all simulations, except the largest ones, where done 3 times; I only show the fastest ones here). 
+Every case except the largest was run up to three times.
 
 | JobID | Ntasks | MG | NC | Grid | Backend | SolveTime (s) | KSPSolve (s) | TotGFlops | GFlops/s | KSP | L2 error | Max error | Residual | Converged |
 |-------|--------|----|----|------|---------|--------------|-------------|-----------|----------|-----|----------|-----------|----------|-----------|
@@ -283,26 +248,13 @@ If we compare the case on 4096 cores with a 2049³ grid, for 3D Poisson, 64 node
 | **L2 error** | 2.7738e-07 | 2.7738e-07 | 2.7738e-07 |
 | **Converged** | ✅ | ✅ | ✅ |
 
-The relative performance is thus:
+- **The numerical results are identical** on all backends: same iterations, same L2 and max error.
+- **The efficiency drops at high core counts** for the native build as much as for PETSc.jl, so it comes from the multigrid setup and the coarse-grid solve, not from PETSc.jl.
+- **The local build is faster than `_jll`** at 4096 tasks (35.9 s vs 39.3 s mean KSPSolve).
 
-| Backend | SolveTime overhead | KSPSolve overhead |
-|---------|--------------------|-------------------|
-| native C | — (reference) | — (reference) |
-| PETSc.jl (best run) | +21.5% | +1.6% |
-| PETSc.jl (worst run) | +32.5% | +30.9% |
-| local lib | +56.9% | +50.8% |
+These runs used an earlier `ex45.jl`, whose KSPSolve time included assembling the operators of every multigrid level in Julia, entry by entry, and compiling that code. The KSPSolve gap to native C therefore does not measure the solve itself. The current `ex45.jl` assembles the operators before the solve and reports the setup and solve times separately; a rerun with it is pending.
 
-From this we can conclude:
-- **Numerical results are identical** across all backends — same iterations, same L2/Max error.
-- **KSPSolve gap vs native** is ~6s for local lib and ~10s for `_jll` — much of this is MG setup overhead inside the solver
-- **SolveTime gap vs native** (~25s for local lib, ~32s for `_jll`) includes Julia setup: mesh construction, matrix assembly, MG hierarchy setup
-- **local lib** is faster than `_jll` at 4096 tasks (35.9s vs 39.3s mean KSPSolve) — likely because it uses the system Cray libsci BLAS directly without MPItrampoline overhead.
-- There is a (significant) drop in performance for high core counts. this is likely related to the multigrid setup and coarse grid solvers and not to PETSc.jl as we see a similar behavior for the native compilation as well.
-
-Overall it shows that there is overhead in using the Julia interface to `PETSc.jl` compared to native C-code. 
-On the other hand, this is done in a higher level language and can thus seemlessly integrate with the full Julia ecosystem. It should also be kept in mind that the residual routines etc. are all written in julia. 
-
-As a start one can configure `PETSc.jl` to use MPITrampoline, which doesn't require any PETSc installation and should thus work on any machine. For the last bit of performance one can configure a native PETSc installation and use that instead.
+The precompiled binaries with the system MPI need no PETSc installation and are the easiest start. A local PETSc build is somewhat faster.
 
 #### Weak scalability plot
 Results can be summarized in the plot below:

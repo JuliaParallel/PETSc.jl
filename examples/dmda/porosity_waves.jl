@@ -100,7 +100,7 @@ bcs = (
    )[1:dim]
 
 # `corners`, `info`, `with_local_coordinate_array` and `reshape_local_array` are
-# dimension-correct (docs/src/man/naming.md §12): on a `dim`-dimensional DMDA
+# dimension-correct: on a `dim`-dimensional DMDA
 # they answer with `dim`-tuples, `CartesianIndex{dim}` and `1 + dim` axes.
 
 # The slice of one dof out of a reshaped local array.
@@ -212,7 +212,7 @@ function ComputeLocalResidual!(l_fx, l_x, snes)
 
     # set ghost boundaries (flux free conditions). `selectdim` rather than a
     # literal `[:, 0, :]`, because the array has as many axes as the DMDA has
-    # dimensions (naming.md §12).
+    # dimensions.
     for d in 2:dim
         if corners.lower[d] == 1
             selectdim(Phi, d, 0) .= selectdim(Phi, d, 1)

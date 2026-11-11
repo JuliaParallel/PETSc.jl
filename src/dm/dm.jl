@@ -1,19 +1,18 @@
 # ─────────────────────────────────────────────────────────────────────────────
-# The typed DM hierarchy (docs/src/man/naming.md §5.3)
+# The typed DM hierarchy
 #
 # `PetscDM{PetscLib}` stays the low-level handle, because `LibPETSc.DMCreate`
-# and friends must return something before the flavour is known (§5.4). The
-# high-level API uses the three types below, which carry the flavour — and, for
-# DMDA and DMStag, the dimension — in the type, so that `corners`,
+# and friends must return something before the DM type is known. The
+# high-level API uses the three types below, which carry the DM type — and, for
+# DMDA and DMStag, the dimension — in the Julia type, so that `corners`,
 # `local_indices` and the coordinate handling dispatch instead of comparing the
-# string `DMGetType` returns. Giving flavour a type is what deletes the nine
-# `@assert type_name(dm) == "stag"` checks (§14).
+# string `DMGetType` returns.
 #
 # DMPlex has no dimension parameter: nothing in dmplex.jl dispatches on it, and
 # neither constructor could supply one honestly, since `DMPlex(petsclib, comm)`
-# leaves the dimension unset until setup (§5.3).
+# leaves the dimension unset until setup.
 #
-# `own` is the ownership flag of §3.3: `true` for a constructor result, `false`
+# `own` is the ownership flag: `true` for a constructor result, `false`
 # for a borrowed handle produced by `narrow`.
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -75,12 +74,12 @@ const TypedPetscDM{PetscLib} =
     Union{DMDA{PetscLib}, DMStag{PetscLib}, DMPlex{PetscLib}}
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Dimension-correct returns (docs/src/man/naming.md §12)
+# Dimension-correct returns
 #
 # Every index-shaped return is built from the DM's type parameter `N` with
 # `ntuple(..., Val(N))`, never by splatting a `Vector`: splatting hides the
-# length from the compiler, so `lower` and `upper` used to infer as `Any` and
-# cost three allocations per call.
+# length from the compiler, so `lower` and `upper` would infer as `Any` and
+# allocate on every call.
 #
 # `axis_names` is three methods rather than `(:x, :y, :z)[1:N]` so the tuple is
 # a compile-time constant and `local_indices(dm2d).center` infers concretely as
@@ -142,13 +141,13 @@ end
 """
     narrow(dm::AbstractPetscDM; own = false)
 
-A handle onto the same PETSc object whose Julia type carries the DM's flavour
+A handle onto the same PETSc object whose Julia type carries the DM type
 and, for a `DMDA` or a `DMStag`, its dimension.
 
 `LibPETSc.DMGetType` and `LibPETSc.DMGetDimension` are queried, so the return
 type is a wide `Union` and the call is a dynamic dispatch. One dispatch is
 cheap; propagating an abstractly-typed DM through a hot loop is not, so narrow
-once behind a function barrier. A flavour with no type of its own comes back
+once behind a function barrier. A DM type with no Julia type of its own comes back
 unchanged.
 
 $(doc_borrowed())
@@ -225,8 +224,8 @@ Returns a `NamedTuple` with the global indices (excluding ghost points) of the
 `lower` and `upper` corners as well as the `size`. A `DMStag` also reports
 `nextra`, the number of extra partial elements in each direction.
 
-Defined for [`DMDA`](@ref) and [`DMStag`](@ref); the flavour is a type
-parameter, so any other DM is a `MethodError` rather than a runtime check.
+Defined for [`DMDA`](@ref) and [`DMStag`](@ref); the DM type is part of the
+Julia type, so any other DM is a `MethodError` rather than a runtime check.
 """
 function corners end
 
@@ -290,7 +289,7 @@ global_vec(dm::AbstractPetscDM{PetscLib}) where {PetscLib} =
 Transfer values from the local vector `lvec` to the global vector `gvec`
 associated with the `dm` object.
 
-The written vector comes first and the `dm` follows it (§8).
+The written vector comes first and the `dm` follows it.
 
 # Arguments
 - `gvec::AbstractPetscVec`: Global vector (destination, written)
@@ -320,7 +319,7 @@ Transfer values from the global vector `gvec` to the local vector `lvec`
 associated with the `dm` object, including ghost point values from neighboring
 processes.
 
-The written vector comes first and the `dm` follows it (§8).
+The written vector comes first and the `dm` follows it.
 
 # Arguments
 - `lvec::AbstractPetscVec`: Local vector (destination, written)
@@ -384,7 +383,7 @@ Set uniform coordinates on `dm` using the lower and upper corners defined by the
 then the value of the trailing coordinates is set to `0`.
 
 Defined for [`DMDA`](@ref) and [`DMStag`](@ref), which reach different PETSc
-calls; the flavour is a type parameter, so the two are ordinary methods.
+calls; the DM type is part of the Julia type, so the two are ordinary methods.
 
 # External Links
 $(doc_external("DMDA/DMDASetUniformCoordinates"))
@@ -474,11 +473,10 @@ end
 """
     type_name(dm::AbstractPetscDM)
 
-The name PETSc knows this DM's flavour by, as a `Symbol` (`:da`, `:stag`,
-`:plex`, …), or `nothing` when no type has been set yet
-(docs/src/man/naming.md §3.1).
+The name PETSc knows this DM's type by, as a `Symbol` (`:da`, `:stag`,
+`:plex`, …), or `nothing` when no type has been set yet.
 
-The flavour is a type parameter ([`DMDA`](@ref), [`DMStag`](@ref),
+The DM type is part of the Julia type ([`DMDA`](@ref), [`DMStag`](@ref),
 [`DMPlex`](@ref)), so dispatch, not this reader, is the way to branch on it.
 
 # External Links
@@ -490,10 +488,10 @@ type_name(dm::AbstractPetscDM{PetscLib}) where {PetscLib} =
 """
     set_type!(dm::AbstractPetscDM, type::Symbol)
 
-Set the DM flavour, for example `:da`, `:stag` or `:plex`.
+Set the DM type, for example `:da`, `:stag` or `:plex`.
 
 This configures a raw `PetscDM` handle; the high-level constructors set the
-flavour themselves, and [`narrow`](@ref) is what puts it into the Julia type.
+DM type themselves, and [`narrow`](@ref) is what puts it into the Julia type.
 
 # External Links
 $(doc_external("DM/DMSetType"))
@@ -557,7 +555,7 @@ end
 Return a new DM that is a clone of `dm` (same topology, no fields or DS).
 
 The clone is a new object the caller owns, and comes back [`narrow`](@ref)ed to
-its flavour.
+its DM type.
 
 # External Links
 $(doc_external("DM/DMClone"))
@@ -613,7 +611,7 @@ end
 """
     PetscDM{PetscLib}
 
-Low-level handle to a PETSc DM of any flavour, as `LibPETSc.DMCreate` and the
+Low-level handle to a PETSc DM of any type, as `LibPETSc.DMCreate` and the
 other generated functions return it. [`narrow`](@ref) gives the typed handle,
 `DMDA`, `DMStag` or `DMPlex`, that the high-level functions dispatch on.
 """

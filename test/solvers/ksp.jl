@@ -108,7 +108,7 @@ using Logging: Error
         @test A1[1:3,1:3] ≈ A[1:3,1:3]
         @test P1[1:end,1:end] ≈ A[1:end,1:end]
 
-        # Get results are borrowed from ksp (naming.md §18.2): destroy! leaves them alone
+        # Get results are borrowed from ksp: destroy! leaves them alone
         @test !any(PETSc.owns, (b1, x3, A1, P1))
         foreach(PETSc.destroy!, (b1, x3, A1, P1))
         @test x3.ptr != C_NULL

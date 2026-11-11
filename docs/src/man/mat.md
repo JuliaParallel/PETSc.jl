@@ -10,9 +10,7 @@ PETSc matrices support:
 - **Parallel distribution**: Row-based distribution across MPI processes
 - **Matrix-free operations**: Via MatShell for custom operators
 
-`PetscMat` is the one constructor: it replaces v0.4's `MatSeqAIJ`,
-`MatSeqDense`, `MatCreateSeqAIJ`, `MatSeqAIJWithArrays` and `MatAIJ`
-([naming conventions](naming.md), §6).
+Every matrix type is built with a `PetscMat` constructor. The [v0.5 release notes](release_notes.md#v0.5.0) list the v0.4 functions it replaces.
 
 ## Example
 
@@ -90,7 +88,7 @@ With `mult_transpose`, `transpose(A) * x` and `A' * x` work on the shell.
 A[i, j] = value
 
 # `set_values!` is the bulk route, and it keeps PETSc's 0-based indices: the
-# `_0b` in the parameter names says so (naming conventions, §12.1).
+# `_0b` in the parameter names says so.
 # A matrix `values` is the block; a vector is read row by row.
 PETSc.set_values!(A, rows_0b, cols_0b, values; mode = PETSc.INSERT_VALUES)
 
@@ -129,8 +127,7 @@ An assembled `PetscMat` supports `copy(A)`, `copyto!(B, A)`, `A + B`, `A - B`, `
 
 `A * x` with a `PetscVec` returns a new `PetscVec`; with a Julia vector it is one `MatMult` and returns a `Vector`. That one is collective too: every rank passes the whole `x` and gets the whole product.
 
-`ownership_range(A)` is 1-based and takes no second argument
-([naming conventions](naming.md), §12.1).
+`ownership_range(A)` is 1-based and takes no second argument.
 
 ## Functions
 

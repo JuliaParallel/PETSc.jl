@@ -64,8 +64,8 @@ MPI.Initialized() || MPI.Init()
                 @test LibPETSc.DMStagGetLocalSizes(petsclib,dm) ===
                       (points_per_proc[mpirank + 1], PetscInt(0), PetscInt(0))
 
-                # Dimension-correct returns (naming.md §12): a 1D DMStag answers
-                # with `CartesianIndex{1}` and 1-tuples, not the v0.4 padding.
+                # Dimension-correct returns: a 1D DMStag answers
+                # with `CartesianIndex{1}` and 1-tuples, with no padding to three entries.
                 corners = PETSc.corners(dm)
                 @test corners.lower ==
                       CartesianIndex(proc_global_offsets[mpirank + 1] + 1)
@@ -96,7 +96,7 @@ MPI.Initialized() || MPI.Init()
                 @test ghost_corners.size ==
                       (points_per_proc[mpirank + 1] + gl + gr,)
                 # `DMStagGetGhostCorners` reports no extra partial elements, so
-                # `ghost_corners` has no `nextra` field (naming.md §12).
+                # `ghost_corners` has no `nextra` field.
                 @test !hasproperty(ghost_corners, :nextra)
 
                 #@test LibPETSc.DMStagGetBoundaryTypes(petsclib,dm) === (

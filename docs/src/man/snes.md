@@ -68,8 +68,7 @@ The options are applied once, at the first `setup!` or `solve!`, after the DM an
 ## Setting the Nonlinear Function
 
 Define the residual function `F(x)`. The callback comes first in the argument
-list, so `do` block syntax works
-([naming conventions](naming.md), §8.1):
+list, so `do` block syntax works:
 
 ```julia
 function residual!(fx, snes, x)
@@ -85,7 +84,7 @@ PETSc.set_function!(residual!, snes, f_vec)
 
 Define the Jacobian `J = dF/dx`. `set_snes_jacobian!` rather than
 `set_jacobian!`, because `set_jacobian!` belongs to `PetscDS` and the callback
-occupies argument 1 here ([naming conventions](naming.md), §4.1):
+occupies argument 1 here:
 
 ```julia
 function jacobian!(J, snes, x)
@@ -108,7 +107,7 @@ For PDE problems, associate the SNES with a DM:
 PETSc.set_dm!(snes, dm)
 
 # Get the DM from SNES. `dm` is both the accessor and the usual variable name,
-# so bind the result to something else (see the naming conventions, §3.2).
+# so bind the result to something else.
 d = PETSc.dm(snes)
 ```
 
@@ -119,7 +118,7 @@ d = PETSc.dm(snes)
 PETSc.solve!(x, snes)
 
 # Get the solution vector. It is a **borrowed** handle: it belongs to `snes`,
-# and `destroy!` on it is a no-op (naming conventions, §3.3)
+# and `destroy!` on it is a no-op
 sol = PETSc.solution(snes)
 
 # What PETSc did

@@ -39,7 +39,7 @@ end
 
 Wrap a raw PETSc `Vec` handle.
 
-`own = false`, the default, is the borrowed case of docs/src/man/naming.md §3.3: no
+`own = false`, the default, borrows the handle: no
 finalizer is attached and `destroy!` is a no-op. With `own = true` a finalizer
 is attached, but only on a serial communicator, since `VecDestroy` is collective
 and a GC finalizer runs at an arbitrary point.
@@ -138,8 +138,7 @@ end
     type_name(v::AbstractPetscVec)
 
 The name PETSc knows this vector's implementation by, as a `Symbol` (`:seq`,
-`:mpi`, …), or `nothing` when no type has been set yet (docs/src/man/naming.md
-§3.1).
+`:mpi`, …), or `nothing` when no type has been set yet.
 
 # External Links
 $(doc_external("Vec/VecGetType"))
@@ -225,8 +224,7 @@ out with the first `n1` elements on the first processor, next `n2` elements on
 the second, etc. For certain parallel layouts this range may not be well
 defined.
 
-The range is **1-based**, always: an index into Julia data is 1-based
-(docs/src/man/naming.md §12.1).
+The range is **1-based**, always: an index into Julia data is 1-based.
 
 !!! note
 

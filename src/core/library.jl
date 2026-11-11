@@ -97,7 +97,7 @@ end
 """
     library_info()
 
-Report the PETSc library configuration as a `NamedTuple` (§12).
+Report the PETSc library configuration as a `NamedTuple`.
 
 | Field | Meaning |
 |---|---|

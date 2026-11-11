@@ -1,6 +1,6 @@
 # test/core/bang_returns.jl
-# A `!` function returns the object it mutates (docs/src/man/naming.md §7), with
-# the exceptions §7 lists: releases and package-state setters return `nothing`,
+# A `!` function returns the object it mutates, with
+# two exceptions: releases and package-state setters return `nothing`,
 # and a do-block function returns the block's result.
 
 using Test

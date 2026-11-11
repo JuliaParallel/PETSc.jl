@@ -382,8 +382,8 @@ using .PETScTestUtils: without_petsc_traceback
 end
 
 # The same 2x2 system with a Jacobian, set in the two ways a user writes it:
-# named functions, and do-blocks. The callbacks return nothing; since 0.5.1 a
-# callback's return value is ignored and it fails by throwing.
+# named functions, and do-blocks. The callbacks return nothing: a
+# callback's return value is ignored, and it fails by throwing.
 @testset "SNES with a Jacobian: named functions and do-blocks" begin
     petsclib = PETSc.petsclibs[1]
     PETSc.initialize(petsclib)

@@ -1,6 +1,6 @@
 #!/usr/bin/env julia
 #
-# The high-level API surface (docs/src/man/naming.md §1.1).
+# The high-level API surface (docs/src/man/conventions.md, "The register").
 #
 #   julia --project=. scripts/api_surface.jl --check
 #   julia --project=. scripts/api_surface.jl --sweeps
@@ -10,16 +10,16 @@
 # `scripts/renames.jl`; a name missing from it is added there rather than
 # excused here, because five generated files are derived from the same data.
 #
-# `--sweeps` derives the lists §1.1 asks for, so that no count in
-# `naming.md` has to be remembered:
+# `--sweeps` derives the lists "The register" asks for, so that no count in
+# `conventions.md` has to be remembered:
 #
-#   1. functions taking `petsclib` first alongside a dispatchable PETSc object (§8)
-#   2. functions returning a `NamedTuple` (§12)
-#   3. exported names against §13's list
-#   4. readers returning a PETSc object without a `doc_borrowed` entry (§3.3)
-#   5. `!` functions that can return `nothing` instead of the object they mutate (§7)
+#   1. functions taking `petsclib` first alongside a dispatchable PETSc object ("Argument order")
+#   2. functions returning a `NamedTuple` ("Return values")
+#   3. exported names against the "Exports" list
+#   4. readers returning a PETSc object without a `doc_borrowed` entry ("What an accessor hands back")
+#   5. `!` functions that can return `nothing` instead of the object they mutate ("Mutation")
 #
-# The module is loaded rather than parsed, because §13's short accessors (`dm`,
+# The module is loaded rather than parsed, because the short accessors (`dm`,
 # `comm`, `info`, `ds`, `label`, `solution`) cannot be found by a text search.
 
 module APISurface
@@ -59,7 +59,7 @@ const MODULE_BUILTINS = Set{Symbol}([:PETSc, :eval, :include])
 
 `names(PETSc; all = true)` filtered to bindings whose methods are defined in
 PETSc's own source files. A name whose binding `PETSc` does not own (`ndims`,
-`size`, `show`: the Base extensions of §11) is not part of the surface, and
+`size`, `show`: the Base extensions of "Extending Base and stdlib") is not part of the surface, and
 neither is anything that only has generated or `LibPETSc` methods.
 """
 function surface()
@@ -68,7 +68,7 @@ function surface()
         str = String(name)
         (startswith(str, "#") || name in MODULE_BUILTINS) && continue
         # A Base extension: the binding belongs to Base (or to another module),
-        # and §1.1 exempts it by definition.
+        # and "The register" exempts it by definition.
         Base.which(PETSc, name) === PETSc || continue
         isdefined(PETSc, name) || continue
         value = getproperty(PETSc, name)
@@ -172,7 +172,7 @@ end
 """
     petsclib_first() -> Vector
 
-Sweep 1 (§8): methods whose first argument is a `PetscLibType` while a later
+Sweep 1 ("Argument order"): methods whose first argument is a `PetscLibType` while a later
 argument is a dispatchable PETSc object, so the library could have been read off
 the object instead.
 """
@@ -220,7 +220,7 @@ is_namedtuple_type(T) = T isa Type && T !== Union{} && T <: NamedTuple
 """
     namedtuple_returns() -> Vector{Symbol}
 
-Sweep 2 (§12): the functions that return a `NamedTuple`. The internal helpers
+Sweep 2 ("Return values"): the functions that return a `NamedTuple`. The internal helpers
 are not API, so they are not counted.
 """
 function namedtuple_returns()
@@ -238,7 +238,7 @@ end
 """
     export_sweep() -> NamedTuple
 
-Sweep 3 (§13): what `PETSc` exports against the register's `EXPORTED` list.
+Sweep 3 ("Exports"): what `PETSc` exports against the register's `EXPORTED` list.
 """
 function export_sweep()
     # The module's own name is reported as exported; it is not an export.
@@ -259,7 +259,7 @@ end
 
 The names whose docstring interpolates `doc_borrowed()`, found by reading the
 source: `Docs.doc` on a binding with several docstrings answers with a summary
-rather than the text, and §1.1 asks for a grep for the helper anyway.
+rather than the text, and "The register" asks for a grep for the helper anyway.
 """
 function borrowed_documented()
     documented = Set{Symbol}()
@@ -289,7 +289,7 @@ end
 """
     borrowed_sweep() -> Vector{Symbol}
 
-Sweep 4 (§3.3): readers (names without a trailing `!`, and not creators) that
+Sweep 4 ("What an accessor hands back"): readers (names without a trailing `!`, and not creators) that
 hand back a PETSc object without a `doc_borrowed` note in their docstring. The
 internal helpers are not part of the documented API and are skipped.
 """
@@ -311,7 +311,7 @@ function borrowed_sweep()
     return hits
 end
 
-# The `!` functions §7 lets return `nothing`: releases and package-state setters.
+# The `!` functions "Mutation" lets return `nothing`: releases and package-state setters.
 const RETURNS_NOTHING = Set([
     :destroy!, :set_library!, :unset_library!, :set_petscint!,
 ])
@@ -319,8 +319,8 @@ const RETURNS_NOTHING = Set([
 """
     bang_returns_sweep() -> Vector{Symbol}
 
-Sweep 5 (§7): `!` functions whose inferred return type includes `Nothing`, other
-than the releases and package-state setters §7 exempts. A method inference
+Sweep 5 ("Mutation"): `!` functions whose inferred return type includes `Nothing`, other
+than the releases and package-state setters "Mutation" exempts. A method inference
 cannot see through (arguments typed `Any`) is not reported.
 """
 function bang_returns_sweep()
@@ -336,21 +336,21 @@ function bang_returns_sweep()
 end
 
 function sweeps(io::IO = stdout)
-    println(io, "1. petsclib first alongside a dispatchable PETSc object (§8)")
+    println(io, "1. petsclib first alongside a dispatchable PETSc object (Argument order)")
     hits = petsclib_first()
     isempty(hits) && println(io, "   (none)")
     for (name, m) in hits
         println(io, "   ", name, "  ", basename(String(m.file)), ":", m.line)
     end
 
-    println(io, "\n2. functions returning a NamedTuple (§12)")
+    println(io, "\n2. functions returning a NamedTuple (Return values)")
     nts = namedtuple_returns()
     println(io, "   ", length(nts), " function(s)")
     for name in nts
         println(io, "   ", name)
     end
 
-    println(io, "\n3. exported names against §13")
+    println(io, "\n3. exported names against the Exports list")
     es = export_sweep()
     println(io, "   exported: ", join(String.(es.exported), ", "))
     println(
@@ -364,14 +364,14 @@ function sweeps(io::IO = stdout)
         isempty(es.absent) ? "(none)" : join(String.(es.absent), ", "),
     )
 
-    println(io, "\n4. readers returning a PETSc object with no doc_borrowed entry (§3.3)")
+    println(io, "\n4. readers returning a PETSc object with no doc_borrowed entry (What an accessor hands back)")
     bs = borrowed_sweep()
     isempty(bs) && println(io, "   (none)")
     for name in bs
         println(io, "   ", name)
     end
 
-    println(io, "\n5. ! functions that can return nothing (§7)")
+    println(io, "\n5. ! functions that can return nothing (Mutation)")
     rs = bang_returns_sweep()
     isempty(rs) && println(io, "   (none)")
     for name in rs

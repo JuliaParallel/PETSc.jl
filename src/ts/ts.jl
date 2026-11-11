@@ -314,8 +314,7 @@ The name of the PETSc implementation `obj` currently uses.
 
 The reader is `type_name` rather than `type`, because `type` is the conventional name
 for the argument of the matching setter and would be shadowed by it, and because what
-comes back is the name of a PETSc implementation rather than a Julia type
-(docs/src/man/naming.md §3).
+comes back is the name of a PETSc implementation rather than a Julia type.
 
 Declared here, with methods on `TS`, `KSP`, `SNES`, `PC`, `PetscVec`, `PetscMat` and
 `AbstractPetscDM`.
@@ -406,7 +405,7 @@ end
 """
     dm(ts::AbstractTS)
 
-The DM attached to `ts`, [`narrow`](@ref)ed to its flavour.
+The DM attached to `ts`, [`narrow`](@ref)ed to its DM type.
 
 $(doc_borrowed())
 
@@ -994,8 +993,7 @@ $(doc_callback())
 # External Links
 $(doc_external("TS/TSSetRHSFunction"))
 
-The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
-works.
+The callback comes first, so `do` block syntax works.
 """
 function set_rhs_function! end
 
@@ -1044,8 +1042,7 @@ $(doc_callback())
 # External Links
 $(doc_external("TS/TSSetRHSJacobian"))
 
-The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
-works.
+The callback comes first, so `do` block syntax works.
 """
 function set_rhs_jacobian! end
 
@@ -1103,8 +1100,7 @@ $(doc_callback())
 # External Links
 $(doc_external("TS/TSSetIFunction"))
 
-The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
-works.
+The callback comes first, so `do` block syntax works.
 """
 function set_ifunction! end
 
@@ -1155,8 +1151,7 @@ $(doc_callback())
 # External Links
 $(doc_external("TS/TSSetIJacobian"))
 
-The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
-works.
+The callback comes first, so `do` block syntax works.
 """
 function set_ijacobian! end
 
@@ -1223,8 +1218,7 @@ $(doc_callback())
 # External Links
 $(doc_external("TS/TSMonitorSet"))
 
-The callback comes first (docs/src/man/naming.md §8.1), so `do` block syntax
-works.
+The callback comes first, so `do` block syntax works.
 """
 function set_monitor! end
 

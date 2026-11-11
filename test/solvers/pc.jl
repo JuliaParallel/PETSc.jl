@@ -35,7 +35,7 @@ using .PETScTestUtils: without_petsc_traceback
             @test ksp \ b ≈ Matrix(S) \ b
             @test PETSc.type_name(PETSc.pc(ksp)) === :jacobi   # the solve kept it
 
-            # borrowed from ksp (naming.md §3.3): destroy! leaves it, and ksp, usable
+            # borrowed from ksp: destroy! leaves it, and ksp, usable
             @test !PETSc.owns(p)
             @test PETSc.destroy!(p) === nothing
             @test p.ptr != C_NULL
@@ -110,7 +110,7 @@ using .PETScTestUtils: without_petsc_traceback
             @test nreplaced[] > 0
             @test napply[] == napply_before
 
-            # an exception in the callback comes out of the solve as itself (naming.md §18.4)
+            # an exception in the callback comes out of the solve as itself
             PETSc.set_shell_apply!(PETSc.pc(ksp)) do y, p, x
                 throw(DomainError(-1.0, "shell apply! failed on purpose"))
             end

@@ -166,7 +166,7 @@ end
 
 Tell SNES to use `DMPlex`'s built-in FEM residual / Jacobian assembly on `dm`.
 
-`petsclib` is not an argument: the `dm` carries it as a type parameter (§8).
+`petsclib` is not an argument: the `dm` carries it as a type parameter.
 
 # External Links
 $(doc_external("DMPlex/DMPlexSetSNESLocalFEM"))

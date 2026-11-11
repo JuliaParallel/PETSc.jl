@@ -173,20 +173,32 @@ function build_petsc_options(log_view::Bool, options)
     return args
 end
 
-# Functions the GPU extensions register, each returning `name => value` option
-# pairs that make PETSc use the device the Julia GPU package has selected.
-# PETSc otherwise picks a device per rank by itself, and the arrays it
-# hands out then live on a device the Julia kernels do not run on.
+# Functions the GPU extensions register. Each takes the library and returns
+# `name => value` option pairs that make PETSc use the device the Julia GPU
+# package has selected. PETSc otherwise picks a device per rank by itself, and
+# the arrays it hands out then live on a device the Julia kernels do not run on.
 const device_option_hooks = Function[]
 
 # Set before `PetscInitialize`, which reads `PETSC_OPTIONS` and the command line
 # afterwards: a device chosen there overrides these.
 function set_device_options(petsclib)
     db = LibPETSc.PetscOptions{typeof(petsclib)}(C_NULL, petsclib.age; own = false)
-    for hook in device_option_hooks, (name, value) in hook()
+    for hook in device_option_hooks, (name, value) in hook(petsclib)
         LibPETSc.PetscOptionsSetValue(petsclib, db, name, value)
     end
     return nothing
+end
+
+"""
+    has_symbol(petsclib, name::Symbol) -> Bool
+
+Whether the PETSc library of `petsclib` exports the C function `name`. A function
+that belongs to one device, such as `VecCreateSeqCUDA` or `VecCreateSeqHIP`, is
+there only in a PETSc built for that device.
+"""
+function has_symbol(petsclib, name::Symbol)
+    handle, _ = ensure_library_handle(petsclib)
+    return Libdl.dlsym_e(library_ptr(handle), name) != C_NULL
 end
 
 function ensure_mpi_initialized()

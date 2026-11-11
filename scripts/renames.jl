@@ -169,6 +169,7 @@ const INTERNAL = Set{Symbol}([
     :PETSc_CUDA_jll_id,
     :device_option_hooks,
     :set_device_options,
+    :has_symbol,
     :errorcode,
     :run_callback,
     # the underscore stays: inner worker beside a wrapper of the same name

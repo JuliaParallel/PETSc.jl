@@ -2,9 +2,10 @@
 # PETScCUDAExt and PETScAMDGPUExt: PETSc uses the device the Julia GPU package
 # has selected, and an explicit -device_select_* option still overrides it.
 #
-# Not part of runtests.jl: it needs a GPU and a PETSc built with CUDA or HIP.
-# Run it like test/gpu/device_arrays.jl; with two or more devices it checks a
-# device other than PETSc's own default:
+# Not part of runtests.jl: it needs a GPU. With a PETSc built with CUDA or HIP
+# it checks the selection; with two or more devices, a device other than PETSc's
+# own default. With any other PETSc it checks that the option is left unset,
+# since that build never reads it. Run it like test/gpu/device_arrays.jl:
 #
 #   julia --project=ENV test/gpu/device_selection.jl cuda    # or hip
 
@@ -15,12 +16,14 @@ const gpu = get(ARGS, 1, "")
 if gpu == "cuda"
     using CUDA
     const option = "-device_select_cuda"
+    const device_function = :VecCreateSeqCUDA
     devices() = collect(CUDA.devices())
     select!(d) = CUDA.device!(d)
     selected_id() = CUDA.deviceid(CUDA.device())
 elseif gpu == "hip"
     using AMDGPU
     const option = "-device_select_hip"
+    const device_function = :VecCreateSeqHIP
     devices() = AMDGPU.devices()
     select!(d) = AMDGPU.device!(d)
     selected_id() = AMDGPU.device_id(AMDGPU.device()) - 1
@@ -47,17 +50,26 @@ function petsc_device_id(petsclib::PETSc.LibPETSc.PetscLibType{ST, IT}) where {S
 end
 
 @testset "device selection ($gpu)" begin
-    # PETSc's own default on one rank is device 0: pick the last one instead
-    select!(last(devices()))
-    @testset "PETSc follows the Julia GPU package" begin
-        PETSc.initialize(petsclib)
-        @test petsc_device_id(petsclib) == selected_id()
-        PETSc.finalize(petsclib)
-    end
+    if !PETSc.has_symbol(petsclib, device_function)
+        @testset "a PETSc without $gpu leaves $option unset" begin
+            PETSc.initialize(petsclib)
+            global_options = PETSc.LibPETSc.PetscOptions{typeof(petsclib)}(C_NULL, petsclib.age; own = false)
+            @test !PETSc.LibPETSc.PetscOptionsHasName(petsclib, global_options, "", option)
+            PETSc.finalize(petsclib)
+        end
+    else
+        # PETSc's own default on one rank is device 0: pick the last one instead
+        select!(last(devices()))
+        @testset "PETSc follows the Julia GPU package" begin
+            PETSc.initialize(petsclib)
+            @test petsc_device_id(petsclib) == selected_id()
+            PETSc.finalize(petsclib)
+        end
 
-    @testset "an explicit option overrides it" begin
-        PETSc.initialize(petsclib; options = [option, "0"])
-        @test petsc_device_id(petsclib) == 0
-        PETSc.finalize(petsclib)
+        @testset "an explicit option overrides it" begin
+            PETSc.initialize(petsclib; options = [option, "0"])
+            @test petsc_device_id(petsclib) == 0
+            PETSc.finalize(petsclib)
+        end
     end
 end

@@ -15,8 +15,10 @@ PETSc.memtype_backend(::Val{PETSC_MEMTYPE_DEVICE}) = CUDAMemBackend()
 PETSc.array_type(::Val{PETSC_MEMTYPE_DEVICE}) = CuArray
 
 # PETSc uses the device CUDA.jl has selected, so that the device memory it hands
-# out belongs to the context CUDA.jl launches kernels in.
-device_options() = CUDA.functional() ?
+# out belongs to the context CUDA.jl launches kernels in. Only a PETSc built with
+# CUDA reads the option; any other build would report it unused at exit.
+device_options(petsclib) =
+    CUDA.functional() && PETSc.has_symbol(petsclib, :VecCreateSeqCUDA) ?
     ["-device_select_cuda" => string(CUDA.deviceid(CUDA.device()))] : Pair{String, String}[]
 
 # With the extension loaded, `memtype = :native` checkouts wrap device memory.

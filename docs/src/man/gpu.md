@@ -198,11 +198,11 @@ This records a trace compatible with NSight Systems (`nsys profile`) and NVTX. F
 
 ### Poisson equation (ex45)
 
-[`examples/dmda/ex45.jl`](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/dmda/ex45.jl) solves −∇²u = f on the unit cube with CG and geometric multigrid (Chebyshev/Jacobi smoothers), with the same solver on CPU and GPU. Every run takes 12 to 14 CG iterations, so the solve time grows linearly with the number of unknowns. Throughput is unknowns × CG iterations per second.
+[`examples/dmda/ex45.jl`](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/dmda/ex45.jl) solves −∇²u = f on the unit cube with CG and geometric multigrid (Chebyshev/Jacobi smoothers), with the same solver on CPU and GPU. Every run takes 12 to 14 CG iterations, so the solve time grows linearly with the number of unknowns. The right panel plots the matrix-vector product rate against the read bandwidth measured on each device with a plain array sum; the lines are the rates at which MatMult would use all of that bandwidth.
 
-![KSPSolve time and throughput of ex45 on CPUs and GPUs](../assets/img/ex45_cpu_gpu.png)
+![KSPSolve time of ex45 and memory bandwidth use on CPUs and GPUs](../assets/img/ex45_cpu_gpu.png)
 
-- The solve is limited by memory bandwidth, so on the CPU more cores help only until they saturate it: at 257³ (17M unknowns), 64 EPYC cores are 13× faster than one.
+- The solve is limited by memory bandwidth, and MatMult runs close to the bandwidth limit on every device. More CPU cores help only until they saturate it: at 257³ (17M unknowns), 64 EPYC cores are 13× faster than one.
 - A GPU needs about 10⁶ unknowns to be fully used. At 257³, one A100 is 5× faster than all 64 EPYC cores.
 - Two A100, with halos staged through the host, are 1.4× faster than one at 513³ (135M unknowns).
 

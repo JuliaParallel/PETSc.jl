@@ -1,522 +1,299 @@
 #=
-  ex19.jl — 2D Driven Cavity: velocity–vorticity–temperature formulation
+  ex19.jl: 2-D driven cavity in the velocity–vorticity–temperature formulation
   Port of PETSc snes/tutorials/ex19.c
 
-  Solves on the unit square [0,1]²:
-    −∇²u  − ∂ω/∂y               = 0
-    −∇²v  + ∂ω/∂x               = 0
-    −∇²ω  + ∇·(uω, vω) − Gr·∂T/∂x = 0
-    −∇²T  + Pr·∇·(uT, vT)       = 0
-
-  4 DOFs per node: (u, v, ω, T).  Convective terms are upwinded.
-
-  Boundary conditions:
-    All walls:   u = v = 0  (no-slip),  except top lid: u = lidvelocity
-    Left:        T = 0  (cold, Dirichlet)
-    Right:       T = 1  (hot, Dirichlet, only when Gr > 0)
-    Top/bottom:  ∂T/∂n = 0  (insulated, Neumann)
-    ω:           derived from the no-slip condition at each wall
+  On the unit square, with the unknowns (u, v, ω, T) at every grid point:
+    −∇²u − ∂ω/∂y                 = 0
+    −∇²v + ∂ω/∂x                 = 0
+    −∇²ω + ∇·(uω, vω) − Gr ∂T/∂x = 0
+    −∇²T + Pr ∇·(uT, vT)         = 0
+  with upwinded advection. All walls are no-slip, and the top lid moves with
+  u = 1/(mx − 1). The left wall is cold (T = 0), the right one hot (T = 1 when
+  Gr > 0), top and bottom are insulated, and ω follows from no-slip at each wall.
 
   Usage (from the examples/ directory):
-    # Basic run (4×4 default grid)
-    julia --project ex19.jl
+    # Multigrid with Chebyshev/Jacobi smoothers on 4 ranks, with PETSc's log
+    mpiexec -n 4 julia --project dmda/ex19.jl -da_grid_x 257 -da_grid_y 257 \
+        -pc_type mg -pc_mg_levels 4 -mg_levels_ksp_type chebyshev \
+        -mg_levels_pc_type jacobi -snes_monitor -log_view
 
-    # Larger grid with SNES convergence output
-    julia --project ex19.jl -snes_monitor -snes_converged_reason -da_grid_x 129 -da_grid_y 129
+    # One GPU per rank: PETSc built with CUDA (e.g. PETSc.set_library!(:cuda)) and
+    # CUDA.jl, or `-gpu hip` with HIP and AMDGPU.jl
+    julia --project dmda/ex19.jl -gpu cuda -da_grid_x 257 -da_grid_y 257 \
+        -pc_type mg -pc_mg_levels 4 -mg_levels_ksp_type chebyshev -mg_levels_pc_type jacobi
 
-    # With PETSc performance log
-    julia --project ex19.jl -da_grid_x 129 -da_grid_y 129 -log_view
-
-    # Multigrid preconditioner (3 levels, Chebyshev+Jacobi smoothers)
-    julia --project ex19.jl -da_grid_x 125 -da_grid_y 125 \\
-        -pc_type mg -pc_mg_levels 3 \\
-        -mg_levels_ksp_type chebyshev -mg_levels_pc_type jacobi \\
-        -snes_monitor -ksp_monitor
-
-    # MPI parallel (4 ranks)
-    mpiexec -n 4 julia --project ex19.jl \\
-        -da_grid_x 257 -da_grid_y 257 \\
-        -pc_type mg -pc_mg_levels 4 \\
-        -mg_levels_ksp_type chebyshev -mg_levels_pc_type jacobi
-
-    # GPU: set  gpu = :cuda  or  gpu = :hip  at the top of the file, then:
-    julia --project ex19.jl -da_grid_x 257 -da_grid_y 257 \\
-        -pc_type mg -pc_mg_levels 4 \\
-        -mg_levels_ksp_type chebyshev -mg_levels_pc_type jacobi
-
-  Jacobian strategy:
-    Fine-grid level: manual FD coloring via PETSc.star_fd_coloring +
-      MatSetPreallocationCOOLocal + MatSetValuesCOO.  On GPU the entire
-      perturb → F(x+h) → accumulate loop runs on-device with no host copies.
-    Coarser MG levels: fall back to SNESComputeJacobianDefaultColor
-      (correct for each level's DM, CPU-only).
-
-  Requires: LocalPreferences.toml in examples/ with PetscInt = "Int32" matching
-    the PETSc build (check with: grep sizeof_PetscInt petscconf.h).
-
-  GPU usage: set  gpu = :cuda  (NVIDIA) or  gpu = :hip  (AMD) at the top of this
-    file. Requires PETSc built with --with-cuda or --with-hip, and CUDA.jl or
-    AMDGPU.jl in the environment.
+  The residual is a KernelAbstractions kernel, so it runs on the CPU or the GPU.
+  The finest grid's Jacobian comes from finite differences with a coloring of
+  the stencil, on the device; coarser levels use PETSc's own coloring.
 =#
+using PETSc, MPI, KernelAbstractions
+using PETSc: LibPETSc
 
-# ── GPU switch ────────────────────────────────────────────────────────────────
-const gpu = :none   # :cuda (CUDA.jl) or :hip (AMDGPU.jl)
+# ============================================================================
+#   Physics
+# ============================================================================
+const U, V, Ω, T = 1, 2, 3, 4   # the four unknowns at every grid point
+const params = (; prandtl = 1.0, grashof = 1.0)
 
-using MPI
-using PETSc
-using KernelAbstractions
+# The residual (F_u, F_v, F_ω, F_T) at global grid point (i, j), with every
+# equation multiplied by hx hy, as in ex19.c. The point is at (a, b) in the
+# ghosted array x_ghost, which also holds its neighbors.
+# The helpers are anonymous functions (`f = q -> ...`): Julia would create a named
+# one (`f(q) = ...`) before its variables are set and box them, which GPUs reject.
+@inline function cavity_residual(x_ghost, a, b, i, j, grid, params)
+    hx, hy = grid.hx, grid.hy
+    # X(q) is unknown q at this point, X(q, di, dj) at the neighbor (i + di, j + dj)
+    X = (q, di = 0, dj = 0) -> x_ghost[q, a + di, b + dj]
 
-if gpu === :cuda
-    using CUDA
-elseif gpu === :hip
-    using AMDGPU
+    # Walls: u = v = 0 (u = lid speed on top), ω from no-slip, T fixed left and
+    # right, insulated bottom and top. Corners count as left or right wall.
+    T_right = params.grashof > 0 ? 1.0 : 0.0
+    if i == 1               # left
+        return (X(U), X(V), X(Ω) - (X(V, 1, 0) - X(V)) / hx, X(T))
+    elseif i == grid.mx     # right
+        return (X(U), X(V), X(Ω) - (X(V) - X(V, -1, 0)) / hx, X(T) - T_right)
+    elseif j == 1           # bottom
+        return (X(U), X(V), X(Ω) + (X(U, 0, 1) - X(U)) / hy, X(T) - X(T, 0, 1))
+    elseif j == grid.my     # top
+        return (X(U) - hx, X(V), X(Ω) + (X(U) - X(U, 0, -1)) / hy, X(T) - X(T, 0, -1))  # lid speed 1/(mx − 1)
+    end
+
+    # Interior. −∇²q, ∂q/∂x and ∂q/∂y by centered differences, times hx hy
+    laplacian = q -> (2X(q) - X(q, -1, 0) - X(q, 1, 0)) * hy / hx +
+                     (2X(q) - X(q, 0, -1) - X(q, 0, 1)) * hx / hy
+    d_dx = q -> (X(q, 1, 0) - X(q, -1, 0)) / 2 * hy
+    d_dy = q -> (X(q, 0, 1) - X(q, 0, -1)) / 2 * hx
+
+    # ∇·(uq, vq) times hx hy, upwinded: a backward difference where the
+    # velocity is positive, a forward one where it is negative
+    u, v = X(U), X(V)
+    u⁺, u⁻ = max(u, 0), min(u, 0)
+    v⁺, v⁻ = max(v, 0), min(v, 0)
+    advection = q -> (u⁺ * (X(q) - X(q, -1, 0)) + u⁻ * (X(q, 1, 0) - X(q))) * hy +
+                     (v⁺ * (X(q) - X(q, 0, -1)) + v⁻ * (X(q, 0, 1) - X(q))) * hx
+
+    return (laplacian(U) - d_dy(Ω),
+            laplacian(V) + d_dx(Ω),
+            laplacian(Ω) + advection(Ω) - params.grashof * d_dx(T),
+            laplacian(T) + params.prandtl * advection(T))
 end
 
-# A copy of `a` on the GPU, or `a` itself on the CPU
-to_device(a) = gpu === :cuda ? CuArray(a) : gpu === :hip ? ROCArray(a) : a
-
-
-# ── Physical parameters ──────────────────────────────────────────────────────
-Base.@kwdef mutable struct AppCtx{T}
-    lidvelocity :: T = one(T)
-    prandtl     :: T = one(T)
-    grashof     :: T = one(T)
-end
-
-# ── Residual kernel ───────────────────────────────────────────────────────────
-#
-# Iterates over the locally-owned grid: (li, lj) ∈ 1..nx_own × 1..ny_own.
-#
-# Array layout (plain 1-based, no OffsetArray — GPU-compatible):
-#   x_par[dof, xi, xj]   ghost input,  xi = li + ox, xj = lj + oy
-#   f_par[dof, li, lj]   owned output
-#
-# ox = xs - xsg, oy = ys - ysg  (ghost offsets; 0 at a domain boundary, 1 otherwise)
-#
-# Corner priority matches the C code: left/right walls processed last, so they
-# take precedence over bottom/top at corners.  Achieved here by checking i==1
-# and i==mx before j==1 and j==my.
-#
-@kernel function cavity_residual_kernel!(
-    f_par,
-    x_par,
-    dhx, dhy,           # mx-1, my-1
-    hx,  hy,            # 1/dhx, 1/dhy
-    hydhx, hxdhy,       # metric factors for Laplacian scaling
-    grashof, prandtl, lid,
-    mx :: Int, my :: Int,
-    xs :: Int, ys :: Int,
-    ox :: Int, oy :: Int,
-)
+# One thread per grid point (li, lj) of this rank: writes its residual to F[:, li, lj]
+@kernel function cavity_residual_kernel!(F, x_ghost, grid, params)
     li, lj = @index(Global, NTuple)
-
-    i  = xs + li - 1   # global 1-based x-coordinate
-    j  = ys + lj - 1   # global 1-based y-coordinate
-    xi = li + ox        # ghost-array x-index for this point
-    xj = lj + oy        # ghost-array y-index for this point
-
-    # ── Boundary conditions ───────────────────────────────────────────────────
-
-    if i == 1                           # left wall — cold (T = 0)
-        f_par[1, li, lj] = x_par[1, xi,   xj  ]
-        f_par[2, li, lj] = x_par[2, xi,   xj  ]
-        f_par[3, li, lj] = x_par[3, xi,   xj  ] -
-            (x_par[2, xi+1, xj] - x_par[2, xi, xj]) * dhx
-        f_par[4, li, lj] = x_par[4, xi,   xj  ]
-
-    elseif i == mx                      # right wall — hot (T = 1 when Gr > 0)
-        f_par[1, li, lj] = x_par[1, xi,   xj  ]
-        f_par[2, li, lj] = x_par[2, xi,   xj  ]
-        f_par[3, li, lj] = x_par[3, xi,   xj  ] -
-            (x_par[2, xi, xj] - x_par[2, xi-1, xj]) * dhx
-        f_par[4, li, lj] = x_par[4, xi,   xj  ] -
-            (grashof > zero(grashof) ? one(grashof) : zero(grashof))
-
-    elseif j == 1                       # bottom wall — no-slip, insulated
-        f_par[1, li, lj] = x_par[1, xi,   xj  ]
-        f_par[2, li, lj] = x_par[2, xi,   xj  ]
-        f_par[3, li, lj] = x_par[3, xi,   xj  ] +
-            (x_par[1, xi, xj+1] - x_par[1, xi, xj]) * dhy
-        f_par[4, li, lj] = x_par[4, xi,   xj  ] - x_par[4, xi, xj+1]
-
-    elseif j == my                      # top wall — moving lid, insulated
-        f_par[1, li, lj] = x_par[1, xi,   xj  ] - lid
-        f_par[2, li, lj] = x_par[2, xi,   xj  ]
-        f_par[3, li, lj] = x_par[3, xi,   xj  ] +
-            (x_par[1, xi, xj] - x_par[1, xi, xj-1]) * dhy
-        f_par[4, li, lj] = x_par[4, xi,   xj  ] - x_par[4, xi, xj-1]
-
-    else                                # ── interior point ───────────────────
-
-        # Upwind split of advecting velocities
-        vx  = x_par[1, xi, xj];  avx = abs(vx)
-        vxp = oftype(vx, 0.5) * (vx + avx)   # max(vx, 0)
-        vxm = oftype(vx, 0.5) * (vx - avx)   # min(vx, 0)
-
-        vy  = x_par[2, xi, xj];  avy = abs(vy)
-        vyp = oftype(vy, 0.5) * (vy + avy)
-        vym = oftype(vy, 0.5) * (vy - avy)
-
-        # u-equation:  −∇²u − ∂ω/∂y = 0
-        cu  = x_par[1, xi, xj]
-        uxx = (2cu - x_par[1, xi-1, xj] - x_par[1, xi+1, xj]) * hydhx
-        uyy = (2cu - x_par[1, xi, xj-1] - x_par[1, xi, xj+1]) * hxdhy
-        f_par[1, li, lj] = uxx + uyy -
-            oftype(cu, 0.5) * (x_par[3, xi, xj+1] - x_par[3, xi, xj-1]) * hx
-
-        # v-equation:  −∇²v + ∂ω/∂x = 0
-        cv  = x_par[2, xi, xj]
-        vxx = (2cv - x_par[2, xi-1, xj] - x_par[2, xi+1, xj]) * hydhx
-        vyy = (2cv - x_par[2, xi, xj-1] - x_par[2, xi, xj+1]) * hxdhy
-        f_par[2, li, lj] = vxx + vyy +
-            oftype(cv, 0.5) * (x_par[3, xi+1, xj] - x_par[3, xi-1, xj]) * hy
-
-        # ω-equation:  −∇²ω + ∇·(uω, vω) − Gr·∂T/∂x = 0
-        cω  = x_par[3, xi, xj]
-        wxx = (2cω - x_par[3, xi-1, xj] - x_par[3, xi+1, xj]) * hydhx
-        wyy = (2cω - x_par[3, xi, xj-1] - x_par[3, xi, xj+1]) * hxdhy
-        f_par[3, li, lj] = wxx + wyy +
-            (vxp * (cω - x_par[3, xi-1, xj]) + vxm * (x_par[3, xi+1, xj] - cω)) * hy +
-            (vyp * (cω - x_par[3, xi, xj-1]) + vym * (x_par[3, xi, xj+1] - cω)) * hx -
-            oftype(cω, 0.5) * grashof * (x_par[4, xi+1, xj] - x_par[4, xi-1, xj]) * hy
-
-        # T-equation:  −∇²T + Pr·∇·(uT, vT) = 0
-        cT  = x_par[4, xi, xj]
-        txx = (2cT - x_par[4, xi-1, xj] - x_par[4, xi+1, xj]) * hydhx
-        tyy = (2cT - x_par[4, xi, xj-1] - x_par[4, xi, xj+1]) * hxdhy
-        f_par[4, li, lj] = txx + tyy + prandtl * (
-            (vxp * (cT - x_par[4, xi-1, xj]) + vxm * (x_par[4, xi+1, xj] - cT)) * hy +
-            (vyp * (cT - x_par[4, xi, xj-1]) + vym * (x_par[4, xi, xj+1] - cT)) * hx)
+    i = grid.i_first + li - 1               # global grid index
+    j = grid.j_first + lj - 1
+    r = cavity_residual(x_ghost, li + grid.i_shift, lj + grid.j_shift, i, j, grid, params)
+    for q in 1:4
+        F[q, li, lj] = r[q]
     end
 end
 
-# ── FD-coloring GPU helper kernels ────────────────────────────────────────────
-#
-# scatter_perturb_kernel!: add h to selected entries of a vector.
-#   cols[k] is the 1-based Julia index to perturb.
-#
-@kernel function scatter_perturb_kernel!(x, cols, h)
-    k = @index(Global)
-    @inbounds x[cols[k]] += h
+# The grid of one multigrid level, as this rank sees it
+function grid_metrics(dm)
+    mx, my = PETSc.info(dm).global_size
+    own = PETSc.corners(dm)                 # the points this rank owns
+    ghost = PETSc.ghost_corners(dm)         # the same, plus one layer of neighbors
+    hx, hy = 1 / (mx - 1), 1 / (my - 1)
+    return (;
+        mx, my,                             # points in the whole grid
+        hx, hy,                             # grid spacing
+        i_first = own.lower[1], j_first = own.lower[2],   # global index of this rank's first point
+        nx = own.size[1], ny = own.size[2],               # number of points this rank owns
+        # The ghosted array starts with the neighbor layer, except at a wall:
+        # this rank's first point sits at (1 + i_shift, 1 + j_shift) in it.
+        i_shift = own.lower[1] - ghost.lower[1], j_shift = own.lower[2] - ghost.lower[2],
+        nx_ghost = ghost.size[1], ny_ghost = ghost.size[2],
+    )
 end
 
-# fd_accumulate_kernel!: write (f1 − f0)/h into val at COO indices.
-#   coo_idxs[k] and row_idxs[k] are 1-based Julia indices.
-#
-@kernel function fd_accumulate_kernel!(val, f0, f1, coo_idxs, row_idxs, inv_h)
+# ============================================================================
+#   Finite-difference Jacobian with a stencil coloring
+# ============================================================================
+# Columns of one color share no row, so one residual evaluation per color gives
+# all their Jacobian entries: (F(x + h eₖ) − F(x)) / h for the columns k.
+
+@kernel function perturb!(x, cols, h)
     k = @index(Global)
-    @inbounds val[coo_idxs[k]] = (f1[row_idxs[k]] - f0[row_idxs[k]]) * inv_h
+    x[cols[k]] += h
 end
 
-# ── FD-coloring Jacobian fill ─────────────────────────────────────────────────
-#
-# Fills val_dev[k] with the forward-difference Jacobian value for COO slot k.
-# Loops over colors: scatter +h onto the owned columns of that color, evaluate
-# F(x + h·eₖ), then accumulate (F1 − F0)/h into val_dev at the matching slots.
-# Does NOT call MatSetValuesCOO or MatAssembly; those remain with the caller.
-#
-# Captures from module scope: scatter_perturb_kernel!, fd_accumulate_kernel!,
-#   KernelAbstractions.
-#
-function fd_coloring_jac!(
-    petsclib,
-    snes,
-    g_x,
-    f0_vec, f1_vec, x_pert_vec,
-    val_dev  :: AbstractVector{T},
-    n_colors    :: Int,
-    perturb_cols_dev,
-    coo_idxs_dev,
-    local_rows_dev,
-    h_eps :: T,
-    inv_h :: T,
-) where T
-    LibPETSc.SNESComputeFunction(petsclib, snes, g_x, f0_vec)
-    PETSc.with_local_array!(f0_vec; read=true, write=false) do f0
-        for c in 1:n_colors
-            isempty(perturb_cols_dev[c]) && continue
+@kernel function difference!(vals, f0, f1, slots, rows, inv_h)
+    k = @index(Global)
+    vals[slots[k]] = (f1[rows[k]] - f0[rows[k]]) * inv_h
+end
 
-            LibPETSc.VecCopy(petsclib, g_x, x_pert_vec)
-            PETSc.with_local_array!(x_pert_vec; read=true, write=true) do xp
-                kb = KernelAbstractions.get_backend(xp)
-                scatter_perturb_kernel!(kb, 64)(
-                    xp, perturb_cols_dev[c], h_eps;
-                    ndrange = length(perturb_cols_dev[c]))
-                KernelAbstractions.synchronize(kb)
+# The Jacobian matrix, the coloring of the grid of da and the work Vecs
+function fd_jacobian_setup(da, x)
+    coloring = PETSc.star_fd_coloring(da)
+    # The Jacobian with the sparsity pattern of the stencil, filled in COO order
+    J = LibPETSc.DMCreateMatrix(petsclib, da)
+    LibPETSc.MatSetPreallocationCOOLocal(petsclib, J, LibPETSc.PetscCount(coloring.nnz_coo),
+                                         coloring.row_coo_local_0b, coloring.col_coo_local_0b)
+
+    # The Jacobian values, on the device for a device matrix. MatSetValuesCOO
+    # takes an Array: on the GPU, one over the device memory, which PETSc reads
+    # as device memory for a device matrix.
+    vals = to_device(zeros(coloring.nnz_coo))
+    coo_vals = gpu == "none" ? vals :
+        unsafe_wrap(Array, Ptr{Float64}(UInt(pointer(vals))), length(vals))
+
+    return (; J, vals, coo_vals,
+              # for each color: the columns to perturb, the COO entries they
+              # fill, and the residual rows those entries come from
+              cols  = map(to_device, coloring.perturb_cols_1b),
+              slots = map(to_device, coloring.coo_idxs_1b),
+              rows  = map(to_device, coloring.local_rows_1b),
+              # x + h eₖ, F(x) and F(x + h eₖ)
+              x1 = LibPETSc.VecDuplicate(petsclib, x),
+              f0 = LibPETSc.VecDuplicate(petsclib, x),
+              f1 = LibPETSc.VecDuplicate(petsclib, x),
+              h  = sqrt(eps()))
+end
+
+# Fill fd.vals with the finite-difference Jacobian at x
+function fd_jacobian!(fd, snes, x)
+    LibPETSc.SNESComputeFunction(petsclib, snes, x, fd.f0)
+    PETSc.with_local_array!(fd.f0; write = false) do f0
+        for c in eachindex(fd.cols)
+            if isempty(fd.cols[c])          # a color with no columns on this rank
+                continue
             end
-
-            LibPETSc.SNESComputeFunction(petsclib, snes, x_pert_vec, f1_vec)
-
-            PETSc.with_local_array!(f1_vec; read=true, write=false) do f1
-                kb = KernelAbstractions.get_backend(f1)
-                fd_accumulate_kernel!(kb, 64)(
-                    val_dev, f0, f1,
-                    coo_idxs_dev[c], local_rows_dev[c], inv_h;
-                    ndrange = length(coo_idxs_dev[c]))
-                KernelAbstractions.synchronize(kb)
+            LibPETSc.VecCopy(petsclib, x, fd.x1)
+            PETSc.with_local_array!(fd.x1) do x1
+                backend = get_backend(x1)
+                perturb!(backend, 64)(x1, fd.cols[c], fd.h; ndrange = length(fd.cols[c]))
+                KernelAbstractions.synchronize(backend)
+            end
+            LibPETSc.SNESComputeFunction(petsclib, snes, fd.x1, fd.f1)
+            PETSc.with_local_array!(fd.f1; write = false) do f1
+                backend = get_backend(f1)
+                difference!(backend, 64)(fd.vals, f0, f1, fd.slots[c], fd.rows[c], 1 / fd.h;
+                                         ndrange = length(fd.slots[c]))
+                KernelAbstractions.synchronize(backend)
             end
         end
     end
     return nothing
 end
 
-# ── Setup ─────────────────────────────────────────────────────────────────────
-opts     = isinteractive() ? NamedTuple() : PETSc.parse_options(filter(a -> a != "-log_view", ARGS))
-log_view = "-log_view" in ARGS
-
-petsclib = try
-    PETSc.getlib(; PetscScalar = Float64, PetscInt = Int32)
-catch
-    # only one PetscInt width is registered per process (default Int64, see
-    # `PETSc.set_petscint!`): fall back to any Float64 library
-    first(filter(l -> PETSc.scalartype(l) == Float64, collect(PETSc.petsclibs)))
-end
-PETSc.initialize(petsclib; log_view)
-
-_T        = Float64
-PetscInt = petsclib.PetscInt
-comm     = MPI.COMM_WORLD
-
-# DMDA: 4×4 default (matches ex19.c); override via -da_grid_x / -da_grid_y
-da = PETSc.DMDA(
-    petsclib, comm,
-    (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE),
-    (4, 4),
-    4;   # DOFs per node: (u, v, ω, T)
-    stencil_width = 1,
-    stencil_type = PETSc.DMDA_STENCIL_STAR,
-    opts...,
-)
-
-# GPU vecs and GPU matrix enable a fully GPU-resident FD coloring path via
-# COO preallocation.  No host↔device bouncing in residual or Jacobian.
-if gpu === :cuda
-    LibPETSc.DMSetVecType(petsclib, da, "cuda")
-    LibPETSc.DMSetMatType(petsclib, da, "aijcusparse")
-elseif gpu === :hip
-    LibPETSc.DMSetVecType(petsclib, da, "hip")
-    LibPETSc.DMSetMatType(petsclib, da, "aijhipsparse")
+# ============================================================================
+#   GPU selection (-gpu cuda or -gpu hip)
+# ============================================================================
+# Rank number within its node, to give each rank of a node its own GPU
+function node_rank()
+    MPI.Initialized() || MPI.Init()
+    node = MPI.Comm_split_type(MPI.COMM_WORLD, MPI.COMM_TYPE_SHARED, 0)
+    r = MPI.Comm_rank(node)
+    MPI.free(node)
+    return r
 end
 
-snes = PETSc.SNES(petsclib, comm; opts...)
+const gpu = get(PETSc.parse_options(ARGS), :gpu, "none")
+if gpu == "cuda"
+    using CUDA
+elseif gpu == "hip"
+    using AMDGPU
+elseif gpu != "none"
+    error("-gpu takes cuda or hip, got $gpu")
+end
+
+# Each rank picks a GPU, and the DM gets GPU Vec and Mat types, which every
+# multigrid level inherits. PETSc uses the GPU selected here, so this comes
+# before PETSc.initialize. (A separate block from the `using` above, so that
+# the functions of CUDA.jl or AMDGPU.jl are available.)
+if gpu == "cuda"
+    CUDA.device!(node_rank() % length(CUDA.devices()))
+    const gpu_options = (; dm_vec_type = "cuda", dm_mat_type = "aijcusparse")
+elseif gpu == "hip"
+    AMDGPU.device!(AMDGPU.devices()[node_rank() % length(AMDGPU.devices()) + 1])
+    const gpu_options = (; dm_vec_type = "hip", dm_mat_type = "aijhipsparse")
+else
+    const gpu_options = (;)
+end
+
+# A copy of the array `a` on the GPU, or `a` itself on the CPU
+function to_device(a)
+    if gpu == "cuda"
+        return CuArray(a)
+    elseif gpu == "hip"
+        return ROCArray(a)
+    else
+        return a
+    end
+end
+
+petsclib = PETSc.getlib(; PetscScalar = Float64)
+# The command line goes into the options database, which the DMDA and the SNES
+# read: -da_grid_x, -snes_monitor, -log_view and the like
+PETSc.initialize(petsclib; options = isinteractive() ? String[] : collect(String, ARGS))
+
+# ============================================================================
+#   Solve
+# ============================================================================
+comm = MPI.COMM_WORLD
+# 4 × 4 by default, as in ex19.c
+da = PETSc.DMDA(petsclib, comm, (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE), (4, 4), 4;
+                stencil_width = 1, stencil_type = PETSc.DMDA_STENCIL_STAR, gpu_options...)
+snes = PETSc.SNES(petsclib, comm)
 PETSc.set_dm!(snes, da)
 
-# Actual grid size after setfromoptions (may differ from the 4×4 default)
-info = PETSc.info(da)
-mx   = Int(info.global_size[1])
-my   = Int(info.global_size[2])
-
-user = AppCtx{_T}(
-    lidvelocity = _T(1) / (mx - 1),
-    prandtl     = _T(1),
-    grashof     = _T(1),
-)
-
-# Precomputed grid metrics
-dhx   = _T(mx - 1);   dhy   = _T(my - 1)
-hx    = one(_T) / dhx; hy    = one(_T) / dhy
-hydhx = hy * dhx;    hxdhy = hx * dhy
-
-# ── Initial condition: u = v = ω = 0, T linear in x ─────────────────────────
+# Initial guess: u = v = ω = 0, and T linear in x when Gr > 0
 x = PETSc.global_vec(da)
-
-PETSc.with_local_array!(x; read = false) do x_arr
-    corners = PETSc.corners(da)
-    xs = corners.lower[1];  ys = corners.lower[2]
-    xe = corners.upper[1];  ye = corners.upper[2]
-    nx_own = xe - xs + 1;   ny_own = ye - ys + 1
-    dx = one(_T) / (mx - 1)
-    x_par = reshape(x_arr, 4, nx_own, ny_own)
-    # Components u, v, ω start at zero; T is linear in x (or zero if grashof=0).
-    # Use broadcast-friendly assignment so this works for both Array and CuArray.
-    fill!(x_par, zero(_T))
-    if user.grashof > 0
-        # T = (ig - 1) * dx  where ig (1-based global x-index) = xs + li - 1
-        # Build on host then copy to the same device as x_arr.
-        t_cpu = _T.((xs - 1 : xs + nx_own - 2) .* dx)   # 1-D CPU, length nx_own
-        t_dev = similar(x_arr, nx_own)
-        copyto!(t_dev, t_cpu)
-        x_par[4, :, :] .= reshape(t_dev, nx_own, 1)
+PETSc.with_local_array!(x; read = false) do x_array
+    grid = grid_metrics(da)
+    X = reshape(x_array, 4, grid.nx, grid.ny)    # X[q, i, j]: unknown q at point (i, j)
+    fill!(X, 0)
+    if params.grashof > 0
+        x_coordinates = (grid.i_first - 1 .+ (0:grid.nx - 1)) .* grid.hx
+        X[T, :, :] .= x_coordinates             # the same in every row j
     end
 end
 
-# ── Residual callback ─────────────────────────────────────────────────────────
-r = similar(x)
-
-PETSc.set_function!(snes, r) do g_fx, snes, g_x
-    da = PETSc.dm(snes)
-
-    l_x = PETSc.local_vec(da)
-    PETSc.global_to_local!(l_x, da, g_x; mode = PETSc.INSERT_VALUES)
-
-    corners       = PETSc.corners(da)
-    ghost_corners = PETSc.ghost_corners(da)
-
-    xs  = corners.lower[1];        ys  = corners.lower[2]
-    xe  = corners.upper[1];        ye  = corners.upper[2]
-    xsg = ghost_corners.lower[1];  ysg = ghost_corners.lower[2]
-    xeg = ghost_corners.upper[1];  yeg = ghost_corners.upper[2]
-
-    nx_own = xe  - xs  + 1;  ny_own = ye  - ys  + 1
-    nx_g   = xeg - xsg + 1;  ny_g   = yeg - ysg + 1
-    ox = xs - xsg;  oy = ys - ysg
-
-    # Recompute grid metrics from the DM so this callback is correct on every
-    # MG level (coarsen/refine changes mx/my; capturing outer-scope values
-    # would give wrong stencil weights and lid velocity on coarse grids).
-    info_  = PETSc.info(da)
-    mx_    = Int(info_.global_size[1])
-    my_    = Int(info_.global_size[2])
-    dhx_   = _T(mx_ - 1);   dhy_   = _T(my_ - 1)
-    hx_    = one(_T) / dhx_; hy_    = one(_T) / dhy_
-    hydhx_ = hy_ * dhx_;    hxdhy_ = hx_ * dhy_
-    lid_   = _T(1) / dhx_    # lidvelocity = 1/(mx-1)
-
-    # with_local_arrays! hands out both arrays on the same side: on the GPU when
-    # either Vec is there (coarser MG levels and PETSc's FD coloring can pass a
-    # host Vec), on the CPU otherwise.
-    PETSc.with_local_arrays!(g_fx, l_x) do fx, lx
-        kern  = KernelAbstractions.get_backend(fx)
-        x_par = reshape(lx, 4, nx_g,   ny_g)
-        f_par = reshape(fx, 4, nx_own, ny_own)
-        cavity_residual_kernel!(kern, 64)(
-            f_par, x_par,
-            dhx_, dhy_, hx_, hy_, hydhx_, hxdhy_,
-            user.grashof, user.prandtl, lid_,
-            mx_, my_, xs, ys, ox, oy;
-            ndrange = (nx_own, ny_own),
+# The residual F(x), on any multigrid level. The kernel needs the neighbors of
+# this rank's points too, so x is first copied into a ghosted local Vec.
+F = similar(x)
+PETSc.set_function!(snes, F) do F, snes, x
+    dm = PETSc.dm(snes)
+    grid = grid_metrics(dm)
+    x_local = PETSc.local_vec(dm)
+    PETSc.global_to_local!(x_local, dm, x; mode = PETSc.INSERT_VALUES)
+    # Both arrays come out on the same side: on the GPU when either Vec is there
+    # (PETSc's coloring on coarser levels can pass a host Vec)
+    PETSc.with_local_arrays!(F, x_local) do F_array, x_array
+        backend = get_backend(F_array)
+        cavity_residual_kernel!(backend, 64)(
+            reshape(F_array, 4, grid.nx, grid.ny),
+            reshape(x_array, 4, grid.nx_ghost, grid.ny_ghost),
+            grid, params;
+            ndrange = (grid.nx, grid.ny),       # one thread per owned point
         )
-        KernelAbstractions.synchronize(kern)
+        KernelAbstractions.synchronize(backend)
     end
-
-    PETSc.destroy!(l_x)
-    return PetscInt(0)
+    PETSc.destroy!(x_local)
+    return 0
 end
 
-# ── Jacobian: manual FD coloring with GPU-efficient COO matrix assembly ───────
-#
-# Setup (one-time):
-#   star_fd_coloring  — builds IS_COLORING_LOCAL coloring and analytically
-#     derives the STAR-stencil COO (row, col) triplets; returns per-color index
-#     arrays for the owned columns and COO slots to fill.
-#   MatSetPreallocationCOOLocal  — registers the COO pattern (enables on-device
-#     scatter on GPU; avoids per-entry hash-table lookups on CPU).
-#
-# Each Newton step (fd_coloring_jac!):
-#   For each color: copy x → x_pert, scatter +h to owned cols of that color
-#   (GPU kernel), evaluate F(x_pert), accumulate (F1−F0)/h into val[] (GPU
-#   kernel).  Then MatSetValuesCOO assembles J from val[] in one call.
-#
-# NOTE: For MG, coarser levels fall back to SNESComputeJacobianDefaultColor
-#       (correct, but CPU-only FD coloring for those levels).
-
-# ── Coloring + COO index setup ────────────────────────────────────────────────
-# Builds the IS_COLORING_LOCAL coloring for da's STAR stencil, ghost-local COO
-# (row, col) pairs, and per-color owned-column / COO-entry index arrays.
-# 2-D DMDA STAR stencil only; see PETSc.star_fd_coloring for 3-D notes.
-# `star_fd_coloring` takes no `petsclib`, and the name of each index vector it
-# returns says its base (`_0b` or `_1b`).
-coloring         = PETSc.star_fd_coloring(da)
-n_colors         = coloring.n_colors
-n_local_dofs     = coloring.n_local_dofs
-nnz_coo          = coloring.nnz_coo
-row_coo_local_0b = coloring.row_coo_local_0b
-col_coo_local_0b = coloring.col_coo_local_0b
-
-# ── Create J ─────────────────────────────────────────────────────────────────
-J = LibPETSc.DMCreateMatrix(petsclib, da)
-# Register the COO pattern on both CPU and GPU.  This allows MatSetValuesCOO
-# to be used for assembly in both cases, avoiding per-entry hash-table lookups
-# that MatSetValuesLocal incurs.  On GPU it also enables device-side scatter.
-LibPETSc.MatSetPreallocationCOOLocal(petsclib, J, LibPETSc.PetscCount(nnz_coo), row_coo_local_0b, col_coo_local_0b)
-
-# ── Per-color index arrays for the FD loop ───────────────────────────────────
-perturb_cols_1b = coloring.perturb_cols_1b
-coo_idxs_1b     = coloring.coo_idxs_1b
-local_rows_1b   = coloring.local_rows_1b
-
-perturb_cols_dev = map(to_device, perturb_cols_1b)
-coo_idxs_dev     = map(to_device, coo_idxs_1b)
-local_rows_dev   = map(to_device, local_rows_1b)
-val_dev          = to_device(zeros(_T, nnz_coo))
-# What MatSetValuesCOO takes: on the GPU an Array over the device memory (the
-# wrapper wants a Vector; PETSc reads device values for a device matrix)
-coo_vals = gpu === :none ? val_dev :
-    unsafe_wrap(Array, Ptr{_T}(UInt(pointer(val_dev))), length(val_dev))
-
-# ── Scratch vectors for the FD loop ────────────────────────────────────────
-x_pert_vec = LibPETSc.VecDuplicate(petsclib, x)
-f0_vec     = LibPETSc.VecDuplicate(petsclib, x)
-f1_vec     = LibPETSc.VecDuplicate(petsclib, x)
-h_eps      = _T(sqrt(eps(_T)))
-inv_h      = _T(1) / h_eps
-
-# ── Jacobian callback ────────────────────────────────────────────────────────
-PETSc.set_snes_jacobian!(snes, J) do Jmat, actual_snes, g_x
-    # For MG: if this is a coarser level (different DM than the fine-grid da),
-    # fall back to PETSc's built-in FD coloring (correct for that level's DM).
-    da_level = PETSc.dm(actual_snes)
-    if da_level.ptr != da.ptr
-        LibPETSc.SNESComputeJacobianDefaultColor(petsclib, actual_snes, g_x, Jmat, Jmat, C_NULL)
-        return PetscInt(0)
+# The Jacobian. Multigrid calls this for every level, each with its own SNES and
+# DM: on the finest grid (da) our finite differences fill it, on coarser grids
+# PETSc's own finite-difference coloring does.
+fd = fd_jacobian_setup(da, x)
+PETSc.set_snes_jacobian!(snes, fd.J) do J, snes, x
+    on_finest_grid = PETSc.dm(snes).ptr == da.ptr
+    if on_finest_grid
+        fd_jacobian!(fd, snes, x)
+        LibPETSc.MatSetValuesCOO(petsclib, J, fd.coo_vals, LibPETSc.INSERT_VALUES)
+        PETSc.assemble!(J)
+    else
+        LibPETSc.SNESComputeJacobianDefaultColor(petsclib, snes, x, J, J, C_NULL)
     end
-
-    # ── FD coloring: fill val_dev with Jacobian entries ────────────────────────
-    fd_coloring_jac!(
-        petsclib, actual_snes, g_x,
-        f0_vec, f1_vec, x_pert_vec, val_dev,
-        n_colors,
-        perturb_cols_dev, coo_idxs_dev, local_rows_dev,
-        h_eps, inv_h,
-    )
-
-    # ── Assemble J via COO ─────────────────────────────────────────────────────
-    # On GPU the sparse library scatters the device values directly. Both paths
-    # use the COO pattern registered by MatSetPreallocationCOOLocal.
-    LibPETSc.MatSetValuesCOO(petsclib, Jmat, coo_vals, LibPETSc.INSERT_VALUES)
-    LibPETSc.MatAssemblyBegin(petsclib, Jmat, LibPETSc.MAT_FINAL_ASSEMBLY)
-    LibPETSc.MatAssemblyEnd(petsclib, Jmat, LibPETSc.MAT_FINAL_ASSEMBLY)
-    if gpu !== :none
-        # Force GPU→CPU sync so both copies are valid.
-        # MatBindToCPU(PETSC_TRUE) triggers the device-to-host copy when
-        # offloadmask==PETSC_OFFLOAD_GPU, making the CPU CSR correct.
-        # MatBindToCPU(PETSC_FALSE) then releases the CPU-only restriction,
-        # leaving offloadmask==PETSC_OFFLOAD_BOTH so that:
-        #   MatGetDiagonal (Jacobi smoother in MG)  → reads CPU copy ✓
-        #   MatPtAP (Galerkin coarse-op formation)  → uses GPU copy  ✓
-        LibPETSc.MatBindToCPU(petsclib, Jmat, LibPETSc.PETSC_TRUE)
-        LibPETSc.MatBindToCPU(petsclib, Jmat, LibPETSc.PETSC_FALSE)
-    end
-    return PetscInt(0)
+    return 0
 end
 
-# ── Solve ─────────────────────────────────────────────────────────────────────
-@show Threads.nthreads()
 PETSc.solve!(x, snes)
-
 if MPI.Comm_rank(comm) == 0
-    its = LibPETSc.SNESGetIterationNumber(petsclib, snes)
-    println("SNES converged in $its Newton iterations.")
+    println("SNES converged in $(LibPETSc.SNESGetIterationNumber(petsclib, snes)) Newton iterations.")
 end
 
-# ── Cleanup ───────────────────────────────────────────────────────────────────
-# Run a full GC so any remaining PETSc-object finalizers fire while PETSc is
-# still active.
-GC.gc(true)
-MPI.Barrier(comm)
-
-# SNES holds internal PETSc references to J, da, and r — destroy it first so
-# those reference counts are decremented before we explicitly free the objects.
-foreach(PETSc.destroy!, (snes, J, x_pert_vec, f0_vec, f1_vec, x, r, da))
+foreach(PETSc.destroy!, (snes, fd.J, fd.x1, fd.f0, fd.f1, x, F, da))
 PETSc.finalize(petsclib)
-
-MPI.Barrier(comm)
-MPI.Finalize()
-
-# On macOS ARM64 with MPICH ch4:ofi, MPICH's C atexit handler crashes during
-# process teardown (SIGSEGV in libfabric/OFI cleanup).  quick_exit(0) bypasses
-# all C atexit() handlers and avoids the crash.  Skip when running interactively
-# (e.g. include("ex19.jl") in the REPL) so the Julia session isn't killed.
-if !isinteractive()
-    Sys.isapple() && ccall(:quick_exit, Cvoid, (Cint,), 0)   # macOS MPICH teardown workaround; not in the Windows CRT
-end

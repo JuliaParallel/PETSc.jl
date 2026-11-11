@@ -45,6 +45,7 @@ if selected("core")
     include("core/audit.jl")            # leak auditor
     include("core/errors.jl")           # argument validation
     include("core/smoke.jl")            # Vec, Mat and KSP end to end
+    include("core/coexist.jl")          # Float32 and ComplexF64 libraries side by side
     include("core/petscbool.jl")        # PetscBool is one byte (PETSc >= 3.24)
     include("core/destroy.jl")          # destroy! guards: stale cycle, double destroy
     include("core/handles.jl")          # destroy! on IS, AO, PF, Tao; ISColoringGetIS ownership

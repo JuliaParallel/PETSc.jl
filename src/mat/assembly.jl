@@ -286,3 +286,66 @@ function set_values!(
     )
     return M
 end
+
+"""
+    set_preallocation_coo!(A::AbstractPetscMat, rows_0b, cols_0b)
+
+Give `A` the nonzero pattern of the entries `(rows_0b[k], cols_0b[k])`, 0-based
+global indices, to be filled by [`set_values_coo!`](@ref). An entry may repeat;
+its values are added. A negative index drops the entry. Collective. Returns `A`.
+
+A matrix from `PetscMat(dm)` after [`set_matrix_preallocate_skip!`](@ref) has
+the DM's sizes and local-to-global mapping and no storage, ready for this call.
+
+# External Links
+$(doc_external("Mat/MatSetPreallocationCOO"))
+"""
+set_preallocation_coo!(A::AbstractPetscMat, rows_0b, cols_0b) =
+    preallocation_coo!(LibPETSc.MatSetPreallocationCOO, A, rows_0b, cols_0b)
+
+"""
+    set_preallocation_coo_local!(A::AbstractPetscMat, rows_0b, cols_0b)
+
+[`set_preallocation_coo!`](@ref) with 0-based local indices, ghost points
+included, mapped through the local-to-global mapping of `A`, which a matrix
+from a DM has. Collective. Returns `A`.
+
+# External Links
+$(doc_external("Mat/MatSetPreallocationCOOLocal"))
+"""
+set_preallocation_coo_local!(A::AbstractPetscMat, rows_0b, cols_0b) =
+    preallocation_coo!(LibPETSc.MatSetPreallocationCOOLocal, A, rows_0b, cols_0b)
+
+function preallocation_coo!(
+    setter::F, A::AbstractPetscMat{PetscLib}, rows_0b, cols_0b,
+) where {F, PetscLib}
+    length(rows_0b) == length(cols_0b) || throw(DimensionMismatch(
+        "COO preallocation needs as many column indices as row indices, " *
+        "got $(length(rows_0b)) rows and $(length(cols_0b)) columns",
+    ))
+    PetscInt = inttype(PetscLib)
+    setter(
+        PetscLib, A, LibPETSc.PetscCount(length(rows_0b)),
+        c_vector(PetscInt, rows_0b), c_vector(PetscInt, cols_0b),
+    )
+    return A
+end
+
+"""
+    set_values_coo!(A::AbstractPetscMat, vals; mode::InsertMode = INSERT_VALUES)
+
+Set the entries of `A` in the order its COO pattern listed them
+([`set_preallocation_coo!`](@ref)): `vals[k]` goes to entry `k`. `vals` must have
+one value per entry of the pattern; PETSc cannot check this. With
+`ADD_VALUES` the values are added to the entries. `A` is assembled afterwards.
+Collective. Returns `A`.
+
+# External Links
+$(doc_external("Mat/MatSetValuesCOO"))
+"""
+function set_values_coo!(
+    A::AbstractPetscMat{PetscLib}, vals; mode::InsertMode = INSERT_VALUES,
+) where {PetscLib}
+    LibPETSc.MatSetValuesCOO(PetscLib, A, c_vector(scalartype(PetscLib), vals), mode)
+    return A
+end

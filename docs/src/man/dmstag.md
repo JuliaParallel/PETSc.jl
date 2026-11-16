@@ -238,6 +238,8 @@ A = PETSc.PetscMat(dm)
 
 `PetscMat(dm)` stores every coupling the stencil allows, as explicit zeros. To let the first assembly define the pattern instead, call `PETSc.set_matrix_preallocate_only!(dm, true)` before creating the matrix.
 
+For COO assembly, `PETSc.set_matrix_preallocate_skip!(dm, true)` makes `PetscMat(dm)` allocate no storage; give it its pattern with `set_preallocation_coo_local!(A, rows_0b, cols_0b)` (0-based local indices, ghosts included) and fill it with `set_values_coo!(A, vals)`, which assembles it.
+
 ## Functions
 
 ```@autodocs

@@ -371,3 +371,20 @@ function Base.copyto!(dest::Vector, src::AbstractPetscVec)
         "destination has length $(length(dest)), source has length $(length(src))"))
     return copyto!(dest, collect(src))
 end
+
+"""
+    copyto!(dest::AbstractPetscVec, src::Vector)
+
+Copy the whole Julia vector `src` into `dest` and return `dest`, the reverse of
+`copyto!(dest::Vector, v)`: every rank passes all `length(dest)` entries, as
+[`collect`](@ref) returns them, and writes the ones it owns,
+`src[ownership_range(dest)]`. No communication, so a rank can make the call on its
+own. A device `dest` gets the entries through a host copy.
+"""
+function Base.copyto!(dest::AbstractPetscVec, src::Vector)
+    length(dest) == length(src) || throw(DimensionMismatch(
+        "destination has length $(length(dest)), source has length $(length(src))"))
+    owned = view(src, ownership_range(dest))
+    with_local_array!(a -> copyto!(a, owned), dest; read = false, memtype = :host)
+    return dest
+end

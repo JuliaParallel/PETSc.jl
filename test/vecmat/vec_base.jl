@@ -132,6 +132,12 @@ end
             @test copyto!(dest, x) === dest
             @test dest == xs
             @test_throws DimensionMismatch copyto!(zeros(PetscScalar, n + 1), x)
+            # the reverse: every rank passes the whole vector and writes its own part
+            w = similar(x)
+            @test copyto!(w, 2 .* xs) === w
+            @test collect(w) == 2 .* xs
+            @test_throws DimensionMismatch copyto!(w, zeros(PetscScalar, n + 1))
+            PETSc.destroy!(w)
         end
 
         @testset "generic algorithms ($PetscScalar)" begin

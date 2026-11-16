@@ -63,28 +63,28 @@ $(doc_external("Vec/VecGetArrayAndMemType"))
 $(doc_external("DMStag/DMStagGetLocationSlot"))
 """
 function with_field_views!(
-    f,
+    f::F,
     dm::DMStag{PetscLib, N},
     vecs::Vararg{AbstractPetscVec{PetscLib}, M};
     fields = nothing,
     read::Union{Bool, NTuple{M, Bool}} = true,
     write::Union{Bool, NTuple{M, Bool}} = true,
     memtype::Symbol = :native,
-) where {PetscLib, N, M}
+) where {F, PetscLib, N, M}
     return with_field_views!(
         f, dm, vecs, fields, flags(read, Val(M)), flags(write, Val(M)), array_getter(memtype),
     )
 end
 
 function with_field_views!(
-    f,
+    f::F,
     dm::DMStag{PetscLib, N},
     vecs::NTuple{M, AbstractPetscVec{PetscLib}},
     fields,
     read::NTuple{M, Bool},
     write::NTuple{M, Bool},
     acquire::G,
-) where {PetscLib, N, M, G}
+) where {F, PetscLib, N, M, G}
     lib = getlib(PetscLib)
     gc = ghost_corners(dm)
     q = Int(LibPETSc.DMStagGetEntriesPerElement(lib, dm))

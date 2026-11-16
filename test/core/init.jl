@@ -218,6 +218,29 @@ using PETSc
         PETSc.finalize(petsclib)
     end
 
+    # The GPU extensions' hooks get the library being initialized, so they can leave
+    # out an option the build would not read: PETSc reports unused options at exit.
+    @testset "device option hooks see the library" begin
+        petsclib = PETSc.petsclibs[1]
+        @test PETSc.has_symbol(petsclib, :VecCreate)
+        @test !PETSc.has_symbol(petsclib, :petscjl_no_such_function)
+        seen = []
+        hook(lib) = (push!(seen, lib);
+                     PETSc.has_symbol(lib, :VecCreate) ? ["-petscjl_test_device" => "3"] : Pair{String, String}[])
+        push!(PETSc.device_option_hooks, hook)
+        try
+            PETSc.isinitialized(petsclib) && PETSc.finalize(petsclib)
+            PETSc.initialize(petsclib)
+            @test seen == [petsclib]
+            global_options = PETSc.LibPETSc.PetscOptions{typeof(petsclib)}(C_NULL, petsclib.age; own = false)
+            @test PETSc.LibPETSc.PetscOptionsGetInt(petsclib, global_options, "", "-petscjl_test_device") ==
+                  (3, PETSc.LibPETSc.PETSC_TRUE)
+            PETSc.finalize(petsclib)
+        finally
+            filter!(h -> h !== hook, PETSc.device_option_hooks)
+        end
+    end
+
     # `finalize` on a library that was never initialized does nothing; before, PETSc raised
     # an error. It runs in a process of its own, since it finalizes every library.
     @testset "finalize before initialize" begin

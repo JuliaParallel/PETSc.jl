@@ -52,6 +52,8 @@ MPI.Initialized() || MPI.Init()
             ("with_local_array! read", 4, () -> PETSc.with_local_array!(a -> a[1], x; write = false)),
             ("with_local_array! x2",   6, () -> PETSc.with_local_array!((a, b) -> a[1] + b[1], x, y)),
             ("broadcast into a Vec",   8, () -> (x .= 2 .* y .+ 1; nothing)),
+            ("mapreduce",             20, () -> mapreduce(abs2, +, y)),
+            ("count",                  6, () -> count(a -> real(a) > 0, y)),
             ("size(A)",                0, () -> size(A)),
             ("A[i, j] = a",            0, () -> (B[2, 2] = one(PetscScalar))),
             ("isassembled",            0, () -> PETSc.isassembled(A)),
@@ -92,5 +94,42 @@ MPI.Initialized() || MPI.Init()
     end
     foreach(PETSc.destroy!, small_objs)
     foreach(PETSc.destroy!, large_objs)
+    PETSc.finalize(petsclib)
+end
+
+# A call reached through dynamic dispatch, as from a script with non-const globals,
+# runs the method instance compiled for the function's own type only if the method
+# has a `::F` type parameter for it; without one it runs a generic instance that
+# allocates more.
+@testset "with_local_array! and with_field_views! specialize on their function" begin
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    x = PETSc.PetscVec(petsclib, MPI.COMM_SELF, rand(petsclib.PetscScalar, 16))
+    y = PETSc.PetscVec(petsclib, MPI.COMM_SELF, rand(petsclib.PetscScalar, 16))
+    none2 = (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE)
+    dm = PETSc.DMStag(petsclib, MPI.COMM_SELF, none2, (8, 8), (0, 1, 1); stencil_width = 1)
+    lo = PETSc.local_vec(dm)
+    I = CartesianIndex(1, 1)
+    fields = (PETSc.face_location(dm, 1) => 0, PETSc.element_location(dm) => 0)
+    f = (a, b) -> a[1] + b[1]
+    fv = v -> v[1][I]
+    fa = a -> a[I, 1]
+    # read back as `Any`, so each call dispatches at run time
+    box = Any[(x, y)]
+    stag = Any[(dm, lo)]
+    # a budget, then the call; without the `::F` each one allocates 3 to 5 more
+    calls = (
+        (7, () -> PETSc.with_local_array!(f, box[1]...)),
+        (6, () -> PETSc.with_local_array!(f, box[1]; write = false)),
+        (10, () -> PETSc.with_local_array!(f, Vector, box[1]...)),
+        (9, () -> PETSc.with_local_array!(f, Vector, box[1])),
+        (8, () -> PETSc.with_field_views!(fv, stag[1]...; fields)),
+        (7, () -> PETSc.with_field_views!(fa, stag[1]...)),
+    )
+    for (budget, g) in calls
+        g(); g()
+        @test @allocations(g()) <= budget
+    end
+    foreach(PETSc.destroy!, (lo, dm, y, x))
     PETSc.finalize(petsclib)
 end

@@ -15,9 +15,11 @@ PETSc.memtype_backend(::Val{PETSC_MEMTYPE_HIP}) = HIPMemBackend()
 PETSc.array_type(::Val{PETSC_MEMTYPE_HIP}) = ROCArray
 
 # PETSc uses the device AMDGPU.jl has selected, so that the device memory it
-# hands out is on the device AMDGPU.jl launches kernels on.
+# hands out is on the device AMDGPU.jl launches kernels on. Only a PETSc built
+# with HIP reads the option; any other build would report it unused at exit.
 # AMDGPU.jl counts devices from 1, HIP from 0.
-device_options() = AMDGPU.functional() ?
+device_options(petsclib) =
+    AMDGPU.functional() && PETSc.has_symbol(petsclib, :VecCreateSeqHIP) ?
     ["-device_select_hip" => string(AMDGPU.device_id(AMDGPU.device()) - 1)] : Pair{String, String}[]
 
 # With the extension loaded, `memtype = :native` checkouts wrap device memory.

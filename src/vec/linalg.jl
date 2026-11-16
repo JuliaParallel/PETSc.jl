@@ -211,7 +211,7 @@ function entrywise_isapprox(v::AbstractPetscVec{PetscLib}, w::AbstractPetscVec{P
 end
 
 # `f` applied to the local array of `v`, combined over the ranks with `op`
-reduce_owned(f, op, v::AbstractPetscVec) =
+reduce_owned(f::F, op::OP, v::AbstractPetscVec) where {F, OP} =
     MPI.Allreduce(with_local_array!(f, v; write = false), op, comm(v))
 
 # `cmp` over the owned entries of `v` and `w`, with the same answer on every rank.
@@ -285,7 +285,7 @@ answer, also for an `op` that is not commutative. This is what `sum(f, v)`,
 `prod(v)`, `extrema(v)` and `reduce(op, v)` call. The results of `f` must be `isbits`.
 `init` is applied once, to the combined result.
 """
-function Base.mapreduce(f, op, v::AbstractPetscVec; init = Base._InitialValue())
+function Base.mapreduce(f::F, op::OP, v::AbstractPetscVec; init = Base._InitialValue()) where {F, OP}
     R = reduction_type(f, op, eltype(v))
     partial = with_local_array!(v; write = false) do a
         isempty(a) ? nothing : mapreduce(f, op, a)

@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+
+- `with_local_array!` and `with_field_views!` called through dynamic dispatch, such as from a script with non-const globals or through a field of abstract type, allocate 3 to 4 fewer objects per call (240 to 176 bytes for two Vecs). Calls from type-stable code are unchanged.
+- `mapreduce(f, op, v)` on a PetscVec, and the `sum(f, v)`, `prod`, `reduce` and `extrema` that call it, allocate 16 objects per call instead of 49 and run about 10 times faster on one rank (0.2 µs instead of 2 µs for 64 entries). `count`, `any` and `all` on a PetscVec run about 3 times faster, and `count` no longer allocates more on a longer vector.
+
 ## 0.6.0 (2026-11-06)
 
 ### Breaking
@@ -57,7 +64,7 @@
 ### Fixed
 
 - Loading PETSc.jl no longer slows down compiling other code. It invalidated about 18 000 compiled methods, many of them Julia's compiler itself, so the first call of new code after `using PETSc` recompiled them first: a small KernelAbstractions kernel took 27 s to compile instead of 5 s.
-- PETSc uses the GPU that CUDA.jl or AMDGPU.jl has selected. It picked one per rank by itself, so with several GPUs per node a rank could get device memory from one GPU while its Julia kernels ran on another, and crash with an illegal memory access. Select one GPU per rank with `CUDA.device!` (or `AMDGPU.device!`) before `PETSc.initialize`; `-device_select_cuda` or `-device_select_hip` still overrides it.
+- PETSc uses the GPU that CUDA.jl or AMDGPU.jl has selected. It picked one per rank by itself, so with several GPUs per node a rank could get device memory from one GPU while its Julia kernels ran on another, and crash with an illegal memory access. Select one GPU per rank with `CUDA.device!` (or `AMDGPU.device!`) before `PETSc.initialize`; `-device_select_cuda` or `-device_select_hip` still overrides it. A PETSc built without that GPU, such as the default PETSc_jll, gets no such option, so it doesn't report an unused option at exit.
 - `examples/dmda/ex19.jl` crashed at exit when given command-line options.
 - A `LibPETSc` call given a handle with a null pointer (`PetscVec(petsclib)`, never created) where PETSc requires an object throws an `ArgumentError` naming the function and argument. It crashed the process with signal 11, since PETSc_jll is built without PETSc's own checks. Optional arguments, where NULL means "none", still take such a handle.
 - `LibPETSc.PetscSFGetGraphLayout(petsclib, sf)` returns `(layout, nleaves, ilocal, gremote)`: the new `PetscLayout` (destroy it with `PetscLayoutDestroy`), the leaf locations as `PetscSFGetGraph` gives them, and the global root indices as a Julia `Vector`. It took the layout as an input and threw an `UndefVarError` on every call.

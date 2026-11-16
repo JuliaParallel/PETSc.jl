@@ -77,15 +77,46 @@ $(doc_external("DMStag/DMStagStencilToIndexLocal"))
 """
 function zero_rows_local!(
     J::AbstractPetscMat{PetscLib},
-    dm::DMStag{PetscLib, N},
+    dm::DMStag{PetscLib},
     rows::AbstractVector{LibPETSc.DMStagStencil};
     diag = 1,
     x = nothing,
     b = nothing,
+) where {PetscLib}
+    return zero_rows_local!(J, stencil_local_0b(dm, rows); diag, x, b)
+end
+
+"""
+    set_preallocation_coo_local!(A::AbstractPetscMat, dm::DMStag, rows, cols)
+
+[`set_preallocation_coo_local!`](@ref) with the entries given as stencils of `dm`,
+which `A` was created from: entry `k` is at row `rows[k]` and column `cols[k]`.
+Fill it with [`set_values_coo!`](@ref). Collective. Returns `A`.
+
+# External Links
+$(doc_external("DMStag/DMStagStencilToIndexLocal"))
+$(doc_external("Mat/MatSetPreallocationCOOLocal"))
+"""
+function set_preallocation_coo_local!(
+    A::AbstractPetscMat{PetscLib},
+    dm::DMStag{PetscLib},
+    rows::AbstractVector{LibPETSc.DMStagStencil},
+    cols::AbstractVector{LibPETSc.DMStagStencil},
+) where {PetscLib}
+    length(rows) == length(cols) || throw(DimensionMismatch(
+        "COO preallocation needs as many column stencils as row stencils, " *
+        "got $(length(rows)) rows and $(length(cols)) columns",
+    ))
+    return set_preallocation_coo_local!(A, stencil_local_0b(dm, rows), stencil_local_0b(dm, cols))
+end
+
+# The 0-based local (ghosted) indices of the stencils of `dm`
+function stencil_local_0b(
+    dm::DMStag{PetscLib, N}, stencils::AbstractVector{LibPETSc.DMStagStencil},
 ) where {PetscLib, N}
     T = inttype(PetscLib)
-    rows_0b = LibPETSc.DMStagStencilToIndexLocal(
-        getlib(PetscLib), dm, T(N), T(length(rows)), c_prefix(LibPETSc.DMStagStencil, rows),
+    return LibPETSc.DMStagStencilToIndexLocal(
+        getlib(PetscLib), dm, T(N), T(length(stencils)),
+        c_prefix(LibPETSc.DMStagStencil, stencils),
     )
-    return zero_rows_local!(J, rows_0b; diag, x, b)
 end

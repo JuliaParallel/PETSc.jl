@@ -196,6 +196,17 @@ PETSc.with_product_coordinates(dm) do x, y
 end
 ```
 
+## Multigrid and semi-coarsening
+
+A geometric multigrid (`pc_type = "mg"` on a KSP or SNES with the DM set) coarsens by a factor of 2 in every direction. Set another factor per direction with the constructor options `stag_refine_x`, `stag_refine_y` and `stag_refine_z`; a factor of 1 keeps that direction at full resolution on every level. Each coarsened direction needs a number of elements divisible by its factor on every level.
+
+```julia
+# coarsen in y only
+dm = DMStag(petsclib, comm, bcs, (64, 64), (0, 1, 1); stag_refine_x = 1)
+```
+
+A DMDA takes `da_refine_x`, `da_refine_y` and `da_refine_z`.
+
 ## Stencil Types
 
 - `DMSTAG_STENCIL_BOX` - Full box stencil (includes diagonals)
@@ -226,6 +237,8 @@ A = PETSc.PetscMat(dm)
 ```
 
 `PetscMat(dm)` stores every coupling the stencil allows, as explicit zeros. To let the first assembly define the pattern instead, call `PETSc.set_matrix_preallocate_only!(dm, true)` before creating the matrix.
+
+For COO assembly, `PETSc.set_matrix_preallocate_skip!(dm, true)` makes `PetscMat(dm)` allocate no storage; give it its pattern with `set_preallocation_coo_local!(A, rows_0b, cols_0b)` (0-based local indices, ghosts included) or `set_preallocation_coo_local!(A, dm, rows, cols)` (vectors of stencils, one entry per pair) and fill it with `set_values_coo!(A, vals)`, which assembles it.
 
 ## Functions
 

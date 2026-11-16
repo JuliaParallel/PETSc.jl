@@ -311,6 +311,8 @@ const INTERNAL = Set{Symbol}([
     :SNES_REASON_TEXT,
     :TS_REASON_TEXT,
     :block_values,
+    :preallocation_coo!,
+    :stencil_local_0b,
     :c_vector,
     :c_prefix,
     :PrefixView,
@@ -358,6 +360,7 @@ const UNCHANGED_PUBLIC = Symbol[
     :stencil,                # new in v0.5.2
     :local_to_local!,        # new in v0.5.2
     :set_matrix_preallocate_only!,  # new in v0.5.2
+    :set_matrix_preallocate_skip!,  # new in v0.6.1
     :with_product_coordinates,      # new in v0.5.2
     :with_field_views!,             # new in v0.5.2
     :PetscDS,
@@ -401,6 +404,9 @@ const UNCHANGED_PUBLIC = Symbol[
     :isassembled,            # new in v0.5.2
     :zero_rows!,             # new in v0.5.2
     :zero_rows_local!,       # new in v0.5.2
+    :set_preallocation_coo!,        # new in v0.6.1
+    :set_preallocation_coo_local!,  # new in v0.6.1
+    :set_values_coo!,               # new in v0.6.1
     :set_option!,            # new in v0.5.2
     :diagonal!,              # new in v0.5.2
     # ksp.jl / snes.jl / ts.jl

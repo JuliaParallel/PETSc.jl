@@ -84,6 +84,7 @@ if selected("vecmat")
     include("vecmat/linear_algebra.jl")  # copy, dot, axpy!, +, -, * on Vecs and Mats
     include("vecmat/vec_base.jl")        # AbstractVector contract: ==, hash, reductions, collect
     include("vecmat/mat_base.jl")        # AbstractMatrix contract: ==, equal, isapprox, collect, sum
+    include("vecmat/mat_coo.jl")         # COO assembly of a matrix from a DM
 end
 
 if selected("solvers")
@@ -150,7 +151,7 @@ end
 # Last, so that no MPI run happens inside another
 if selected("mpi")
     @testset "MPI Tests" begin
-        for file in ("mpi/vec.jl", "mpi/mat.jl", "vecmat/linear_algebra.jl", "vecmat/vec_base.jl", "vecmat/mat_base.jl", "solvers/ksp.jl", "dm/dmstag.jl",
+        for file in ("mpi/vec.jl", "mpi/mat.jl", "vecmat/linear_algebra.jl", "vecmat/vec_base.jl", "vecmat/mat_base.jl", "vecmat/mat_coo.jl", "solvers/ksp.jl", "dm/dmstag.jl",
                      "mpi/dmstag_halos.jl", "mpi/blas_threads.jl", "mpi/star_fd_coloring.jl",
                      "core/with_destroy.jl", "mpi/ts.jl")
             @test run_separately(file; nranks = 4)

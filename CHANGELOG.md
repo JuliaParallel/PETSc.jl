@@ -4,6 +4,8 @@
 
 ### Added
 
+- The DMStag manual page says how to semi-coarsen for multigrid: the constructor options `stag_refine_x`, `stag_refine_y` and `stag_refine_z` (and `da_refine_x` and the others on a DMDA) set the refinement factor per direction.
+- COO assembly of a matrix from a DM: `set_matrix_preallocate_skip!(dm, true)` makes `PetscMat(dm)` return a matrix with the DM's sizes and local-to-global mapping but no storage, `set_preallocation_coo!` and `set_preallocation_coo_local!` give it its pattern from 0-based global or local index vectors, and `set_values_coo!` fills it. On a DMStag, `set_preallocation_coo_local!(A, dm, rows, cols)` takes the entries as stencils.
 - `copyto!(v::PetscVec, x::Vector)` copies a whole Julia vector into `v`, the reverse of `copyto!(x, v)`: every rank passes all entries and writes the ones it owns. It gives the same result as Base's entry-by-entry copy it replaces, about 100 times faster (0.01 ms instead of 1 ms for 100 000 entries on one rank), with no communication.
 - `global_options(petsclib)` returns PETSc's global options database as a borrowed `PetscOptions`, to read and set with `opts[key]`. It displays as the global database instead of as a null pointer. The `initialize` docstring shows how to start PETSc's default log on a library already initialized, and print it.
 

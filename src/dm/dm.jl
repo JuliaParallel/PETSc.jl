@@ -547,6 +547,25 @@ function set_matrix_preallocate_only!(
     return dm
 end
 
+"""
+    set_matrix_preallocate_skip!(dm::AbstractPetscDM, flag::Bool)
+
+With `flag` set, a matrix made from `dm` by [`PetscMat`](@ref) has the sizes and
+the local-to-global mapping of `dm` but no storage, for a pattern given afterwards
+by [`set_preallocation_coo!`](@ref) or [`set_preallocation_coo_local!`](@ref).
+The setting stays on `dm` for every later matrix. Returns `dm`.
+
+# External Links
+$(doc_external("DM/DMSetMatrixPreallocateSkip"))
+"""
+function set_matrix_preallocate_skip!(
+    dm::AbstractPetscDM{PetscLib},
+    flag::Bool,
+) where {PetscLib}
+    LibPETSc.DMSetMatrixPreallocateSkip(getlib(PetscLib), dm, LibPETSc.PetscBool(flag))
+    return dm
+end
+
 
 
 """

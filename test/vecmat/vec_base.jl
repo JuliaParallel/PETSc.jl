@@ -1,5 +1,11 @@
 using Test
 using MPI
+
+# a callable that is not a Function
+struct VecRealAbove
+    t::Float64
+end
+(p::VecRealAbove)(x) = real(x) > p.t
 MPI.Initialized() || MPI.Init()
 using PETSc
 
@@ -92,6 +98,8 @@ end
             @test any(v -> real(v) > n, x) == false
             @test all(v -> abs(v) >= 1, x)
             @test !all(v -> real(v) > 0, x)
+            @test any(VecRealAbove(n - 1), x) == any(VecRealAbove(n - 1), xs)
+            @test all(VecRealAbove(-10n), x)
             @test count(v -> real(v) < 0, x) == count(v -> real(v) < 0, xs)
             @test count(v -> real(v) < 0, x; init = 10) == 10 + count(v -> real(v) < 0, xs)
             @test sum(abs2, x) ≈ sum(abs2, xs)

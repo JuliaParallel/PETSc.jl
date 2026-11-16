@@ -205,8 +205,12 @@ reduce_zeros(f, ::Union{typeof(*), typeof(Base.mul_prod)}, ::Type{T}, k, v) wher
     k == 0 ? v : v * f(zero(T))^k
 
 # Base's `any`, `all` and `count` on an array iterate it entry by entry
-Base.any(f::Function, A::AbstractPetscMat) = mapreduce(x -> f(x)::Bool, |, A)
-Base.all(f::Function, A::AbstractPetscMat) = mapreduce(x -> f(x)::Bool, &, A)
+Base.any(f, A::AbstractPetscMat) = mapreduce(x -> f(x)::Bool, |, A)
+Base.all(f, A::AbstractPetscMat) = mapreduce(x -> f(x)::Bool, &, A)
+# Base has any(f::Function, ::AbstractArray) up to Julia 1.13; without these a Function
+# argument is ambiguous between it and the methods above
+Base.any(f::Function, A::AbstractPetscMat) = invoke(any, Tuple{Any, AbstractPetscMat}, f, A)
+Base.all(f::Function, A::AbstractPetscMat) = invoke(all, Tuple{Any, AbstractPetscMat}, f, A)
 Base.count(f, A::AbstractPetscMat; init = 0) = mapreduce(x -> f(x)::Bool, Base.add_sum, A; init)
 
 """

@@ -331,8 +331,12 @@ Whether `f` holds for any or all entries of `v`, or for how many. Collective: `f
 on the entries each rank owns, and every rank gets the combined answer. On a device
 vector `f` runs on the device array.
 """
-Base.any(f::Function, v::AbstractPetscVec) = reduce_owned(a -> Int(any(f, a)), max, v) == 1
-Base.all(f::Function, v::AbstractPetscVec) = reduce_owned(a -> Int(all(f, a)), min, v) == 1
+Base.any(f, v::AbstractPetscVec) = reduce_owned(a -> Int(any(f, a)), max, v) == 1
+Base.all(f, v::AbstractPetscVec) = reduce_owned(a -> Int(all(f, a)), min, v) == 1
+# Base has any(f::Function, ::AbstractArray) up to Julia 1.13; without these a Function
+# argument is ambiguous between it and the methods above
+Base.any(f::Function, v::AbstractPetscVec) = invoke(any, Tuple{Any, AbstractPetscVec}, f, v)
+Base.all(f::Function, v::AbstractPetscVec) = invoke(all, Tuple{Any, AbstractPetscVec}, f, v)
 Base.count(f, v::AbstractPetscVec; init = 0) = init + reduce_owned(a -> count(f, a), +, v)
 
 """

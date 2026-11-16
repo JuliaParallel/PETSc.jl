@@ -52,6 +52,8 @@ MPI.Initialized() || MPI.Init()
             ("with_local_array! read", 4, () -> PETSc.with_local_array!(a -> a[1], x; write = false)),
             ("with_local_array! x2",   6, () -> PETSc.with_local_array!((a, b) -> a[1] + b[1], x, y)),
             ("broadcast into a Vec",   8, () -> (x .= 2 .* y .+ 1; nothing)),
+            ("mapreduce",             20, () -> mapreduce(abs2, +, y)),
+            ("count",                  6, () -> count(a -> real(a) > 0, y)),
             ("size(A)",                0, () -> size(A)),
             ("A[i, j] = a",            0, () -> (B[2, 2] = one(PetscScalar))),
             ("isassembled",            0, () -> PETSc.isassembled(A)),

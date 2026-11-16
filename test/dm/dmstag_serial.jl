@@ -990,3 +990,17 @@ end
     @test_throws "points_per_proc[1] must be an Array{Int64}" PETSc.DMDA(
         petsclib, MPI.COMM_SELF, nb, (4,), 1; points_per_proc = wrong)
 end
+
+# Semi-coarsening for multigrid goes through the constructor options, as the manual says
+@testset "refinement factors from constructor options" begin
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    none2 = (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE)
+    dm = PETSc.DMStag(petsclib, MPI.COMM_SELF, none2, (8, 8), (0, 1, 1); stag_refine_x = 1)
+    @test LibPETSc.DMStagGetRefinementFactor(petsclib, dm) == (1, 2, 2)
+    coarse = LibPETSc.DMCoarsen(petsclib, dm, MPI.COMM_SELF)
+    @test LibPETSc.DMStagGetGlobalSizes(petsclib, coarse)[1:2] == (8, 4)
+    da = PETSc.DMDA(petsclib, MPI.COMM_SELF, none2, (9, 9), 1; da_refine_y = 1)
+    @test LibPETSc.DMDAGetRefinementFactor(petsclib, da) == (2, 1, 2)
+    foreach(PETSc.destroy!, (da, coarse, dm))
+end

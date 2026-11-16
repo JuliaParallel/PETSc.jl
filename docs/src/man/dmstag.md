@@ -196,6 +196,17 @@ PETSc.with_product_coordinates(dm) do x, y
 end
 ```
 
+## Multigrid and semi-coarsening
+
+A geometric multigrid (`pc_type = "mg"` on a KSP or SNES with the DM set) coarsens by a factor of 2 in every direction. Set another factor per direction with the constructor options `stag_refine_x`, `stag_refine_y` and `stag_refine_z`; a factor of 1 keeps that direction at full resolution on every level. Each coarsened direction needs a number of elements divisible by its factor on every level.
+
+```julia
+# coarsen in y only
+dm = DMStag(petsclib, comm, bcs, (64, 64), (0, 1, 1); stag_refine_x = 1)
+```
+
+A DMDA takes `da_refine_x`, `da_refine_y` and `da_refine_z`.
+
 ## Stencil Types
 
 - `DMSTAG_STENCIL_BOX` - Full box stencil (includes diagonals)

@@ -43,6 +43,7 @@ end
     none2 = (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE)
     da = PETSc.DMDA(petsclib, comm, none2, (7, 6), 1; stencil_width = 1, stencil_type = :star)
     rows, cols, vals, stencil_rows = laplacian_coo(da)
+    rows0, cols0 = copy(rows), copy(cols)
 
     # the reference, before the DM skips preallocation for every later matrix
     A_ref = PETSc.PetscMat(da)
@@ -54,6 +55,7 @@ end
     @test PETSc.set_matrix_preallocate_skip!(da, true) === da
     A = PETSc.PetscMat(da)
     @test PETSc.set_preallocation_coo_local!(A, rows, cols) === A
+    @test rows == rows0 && cols == cols0   # PETSc sorts the indices it gets in place
     @test PETSc.set_values_coo!(A, vals) === A
     @test PETSc.isassembled(A)
     @test A == A_ref

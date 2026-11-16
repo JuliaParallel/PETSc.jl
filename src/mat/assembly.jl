@@ -324,10 +324,10 @@ function preallocation_coo!(
         "got $(length(rows_0b)) rows and $(length(cols_0b)) columns",
     ))
     PetscInt = inttype(PetscLib)
-    setter(
-        PetscLib, A, LibPETSc.PetscCount(length(rows_0b)),
-        c_vector(PetscInt, rows_0b), c_vector(PetscInt, cols_0b),
-    )
+    # Copies, never the caller's arrays: PETSc sorts the indices in place
+    rows = copyto!(Vector{PetscInt}(undef, length(rows_0b)), rows_0b)
+    cols = copyto!(Vector{PetscInt}(undef, length(cols_0b)), cols_0b)
+    setter(PetscLib, A, LibPETSc.PetscCount(length(rows)), rows, cols)
     return A
 end
 

@@ -7,9 +7,20 @@ function Base.show(io::IO, v::AbstractPetscOptions{PetscLib}) where {PetscLib}
 
     # Try to display options, but handle errors gracefully
     try
+        copts = LibPETSc.PetscOptionsGetAll(PetscLib, v)
+        all = try
+            unsafe_string(copts)
+        finally
+            LibPETSc.PetscFree(PetscLib, copts)
+        end
         # a null handle is PETSc's global database
         println(io, v.ptr == C_NULL ? "PETSc global options database:" : "PETSc Options database:")
-        LibPETSc.PetscOptionsView(PetscLib, v, C_NULL)  # NULL viewer: PETSc prints to stdout
+        # one option per line, with its value if it has one, sorted as PetscOptionsView sorts
+        lines = String[]
+        for tok in split(all)
+            isoption(tok) || isempty(lines) ? push!(lines, tok) : (lines[end] *= " " * tok)
+        end
+        foreach(l -> println(io, "  ", l), sort!(lines))
     catch
         println(io, "PETSc Options (not yet initialized)")
     end

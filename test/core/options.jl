@@ -42,25 +42,19 @@ using .PETScTestUtils: without_petsc_traceback
         @test "" == opts["nothing_opt"]
         @test "1" == opts["new_opt"]
         
-        # Check that viewer is working
-        _stdout = stdout
-        (rd, wr) = redirect_stdout()
-        @show opts
-        #@test readline(rd) == "PETSc Options database:"
-        @test readline(rd) == "#PETSc Option Table entries:"
-        @test readline(rd) == "-da_grid_x 100 # (source: code)"
-        @test readline(rd) == "-da_grid_y 100 # (source: code)"
-        @test readline(rd) == "-ksp_monitor # (source: code)"
-        @test readline(rd) == "-ksp_view # (source: code)"
-        @test readline(rd) == "-mg_levels_0_pc_type ilu # (source: code)"
-        @test readline(rd) == "-new_opt 1 # (source: code)"
-        @test readline(rd) == "-nothing_opt # (source: code)"
-        @test readline(rd) == "-pc_mg_levels 1 # (source: code)"
-        @test readline(rd) == "-pc_type mg # (source: code)"
-        @test readline(rd) == "#End of PETSc Option Table entries"
-
-        redirect_stdout(_stdout)
-        
+        # `show` writes the options to its `io`, one per line and sorted
+        @test sprint(show, opts) == """
+            PETSc Options database:
+              -da_grid_x 100
+              -da_grid_y 100
+              -ksp_monitor
+              -ksp_view
+              -mg_levels_0_pc_type ilu
+              -new_opt 1
+              -nothing_opt
+              -pc_mg_levels 1
+              -pc_type mg
+            """
 
         PETSc.finalize(petsclib)
     end
@@ -315,6 +309,11 @@ end
     fresh = PETSc.PetscOptions(petsclib)
     @test_throws KeyError fresh[:global_options_test]
     @test occursin("global options database", sprint(show, g))
+    @test occursin("\n  -global_options_test 3\n", sprint(show, g))
+    # `show` writes the options to its `io`, one per line
+    shown = PETSc.PetscOptions(petsclib; ksp_rtol = 0.5, ksp_monitor = true)
+    @test sprint(show, shown) == "PETSc Options database:\n  -ksp_monitor\n  -ksp_rtol 0.5\n"
+    PETSc.destroy!(shown)
     PETSc.destroy!(g)   # borrowed: does nothing
     @test g[:global_options_test] == "3"
     g[:global_options_test] = false

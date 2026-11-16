@@ -207,21 +207,23 @@ their memory type, e.g. `array_type(::Val{PETSC_MEMTYPE_DEVICE}) = CuArray`.
 Any other `MT` throws, naming the GPU package to load. [`memtype`](@ref) calls it.
 """
 array_type(::Val{LibPETSc.PETSC_MEMTYPE_HOST}) = Vector
-array_type(::Val{MT}) where {MT} =
-    error("No array type registered for PetscMemType $MT — load the corresponding GPU package (e.g. CUDA.jl)")
+array_type(::Val{MT}) where {MT} = throw(ArgumentError(
+    "no Julia array type for PetscMemType $MT: load the GPU package for it, " *
+    "CUDA.jl for PETSC_MEMTYPE_DEVICE or AMDGPU.jl for PETSC_MEMTYPE_HIP",
+))
 # GPU extensions add: array_type(::Val{LibPETSc.PETSC_MEMTYPE_DEVICE}) = CuArray
 
 """
     with_local_array!(
         f!,
-        vecs::NTuple{N, AbstractVec};
+        vecs::NTuple{N, AbstractPetscVec};
         read::Union{Bool, NTuple{N, Bool}} = true,
         write::Union{Bool, NTuple{N, Bool}} = true,
         memtype::Symbol = :native,
     )
     with_local_array!(f!, ::Type{A}, vecs...; read, write, memtype) where {A <: AbstractArray}
 
-Apply `f!` to local array views of `vecs`.
+Apply `f!` to local array views of `vecs`, and return what `f!` returns.
 
 With `memtype = :native` each array is where its Vec keeps the data: a device
 array for a Vec on a GPU, with the GPU package loaded. `memtype = :host` gives

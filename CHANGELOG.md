@@ -4,6 +4,8 @@
 
 ### Fixed
 
+- `any(f, v)` and `all(f, v)` on a PetscVec or PetscMat take a callable object that is not a `Function`, and reduce over the entries each rank owns, as they do for a `Function`.
+- `array_type` for a `PetscMemType` that no loaded GPU package handles throws an `ArgumentError` naming the package to load, instead of an `ErrorException`
 - `with_local_array!` and `with_field_views!` called through dynamic dispatch, such as from a script with non-const globals or through a field of abstract type, allocate 3 to 4 fewer objects per call (240 to 176 bytes for two Vecs). Calls from type-stable code are unchanged.
 - `mapreduce(f, op, v)` on a PetscVec, and the `sum(f, v)`, `prod`, `reduce` and `extrema` that call it, allocate 16 objects per call instead of 49 and run about 10 times faster on one rank (0.2 µs instead of 2 µs for 64 entries). `count`, `any` and `all` on a PetscVec run about 3 times faster, and `count` no longer allocates more on a longer vector.
 

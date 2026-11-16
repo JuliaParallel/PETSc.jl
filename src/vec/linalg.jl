@@ -331,8 +331,12 @@ Whether `f` holds for any or all entries of `v`, or for how many. Collective: `f
 on the entries each rank owns, and every rank gets the combined answer. On a device
 vector `f` runs on the device array.
 """
-Base.any(f::Function, v::AbstractPetscVec) = reduce_owned(a -> Int(any(f, a)), max, v) == 1
-Base.all(f::Function, v::AbstractPetscVec) = reduce_owned(a -> Int(all(f, a)), min, v) == 1
+Base.any(f, v::AbstractPetscVec) = reduce_owned(a -> Int(any(f, a)), max, v) == 1
+Base.all(f, v::AbstractPetscVec) = reduce_owned(a -> Int(all(f, a)), min, v) == 1
+# Base has any(f::Function, ::AbstractArray) up to Julia 1.13; without these a Function
+# argument is ambiguous between it and the methods above
+Base.any(f::Function, v::AbstractPetscVec) = invoke(any, Tuple{Any, AbstractPetscVec}, f, v)
+Base.all(f::Function, v::AbstractPetscVec) = invoke(all, Tuple{Any, AbstractPetscVec}, f, v)
 Base.count(f, v::AbstractPetscVec; init = 0) = init + reduce_owned(a -> count(f, a), +, v)
 
 """
@@ -366,4 +370,21 @@ function Base.copyto!(dest::Vector, src::AbstractPetscVec)
     length(dest) == length(src) || throw(DimensionMismatch(
         "destination has length $(length(dest)), source has length $(length(src))"))
     return copyto!(dest, collect(src))
+end
+
+"""
+    copyto!(dest::AbstractPetscVec, src::Vector)
+
+Copy the whole Julia vector `src` into `dest` and return `dest`, the reverse of
+`copyto!(dest::Vector, v)`: every rank passes all `length(dest)` entries, as
+[`collect`](@ref) returns them, and writes the ones it owns,
+`src[ownership_range(dest)]`. No communication, so a rank can make the call on its
+own. A device `dest` gets the entries through a host copy.
+"""
+function Base.copyto!(dest::AbstractPetscVec, src::Vector)
+    length(dest) == length(src) || throw(DimensionMismatch(
+        "destination has length $(length(dest)), source has length $(length(src))"))
+    owned = view(src, ownership_range(dest))
+    with_local_array!(a -> copyto!(a, owned), dest; read = false, memtype = :host)
+    return dest
 end

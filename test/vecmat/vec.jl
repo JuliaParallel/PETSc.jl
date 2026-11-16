@@ -361,6 +361,10 @@ end
         a -> nothing, fx, x; memtype = :device)
     @test_throws "memtype must be :native or :host" PETSc.with_local_arrays!(
         (f, a) -> nothing, fx, x; memtype = :device)
+    # no GPU extension registers SYCL memory
+    sycl = Val(LibPETSc.PETSC_MEMTYPE_SYCL)
+    @test_throws ArgumentError PETSc.array_type(sycl)
+    @test_throws "no Julia array type for PetscMemType" PETSc.array_type(sycl)
     fx .= 0
     @test fx[:] == zeros(PetscScalar, 3)
 

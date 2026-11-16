@@ -42,25 +42,19 @@ using .PETScTestUtils: without_petsc_traceback
         @test "" == opts["nothing_opt"]
         @test "1" == opts["new_opt"]
         
-        # Check that viewer is working
-        _stdout = stdout
-        (rd, wr) = redirect_stdout()
-        @show opts
-        #@test readline(rd) == "PETSc Options database:"
-        @test readline(rd) == "#PETSc Option Table entries:"
-        @test readline(rd) == "-da_grid_x 100 # (source: code)"
-        @test readline(rd) == "-da_grid_y 100 # (source: code)"
-        @test readline(rd) == "-ksp_monitor # (source: code)"
-        @test readline(rd) == "-ksp_view # (source: code)"
-        @test readline(rd) == "-mg_levels_0_pc_type ilu # (source: code)"
-        @test readline(rd) == "-new_opt 1 # (source: code)"
-        @test readline(rd) == "-nothing_opt # (source: code)"
-        @test readline(rd) == "-pc_mg_levels 1 # (source: code)"
-        @test readline(rd) == "-pc_type mg # (source: code)"
-        @test readline(rd) == "#End of PETSc Option Table entries"
-
-        redirect_stdout(_stdout)
-        
+        # `show` writes the options to its `io`, one per line and sorted
+        @test sprint(show, opts) == """
+            PETSc Options database:
+              -da_grid_x 100
+              -da_grid_y 100
+              -ksp_monitor
+              -ksp_view
+              -mg_levels_0_pc_type ilu
+              -new_opt 1
+              -nothing_opt
+              -pc_mg_levels 1
+              -pc_type mg
+            """
 
         PETSc.finalize(petsclib)
     end
@@ -301,4 +295,47 @@ end
     # the method for `opts` has a docstring of its own, next to the one for `obj`
     docs = Base.Docs.meta(PETSc)[Base.Docs.Binding(PETSc, :with_options)].docs
     @test any(sig -> occursin("AbstractPetscOptions", string(sig)), keys(docs))
+end
+
+@testset "global_options" begin
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    g = PETSc.global_options(petsclib)
+    @test g isa PETSc.PetscOptions
+    @test !PETSc.owns(g)
+    g[:global_options_test] = 3
+    # a second handle reads the same database; a fresh database does not have the key
+    @test PETSc.global_options(petsclib)[:global_options_test] == "3"
+    fresh = PETSc.PetscOptions(petsclib)
+    @test_throws KeyError fresh[:global_options_test]
+    @test occursin("global options database", sprint(show, g))
+    @test occursin("\n  -global_options_test 3\n", sprint(show, g))
+    # `show` writes the options to its `io`, one per line
+    shown = PETSc.PetscOptions(petsclib; ksp_rtol = 0.5, ksp_monitor = true)
+    @test sprint(show, shown) == "PETSc Options database:\n  -ksp_monitor\n  -ksp_rtol 0.5\n"
+    PETSc.destroy!(shown)
+    PETSc.destroy!(g)   # borrowed: does nothing
+    @test g[:global_options_test] == "3"
+    g[:global_options_test] = false
+    @test_throws KeyError g[:global_options_test]
+    PETSc.destroy!(fresh)
+    @test sprint(show, fresh) == "PETSc Options (destroyed)\n"
+    PETSc.finalize(petsclib)
+end
+
+# The calls the initialize docstring gives for starting the log after initialize
+@testset "default log started after initialize" begin
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    LibPETSc.PetscLogDefaultBegin(petsclib)
+    x = PETSc.PetscVec(petsclib, PETSc.MPI.COMM_SELF, 10)
+    fill!(x, 1)
+    PETSc.destroy!(x)
+    cd(mktempdir()) do
+        viewer = LibPETSc.PetscViewerASCIIOpen(petsclib, PETSc.MPI.COMM_SELF, "log.txt")
+        LibPETSc.PetscLogView(petsclib, viewer)
+        LibPETSc.PetscViewerDestroy(petsclib, viewer)
+        @test occursin("VecSet", read("log.txt", String))
+    end
+    PETSc.finalize(petsclib)
 end

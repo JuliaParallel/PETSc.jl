@@ -1,5 +1,11 @@
 using Test
 using MPI
+
+# a callable that is not a Function
+struct MatRealAbove
+    t::Float64
+end
+(p::MatRealAbove)(x) = real(x) > p.t
 MPI.Initialized() || MPI.Init()
 using PETSc
 
@@ -129,6 +135,8 @@ dense(n, entries, T) = (D = zeros(T, n, n); foreach(((i, j, a),) -> D[i, j] = a,
             @test any(iszero, P)
             @test !all(x -> real(x) > 0, P)
             @test all(x -> abs(x) < 100n, P)
+            @test any(MatRealAbove(0), P) == any(MatRealAbove(0), S)
+            @test !all(MatRealAbove(0), P)
             if PetscScalar <: Real
                 @test maximum(P) == maximum(S)
                 @test minimum(P) == minimum(S)

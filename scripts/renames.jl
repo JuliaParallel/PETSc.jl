@@ -312,6 +312,7 @@ const INTERNAL = Set{Symbol}([
     :TS_REASON_TEXT,
     :block_values,
     :preallocation_coo!,
+    :stencil_local_0b,
     :c_vector,
     :c_prefix,
     :PrefixView,

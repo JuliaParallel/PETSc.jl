@@ -1,7 +1,8 @@
 # test/vecmat/mat_coo.jl
 # COO assembly of a matrix from a DM: set_matrix_preallocate_skip!,
-# set_preallocation_coo_local!, set_preallocation_coo! and set_values_coo! give the
-# same matrix as set_values! with stencils. Runs on any number of ranks.
+# set_preallocation_coo_local! (with indices, or with DMStag stencils),
+# set_preallocation_coo! and set_values_coo! give the same matrix as set_values!
+# with stencils. Runs on any number of ranks.
 
 using Test
 using PETSc, MPI
@@ -87,5 +88,46 @@ end
     @test x ≈ x_ref
 
     foreach(PETSc.destroy!, (x_ref, x, ksp_ref, ksp, b, B, A, A_ref, da))
+    PETSc.finalize(petsclib)
+end
+
+@testset "COO assembly on a DMStag, with stencils" begin
+    comm = MPI.COMM_WORLD
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    none2 = (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE)
+    dm = PETSc.DMStag(petsclib, comm, none2, (6, 5), (0, 0, 1); stencil_width = 1)
+    e = PETSc.element_location(dm)
+    nx, ny = size(dm)
+    c = PETSc.corners(dm)
+
+    # the 5-point Laplacian on the elements this rank owns
+    rows, cols, vals = LibPETSc.DMStagStencil[], LibPETSc.DMStagStencil[], Float64[]
+    for I in CartesianIndices((c.lower[1]:c.upper[1], c.lower[2]:c.upper[2]))
+        i, j = Tuple(I)
+        push!(rows, PETSc.stencil(dm, e, I)); push!(cols, PETSc.stencil(dm, e, I)); push!(vals, 4)
+        for (p, q) in ((i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1))
+            1 <= p <= nx && 1 <= q <= ny || continue
+            push!(rows, PETSc.stencil(dm, e, I)); push!(cols, PETSc.stencil(dm, e, (p, q)))
+            push!(vals, -1)
+        end
+    end
+
+    A_ref = PETSc.PetscMat(dm)
+    for k in eachindex(rows, cols, vals)
+        PETSc.set_values!(A_ref, dm, rows[k:k], cols[k:k], vals[k:k])
+    end
+    PETSc.assemble!(A_ref)
+
+    PETSc.set_matrix_preallocate_skip!(dm, true)
+    A = PETSc.PetscMat(dm)
+    @test PETSc.set_preallocation_coo_local!(A, dm, rows, cols) === A
+    PETSc.set_values_coo!(A, vals)
+    @test A == A_ref
+
+    @test_throws "as many column stencils as row stencils" PETSc.set_preallocation_coo_local!(
+        A, dm, rows, cols[1:end-1])
+
+    foreach(PETSc.destroy!, (A, A_ref, dm))
     PETSc.finalize(petsclib)
 end

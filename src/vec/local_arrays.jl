@@ -242,31 +242,31 @@ end
 
 """
 function with_local_array!(
-    f!,
+    f!::F,
     vecs::NTuple{N, AbstractPetscVec};
     read::Union{Bool, NTuple{N, Bool}} = true,
     write::Union{Bool, NTuple{N, Bool}} = true,
     memtype::Symbol = :native,
-) where {N}
+) where {F, N}
     return checkout_arrays(
         f!, nothing, vecs, flags(read, Val(N)), flags(write, Val(N)), array_getter(memtype),
     )
 end
-with_local_array!(f!, vecs...; kwargs...) = with_local_array!(f!, vecs; kwargs...)
+with_local_array!(f!::F, vecs...; kwargs...) where {F} = with_local_array!(f!, vecs; kwargs...)
 
 function with_local_array!(
-    f!,
+    f!::F,
     ::Type{A},
     vecs::NTuple{N, AbstractPetscVec};
     read::Union{Bool, NTuple{N, Bool}} = true,
     write::Union{Bool, NTuple{N, Bool}} = true,
     memtype::Symbol = :native,
-) where {A <: AbstractArray, N}
+) where {F, A <: AbstractArray, N}
     return checkout_arrays(
         f!, A, vecs, flags(read, Val(N)), flags(write, Val(N)), array_getter(memtype),
     )
 end
-with_local_array!(f!, ::Type{A}, vecs...; kwargs...) where {A <: AbstractArray} =
+with_local_array!(f!::F, ::Type{A}, vecs...; kwargs...) where {F, A <: AbstractArray} =
     with_local_array!(f!, A, vecs; kwargs...)
 
 flags(b::Bool, ::Val{N}) where {N} = ntuple(_ -> b, Val(N))

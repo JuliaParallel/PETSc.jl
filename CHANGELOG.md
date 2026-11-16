@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+
+- `with_local_array!` and `with_field_views!` called through dynamic dispatch, such as from a script with non-const globals or through a field of abstract type, allocate 3 to 4 fewer objects per call (240 to 176 bytes for two Vecs). Calls from type-stable code are unchanged.
+
 ## 0.6.0 (2026-11-06)
 
 ### Breaking

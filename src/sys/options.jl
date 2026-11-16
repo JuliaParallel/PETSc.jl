@@ -1,13 +1,14 @@
 # Custom display for REPL
 function Base.show(io::IO, v::AbstractPetscOptions{PetscLib}) where {PetscLib}
-    if v.ptr == C_NULL
-        println(io, "PETSc Options (null pointer)")
+    if v.age == -1
+        println(io, "PETSc Options (destroyed)")
         return
     end
-    
+
     # Try to display options, but handle errors gracefully
     try
-        println(io, "PETSc Options database:")
+        # a null handle is PETSc's global database
+        println(io, v.ptr == C_NULL ? "PETSc global options database:" : "PETSc Options database:")
         LibPETSc.PetscOptionsView(PetscLib, v, C_NULL)  # NULL viewer: PETSc prints to stdout
     catch
         println(io, "PETSc Options (not yet initialized)")
@@ -89,6 +90,19 @@ function LibPETSc.PetscOptions(petsclib::PetscLibType; kwargs...)
 
     return opts
 end
+
+"""
+    global_options(petsclib::PetscLibType)
+
+PETSc's global options database for `petsclib`: the one `PetscInitialize`,
+`PETSC_OPTIONS` and `initialize(; options)` fill, and that every PETSc object
+reads unless an options database was pushed on top of it. Read and set entries
+with `opts[key]` and `opts[key] = val`.
+
+$(doc_borrowed())
+"""
+global_options(petsclib::PetscLibType) =
+    LibPETSc.PetscOptions{typeof(petsclib)}(C_NULL, petsclib.age; own = false)
 
 """
     destroy!(opts::AbstractPetscOptions)
@@ -240,7 +254,7 @@ end
 # throws, so the database holds only what the user set.
 function with_layered_options(f, ::Type{PetscLib}, entries) where {PetscLib}
     petsclib = getlib(PetscLib)
-    db = LibPETSc.PetscOptions{PetscLib}(C_NULL, petsclib.age; own = false)
+    db = global_options(petsclib)
     ours = get!(Dict{String, Union{Nothing, String}}, layered_keys, PetscLib)
     undo = Tuple{String, Bool, Union{Missing, Nothing, String}}[]
     try

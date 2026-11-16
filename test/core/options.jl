@@ -302,3 +302,41 @@ end
     docs = Base.Docs.meta(PETSc)[Base.Docs.Binding(PETSc, :with_options)].docs
     @test any(sig -> occursin("AbstractPetscOptions", string(sig)), keys(docs))
 end
+
+@testset "global_options" begin
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    g = PETSc.global_options(petsclib)
+    @test g isa PETSc.PetscOptions
+    @test !PETSc.owns(g)
+    g[:global_options_test] = 3
+    # a second handle reads the same database; a fresh database does not have the key
+    @test PETSc.global_options(petsclib)[:global_options_test] == "3"
+    fresh = PETSc.PetscOptions(petsclib)
+    @test_throws KeyError fresh[:global_options_test]
+    @test occursin("global options database", sprint(show, g))
+    PETSc.destroy!(g)   # borrowed: does nothing
+    @test g[:global_options_test] == "3"
+    g[:global_options_test] = false
+    @test_throws KeyError g[:global_options_test]
+    PETSc.destroy!(fresh)
+    @test sprint(show, fresh) == "PETSc Options (destroyed)\n"
+    PETSc.finalize(petsclib)
+end
+
+# The calls the initialize docstring gives for starting the log after initialize
+@testset "default log started after initialize" begin
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    LibPETSc.PetscLogDefaultBegin(petsclib)
+    x = PETSc.PetscVec(petsclib, PETSc.MPI.COMM_SELF, 10)
+    fill!(x, 1)
+    PETSc.destroy!(x)
+    cd(mktempdir()) do
+        viewer = LibPETSc.PetscViewerASCIIOpen(petsclib, PETSc.MPI.COMM_SELF, "log.txt")
+        LibPETSc.PetscLogView(petsclib, viewer)
+        LibPETSc.PetscViewerDestroy(petsclib, viewer)
+        @test occursin("VecSet", read("log.txt", String))
+    end
+    PETSc.finalize(petsclib)
+end

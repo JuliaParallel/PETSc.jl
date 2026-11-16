@@ -100,6 +100,11 @@ PETSc.initialize(petsclib; log_view = true, options = [":logfile.txt", "-log_vie
 # Pass custom PETSc options without logging
 PETSc.initialize(petsclib; options = ["-malloc_debug", "-on_error_abort"])
 
+# Start logging later, on a library initialized without `log_view`, and print it
+LibPETSc.PetscLogDefaultBegin(petsclib)
+# ... the code to measure ...
+LibPETSc.PetscLogView(petsclib, LibPETSc.PetscViewerASCIIGetStdout(petsclib, MPI.COMM_WORLD))
+
 # Four BLAS threads per rank, overriding the one-thread default for ranks sharing a node
 PETSc.initialize(petsclib; options = ["-blas_num_threads", "4"])
 ```
@@ -182,7 +187,7 @@ const device_option_hooks = Function[]
 # Set before `PetscInitialize`, which reads `PETSC_OPTIONS` and the command line
 # afterwards: a device chosen there overrides these.
 function set_device_options(petsclib)
-    db = LibPETSc.PetscOptions{typeof(petsclib)}(C_NULL, petsclib.age; own = false)
+    db = global_options(petsclib)
     for hook in device_option_hooks, (name, value) in hook(petsclib)
         LibPETSc.PetscOptionsSetValue(petsclib, db, name, value)
     end
@@ -236,8 +241,7 @@ function apply_blas_num_threads(petsclib)
     # Collective, so every rank calls it before any test of its own environment or
     # options: ranks that skipped it would leave the others waiting in it.
     shared = ranks_on_node() > 1
-    global_options = LibPETSc.PetscOptions{typeof(petsclib)}(C_NULL, petsclib.age; own = false)
-    n, set = LibPETSc.PetscOptionsGetInt(petsclib, global_options, "", "-blas_num_threads")
+    n, set = LibPETSc.PetscOptionsGetInt(petsclib, global_options(petsclib), "", "-blas_num_threads")
     if Bool(set)
         n >= 1 || throw(ArgumentError("-blas_num_threads must be at least 1, got $n"))
         LinearAlgebra.BLAS.set_num_threads(Int(n))

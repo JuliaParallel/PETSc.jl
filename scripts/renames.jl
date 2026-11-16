@@ -469,6 +469,7 @@ const UNCHANGED_PUBLIC = Symbol[
     :PetscNotInitialized,
     :ConvergenceError,       # new in v0.5.3
     :with_options,           # new in v0.5.3
+    :global_options,         # new in v0.6.1
     :with_local_arrays!,     # new in v0.5.5
     :with_local_coordinate_array,  # new in v0.5.5
     :with_destroy,           # new in v0.5.3

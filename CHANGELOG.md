@@ -5,11 +5,12 @@
 ### Added
 
 - `copyto!(v::PetscVec, x::Vector)` copies a whole Julia vector into `v`, the reverse of `copyto!(x, v)`: every rank passes all entries and writes the ones it owns. It gives the same result as Base's entry-by-entry copy it replaces, about 100 times faster (0.01 ms instead of 1 ms for 100 000 entries on one rank), with no communication.
+- `global_options(petsclib)` returns PETSc's global options database as a borrowed `PetscOptions`, to read and set with `opts[key]`. It displays as the global database instead of as a null pointer. The `initialize` docstring shows how to start PETSc's default log on a library already initialized, and print it.
 
 ### Fixed
 
 - `any(f, v)` and `all(f, v)` on a PetscVec or PetscMat take a callable object that is not a `Function`, and reduce over the entries each rank owns, as they do for a `Function`.
-- `array_type` for a `PetscMemType` that no loaded GPU package handles throws an `ArgumentError` naming the package to load, instead of an `ErrorException`
+- `array_type` for a `PetscMemType` that no loaded GPU package handles throws an `ArgumentError` naming the package to load, instead of an `ErrorException`.
 - `with_local_array!` and `with_field_views!` called through dynamic dispatch, such as from a script with non-const globals or through a field of abstract type, allocate 3 to 4 fewer objects per call (240 to 176 bytes for two Vecs). Calls from type-stable code are unchanged.
 - `mapreduce(f, op, v)` on a PetscVec, and the `sum(f, v)`, `prod`, `reduce` and `extrema` that call it, allocate 16 objects per call instead of 49 and run about 10 times faster on one rank (0.2 µs instead of 2 µs for 64 entries). `count`, `any` and `all` on a PetscVec run about 3 times faster, and `count` no longer allocates more on a longer vector.
 

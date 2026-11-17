@@ -33,7 +33,7 @@
 using PETSc, MPI, Printf
 
 # Get the PETSc lib with our chosen `PetscScalar` type
-petsclib = PETSc.getlib(; PetscScalar = Float64)
+const petsclib = PETSc.getlib(; PetscScalar = Float64)
 
 # Initialize PETSc 
 PETSc.initialize(petsclib)

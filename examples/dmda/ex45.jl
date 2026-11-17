@@ -135,7 +135,7 @@ else
     const gpu_options = (;)
 end
 
-petsclib = PETSc.getlib(; PetscScalar = Float64)
+const petsclib = PETSc.getlib(; PetscScalar = Float64)
 # The command line goes into the options database, so -log_view and the like apply
 PETSc.initialize(petsclib; options = isinteractive() ? String[] : collect(String, ARGS))
 

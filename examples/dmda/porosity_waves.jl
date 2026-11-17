@@ -68,7 +68,7 @@ PetscScalar = Float64
 PetscInt = Int64
 
 # get the PETSc lib with our chosen `PetscScalar` type
-petsclib = PETSc.getlib(; PetscScalar = PetscScalar, PetscInt = PetscInt)
+const petsclib = PETSc.getlib(; PetscScalar = PetscScalar, PetscInt = PetscInt)
 
 # Initialize PETSc
 PETSc.initialize(petsclib)

@@ -15,7 +15,7 @@ using PETSc, MPI, LinearAlgebra
 
 MPI.Initialized() || MPI.Init()
 
-petsclib = PETSc.petsclibs[1]
+const petsclib = PETSc.petsclibs[1]
 PETSc.initialize(petsclib)
 PetscScalar = PETSc.scalartype(petsclib)
 

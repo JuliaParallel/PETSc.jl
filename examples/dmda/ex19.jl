@@ -223,7 +223,7 @@ function to_device(a)
     end
 end
 
-petsclib = PETSc.getlib(; PetscScalar = Float64)
+const petsclib = PETSc.getlib(; PetscScalar = Float64)
 # The command line goes into the options database, which the DMDA and the SNES
 # read: -da_grid_x, -snes_monitor, -log_view and the like
 PETSc.initialize(petsclib; options = isinteractive() ? String[] : collect(String, ARGS))

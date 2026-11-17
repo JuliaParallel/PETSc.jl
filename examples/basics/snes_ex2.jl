@@ -11,7 +11,7 @@
 using PETSc, MPI, LinearAlgebra, SparseArrays, ForwardDiff, UnicodePlots
 
 MPI.Initialized() || MPI.Init()
-petsclib = first(PETSc.petsclibs)
+const petsclib = first(PETSc.petsclibs)
 PETSc.isinitialized(petsclib) || PETSc.initialize(petsclib)
 comm = MPI.COMM_WORLD
 

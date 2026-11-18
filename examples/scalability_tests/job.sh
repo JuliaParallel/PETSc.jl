@@ -58,7 +58,7 @@ srun -n ${NTASKS} $JULIA --heap-size-hint=1G \
   -ksp_rtol 1e-8 \
   -mg_coarse_ksp_type preonly \
   -mg_coarse_pc_type telescope \
-  -mg_coarse_telescope_reduction_factor ${REDUCTION_FACTOR} \
+  -mg_coarse_pc_telescope_reduction_factor ${REDUCTION_FACTOR} \
   -mg_coarse_telescope_pc_type lu \
   -mg_coarse_telescope_pc_factor_mat_solver_type superlu_dist \
   -pc_mg_log \

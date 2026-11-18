@@ -81,7 +81,7 @@ comm = MPI.COMM_WORLD
 PetscScalar = Float64
 
 # get the PETSc lib with our chosen `PetscScalar` type
-petsclib = PETSc.getlib(; PetscScalar = PetscScalar)
+const petsclib = PETSc.getlib(; PetscScalar = PetscScalar)
 
 # Initialize PETSc
 PETSc.initialize(petsclib)

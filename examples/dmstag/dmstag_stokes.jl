@@ -259,7 +259,7 @@ end
 
 # Initialize PETSc and MPI
 MPI.Initialized() || MPI.Init()
-petsclib = first(PETSc.petsclibs)
+const petsclib = first(PETSc.petsclibs)
 PETSc.isinitialized(petsclib) || PETSc.initialize(petsclib)
 comm = MPI.COMM_WORLD
 

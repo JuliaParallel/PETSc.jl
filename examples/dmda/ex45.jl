@@ -61,21 +61,28 @@ function laplacian_csr(dm)
     wx, wy, wz = V / hx^2, V / hy^2, V / hz^2
     row = global_rows(dm)
     PetscInt = petsclib.PetscInt
-    rowptr, cols, vals = PetscInt[0], PetscInt[], Float64[]
+    n = prod(own.size)
+    rowptr = sizehint!(PetscInt[0], n + 1)
+    cols = sizehint!(PetscInt[], 7n)
+    vals = sizehint!(Float64[], 7n)
+    entries = Vector{Pair{PetscInt, Float64}}(undef, 7)     # one row, reused
     for I in own.lower:own.upper
         i, j, k = Tuple(I)
         if on_boundary((i, j, k), N)
-            entries = [row[i, j, k] => 1.0]
+            entries[1] = row[i, j, k] => 1.0
+            m = 1
         else
-            entries = [
+            entries .= (
                 row[i, j, k] => 2 * (wx + wy + wz),
                 row[i-1, j, k] => -wx, row[i+1, j, k] => -wx,
                 row[i, j-1, k] => -wy, row[i, j+1, k] => -wy,
                 row[i, j, k-1] => -wz, row[i, j, k+1] => -wz,
-            ]
+            )
+            m = 7
         end
-        # PETSc's CSR input wants the columns of a row in increasing order
-        for (col, val) in sort!(entries)
+        # PETSc's CSR input wants the columns of a row in increasing order. A
+        # neighbor owned by another rank can number below this rank's own rows.
+        for (col, val) in sort!(view(entries, 1:m))
             push!(cols, col); push!(vals, val)
         end
         push!(rowptr, length(cols))
@@ -135,7 +142,7 @@ else
     const gpu_options = (;)
 end
 
-petsclib = PETSc.getlib(; PetscScalar = Float64)
+const petsclib = PETSc.getlib(; PetscScalar = Float64)
 # The command line goes into the options database, so -log_view and the like apply
 PETSc.initialize(petsclib; options = isinteractive() ? String[] : collect(String, ARGS))
 

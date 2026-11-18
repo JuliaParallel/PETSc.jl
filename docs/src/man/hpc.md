@@ -1,20 +1,26 @@
 # Running on HPC Systems
 
-PETSc.jl runs on clusters with the cluster's MPI in two ways: the precompiled `PETSc_jll` binaries with the system MPI selected at run time, or a PETSc built on the cluster.
+On a cluster, PETSc.jl has to use the cluster's MPI, so that runs across nodes use its network. Three setups do that. They differ in where `libpetsc` comes from and how it reaches the system MPI:
 
-## 1. Use the precompiled binaries with the system MPI
+| Setup | PETSc library | Path to the system MPI | Built on the cluster |
+|---|---|---|---|
+| 1. `PETSc_jll`, system MPI | prebuilt `PETSc_jll` | MPI.jl loads the system `libmpi` directly; `PETSc_jll` picks the build for its ABI | nothing |
+| 2. `PETSc_jll`, MPItrampoline | prebuilt `PETSc_jll` (MPItrampoline build) | MPItrampoline forwards every MPI call to MPIwrapper, a small library built against the system MPI | MPIwrapper |
+| 3. Local PETSc | your own `libpetsc.so` | PETSc links the system MPI itself | PETSc |
 
-`PETSc_jll` comes in builds for several MPI ABIs (the standard MPI ABI, MPICH, Open MPI, MPItrampoline) and loads the one that matches the MPI that MPI.jl is configured to use. Pointing MPI.jl at the system MPI with MPIPreferences is therefore all it takes; nothing has to be compiled on the cluster. The default JLL MPIs talk over TCP, so a run across nodes needs the system MPI to use the cluster's network.
+All three run the same Julia code; only the environment's preferences differ. Setup 1 needs nothing compiled and is the place to start. Setup 2 works with any MPI, whatever its ABI. Setup 3 is for external packages or GPU builds that `PETSc_jll` doesn't have, and for compiler flags tuned to the machine.
 
-#### 1.1 Select the system MPI
+## 1. `PETSc_jll` with the system MPI
 
-Install the packages the usual way:
+`PETSc_jll` comes in builds for several MPI ABIs (the standard MPI ABI, MPICH, Open MPI, MPItrampoline) and loads the one that matches the MPI that MPI.jl is configured to use. Pointing MPI.jl at the system MPI with MPIPreferences is all it takes.
+
+Install the packages:
 ```julia
 julia> ]
-pkg> add MPI, MPIPreferences
+pkg> add MPI, MPIPreferences, PETSc
 ```
 
-Then pick the case that matches the cluster's MPI (load its module first, so that its library and `mpiexec` are found):
+Then pick the case that matches the cluster's MPI (load its module first, so that its library and launcher are found):
 
 - **An MPI with the standard ABI.** MPI 5.0 defines a standard ABI, which MPICH 5 implements when configured with `--enable-mpi-abi` (it installs `libmpi_abi.so`). Give the ABI explicitly; the automatic detection reports the implementation's own ABI:
   ```julia
@@ -30,232 +36,147 @@ Then pick the case that matches the cluster's MPI (load its module first, so tha
   `PETSc_jll` then loads its `mpich` build.
 - **Open MPI**: the same call; `PETSc_jll` loads its `openmpi` build.
 
-`mpiexec` names the launcher of the cluster (`srun` on SLURM, `mpiexec` elsewhere). If none of these fits, [MPItrampoline](https://github.com/eschnett/MPItrampoline) with `MPIPreferences.use_jll_binary("MPItrampoline_jll")` forwards to any MPI through a small wrapper library that you compile on the cluster.
+`mpiexec` names the launcher of the cluster (`srun` on SLURM, `mpiexec` elsewhere). The call writes the choice to `LocalPreferences.toml` of the active project. Some centers ship a Julia environment that already sets these preferences, through a `LocalPreferences.toml` on `JULIA_LOAD_PATH`; a project there uses the system MPI without any call.
 
-Restart Julia, then check that MPI.jl loads the system library:
-```julia
-julia> using MPI
-julia> MPI.Get_library_version()
-```
+## 2. `PETSc_jll` through MPItrampoline
 
-#### 1.2 Test MPI
+[MPItrampoline](https://github.com/eschnett/MPItrampoline) defines an MPI ABI of its own and forwards each call at run time to [MPIwrapper](https://github.com/eschnett/MPIwrapper), which you compile once against the system MPI. This works for any MPI, also one whose ABI matches none of the `PETSc_jll` builds.
 
-```julia
-julia> using MPI
-julia> mpiexec(cmd -> run(`$cmd -n 3 echo hello world`));
-hello world
-hello world
-hello world
-```
-
-#### 1.3 Use PETSc.jl
-
-No change to your script is needed:
-```julia
-using PETSc, MPI
-petsclib = PETSc.getlib(; PetscScalar = Float64, PetscInt = Int64)
-PETSc.initialize(petsclib)
-# ...
-```
-and launch through the cluster's MPI:
+Build MPIwrapper with the cluster's MPI compiler wrappers:
 ```bash
-srun julia --project myScript.jl
+git clone https://github.com/eschnett/MPIwrapper
+cmake -S MPIwrapper -B MPIwrapper/build -DMPIEXEC_EXECUTABLE=$(which srun) \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=$HOME/mpiwrapper
+cmake --build MPIwrapper/build
+cmake --install MPIwrapper/build
 ```
 
-## 2. Use a locally installed PETSc build
-
-If you need a PETSc build with specific options (external packages, GPU support, custom BLAS, etc.), you can point `PETSc.jl` directly to your local installation. This is also the way to GPU support on machines that `PETSc_CUDA_jll` has no build for, such as aarch64 (Grace Hopper) or AMD GPUs; see [GPU Support](gpu.md).
-The local PETSc must be compiled as a **shared library** (`--with-shared-libraries=1`) and linked against the **same MPI** that `MPI.jl` is configured to use (i.e. the one that you should use on your HPC machine).
-
-#### 2.1 Link `PETSc` to the local library  
-
-Configure the path once with `PETSc.set_library!`, as described in [Using a custom PETSc build](@ref).
-
-#### 2.2 Link `MPI.jl` to the local mpi
-You *must* use the same MPI implementation as the one versus which you compiled PETSc (otherwise you'll get heaps of problems).
-
-Check with:
+Select MPItrampoline in the project, overriding any system MPI the environment already sets:
 ```julia
-julia> using MPI
-
-julia> MPI.Get_library_version()
+using MPIPreferences
+MPIPreferences.use_jll_binary("MPItrampoline_jll")
 ```
 
+and point MPItrampoline at the wrapper in every job:
+```bash
+export MPITRAMPOLINE_LIB=$HOME/mpiwrapper/lib64/libmpiwrapper.so
+```
 
+`PETSc_jll` then loads its MPItrampoline build. Every MPI call goes through one more function call; in the results below this costs no measurable time in the solve.
 
-### 3. Typical HPC job script
+## 3. A PETSc built on the cluster
 
-A typical SLURM submission script, with MPI.jl configured for the system MPI as in section 1, looks like:
+The library must be a shared library (`--with-shared-libraries=1`), built with the cluster's MPI compiler wrappers, and the project's MPI.jl must use the same MPI (case 1 above). A mismatch between the MPI that PETSc was built against and the one MPI.jl loads crashes or hangs at the first MPI call.
 
+A configure line with 64-bit indices and SuperLU_DIST for the coarse solve (set the architecture flags for the compute nodes' CPU, which can differ from the login node's):
+```bash
+./configure --prefix=$HOME/petsc/3.25.6-opt \
+    --with-cc=mpicc --with-cxx=mpicxx --with-fc=0 \
+    --with-debugging=0 COPTFLAGS="-O3 -march=native" CXXOPTFLAGS="-O3 -march=native" \
+    --with-64-bit-indices=1 --with-precision=double --with-scalar-type=real \
+    --with-shared-libraries=1 --with-blaslapack-dir=$OPENBLAS_DIR \
+    --download-superlu_dist --download-metis --download-parmetis \
+    --with-mpiexec=srun
+make && make install
+```
+
+Then point PETSc.jl at it once, as described in [Using a custom PETSc build](@ref):
+```julia
+using PETSc
+PETSc.set_library!("$(ENV["HOME"])/petsc/3.25.6-opt/lib/libpetsc.so"; PetscScalar = Float64, PetscInt = Int64)
+```
+
+This is also the way to GPU support on machines that `PETSc_CUDA_jll` has no build for, such as aarch64 (Grace Hopper) or AMD GPUs; see [GPU Support](gpu.md).
+
+## Checking the setup
+
+On the login node, in the project you'll run:
+```julia
+julia> using MPI, PETSc
+julia> MPI.Get_library_version()   # the system MPI (setups 1 and 3) or MPItrampoline (setup 2)
+julia> PETSc.library_info()        # PETSc_jll or the path of your own library
+```
+
+and check that a parallel launch works:
+```julia
+julia> mpiexec(cmd -> run(`$cmd -n 3 echo hello world`));
+```
+
+PETSc's own report confirms the library at run time: with `-log_view`, the header names the PETSc version and the number of processes, and the end lists the configure options of the library that was loaded.
+
+## Running jobs
+
+#### Precompile before the first parallel run
+
+Run the project once on a single process (on the login node, or in a one-task job) after every package update:
+```bash
+julia --project=. -e 'using PETSc'
+```
+If the cache is stale when a job starts, every rank compiles at the same time; the job then hangs on the cache's lock file, at 0% CPU and without an error, until the time limit.
+
+#### A job script
+
+A SLURM script for setup 2; for setups 1 and 3 drop `MPITRAMPOLINE_LIB`:
 ```bash
 #!/bin/bash
 #SBATCH --nodes=8
-#SBATCH --ntasks-per-node=128
+#SBATCH --ntasks-per-node=64
+#SBATCH --time=00:10:00
 
-export JULIA_CPU_TARGET="generic"
+export MPITRAMPOLINE_LIB=$HOME/mpiwrapper/lib64/libmpiwrapper.so
+# One thread per rank: BLAS and SuperLU_DIST otherwise start a thread per core in every rank
+export OMP_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
 
-srun julia --project ex45.jl \
-  -N 257 \
-  -ksp_type cg \
-  -pc_type mg \
-  -pc_mg_levels 5 \
-  -mg_levels_ksp_type chebyshev \
-  -mg_levels_pc_type sor \
-  -ksp_rtol 1e-8 \
-  -ksp_view \
-  -pc_mg_log \
-  -log_view
+srun --cpu-bind=cores julia --project=$HOME/myproject ex45.jl \
+    -Nx 1025 -Ny 1025 -Nz 1025 -pc_mg_levels 6 \
+    -ksp_type cg -pc_type mg \
+    -mg_levels_ksp_type chebyshev -mg_levels_pc_type jacobi \
+    -mg_coarse_ksp_type preonly -mg_coarse_pc_type telescope \
+    -mg_coarse_pc_telescope_reduction_factor 32 \
+    -mg_coarse_telescope_pc_type lu -mg_coarse_telescope_pc_factor_mat_solver_type superlu_dist \
+    -ksp_rtol 1e-8 -ksp_converged_reason -log_view
 ```
 
-#### Precompile code on compute nodes
-On some machines, it can be useful to precompile `PETSc.jl` on a single core rather than having many processors trying to do the same thing simultaneously.
+`--cpu-bind=cores` pins each rank to one core. On nodes with several sockets or NUMA domains, add `--distribution=block:cyclic` to spread the ranks over all of them, so that each rank gets its share of the memory bandwidth.
 
-This is an example on how this can be done by getting access on an interactive node using slurm. Note that julia was installed in the home directory using `juliaup`.
-```bash
-salloc --nodes=1 --ntasks=1 --time=00:30:00 \
-    --partition=standard --account=your_project_number
+#### Check that every option was used
 
-# Once on the compute node:
-module --force purge
-module load CrayEnv
-module load craype
-module load gcc-native/13.2
-module load cray-mpich/8.1.32
-
-export JULIA_CPU_TARGET="generic"
-
-# Clear stale cache
-rm -rf $HOME/.julia/compiled/v1.12/PETSc/
-rm -rf $HOME/.julia/compiled/v1.12/PETSc_jll/
-rm -rf $HOME/.julia/compiled/v1.12/MPI/
-
-# Precompile
-julia --project=$HOME/myproject -e 'using PETSc; println("OK")'
+PETSc ignores options it doesn't recognize, so a misspelled option silently leaves the solver at its default. At the end of a run, PETSc lists every option that nothing read (`-options_left`, on by default):
 ```
+There is one unused database option. It is:
+Option left: name:-mg_coarse_telescope_reduction_factor value: 256 source: command line
+```
+(the correct name is `-mg_coarse_pc_telescope_reduction_factor`). `ex45.jl` reads `-Nx`, `-Ny` and `-Nz` itself, so PETSc lists those for the Julia runs; any other line is a mistake. Options passed to PETSc.jl as keyword arguments are not checked this way, so for benchmarks and production runs, pass the solver options on the command line and check the end of the output.
+
+#### Start-up time
+
+Loading Julia and PETSc.jl and compiling the code on first use adds a few seconds per run, independent of the number of ranks (about 3 to 5 s in the results below). It is paid once per run, not per solve or per time step. The MPI launch itself can cost much more on large jobs, for native PETSc and Julia alike: on some systems it grows with the number of ranks per node, to tens of seconds for a full node. Time a trivial MPI program at the job size you plan before reading wall-clock times as solver performance.
 
 #### `mpiexec` from Julia inside a SLURM allocation
 
 A program that starts MPI processes itself through MPI.jl's `mpiexec` with a JLL MPI (`MPICH_jll`, `MPIABI_jll`), such as PETSc.jl's own test suite, hangs inside `srun` or `salloc` until the time limit: MPICH's launcher tries to start a SLURM job step, which waits for the resources the allocation already holds. Set `HYDRA_LAUNCHER=fork` so that it starts the processes directly.
 
----
+## Performance and weak scalability
 
-## Performance and Weak Scalability
+The benchmark is [`ex45.jl`](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/dmda/ex45.jl), the 3D Poisson problem −Δu = f on the unit cube with a manufactured solution, solved with conjugate gradients and geometric multigrid: Chebyshev/Jacobi smoothing, and an LU coarse solve (SuperLU_DIST) on a 33³ grid, gathered onto 16 ranks with `PCTELESCOPE`. Each rank holds 128³ grid points, and the number of levels grows with the grid so that the coarse grid stays the same. The same problem runs three ways:
 
-This section summarises weak scalability results for a 3D Laplacian benchmark ([`ex45.jl`](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/dmda/ex45.jl)) using a CG solver with geometric multigrid preconditioning (`-pc_type mg`). The problem size is scaled proportionally with the number of MPI ranks so that the work per rank stays constant.
+- **jll**: `ex45.jl` with `PETSc_jll` through MPItrampoline (setup 2),
+- **local lib**: `ex45.jl` with a PETSc built on the cluster (setup 3),
+- **native**: [`ex45_julia.c`](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/scalability_tests/ex45_julia.c), the same program in C, linked against the same local PETSc.
 
-We have performed these simulations on LUMI-C (Finland) and provide job submission scripts (`submit_scaling.sh`, `job.sh`), along with a parsing file that collects and summarizes the results (`parse_scaling.jl`). 
-All files are uploaded under [PETSc.jl/examples/scalability_tests](https://github.com/JuliaParallel/PETSc.jl/tree/main/examples/scalability_tests), and can be started with
-```bash
-$ ./submit_scaling.sh 512 1025 1025 1025 6 16
-```
-which will start a 1025³ simulation on 512 cores, with 6 multigrid levels and the coarse grid solver being solved on 16 cores.
+The runs below are on CSCS Daint (GH200 nodes, CPUs only, 64 ranks per node spread over the four Grace CPUs, Cray MPICH 8.1.32, PETSc 3.25.6 with 64-bit indices). Times are the median of three runs; the spread between runs was at most 3%.
 
-We consider 3 cases:
-- Using `PETSc.jl` with the precompiled binaries, through MPITrampoline linked to the local MPI ("PETSc.jl")
-- Using `PETSc.jl` linked to our locally build PETSc version ("local lib")
-- Using a C-compiled version of `ex45_julia.c`  ("native")
+| Ranks [nodes] | Grid | Iterations | KSPSolve native | local lib | jll | Total in PETSc, native / local lib / jll |
+|---|---|---|---|---|---|---|
+| 64 [1] | 513³ | 7 | 1.82 s | 1.85 s | 1.89 s | 3.5 / 6.9 / 7.1 s |
+| 512 [8] | 1025³ | 8 | 2.08 s | 2.09 s | 2.16 s | 4.1 / 7.5 / 7.7 s |
+| 4096 [64] | 2049³ | 8 | 2.24 s | 2.30 s | 2.29 s | 4.9 / 8.5 / 9.5 s |
 
-#### Results
-Every case except the largest was run up to three times.
+- **The solve is the same in Julia and C.** KSPSolve with PETSc.jl is within 1 to 4% of native at every size, with either library. All three give the same iteration counts and errors.
+- **Weak scaling:** from 1 to 64 nodes the native solve time grows from 1.82 to 2.24 s, an efficiency of 81% (93% from 8 to 64 nodes). Part of the step from 1 to 8 nodes is one more iteration. The rest is on the fine levels, which are limited by memory bandwidth, and by communication between nodes once the job spans several.
+- **Julia's fixed cost:** the total time inside PETSc (from `PetscInitialize` to `PetscFinalize`) is 3.3 to 4.6 s longer with PETSc.jl, for compiling the Julia code on first use and assembling the operators in Julia. It hardly depends on the number of ranks.
 
-| JobID | Ntasks | MG | NC | Grid | Backend | SolveTime (s) | KSPSolve (s) | TotGFlops | GFlops/s | KSP | L2 error | Max error | Residual | Converged |
-|-------|--------|----|----|------|---------|--------------|-------------|-----------|----------|-----|----------|-----------|----------|-----------|
-| 17684772 | 64 | 5 | 16 | 513³ | PETSc.jl | 50.800 | 27.108 | 335.60 | 6.00 | 9 | 4.4372e-06 | 1.2557e-05 | 3.5610e-05 | ✅ |
-| 17769825 | 64 | 5 | 16 | 513³ | local lib | 51.032 | 27.006 | 335.60 | 6.00 | 9 | 4.4372e-06 | 1.2557e-05 | 3.5610e-05 | ✅ |
-| 17767475 | 64 | 5 | 16 | 513³ | native | 38.770 | 26.917 | 337.90 | 8.50 | 9 | 4.4372e-06 | 1.2557e-05 | 3.5610e-05 | ✅ |
-| 17724458 | 512 | 6 | 16 | 1025³ | PETSc.jl | 61.715 | 32.482 | 2878.00 | 37.52 | 10 | 1.1093e-06 | 3.1236e-06 | 9.6257e-05 | ✅ |
-| 17769827 | 512 | 6 | 16 | 1025³ | local lib | 58.254 | 32.033 | 2878.00 | 40.54 | 10 | 1.1093e-06 | 3.1236e-06 | 9.6257e-05 | ✅ |
-| 17767644 | 512 | 6 | 16 | 1025³ | native | 42.700 | 30.122 | 2896.00 | 65.64 | 10 | 1.1093e-06 | 3.1236e-06 | 9.6257e-05 | ✅ |
-| 17768041 | 512 | 6 | 16 | 1025³ | native | 42.924 | 30.307 | 2896.00 | 65.34 | 10 | 1.1093e-06 | 3.1236e-06 | 9.6257e-05 | ✅ |
-| 17658195 | 4096 | 7 | 16 | 2049³ | PETSc.jl | 72.949 | 34.332 | 21390.00 | 258.00 | 9 | 2.7738e-07 | 7.8741e-07 | 1.9254e-04 | ✅ |
-| 17769830 | 4096 | 7 | 16 | 2049³ | local lib | 68.095 | 34.220 | 21390.00 | 270.00 | 9 | 2.7738e-07 | 7.8741e-07 | 1.9254e-04 | ✅ |
-| 17767610 | 4096 | 7 | 16 | 2049³ | native | 41.345 | 28.214 | 21540.00 | 506.10 | 9 | 2.7738e-07 | 7.8741e-07 | 1.9254e-04 | ✅ |
-| 17726872 | 32768 | 8 | 16 | 4097³ | PETSc.jl | 142.540 | 63.300 | 171000.00 | 746.60 | 9 | 6.9301e-08 | 1.9765e-07 | 6.6391e-04 | ✅ |
-| 17767541 | 32768 | 8 | 16 | 4097³ | native | 69.282 | 50.858 | 172200.00 | 2386.00 | 9 | 6.9301e-08 | 1.9765e-07 | 6.6391e-04 | ✅ |
-| 17769918  |  32768  |   8 |   16 |  4097³ | local lib |    135.402  |     73.108 |  171000.00   |   263.20 |    9 |   6.9301e-08  |  1.9765e-07 |   6.6391e-04 | ✅ |
----
-In this table `KSPSolve` indicates the time spent in the solver (taken from the log) and `SolveTime` the time for the full solution.
+Earlier runs on LUMI-C with SOR smoothing are shown below. The coarse-solve option in those runs was misspelled, so the coarse LU ran on all ranks, and the KSPSolve time of the `ex45.jl` used then also included assembling the multigrid operators in Julia. Both make the gap to native look larger than it is.
 
-Below, we break this for each of the cases:
-
-#### a) PETSc.jl with precompiled `PETSc_jll` binaries
-
-the results of using PETSc.jl with precompiled `jll` libraries are:
-
-| Ntasks | Grid | DOFs/core | KSPSolve (s) | SolveTime (s) | Efficiency | Converged |
-|--------|------|-----------|-------------|--------------|------------|-----------|
-| 64 | 513³ | 2,109,464 | 27.916 | 55.843 | 100.0% | ✅ |
-| 64 | 513³ | 2,109,464 | 27.108 | 50.800 | 103.0% | ✅ |
-| 64 | 513³ | 2,109,464 | 28.121 | 56.352 | 99.3% | ✅ |
-| 512 | 1025³ | 2,103,302 | 33.670 | 66.789 | 82.9% | ✅ |
-| 512 | 1025³ | 2,103,302 | 32.482 | 61.715 | 85.9% | ✅ |
-| 512 | 1025³ | 2,103,302 | 34.236 | 65.473 | 81.5% | ✅ |
-| 4096 | 2049³ | 2,100,226 | 34.332 | 72.949 | 81.3% | ✅ |
-| 4096 | 2049³ | 2,100,226 | 44.244 | 79.557 | 63.1% | ✅ |
-| 32768 | 4097³ | 2,098,688 | 63.300 | 142.540 | 44.1% | ✅ |
-
-Please note that in the way we run this on LUMI-C, the 64 core case is on a single node and does not have inter-node communication. Despite this, weak scalability is pretty good (one could also argue to use the 512 core case as reference as this includes communication, in which case it would even be better).
-There is some variability in the timing when repeating the same run (a few %).
-
-#### b) PETSc.jl linked against a local PETSc build (system MPI)
-
-| Ntasks | Grid | DOFs/core | KSPSolve (s) | SolveTime (s) | Efficiency | Converged |
-|--------|------|-----------|-------------|--------------|------------|-----------|
-| 64 | 513³ | 2,109,464 | 27.065 | 51.123 | 100.0% | ✅ |
-| 64 | 513³ | 2,109,464 | 27.006 | 51.032 | 100.2% | ✅ |
-| 64 | 513³ | 2,109,464 | 27.551 | 56.452 | 98.2% | ✅ |
-| 512 | 1025³ | 2,103,302 | 34.456 | 61.041 | 78.5% | ✅ |
-| 512 | 1025³ | 2,103,302 | 32.033 | 58.254 | 84.5% | ✅ |
-| 512 | 1025³ | 2,103,302 | 30.708 | 61.971 | 88.1% | ✅ |
-| 4096 | 2049³ | 2,100,226 | 38.414 | 69.384 | 70.5% | ✅ |
-| 4096 | 2049³ | 2,100,226 | 35.292 | 68.905 | 76.7% | ✅ |
-| 4096 | 2049³ | 2,100,226 | 34.220 | 68.095 | 79.1% | ✅ |
-| 32768 | 4097³ | 2,098,688 | 73.108  | 135.402  | 37.0% | ✅ |
-
-
-#### c) Native C build (`ex45_julia.c`)
-
-The equivalent PETSc C example compiled natively, serving as the baseline.
-
-
-| Ntasks | Grid | DOFs/core | KSPSolve (s) | SolveTime (s) | Efficiency | Converged |
-|--------|------|-----------|-------------|--------------|------------|-----------|
-| 64 | 513³ | 2,109,464 | 26.917 | 38.770 | 100.0% | ✅ |
-| 64 | 513³ | 2,109,464 | 27.155 | 39.011 | 99.1% | ✅ |
-| 64 | 513³ | 2,109,464 | 26.854 | 39.065 | 100.2% | ✅ |
-| 512 | 1025³ | 2,103,302 | 31.492 | 44.062 | 85.5% | ✅ |
-| 512 | 1025³ | 2,103,302 | 30.122 | 42.700 | 89.4% | ✅ |
-| 512 | 1025³ | 2,103,302 | 30.607 | 43.331 | 87.9% | ✅ |
-| 512 | 1025³ | 2,103,302 | 30.307 | 42.924 | 88.8% | ✅ |
-| 4096 | 2049³ | 2,100,226 | 30.694 | 46.659 | 87.7% | ✅ |
-| 4096 | 2049³ | 2,100,226 | 28.214 | 41.345 | 95.4% | ✅ |
-| 4096 | 2049³ | 2,100,226 | 28.498 | 42.759 | 94.5% | ✅ |
-| 32768 | 4097³ | 2,098,688 | 50.858 | 69.282 | 52.9% | ✅ |
-
-
-#### d) Backend Comparison 
-
-If we compare the case on 4096 cores with a 2049³ grid, for 3D Poisson, 64 nodes × 64 tasks/node, MG levels = 7, coarse ranks = 16 we get:
-
-| Metric | native C | PETSc.jl (`_jll`) | local lib |
-|--------|----------|-------------------|-----------|
-| **Runs** | 3 | 2 | 3 |
-| **SolveTime mean (s)** | 43.6 | 76.3 | 68.8 |
-| **SolveTime range (s)** | 41.3–46.7 | 72.9–79.6 | 68.1–69.4 |
-| **KSPSolve mean (s)** | 29.1 | 39.3 | 35.9 |
-| **KSPSolve range (s)** | 28.2–30.7 | 34.3–44.2 | 34.2–38.4 |
-| **KSP iterations** | 9 | 9 | 9 |
-| **L2 error** | 2.7738e-07 | 2.7738e-07 | 2.7738e-07 |
-| **Converged** | ✅ | ✅ | ✅ |
-
-- **The numerical results are identical** on all backends: same iterations, same L2 and max error.
-- **The efficiency drops at high core counts** for the native build as much as for PETSc.jl, so it comes from the multigrid setup and the coarse-grid solve, not from PETSc.jl.
-- **The local build is faster than `_jll`** at 4096 tasks (35.9 s vs 39.3 s mean KSPSolve).
-
-These runs used an earlier `ex45.jl`, whose KSPSolve time included assembling the operators of every multigrid level in Julia, entry by entry, and compiling that code. The KSPSolve gap to native C therefore does not measure the solve itself. The current `ex45.jl` assembles the operators before the solve and reports the setup and solve times separately; a rerun with it is pending.
-
-The precompiled binaries with the system MPI need no PETSc installation and are the easiest start. A local PETSc build is somewhat faster.
-
-#### Weak scalability plot
-Results can be summarized in the plot below:
 ![weak_scalability_LUMI](../assets/img/weak_scaling_ex45_LUMI.png)

@@ -21,7 +21,7 @@ if !MPI.Initialized()
     MPI.Init()
 end
 
-petsclib = first(PETSc.petsclibs)
+const petsclib = first(PETSc.petsclibs)
 PETSc.isinitialized(petsclib) || PETSc.initialize(petsclib)
 
 PetscScalar = PETSc.scalartype(petsclib)

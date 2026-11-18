@@ -123,7 +123,7 @@ const DEFAULT_SOLVER = (
 cli_opts = PETSc.parse_options(_args)
 own_solver = haskey(cli_opts, :pc_type) || haskey(cli_opts, :ksp_type)
 opts     = merge(DEFAULT_DISCRETIZATION, own_solver ? (;) : DEFAULT_SOLVER, cli_opts)
-petsclib = PETSc.getlib(; PetscScalar = Float64)
+const petsclib = PETSc.getlib(; PetscScalar = Float64)
 MPI.Initialized() || MPI.Init()
 # The command line goes into the options database too: objects built without
 # options keywords, such as the PetscFEs, read their options from there.

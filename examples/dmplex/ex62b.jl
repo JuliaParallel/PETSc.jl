@@ -345,7 +345,7 @@ const repl_opts = String[
 # ── PETSc / MPI init ─────────────────────────────────────────────────────────
 args     = isinteractive() ? repl_opts : collect(String, ARGS)
 opts     = PETSc.parse_options(args)
-petsclib = PETSc.getlib(; PetscScalar = Float64)
+const petsclib = PETSc.getlib(; PetscScalar = Float64)
 MPI.Initialized() || MPI.Init()
 # The command line goes into the options database too: objects built without
 # options keywords, such as the PetscFEs, read their options from there.

@@ -67,7 +67,7 @@ for k in keys(opts)
     end
 end
 
-petsclib = PETSc.getlib(; PetscScalar = Float64)
+const petsclib = PETSc.getlib(; PetscScalar = Float64)
 PETSc.initialize(petsclib)
 
 results = []
